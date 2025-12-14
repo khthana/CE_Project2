@@ -1,0 +1,98 @@
+package WapBrowser;
+
+import java.awt.*;
+import javax.swing.*;
+import java.io.* ;
+import java.util.* ;
+import com.borland.jbcl.layout.*;
+import java.awt.event.*;
+
+public class RemFav extends JFrame {
+  JPanel jPanel1 = new JPanel();
+  JButton jButton2 = new JButton();
+  JButton jButton1 = new JButton();
+  XYLayout xYLayout2 = new XYLayout();
+  XYLayout xYLayout1 = new XYLayout();
+  JButton jButton3 = new JButton();
+  java.awt.List list1 = new java.awt.List();
+
+  public RemFav() {
+    try {
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+  private void jbInit() throws Exception {
+    this.setResizable(false);
+    this.setTitle("Remove Favorite");
+    this.getContentPane().setLayout(xYLayout1);
+    jButton2.setText("OKay");
+    jButton2.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton2_actionPerformed(e);
+      }
+    });
+    jButton1.setText("Remove");
+    jButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton1_actionPerformed(e);
+      }
+    });
+    jPanel1.setLayout(xYLayout2);
+    jButton3.setText("Nah");
+    jButton3.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton3_actionPerformed(e);
+      }
+    });
+    jPanel1.add(jButton2,   new XYConstraints(252, 9, -1, -1));
+    jPanel1.add(jButton3, new XYConstraints(323, 9, -1, -1));
+    jPanel1.add(jButton1, new XYConstraints(10, 9, -1, -1));
+    jPanel1.add(list1,        new XYConstraints(10, 46, 379, 245));
+    this.getContentPane().add(jPanel1,    new XYConstraints(0, 0, 404, 302));
+    this.setSize(new Dimension(405, 335)) ;
+    this.setLocation(100,100) ;
+
+    DataInputStream din = new DataInputStream (new BufferedInputStream (new FileInputStream ("fav.txt"))) ;
+    Vector vin = new Vector(1,1) ;
+    String ss ;
+    int i = 0 ;
+    while ((ss = din.readLine()) != null) {
+      ss.trim() ;
+      vin.add(ss) ;
+      list1.add(ss);
+    }
+    din.close() ;
+  }
+
+  public static void main (String args[]) {
+    RemFav a = new RemFav() ;
+    a.show();
+    }
+
+  void jButton1_actionPerformed(ActionEvent e) {
+    list1.remove(list1.getSelectedIndex());
+  }
+
+  void jButton3_actionPerformed(ActionEvent e) {
+    this.dispose();
+  }
+
+  void jButton2_actionPerformed(ActionEvent e) {
+    String s ;
+    try {
+        FileOutputStream out = new FileOutputStream("fav.txt",false);
+        for (int ii=0;ii<list1.getItemCount();ii++) {
+          s = list1.getItem(ii) ;
+          s.trim();
+          String txtxx = s + "\n" ;
+          byte bytes[] = txtxx.getBytes();
+          out.write(bytes);
+        }
+        out.close();
+    } catch (Exception eeeeeeeee) {}
+    this.dispose();
+  }
+}

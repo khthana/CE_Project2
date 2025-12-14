@@ -1,0 +1,1087 @@
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   1
+ECG_rev1.ASM                                    
+
+                       1	;******************************************************
+                       2	;*          Program Test 4 Bits LCD                 	*
+                       3	;*          Dot Matrix LCD 16X1                  	*
+                       4	;*          HardWare :Project SAN       		*
+                       5	;*          Complier : SXA51                        	*
+                       6	;******************************************************
+     00B6=             7	CS_LCD 	EQU 	P3.6          	; E  LCD (Pin WR)
+     00B7=             8	RS_LCD 	EQU    	P3.7          	; RS LCD (Pin RD)
+     00A2=             9	I2C_WPT EQU     	P2.2                    	; I2C-Bus Write Protect
+     00A1=            10	I2C_SCL  EQU     	P2.1                    	; I2C-Bus Clock  >P2.1
+     00A0=            11	I2C_SDA  EQU     	P2.0                    	; I2C-Bus Data  >P2.0
+     0031=            12	NUM	EQU	31H
+     0032=            13	TIMER_H	EQU	32H
+     0033=            14	TIMER_L	EQU	33H
+     0034=            15	TIM1_H	EQU	34H
+     0035=            16	TIM1_L	EQU	35H
+     0036=            17	TIM2_H	EQU	36H
+     0037=            18	TIM2_L	EQU	37H
+     0038=            19	POS	EQU	38H
+     0039=            20	TIME_H	EQU	39H	
+     003A=            21	TIME_L	EQU	3AH
+     003B=            22	ADDRL	EQU	3BH
+     003C=            23	ADDRH	EQU	3CH
+     003D=            24	DISNUM	EQU	3DH
+     0000=            25	BITC	EQU	00H
+     0001=            26	bitA	EQU	01H
+     0000             27	            	ORG     	0000H
+     0000 020040      28	            	LJMP   	MAIN
+                      29		
+     000B             30		ORG	000BH       	;INTERRUPT TIMER0
+     000B 0203C3      31	        	LJMP	TIME0
+                      32	
+                      33		;ORG	0003H
+                      34		;LJMP	INTER0		;INTERRUPT0
+                      35	
+     0023             36		ORG	0023H
+     0023 02046F      37		LJMP	SEND
+                      38	
+     0040             39	        org	0040h    
+     0040 758140      40	MAIN:   mov	sp,#40h	
+     0043 D2B6        41		SETB    	CS_LCD        	; initial LCD
+     0045 1203B2      42	            	LCALL   	DELAY         	; initial delay
+     0048 12011C      43	            	LCALL   	INIT_LCD      	; initial LCD
+     004B 753200      44		MOV	TIMER_H,#00
+     004E 753300      45		MOV	TIMER_L,#00
+     0051 D2A2        46		SETB    	I2C_WPT                 ; Enable I2C Write Protect
+     0053 C2A1        47	            	CLR     	I2C_SCL                 	; Initial Bus For Stop
+     0055 C2A0        48	            	CLR     	I2C_SDA
+     0057 D2A1        49	            	SETB    	I2C_SCL
+     0059 D2A0        50	            	SETB    	I2C_SDA                 	; Stop Condition (SCL=1,SDA=1)
+     005B 753800      51		MOV	POS,#00H
+     005E 853839      52		MOV	TIME_H,POS
+     0061 85383A      53		MOV	TIME_L,POS
+     0064             54	START:   	
+     0064 758921      55	        	MOV     	TMOD,#21H        	;SET TIMER1 MODE2(AUTO RE-LOAD)
+                      56					;SET TIMER0 MODE1(16 BIT)
+     0067 758DFD      57	        	MOV     	TH1,#0FDH        	;SET BAUD RATE=9600(1200=E8,2400=F4,4800=FA,600=D0,300=A0)
+     006A 758CFC      58		MOV     	TH0,#0FCH	;5 msec TIMER #0EE00H
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   2
+ECG_rev1.ASM                                    
+
+     006D 758A67      59		MOV     	TL0,#67H		;1 msec TIMER #0FC67H
+     0070 759850      60		MOV	SCON,#01010000B
+     0073 75A892      61	        	MOV     	IE,#10010010B    	;SET INTERRUPT ENABLE SERIAL AND TIMER0    (10010011B) INTERRUPT0
+                      62		;MOV     	IP,#00000001B	;HIGHER PRIORITY TIMER0			(01H)
+     0076 D28E        63	        	SETB    	TR1		;START TIMER1
+     0078 D28C        64		SETB    	TR0              	;START TIMER0
+     007A D201        65		setb	bitA
+                      66	
+     007C 7400        67		MOV     	A,#0
+     007E 120116      68		LCALL		GOTO_LCD
+     0081 7400        69		MOV     	A,#0
+     0083 90059B      70	        MOV     	DPTR,#LCD_STR
+     0086 C0E0        71	STR1:  PUSH    	ACC    	
+     0088 93          72		MOVC    	A,@A+DPTR
+     0089 B40007      73	        CJNE    	A,#00H,STR2
+     008C D0E0        74	        POP    	ACC
+     008E 05E0        75		INC	ACC
+     0090 02009D      76	            	LJMP    	STR3
+     0093 1200C6      77	STR2:   	LCALL   	WR_LCD
+     0096 D0E0        78	            	POP     	ACC
+     0098 05E0        79	            	INC     	ACC
+     009A 020086      80	            	LJMP    	STR1
+     009D             81	STR3:
+     009D 1203B2      82		lcall	delay
+     00A0 1203B2      83		lcall	delay
+     00A3 1203B2      84		lcall	delay
+     00A6 1203B2      85		lcall	delay
+     00A9 1203B2      86		lcall	delay
+                      87	;******************************************************
+                      88	;*                    show LCD                      		*
+                      89	;******************************************************
+                      90		
+                      91	;AAA:	MOV	DISNUM,NUM
+                      92	;	LCALL	NUM_LCD
+                      93	;	jb	p3.2,AAA2
+                      94	;	jnb	bitA,AAA3
+                      95	;	lcall	inter0
+                      96	;AAA3:	clr	bitA
+                      97	;	sjmp	AAA
+                      98	;AAA2:	setb	bitA
+                      99	;	sjmp	AAA
+                     100	
+                     101	;	MOV     	A,#0
+                     102	;        MOV     	DPTR,#LCD_TAB
+                     103	;WRITE1:  PUSH    	ACC
+                     104	;            	MOVC    	A,@A+DPTR
+                     105	;            	CJNE    	A,#00H,WRITE
+                     106	;            	POP    	ACC
+                     107	;	INC	ACC
+                     108	;            	LJMP    	WRITE2
+                     109	;WRITE:   	LCALL   	WR_LCD
+                     110	;            	POP     	ACC
+                     111	;            	INC     	ACC
+                     112	;            	LJMP    	WRITE1
+                     113	
+                     114	;WRITE2: 	PUSH    	ACC
+                     115	;            	MOVC    	A,@A+DPTR
+                     116	;            	CJNE    	A,#00H,WRITE3
+                     117	;	CLR	ACC
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   3
+ECG_rev1.ASM                                    
+
+                     118	;	LCALL	GOTO_LCD
+                     119	;            	POP    	ACC
+                     120	;	INC	ACC
+                     121	;            	LJMP    	WRITE4
+                     122	;WRITE3: 	LCALL   	WR_LCD
+                     123	;            	POP     	ACC
+                     124	;            	INC     	ACC
+                     125	;	LCALL	DELAY
+                     126	;            	LJMP    	WRITE2
+                     127	;WRITE4: 	PUSH    	ACC
+                     128	;            	MOVC    	A,@A+DPTR
+                     129	;            	CJNE    	A,#00H,WRITE5
+                     130	;            	POP    	ACC
+                     131	;	INC	ACC
+                     132	;            	LJMP    	WRITE6
+                     133	;WRITE5: 	LCALL   	WR_LCD
+                     134	;            	POP     	ACC
+                     135	;            	INC     	ACC
+                     136	;            	LJMP    	WRITE4
+                     137	;WRITE6:	
+                     138	;	MOV	DPTR,#0001H
+                     139	;	LCALL	I2C_READ1
+                     140	;	MOV	POS,#0
+                     141	;	MOV	DISNUM,A
+                     142	;	LCALL	NUM_LCD
+                     143	
+                     144	;	MOV	R5,#00H
+                     145	;WR6:	MOV	NUM,R5
+     00AC 12053B     146	WR6:	LCALL	INTER0
+                     147	;	MOV	POS,#5
+     00AF 85313D     148		MOV	DISNUM,NUM
+     00B2 12034F     149		LCALL	NUM_LCD
+     00B5 1203B2     150		LCALL	DELAY
+     00B8 1203B2     151		LCALL	DELAY
+     00BB 1203B2     152		LCALL	DELAY
+     00BE 1203B2     153		LCALL	DELAY
+     00C1 1203B2     154		LCALL	DELAY
+                     155	;	DJNZ	R5,WR6
+     00C4 80E6       156		SJMP	WR6
+                     157	           
+                     158	;******************************************************
+                     159	;*                Input  : ACC  (ASCII)             		*
+                     160	;*                Output : Data bus LCD             	*
+                     161	;******************************************************
+     00C6 C002       162	WR_LCD:PUSH	02H	
+     00C8 F5F0       163		MOV     	B,A
+     00CA 54F0       164	            	ANL     	A,#0F0H
+     00CC D2B7       165	            	SETB   	RS_LCD		;RS HI
+     00CE FA         166	            	MOV     	R2,A
+     00CF E580       167	            	MOV     	A,P0
+     00D1 540F       168	            	ANL     	A,#00001111B
+     00D3 4A         169	            	ORL     	A,R2
+     00D4 F580       170	           	MOV     	P0,A
+     00D6 12013D     171	            	LCALL   	EN_LCD
+     00D9 E5F0       172	            	MOV     	A,B             	;Low byte
+     00DB C4         173	            	SWAP    	A
+     00DC 54F0       174	            	ANL     	A,#0F0H
+     00DE D2B7       175	            	SETB   	RS_LCD		;RS HI
+     00E0 FA         176	            	MOV     	R2,A
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   4
+ECG_rev1.ASM                                    
+
+     00E1 E580       177	            	MOV     	A,P0
+     00E3 540F       178	            	ANL     	A,#00001111B
+     00E5 4A         179	            	ORL     	A,R2
+     00E6 F580       180	            	MOV     	P0,A
+     00E8 12013D     181	            	LCALL   	EN_LCD
+     00EB D002       182		POP	02H
+     00ED 22         183	            	RET
+                     184	
+                     185	;******************************************************
+                     186	;*                Write Instruction LCD             	*
+                     187	;*                Input  : ACC (Command)            	*
+                     188	;*                Output : Data bus LCD             	*
+                     189	;******************************************************
+     00EE C002       190	WR_INS:	PUSH	02H
+     00F0 F5F0       191		MOV     	B,A
+     00F2 54F0       192	            	ANL     	A,#0F0H
+     00F4 FA         193	            	MOV     	R2,A
+     00F5 E580       194	            	MOV     	A,P0
+     00F7 540F       195	            	ANL     	A,#00001111B    	;else bit
+     00F9 C2B7       196	            	CLR   	RS_LCD		;RS LOW
+     00FB 4A         197	            	ORL     	A,R2
+     00FC F580       198	            	MOV     	P0,A            	; High byte
+     00FE 12013D     199	            	LCALL   	EN_LCD
+     0101 E5F0       200	            	MOV     	A,B             	; Low byte
+     0103 C4         201	            	SWAP    	A
+     0104 54F0       202	            	ANL     	A,#0F0H
+     0106 FA         203	            	MOV     	R2,A
+     0107 E580       204	            	MOV     	A,P0
+     0109 540F       205	            	ANL    	A,#00001111B
+     010B C2B7       206	            	CLR   	RS_LCD		;RS LOW
+     010D 4A         207	            	ORL     	A,R2
+     010E F580       208	            	MOV     	P0,A
+     0110 12013D     209	            	LCALL   	EN_LCD
+     0113 D002       210		POP	02H
+     0115 22         211	            	RET
+                     212	
+                     213	;******************************************************
+                     214	;*                 Goto position of LCD             	*
+                     215	;*                 Input : ACC (addr.)              		*
+                     216	;******************************************************
+     0116            217	GOTO_LCD:   
+     0116 D2E7       218		SETB    	ACC.7
+     0118 1200EE     219	            	LCALL   	WR_INS
+     011B 22         220	            	RET
+                     221	
+                     222	;******************************************************
+                     223	;*                      Initial LCD                 		*
+                     224	;*                      4-Bit Interface             		*
+                     225	;******************************************************
+     011C            226	INIT_LCD:   
+     011C C2B7       227		CLR     	RS_LCD
+     011E 7433       228	            	MOV     	A,#33H          	; Set DL = 1 3-time
+     0120 1200EE     229	            	LCALL   	WR_INS
+     0123 7432       230	            	MOV     	A,#32H          	; Clear DL = 0 1-time
+     0125 1200EE     231	            	LCALL   	WR_INS
+     0128 7420       232	            	MOV     	A,#20H          	; Function set  (28)
+     012A 1200EE     233	            	LCALL   	WR_INS          	; DL=0 4Bit,N=1 2Line,F=0 5X7
+     012D 740C       234	            	MOV     	A,#0CH
+     012F 1200EE     235	            	LCALL   	WR_INS          	; Entry display,cursor off,cursor not blink
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   5
+ECG_rev1.ASM                                    
+
+     0132 7406       236	            	MOV     	A,#06H          	; Entry mode set
+     0134 1200EE     237	            	LCALL   	WR_INS          	; I/D=1 Increment,S=0 cursor shift
+     0137 7401       238	            	MOV     	A,#01H          	; Clear display
+     0139 1200EE     239	            	LCALL   	WR_INS          	; Clear display,set DD RAM address=0
+     013C 22         240	            	RET
+                     241	;******************************************************
+                     242	;*                    Enable Pin E LCD              	*
+                     243	;*                    Active Chip select            		*
+                     244	;******************************************************
+     013D C2B6       245	EN_LCD:	CLR     	CS_LCD          	; Enable LCD
+     013F 120145     246	            	LCALL   	BUSY            	; Busy delay time
+     0142 D2B6       247	            	SETB    	CS_LCD          	; Disable LCD
+     0144 22         248	            	RET
+                     249	
+                     250	;******************************************************
+                     251	;*                Delay time for Busy               	* 
+                     252	;*                  Wait LCD Ready                  	*
+                     253	;******************************************************
+     0145 C007       254	BUSY:    	PUSH  	07H
+     0147 C006       255	            	PUSH    	06H
+     0149 7E05       256	            	MOV     	R6,#05H
+     014B 7FFF       257	BUSY1: 	MOV     	R7,#0FFH
+     014D DFFE       258	            	DJNZ    	R7,$
+     014F DEFA       259	            	DJNZ    	R6,BUSY1
+     0151 D006       260	            	POP     	06H
+     0153 D007       261	            	POP     	07H
+     0155 22         262	            	RET
+                     263	
+                     264	
+                     265	;/*****************************/;
+                     266	;/* I2C-BUS 24LC256 Interface */;
+                     267	;/* Write Data to I2C-EEPROM  */;
+                     268	;/* Input  : DPTR (Address)   */;
+                     269	;/*        : ACC (Data)       */;
+                     270	;/*****************************/;
+                     271	;
+     0156            272	I2C_WRITE:  
+     0156 C0F0       273		PUSH    	B                       	; Save Register
+     0158 C0E0       274	            	PUSH    	ACC                     	; Save Data to Write
+     015A C2A2       275	            	CLR     	I2C_WPT                 ; Disable Write Protect
+     015C C2A1       276	            	CLR     	I2C_SCL                 	; Initial Bus For Start
+     015E D2A0       277	            	SETB    	I2C_SDA                 
+     0160 D2A1       278	            	SETB    	I2C_SCL
+     0162 00         279	            	NOP                             	; TSU:STA Delay (5us)
+     0163 00         280	            	NOP
+     0164 00         281	            	NOP
+     0165 00         282	            	NOP
+     0166 00         283	            	NOP
+     0167 C2A0       284	            	CLR     	I2C_SDA                 	; Start Condition
+     0169 00         285	            	NOP                             	; THD:STA Delay (4us)
+     016A 00         286	            	NOP
+     016B 00         287	            	NOP
+     016C 00         288	            	NOP
+                     289	            ;/* Ready to Start 1st Byte Send */;
+     016D 75F008     290	            	MOV     	B,#8                    	; Write Control Byte 8-Bit Count
+     0170 74A0       291	            	MOV     	A,#10100000B        	; 1010-Slave000,Write
+     0172            292	I2C_WR1:    
+     0172 C2A1       293		CLR     	I2C_SCL                 	;/* Change Data to SDA Signal */;
+     0174 D2A0       294	            	SETB    	I2C_SDA                 	; Release Data Line
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   6
+ECG_rev1.ASM                                    
+
+     0176 33         295	            	RLC     	A                       	; Write MSB First
+     0177 92A0       296	            	MOV     	I2C_SDA,C             	; Write Bit Data to SDA Signal
+     0179 00         297	            	NOP
+     017A 00         298	            	NOP
+     017B 00         299	            	NOP
+     017C D2A1       300	            	SETB    	I2C_SCL                 	; Stobe Data to I2C-EEPROM
+     017E 00         301	            	NOP                             	; T-High Delay (4uS)
+     017F 00         302	            	NOP
+     0180 00         303	            	NOP
+     0181 00         304	            	NOP
+     0182 D5F0ED     305	            	DJNZ    	B,I2C_WR1           	; Loop to Write Control Byte
+     0185 C2A1       306	            	CLR     	I2C_SCL                 	;*/ Falling 9'th Clock For ACK */;
+     0187 D2A0       307	            	SETB    	I2C_SDA                 	; Release Data Line
+     0189 00         308	            	NOP
+     018A 00         309	            	NOP
+     018B 00         310	            	NOP
+     018C 00         311	            	NOP
+     018D D2A1       312	            	SETB    	I2C_SCL                 	;*/ Rising 9'th Clock for Get ACK */;
+     018F 00         313	            	NOP
+     0190 C2D7       314	            	CLR     	CY
+     0192 30A007     315	            	JNB     	I2C_SDA,I2C_WR2	; If ACK Jump
+     0195 D2D7       316	            	SETB    	CY                      	; Not ACK From EEPROM
+     0197 D0E0       317	            	POP     	ACC
+     0199 020224     318	            	LJMP    	I2C_WR8
+     019C            319	I2C_WR2:    
+     019C 75F008     320		MOV     	B,#8                    	; Write Addr High-Byte Count
+     019F E583       321	            	MOV     	A,DPH                   	; Address High Byte
+     01A1            322	I2C_WR3:    
+     01A1 C2A1       323		CLR     	I2C_SCL                 	;/* Change Data to SDA Signal */;
+     01A3 D2A0       324	            	SETB    	I2C_SDA                 	; Release Data Line
+     01A5 33         325	            	RLC     	A                       	; Write MSB First
+     01A6 92A0       326	            	MOV     	I2C_SDA,C               ; Write Bit Data to SDA Signal
+     01A8 00         327	            	NOP
+     01A9 00         328	            	NOP
+     01AA 00         329	            	NOP
+     01AB D2A1       330	            	SETB    	I2C_SCL                 	; Stobe Data to I2C-EEPROM
+     01AD 00         331	           	NOP                             	; T-High Delay (4uS)
+     01AE 00         332	            	NOP
+     01AF 00         333	            	NOP
+     01B0 00         334	            	NOP
+     01B1 D5F0ED     335	            	DJNZ    	B,I2C_WR3          	; Loop to Write Addr High-Byte
+     01B4 C2A1       336	            	CLR     	I2C_SCL                 	;*/ Falling 9'th Clock For ACK */;
+     01B6 D2A0       337	            	SETB    	I2C_SDA                 	; Release Data Line
+     01B8 00         338	            	NOP
+     01B9 00         339	            	NOP
+     01BA 00         340	            	NOP
+     01BB 00         341	            	NOP
+     01BC D2A1       342	            	SETB    	I2C_SCL                 	;*/ Rising 9'th Clock for Get ACK */;
+     01BE 00         343	            	NOP
+     01BF C2D7       344	            	CLR     	CY
+     01C1 30A007     345	            	JNB     	I2C_SDA,I2C_WR4	; If ACK Jump
+     01C4 D2D7       346	            	SETB    	CY                      	; Not ACK From EEPROM
+     01C6 D0E0       347	            	POP     	ACC
+     01C8 020224     348	            	LJMP    	I2C_WR8
+     01CB            349	I2C_WR4:    
+     01CB 75F008     350		MOV     	B,#8                    	; Write Addr Low-Byte Count
+     01CE E582       351	            	MOV     	A,DPL                   	; Address Low Byte
+     01D0            352	I2C_WR5:    
+     01D0 C2A1       353		CLR     	I2C_SCL                 	;/* Change Data to SDA Signal */;
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   7
+ECG_rev1.ASM                                    
+
+     01D2 D2A0       354	            	SETB    	I2C_SDA                 	; Release Data Line
+     01D4 33         355	            	RLC     	A                       	; Write MSB First
+     01D5 92A0       356	            	MOV     	I2C_SDA,C               ; Write Bit Data to SDA Signal
+     01D7 00         357	            	NOP
+     01D8 00         358	            	NOP
+     01D9 00         359	            	NOP
+     01DA D2A1       360	            	SETB    	I2C_SCL                 	; Stobe Data to I2C-EEPROM
+     01DC 00         361	            	NOP                             	; T-High Delay (4uS)
+     01DD 00         362	            	NOP
+     01DE 00         363	            	NOP
+     01DF 00         364	            	NOP
+     01E0 D5F0ED     365	            	DJNZ    	B,I2C_WR5         	; Loop to Write Addr Low-Byte
+     01E3 C2A1       366	            	CLR     	I2C_SCL                 	;*/ Falling 9'th Clock For ACK */;
+     01E5 D2A0       367	            	SETB    	I2C_SDA                 	; Release Data Line
+     01E7 00         368	            	NOP
+     01E8 00         369	            	NOP
+     01E9 00         370	            	NOP
+     01EA 00         371	            	NOP
+     01EB D2A1       372	            	SETB    	I2C_SCL                 	;*/ Rising 9'th Clock for Get ACK */;
+     01ED 00         373	            	NOP
+     01EE C2D7       374	            	CLR     	CY
+     01F0 30A007     375	            	JNB     	I2C_SDA,I2C_WR6	; If ACK Jump
+     01F3 D2D7       376	            	SETB    	CY                      	; Not ACK From EEPROM
+     01F5 D0E0       377	            	POP     	ACC
+     01F7 020224     378	            	LJMP    	I2C_WR8
+     01FA            379	I2C_WR6:    
+     01FA 75F008     380		MOV     	B,#8                    	; Write Data 8-Bit Count
+     01FD D0E0       381	            	POP     	ACC                     	; Restore Data For Write
+     01FF            382	I2C_WR7:    
+     01FF C2A1       383		CLR     	I2C_SCL                 	;/* Change Data to SDA Signal */;
+     0201 D2A0       384	            	SETB    	I2C_SDA                 	; Release Data Line
+     0203 33         385	            	RLC     	A                       	; Write MSB First
+     0204 92A0       386	            	MOV     	I2C_SDA,C               ; Write Bit Data to SDA Signal
+     0206 00         387	            	NOP
+     0207 00         388	            	NOP
+     0208 00         389	            	NOP
+     0209 D2A1       390	            	SETB    	I2C_SCL                 	; Stobe Data to I2C-EEPROM
+     020B 00         391	            	NOP                             	; T-High Delay (4uS)
+     020C 00         392	            	NOP
+     020D 00         393	            	NOP
+     020E 00         394	            	NOP
+     020F D5F0ED     395	            	DJNZ    	B,I2C_WR7          	; Loop to Write Data
+     0212 C2A1       396	            	CLR     	I2C_SCL                 	;*/ Falling 9'th Clock For ACK */;
+     0214 D2A0       397	            	SETB    	I2C_SDA                 	; Release Data Line
+     0216 00         398	            	NOP
+     0217 00         399	            	NOP
+     0218 00         400	            	NOP
+     0219 00         401	            	NOP
+     021A D2A1       402	            	SETB    	I2C_SCL                 	;*/ Rising 9'th Clock for Get ACK */;
+     021C 00         403	            	NOP
+     021D C2D7       404	            	CLR     	CY
+     021F 30A002     405	            	JNB     	I2C_SDA,I2C_WR8 	; If ACK Jump
+     0222 D2D7       406	            	SETB    	CY                      	; Not ACK From EEPROM
+     0224            407	I2C_WR8:    
+     0224 C2A1       408		CLR     	I2C_SCL                 	; Falling Stop Clock
+     0226 C2A0       409	            	CLR     	I2C_SDA
+     0228 00         410	            	NOP
+     0229 00         411	            	NOP
+     022A D2A1       412	            	SETB    	I2C_SCL
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   8
+ECG_rev1.ASM                                    
+
+     022C 00         413	            	NOP                             	; TSU:STO (4us)
+     022D 00         414	            	NOP
+     022E 00         415	            	NOP
+     022F 00         416	            	NOP
+     0230            417	I2C_WR9:    
+     0230 D2A0       418		SETB    	I2C_SDA                 	; Stop Condition (SCL=1,SDA=1)
+     0232 30A0FB     419	            	JNB     	I2C_SDA,I2C_WR9	; Wait Until Stop
+     0235 D2A2       420	            	SETB    	I2C_WPT                 ; Enable Write Protect
+     0237 D0F0       421	            	POP     	B                       	; Restore Register
+     0239 22         422	            	RET
+                     423	
+                     424	;/*****************************/;
+                     425	;/* I2C-BUS 24LC256 Interface */;
+                     426	;/* Read Data From I2C-EEPROM */;
+                     427	;/* -I2C_READ1 = Random Read  */;
+                     428	;/*  Input  : DPTR (Address)  */;
+                     429	;/*  Output : ACC (Data)      */;
+                     430	;/* -I2C_READ2 = Current Read */;
+                     431	;/*  Input  : None (Continue) */;
+                     432	;/*  Output : ACC (Data)      */;
+                     433	;/*****************************/;
+                     434	;
+     023A            435	I2C_READ1:  
+     023A C0F0       436		PUSH    	B                       	; Save Register
+     023C C2A1       437	            	CLR     	I2C_SCL                 	; Initial Bus For Start
+     023E D2A0       438	            	SETB    	I2C_SDA                 
+     0240 D2A1       439	            	SETB    	I2C_SCL
+     0242 00         440	            	NOP                             	; TSU:STA Delay (5us)
+     0243 00         441	            	NOP
+     0244 00         442	            	NOP
+     0245 00         443	            	NOP
+     0246 00         444	            	NOP
+     0247 C2A0       445	            	CLR     	I2C_SDA                 	; Start Condition
+     0249 00         446	            	NOP                             	; THD:STA Delay (4us)
+     024A 00         447	            	NOP
+     024B 00         448	            	NOP
+     024C 00         449	            	NOP
+                     450	            	;/* Ready to Start 1st Byte Send */;
+     024D 75F008     451	            	MOV     	B,#8                    	; Write Control Byte 8-Bit Count
+     0250 74A0       452	            	MOV     	A,#10100000B       	; 1010-Slave000,Write
+     0252            453	I2C_RD1:    
+     0252 C2A1       454		CLR     	I2C_SCL                 	;/* Change Data to SDA Signal */;
+     0254 D2A0       455	            	SETB    	I2C_SDA                 	; Release Data Line
+     0256 33         456	            	RLC     	A                       	; Write MSB First
+     0257 92A0       457	            	MOV     	I2C_SDA,C             	; Write Bit Data to SDA Signal
+     0259 00         458	            	NOP
+     025A 00         459	            	NOP
+     025B 00         460	            	NOP
+     025C D2A1       461	            	SETB    	I2C_SCL                 	; Stobe Data to I2C-EEPROM
+     025E 00         462	            	NOP                             	; T-High Delay (4uS)
+     025F 00         463	            	NOP
+     0260 00         464	            	NOP
+     0261 00         465	            	NOP
+     0262 D5F0ED     466	            	DJNZ    	B,I2C_RD1            	; Loop to Write Control Byte
+     0265 C2A1       467	            	CLR     	I2C_SCL                 	;*/ Falling 9'th Clock For ACK */;
+     0267 D2A0       468	            	SETB    	I2C_SDA                 	; Release Data Line
+     0269 00         469	            	NOP
+     026A 00         470	            	NOP
+     026B 00         471	            	NOP
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   9
+ECG_rev1.ASM                                    
+
+     026C 00         472	            	NOP
+     026D D2A1       473	            	SETB    	I2C_SCL                 	;*/ Rising 9'th Clock for Get ACK */;
+     026F 00         474	            	NOP
+     0270 C2D7       475	            	CLR    	CY
+     0272 30A005     476	            	JNB     	I2C_SDA,I2C_RD2	; If ACK Jump
+     0275 D2D7       477	            	SETB    	CY                      	; Not ACK From EEPROM
+     0277 02033A     478	            	LJMP    	I2C_RD10
+     027A            479	I2C_RD2:    
+     027A 75F008     480		MOV     	B,#8                    	; Write Addr High-Byte Count
+     027D E583       481	            	MOV     	A,DPH                   	; Address High Byte
+     027F            482	I2C_RD3:    
+     027F C2A1       483		CLR     	I2C_SCL                 	;/* Change Data to SDA Signal */;
+     0281 D2A0       484	            	SETB    	I2C_SDA                 	; Release Data Line
+     0283 33         485	            	RLC     	A                       	; Write MSB First
+     0284 92A0       486	            	MOV     	I2C_SDA,C               ; Write Bit Data to SDA Signal
+     0286 00         487	            	NOP
+     0287 00         488	            	NOP
+     0288 00         489	            	NOP
+     0289 D2A1       490	            	SETB    	I2C_SCL                 	; Stobe Data to I2C-EEPROM
+     028B 00         491	            	NOP                             	; T-High Delay (4uS)
+     028C 00         492	            	NOP
+     028D 00         493	            	NOP
+     028E 00         494	            	NOP
+     028F D5F0ED     495	            	DJNZ    	B,I2C_RD3          	; Loop to Write Addr High-Byte
+     0292 C2A1       496	            	CLR     	I2C_SCL                 	;*/ Falling 9'th Clock For ACK */;
+     0294 D2A0       497	           	SETB    	I2C_SDA                 	; Release Data Line
+     0296 00         498	            	NOP
+     0297 00         499	            	NOP
+     0298 00         500	            	NOP
+     0299 00         501	            	NOP
+     029A D2A1       502	            	SETB    	I2C_SCL                 	;*/ Rising 9'th Clock for Get ACK */;
+     029C 00         503	            	NOP
+     029D C2D7       504	            	CLR     	CY
+     029F 30A005     505	            	JNB     	I2C_SDA,I2C_RD4	; If ACK Jump
+     02A2 D2D7       506	            	SETB    	CY                      	; Not ACK From EEPROM
+     02A4 02033A     507	            	LJMP    	I2C_RD10
+     02A7            508	I2C_RD4:    
+     02A7 75F008     509		MOV     	B,#8                    	; Write Addr Low-Byte Count
+     02AA E582       510	            	MOV     	A,DPL                   	; Address Low Byte
+     02AC            511	I2C_RD5:    
+     02AC C2A1       512		CLR     	I2C_SCL                 	;/* Change Data to SDA Signal */;
+     02AE D2A0       513	            	SETB    	I2C_SDA                 	; Release Data Line
+     02B0 33         514	            	RLC     	A                       	; Write MSB First
+     02B1 92A0       515	            	MOV     	I2C_SDA,C               ; Write Bit Data to SDA Signal
+     02B3 00         516	            	NOP
+     02B4 00         517	            	NOP
+     02B5 00         518	            	NOP
+     02B6 D2A1       519	            	SETB    	I2C_SCL                 	; Stobe Data to I2C-EEPROM
+     02B8 00         520	            	NOP                             	; T-High Delay (4uS)
+     02B9 00         521	            	NOP
+     02BA 00         522	            	NOP
+     02BB 00         523	            	NOP
+     02BC D5F0ED     524	            	DJNZ    	B,I2C_RD5            	; Loop to Write Addr Low-Byte
+     02BF C2A1       525	            	CLR     	I2C_SCL                 	;*/ Falling 9'th Clock For ACK */;
+     02C1 D2A0       526	            	SETB    	I2C_SDA                 	; Release Data Line
+     02C3 00         527	            	NOP
+     02C4 00         528	            	NOP
+     02C5 00         529	            	NOP
+     02C6 00         530	            	NOP
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page  10
+ECG_rev1.ASM                                    
+
+     02C7 D2A1       531	            	SETB    	I2C_SCL                 	;*/ Rising 9'th Clock for Get ACK */;
+     02C9 00         532	            	NOP
+     02CA C2D7       533	            	CLR     	CY
+     02CC 30A007     534	            	JNB     	I2C_SDA,I2C_RD6	; If ACK Jump
+     02CF D2D7       535	            	SETB    	CY                      	; Not ACK From EEPROM
+     02D1 02033A     536	            	LJMP    	I2C_RD10
+                     537	            ;/* Current Address Read Operation */;
+     02D4            538	I2C_READ2:  
+     02D4 C0F0       539		PUSH    	B                       	; Save Register
+     02D6            540	I2C_RD6:    
+     02D6 C2A1       541		CLR     	I2C_SCL                 	; Falling New Start Clock
+     02D8 D2A0       542	            	SETB    	I2C_SDA                 	; Initial Bus For Start
+     02DA D2A1       543	            	SETB    	I2C_SCL
+     02DC 00         544	            	NOP                             	; TSU:STA Delay (5us)
+     02DD 00         545	            	NOP
+     02DE 00         546	            	NOP
+     02DF 00         547	            	NOP
+     02E0 00         548	            	NOP
+     02E1 C2A0       549	            	CLR     	I2C_SDA                 ; Start Condition
+     02E3 00         550	            	NOP                             	; THD:STA Delay (4us)
+     02E4 00         551	            	NOP
+     02E5 00         552	            	NOP
+     02E6 00         553	            	NOP
+     02E7 75F008     554	            	MOV     	B,#8                    	; Write Control Byte 8-Bit Count
+     02EA 74A1       555	            	MOV     	A,#10100001B      	; 1010-Slave000,Read
+     02EC            556	I2C_RD7:    
+     02EC C2A1       557		CLR     	I2C_SCL                 	;/* Change Data to SDA Signal */;
+     02EE D2A0       558	            	SETB    	I2C_SDA                 	; Release Data Line
+     02F0 33         559	            	RLC     	A                       	; Write MSB First
+     02F1 92A0       560	            	MOV     	I2C_SDA,C               ; Write Bit Data to SDA Signal
+     02F3 00         561	            	NOP
+     02F4 00         562	            	NOP
+     02F5 00         563	            	NOP
+     02F6 D2A1       564	            	SETB    	I2C_SCL                 	; Stobe Data to I2C-EEPROM
+     02F8 00         565	            	NOP                             	; T-High Delay (4uS)
+     02F9 00         566	            	NOP
+     02FA 00         567	            	NOP
+     02FB 00         568	            	NOP
+     02FC D5F0ED     569	            	DJNZ    	B,I2C_RD7               ; Loop to Write Control Byte
+     02FF C2A1       570	            	CLR     	I2C_SCL                 	;*/ Falling 9'th Clock For ACK */;
+     0301 D2A0       571	            	SETB    	I2C_SDA                 	; Release Data Line
+     0303 00         572	            	NOP
+     0304 00         573	            	NOP
+     0305 00         574	            	NOP
+     0306 00         575	            	NOP
+     0307 D2A1       576	            	SETB    	I2C_SCL                 	;*/ Rising 9'th Clock for Get ACK */;
+     0309 00         577	            	NOP
+     030A C2D7       578	            	CLR     	CY
+     030C 30A005     579	            	JNB     	I2C_SDA,I2C_RD8	; If ACK Jump
+     030F D2D7       580	            	SETB    	CY                      	; Not ACK From EEPROM
+     0311 02033A     581	            	LJMP    	I2C_RD10
+     0314            582	I2C_RD8:    
+     0314 75F008     583		MOV     	B,#8                    	; Read Data 8-Bit Count
+     0317 C2D7       584	            	CLR     	CY
+     0319 E4         585	            	CLR     	A                       	; Clera Buffer For Read
+     031A            586	I2C_RD9:    
+     031A C2A1       587		CLR     	I2C_SCL                 	;/* Wait to Receive SDA Signal */;
+     031C D2A0       588	            	SETB    	I2C_SDA                 	; Release Data Signal
+     031E 00         589	            	NOP
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page  11
+ECG_rev1.ASM                                    
+
+     031F 00         590	            	NOP
+     0320 00         591	            	NOP
+     0321 00         592	            	NOP
+     0322 D2A1       593	            	SETB    	I2C_SCL                 	; Read Data From I2C-EEPROM
+     0324 00         594	            	NOP
+     0325 A2A0       595	            	MOV     	C,I2C_SDA               ; Get Data From SDA Signal
+     0327 33         596	            	RLC     	A
+     0328 00         597	            	NOP
+     0329 D5F0EE     598	            	DJNZ    	B,I2C_RD9               ; Loop to Read Data 8-Bit
+     032C C2A1       599	            	CLR     	I2C_SCL                 	;*/ Falling 9'th Clock For ACK */;
+     032E D2A0       600	            	SETB    	I2C_SDA                 	; Release Data Line
+     0330 00         601	            	NOP
+     0331 00         602	            	NOP
+     0332 00         603	            	NOP
+     0333 00         604	            	NOP
+     0334 D2A1       605	            	SETB    	I2C_SCL                 	;*/ Rising 9'th Clock for Send ACK */;
+     0336 00         606	            	NOP
+     0337 00         607	            	NOP
+     0338 00         608	            	NOP
+     0339 00         609	            	NOP
+     033A            610	I2C_RD10:   
+     033A C2A1       611		CLR     	I2C_SCL                 	; Falling Stop Clock
+     033C C2A0       612	            	CLR     	I2C_SDA
+     033E 00         613	            	NOP
+     033F 00         614	            	NOP
+     0340 00         615	            	NOP
+     0341 D2A1       616	            	SETB    	I2C_SCL
+     0343 00         617	            	NOP                             	; TSU:STO (4us)
+     0344 00         618	            	NOP
+     0345 00         619	            	NOP
+     0346 00         620	            	NOP
+     0347            621	I2C_RD11:   
+     0347 D2A0       622		SETB    	I2C_SDA                 	; Stop Condition (SCL=1,SDA=1)
+     0349 30A0FB     623	            	JNB     	I2C_SDA,I2C_RD11	; Wait Until Stop
+     034C D0F0       624	            	POP     	B                       	; Restore Register
+     034E 22         625	            	RET
+                     626	;***************************************
+     034F            627	NUM_LCD:
+     034F C000       628		PUSH	00H
+     0351 C001       629		PUSH	01H
+     0353 C002       630		PUSH	02H
+     0355 C006       631		PUSH	06H
+     0357 C0E0       632		PUSH	ACC
+     0359 7400       633		MOV	A,#00h
+     035B 120116     634		LCALL	GOTO_LCD
+     035E 7448       635		mov	a,#'H'
+     0360 1200C6     636		LCALL	WR_LCD
+     0363 7452       637		mov	a,#'R'
+     0365 1200C6     638		LCALL	WR_LCD
+     0368 7454       639		mov	a,#'T'
+     036A 1200C6     640		LCALL	WR_LCD
+     036D 742D       641		mov	a,#'-'
+     036F 1200C6     642		LCALL	WR_LCD
+     0372 743E       643		mov	a,#'>'
+     0374 1200C6     644		LCALL	WR_LCD
+     0377 E4         645		CLR	A
+     0378 F8         646		MOV	R0,A
+     0379 F9         647		MOV	R1,A
+     037A FA         648		MOV	R2,A
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page  12
+ECG_rev1.ASM                                    
+
+     037B AE3D       649		MOV	R6,DISNUM	
+     037D EE         650		MOV	A,R6
+     037E 600F       651		JZ	VAL6
+     0380 08         652	VAL2:	INC	R0
+     0381 B80A09     653		CJNE	R0,#10D,VAL3
+     0384 7800       654		MOV	R0,#00H
+     0386 09         655		INC	R1
+     0387 B90A03     656		CJNE	R1,#10D,VAL3
+     038A 7900       657		MOV	R1,#00H
+     038C 0A         658		INC	R2
+     038D DEF1       659	VAL3:	DJNZ	R6,VAL2
+     038F EA         660	VAL6:	MOV	A,R2
+     0390 D2E5       661		SETB	ACC.5
+     0392 D2E4       662		SETB	ACC.4
+     0394 1200C6     663		LCALL	WR_LCD
+     0397 E9         664		MOV	A,R1
+     0398 D2E5       665		SETB	ACC.5
+     039A D2E4       666		SETB	ACC.4
+     039C 1200C6     667		LCALL	WR_LCD
+     039F E8         668		MOV	A,R0
+     03A0 D2E5       669		SETB	ACC.5
+     03A2 D2E4       670		SETB	ACC.4
+     03A4 1200C6     671		LCALL	WR_LCD
+     03A7 D0E0       672		POP	ACC
+     03A9 D006       673		POP	06H
+     03AB D002       674		POP	02H
+     03AD D001       675		POP	01H
+     03AF D000       676		POP	00H
+     03B1 22         677		RET
+                     678	
+                     679	;******************************************************
+                     680	;*                      Delay Time                  		*
+                     681	;******************************************************
+     03B2 C007       682	DELAY:  	PUSH    07H
+     03B4 C006       683	            	PUSH    06H
+     03B6 7EFF       684	DEL1:     	MOV     R6,#0FFH
+     03B8 7FFF       685	DEL2:     	MOV     R7,#0FFH
+     03BA DFFE       686	            	DJNZ    R7,$
+     03BC DEFA       687	            	DJNZ    R6,DEL2
+     03BE D006       688	            	POP     06H
+     03C0 D007       689	            	POP     07H
+     03C2 22         690	            	RET
+                     691	;***********TIMER0****************
+     03C3 C28C       692	TIME0:	clr	tr0
+     03C5 758CFC     693		MOV	TH0,#0FCH
+     03C8 758A67     694		MOV	TL0,#67H
+     03CB C28D       695		CLR	TF0
+                     696		;SETB	TR0
+     03CD C083       697		PUSH	DPH
+     03CF C082       698		PUSH	DPL
+     03D1 C0E0       699		PUSH	ACC
+     03D3 C0F0       700		PUSH	B
+     03D5 853283     701		MOV	DPH,TIMER_H
+     03D8 853382     702		MOV	DPL,TIMER_L
+     03DB A3         703		INC	DPTR
+     03DC 858332     704		MOV	TIMER_H,DPH
+     03DF 858233     705		MOV	TIMER_L,DPL
+     03E2 E582       706		MOV	A,DPL	
+     03E4 B4D10E     707		CJNE	A,#0D1H ,TIM00
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page  13
+ECG_rev1.ASM                                    
+
+     03E7 E583       708		MOV	A,DPH
+     03E9 B40709     709		CJNE	A,#7H,TIM00
+     03EC 753200     710		MOV	TIMER_H,#00H
+     03EF 753300     711		MOV	TIMER_L,#00H
+     03F2 753100     712		MOV	NUM,#00H
+     03F5            713	TIM00:
+     03F5 853983     714		MOV	DPH,TIME_H
+     03F8 853A82     715		MOV	DPL,TIME_L
+     03FB A3         716		INC	DPTR
+     03FC 85823A     717		MOV	TIME_L,DPL
+     03FF 858339     718		MOV	TIME_H,DPH	
+     0402 E582       719		MOV	A,DPL
+     0404 B4605D     720		CJNE	A,#060H,TIM01
+     0407 E583       721		MOV	A,DPH
+     0409 B4EA58     722		CJNE	A,#0EAH,TIM01
+     040C C2A8       723		CLR	IE.0
+                     724		;CLR	TR0
+     040E 753900     725		MOV	TIME_H,#00H
+     0411 753A00     726		MOV	TIME_L,#00H
+                     727		;XXXXXXXXXXXXXXXXXXXXXXX MEM 1MIN XXXXXXXXXX
+     0414 900000     728		MOV	DPTR,#0000H
+     0417 12023A     729		LCALL	I2C_READ1
+     041A F5F0       730		MOV	B,A
+     041C 1202D4     731		LCALL	I2C_READ2
+     041F F582       732		MOV	DPL,A
+     0421 85F083     733		MOV	DPH,B
+                     734		;MOV	POS,#2
+                     735		;MOV	DISNUM,A
+                     736		;LCALL	NUM_LCD
+     0424 E582       737		MOV	A,DPL
+     0426 B4FF0F     738		CJNE	A,#0FFH,TIM02
+     0429 E583       739		MOV	A,DPH
+     042B B47F0A     740		CJNE	A,#07FH,TIM02
+     042E 753200     741		MOV	TIMER_H,#00H
+     0431 753300     742		MOV	TIMER_L,#00H
+     0434 D28C       743		SETB	TR0
+     0436 802C       744		SJMP	TIM01	
+                     745	
+     0438 E531       746	TIM02:	MOV	A,NUM
+     043A A3         747		INC	DPTR
+     043B A983       748		MOV	R1,DPH
+     043D AA82       749		MOV	R2,DPL
+                     750		;MOV	POS,#1
+                     751		;MOV	DISNUM,R2
+                     752		;LCALL	NUM_LCD
+     043F 120145     753		LCALL	BUSY
+     0442 120156     754		LCALL	I2C_WRITE
+     0445 758CFC     755		MOV	TH0,#0FCH
+     0448 120145     756		LCALL	BUSY
+     044B 900000     757		MOV	DPTR,#0000H
+     044E E9         758		MOV	A,R1
+     044F 120156     759		LCALL	I2C_WRITE
+     0452 120145     760		LCALL	BUSY
+     0455 900001     761		MOV	DPTR,#0001H
+     0458 EA         762		MOV	A,R2
+     0459 120156     763		LCALL	I2C_WRITE
+                     764		;MOV	POS,#0
+                     765		;MOV	DISNUM,A
+                     766		;LCALL	NUM_LCD
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page  14
+ECG_rev1.ASM                                    
+
+     045C 758CFC     767		MOV	TH0,#0FCH
+     045F 758A67     768		MOV	TL0,#67H
+     0462 D28C       769		SETB	TR0
+                     770		;SETB	IE.0
+                     771		;XXXXXXXXXXXXXXXXXXXXXXXXX
+     0464 D0F0       772	TIM01:	POP	B
+     0466 D0E0       773		POP	ACC
+     0468 D082       774		POP	DPL
+     046A D083       775		POP	DPH
+     046C D28C       776		SETB	TR0
+     046E 32         777		RETI
+                     778	
+     046F 209803     779	SEND:   	JB	RI,RES
+     0472 C299       780		CLR 	TI
+                     781		;MOV 	SBUF,
+     0474 32         782		RETI
+                     783	
+     0475 C298       784	RES:	CLR	RI
+     0477 C0E0       785		PUSH	ACC
+     0479 C082       786		PUSH	DPL
+     047B C083       787		PUSH	DPH
+     047D E599       788		MOV	A,SBUF
+     047F B4375F     789		CJNE	A,#55D,REC1	;READ DATA
+     0482 C2AC       790		CLR	IE.4		;DISENABLE INTERRUPT SERIAL
+     0484 C2A8       791		CLR	IE.0		;DISENABLE INTERRUPT0
+     0486 C29C       792		CLR	REN		;DISENABLE RECEIVE 
+     0488 C28C       793		CLR	TR0
+                     794	
+     048A 7400       795		MOV     	A,#0h
+     048C 120116     796		LCALL		GOTO_LCD
+     048F 7400       797		MOV     	A,#0h
+     0491 900592     798	        MOV     	DPTR,#LCD_TAB
+     0494 C0E0       799	rec01:  PUSH    	ACC    	
+     0496 93         800		MOVC    	A,@A+DPTR
+     0497 B40007     801	        CJNE    	A,#00H,rec02
+     049A D0E0       802	        POP    	ACC
+     049C 05E0       803		INC	ACC
+     049E 0204AB     804	            	LJMP    	rec03
+     04A1 1200C6     805	rec02:   	LCALL   	WR_LCD
+     04A4 D0E0       806	            	POP     	ACC
+     04A6 05E0       807	            	INC     	ACC
+     04A8 020494     808	            	LJMP    	rec01
+     04AB            809	rec03:
+     04AB 900000     810		MOV	DPTR,#0000H
+     04AE 12023A     811		LCALL	I2C_READ1
+     04B1 F53C       812		MOV	ADDRH,A
+     04B3 F599       813		MOV	SBUF,A
+     04B5 1202D4     814		LCALL	I2C_READ2
+     04B8 F53B       815		MOV	ADDRL,A
+     04BA 3099FD     816		JNB	TI,$
+     04BD C299       817		CLR	TI
+     04BF F599       818		MOV	SBUF,A
+     04C1 A3         819		INC	DPTR
+     04C2 A3         820	REC3:	INC	DPTR
+     04C3 12023A     821		LCALL	I2C_READ1
+     04C6 3099FD     822		JNB	TI,$
+     04C9 C299       823		CLR	TI
+     04CB F599       824		MOV	SBUF,A
+                     825	
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page  15
+ECG_rev1.ASM                                    
+
+     04CD E582       826		MOV	A,DPL
+     04CF B4FFF0     827		CJNE	A,#0FFH,REC3
+     04D2 E583       828		MOV	A,DPH
+     04D4 B47FEB     829		CJNE	A,#07FH,REC3
+                     830	
+     04D7 D2AC       831		setb	IE.4		;DISENABLE INTERRUPT SERIAL
+                     832		;setb	IE.0		;DISENABLE INTERRUPT0
+     04D9 D29C       833		setb	REN		;DISENABLE RECEIVE 
+     04DB D28C       834		setb	TR0
+                     835		;XXXXXXXXXXXXXXXXXXXX
+     04DD D29C       836		SETB	REN
+     04DF 8047       837		SJMP	REC2	
+     04E1 B46344     838	REC1:	CJNE	A,#99D,REC2	;CLEAR DATA
+     04E4 C28C       839		CLR	TR0
+     04E6 7400       840		MOV     	A,#0
+     04E8 120116     841		LCALL		GOTO_LCD
+     04EB 7400       842		MOV     	A,#0
+     04ED 9005A4     843	        MOV     	DPTR,#LCD_C
+     04F0 C0E0       844	rec001:  PUSH    	ACC    	
+     04F2 93         845		MOVC    	A,@A+DPTR
+     04F3 B40007     846	        CJNE    	A,#00H,rec002
+     04F6 D0E0       847	        POP    	ACC
+     04F8 05E0       848		INC	ACC
+     04FA 020507     849	            	LJMP    	rec003
+     04FD 1200C6     850	rec002:   	LCALL   	WR_LCD
+     0500 D0E0       851	            	POP     	ACC
+     0502 05E0       852	            	INC     	ACC
+     0504 0204F0     853	            	LJMP    	rec001
+     0507            854	rec003:
+     0507 120145     855		LCALL	BUSY
+     050A 7400       856		MOV	A,#00D
+     050C 900000     857		MOV	DPTR,#0000H
+     050F 120156     858		LCALL	I2C_WRITE
+     0512 120145     859		LCALL	BUSY
+     0515 7401       860		MOV	A,#01D
+     0517 900001     861		MOV	DPTR,#0001H
+     051A 120156     862		LCALL	I2C_WRITE
+     051D 120145     863		lcall	busy
+     0520 D2AC       864		setb	IE.4		;DISENABLE INTERRUPT SERIAL
+                     865		;setb	IE.0		;DISENABLE INTERRUPT0
+     0522 D29C       866		setb	REN		;DISENABLE RECEIVE 
+     0524 D28C       867		setb	TR0
+                     868		;XXXXXXXXXXXXXXXXXXXX
+     0526 D29C       869		SETB	REN
+                     870		
+     0528 D083       871	REC2:	POP	DPH
+     052A D082       872		POP	DPL
+     052C D0E0       873		POP	ACC
+     052E D28C       874		setb	tr0
+     0530 D200       875		setb	reset
+     0532 C200       876		clr	reset
+     0534 758140     877		mov	sp,#40h
+     0537 020040     878		ljmp	main
+     053A 32         879		RETI
+                     880	
+     053B C0E0       881	INTER0:	PUSH	ACC
+     053D C083       882		PUSH	DPH
+     053F C082       883		PUSH	DPL
+     0541 E4         884		CLR	A
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page  16
+ECG_rev1.ASM                                    
+
+     0542 853234     885		MOV	TIM1_H,TIMER_H
+     0545 853335     886		MOV	TIM1_L,TIMER_L
+     0548 F532       887		MOV	TIMER_H,A
+     054A F533       888		MOV	TIMER_L,A
+     054C E534       889		MOV	A,TIM1_H
+     054E B40005     890		CJNE	A,#00H,IN02
+     0551 753101     891		MOV	NUM,#01H
+     0554 8027       892		SJMP	IN03
+     0556 E4         893	IN02:	CLR	A
+     0557 753601     894		MOV	TIM2_H,#01H
+     055A 75372C     895		MOV	TIM2_L,#02CH
+     055D 9005AC     896		MOV	DPTR,#MEM
+                     897		
+     0560 C0E0       898	IN01:	PUSH	ACC
+     0562 93         899		MOVC	A,@A+DPTR
+     0563 2537       900		ADD	A,TIM2_L
+     0565 F537       901		MOV	TIM2_L,A
+     0567 E4         902		CLR	A
+     0568 3536       903		ADDC	A,TIM2_H
+     056A F536       904		MOV	TIM2_H,A
+     056C D0E0       905		POP	ACC
+     056E 04         906		INC	A
+     056F 120584     907		LCALL	CHECK
+     0572 40EC       908		JC	IN01
+     0574 C3         909		CLR	C
+     0575 F5F0       910		MOV	B,A
+     0577 74C8       911		MOV	A,#200D
+     0579 95F0       912		SUBB	A,B
+     057B F531       913		MOV	NUM,A
+     057D            914	IN03:
+     057D D082       915		POP	DPL
+     057F D083       916		POP	DPH
+     0581 D0E0       917		POP	ACC
+     0583 22         918		ret
+                     919	
+                     920		;RETI
+     0584            921	CHECK:
+     0584 C0E0       922		PUSH	ACC
+     0586 E537       923	  	MOV 	A,TIM2_L  	
+     0588 C3         924	  	CLR 	C     	
+     0589 9535       925	  	SUBB 	A,TIM1_L 	
+     058B E536       926	  	MOV 	A,TIM2_H  	
+     058D 9534       927	  	SUBB 	A,TIM1_H	
+     058F D0E0       928		POP	ACC
+     0591 22         929	  	RET
+                     930	;****************************************
+                     931	
+     0592            932	LCD_TAB:    
+     0592 2055706C   933		DB   ' Upload ',00H
+     0596 6F616420
+     059A 00
+     059B            934	LCD_STR:
+     059B 53544152   935		DB   'STARTING',00H
+     059F 54494E47
+     05A3 00
+     05A4            936	LCD_C:
+     05A4 20436C65   937		DB   ' Clear ',00H	;ADDRESS 10
+     05A8 61722000
+                     938	
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page  17
+ECG_rev1.ASM                                    
+
+     05AC            939	MEM:	
+     05AC 01020102   940	DB     1D,2D,1D,2D,1D,2D,1D,2D,2D,1D	;START AT 300D	;0
+     05B0 01020102
+     05B4 0201
+     05B6 02020102   941	DB     2D,2D,1D,2D,2D,2D,1D,2D,2D,2D			;10
+     05BA 02020102
+     05BE 0202
+     05C0 02020102   942	DB     2D,2D,1D,2D,2D,2D,2D,2D,2D,2D			;20
+     05C4 02020202
+     05C8 0202
+     05CA 03020202   943	DB     3D,2D,2D,2D,2D,2D,3D,2D,2D,3D			;30
+     05CE 02020302
+     05D2 0203
+     05D4 02020302   944	DB     2D,2D,3D,2D,3D,2D,3D,2D,3D,3D			;40
+     05D8 03020302
+     05DC 0303
+     05DE 02030302   945	DB     2D,3D,3D,2D,3D,3D,3D,3D,3D,3D			;50
+     05E2 03030303
+     05E6 0303
+     05E8 03030304   946	DB     3D,3D,3D,4D,3D,3D,4D,3D,4D,3D			;60
+     05EC 03030403
+     05F0 0403
+     05F2 04030404   947	DB     4D,3D,4D,4D,4D,3D,4D,4D,4D,5D			;70
+     05F6 04030404
+     05FA 0405
+     05FC 04040405   948	DB     4D,4D,4D,5D,4D,5D,4D,5D,5D,5D			;80
+     0600 04050405
+     0604 0505
+     0606 05050506   949	DB     5D,5D,5D,6D,5D,5D,6D,6D,6D,6D			;90
+     060A 05050606
+     060E 0606
+     0610 06060607   950	DB     6D,6D,6D,7D,6D,7D,7D,7D,7D,7D			;100
+     0614 06070707
+     0618 0707
+     061A 08070808   951	DB     8D,7D,8D,8D,8D,9D,8D,9D,9D,10D			;110
+     061E 08090809
+     0622 090A
+     0624 090A0A0A   952	DB     9D,10D,10D,10D,11D,10D,11D,12D,12D,12D		;120
+     0628 0B0A0B0C
+     062C 0C0C
+     062E 0C0D0D0E   953	DB     12D,13D,13D,14D,14D,14D,15D,15D,16D,17D		;130
+     0632 0E0E0F0F
+     0636 1011
+     0638 10121213   954	DB     16D,18D,18D,19D,19D,21D,21D,21D,23D,24D		;140
+     063C 13151515
+     0640 1718
+     0642 181A1A1C   955	DB     24D,26D,26D,28D,29D,30D,32D,33D,35D,37D		;150
+     0646 1D1E2021
+     064A 2325
+     064C 26282B2D   956	DB     38D,40D,43D,45D,48D,50D,54D,57D,60D,65D	;STOP AT 2000D
+     0650 30323639
+     0654 3C41
+                     957	
+     0000=           958	            	END
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   1
+ECG_rev1.ASM                                    
+
+           addrh = 003C             addrl = 003B              bita = 0001              bitc = 0000              busy = 0145  
+           busy1 = 014B             check = 0584            cs_lcd = 00B6              del1 = 03B6              del2 = 03B8  
+           delay = 03B2            disnum = 003D            en_lcd = 013D          goto_lcd = 0116           i2c_rd1 = 0252  
+        i2c_rd10 = 033A          i2c_rd11 = 0347           i2c_rd2 = 027A           i2c_rd3 = 027F           i2c_rd4 = 02A7  
+         i2c_rd5 = 02AC           i2c_rd6 = 02D6           i2c_rd7 = 02EC           i2c_rd8 = 0314           i2c_rd9 = 031A  
+       i2c_read1 = 023A         i2c_read2 = 02D4           i2c_scl = 00A1           i2c_sda = 00A0           i2c_wpt = 00A2  
+         i2c_wr1 = 0172           i2c_wr2 = 019C           i2c_wr3 = 01A1           i2c_wr4 = 01CB           i2c_wr5 = 01D0  
+         i2c_wr6 = 01FA           i2c_wr7 = 01FF           i2c_wr8 = 0224           i2c_wr9 = 0230         i2c_write = 0156  
+            in01 = 0560              in02 = 0556              in03 = 057D          init_lcd = 011C            inter0 = 053B  
+           lcd_c = 05A4           lcd_str = 059B           lcd_tab = 0592              main = 0040               mem = 05AC  
+             num = 0031           num_lcd = 034F               pos = 0038            rec001 = 04F0            rec002 = 04FD  
+          rec003 = 0507             rec01 = 0494             rec02 = 04A1             rec03 = 04AB              rec1 = 04E1  
+            rec2 = 0528              rec3 = 04C2               res = 0475            rs_lcd = 00B7              send = 046F  
+           start = 0064              str1 = 0086              str2 = 0093              str3 = 009D             tim00 = 03F5  
+           tim01 = 0464             tim02 = 0438            tim1_h = 0034            tim1_l = 0035            tim2_h = 0036  
+          tim2_l = 0037             time0 = 03C3            time_h = 0039            time_l = 003A           timer_h = 0032  
+         timer_l = 0033              val2 = 0380              val3 = 038D              val6 = 038F               wr6 = 00AC  
+          wr_ins = 00EE            wr_lcd = 00C6  

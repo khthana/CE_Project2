@@ -1,0 +1,42 @@
+devide = 1
+maxframe = 30 -- start at 0
+for nCount = 1 to 16 do 
+(
+		if (nCount == 1 ) then whatbox = $box17
+		if (nCount == 2 ) then whatbox = $box18
+		if (nCount == 3 ) then whatbox = $box19
+		if (nCount == 4 ) then whatbox = $box20
+		if (nCount == 5 ) then whatbox = $box21
+		if (nCount == 6 ) then whatbox = $box22
+		if (nCount == 7 ) then whatbox = $box23
+		if (nCount == 8 ) then whatbox = $box24
+		if (nCount == 9 ) then whatbox = $box25
+		if (nCount == 10) then whatbox = $box26
+		if (nCount == 11) then whatbox = $box27
+		if (nCount == 12) then whatbox = $box28
+		if (nCount == 13) then whatbox = $box29
+		if (nCount == 14) then whatbox = $box30
+		if (nCount == 15) then whatbox = $box31
+		if (nCount == 16) then whatbox = $box32
+				
+		myObj =	copy whatbox
+		select myObj
+		max unlink
+
+		progressUpdate 0
+		animate on for c in 0 to maxframe do at time c
+		(
+			if (getProgressCancel())==true then exit
+			progressUpdate c
+			if ( (c - ((c/devide)*devide) ) == 0 ) then
+			(
+				myObj.transform = whatbox.transform
+			)
+			if (c == maxframe) then
+			(
+				myObj.transform = whatbox.transform
+			)
+		)
+		
+		
+)

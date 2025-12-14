@@ -1,0 +1,1170 @@
+object serviceform: Tserviceform
+  Left = 249
+  Top = 34
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
+  Caption = #3610#3619#3636#3585#3634#3619#3618#3639#3617' - '#3588#3639#3609' - '#3592#3629#3591
+  ClientHeight = 678
+  ClientWidth = 777
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 16
+  object Button1: TButton
+    Left = 640
+    Top = 632
+    Width = 113
+    Height = 33
+    Caption = #3585#3621#3633#3610#3626#3641#3656#3627#3609#3657#3634#3648#3617#3609#3641#3627#3621#3633#3585
+    TabOrder = 0
+    OnClick = Button1Click
+  end
+  object TabbedNotebook1: TTabbedNotebook
+    Left = 24
+    Top = 24
+    Width = 729
+    Height = 593
+    TabFont.Charset = DEFAULT_CHARSET
+    TabFont.Color = clBtnText
+    TabFont.Height = -11
+    TabFont.Name = 'MS Sans Serif'
+    TabFont.Style = []
+    TabOrder = 1
+    object TTabPage
+      Left = 4
+      Top = 24
+      Caption = #3618#3639#3617
+      object TabbedNotebook2: TTabbedNotebook
+        Left = 16
+        Top = 16
+        Width = 689
+        Height = 537
+        TabFont.Charset = DEFAULT_CHARSET
+        TabFont.Color = clBtnText
+        TabFont.Height = -11
+        TabFont.Name = 'MS Sans Serif'
+        TabFont.Style = []
+        TabOrder = 0
+        object TTabPage
+          Left = 4
+          Top = 24
+          Caption = #3609#3633#3585#3624#3638#3585#3625#3634
+          object Label15: TLabel
+            Left = 80
+            Top = 32
+            Width = 53
+            Height = 16
+            Caption = #3619#3627#3633#3626#3626#3617#3634#3594#3636#3585
+          end
+          object Label16: TLabel
+            Left = 360
+            Top = 32
+            Width = 55
+            Height = 16
+            Caption = #3594#3639#3656#3629'-'#3609#3634#3617#3626#3585#3640#3621
+          end
+          object Label17: TLabel
+            Left = 40
+            Top = 80
+            Width = 89
+            Height = 16
+            Caption = #3648#3621#3586#3607#3632#3648#3610#3637#3618#3609#3626#3636#3656#3591#3614#3636#3617#3614#3660
+          end
+          object Label18: TLabel
+            Left = 384
+            Top = 80
+            Width = 34
+            Height = 16
+            Caption = #3594#3639#3656#3629#3648#3619#3639#3656#3629#3591
+          end
+          object TLabel
+            Left = 104
+            Top = 120
+            Width = 3
+            Height = 16
+          end
+          object GroupBox2: TGroupBox
+            Left = 24
+            Top = 288
+            Width = 633
+            Height = 153
+            Caption = #3619#3634#3618#3585#3634#3619#3623#3634#3619#3626#3634#3619
+            TabOrder = 9
+          end
+          object GroupBox1: TGroupBox
+            Left = 24
+            Top = 136
+            Width = 633
+            Height = 145
+            Caption = #3619#3634#3618#3585#3634#3619#3627#3609#3633#3591#3626#3639#3629
+            TabOrder = 8
+          end
+          object EditBorrowStdId: TEdit
+            Left = 152
+            Top = 32
+            Width = 185
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 0
+            OnKeyUp = EditBorrowStdIdKeyUp
+          end
+          object EditBorrowStdName: TEdit
+            Left = 432
+            Top = 32
+            Width = 201
+            Height = 24
+            Enabled = False
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 1
+          end
+          object EditBorrowStdBid: TEdit
+            Left = 152
+            Top = 80
+            Width = 185
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 2
+            OnKeyUp = EditBorrowStdBidKeyUp
+          end
+          object EditBorrowStdBname: TEdit
+            Left = 432
+            Top = 80
+            Width = 201
+            Height = 24
+            Enabled = False
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 3
+          end
+          object ButtonBorrowStdCancel: TButton
+            Left = 256
+            Top = 472
+            Width = 75
+            Height = 25
+            Caption = #3618#3585#3648#3621#3636#3585
+            TabOrder = 4
+            OnClick = ButtonBorrowStdCancelClick
+          end
+          object ButtonBorrowStdOK: TButton
+            Left = 352
+            Top = 472
+            Width = 75
+            Height = 25
+            Caption = #3605#3585#3621#3591
+            TabOrder = 5
+            OnClick = ButtonBorrowStdOKClick
+          end
+          object DBGridStdBBorrow: TDBGrid
+            Left = 48
+            Top = 168
+            Width = 585
+            Height = 97
+            DataSource = databasemd.DataSource3
+            TabOrder = 6
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -13
+            TitleFont.Name = 'MS Sans Serif'
+            TitleFont.Style = []
+          end
+          object DBGridStdMBorrow: TDBGrid
+            Left = 48
+            Top = 320
+            Width = 585
+            Height = 97
+            DataSource = databasemd.DataSource2
+            TabOrder = 7
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -13
+            TitleFont.Name = 'MS Sans Serif'
+            TitleFont.Style = []
+          end
+        end
+        object TTabPage
+          Left = 4
+          Top = 24
+          Caption = #3629#3634#3592#3634#3619#3618#3660'/'#3586#3657#3634#3619#3634#3594#3585#3634#3619'/'#3621#3641#3585#3592#3657#3634#3591#3611#3619#3632#3592#3635
+          object Label1: TLabel
+            Left = 56
+            Top = 32
+            Width = 53
+            Height = 16
+            Caption = #3619#3627#3633#3626#3626#3617#3634#3594#3636#3585
+          end
+          object Label2: TLabel
+            Left = 16
+            Top = 80
+            Width = 89
+            Height = 16
+            Caption = #3648#3621#3586#3607#3632#3648#3610#3637#3618#3609#3626#3636#3656#3591#3614#3636#3617#3614#3660
+          end
+          object Label3: TLabel
+            Left = 328
+            Top = 32
+            Width = 55
+            Height = 16
+            Caption = #3594#3639#3656#3629'-'#3609#3634#3617#3626#3585#3640#3621
+          end
+          object Label4: TLabel
+            Left = 344
+            Top = 80
+            Width = 34
+            Height = 16
+            Caption = #3594#3639#3656#3629#3648#3619#3639#3656#3629#3591
+          end
+          object GroupBox3: TGroupBox
+            Left = 24
+            Top = 136
+            Width = 633
+            Height = 145
+            Caption = #3619#3634#3618#3585#3634#3619#3627#3609#3633#3591#3626#3639#3629
+            TabOrder = 7
+          end
+          object EditBorrowStaMemid: TEdit
+            Left = 120
+            Top = 32
+            Width = 185
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 0
+            OnKeyUp = EditBorrowStaMemidKeyUp
+          end
+          object EditBorrowStaSerial: TEdit
+            Left = 120
+            Top = 80
+            Width = 185
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 1
+            OnKeyUp = EditBorrowStaSerialKeyUp
+          end
+          object EditBorrowStaMemName: TEdit
+            Left = 400
+            Top = 32
+            Width = 201
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 2
+          end
+          object EditBorrowStaBname: TEdit
+            Left = 400
+            Top = 80
+            Width = 201
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 3
+          end
+          object DBGridStaBBorrow: TDBGrid
+            Left = 48
+            Top = 168
+            Width = 585
+            Height = 97
+            DataSource = databasemd.DataSource4
+            TabOrder = 4
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -13
+            TitleFont.Name = 'MS Sans Serif'
+            TitleFont.Style = []
+          end
+          object ButtonBorrowStaCancel: TButton
+            Left = 240
+            Top = 464
+            Width = 75
+            Height = 25
+            Caption = #3618#3585#3648#3621#3636#3585
+            TabOrder = 5
+            OnClick = ButtonBorrowStaCancelClick
+          end
+          object ButtonBorrowStaOK: TButton
+            Left = 344
+            Top = 464
+            Width = 75
+            Height = 25
+            Caption = #3605#3585#3621#3591
+            TabOrder = 6
+            OnClick = ButtonBorrowStaOKClick
+          end
+          object GroupBox4: TGroupBox
+            Left = 24
+            Top = 288
+            Width = 633
+            Height = 145
+            Caption = #3619#3634#3618#3585#3634#3619#3623#3634#3619#3626#3634#3619
+            TabOrder = 8
+            object DBGridStaMBorrow: TDBGrid
+              Left = 24
+              Top = 24
+              Width = 585
+              Height = 97
+              DataSource = databasemd.DataSource5
+              TabOrder = 0
+              TitleFont.Charset = DEFAULT_CHARSET
+              TitleFont.Color = clWindowText
+              TitleFont.Height = -13
+              TitleFont.Name = 'MS Sans Serif'
+              TitleFont.Style = []
+            end
+          end
+        end
+      end
+    end
+    object TTabPage
+      Left = 4
+      Top = 24
+      Caption = #3588#3639#3609
+      object TabbedNotebook3: TTabbedNotebook
+        Left = 16
+        Top = 16
+        Width = 689
+        Height = 545
+        TabFont.Charset = DEFAULT_CHARSET
+        TabFont.Color = clBtnText
+        TabFont.Height = -11
+        TabFont.Name = 'MS Sans Serif'
+        TabFont.Style = []
+        TabOrder = 0
+        object TTabPage
+          Left = 4
+          Top = 27
+          Caption = #3609#3633#3585#3624#3638#3585#3625#3634
+          object Label5: TLabel
+            Left = 16
+            Top = 24
+            Width = 89
+            Height = 16
+            Caption = #3648#3621#3586#3607#3632#3648#3610#3637#3618#3609#3626#3636#3656#3591#3614#3636#3617#3614#3660
+          end
+          object Label19: TLabel
+            Left = 352
+            Top = 24
+            Width = 34
+            Height = 16
+            Caption = #3594#3639#3656#3629#3648#3619#3639#3656#3629#3591
+          end
+          object Label20: TLabel
+            Left = 56
+            Top = 72
+            Width = 53
+            Height = 16
+            Caption = #3619#3627#3633#3626#3626#3617#3634#3594#3636#3585
+          end
+          object Label21: TLabel
+            Left = 328
+            Top = 72
+            Width = 55
+            Height = 16
+            Caption = #3594#3639#3656#3629'-'#3609#3634#3617#3626#3585#3640#3621
+          end
+          object Label6: TLabel
+            Left = 184
+            Top = 456
+            Width = 64
+            Height = 29
+            Caption = #3588#3656#3634#3611#3619#3633#3610
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -24
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+          end
+          object Label7: TLabel
+            Left = 400
+            Top = 456
+            Width = 38
+            Height = 29
+            Caption = #3610#3634#3607
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -24
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+          end
+          object GroupBox5: TGroupBox
+            Left = 24
+            Top = 160
+            Width = 633
+            Height = 137
+            Caption = #3619#3634#3618#3585#3634#3619#3627#3609#3633#3591#3626#3639#3629
+            TabOrder = 8
+          end
+          object EditRetStuSerial: TEdit
+            Left = 120
+            Top = 24
+            Width = 185
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 0
+            OnKeyUp = EditRetStuSerialKeyUp
+          end
+          object EditRetStuBname: TEdit
+            Left = 400
+            Top = 24
+            Width = 201
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 1
+          end
+          object EditRetStuMemid: TEdit
+            Left = 120
+            Top = 72
+            Width = 185
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 2
+          end
+          object EditRetStuName: TEdit
+            Left = 400
+            Top = 72
+            Width = 201
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 3
+          end
+          object DBGridStuBRet: TDBGrid
+            Left = 48
+            Top = 184
+            Width = 585
+            Height = 97
+            DataSource = databasemd.DataSource6
+            TabOrder = 4
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -13
+            TitleFont.Name = 'MS Sans Serif'
+            TitleFont.Style = []
+          end
+          object EditRetStuFee: TEdit
+            Left = 264
+            Top = 456
+            Width = 121
+            Height = 37
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clRed
+            Font.Height = -24
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 5
+          end
+          object ButtonRetStuCancel: TButton
+            Left = 208
+            Top = 120
+            Width = 75
+            Height = 25
+            Caption = #3618#3585#3648#3621#3636#3585
+            TabOrder = 6
+            OnClick = ButtonRetStuCancelClick
+          end
+          object ButtonRetStuOK: TButton
+            Left = 368
+            Top = 120
+            Width = 75
+            Height = 25
+            Caption = #3605#3585#3621#3591
+            TabOrder = 7
+            OnClick = ButtonRetStuOKClick
+          end
+          object GroupBox6: TGroupBox
+            Left = 24
+            Top = 304
+            Width = 633
+            Height = 137
+            Caption = #3619#3634#3618#3585#3634#3619#3623#3634#3619#3626#3634#3619
+            TabOrder = 9
+            object DBGridStuMRet: TDBGrid
+              Left = 24
+              Top = 24
+              Width = 585
+              Height = 97
+              DataSource = databasemd.DataSource7
+              TabOrder = 0
+              TitleFont.Charset = DEFAULT_CHARSET
+              TitleFont.Color = clWindowText
+              TitleFont.Height = -13
+              TitleFont.Name = 'MS Sans Serif'
+              TitleFont.Style = []
+            end
+          end
+        end
+        object TTabPage
+          Left = 4
+          Top = 27
+          Caption = #3629#3634#3592#3634#3619#3618#3660'/'#3586#3657#3634#3619#3634#3594#3585#3634#3619'/'#3621#3641#3585#3592#3657#3634#3591#3611#3619#3632#3592#3635
+          object Label8: TLabel
+            Left = 16
+            Top = 24
+            Width = 89
+            Height = 16
+            Caption = #3648#3621#3586#3607#3632#3648#3610#3637#3618#3609#3626#3636#3656#3591#3614#3636#3617#3614#3660
+          end
+          object Label9: TLabel
+            Left = 352
+            Top = 24
+            Width = 34
+            Height = 16
+            Caption = #3594#3639#3656#3629#3648#3619#3639#3656#3629#3591
+          end
+          object Label10: TLabel
+            Left = 56
+            Top = 72
+            Width = 53
+            Height = 16
+            Caption = #3619#3627#3633#3626#3626#3617#3634#3594#3636#3585
+          end
+          object Label11: TLabel
+            Left = 328
+            Top = 72
+            Width = 55
+            Height = 16
+            Caption = #3594#3639#3656#3629'-'#3609#3634#3617#3626#3585#3640#3621
+          end
+          object Label22: TLabel
+            Left = 192
+            Top = 464
+            Width = 64
+            Height = 29
+            Caption = #3588#3656#3634#3611#3619#3633#3610
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -24
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+          end
+          object Label23: TLabel
+            Left = 400
+            Top = 464
+            Width = 38
+            Height = 29
+            Caption = #3610#3634#3607
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -24
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+          end
+          object GroupBox7: TGroupBox
+            Left = 24
+            Top = 160
+            Width = 633
+            Height = 137
+            Caption = #3619#3634#3618#3585#3634#3619#3627#3609#3633#3591#3626#3639#3629
+            TabOrder = 8
+          end
+          object EditRetStaSerial: TEdit
+            Left = 120
+            Top = 24
+            Width = 185
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 0
+            OnKeyUp = EditRetStaSerialKeyUp
+          end
+          object EditRetStaBname: TEdit
+            Left = 400
+            Top = 24
+            Width = 201
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 1
+          end
+          object EditRetStaMemid: TEdit
+            Left = 120
+            Top = 72
+            Width = 185
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 2
+          end
+          object EditRetStaName: TEdit
+            Left = 400
+            Top = 72
+            Width = 201
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 3
+          end
+          object EditRetStaFee: TEdit
+            Left = 264
+            Top = 456
+            Width = 121
+            Height = 37
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clRed
+            Font.Height = -24
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 4
+          end
+          object ButtonRetStaCancel: TButton
+            Left = 232
+            Top = 112
+            Width = 75
+            Height = 25
+            Caption = #3618#3585#3648#3621#3636#3585
+            TabOrder = 5
+            OnClick = ButtonRetStaCancelClick
+          end
+          object ButtonRetStaOK: TButton
+            Left = 360
+            Top = 112
+            Width = 75
+            Height = 25
+            Caption = #3605#3585#3621#3591
+            TabOrder = 6
+            OnClick = ButtonRetStaOKClick
+          end
+          object DBGridStaBRet: TDBGrid
+            Left = 48
+            Top = 184
+            Width = 585
+            Height = 97
+            DataSource = databasemd.DataSource8
+            TabOrder = 7
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -13
+            TitleFont.Name = 'MS Sans Serif'
+            TitleFont.Style = []
+          end
+          object GroupBox8: TGroupBox
+            Left = 24
+            Top = 304
+            Width = 633
+            Height = 137
+            Caption = #3619#3634#3618#3585#3634#3619#3623#3634#3619#3626#3634#3619
+            TabOrder = 9
+            object DBGridStaMRet: TDBGrid
+              Left = 24
+              Top = 24
+              Width = 585
+              Height = 97
+              DataSource = databasemd.DataSource9
+              TabOrder = 0
+              TitleFont.Charset = DEFAULT_CHARSET
+              TitleFont.Color = clWindowText
+              TitleFont.Height = -13
+              TitleFont.Name = 'MS Sans Serif'
+              TitleFont.Style = []
+            end
+          end
+        end
+      end
+    end
+    object TTabPage
+      Left = 4
+      Top = 24
+      Caption = #3592#3629#3591
+      object TabbedNotebook4: TTabbedNotebook
+        Left = 24
+        Top = 16
+        Width = 673
+        Height = 521
+        PageIndex = 1
+        TabFont.Charset = DEFAULT_CHARSET
+        TabFont.Color = clBtnText
+        TabFont.Height = -11
+        TabFont.Name = 'MS Sans Serif'
+        TabFont.Style = []
+        TabOrder = 0
+        object TTabPage
+          Left = 4
+          Top = 27
+          Caption = #3609#3633#3585#3624#3638#3585#3625#3634
+          object Label12: TLabel
+            Left = 24
+            Top = 72
+            Width = 87
+            Height = 16
+            Caption = #3648#3621#3586#3607#3632#3648#3610#3637#3618#3609#3627#3609#3633#3591#3626#3639#3629
+          end
+          object Label13: TLabel
+            Left = 344
+            Top = 72
+            Width = 34
+            Height = 16
+            Caption = #3594#3639#3656#3629#3648#3619#3639#3656#3629#3591
+          end
+          object Label14: TLabel
+            Left = 56
+            Top = 24
+            Width = 53
+            Height = 16
+            Caption = #3619#3627#3633#3626#3626#3617#3634#3594#3636#3585
+          end
+          object Label28: TLabel
+            Left = 320
+            Top = 24
+            Width = 55
+            Height = 16
+            Caption = #3594#3639#3656#3629'-'#3609#3634#3617#3626#3585#3640#3621
+          end
+          object GroupBox10: TGroupBox
+            Left = 40
+            Top = 144
+            Width = 633
+            Height = 137
+            Caption = #3619#3634#3618#3585#3634#3619#3627#3609#3633#3591#3626#3639#3629#3607#3637#3656#3618#3639#3617
+            TabOrder = 7
+          end
+          object EditResStuSerial: TEdit
+            Left = 120
+            Top = 72
+            Width = 185
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 0
+            OnKeyUp = EditResStuSerialKeyUp
+          end
+          object EditResStuBname: TEdit
+            Left = 384
+            Top = 72
+            Width = 201
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 1
+          end
+          object EditResStuMemid: TEdit
+            Left = 120
+            Top = 24
+            Width = 185
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 2
+            OnKeyUp = EditResStuMemidKeyUp
+          end
+          object EditResStuName: TEdit
+            Left = 384
+            Top = 24
+            Width = 201
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 3
+          end
+          object ButtonResStuCancel: TButton
+            Left = 240
+            Top = 112
+            Width = 75
+            Height = 25
+            Caption = #3618#3585#3648#3621#3636#3585
+            TabOrder = 4
+            OnClick = ButtonResStuCancelClick
+          end
+          object ButtonResStuOK: TButton
+            Left = 384
+            Top = 112
+            Width = 75
+            Height = 25
+            Caption = #3605#3585#3621#3591
+            TabOrder = 5
+            OnClick = ButtonResStuOKClick
+          end
+          object DBGridStuResBorrow: TDBGrid
+            Left = 64
+            Top = 168
+            Width = 585
+            Height = 97
+            DataSource = databasemd.DataSource10
+            TabOrder = 6
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -13
+            TitleFont.Name = 'MS Sans Serif'
+            TitleFont.Style = []
+          end
+          object GroupBox11: TGroupBox
+            Left = 40
+            Top = 288
+            Width = 633
+            Height = 137
+            Caption = #3619#3634#3618#3585#3634#3619#3627#3609#3633#3591#3626#3639#3629#3607#3637#3656#3592#3629#3591
+            TabOrder = 8
+            object DBGridStuRes: TDBGrid
+              Left = 24
+              Top = 24
+              Width = 585
+              Height = 97
+              DataSource = databasemd.DataSource11
+              TabOrder = 0
+              TitleFont.Charset = DEFAULT_CHARSET
+              TitleFont.Color = clWindowText
+              TitleFont.Height = -13
+              TitleFont.Name = 'MS Sans Serif'
+              TitleFont.Style = []
+            end
+          end
+        end
+        object TTabPage
+          Left = 4
+          Top = 27
+          Caption = #3629#3634#3592#3634#3619#3618#3660'/'#3586#3657#3634#3619#3634#3594#3585#3634#3619'/'#3621#3641#3585#3592#3657#3634#3591#3611#3619#3632#3592#3635
+          object Label24: TLabel
+            Left = 24
+            Top = 72
+            Width = 87
+            Height = 16
+            Caption = #3648#3621#3586#3607#3632#3648#3610#3637#3618#3609#3627#3609#3633#3591#3626#3639#3629
+          end
+          object Label25: TLabel
+            Left = 344
+            Top = 72
+            Width = 34
+            Height = 16
+            Caption = #3594#3639#3656#3629#3648#3619#3639#3656#3629#3591
+          end
+          object Label26: TLabel
+            Left = 56
+            Top = 24
+            Width = 53
+            Height = 16
+            Caption = #3619#3627#3633#3626#3626#3617#3634#3594#3636#3585
+          end
+          object Label27: TLabel
+            Left = 328
+            Top = 32
+            Width = 55
+            Height = 16
+            Caption = #3594#3639#3656#3629'-'#3609#3634#3617#3626#3585#3640#3621
+          end
+          object GroupBox9: TGroupBox
+            Left = 16
+            Top = 144
+            Width = 633
+            Height = 137
+            Caption = #3619#3634#3618#3585#3634#3619#3627#3609#3633#3591#3626#3639#3629#3607#3637#3656#3618#3639#3617
+            TabOrder = 7
+          end
+          object EditResStaSerial: TEdit
+            Left = 120
+            Top = 64
+            Width = 185
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 0
+            OnKeyUp = EditResStaSerialKeyUp
+          end
+          object EditResStaBname: TEdit
+            Left = 392
+            Top = 64
+            Width = 201
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 1
+          end
+          object EditResStaMemid: TEdit
+            Left = 120
+            Top = 24
+            Width = 185
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 2
+            OnKeyUp = EditResStaMemidKeyUp
+          end
+          object EditResStaName: TEdit
+            Left = 392
+            Top = 24
+            Width = 201
+            Height = 24
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 3
+          end
+          object ButtonResStaCancel: TButton
+            Left = 232
+            Top = 112
+            Width = 75
+            Height = 25
+            Caption = #3618#3585#3648#3621#3636#3585
+            TabOrder = 4
+            OnClick = ButtonResStaCancelClick
+          end
+          object ButtonResStaOK: TButton
+            Left = 360
+            Top = 112
+            Width = 75
+            Height = 25
+            Caption = #3605#3585#3621#3591
+            TabOrder = 5
+            OnClick = ButtonResStaOKClick
+          end
+          object DBGridStaResBorrow: TDBGrid
+            Left = 40
+            Top = 168
+            Width = 585
+            Height = 97
+            DataSource = databasemd.DataSource12
+            TabOrder = 6
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -13
+            TitleFont.Name = 'MS Sans Serif'
+            TitleFont.Style = []
+          end
+          object GroupBox12: TGroupBox
+            Left = 16
+            Top = 288
+            Width = 633
+            Height = 137
+            Caption = #3619#3634#3618#3585#3634#3619#3627#3609#3633#3591#3626#3639#3629#3607#3637#3656#3592#3629#3591
+            TabOrder = 8
+            object DBGridStaRes: TDBGrid
+              Left = 24
+              Top = 24
+              Width = 585
+              Height = 97
+              DataSource = databasemd.DataSource13
+              TabOrder = 0
+              TitleFont.Charset = DEFAULT_CHARSET
+              TitleFont.Color = clWindowText
+              TitleFont.Height = -13
+              TitleFont.Name = 'MS Sans Serif'
+              TitleFont.Style = []
+            end
+          end
+        end
+        object TTabPage
+          Left = 4
+          Top = 27
+          Caption = #3618#3585#3648#3621#3636#3585#3585#3634#3619#3592#3629#3591
+          object GroupBox13: TGroupBox
+            Left = 32
+            Top = 248
+            Width = 601
+            Height = 145
+            Caption = #3619#3634#3618#3585#3634#3619#3627#3609#3633#3591#3626#3639#3629#3607#3637#3656#3592#3632#3618#3585#3648#3621#3636#3585#3585#3634#3619#3592#3629#3591
+            TabOrder = 4
+            object Label29: TLabel
+              Left = 32
+              Top = 40
+              Width = 87
+              Height = 16
+              Caption = #3648#3621#3586#3607#3632#3648#3610#3637#3618#3609#3627#3609#3633#3591#3626#3639#3629
+            end
+            object Label30: TLabel
+              Left = 336
+              Top = 40
+              Width = 47
+              Height = 16
+              Caption = #3594#3639#3656#3629#3627#3609#3633#3591#3626#3639#3629
+            end
+            object Label31: TLabel
+              Left = 64
+              Top = 96
+              Width = 53
+              Height = 16
+              Caption = #3619#3627#3633#3626#3626#3617#3634#3594#3636#3585
+            end
+            object Label32: TLabel
+              Left = 328
+              Top = 96
+              Width = 54
+              Height = 16
+              Caption = #3594#3639#3656#3629' '#3609#3634#3617#3626#3585#3640#3621
+            end
+          end
+          object Editcancelresbid: TEdit
+            Left = 176
+            Top = 288
+            Width = 145
+            Height = 24
+            TabOrder = 0
+            OnKeyUp = EditcancelresbidKeyUp
+          end
+          object Editcancelresbname: TEdit
+            Left = 440
+            Top = 288
+            Width = 145
+            Height = 24
+            Enabled = False
+            TabOrder = 1
+          end
+          object Editcancelresmemid: TEdit
+            Left = 176
+            Top = 344
+            Width = 145
+            Height = 24
+            Enabled = False
+            TabOrder = 2
+          end
+          object Editcancelresmemname: TEdit
+            Left = 440
+            Top = 344
+            Width = 145
+            Height = 24
+            Enabled = False
+            TabOrder = 3
+          end
+          object cancelres: TButton
+            Left = 256
+            Top = 416
+            Width = 75
+            Height = 25
+            Caption = #3618#3585#3648#3621#3636#3585
+            TabOrder = 5
+            OnClick = cancelresClick
+          end
+          object okcancelres: TButton
+            Left = 360
+            Top = 416
+            Width = 75
+            Height = 25
+            Caption = #3605#3585#3621#3591
+            TabOrder = 6
+            OnClick = okcancelresClick
+          end
+          object DBGridcancelres: TDBGrid
+            Left = 32
+            Top = 80
+            Width = 601
+            Height = 153
+            DataSource = databasemd.DataSource14
+            TabOrder = 7
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -13
+            TitleFont.Name = 'MS Sans Serif'
+            TitleFont.Style = []
+          end
+          object viewcancelres: TButton
+            Left = 304
+            Top = 32
+            Width = 75
+            Height = 25
+            Caption = #3604#3641#3619#3634#3618#3585#3634#3619
+            TabOrder = 8
+            OnClick = viewcancelresClick
+          end
+        end
+      end
+    end
+  end
+end

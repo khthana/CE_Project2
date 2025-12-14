@@ -1,0 +1,47 @@
+A51 MACRO ASSEMBLER  TEST2                                                                02/21/2002 23:23:22 PAGE     1
+
+
+MACRO ASSEMBLER A51 V6.00f
+OBJECT MODULE PLACED IN .\test2.OBJ
+ASSEMBLER INVOKED BY: d:\program files\Keil\C51\BIN\A51.EXE .\test2.a SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1             ORG     00000H
+                       2     
+0000 7580FF            3     MAIN:   MOV     P0,#0FFH
+0003 7590FF            4             MOV     P1,#0FFH
+0006 75A0FF            5             MOV     P2,#0FFH
+0009 75B0FF            6             MOV     P3,#0FFH
+                       7     
+                       8     ;MAIN:  XRL     P0,#0FFH
+                       9     ;       XRL     P1,#0FFH
+                      10     ;       XRL     P2,#0FFH
+                      11     ;       XRL     P3,#0FFH
+                      12     ;       ACALL   DELAY
+000C 80F2             13             JMP     MAIN
+                      14     ;
+                      15     ;DELAY: MOV     R0,#50
+                      16     ;       DJNZ    R0,DELAY
+                      17     ;       RET
+                      18     
+                      19             END
+A51 MACRO ASSEMBLER  TEST2                                                                02/21/2002 23:23:22 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+MAIN . . . . . . .  C ADDR   0000H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

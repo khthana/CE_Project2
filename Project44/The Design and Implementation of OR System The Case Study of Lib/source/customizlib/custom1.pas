@@ -1,0 +1,43 @@
+unit custom1;
+
+interface
+
+uses
+  SysUtils, Windows, Messages, Classes, Graphics, Controls,
+  StdCtrls, ExtCtrls, Forms, QDialogs;
+
+type
+  TCustomForm1 = class(TForm)
+    Button1: TButton;
+    Button2: TButton;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    procedure Button2Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+  end;
+
+var
+  CustomForm1: TCustomForm1;
+
+implementation
+
+uses custom2;
+
+{$R *.DFM}
+
+procedure TCustomForm1.Button2Click(Sender: TObject);
+begin
+    if MessageDlg('ต้องการสร้างตารางและฟังก์ชันการทำงานของระบบห้องสมุดหรือไม่', mtConfirmation, [mbYes, mbNo], 0) = 3 then
+       CustomForm1.Close;
+end;
+
+procedure TCustomForm1.Button1Click(Sender: TObject);
+begin
+    if CustomStep1 = nil then
+        Application.CreateForm(TCustomStep1,CustomStep1);
+    CustomStep1.show;
+    CustomForm1.Hide;
+end;
+
+end.

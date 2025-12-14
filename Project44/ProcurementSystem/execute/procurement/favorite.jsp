@@ -1,0 +1,204 @@
+<%@page contentType="text/html;  charset=windows-874" %>
+<%@page import ="java.sql.*,java.lang.*,java.util.Date"%> <!-- import  เพื่อใช้ session -->
+<%@page session="true"%><!-- default -->
+<%@include file="th-db.jsp"%>
+<HTML><HEAD><TITLE>:: Online e-Procurement ::</TITLE>
+<LINK href="picture/cssomo1.css" rel=stylesheet type="text/css">
+<META content="text/html; charset=windows-874" http-equiv=Content-Type>
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="Sirirporn J.">
+<META NAME="Description" CONTENT="First page for e-Procurement system">
+</HEAD>
+<BODY  leftMargin=0 topMargin=0 vLink=#0077ff marginheight="0" 
+marginwidth="0"><FONT color=#000000></FONT>
+<TABLE border=0 cellPadding=0 cellSpacing=0 width=760 bgcolor="#FFFFFF" align="center">
+  <TBODY > 
+  <TR>
+    <TD align=left height=75 vAlign=bottom>
+      <%@include file="topmenu.html"%></TD></TR>
+  
+  <TR>
+    <TD height=10 bgcolor="#B6B6B6"> 
+    </TD>
+  </TR>
+    <TR>
+    <TD height=30 bgcolor="white"> 
+   <div align="right">  
+   <FONT  COLOR="#658dc1"><B>
+   <%@include file="date.txt"%></B></FONT></div>
+    </TD>
+  </TR>
+   <TR>
+    <TD height=1 bgcolor="#B6B6B6"> 
+    </TD>
+  </TR>
+  <TR colspan="2">
+    <TD bgColor=#bfbfbf height=1 width=760></TD>
+	</TR></TBODY></TABLE>
+<TABLE border=0 cellPadding=0 cellSpacing=0 width=760 align="center">
+  <TBODY> 
+  <TR> 
+    <TD align=middle vAlign=top> 
+      <TABLE width="100%" cellpadding="3" cellspacing="0" border="0">
+        <TR>
+		  <TD bgColor="#bfbfbf" width="27%" align="center" valign="top">
+
+            <%@include file="directory.html"%>
+             <%@include file="shopping.html"%><P><P><BR><BR>
+
+			
+          </TD>
+		  <TD bgColor="#ffffff" width="73%" align="center" valign="top"> 
+		<%
+			String emp = (String)session.getAttribute("emp");
+			String name = (String)session.getAttribute("name");
+			String sname = (String)session.getAttribute("sname");
+			String passwd = (String)session.getAttribute("passwd");
+			String dept = (String)session.getAttribute("dept");
+			String code= (String)session.getAttribute("favcode");
+			String tablename= (String)session.getAttribute("favtablename");
+			if ((emp==null) && (passwd==null)) {
+				    if((code != null) && (tablename != null)) {
+						session.removeAttribute("favcode");
+						session.removeAttribute("favtablename");
+					
+					}//if
+                                           	%>		
+<!-- <P>&nbsp;<P>&nbsp;<form action="favlogin.jsp" method="post">		    
+<TABLE align="CENTER" cellpadding="3" bordercolor="#66669A" border="1" width="250" cellspacing="0">
+    <TR bgcolor="#66669A" height="24">
+	<TD colspan="2" align="left"><FONT COLOR="#F1F0FF"><B>Login เข้าสู่ระบบ</B></FONT></TD>
+</TR>
+<TR>
+	<TD  bgcolor="#FFFFFF" width="100"> รหัสสมาชิก</TD>
+	<TD bgcolor="#F1F0FF" ><input type="text" name="username" size="15" maxlength="20"></TD>
+</TR>
+<TR>
+	<TD  bgcolor="#FFFFFF" width="100">รหัสผ่าน</TD>
+	<TD bgcolor="#F1F0FF" ><input type="password" name="passwd" size="15" maxlength="15"></TD>
+</TR>
+<TR>
+<TD colspan="2" bgcolor="#F1F0FF" height="35" >
+	<CENTER><INPUT TYPE="submit" value="ตกลง">&nbsp;&nbsp; <INPUT TYPE="reset" value="เริ่มใหม่"></CENTER>	
+ </TD>
+ </TR>	
+</table>
+<CENTER><a href="forgetpw.jsp">ลืมรหัสผ่าน</a> |  <a href="register.jsp">ลงทะเบียน</a></CENTER>
+</form>
+			 -->
+
+			 <P>&nbsp;<P>&nbsp;<CENTER><B>ยังไม่ได้ Login กรุณา  Login  ก่อนเข้าระบบ</B></CENTER>
+		<%
+			}else{ // login แล้ว ต้องการดู  favorite items
+				%>
+
+
+<%    try{
+         Class.forName("oracle.jdbc.driver.OracleDriver");
+		 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");
+         Statement stmt = con.createStatement();
+		Statement stmt1 = con.createStatement();
+		 String query="SELECT * FROM FAVORITE WHERE EMP#='"+emp+"'";
+		 ResultSet res=stmt.executeQuery(query);
+	   if(res.next()){  // have item in favorite item
+						Statement stmt2= con.createStatement();				
+		                query="SELECT * FROM FAVORITE WHERE EMP#='"+emp+"'";
+						ResultSet res2=stmt2.executeQuery(query); %>
+			            <P>&nbsp;<div align="left"><IMG SRC="picture/favorite_head.gif" WIDTH="266" HEIGHT="80" BORDER=0 ></div>
+						<table width="90%" border="1" bordercolor="#DF572D"cellspacing="0" cellpadding="3">
+<tr border="0" bgcolor="#DF572D" align="center">
+      <td ><b><font color="#FFF0E1" ><div align="center">รหัส</div></font></b></td>
+      <td width="100"><b><font color="#FFF0E1"><div align="center">ชนิด</div></font></b></td>
+	   <td width="80"><b><font  color="#FFF0E1"><div align="center">ตรา</div></font></b></td>
+      <td width="150"><b><font color="#FFF0E1"><div align="center">รายละเอียด</div></font></b></td>
+	   <td width="5"><b><font color="#FFF0E1"><div align="center">ลบ</div></font></b></td>
+		<td width="3"><b><font color="#FFF0E1"><div align="center">จำนวน</div></font></b></td> 
+		<td width="20"><b><font color="#FFF0E1"><div align="center">สั่ง</div></font></b></td>
+    </tr>
+<%
+		while(res2.next()){  
+
+                       
+						 String tablename1 = res.getString("TABLE_NAME");
+						 String code1=res.getString("CODE");
+						 query="SELECT  *  FROM "+tablename1+" WHERE CODE='"+code1+"'";
+						 System.out.println(query);
+						 ResultSet res1=stmt1.executeQuery(query);
+						 res1.next();
+						 String detail=res1.getString("DETAIL");
+						 String brand=res1.getString("BRAND");
+						 String type=res1.getString("TYPE");
+						 String cat=res1.getString("CAT#");
+						 if (detail==null){ detail="-";}
+						 res1.close();
+%>
+
+	 <tr border="0" bgcolor="#FFF0E1" align="center" valign="top">
+	  
+      <td ><%=code1%></td>
+      <td ><%=type%></td>
+      <td ><%=brand%></td>
+      <td ><%=detail%></td>
+<!--       <td ></td> -->
+	   
+	 	  <td align="center" valign="center">
+		<A HREF="deletefav.jsp?id=<%=code1%>">ลบ</A>
+		</td>
+			  <FORM METHOD=POST ACTION="servlet/AddToCartServlet">
+			  <td align="center" valign="center"> 
+			      <INPUT TYPE="text" NAME="num" SIZE="2">
+			      <INPUT TYPE="hidden" NAME="catNo" VALUE="<%=cat%>">
+			   <INPUT TYPE="hidden" NAME="code" VALUE="<%=code1%>">
+			   <INPUT TYPE="hidden" NAME="type" VALUE="<%=type%>">
+			   <INPUT TYPE="hidden" NAME="tablename" VALUE="<%=tablename1%>">
+			  </td>
+			<td align="center" valign="center" bgcolor="#FFFFFF"> 
+		
+				<INPUT TYPE="image" SRC="picture/shoppingcart.gif">
+
+	  </td>
+		  </FORM>
+
+    </tr>
+
+	<%
+	
+	    }	//while
+
+		%></table>		<%
+		  res2.close();
+		  stmt2.close();
+	   }else {
+
+		   %>      <P>&nbsp;<P>&nbsp;<CENTER><B>ไม่มีสินค้าใน Favorite Items</B></CENTER>
+			   
+		   <%
+	   }//if 
+		 
+	   	 res.close();
+	     stmt1.close();
+	     stmt.close();
+		    con.close();
+            }
+            catch (Exception E) {
+                out.println("An Error Occured:");
+                out.println(E);
+			
+            }
+
+			}//if
+			
+			%>
+	
+           </TD>
+	</TR>
+	</TABLE>
+    </TD>
+  </TR>
+  <TR>
+                <%@include file="bottommenu.html"%>
+                    </TR>
+
+  </TBODY> 
+</TABLE>
+</BODY></HTML>

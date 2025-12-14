@@ -1,0 +1,111 @@
+#ext.schema
+#my schema
+#att OID prefix => 1.3.6.1.4.1.4203.1.3
+#kmitl => .161246
+#attributetype ( 1.3.6.1.4.0.1 NAME 'AgentType'
+#	EQUALITY generalizedTimeMatch
+#	ORDERING generalizedTimeOrderingMatch
+#	SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+#	SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation )
+
+attributetype ( 1.3.6.1.4.0.1 NAME 'AgentType'
+	EQUALITY  caseIgnoreMatch  
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.0.2 NAME 'AgentID'
+	EQUALITY  caseIgnoreMatch  
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.0.3 NAME 'Responsibility'
+	EQUALITY  caseIgnoreMatch  
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.0.4 NAME 'IP'
+	EQUALITY  caseIgnoreMatch  
+	ORDERING  caseIgnoreOrderingMatch
+	SUBSTR	  caseIgnoreSubstringsMatch	
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.0.5 NAME 'StartTime'
+	EQUALITY  caseIgnoreMatch  
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.0.6 NAME 'Status'
+	EQUALITY  caseIgnoreMatch  
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+#Stateful attr
+attributetype ( 1.3.6.1.4.0.7 NAME 'Capture'
+	EQUALITY  caseIgnoreMatch  
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+#Firewall attr
+attributetype ( 1.3.6.1.4.0.8 NAME 'FirewallRule'
+	EQUALITY  caseIgnoreMatch  
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+#NIDS attr
+attributetype ( 1.3.6.1.4.0.9 NAME 'Intrusion'
+	EQUALITY  caseIgnoreMatch  
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.0.10 NAME 'testint'
+	EQUALITY  caseIgnoreListMatch
+	ORDERING  caseIgnoreOrderingMatch
+        SUBSTR	  numericStringSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27)
+
+
+attributetype ( 1.3.6.1.4.0.11 NAME 'testboolean'
+	EQUALITY  caseExactIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7)
+
+attributetype ( 1.3.6.1.4.0.12 NAME 'testIA5'
+	EQUALITY  integerMatch
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
+
+attributetype ( 1.3.6.1.4.0.13 NAME 'testDStr'
+	EQUALITY  caseIgnoreIA5Match
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.0.14 NAME 'testnumstr'
+	EQUALITY  integerMatch
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.36)
+
+#ORDERING generalizedTimeOrderingMatch
+
+#obj OID prefix => 1.3.6.1.4.1.4203.1.4
+#kmitl => .161246
+
+#obj stateful
+objectclass  ( 1.3.6.1.4.1.2 NAME 'Stateful'
+	SUP top STRUCTURAL 
+	MUST (AgentID$Responsibility$IP$StartTime$Status$Capture)
+	MAY description)
+
+#obj firewall
+objectclass  ( 1.3.6.1.4.1.3 NAME 'Firewall'
+	SUP top STRUCTURAL 
+	MUST (AgentID$Responsibility$IP$StartTime$Status$FirewallRule)
+	MAY description)
+
+#obj 
+objectclass  ( 1.3.6.1.4.1.4 NAME 'NIDS'
+	SUP top STRUCTURAL 
+	MUST (AgentID$Responsibility$IP$StartTime$Status$Intrusion)
+	MAY description)
+
+objectclass  ( 1.3.6.1.4.1.5 NAME 'test'
+	SUP top STRUCTURAL 
+	MAY (description$mail$cn$testint$testboolean$testIA5$testdstr$testnumstr))

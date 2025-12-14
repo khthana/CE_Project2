@@ -1,0 +1,15 @@
+mov r0,#FFFF;   nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            stc;            stc;
+pushf;          nop;            nop;            nop;
+nop;            nop;            clc;            clc;
+nop;            nop;            nop;            nop;
+popf;           nop;            flag;           flag;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+pushf;          nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+mov [#000F],r0; nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+popf;           nop;            flag;           flag;
+nop;            nop;            nop;            nop;

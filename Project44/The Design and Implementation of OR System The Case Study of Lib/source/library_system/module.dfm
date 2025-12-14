@@ -1,0 +1,168 @@
+object databasemd: Tdatabasemd
+  OldCreateOrder = True
+  OnCreate = Datamodule1Create
+  OnDestroy = Datamodule1Destroy
+  Left = 333
+  Top = 115
+  Height = 619
+  Width = 570
+  object Database1: TDatabase
+    AliasName = 'libary'
+    DatabaseName = 'librarysystem'
+    LoginPrompt = False
+    SessionName = 'Default'
+    Left = 40
+    Top = 32
+  end
+  object Query1: TQuery
+    DatabaseName = 'librarysystem'
+    SessionName = 'Default'
+    Left = 184
+    Top = 32
+  end
+  object DataSource1: TDataSource
+    DataSet = Query1
+    Left = 112
+    Top = 32
+  end
+  object DataSource2: TDataSource
+    DataSet = Query2
+    Left = 112
+    Top = 88
+  end
+  object Query2: TQuery
+    DatabaseName = 'librarysystem'
+    Left = 176
+    Top = 88
+  end
+  object Query3: TQuery
+    DatabaseName = 'librarysystem'
+    Left = 176
+    Top = 136
+  end
+  object DataSource3: TDataSource
+    DataSet = Query3
+    Left = 112
+    Top = 136
+  end
+  object DataSource4: TDataSource
+    DataSet = Query4
+    Left = 112
+    Top = 192
+  end
+  object Query4: TQuery
+    DatabaseName = 'librarysystem'
+    Left = 176
+    Top = 192
+  end
+  object Query5: TQuery
+    DatabaseName = 'librarysystem'
+    Left = 176
+    Top = 248
+  end
+  object DataSource5: TDataSource
+    DataSet = Query5
+    Left = 112
+    Top = 248
+  end
+  object DataSource6: TDataSource
+    DataSet = Query6
+    Left = 104
+    Top = 312
+  end
+  object Query6: TQuery
+    DatabaseName = 'librarysystem'
+    Left = 168
+    Top = 320
+  end
+  object Query7: TQuery
+    DatabaseName = 'librarysystem'
+    Left = 168
+    Top = 368
+  end
+  object DataSource7: TDataSource
+    DataSet = Query7
+    Left = 104
+    Top = 368
+  end
+  object DataSource8: TDataSource
+    DataSet = Query8
+    Left = 104
+    Top = 424
+  end
+  object Query8: TQuery
+    DatabaseName = 'librarysystem'
+    Left = 168
+    Top = 424
+  end
+  object Query9: TQuery
+    DatabaseName = 'librarysystem'
+    Left = 168
+    Top = 472
+  end
+  object DataSource9: TDataSource
+    DataSet = Query9
+    Left = 104
+    Top = 472
+  end
+  object DataSource10: TDataSource
+    DataSet = Query10
+    Left = 320
+    Top = 32
+  end
+  object DataSource11: TDataSource
+    DataSet = Query11
+    Left = 320
+    Top = 88
+  end
+  object Query10: TQuery
+    DatabaseName = 'librarysystem'
+    Left = 384
+    Top = 32
+  end
+  object Query11: TQuery
+    DatabaseName = 'librarysystem'
+    Left = 384
+    Top = 88
+  end
+  object DataSource12: TDataSource
+    DataSet = Query12
+    Left = 320
+    Top = 144
+  end
+  object DataSource13: TDataSource
+    DataSet = Query13
+    Left = 320
+    Top = 200
+  end
+  object Query12: TQuery
+    DatabaseName = 'librarysystem'
+    Left = 392
+    Top = 152
+  end
+  object Query13: TQuery
+    DatabaseName = 'librarysystem'
+    Left = 392
+    Top = 200
+  end
+  object DataSource14: TDataSource
+    DataSet = Query14
+    Left = 320
+    Top = 264
+  end
+  object Query14: TQuery
+    DatabaseName = 'librarysystem'
+    Left = 392
+    Top = 264
+  end
+  object Query15: TQuery
+    DatabaseName = 'librarysystem'
+    Left = 392
+    Top = 328
+  end
+  object DataSource15: TDataSource
+    DataSet = Query15
+    Left = 320
+    Top = 328
+  end
+end

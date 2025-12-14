@@ -1,0 +1,1707 @@
+package routersim;
+
+import java.io.*;
+import java.lang.*;
+import java.util.*;
+public class SwitchCMD {
+  private final String error = "% Invalid input detected at '^' marker.\n";
+  private final String ambigous = "% Ambiguous Command :";
+  private final ListCommand cmdUserExe = new ListCommand(new String[]{"?","enable","encapsulation arg_ppp","show cdp","show cdp entry *","show cdp entry arg_name","show cdp interface","show cdp neighbors","ping arg_ip_name","traceroute arg_ip_name","exit",""});
+  private final ListCommand cmdPrivilegedExe = new ListCommand(new String[]{"?","configure","configure terminal","disable","clock set arg_time_date","show history","show cdp","show cdp entry arg_name","show cdp entry *","show cdp interface","show cdp neighbors","terminal editing","terminal no editing","show ip route","show ip route arg_routetype","show running-config","show startup-config","copy running-config startup-config","copy startup-config running-config","erase startup-config","reload","show version","show interface","show interface arg_typeint","show ip protocol","ping arg_ip_name","traceroute arg_ip_name","telnet arg_ip_name","show ip ospf neighbors","show ip ospf interface arg_intname","exit",""});
+  private final ListCommand globalConfig = new ListCommand(new String[]{"?","interface arg_intname","hostname arg_string","enable secret arg_string","no enable secret","line vty 0 4","line auxiliary 0","line console 0","banner motd#","no banner login","ip route arg_ip arg_ip arg_ip","ip classless","no ip route arg_ip arg_ip arg_ip","no ip classless","router arg_protocol arg_num","router arg_protocol","no router arg_protocol","ip host arg_name arg_ip","cdp timer arg_num","ip ospf cost arg_name arg_num","exit",""});
+  private final ListCommand intCmd = new ListCommand(new String[]{"?","interface arg_intname","ip address arg_ip arg_ip","encapsulation","shutdown","no shutdown","ring-speed arg_num","description arg_string","bandwidth arg_num","clock rate arg_num","exit",""});
+  private final ListCommand routingCmd = new ListCommand(new String[]{"?","network arg_ip","version arg_num","exit",""});
+  private final ListCommand lineCmd = new ListCommand(new String[]{"?","password arg_string","login","no login","exit",""});
+//  private int cmdNum = -1;
+  private boolean accept = false;
+
+  //------Function--------//
+  public void runCommand(Router router,String cmdline,RouterConsole rconsole){
+    accept = false;
+    StringTokenizer st1 = new StringTokenizer(cmdline);
+    ListCommand allCmd = null;
+    int nummatch = 0;
+    switch (router.getMode()){
+      case 1 :
+                //User Exec Commands
+                allCmd = cmdUserExe;
+                break;
+      case 2 :
+                //Privileged EXec Commands
+                allCmd = cmdPrivilegedExe;
+                break;
+      case 3 :
+                //Global Config
+                allCmd = globalConfig;
+                break;
+      case 4:
+                //Interface Commands
+                allCmd = intCmd;
+                break;
+      case 5 :
+                //Routing Engine Commands
+                allCmd = routingCmd;
+                break;
+      case 6 :
+                //Line Commands
+                allCmd = lineCmd;
+                break;
+      default : RouterConsole.output  += "Error in Mode\n";
+    }//end switch
+    allCmd.resetList();
+    String usercmd="";
+    if (st1.hasMoreTokens()){
+      usercmd = st1.nextToken();
+    }
+    String listcmd = "";
+    String commandlist ="";
+    String list = (String)allCmd.nextElement();
+    String matchCmd = "";
+    while (allCmd.hasMoreElements()){
+      boolean match = true;
+      StringTokenizer tmp1 = new StringTokenizer(cmdline);
+      StringTokenizer tmp2 = new StringTokenizer(list);
+//      System.out.println("full->"+cmdline+":"+list);
+      while ((tmp1.hasMoreTokens())&&(match)){
+        String checkusercmd = tmp1.nextToken();
+        String checklistcmd="";
+        if(tmp2.hasMoreTokens()){
+          //both have more token
+          checklistcmd = tmp2.nextToken();
+        }
+        else {
+          //case usercmd have more token but list not more token
+          match = false;
+        }
+//        System.out.println("debug->"+checkusercmd+":"+checklistcmd);
+        if ((checkusercmd.length() <= checklistcmd.length())&&(!checklistcmd.startsWith("arg"))){
+          if (checkusercmd.equalsIgnoreCase(checklistcmd.substring(0,checkusercmd.length()))){
+            //if cmd must equal
+          }//end if
+          else{
+            match = false;
+          }//end else
+        }//end if screen only keyword
+        else if (checklistcmd.startsWith("arg")){
+          //when list is argument
+          if (checklistcmd.startsWith("arg_string")){
+            while (tmp1.hasMoreTokens()){
+              String t = tmp1.nextToken();
+            }
+          }
+          else if (checklistcmd.startsWith("arg_name")){
+            if (checkusercmd.equals("*")){
+              match=false;
+            }
+          }
+        }
+        else {
+          //when not match keyword and not match argument
+          match = false;
+        }//end if
+//        System.out.println("Match->"+match);
+      }
+      if (match){
+        if ((!tmp1.hasMoreTokens())&&(!tmp2.hasMoreTokens())){
+          nummatch++;
+          commandlist = list;
+        }
+      }//end if
+      list = (String)allCmd.nextElement();
+    }//end while
+    if (nummatch == 1){
+      StringTokenizer st2 = new StringTokenizer(commandlist);
+      listcmd = st2.nextToken();
+//      System.out.println("match");
+      boolean con = true;
+      while ((((st1.hasMoreTokens())||(st2.hasMoreTokens())))&&con){
+        if (st1.hasMoreTokens())
+          usercmd = st1.nextToken();
+        else usercmd = "";
+        listcmd = st2.nextToken();
+        if (listcmd.startsWith("arg")){
+          if (listcmd.equalsIgnoreCase("arg_ip")){
+            if (!Interface.isIp(usercmd)){
+              con = false;
+            }
+            else{
+            }
+          }
+          else if (listcmd.equalsIgnoreCase("arg_num")){
+            try {
+              Integer.parseInt(usercmd);
+            }
+            catch (Exception exp){
+              // Error in number
+              con = false;
+            }
+          }
+          else if (listcmd.equalsIgnoreCase("arg_string")){
+            if (usercmd.equals("")){
+              con = false;
+//              System.out.println("false="+usercmd);
+            }
+            else {
+              while (st1.hasMoreTokens()){
+                String x = st1.nextToken();
+              }
+            }
+          }
+          else if (listcmd.equalsIgnoreCase("arg_routetype")){
+            String sta = "static";
+            String rip = "rip";
+            String osp = "ospf";
+            con = false;
+            usercmd = usercmd.toLowerCase();
+            switch (usercmd.charAt(0)){
+              case 's': if (usercmd.equalsIgnoreCase(sta.substring(0,usercmd.length()))){
+                          con = true;
+                        }
+                        break;
+              case 'r': if (usercmd.equalsIgnoreCase(rip.substring(0,usercmd.length()))){
+                          con = true;
+                        }
+                        break;
+              case 'o': if (usercmd.equalsIgnoreCase(osp.substring(0,usercmd.length()))){
+                          con = true;
+                        }
+                        break;
+            }
+          }
+          else if (listcmd.equalsIgnoreCase("arg_typeint")){
+            String eth = "Ethernet";
+            String ser = "Serial";
+            String tok = "Tokenring";
+            con = false;
+            usercmd = usercmd.toLowerCase();
+            switch (usercmd.charAt(0)){
+              case 'e': if (usercmd.equalsIgnoreCase(eth.substring(0,usercmd.length()))){
+                            con = true;
+                          }
+                          break;
+              case 's': if (usercmd.equalsIgnoreCase(ser.substring(0,usercmd.length()))){
+                            con = true;
+                          }
+                          break;
+              case 't': if (usercmd.equalsIgnoreCase(tok.substring(0,usercmd.length()))){
+                            con = true;
+                          }
+                          break;
+              default :  //Error in type of interface
+            }
+          }
+          else if (listcmd.equalsIgnoreCase("arg_intname")){
+            String eth = "Ethernet";
+            String ser = "Serial";
+            String tok = "Tokenring";
+            con = false;
+            usercmd = usercmd.toLowerCase();
+            switch (usercmd.charAt(0)){
+              case 'e' :  if (usercmd.length() < 10){ //EthernetXX
+                            int ii = 0;
+                            while (usercmd.charAt(ii) == eth.charAt(ii)){
+                              ii++;
+                            }//end while
+                            if (Interface.getNum(usercmd.substring(ii)) > -1){
+                              con = true;
+                            }//end if
+                          }//end if
+                          break;
+              case 's' :  if (usercmd.length() < 8){ //SerialXX
+                            int ii = 0;
+                            while (usercmd.charAt(ii) == ser.charAt(ii)){
+                              ii++;
+                            }//end while
+                            if (Interface.getNum(usercmd.substring(ii)) > -1){
+                              con = true;
+                            }//end if
+                          }//end if
+                          break;
+              case 't' :  if (usercmd.length() < 11){ //TokenringXX
+                            int ii = 0;
+                            while (usercmd.charAt(ii) == eth.charAt(ii)){
+                              ii++;
+                            }//end while
+                            if (Interface.getNum(usercmd.substring(ii)) > -1){
+                              con = true;
+                            }//end if
+                          }//end if
+                          break;
+              default : //Error in interface name
+            }//end switch
+          }
+          else if (listcmd.equalsIgnoreCase("arg_ip_name")){
+            con = false;
+            if (!Interface.isIp(usercmd)){
+              for(int i=0; i<Frame1.vRouter.size(); i++){
+                Router rou = (Router)Frame1.vRouter.elementAt(i);
+                if (usercmd.equalsIgnoreCase(rou.getName())){
+                  con = true;
+                }//end if
+              }//end for
+            }//end if
+            else {
+              con = true;
+            }//end else
+          }
+          else if (listcmd.equalsIgnoreCase("arg_protocol")){
+            con = false;
+            if ((usercmd.equalsIgnoreCase("rip"))||(usercmd.equalsIgnoreCase("ospf"))){
+              con = true;
+            }//end if
+          }
+          else if(listcmd.equalsIgnoreCase("arg_time")){
+          }
+          else if (listcmd.equalsIgnoreCase("arg_name")){
+            con = false;
+            for(int i=0; i<Frame1.vRouter.size(); i++){
+              Router rou = (Router)Frame1.vRouter.elementAt(i);
+              if (usercmd.equalsIgnoreCase(rou.getName())){
+                con = true;
+              }//end if
+            }//end for
+          }
+          else {
+            //error
+            con = false;
+//            System.out.println("con = false");
+          }
+        }//end if
+/*        else if (listcmd.startsWith("option")){
+          con = false;
+          if (listcmd.equalsIgnoreCase("option_terminal")){
+            if (usercmd.equals("")){
+              con = true;
+            }//end if
+/ *            else {
+              String subterminal = "terminal".substring(0,usercmd.length());
+              if (subterminal.equalsIgnoreCase(usercmd)){
+                con = true;
+                cmdNum = 4;
+              }//end if
+            }
+* /
+          }
+          else {
+            //error
+            con = false;
+          }
+        }
+*/
+        else {
+          if (st1.hasMoreTokens()){
+/*            usercmd = st1.nextToken();
+            listcmd = st2.nextToken();
+            if (!usercmd.equalsIgnoreCase(listcmd.substring(0,usercmd.length()))){
+              con = false;
+            }//end if*/
+          }//end if
+          else {
+            if (!st2.hasMoreTokens()){
+              con = true;
+            }
+            else{
+              con = false;
+            }
+          }
+        }//end else
+      }//end while
+      if (con){
+        accept = true;
+//        System.out.println("Accept");
+      }//end if
+      else{
+        RouterConsole.output += error;
+//        System.out.println(error);
+      }//end else
+    }//end if
+    else if (nummatch > 1){
+      RouterConsole.output += ambigous + "\"" + cmdline + "\"\n";
+//      System.out.println(ambigous+ "\"" + usercmd + "\"");
+
+    }//end if
+    else{
+      //not in list command
+      RouterConsole.output += error;
+//      System.out.println("% Invalid input detected at '^' marker.");
+    }//end else
+    if (accept){
+      if (commandlist.equals("enable")){
+        enablecmd(router);
+      }
+      else if (commandlist.equals("?")){
+        Command c = new Command();
+        switch(router.getMode()){
+          case 1 : c.showCmd1();break;
+          case 2 : c.showCmd2();break;
+          case 3 : c.showCmd3();break;
+          case 4 : c.showCmd4();break;
+          case 5 : c.showCmd5();break;
+          case 6 : c.showCmd6();break;
+          default : RouterConsole.output += error;
+        }
+      }
+      else if (commandlist.equals("ping arg_ip_name")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        pingcmd(router,arg);
+      }
+      else if (commandlist.equals("traceroute arg_ip_name")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        traceroutecmd(router,arg);
+      }
+      else if (commandlist.equals("exit")){
+        exitcmd(router,rconsole);
+      }
+      else if (commandlist.equals("configure terminal")){
+        configtcmd(router);
+      }
+      else if (commandlist.equals("configure")){
+        configcmd(router);
+      }
+      else if (commandlist.equals("disable")){
+        disablecmd(router);
+      }
+      else if (commandlist.equals("clock set arg_time_date")){
+      }
+      else if (commandlist.equals("show history")){
+        showhistorycmd(router);
+      }
+      else if (commandlist.equals("terminal editing")){
+        terminaleditcmd(router);
+      }
+      else if (commandlist.equals("terminal no editing")){
+        terminalnoeditcmd(router);
+      }
+      else if (commandlist.equals("show running-config")){
+        showruncmd(router);
+      }
+      else if (commandlist.equals("show startup-config")){
+        showstartcmd(router);
+      }
+      else if (commandlist.equals("copy running-config startup-config")){
+        copyrunstartcmd(router);
+      }
+      else if (commandlist.equals("copy startup-config running-config")){
+        copystartruncmd(router);
+      }
+      else if (commandlist.equals("erase startup-config")){
+        erasestartcmd(router);
+      }
+      else if (commandlist.equals("reload")){
+      }
+      else if (commandlist.equals("show version")){
+        showversioncmd(router);
+      }
+      else if (commandlist.equals("show interface")){
+        showintcmd(router);
+      }
+      else if (commandlist.equals("show ip protocol")){
+        showipprotocol(router);
+      }
+      else if (commandlist.equals("show interface arg_typeint")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        showintcmd(router,arg);
+      }
+      else if (commandlist.equals("interface arg_intname")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        intcmd(router,arg);
+      }
+      else if (commandlist.equals("hostname arg_string")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        hostnamecmd(router,arg);
+      }
+      else if (commandlist.equals("enable secret arg_string")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        enablesecretcmd(router,arg);
+      }
+      else if (commandlist.equals("no enable secret")){
+        noenablesecretcmd(router);
+      }
+      else if (commandlist.equals("line vty 0 4")){
+        linevtycmd(router);
+      }
+      else if (commandlist.equals("line auxiliary 0")){
+        lineAuxcmd(router);
+      }
+      else if (commandlist.equals("line console 0")){
+        lineConsolecmd(router);
+      }
+      else if (commandlist.equals("password arg_string")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        linepasswdcmd(router,arg);
+      }
+      else if (commandlist.equals("login")){
+        logincmd(router);
+      }
+      else if (commandlist.equals("no login")){
+        nologincmd(router);
+      }
+      else if (commandlist.equals("banner motd#")){
+      }
+      else if (commandlist.equals("no banner login")){
+      }
+      else if (commandlist.equals("show ip route")){
+        showiproutecmd(router);
+      }
+      else if (commandlist.endsWith("show ip route arg_routetype")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        showiproutecmd(router,arg);
+      }
+      else if (commandlist.equals("ip route arg_ip arg_ip arg_ip")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg1 = stoken.nextToken();
+        arg1 = stoken.nextToken();
+        arg1 = stoken.nextToken();
+        String arg2 = stoken.nextToken();
+        String arg3 = stoken.nextToken();
+        iproutecmd(router,arg1,arg2,arg3);
+      }
+      else if (commandlist.equals("ip classless")){
+        ipclasslesscmd(router);
+      }
+      else if (commandlist.equals("no ip route arg_ip arg_ip arg_ip")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg1 = stoken.nextToken();
+        arg1 = stoken.nextToken();
+        arg1 = stoken.nextToken();
+        arg1 = stoken.nextToken();
+        String arg2 = stoken.nextToken();
+        String arg3 = stoken.nextToken();
+        noiproutecmd(router,arg1,arg2,arg3);
+      }
+      else if (commandlist.equals("no ip classless")){
+        noipclasslesscmd(router);
+      }
+      else if (commandlist.equals("router arg_protocol")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        routercmd(router,arg,1);
+      }
+      else if (commandlist.equals("router arg_protocol arg_num")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg1 = stoken.nextToken();
+        arg1 = stoken.nextToken();
+        String arg2 = stoken.nextToken();
+        routercmd(router,arg1,Integer.parseInt(arg2));
+      }
+      else if (commandlist.equals("no router arg_protocol")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        noroutercmd(router,arg);
+      }
+      else if (commandlist.equals("ip host arg_name arg_ip")){
+      }
+      else if (commandlist.equals("cdp timer arg_num")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        router.getCdp().setTimer(Integer.parseInt(arg));
+      }
+      else if (commandlist.equals("ip address arg_ip arg_ip")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg1 = stoken.nextToken();
+        arg1 = stoken.nextToken();
+        arg1 = stoken.nextToken();
+        String arg2 = stoken.nextToken();
+        ipaddcmd(router,arg1,arg2);
+      }
+      else if (commandlist.equals("encapsulation")){
+      }
+      else if (commandlist.equals("shutdown")){
+        shutcmd(router);
+      }
+      else if (commandlist.equals("no shutdown")){
+        noshutcmd(router);
+      }
+      else if (commandlist.equals("ring-speed arg_num")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        ringspeedcmd(router,Integer.parseInt(arg));
+      }
+      else if (commandlist.equals("description arg_string")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = "";
+        while (stoken.hasMoreTokens()){
+          arg += stoken.nextToken()+" ";
+        }
+        arg.trim();
+        descriptcmd(router,arg);
+        System.out.println("des="+arg);
+      }
+      else if (commandlist.equals("bandwidth arg_num")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        bandwidthcmd(router,Integer.parseInt(arg));
+      }
+      else if (commandlist.equals("clock rate arg_num")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        clockratecmd(router,Integer.parseInt(arg));
+      }
+      else if (commandlist.equals("show ip ospf neighbors")){
+        showospfneighbor(router);
+      }
+      else if (commandlist.equals("show ip ospf interface arg_intname")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        showospfint(router,arg);
+      }
+      else if (commandlist.equals("ip ospf cost arg_name arg_num")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg1 = stoken.nextToken();
+        arg1 = stoken.nextToken();
+        arg1 = stoken.nextToken();
+        arg1 = stoken.nextToken();
+        String arg2 = stoken.nextToken();
+        System.out.println("switch="+arg1+":"+arg2);
+        ospfcost(router,arg1,Integer.parseInt(arg2));
+      }
+      else if (commandlist.equals("network arg_ip")){
+      }
+      else if (commandlist.equals("version arg_num")){
+      }
+      else if (commandlist.equals("show cdp")){
+        Command c = new Command();
+        c.showCdp(router);
+      }
+      else if(commandlist.equals("show cdp interface")){
+        Command c = new Command();
+        c.showCdpInt(router);
+      }
+      else if (commandlist.equals("show cdp neighbors")){
+        Command c = new Command();
+        c.showCdpNeighbors(router);
+      }
+      else if (commandlist.equals("show cdp entry *")){
+        Command c = new Command();
+        c.showCdpEntry(router,"*");
+      }
+      else if (commandlist.equals("show cdp entry arg_name")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        Command c = new Command();
+        c.showCdpEntry(router,arg);
+      }
+      else if (commandlist.equals("telnet arg_ip_name")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        telnetcmd(router,arg,rconsole);
+      }
+    }//end accept
+  }//end function
+
+  //--------------Old Function---------------------//
+  String findFirstCMD(String c,char separator){
+    int i=0;
+    while ((c.charAt(i) != separator) && (i+1 < c.length())){
+      i++;
+    }
+    return c.substring(0,i+1).trim();
+  }
+  String[] splitCMD(String str){
+    String arrCMD[] = new String[6];
+    for (int i=0;i <6;i++){
+      arrCMD[i] = "";
+    }
+    int i=0;
+    while (str.length() >0){
+      arrCMD[i] = findFirstCMD(str,' ');
+      str = str.substring(arrCMD[i].length()).trim();
+      i++;
+    }
+    return arrCMD;
+  }
+  public void sendCMD(Router router,String cmdline){
+    String[] arrCMD = new String[6];
+    arrCMD = splitCMD(cmdline);
+    if (router.getMode() == 10){
+      RouterConsole.output = "";
+      System.out.print(arrCMD[0]+"&"+router.getPasswd());
+      if (arrCMD[0].equalsIgnoreCase(router.getPasswd())){
+        router.setMode(2);
+      }
+    }
+    else
+    //-------Mode 1------------//
+    if (cmdline.startsWith("?")){
+      RouterConsole.output = "";
+      Command c = new Command();
+      switch (router.getMode()){
+        case 1 : c.showCmd1();break;
+        case 2 : c.showCmd2();break;
+        case 3 : c.showCmd3();break;
+        case 4 : c.showCmd4();break;
+        default: break;
+      }//end switch
+    }
+    else if((arrCMD[0].equalsIgnoreCase("enable"))&&(arrCMD[1].equalsIgnoreCase("password"))){
+      if (arrCMD[2].length() != 0){
+        router.setPasswd(arrCMD[2]);
+      }
+      else {RouterConsole.output += error;}
+    }
+    else if ((arrCMD[0].equalsIgnoreCase("en"))||(arrCMD[0].equalsIgnoreCase("enable"))){
+      RouterConsole.output = "";
+      if (router.getMode() == 1){
+        if (router.getPasswd() == null){
+          router.setMode(2);
+        }
+        else {
+          router.setMode(10);
+        }
+      }//end if
+      else {RouterConsole.output = error;}
+    }
+    //------------Mode 2--------------//
+    else if((arrCMD[0].equalsIgnoreCase("dis"))||(arrCMD[0].equalsIgnoreCase("disable"))){
+      RouterConsole.output = "";
+      if (router.getMode() == 2){
+        router.setMode(1);
+      }//end if
+      else {RouterConsole.output = error;}
+    }
+    else if((arrCMD[0].equalsIgnoreCase("config"))&&((arrCMD[1].equalsIgnoreCase("t"))||(arrCMD[1].equalsIgnoreCase("terminal")))){
+      RouterConsole.output = "";
+      if(router.getMode() == 2){
+        router.setMode(3);
+        RouterConsole.output="Enter configuration commands, one per line. End with CNTL/Z.\n";
+      }//end if
+      else {RouterConsole.output = error;}
+    }
+    else if((arrCMD[0].equalsIgnoreCase("set"))&&(arrCMD[1].equalsIgnoreCase("clock"))){
+      router.setClock(arrCMD[2]+" "+arrCMD[3]+" "+arrCMD[4]+" "+arrCMD[5]);
+      System.out.println(router.getClock());
+    }
+    //-----------Mode 3--------//
+    else if(((arrCMD[0].equalsIgnoreCase("int"))||(arrCMD[0].equalsIgnoreCase("interface")))&&(arrCMD[1].length() != 0)){
+      RouterConsole.output = "";
+      if ((router.getMode() == 3) || (router.getMode() == 4)){
+        router.setMode(4);
+        setInterface(router,arrCMD[1]);
+      }
+      else {RouterConsole.output = error;}
+    }
+    else if((arrCMD[0].equalsIgnoreCase("hostname"))&&(arrCMD[1].length() != 0)){
+      RouterConsole.output = "";
+      if (router.getMode() == 3){
+        setHostname(router,arrCMD[1]);
+      }
+      else {RouterConsole.output = error;}
+    }
+    else if((arrCMD[0].equalsIgnoreCase("no"))&&(arrCMD[1].equalsIgnoreCase("ip"))&&(arrCMD[2].equalsIgnoreCase("route"))){
+      RouterConsole.output = "";
+      if (router.getMode() == 3){
+        if ((arrCMD[3].length() != 0)&&(arrCMD[4].length() != 0)&&(arrCMD[5].length() != 0)){
+          setNoIpRoute(router,arrCMD[3],arrCMD[4],arrCMD[5]);
+        }
+      }
+      else {RouterConsole.output = error;}
+    }
+    else if((arrCMD[0].equalsIgnoreCase("ip"))&&(arrCMD[1].equalsIgnoreCase("route"))){
+      RouterConsole.output = "";
+      if (router.getMode() == 3){
+        if ((arrCMD[2].length() != 0)&&(arrCMD[3].length() != 0)&&(arrCMD[4].length() != 0)){
+          setIpRoute(router,arrCMD[2],arrCMD[3],arrCMD[4]);
+        }
+      }
+      else {RouterConsole.output = error;}
+    }
+    else if((arrCMD[0].equalsIgnoreCase("router"))&&(arrCMD[1].equalsIgnoreCase("rip"))){
+      RouterConsole.output = "";
+      if (router.getMode() == 3){
+        router.setMode(5);
+        setRouterRip(router);
+      }
+      else {RouterConsole.output = error;}
+    }
+    else if((arrCMD[0].equalsIgnoreCase("router"))&&(arrCMD[1].equalsIgnoreCase("ospf"))){
+      RouterConsole.output = "";
+      if (router.getMode() == 3){
+        router.setMode(5);
+        setRouterOspf(router);
+      }
+      else {RouterConsole.output = error;}
+    }
+    else if((arrCMD[0].equalsIgnoreCase("no")) && (arrCMD[1].equalsIgnoreCase("router")) && (arrCMD[2].equalsIgnoreCase("rip"))){
+      RouterConsole.output = "";
+      if (router.getMode() == 3){
+        router.setMode(5);
+        setNoRouterRip(router);
+      }
+      else {RouterConsole.output = error;}
+    }
+    else if((arrCMD[0].equalsIgnoreCase("no")) && (arrCMD[1].equalsIgnoreCase("router")) && (arrCMD[2].equalsIgnoreCase("ospf"))){
+      RouterConsole.output = "";
+      if (router.getMode() == 3){
+        router.setMode(5);
+        setNoRouterOspf(router);
+      }
+      else {RouterConsole.output = error;}
+    }
+    else if(arrCMD[0].equalsIgnoreCase("exit")){
+       RouterConsole.output = "";
+        switch (router.getMode()){
+          case 1 : router.setMode(0);RouterConsole.output="reset";break;
+          case 3 : router.setMode(2);RouterConsole.output="%SYS-5-CONFIG_I: Configured from console by console\n";break;
+          case 4 : router.setMode(3);RouterConsole.output="";break;
+          case 5 : router.setMode(2);RouterConsole.output="%SYS-5-CONFIG_I: Configured from console by console\n";break;
+          default :RouterConsole.output="";
+        }//end switch
+    }
+    //------------Mode 4---------------//
+    else if ((arrCMD[0].equalsIgnoreCase("bandwidth"))&&(arrCMD[1].length() != 0)){
+      RouterConsole.output = "";
+      if (router.getMode() == 4){
+        Interface i1 = (Interface)router.getVInt().lastElement();
+        i1.setBandwidth(Integer.parseInt(arrCMD[1]));
+      }
+    }
+    else if ((arrCMD[0].equalsIgnoreCase("clock rate"))&&(arrCMD[1].length() != 0)){
+      RouterConsole.output = "";
+      if (router.getMode() == 4){
+        Interface i1 = (Interface)router.getVInt().lastElement();
+        i1.setClockRate(Integer.parseInt(arrCMD[1]));
+      }
+    }
+    else if ((arrCMD[0].equalsIgnoreCase("ip"))&&((arrCMD[1].equalsIgnoreCase("add"))||(arrCMD[1].equalsIgnoreCase("address")))){
+      RouterConsole.output = "";
+      if (router.getMode() == 4){
+        if ((arrCMD[2].length() != 0)&&(arrCMD[3].length() != 0)){
+          setIpAddress(router,arrCMD[2],arrCMD[3]);
+        }//have value
+      }//in proper mode
+      else {RouterConsole.output = error;}
+    }
+    else if((arrCMD[0].equalsIgnoreCase("no"))&&((arrCMD[1].equalsIgnoreCase("shut"))||(arrCMD[1].equalsIgnoreCase("shutdown")))){
+      RouterConsole.output = "";
+      if (router.getMode() == 4){
+        Interface inf = (Interface)router.getVInt().lastElement();
+        inf.noshutInt(router);
+        RouterConsole.output="%LINEPROTO-5-UPDOWN: Line protocol on Interface "+inf.getType() + inf.getNameInt().charAt(inf.getNameInt().length()-1)+", changed state to up\n%LINK-3-UPDOWN: Interface "+inf.getType() + inf.getNameInt().charAt(inf.getNameInt().length()-1)+", changed state to up\n";
+      }
+      else {RouterConsole.output = error;}
+    }
+    else if((arrCMD[0].equalsIgnoreCase("shut"))||(arrCMD[0].equalsIgnoreCase("shutdown"))){
+      RouterConsole.output = "";
+      if (router.getMode() == 4){
+        Interface inf = (Interface)router.getVInt().lastElement();
+        inf.shutInt(router);
+        RouterConsole.output="%LINEPROTO-5-UPDOWN: Line protocol on Interface "+inf.getType() + inf.getNameInt().charAt(inf.getNameInt().length()-1)+", changed state to down\n%LINK-3-UPDOWN: Interface"+ inf.getType() + inf.getNameInt().charAt(inf.getNameInt().length()-1)+", changed state to administratively down\n";
+      }
+      else {RouterConsole.output = error;}
+    }
+    //-----------Mode < 3 -------------//
+    else if (((arrCMD[0].equalsIgnoreCase("sh"))||(arrCMD[0].equalsIgnoreCase("show")))&&((arrCMD[1].equalsIgnoreCase("int"))||(arrCMD[1].equalsIgnoreCase("interface")))){
+      RouterConsole.output = "";
+      if (router.getMode() < 3){
+        Command c = new Command();
+        if (arrCMD[2].length() != 0){
+          c.showInt(router,arrCMD[2]);
+        }
+        else{
+          c.showInt(router);
+        }
+      }
+      else {RouterConsole.output = error;}
+    }
+    else if(((arrCMD[0].equalsIgnoreCase("sh"))||(arrCMD[0].equalsIgnoreCase("show")))&&(arrCMD[1].equalsIgnoreCase("ip"))&&(arrCMD[2].equalsIgnoreCase("route"))){
+      RouterConsole.output = "";
+      if (router.getMode() < 3){
+        if(arrCMD[3].length() != 0){
+          Command c = new Command();
+          if (arrCMD[3].equalsIgnoreCase("static")){
+            c.showIpRoute(router,'s');
+          }
+          else if(arrCMD[3].equalsIgnoreCase("rip")){
+            c.showIpRoute(router,'r');
+          }
+          else if (arrCMD[3].equalsIgnoreCase("ospf")){
+//            c.
+          }
+        }
+        else {
+          Command c = new Command();
+          if (router.getFlag() != 'o'){
+            c.showIpRoute(router);
+          }
+          else {
+          }
+        }//if specific type of ip route
+      }//if correct mode
+      else {RouterConsole.output = error;}
+    }
+    else if ((arrCMD[0].equalsIgnoreCase("traceroute"))&&(arrCMD[1].length() != 0)){
+      if (router.getMode() < 3){
+        RouterConsole.output = "";
+//        System.out.println("Start trace at "+ arrCMD[1] + "\n");
+        RouterConsole.output = "Start trace at "+ arrCMD[1] + "\n";
+        Command c = new Command();
+        if (router.getFlag() != 'o'){
+          c.trace(router,arrCMD[1]);
+        }
+        else {
+          RouterConsole.output += c.trace_ospf(router,arrCMD[1]);
+        }
+      }
+      else{RouterConsole.output = error;}
+    }
+    else if((arrCMD[0].equalsIgnoreCase("ping"))&&(arrCMD[1].length() != 0)){
+      if (router.getMode() < 3){
+        RouterConsole.output = "";
+        Command c = new Command();
+        if (router.getFlag() != 'o'){
+          c.ping(router,arrCMD[1]);
+        }
+        else {
+          RouterConsole.output += c.ping_ospf(router,arrCMD[1]);
+        }
+      }
+      else{RouterConsole.output = error;}
+    }
+    else if ((arrCMD[0].equalsIgnoreCase("telnet"))&&(arrCMD[1].length() != 0)){
+      if (router.getMode() < 3){
+        RouterConsole.output = "";
+        Command c = new Command();
+//        c
+      }
+    }
+    //--------Mode  >1 & < 3 -------------//
+    else if (((arrCMD[0].equalsIgnoreCase("sh"))||(arrCMD[0].equalsIgnoreCase("show")))&&(arrCMD[1].equalsIgnoreCase("ip"))&&(arrCMD[2].equalsIgnoreCase("protocol"))){
+      if (router.getMode() == 2){
+        RouterConsole.output = "";
+        Command c = new Command();
+        c.showIPProtocol(router);
+      }
+      else {RouterConsole.output = error;}
+    }
+
+    else if (((arrCMD[0].equalsIgnoreCase("sh"))||(arrCMD[0].equalsIgnoreCase("show")))&& (arrCMD[1].equalsIgnoreCase("history"))){
+      if (router.getMode() == 2){
+        RouterConsole.output ="";
+        Command c = new Command();
+        c.showHistory(router);
+      }
+    }
+    else if ((arrCMD[0].equalsIgnoreCase("erase"))&&(arrCMD[1].equalsIgnoreCase("startup-config"))){
+      if (router.getMode() == 2){
+        RouterConsole.output ="";
+        Command c = new Command();
+        c.eraseStartUp(router);
+      }
+    }
+    else if (((arrCMD[0].equalsIgnoreCase("sh"))||(arrCMD[0].equalsIgnoreCase("show")))&&(arrCMD[1].equalsIgnoreCase("startup-config"))){
+      if (router.getMode() == 2){
+        RouterConsole.output ="";
+        Command c = new Command();
+        c.showStartUp(router);
+      }
+    }
+    else if (((arrCMD[0].equalsIgnoreCase("sh"))||(arrCMD[0].equalsIgnoreCase("show")))&&(arrCMD[1].equalsIgnoreCase("running-config"))){
+      RouterConsole.output = "";
+      if (router.getMode() == 2){
+        RouterConsole.output = "";
+        Command c = new Command();
+        c.showRunningConfig(router);
+      }
+      else {RouterConsole.output=error;}
+    }
+    else if ((arrCMD[0].equalsIgnoreCase("copy"))&&(arrCMD[1].equalsIgnoreCase("running-config"))&&(arrCMD[2].equalsIgnoreCase("startup-config"))){
+      RouterConsole.output = "";
+      if (router.getMode() == 2){
+        RouterConsole.output = "";
+        Command c = new Command();
+        c.saveRunningConfig(router);
+      }
+      else {RouterConsole.output=error;}
+    }
+    else if((arrCMD[0].equalsIgnoreCase("ip")) && (arrCMD[1].equalsIgnoreCase("ospf")) &&(arrCMD[2].equalsIgnoreCase("cost"))){
+      RouterConsole.output = "";
+      if (router.getMode() == 3){
+        if (arrCMD[5]!=null && arrCMD[3]!=null && arrCMD[4] != null){
+          Ospf o = (Ospf)router.getOSPF();
+          o.setWeight(arrCMD[3],arrCMD[4],Integer.parseInt(arrCMD[5]));
+        }
+      }
+      else {RouterConsole.output=error;}
+    }
+    else if (((arrCMD[0].equalsIgnoreCase("sh"))||(arrCMD[0].equalsIgnoreCase("show")))&&(arrCMD[1].equalsIgnoreCase("ip"))&&(arrCMD[2].equalsIgnoreCase("ospf"))&&(arrCMD[3].equalsIgnoreCase("neighbor"))){
+      RouterConsole.output = "";
+      if (router.getMode() == 2){
+        RouterConsole.output ="";
+        RouterConsole.output += "Neighbor\tID\tPri\tState\tDead Time\tAddress\tInterface\n";
+        Command c = new Command();
+        RouterConsole.output += c.show_ip_ospf_neighbor(router);
+      }
+      else {RouterConsole.output=error;}
+    }
+    else if (((arrCMD[0].equalsIgnoreCase("sh"))||(arrCMD[0].equalsIgnoreCase("show")))&&(arrCMD[1].equalsIgnoreCase("ip"))&&(arrCMD[2].equalsIgnoreCase("ospf"))&&((arrCMD[3].equalsIgnoreCase("int"))||(arrCMD[3].equalsIgnoreCase("interface")))){
+      if (router.getMode() == 2){
+        if (arrCMD[4].length() != 0){
+          RouterConsole.output = "";
+          Command c = new Command();
+          RouterConsole.output += c.show_ip_ospf_inf(router,arrCMD[4]);
+        }
+      }
+    }
+    else {RouterConsole.output=error;}
+  }
+  //-------------------End old Function-----------------------//
+  //---------------Command int e0-------------//
+  public void setInterface(Router r,String s){
+    Interface i1 = new Interface();
+    i1.AddNewInt(r,s);
+  }
+  //-------------Command ip address-----------//
+  public void setIpAddress(Router r,String ip,String subnet){
+    boolean dup = false;
+    for(int a=0; a < Frame1.vRouter.size(); a++){
+      Router tmp = (Router)Frame1.vRouter.elementAt(a);
+      for(int b=0; b < tmp.getVInt().size(); b++){
+        Interface i = (Interface)tmp.getVInt().elementAt(b);
+        if (i.getIpAddress().equalsIgnoreCase(ip)){
+          dup = true;
+        }//end if
+      }//end for
+    }//end for
+    if (dup){
+      RouterConsole.output += "Allready " + ip + "\n";
+    }//end ip
+    else{
+      Interface i1 = (Interface)r.getVInt().lastElement();
+      i1.setIpAddress(r,ip,subnet);
+    }
+  }
+  //------------Command ip rotue-----------------//
+  public void setIpRoute(Router r,String des,String subnet,String gw){
+    if ((r.getFlag() == 'c')||(r.getFlag() == 's')){
+      RoutingTable rt = new RoutingTable();
+      rt.ipRoute(r,des,subnet,gw);
+      r.setFlag('s');
+    }
+    else{
+      RouterConsole.output += "You have another protocol\n";
+    }
+  }
+  //----------Command no ip route--------------//
+  public void setNoIpRoute(Router r,String des,String subnet,String gw){
+    if(r.getFlag() == 's'){
+      RoutingTable rt = new RoutingTable();
+      rt.noIpRoute(r,des,subnet,gw);
+      boolean have = false;
+      for (int a=0;a < r.getVrt().size();a++){
+        RoutingTable rrt = (RoutingTable)r.getVrt().elementAt(a);
+        if (rrt.getRouteType() == 's'){
+          have = true;
+        }
+      }
+      if (!have){
+        r.setFlag('c');
+      }
+    }
+    else {
+      RouterConsole.output += "You don't have static route\n";
+    }
+  }
+  //-------------Command Hostname-----------//
+  public void setHostname(Router r,String name){
+    boolean dup = false;
+    for(int i=0; i < Frame1.vRouter.size(); i++){
+      Router tmp = (Router)Frame1.vRouter.elementAt(i);
+      if(tmp.getName().equalsIgnoreCase(name)){
+        dup = true;
+      }//end if
+    }//end for
+    if (dup){
+      RouterConsole.output = RouterConsole.output + "Already " + name +"\n";
+    }//end if
+    else {
+      r.setName(name);
+      Frame1.setTab(name);
+    }//end else
+  }
+  //---------Commnad Router rip-------------//
+  public void setRouterRip(Router r){
+    if (r.getFlag() == 'c'){
+      r.setFlag('r');
+      Rip ripf = (Rip)r.getRIP();
+//      ripf.start();
+    }
+    else {
+      RouterConsole.output += "You have already static route\n";
+    }
+  }
+  //-------Command no router rip-----------//
+  public void setNoRouterRip(Router r){
+    if (r.getFlag() == 'r'){
+      r.setFlag('c');
+      Rip ripf = (Rip)r.getRIP();
+      ripf.stop();
+      //Delete Routing Table with flag 'r'
+      for(int b=r.getVrt().size()-1; b > -1; b--){
+        RoutingTable rting = (RoutingTable)r.getVrt().elementAt(b);
+        if (rting.getRouteType() == 'r'){
+          r.getVrt().removeElementAt(b);
+        }//end if
+      }//end for
+    }
+    else{
+      RouterConsole.output += "You don't have Protocol RIP\n";
+    }
+  }
+  //---------Command no router ospf---------//
+  public void setNoRouterOspf(Router r){
+    if (r.getFlag() == 'o'){
+      r.setFlag('c');
+      Ospf ospff = (Ospf)r.getOSPF();
+      ospff.stop();
+    }
+    else{
+      RouterConsole.output += "You don't have Protocol OSPF\n";
+    }
+  }
+  //--------Set router OSPF---------------//
+  public void setRouterOspf(Router r){
+    if(r.getFlag() == 'c'){
+      r.setFlag('0');
+      Ospf ospff = (Ospf)r.getOSPF();
+      ospff.start();
+    }
+    else {
+      RouterConsole.output += "You have already static route\n";
+    }
+  }
+  public SwitchCMD() {
+  }
+  //-----------End old Function-----------//
+
+
+  //---------New Function-------------//
+  public void enablecmd(Router router){
+    RouterConsole.output = "";
+      if (!router.getEnablePasswd()){
+        router.setMode(2);
+      }
+      else {
+        router.setMode(10);
+      }
+  }
+  public void pingcmd(Router router,String arg){
+    System.out.println("ping");
+    Command c = new Command();
+    if (router.getFlag() != 'o'){
+      c.ping(router,arg);
+    }
+    else {
+      RouterConsole.output += c.ping_ospf(router,arg);
+    }
+  }
+  public void traceroutecmd(Router router,String arg){
+    RouterConsole.output += "Start trace at " + arg + "\n";;
+    Command c = new Command();
+    if (router.getFlag() != 'o'){
+      c.trace(router,arg);
+    }
+    else {
+      RouterConsole.output += c.trace_ospf(router,arg);
+    }
+  }
+  public void telnetcmd(Router r,String ip,RouterConsole rconsole){
+    Command c = new Command();
+    c.telnetCmd(r,ip,rconsole);
+/*
+//    Router newr = null;
+    Interface itmp = new Interface();
+    Router newrouter = null;
+    boolean connection = false;
+    //when send ip
+    if (itmp.isIp(ip)){
+      for (int i=0; i < Frame1.vRouter.size(); i++){
+        Router router = (Router)Frame1.vRouter.elementAt(i);
+        for (int j=0; j < router.getVInt().size(); j++){
+          Interface intf = (Interface)router.getVInt().elementAt(j);
+          if (ip.equalsIgnoreCase(intf.getIpAddress())){
+            newrouter = router;
+            if (router.getEnableTelnet()){
+              int a =0;
+              while ((router.getName().equalsIgnoreCase(rconsole.getRouter(a).getName()))&&(a < rconsole.getRouters().size())){
+                a++;
+              }//end while
+              if (router.getName().equalsIgnoreCase(rconsole.getRouter(a).getName())){
+                rconsole.getRouters().removeElementAt(a);
+              }//end if
+              rconsole.getRouters().addElement(router);
+              router.setOldMode(router.getMode());
+              router.setMode(2);
+              rconsole.setRouter(router);
+              connection = true;
+//              RouterConsole.output += "Telnet Success\n";
+            }//end if
+            else{
+              //Ip is not correct
+//              RouterConsole.output += "Invalid Destination\n";
+            }
+          }//end if open port
+          else {
+//            RouterConsole.output += "Not open Port\n";
+          }
+        }//end for interface
+      }//end for router
+      if (connection){
+        RouterConsole.output += "Telnet Success....\n";
+        RouterConsole.output += "Welcome to " + ((Router)rconsole.getRouters().lastElement()).getName() + "\n";
+      }
+      else {
+        if (newrouter != null){
+          RouterConsole.output += "Can not connect to " + newrouter.getName() + "\n";
+        }
+        else {
+          RouterConsole.output += "Not have ip " + ip + "\n";
+        }
+      }
+    }//end if
+    else {
+      //When send Router name
+//      Dns dns = (Dns)r.getdns
+    }//end else
+*/
+  }
+  public void exitcmd(Router router,RouterConsole rconsole){
+    System.out.println(rconsole.getRouters().size());
+    if (rconsole.getRouters().size() == 1){
+      switch (router.getMode()){
+        case 1 : router.setMode(0);RouterConsole.output+="reset";break;
+        case 2 : RouterConsole.output += error;
+        case 3 : router.setMode(2);RouterConsole.output+="%SYS-5-CONFIG_I: Configured from console by console\n";break;
+        case 4 : router.setMode(3);RouterConsole.output+="";break;
+        case 5 : router.setMode(2);RouterConsole.output+="%SYS-5-CONFIG_I: Configured from console by console\n";break;
+        case 6 : router.setMode(2);router.setLineMode(-1);RouterConsole.output+="%SYS-5-CONFIG_I: Configured from console by console\n";break;
+  //      default :RouterConsole.output="";
+      }//end switch
+    }
+    else{
+      //Exit From Telnet
+      Router telnetRouter = (Router)rconsole.getRouters().elementAt(rconsole.getRouters().size()-1);
+      telnetRouter.setMode(telnetRouter.getOldMode());
+      rconsole.getRouters().removeElementAt(rconsole.getRouters().size()-1);
+      rconsole.setRouter((Router)rconsole.getRouters().lastElement());
+      Router oldRouter = (Router)rconsole.getRouters().lastElement();
+      oldRouter.setMode(oldRouter.getOldMode());
+    }
+//    System.out.println(router.getMode());
+  }
+  public void configtcmd(Router router){
+    router.setMode(3);
+    RouterConsole.output+="Enter configuration commands, one per line. End with CNTL/Z.\n";
+  }
+  public void configcmd(Router router){
+    router.setMode(20);
+//    RouterConsole.output += "Configuring from terminal, memory, or network[terminal]?";
+  }
+  public void disablecmd(Router router){
+    router.setMode(1);
+  }
+  public void clocksetcmd(){
+  }
+  public void showhistorycmd(Router router){
+    Command c = new Command();
+    c.showHistory(router);
+  }
+  public void terminaleditcmd(Router router){
+    router.setTerminalEdit(true);
+  }
+  public void terminalnoeditcmd(Router router){
+    router.setTerminalEdit(false);
+  }
+  public void showruncmd(Router router){
+    Command c = new Command();
+    c.showRunningConfig(router);
+  }
+  public void showstartcmd(Router router){
+    Command c = new Command();
+    c.showStartUp(router);
+  }
+  public void copyrunstartcmd(Router router){
+    Command c = new Command();
+    c.saveRunningConfig(router);
+  }
+  public void copystartruncmd(Router router){
+  }
+  public void erasestartcmd(Router router){
+    Command c = new Command();
+    c.eraseStartUp(router);
+  }
+  public void reloadcmd(Router router){
+  }
+  public void showversioncmd(Router router){
+    Command c = new Command();
+    c.showVersion(router);
+  }
+  public void showintcmd(Router router){
+    Command c = new Command();
+    c.showInt(router);
+  }
+  public void showintcmd(Router router,String type){
+    Command c = new Command();
+    c.showInt(router,type);
+  }
+  public void showipprotocol(Router router){
+    Command c = new Command();
+    c.showIPProtocol(router);
+  }
+  public void intcmd(Router router,String intname){
+    router.setMode(4);
+    Interface i1 = new Interface();
+    i1.AddNewInt(router,intname);
+  }
+  public void enablesecretcmd(Router router,String passwd){
+    router.setEnablePasswd(true);
+    router.setPasswd(passwd);
+  }
+  public void noenablesecretcmd(Router router){
+    router.setEnablePasswd(false);
+  }
+  public void hostnamecmd(Router router,String name){
+    System.out.println("Hostname");
+    boolean dup = false;
+    for(int i=0; i < Frame1.vRouter.size(); i++){
+      Router tmp = (Router)Frame1.vRouter.elementAt(i);
+      if(tmp.getName().equalsIgnoreCase(name)){
+        dup = true;
+      }//end if
+    }//end for
+    if (dup){
+      RouterConsole.output = RouterConsole.output + "Already " + name +"\n";
+    }//end if
+    else {
+      router.setName(name);
+      Frame1.setTab(name);
+    }//end else
+  }
+  public void showiproutecmd(Router router){
+    Command c = new Command();
+    if (router.getFlag() != 'o'){
+      c.showIpRoute(router);
+    }
+    else {
+      RouterConsole.output += c.show_ip_route_ospf(router,true);
+    }
+  }
+  public void showiproutecmd(Router router,String protocol){
+    Command c = new Command();
+    if (protocol.equalsIgnoreCase("static")){
+      c.showIpRoute(router,'s');
+    }
+    else if(protocol.equalsIgnoreCase("rip")){
+      c.showIpRoute(router,'r');
+    }
+    else if (protocol.equalsIgnoreCase("ospf")){
+            c.show_ip_route_ospf(router,false);
+    }
+  }
+  public void iproutecmd(Router router,String des,String subnet,String gw){
+    if ((router.getFlag() == 'c')||(router.getFlag() == 's')){
+      RoutingTable rt = new RoutingTable();
+      rt.ipRoute(router,des,subnet,gw);
+      router.setFlag('s');
+    }
+    else{
+      RouterConsole.output += "You have another protocol\n";
+    }
+  }
+  public void noiproutecmd(Router router,String des,String subnet,String gw){
+    if(router.getFlag() == 's'){
+      RoutingTable rt = new RoutingTable();
+      rt.noIpRoute(router,des,subnet,gw);
+      boolean have = false;
+      for (int a=0;a < router.getVrt().size();a++){
+        RoutingTable rrt = (RoutingTable)router.getVrt().elementAt(a);
+        if (rrt.getRouteType() == 's'){
+          have = true;
+        }//end if
+      }//end for
+      if (!have){
+        router.setFlag('c');
+      }//end if
+    }//end if
+    else {
+      RouterConsole.output += "You don't have static route\n";
+    }
+  }
+  public void linevtycmd(Router router){
+    router.setMode(6);
+    router.setLineMode(1);
+  }
+  public void lineAuxcmd(Router router){
+    router.setMode(6);
+    router.setLineMode(2);
+  }
+  public void lineConsolecmd(Router router){
+    router.setMode(6);
+    router.setLineMode(3);
+  }
+  public void ipclasslesscmd(Router router){
+  }
+  public void noipclasslesscmd(Router router){
+  }
+  public void routercmd(Router router,String protocol,int num){
+    if (protocol.equalsIgnoreCase("ospf")){
+      if((router.getFlag() == 'c')||(router.getFlag() == 'o')){
+        router.setMode(5);
+        router.setFlag('o');
+        if (!Frame1.singleMode){
+          Ospf ospff = (Ospf)router.getOSPF();
+          if (ospff.isAlive()){
+            ospff.resume();
+            System.out.println("resume not single mode");
+          }
+          else{
+            ospff.start();
+            System.out.println("start not single mode");
+          }
+        }//not single mode
+        else{
+/*  Comment out if not run
+          System.out.println("//---------------//");
+          for (int a=0; a<Frame1.vRouter.size(); a++){
+            Router r = (Router)Frame1.vRouter.elementAt(a);
+            if (r.getFlag() == 'o'){
+              Ospf ospff = (Ospf)r.getOSPF();
+              System.out.println(r.getName()+" is "+ ripff.isAlive());
+              if(ospff.isAlive()){
+                ospff.run();
+                System.out.println(r.getName()+" run single mode");
+              }
+              else{
+                ospff.start();
+                System.out.println(r.getName()+" start single mode");
+              }
+            }//flag r
+            else {
+              System.out.println(r.getName()+ " is "+r.getFlag());
+            }
+          }//router
+*/
+        }//sigle mode
+        router.setFlag('o');
+      }//end flag c or o
+      else {
+        RouterConsole.output += "You have already other protocol\n";
+      }//end flag is not c or o
+    }//end protocol ospf
+
+    //-------Protocol RIP---------------------//
+    else if (protocol.equalsIgnoreCase("rip")){
+      if ((router.getFlag() == 'c')||(router.getFlag() == 'r')){
+        router.setMode(5);
+        router.setFlag('r');
+        if (!Frame1.singleMode){
+          Rip ripf = (Rip)router.getRIP();
+          if (ripf.isAlive()){
+            ripf.resume();
+            System.out.println("resume not single mode");
+          }
+          else{
+            ripf.start();
+            System.out.println("start not single mode");
+          }
+        }//not single mode
+        else{
+/*  Comment out if not run
+          System.out.println("//---------------//");
+          for (int a=0; a<Frame1.vRouter.size(); a++){
+            Router r = (Router)Frame1.vRouter.elementAt(a);
+            if (r.getFlag() == 'r'){
+              Rip ripff = (Rip)r.getRIP();
+              System.out.println(r.getName()+" is "+ ripff.isAlive());
+              if(ripff.isAlive()){
+                ripff.run();
+                System.out.println(r.getName()+" run single mode");
+              }
+              else{
+                ripff.start();
+                System.out.println(r.getName()+" start single mode");
+              }
+            }//flag r
+            else {
+              System.out.println(r.getName()+ " is "+r.getFlag());
+            }
+          }//router
+*/
+        }//single mode
+      }//end flag c or r
+      else {
+        RouterConsole.output += "You have already other protocol\n";
+      }//end flag is not c or r
+    }//end protocol rip
+    else {
+      RouterConsole.output += error;
+    }//end if no ospf
+  }//end
+  public void noroutercmd(Router router,String protocol){
+    if (protocol.equalsIgnoreCase("rip")){
+      if (router.getFlag() == 'r'){
+        router.setFlag('c');
+        Rip ripf = (Rip)router.getRIP();
+//        ripf.stop();
+        ripf.suspend();
+        router.setMode(5);
+        //Delete Routing Table with flag 'r'
+        for(int b=router.getVrt().size()-1; b > -1; b--){
+          RoutingTable rting = (RoutingTable)router.getVrt().elementAt(b);
+          if (rting.getRouteType() == 'r'){
+            router.getVrt().removeElementAt(b);
+          }//end if
+        }//end for
+      }
+      else{
+        RouterConsole.output += "You don't have Protocol RIP\n";
+      }
+    }//end protocol rip
+    else if (protocol.equalsIgnoreCase("ospf")){
+      if(router.getFlag() == 'o'){
+        router.setFlag('c');
+        Ospf ospff = (Ospf)router.getOSPF();
+//        ospff.stop();
+        ospff.suspend();
+        router.setMode(5);
+        //Delete Routing Table with flag 'o'
+        for(int b=router.getVrt().size()-1; b > -1; b--){
+          RoutingTable rting = (RoutingTable)router.getVrt().elementAt(b);
+          if (rting.getRouteType() == 'o'){
+            router.getVrt().removeElementAt(b);
+          }//end if
+        }//end for
+      }
+      else{
+        RouterConsole.output += "You don't have Protocol OSPF\n";
+      }
+    }//end protocol ospf
+    else {
+      RouterConsole.output += error;
+    }
+  }
+  public void ipaddcmd(Router router,String ip,String subnet){
+    boolean dup = false;
+    for(int a=0; a < Frame1.vRouter.size(); a++){
+      Router tmp = (Router)Frame1.vRouter.elementAt(a);
+      for(int b=0; b < tmp.getVInt().size(); b++){
+        Interface i = (Interface)tmp.getVInt().elementAt(b);
+        if (i.getIpAddress().equalsIgnoreCase(ip)){
+          dup = true;
+          try{
+            Interface i1 = (Interface)router.getVInt().lastElement();
+            if ((i1.getNameInt().equals(i.getNameInt()))){
+              dup = false;
+            }//end if
+          }//end try
+          catch (Exception exp){
+          }//end catch
+        }//end if
+      }//end for
+    }//end for
+    if (dup){
+      RouterConsole.output = RouterConsole.output + "Allready " + ip + "\n";
+    }//end ip
+    else{
+      try{
+        Interface i1 = (Interface)router.getVInt().lastElement();
+        i1.setIpAddress(router,ip,subnet);
+      }
+      catch(Exception exp){
+        RouterConsole.output += "Can't add ip address\n";
+      }
+    }
+  }
+  public void shutcmd(Router router){
+    Interface inf = (Interface)router.getVInt().lastElement();
+    inf.shutInt(router);
+    RouterConsole.output+="%LINEPROTO-5-UPDOWN: Line protocol on Interface "+inf.getType() + inf.getNameInt().charAt(inf.getNameInt().length()-1)+", changed state to down\n%LINK-3-UPDOWN: Interface"+ inf.getType() + inf.getNameInt().charAt(inf.getNameInt().length()-1)+", changed state to administratively down\n";
+  }
+  public void noshutcmd(Router router){
+    Interface inf = (Interface)router.getVInt().lastElement();
+    inf.noshutInt(router);
+    RouterConsole.output+="%LINEPROTO-5-UPDOWN: Line protocol on Interface "+inf.getType() + inf.getNameInt().charAt(inf.getNameInt().length()-1)+", changed state to up\n%LINK-3-UPDOWN: Interface "+inf.getType() + inf.getNameInt().charAt(inf.getNameInt().length()-1)+", changed state to up\n";
+  }
+  public void ringspeedcmd(Router router,int speed){
+    Interface inf = (Interface)router.getVInt().lastElement();
+    if (inf.getType().equals("Token Ring")){
+      inf.setRingSpeed(speed);
+    }
+    else{
+      RouterConsole.output += error;
+    }
+  }
+  public void descriptcmd(Router router,String descript){
+    Interface i1 = (Interface)router.getVInt().lastElement();
+    i1.setDescription(descript);
+  }
+  public void bandwidthcmd(Router router,int bandwidth){
+    Interface i1 = (Interface)router.getVInt().lastElement();
+    System.out.println("bandwidth="+bandwidth);
+    if (i1.getType().equals("Serial")){
+      i1.setBandwidth(bandwidth);
+    }
+    else {
+      RouterConsole.output += error;
+    }
+  }
+  public void clockratecmd(Router router,int clockrate){
+    Interface i1 = (Interface)router.getVInt().lastElement();
+    if (i1.getType().equals("Serial")){
+      i1.setClockRate(clockrate);
+    }
+    else{
+      RouterConsole.output += error;
+    }
+  }
+  public void linepasswdcmd(Router router,String passwd){
+    switch (router.getLineMode()){
+      case 1 : router.setVtyPasswd(passwd);break;
+      case 2 : router.setAuxPasswd(passwd);break;
+      case 3 : router.setConsolePasswd(passwd);break;
+      default : RouterConsole.output += error;
+    }//end switch
+  }
+  public void logincmd(Router router){
+    router.setEnableTelnet(true);
+  }
+  public void nologincmd(Router router){
+    router.setEnableTelnet(false);
+  }
+  public void showprotocolcmd(Router router){
+    Command c = new Command();
+    c.showIPProtocol(router);
+  }
+  public void showospfneighbor(Router router){
+    RouterConsole.output += "Neighbor\tID\tPri\tState\tDead Time\tAddress\tInterface\n";
+    Command c = new Command();
+    RouterConsole.output += c.show_ip_ospf_neighbor(router);
+  }
+  public void showospfint(Router router,String type){
+    Command c = new Command();
+    RouterConsole.output += c.show_ip_ospf_inf(router,type);
+  }
+  public void ospfcost(Router router,String name1,int cost){
+    System.out.println(name1+":"+cost);
+    Ospf o = (Ospf)router.getOSPF();
+    o.setWeight(router.getName(),name1,cost);
+  }
+  public void tabCmd(String findword,int mode){
+    StringTokenizer st1 = new StringTokenizer(findword);
+    ListCommand allCmd = null;
+    String returnword="";
+    switch (mode){
+      case 1 :
+                //User Exec Commands
+                allCmd = cmdUserExe;
+                break;
+      case 2 :
+                //Privileged EXec Commands
+                allCmd = cmdPrivilegedExe;
+                break;
+      case 3 :
+                //Global Config
+                allCmd = globalConfig;
+                break;
+      case 4:
+                //Interface Commands
+                allCmd = intCmd;
+                break;
+      case 5 :
+                //Routing Engine Commands
+                allCmd = routingCmd;
+                break;
+      case 6 :
+                //Line Commands
+                allCmd = lineCmd;
+                break;
+      default : RouterConsole.output  += "Error in Mode\n";
+    }
+    allCmd.resetList();
+    String usercmd="";
+    if (st1.hasMoreTokens()){
+      usercmd = st1.nextToken();
+    }
+    String listcmd = "";
+    String commandlist ="";
+    String list = (String)allCmd.nextElement();
+    String matchCmd = "";
+    while (allCmd.hasMoreElements()){
+      boolean match = true;
+      StringTokenizer tmp1 = new StringTokenizer(findword);
+      StringTokenizer tmp2 = new StringTokenizer(list);
+      while ((tmp1.hasMoreTokens())&&(match)){
+        String checkusercmd = tmp1.nextToken();
+        String checklistcmd="";
+        if(tmp2.hasMoreTokens()){
+          //both have more token
+          checklistcmd = tmp2.nextToken();
+        }
+        else {
+          //case usercmd have more token but list not more token
+          match = false;
+        }
+        if ((checkusercmd.length() <= checklistcmd.length())&&(!checklistcmd.startsWith("arg"))){
+          if (checkusercmd.equalsIgnoreCase(checklistcmd.substring(0,checkusercmd.length()))){
+            //if cmd must equal
+          }//end if
+          else{
+            match = false;
+          }//end else
+        }//end if screen only keyword
+        else if (checklistcmd.startsWith("arg")){
+          //when list is argument
+        }
+        else {
+          //when not match keyword and not match argument
+          match = false;
+        }//end if
+      }
+//      System.out.println("match="+match+"\nlistcmd="+listcmd);
+      if (match){
+//        if ((!tmp1.hasMoreTokens())&&(!tmp2.hasMoreTokens())){
+          returnword+= list;
+          RouterConsole.output += list+"  ";
+//        }
+      }//end if
+      list = (String)allCmd.nextElement();
+    }
+    System.out.println("returnword="+returnword);
+  }
+}

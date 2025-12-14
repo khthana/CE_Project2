@@ -1,0 +1,79 @@
+package routersim;
+
+public class Prompt extends Network{
+  protected String promptChar = ">";
+  //----------------------enable cmd--------------------------//
+  //work enable command
+  public boolean enable(){
+    boolean f = false;
+    if (promptChar.equals(">")){
+      promptChar = "#";
+      f = true;
+    }//end if
+    else {
+      System.out.println("%  Invalid input detected at '^' marker. \n");
+    }//end else
+    return f;
+  }
+  //----------------------ping cmd--------------------------//
+  public void ping(){
+  }
+  //----------------------traceroute cmd-----------------//
+  public void traceroute(){
+  }
+  //----------------------------disable cmd----------------//
+  //work disable command
+  public boolean disable(){
+    boolean f = false;
+    if (promptChar.equals("#")){
+      promptChar = ">";
+      f = true;
+    }//end if
+    else {
+      System.out.println("%  Invalid input detected at '^' marker. \n");
+    }//end else
+    return f;
+  }
+  //-----------------------config t cmd---------------------//
+  //work config terminal command
+  public boolean configT(){
+    boolean f = false;
+    if (promptChar.equals("#")){
+      promptChar = "(config)#";
+      f = true;
+    }//end if
+    else {
+      System.out.println("%  Invalid input detected at '^' marker. \n");
+    }//end else
+    return f;
+  }
+  //------------------------int cmd----------------------------//
+  //work int command
+  public boolean intf(){
+    boolean f = false;
+    if (promptChar.equals("(config)#")){
+      promptChar = "(config-if)#";
+      f = true;
+    }//end if
+    else {
+      System.out.println("%  Invalid input detected at '^' marker. \n");
+    }//end else
+    return f;
+  }
+  //------------------------------exit cmd-----------------------//
+  //work exit command
+  public boolean exitcmd(){
+    boolean f = false;
+    if ((promptChar.equals("(config)#"))|| (promptChar.equals("(config-if)#")) ){
+      promptChar = "#";
+      f = true;
+    }//end if
+    else {
+      System.out.println("%  Invalid input detected at '^' marker. \n");
+    }//end else
+    return f;
+  }
+  //constructor
+  public Prompt() {
+  }
+}

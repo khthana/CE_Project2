@@ -1,0 +1,18 @@
+package routersim;
+import java.util.*;
+
+public class PrivilegedExe implements Enumeration{
+  String s[];
+  int i = 0;
+  PrivilegedExe(String s[]){
+    this.s = s;
+  }
+  public boolean hasMoreElements(){
+    return i < s.length;
+  }
+  public Object nextElement(){
+    if (i < s.length)
+      return s[i++];
+    return null;
+  }
+}

@@ -1,0 +1,3453 @@
+VERSION 5.00
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSADODC.OCX"
+Object = "{648A5603-2C6E-101B-82B6-000000000014}#1.1#0"; "MSCOMM32.OCX"
+Begin VB.Form FormMain 
+   BackColor       =   &H80000001&
+   Caption         =   "Assistive Browser"
+   ClientHeight    =   3345
+   ClientLeft      =   1395
+   ClientTop       =   4680
+   ClientWidth     =   9630
+   FillColor       =   &H00FF0000&
+   FillStyle       =   6  'Cross
+   LinkTopic       =   "Form1"
+   PaletteMode     =   2  'Custom
+   ScaleHeight     =   3345
+   ScaleWidth      =   9630
+   Begin VB.Frame FrameMove 
+      BackColor       =   &H80000001&
+      BorderStyle     =   0  'None
+      Caption         =   "Frame1"
+      Height          =   2295
+      Left            =   5640
+      TabIndex        =   135
+      Top             =   600
+      Width           =   1335
+      Begin VB.CommandButton B_F 
+         BackColor       =   &H0094D885&
+         Caption         =   "prts"
+         Height          =   375
+         Index           =   13
+         Left            =   120
+         Style           =   1  'Graphical
+         TabIndex        =   15
+         Top             =   120
+         Width           =   375
+      End
+      Begin VB.CommandButton B_F 
+         BackColor       =   &H0094D885&
+         Caption         =   "scrl"
+         Height          =   375
+         Index           =   14
+         Left            =   480
+         Style           =   1  'Graphical
+         TabIndex        =   16
+         Top             =   120
+         Width           =   375
+      End
+      Begin VB.CommandButton B_F 
+         BackColor       =   &H0094D885&
+         Caption         =   "pau"
+         Height          =   375
+         Index           =   15
+         Left            =   840
+         Style           =   1  'Graphical
+         TabIndex        =   17
+         Top             =   120
+         Width           =   375
+      End
+      Begin VB.CommandButton B_arrow 
+         Height          =   375
+         Index           =   3
+         Left            =   840
+         Picture         =   "FormMain.frx":0000
+         Style           =   1  'Graphical
+         TabIndex        =   87
+         Top             =   1920
+         Width           =   375
+      End
+      Begin VB.CommandButton B_arrow 
+         Height          =   375
+         Index           =   2
+         Left            =   120
+         Picture         =   "FormMain.frx":08E0
+         Style           =   1  'Graphical
+         TabIndex        =   86
+         Top             =   1920
+         Width           =   375
+      End
+      Begin VB.CommandButton B_arrow 
+         Height          =   375
+         Index           =   1
+         Left            =   480
+         Picture         =   "FormMain.frx":11DF
+         Style           =   1  'Graphical
+         TabIndex        =   85
+         Top             =   1920
+         Width           =   375
+      End
+      Begin VB.CommandButton B_arrow 
+         Height          =   375
+         Index           =   0
+         Left            =   480
+         Picture         =   "FormMain.frx":1AEB
+         Style           =   1  'Graphical
+         TabIndex        =   84
+         Top             =   1560
+         Width           =   375
+      End
+   End
+   Begin MSAdodcLib.Adodc AdodcProgram 
+      Height          =   330
+      Left            =   0
+      Top             =   4080
+      Visible         =   0   'False
+      Width           =   1695
+      _ExtentX        =   2990
+      _ExtentY        =   582
+      ConnectMode     =   0
+      CursorLocation  =   3
+      IsolationLevel  =   -1
+      ConnectionTimeout=   15
+      CommandTimeout  =   30
+      CursorType      =   3
+      LockType        =   3
+      CommandType     =   2
+      CursorOptions   =   0
+      CacheSize       =   50
+      MaxRecords      =   0
+      BOFAction       =   0
+      EOFAction       =   2
+      ConnectStringType=   1
+      Appearance      =   1
+      BackColor       =   -2147483643
+      ForeColor       =   -2147483640
+      Orientation     =   0
+      Enabled         =   -1
+      Connect         =   "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=Words.mdb;Persist Security Info=False"
+      OLEDBString     =   "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=Words.mdb;Persist Security Info=False"
+      OLEDBFile       =   ""
+      DataSourceName  =   ""
+      OtherAttributes =   ""
+      UserName        =   ""
+      Password        =   ""
+      RecordSource    =   "Table_Program"
+      Caption         =   "Adodc2"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   222
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      _Version        =   393216
+   End
+   Begin MSAdodcLib.Adodc AdodcHis 
+      Height          =   330
+      Left            =   1320
+      Top             =   3600
+      Visible         =   0   'False
+      Width           =   1455
+      _ExtentX        =   2566
+      _ExtentY        =   582
+      ConnectMode     =   0
+      CursorLocation  =   3
+      IsolationLevel  =   -1
+      ConnectionTimeout=   15
+      CommandTimeout  =   30
+      CursorType      =   3
+      LockType        =   3
+      CommandType     =   2
+      CursorOptions   =   0
+      CacheSize       =   50
+      MaxRecords      =   0
+      BOFAction       =   0
+      EOFAction       =   0
+      ConnectStringType=   1
+      Appearance      =   1
+      BackColor       =   -2147483643
+      ForeColor       =   -2147483640
+      Orientation     =   0
+      Enabled         =   -1
+      Connect         =   "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=Words.mdb;Persist Security Info=False"
+      OLEDBString     =   "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=Words.mdb;Persist Security Info=False"
+      OLEDBFile       =   ""
+      DataSourceName  =   ""
+      OtherAttributes =   ""
+      UserName        =   ""
+      Password        =   ""
+      RecordSource    =   "Table_History"
+      Caption         =   "AdodcHis"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   222
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      _Version        =   393216
+   End
+   Begin VB.ComboBox ComboProgram 
+      Height          =   315
+      ItemData        =   "FormMain.frx":2426
+      Left            =   6960
+      List            =   "FormMain.frx":242D
+      Sorted          =   -1  'True
+      Style           =   2  'Dropdown List
+      TabIndex        =   128
+      Top             =   120
+      Width           =   1455
+   End
+   Begin VB.TextBox TextHistory 
+      BackColor       =   &H00C0FFFF&
+      Height          =   315
+      Left            =   1680
+      TabIndex        =   121
+      Text            =   "History word"
+      Top             =   480
+      Visible         =   0   'False
+      Width           =   3855
+   End
+   Begin VB.CommandButton B_F 
+      BackColor       =   &H00FFFF80&
+      Caption         =   "F4"
+      Height          =   375
+      Index           =   4
+      Left            =   2040
+      Style           =   1  'Graphical
+      TabIndex        =   6
+      Top             =   600
+      Width           =   375
+   End
+   Begin VB.CommandButton B_F 
+      BackColor       =   &H00FFFF80&
+      Caption         =   "F5"
+      Height          =   375
+      Index           =   5
+      Left            =   2520
+      Style           =   1  'Graphical
+      TabIndex        =   7
+      Top             =   600
+      Width           =   375
+   End
+   Begin VB.Timer TimerPort 
+      Interval        =   10
+      Left            =   5640
+      Top             =   3600
+   End
+   Begin VB.Timer TimerUpdateSetting 
+      Interval        =   500
+      Left            =   5280
+      Top             =   3600
+   End
+   Begin MSCommLib.MSComm MSComm1 
+      Left            =   3240
+      Top             =   3600
+      _ExtentX        =   1005
+      _ExtentY        =   1005
+      _Version        =   393216
+      DTREnable       =   -1  'True
+   End
+   Begin VB.CommandButton B_CutCopy 
+      Height          =   375
+      Index           =   2
+      Left            =   7680
+      Picture         =   "FormMain.frx":2441
+      Style           =   1  'Graphical
+      TabIndex        =   118
+      Top             =   600
+      Width           =   375
+   End
+   Begin VB.CommandButton B_CutCopy 
+      Height          =   375
+      Index           =   1
+      Left            =   7320
+      Picture         =   "FormMain.frx":28F7
+      Style           =   1  'Graphical
+      TabIndex        =   117
+      Top             =   600
+      Width           =   375
+   End
+   Begin VB.CommandButton B_CutCopy 
+      Height          =   375
+      Index           =   0
+      Left            =   6960
+      Picture         =   "FormMain.frx":2DAD
+      Style           =   1  'Graphical
+      TabIndex        =   116
+      Top             =   600
+      Width           =   375
+   End
+   Begin MSAdodcLib.Adodc Adodc1 
+      Height          =   330
+      Left            =   0
+      Top             =   3600
+      Visible         =   0   'False
+      Width           =   1320
+      _ExtentX        =   2328
+      _ExtentY        =   582
+      ConnectMode     =   0
+      CursorLocation  =   3
+      IsolationLevel  =   -1
+      ConnectionTimeout=   15
+      CommandTimeout  =   30
+      CursorType      =   3
+      LockType        =   3
+      CommandType     =   2
+      CursorOptions   =   0
+      CacheSize       =   50
+      MaxRecords      =   0
+      BOFAction       =   0
+      EOFAction       =   0
+      ConnectStringType=   1
+      Appearance      =   1
+      BackColor       =   -2147483643
+      ForeColor       =   -2147483640
+      Orientation     =   0
+      Enabled         =   -1
+      Connect         =   "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=Words.mdb;Persist Security Info=False"
+      OLEDBString     =   "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=Words.mdb;Persist Security Info=False"
+      OLEDBFile       =   ""
+      DataSourceName  =   ""
+      OtherAttributes =   ""
+      UserName        =   ""
+      Password        =   ""
+      RecordSource    =   "Table_Word"
+      Caption         =   "AdodcDic"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   222
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      _Version        =   393216
+   End
+   Begin VB.CommandButton B_LoadHistory 
+      Caption         =   "Load Dic"
+      Height          =   375
+      Left            =   8520
+      TabIndex        =   115
+      Top             =   3600
+      Visible         =   0   'False
+      Width           =   855
+   End
+   Begin VB.Timer TimerDB 
+      Interval        =   50
+      Left            =   4920
+      Top             =   3600
+   End
+   Begin VB.Timer TimerLoopMousemove 
+      Interval        =   500
+      Left            =   4560
+      Top             =   3600
+   End
+   Begin VB.Timer TimerClickMouse 
+      Enabled         =   0   'False
+      Interval        =   1000
+      Left            =   4200
+      Top             =   3600
+   End
+   Begin VB.ComboBox TxDisplay 
+      Height          =   315
+      ItemData        =   "FormMain.frx":3263
+      Left            =   1680
+      List            =   "FormMain.frx":3265
+      Sorted          =   -1  'True
+      TabIndex        =   107
+      Top             =   120
+      Width           =   3855
+   End
+   Begin VB.Timer TimerStrartProgram 
+      Interval        =   500
+      Left            =   3840
+      Top             =   3600
+   End
+   Begin VB.CommandButton B_clear 
+      Height          =   375
+      Left            =   6360
+      Picture         =   "FormMain.frx":3267
+      Style           =   1  'Graphical
+      TabIndex        =   106
+      Top             =   120
+      Width           =   375
+   End
+   Begin VB.CommandButton B_send 
+      Caption         =   "send"
+      Height          =   375
+      Left            =   5760
+      Style           =   1  'Graphical
+      TabIndex        =   105
+      Top             =   120
+      Width           =   615
+   End
+   Begin VB.CommandButton B_numc 
+      BackColor       =   &H0080ABD7&
+      Caption         =   "ent"
+      Height          =   615
+      Index           =   5
+      Left            =   8040
+      Style           =   1  'Graphical
+      TabIndex        =   104
+      Top             =   2280
+      Width           =   375
+   End
+   Begin VB.CommandButton B_numc 
+      BackColor       =   &H008080FF&
+      Caption         =   "+"
+      Height          =   855
+      Index           =   4
+      Left            =   8040
+      Style           =   1  'Graphical
+      TabIndex        =   103
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_numc 
+      BackColor       =   &H008080FF&
+      Caption         =   "-"
+      Height          =   375
+      Index           =   3
+      Left            =   8040
+      Style           =   1  'Graphical
+      TabIndex        =   102
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_numc 
+      BackColor       =   &H008080FF&
+      Caption         =   "*"
+      Height          =   375
+      Index           =   2
+      Left            =   7680
+      Style           =   1  'Graphical
+      TabIndex        =   101
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_numc 
+      BackColor       =   &H008080FF&
+      Caption         =   "/"
+      Height          =   375
+      Index           =   1
+      Left            =   7320
+      Style           =   1  'Graphical
+      TabIndex        =   100
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_numc 
+      BackColor       =   &H0080ABD7&
+      Caption         =   "nm"
+      Height          =   375
+      Index           =   0
+      Left            =   6960
+      Style           =   1  'Graphical
+      TabIndex        =   99
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_num 
+      BackColor       =   &H0080FF80&
+      Caption         =   "."
+      Height          =   375
+      Index           =   10
+      Left            =   7680
+      Style           =   1  'Graphical
+      TabIndex        =   98
+      Top             =   2520
+      Width           =   375
+   End
+   Begin VB.CommandButton B_num 
+      BackColor       =   &H0080FF80&
+      Caption         =   "0"
+      Height          =   375
+      Index           =   0
+      Left            =   6960
+      Style           =   1  'Graphical
+      TabIndex        =   88
+      Top             =   2520
+      Width           =   735
+   End
+   Begin VB.CommandButton B_num 
+      BackColor       =   &H0080FF80&
+      Caption         =   "3"
+      Height          =   375
+      Index           =   3
+      Left            =   7680
+      Style           =   1  'Graphical
+      TabIndex        =   91
+      Top             =   2160
+      Width           =   375
+   End
+   Begin VB.CommandButton B_num 
+      BackColor       =   &H0080FF80&
+      Caption         =   "2"
+      Height          =   375
+      Index           =   2
+      Left            =   7320
+      Style           =   1  'Graphical
+      TabIndex        =   90
+      Top             =   2160
+      Width           =   375
+   End
+   Begin VB.CommandButton B_num 
+      BackColor       =   &H0080FF80&
+      Caption         =   "6"
+      Height          =   375
+      Index           =   6
+      Left            =   7680
+      Style           =   1  'Graphical
+      TabIndex        =   94
+      Top             =   1800
+      Width           =   375
+   End
+   Begin VB.CommandButton B_num 
+      BackColor       =   &H0080FF80&
+      Caption         =   "5"
+      Height          =   375
+      Index           =   5
+      Left            =   7320
+      Style           =   1  'Graphical
+      TabIndex        =   93
+      Top             =   1800
+      Width           =   375
+   End
+   Begin VB.CommandButton B_num 
+      BackColor       =   &H0080FF80&
+      Caption         =   "9"
+      Height          =   375
+      Index           =   9
+      Left            =   7680
+      Style           =   1  'Graphical
+      TabIndex        =   97
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_num 
+      BackColor       =   &H0080FF80&
+      Caption         =   "8"
+      Height          =   375
+      Index           =   8
+      Left            =   7320
+      Style           =   1  'Graphical
+      TabIndex        =   96
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_com 
+      BackColor       =   &H00C0FFFF&
+      Caption         =   "pdn"
+      Height          =   375
+      Index           =   5
+      Left            =   6480
+      Style           =   1  'Graphical
+      TabIndex        =   83
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_com 
+      BackColor       =   &H00C0FFFF&
+      Caption         =   "end"
+      Height          =   375
+      Index           =   4
+      Left            =   6120
+      Style           =   1  'Graphical
+      TabIndex        =   82
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_com 
+      BackColor       =   &H00C0FFFF&
+      Caption         =   "del"
+      Height          =   375
+      Index           =   3
+      Left            =   5760
+      Style           =   1  'Graphical
+      TabIndex        =   81
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_com 
+      BackColor       =   &H00C0FFFF&
+      Caption         =   "pup"
+      Height          =   375
+      Index           =   2
+      Left            =   6480
+      Style           =   1  'Graphical
+      TabIndex        =   80
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_com 
+      BackColor       =   &H00C0FFFF&
+      Caption         =   "hm"
+      Height          =   375
+      Index           =   1
+      Left            =   6120
+      Style           =   1  'Graphical
+      TabIndex        =   79
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_com 
+      BackColor       =   &H00C0FFFF&
+      Caption         =   "ins"
+      Height          =   375
+      Index           =   0
+      Left            =   5760
+      Style           =   1  'Graphical
+      TabIndex        =   78
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_co2 
+      BackColor       =   &H000080FF&
+      Caption         =   "Alt"
+      Height          =   375
+      Index           =   5
+      Left            =   4200
+      Style           =   1  'Graphical
+      TabIndex        =   77
+      Top             =   2520
+      Width           =   495
+   End
+   Begin VB.CommandButton B_co2 
+      Height          =   375
+      Index           =   4
+      Left            =   4680
+      Picture         =   "FormMain.frx":357F
+      Style           =   1  'Graphical
+      TabIndex        =   76
+      Top             =   2520
+      Width           =   495
+   End
+   Begin VB.CommandButton B_co1 
+      BackColor       =   &H000080FF&
+      Caption         =   "Alt"
+      Height          =   375
+      Index           =   6
+      Left            =   1200
+      MaskColor       =   &H00C0C0FF&
+      Style           =   1  'Graphical
+      TabIndex        =   75
+      Top             =   2520
+      Width           =   495
+   End
+   Begin VB.CommandButton B_co1 
+      Height          =   375
+      Index           =   5
+      Left            =   720
+      MaskColor       =   &H00C0C0FF&
+      Picture         =   "FormMain.frx":3CEB
+      Style           =   1  'Graphical
+      TabIndex        =   74
+      Top             =   2520
+      Width           =   495
+   End
+   Begin VB.CommandButton B_space 
+      BackColor       =   &H00C0FFFF&
+      Caption         =   " "
+      Height          =   375
+      Left            =   1680
+      Style           =   1  'Graphical
+      TabIndex        =   73
+      Top             =   2520
+      Width           =   2535
+   End
+   Begin VB.CommandButton B_co2 
+      BackColor       =   &H000080FF&
+      Caption         =   "Ctrl"
+      Height          =   375
+      Index           =   3
+      Left            =   5160
+      Style           =   1  'Graphical
+      TabIndex        =   72
+      Top             =   2520
+      Width           =   495
+   End
+   Begin VB.CommandButton B_co1 
+      BackColor       =   &H000080FF&
+      Caption         =   "Ctrl"
+      Height          =   375
+      Index           =   4
+      Left            =   240
+      MaskColor       =   &H00C0C0FF&
+      Style           =   1  'Graphical
+      TabIndex        =   71
+      Top             =   2520
+      Width           =   495
+   End
+   Begin VB.CommandButton B_co1 
+      BackColor       =   &H000080FF&
+      Caption         =   "Shift"
+      Height          =   375
+      Index           =   3
+      Left            =   240
+      MaskColor       =   &H00C0C0FF&
+      Style           =   1  'Graphical
+      TabIndex        =   66
+      Top             =   2160
+      Width           =   975
+   End
+   Begin VB.CommandButton B_r2 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   12
+      Left            =   5280
+      Style           =   1  'Graphical
+      TabIndex        =   69
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_co1 
+      BackColor       =   &H000080FF&
+      Caption         =   "Capslock"
+      Height          =   375
+      Index           =   2
+      Left            =   240
+      MaskColor       =   &H00C0C0FF&
+      Style           =   1  'Graphical
+      TabIndex        =   65
+      Top             =   1800
+      Width           =   855
+   End
+   Begin VB.CommandButton B_co1 
+      BackColor       =   &H000080FF&
+      Caption         =   "Tab"
+      Height          =   375
+      Index           =   1
+      Left            =   240
+      MaskColor       =   &H00C0C0FF&
+      Style           =   1  'Graphical
+      TabIndex        =   64
+      Top             =   1440
+      Width           =   735
+   End
+   Begin VB.CommandButton B_co1 
+      BackColor       =   &H000080FF&
+      Caption         =   "T/E"
+      Height          =   375
+      Index           =   0
+      Left            =   240
+      MaskColor       =   &H00C0C0FF&
+      Style           =   1  'Graphical
+      TabIndex        =   63
+      Top             =   1080
+      Width           =   495
+   End
+   Begin VB.CommandButton B_F 
+      BackColor       =   &H00FFFF80&
+      Caption         =   "F12"
+      Height          =   375
+      Index           =   12
+      Left            =   5160
+      Style           =   1  'Graphical
+      TabIndex        =   14
+      Top             =   600
+      Width           =   375
+   End
+   Begin VB.CommandButton B_F 
+      BackColor       =   &H00FFFF80&
+      Caption         =   "F11"
+      Height          =   375
+      Index           =   11
+      Left            =   4800
+      Style           =   1  'Graphical
+      TabIndex        =   13
+      Top             =   600
+      Width           =   375
+   End
+   Begin VB.CommandButton B_F 
+      BackColor       =   &H00FFFF80&
+      Caption         =   "F10"
+      Height          =   375
+      Index           =   10
+      Left            =   4440
+      Style           =   1  'Graphical
+      TabIndex        =   12
+      Top             =   600
+      Width           =   375
+   End
+   Begin VB.CommandButton B_F 
+      BackColor       =   &H00FFFF80&
+      Caption         =   "F9"
+      Height          =   375
+      Index           =   9
+      Left            =   4080
+      Style           =   1  'Graphical
+      TabIndex        =   11
+      Top             =   600
+      Width           =   375
+   End
+   Begin VB.CommandButton B_F 
+      BackColor       =   &H00FFFF80&
+      Caption         =   "F8"
+      Height          =   375
+      Index           =   8
+      Left            =   3600
+      Style           =   1  'Graphical
+      TabIndex        =   10
+      Top             =   600
+      Width           =   375
+   End
+   Begin VB.CommandButton B_F 
+      BackColor       =   &H00FFFF80&
+      Caption         =   "F7"
+      Height          =   375
+      Index           =   7
+      Left            =   3240
+      Style           =   1  'Graphical
+      TabIndex        =   9
+      Top             =   600
+      Width           =   375
+   End
+   Begin VB.CommandButton B_F 
+      BackColor       =   &H00FFFF80&
+      Caption         =   "F6"
+      Height          =   375
+      Index           =   6
+      Left            =   2880
+      Style           =   1  'Graphical
+      TabIndex        =   8
+      Top             =   600
+      Width           =   375
+   End
+   Begin VB.CommandButton B_F 
+      BackColor       =   &H00FFFF80&
+      Caption         =   "F3"
+      Height          =   375
+      Index           =   3
+      Left            =   1680
+      Style           =   1  'Graphical
+      TabIndex        =   5
+      Top             =   600
+      Width           =   375
+   End
+   Begin VB.CommandButton B_F 
+      BackColor       =   &H00FFFF80&
+      Caption         =   "F2"
+      Height          =   375
+      Index           =   2
+      Left            =   1320
+      Style           =   1  'Graphical
+      TabIndex        =   4
+      Top             =   600
+      Width           =   375
+   End
+   Begin VB.CommandButton B_F 
+      BackColor       =   &H00FFFF80&
+      Caption         =   "F1"
+      Height          =   375
+      Index           =   1
+      Left            =   960
+      Style           =   1  'Graphical
+      TabIndex        =   3
+      Top             =   600
+      Width           =   375
+   End
+   Begin VB.CommandButton B_Esc 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00FFFF80&
+      Caption         =   "esc"
+      Height          =   375
+      Left            =   240
+      MaskColor       =   &H00FF00FF&
+      Style           =   1  'Graphical
+      TabIndex        =   2
+      Top             =   600
+      UseMaskColor    =   -1  'True
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r4 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   9
+      Left            =   4440
+      Style           =   1  'Graphical
+      TabIndex        =   62
+      Top             =   2160
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r4 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   8
+      Left            =   4080
+      Style           =   1  'Graphical
+      TabIndex        =   61
+      Top             =   2160
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r4 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   7
+      Left            =   3720
+      Style           =   1  'Graphical
+      TabIndex        =   60
+      Top             =   2160
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r4 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   6
+      Left            =   3360
+      Style           =   1  'Graphical
+      TabIndex        =   59
+      Top             =   2160
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r4 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   5
+      Left            =   3000
+      Style           =   1  'Graphical
+      TabIndex        =   58
+      Top             =   2160
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r4 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   4
+      Left            =   2640
+      Style           =   1  'Graphical
+      TabIndex        =   57
+      Top             =   2160
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r4 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   3
+      Left            =   2280
+      Style           =   1  'Graphical
+      TabIndex        =   56
+      Top             =   2160
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r4 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   2
+      Left            =   1920
+      Style           =   1  'Graphical
+      TabIndex        =   55
+      Top             =   2160
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r4 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   1
+      Left            =   1560
+      Style           =   1  'Graphical
+      TabIndex        =   54
+      Top             =   2160
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r4 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   0
+      Left            =   1200
+      Style           =   1  'Graphical
+      TabIndex        =   53
+      Top             =   2160
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r3 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   10
+      Left            =   4680
+      Style           =   1  'Graphical
+      TabIndex        =   52
+      Top             =   1800
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r3 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   9
+      Left            =   4320
+      Style           =   1  'Graphical
+      TabIndex        =   51
+      Top             =   1800
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r3 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   8
+      Left            =   3960
+      Style           =   1  'Graphical
+      TabIndex        =   50
+      Top             =   1800
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r3 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   7
+      Left            =   3600
+      Style           =   1  'Graphical
+      TabIndex        =   49
+      Top             =   1800
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r3 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   6
+      Left            =   3240
+      Style           =   1  'Graphical
+      TabIndex        =   48
+      Top             =   1800
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r3 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   5
+      Left            =   2880
+      Style           =   1  'Graphical
+      TabIndex        =   47
+      Top             =   1800
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r3 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   4
+      Left            =   2520
+      Style           =   1  'Graphical
+      TabIndex        =   46
+      Top             =   1800
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r3 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   3
+      Left            =   2160
+      Style           =   1  'Graphical
+      TabIndex        =   45
+      Top             =   1800
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r3 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   2
+      Left            =   1800
+      Style           =   1  'Graphical
+      TabIndex        =   44
+      Top             =   1800
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r3 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   1
+      Left            =   1440
+      Style           =   1  'Graphical
+      TabIndex        =   43
+      Top             =   1800
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r3 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   0
+      Left            =   1080
+      Style           =   1  'Graphical
+      TabIndex        =   42
+      Top             =   1800
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r2 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   11
+      Left            =   4920
+      Style           =   1  'Graphical
+      TabIndex        =   41
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r2 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   10
+      Left            =   4560
+      Style           =   1  'Graphical
+      TabIndex        =   40
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r2 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   9
+      Left            =   4200
+      Style           =   1  'Graphical
+      TabIndex        =   39
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r2 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   8
+      Left            =   3840
+      Style           =   1  'Graphical
+      TabIndex        =   38
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r2 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   7
+      Left            =   3480
+      Style           =   1  'Graphical
+      TabIndex        =   37
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r2 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   6
+      Left            =   3120
+      Style           =   1  'Graphical
+      TabIndex        =   36
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r2 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   5
+      Left            =   2760
+      Style           =   1  'Graphical
+      TabIndex        =   35
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r2 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   4
+      Left            =   2400
+      Style           =   1  'Graphical
+      TabIndex        =   34
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r2 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   3
+      Left            =   2040
+      Style           =   1  'Graphical
+      TabIndex        =   33
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r2 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   2
+      Left            =   1680
+      Style           =   1  'Graphical
+      TabIndex        =   32
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r2 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   1
+      Left            =   1320
+      Style           =   1  'Graphical
+      TabIndex        =   31
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r2 
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   0
+      Left            =   960
+      Style           =   1  'Graphical
+      TabIndex        =   30
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r1 
+      Appearance      =   0  'Flat
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   11
+      Left            =   4680
+      Style           =   1  'Graphical
+      TabIndex        =   29
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r1 
+      Appearance      =   0  'Flat
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   10
+      Left            =   4320
+      Style           =   1  'Graphical
+      TabIndex        =   28
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r1 
+      Appearance      =   0  'Flat
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   9
+      Left            =   3960
+      Style           =   1  'Graphical
+      TabIndex        =   27
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r1 
+      Appearance      =   0  'Flat
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   8
+      Left            =   3600
+      Style           =   1  'Graphical
+      TabIndex        =   26
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r1 
+      Appearance      =   0  'Flat
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   7
+      Left            =   3240
+      Style           =   1  'Graphical
+      TabIndex        =   25
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r1 
+      Appearance      =   0  'Flat
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   6
+      Left            =   2880
+      Style           =   1  'Graphical
+      TabIndex        =   24
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r1 
+      Appearance      =   0  'Flat
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   5
+      Left            =   2520
+      Style           =   1  'Graphical
+      TabIndex        =   23
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r1 
+      Appearance      =   0  'Flat
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   4
+      Left            =   2160
+      Style           =   1  'Graphical
+      TabIndex        =   22
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r1 
+      Appearance      =   0  'Flat
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   3
+      Left            =   1800
+      Style           =   1  'Graphical
+      TabIndex        =   21
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r1 
+      Appearance      =   0  'Flat
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   2
+      Left            =   1440
+      Style           =   1  'Graphical
+      TabIndex        =   20
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r1 
+      Appearance      =   0  'Flat
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   1
+      Left            =   1080
+      Style           =   1  'Graphical
+      TabIndex        =   19
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_r1 
+      Appearance      =   0  'Flat
+      BackColor       =   &H0080C0FF&
+      Height          =   375
+      Index           =   0
+      Left            =   720
+      Style           =   1  'Graphical
+      TabIndex        =   18
+      Top             =   1080
+      Width           =   375
+   End
+   Begin VB.CommandButton B_co2 
+      BackColor       =   &H000080FF&
+      Caption         =   "bksp"
+      Height          =   375
+      Index           =   0
+      Left            =   5040
+      Style           =   1  'Graphical
+      TabIndex        =   67
+      Top             =   1080
+      Width           =   615
+   End
+   Begin VB.CommandButton B_co2 
+      BackColor       =   &H000080FF&
+      Caption         =   "Enter"
+      Height          =   375
+      Index           =   1
+      Left            =   5040
+      Style           =   1  'Graphical
+      TabIndex        =   68
+      Top             =   1800
+      Width           =   615
+   End
+   Begin VB.CommandButton B_co2 
+      BackColor       =   &H000080FF&
+      Caption         =   "Shift"
+      Height          =   375
+      Index           =   2
+      Left            =   4800
+      Style           =   1  'Graphical
+      TabIndex        =   70
+      Top             =   2160
+      Width           =   855
+   End
+   Begin VB.CommandButton B_num 
+      BackColor       =   &H0080FF80&
+      Caption         =   "1"
+      Height          =   375
+      Index           =   1
+      Left            =   6960
+      Style           =   1  'Graphical
+      TabIndex        =   89
+      Top             =   2160
+      Width           =   375
+   End
+   Begin VB.CommandButton B_num 
+      BackColor       =   &H0080FF80&
+      Caption         =   "4"
+      Height          =   375
+      Index           =   4
+      Left            =   6960
+      Style           =   1  'Graphical
+      TabIndex        =   92
+      Top             =   1800
+      Width           =   375
+   End
+   Begin VB.CommandButton B_num 
+      BackColor       =   &H0080FF80&
+      Caption         =   "7"
+      Height          =   375
+      Index           =   7
+      Left            =   6960
+      Style           =   1  'Graphical
+      TabIndex        =   95
+      Top             =   1440
+      Width           =   375
+   End
+   Begin VB.Frame FrameTask 
+      BorderStyle     =   0  'None
+      Height          =   375
+      Left            =   0
+      TabIndex        =   122
+      Top             =   3000
+      Width           =   9615
+      Begin VB.CommandButton cmdResize 
+         BackColor       =   &H80000018&
+         Caption         =   "<<ย่อ"
+         Height          =   375
+         Left            =   8880
+         Style           =   1  'Graphical
+         TabIndex        =   136
+         Top             =   0
+         Width           =   735
+      End
+      Begin VB.CommandButton B_exit 
+         BackColor       =   &H00C0C0FF&
+         Caption         =   "ออกดีกว่า"
+         Height          =   375
+         Left            =   7920
+         Style           =   1  'Graphical
+         TabIndex        =   127
+         Top             =   0
+         Width           =   1000
+      End
+      Begin VB.PictureBox PictureRight 
+         Height          =   375
+         Left            =   360
+         Picture         =   "FormMain.frx":4457
+         ScaleHeight     =   315
+         ScaleWidth      =   315
+         TabIndex        =   126
+         Top             =   0
+         Visible         =   0   'False
+         Width           =   375
+      End
+      Begin VB.PictureBox PictureLeft 
+         Height          =   375
+         Left            =   360
+         Picture         =   "FormMain.frx":4949
+         ScaleHeight     =   315
+         ScaleWidth      =   315
+         TabIndex        =   125
+         Top             =   0
+         Width           =   375
+      End
+      Begin VB.PictureBox PictureDown 
+         Height          =   375
+         Left            =   0
+         Picture         =   "FormMain.frx":4E3B
+         ScaleHeight     =   315
+         ScaleWidth      =   315
+         TabIndex        =   124
+         Top             =   0
+         Visible         =   0   'False
+         Width           =   375
+      End
+      Begin VB.PictureBox PictureUp 
+         Height          =   375
+         Left            =   0
+         Picture         =   "FormMain.frx":537D
+         ScaleHeight     =   315
+         ScaleWidth      =   315
+         TabIndex        =   123
+         Top             =   0
+         Width           =   375
+      End
+      Begin VB.Shape Shape1 
+         BorderColor     =   &H80000009&
+         Height          =   360
+         Left            =   810
+         Top             =   0
+         Width           =   1120
+      End
+      Begin VB.Label LabelAlt 
+         Caption         =   "Alt"
+         ForeColor       =   &H8000000E&
+         Height          =   375
+         Left            =   1680
+         TabIndex        =   132
+         Top             =   40
+         Width           =   270
+      End
+      Begin VB.Label LabelCtrl 
+         Caption         =   "Ctrl"
+         ForeColor       =   &H8000000E&
+         Height          =   375
+         Left            =   1300
+         TabIndex        =   131
+         Top             =   40
+         Width           =   315
+      End
+      Begin VB.Label LabelCaps 
+         Caption         =   "Caps"
+         ForeColor       =   &H8000000E&
+         Height          =   375
+         Left            =   840
+         TabIndex        =   130
+         Top             =   40
+         Width           =   435
+      End
+      Begin VB.Image Image6 
+         Height          =   375
+         Left            =   5760
+         Picture         =   "FormMain.frx":58BF
+         Stretch         =   -1  'True
+         Top             =   0
+         Width           =   375
+      End
+      Begin VB.Image Image2 
+         Height          =   375
+         Left            =   5400
+         Picture         =   "FormMain.frx":76B1
+         Stretch         =   -1  'True
+         Top             =   0
+         Width           =   375
+      End
+      Begin VB.Image Image3 
+         Height          =   375
+         Left            =   7560
+         Picture         =   "FormMain.frx":94A3
+         Stretch         =   -1  'True
+         Top             =   0
+         Width           =   375
+      End
+      Begin VB.Image Image1 
+         Height          =   375
+         Left            =   7200
+         Picture         =   "FormMain.frx":B295
+         Stretch         =   -1  'True
+         Top             =   0
+         Width           =   375
+      End
+      Begin VB.Image Image4 
+         Height          =   375
+         Left            =   6120
+         Picture         =   "FormMain.frx":D087
+         Stretch         =   -1  'True
+         Top             =   0
+         Width           =   375
+      End
+      Begin VB.Image Image9 
+         Height          =   375
+         Left            =   6840
+         Picture         =   "FormMain.frx":EE79
+         Stretch         =   -1  'True
+         Top             =   0
+         Width           =   375
+      End
+      Begin VB.Image Image7 
+         Height          =   375
+         Left            =   6480
+         Picture         =   "FormMain.frx":10C6B
+         Stretch         =   -1  'True
+         Top             =   0
+         Width           =   375
+      End
+      Begin VB.Image Image8 
+         Height          =   375
+         Left            =   5040
+         Picture         =   "FormMain.frx":12A5D
+         Stretch         =   -1  'True
+         Top             =   0
+         Width           =   375
+      End
+      Begin VB.Line Line1 
+         X1              =   720
+         X2              =   720
+         Y1              =   360
+         Y2              =   0
+      End
+   End
+   Begin VB.Frame FrameMove2 
+      BackColor       =   &H80000001&
+      BorderStyle     =   0  'None
+      Caption         =   "Frame1"
+      Height          =   2895
+      Left            =   8400
+      TabIndex        =   137
+      Top             =   0
+      Width           =   1215
+      Begin VB.Frame FrameMouseEvent 
+         BackColor       =   &H80000001&
+         Caption         =   "mouse event"
+         ForeColor       =   &H0080FF80&
+         Height          =   1215
+         Left            =   45
+         TabIndex        =   108
+         Top             =   840
+         Width           =   1095
+         Begin VB.OptionButton Op_click 
+            BackColor       =   &H80000001&
+            Caption         =   "Click"
+            ForeColor       =   &H00FFFFFF&
+            Height          =   255
+            Left            =   120
+            TabIndex        =   111
+            Top             =   240
+            Value           =   -1  'True
+            Width           =   855
+         End
+         Begin VB.OptionButton Op_drag 
+            BackColor       =   &H80000001&
+            Caption         =   "Drag"
+            ForeColor       =   &H00FFFFFF&
+            Height          =   255
+            Left            =   120
+            TabIndex        =   110
+            Top             =   840
+            Width           =   855
+         End
+         Begin VB.OptionButton Op_dbclick 
+            BackColor       =   &H80000001&
+            Caption         =   "Dbclick"
+            ForeColor       =   &H00FFFFFF&
+            Height          =   375
+            Left            =   120
+            TabIndex        =   109
+            Top             =   480
+            Width           =   855
+         End
+      End
+      Begin MSComctlLib.ProgressBar pgbMyBar 
+         Height          =   255
+         Left            =   120
+         TabIndex        =   0
+         ToolTipText     =   "Timer click mouse"
+         Top             =   120
+         Width           =   855
+         _ExtentX        =   1508
+         _ExtentY        =   450
+         _Version        =   393216
+         Appearance      =   1
+      End
+      Begin VB.Frame FrameMouseButton 
+         BackColor       =   &H80000001&
+         Caption         =   "mouse button"
+         ForeColor       =   &H0080FF80&
+         Height          =   855
+         Left            =   45
+         TabIndex        =   112
+         Top             =   2040
+         Width           =   1095
+         Begin VB.OptionButton Op_mouse_right 
+            BackColor       =   &H80000001&
+            Caption         =   "Right"
+            ForeColor       =   &H00FFFFFF&
+            Height          =   255
+            Left            =   120
+            TabIndex        =   114
+            Top             =   480
+            Width           =   855
+         End
+         Begin VB.OptionButton Op_mouse_left 
+            BackColor       =   &H80000001&
+            Caption         =   "Left"
+            ForeColor       =   &H00FFFFFF&
+            Height          =   255
+            Left            =   120
+            TabIndex        =   113
+            Top             =   240
+            Value           =   -1  'True
+            Width           =   855
+         End
+      End
+   End
+   Begin VB.Label LabelPGname 
+      Caption         =   "PGname"
+      DataField       =   "Program"
+      DataSource      =   "AdodcProgram"
+      Height          =   255
+      Left            =   2520
+      TabIndex        =   134
+      Top             =   4200
+      Visible         =   0   'False
+      Width           =   615
+   End
+   Begin VB.Label LabelPG 
+      Caption         =   "PG"
+      DataField       =   "Path"
+      DataSource      =   "AdodcProgram"
+      Height          =   255
+      Left            =   1800
+      TabIndex        =   133
+      Top             =   4200
+      Visible         =   0   'False
+      Width           =   615
+   End
+   Begin VB.Label LabelHistory 
+      BorderStyle     =   1  'Fixed Single
+      Caption         =   "LabelDBhistory"
+      DataField       =   "History"
+      DataSource      =   "AdodcHis"
+      Height          =   375
+      Left            =   6840
+      TabIndex        =   129
+      Top             =   3600
+      Visible         =   0   'False
+      Width           =   735
+   End
+   Begin VB.Label LabelDic 
+      BorderStyle     =   1  'Fixed Single
+      Caption         =   "Label1"
+      DataField       =   "Word"
+      DataSource      =   "Adodc1"
+      Height          =   375
+      Left            =   6120
+      TabIndex        =   120
+      Top             =   3600
+      Visible         =   0   'False
+      Width           =   615
+   End
+   Begin VB.Label LabelPredict 
+      BorderStyle     =   1  'Fixed Single
+      Caption         =   "Predict word"
+      Height          =   315
+      Left            =   240
+      TabIndex        =   119
+      Top             =   120
+      Width           =   1335
+   End
+   Begin VB.Label lbHwnd 
+      Alignment       =   2  'Center
+      BorderStyle     =   1  'Fixed Single
+      Height          =   375
+      Left            =   7680
+      TabIndex        =   1
+      Top             =   3600
+      Visible         =   0   'False
+      Width           =   615
+   End
+   Begin VB.Menu mSetvalue 
+      Caption         =   "ตั้งค่า"
+      Visible         =   0   'False
+      Begin VB.Menu mControlBt 
+         Caption         =   "ตั้งปุ่มและเมาส์.."
+      End
+      Begin VB.Menu mColor 
+         Caption         =   "เปลี่ยนสี.."
+      End
+      Begin VB.Menu mPort 
+         Caption         =   "พอร์ต"
+         Begin VB.Menu mCom1 
+            Caption         =   "Com1"
+            Checked         =   -1  'True
+         End
+         Begin VB.Menu mCom2 
+            Caption         =   "Com2"
+         End
+      End
+      Begin VB.Menu mExit 
+         Caption         =   "E&xit"
+      End
+   End
+   Begin VB.Menu mButtonAndMouse 
+      Caption         =   "ตั้งปุ่มและเมาส์"
+   End
+   Begin VB.Menu mChangeColor 
+      Caption         =   "เปลี่ยนสี"
+   End
+   Begin VB.Menu mWord 
+      Caption         =   "เพิ่ม/ลบ คำ"
+   End
+   Begin VB.Menu mComPort 
+      Caption         =   "เปลี่ยนพอร์ต"
+   End
+   Begin VB.Menu mHelp 
+      Caption         =   "วิธีใช้"
+   End
+   Begin VB.Menu mAbout 
+      Caption         =   "เกี่ยวกับโปรแกรม"
+   End
+End
+Attribute VB_Name = "FormMain"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Explicit
+
+Sub SpyWindow()
+    Dim lHwnd As Long 'temp hwnd
+    lHwnd = 0
+    Do
+         '* ตรวจการกดปุ่มเลื่อน mouse cursor
+        Call MoveMouseCursor
+        '*ถ้าคลิกเมาส์ให้เรียก Trackmouse เพื่อหา hwnd จาก mouse position
+        If (GetAsyncKeyState(vbKeyLButton) Or mouse_click) Then
+            mouse_click = False
+            lHwnd = TrackMouse(lHwnd)
+        End If
+        If gbCancle = True Or lHwnd = 0 Then Exit Do
+        
+         '*ตรวจสอบว่า hwnd ที่ได้มาเป็นของ form ของ Assistive browser หรือไม่
+        If (lHwnd <> form_hwnd) And (GetParent(lHwnd) <> form_hwnd) Then
+            old_hwnd = m_hwnd '*เก็บค่าเก่าก่อนเปลี่ยน
+            m_hwnd = lHwnd
+            lbHwnd.Caption = lHwnd
+        End If
+        DoEvents
+    Loop
+End Sub
+
+
+Private Sub B_clear_Click()
+    TxDisplay.text = ""
+End Sub
+
+Private Sub B_CutCopy_Click(Index As Integer)
+    Call SetForegroundWindow(m_hwnd)
+    Call StayOnTop(Me.hwnd, True)
+    ctrl = True
+    Select Case Index
+        Case 0: 'SendKeys ("^X") '* ตัด    ^ = ctrl
+            SendChar ("x")
+        Case 1: 'SendKeys ("^C") '* คัดลอก
+            SendChar ("c")
+        Case 2: 'SendKeys ("^V") '* วาง
+            SendChar ("v")
+    End Select
+End Sub
+
+Private Sub B_exit_Click()
+        gbCancle = True
+        Unload Me
+End Sub
+
+Private Sub cmdResize_Click()
+    If cmdResize.Caption = "<<ย่อ" Then
+        cmdResize.Caption = "ขยาย>>"
+        FormMain.Width = 7000
+        cmdResize.Left = FrameTask.Width - cmdResize.Width * 1.15
+        B_exit.Left = cmdResize.Left - B_exit.Width
+        '* ย้าย process bar และ mouse control
+        pgbMyBar.Top
+        '* ซ่อน image move window
+        Image1.Visible = False
+        Image2.Visible = False
+        Image3.Visible = False
+        Image4.Visible = False
+        Image6.Visible = False
+        Image7.Visible = False
+        Image8.Visible = False
+        Image9.Visible = False
+        '* ซ่อน Menu
+        mAbout.Visible = False
+    Else
+        cmdResize.Caption = "<<ย่อ"
+        FormMain.Width = 9750
+        cmdResize.Left = FrameTask.Width - cmdResize.Width * 1.1
+        B_exit.Left = cmdResize.Left - B_exit.Width
+        '* ซ่อน image move window
+        Image1.Visible = True
+        Image2.Visible = True
+        Image3.Visible = True
+        Image4.Visible = True
+        Image6.Visible = True
+        Image7.Visible = True
+        Image8.Visible = True
+        Image9.Visible = True
+        '* ซ่อน Menu
+        mAbout.Visible = True
+    End If
+End Sub
+
+Private Sub ComboProgram_Click()
+    Dim pg As String
+    pg = ComboProgram.text 'List(Int(ComboProgram.Appearance) + 1)
+    If pg = "เลือกโปรแกรม.." Then
+        loadFlag = True
+        saveFlag = False
+        caller = Me.Name
+        BrowseFile.File.Pattern = "*.exe"
+        BrowseFile.Show
+    Else
+        AdodcProgram.Recordset.MoveFirst
+        AdodcProgram.Recordset.Find "Program = '" & pg & "'"
+        pg = LabelPG
+        Shell pg, vbNormalFocus
+    End If
+End Sub
+
+Private Sub Image1_Click()
+    Call MoveWindowPos(Me.hwnd, 1)
+End Sub
+
+Private Sub Image2_Click()
+    Call MoveWindowPos(Me.hwnd, 2)
+End Sub
+
+Private Sub Image3_Click()
+    Call MoveWindowPos(Me.hwnd, 3)
+End Sub
+
+Private Sub Image4_Click()
+    Call MoveWindowPos(Me.hwnd, 4)
+End Sub
+
+Private Sub Image6_Click()
+    Call MoveWindowPos(Me.hwnd, 6)
+End Sub
+
+Private Sub Image7_Click()
+    Call MoveWindowPos(Me.hwnd, 7)
+End Sub
+
+Private Sub Image8_Click()
+    Call MoveWindowPos(Me.hwnd, 8)
+End Sub
+
+Private Sub Image9_Click()
+    Call MoveWindowPos(Me.hwnd, 9)
+End Sub
+
+'Private Sub B_LoadHistory_Click()
+'    Dim all_word As Long
+'    Dim item_t As String
+'    Dim i As Long
+'    '* load history ทั้งหมดจาก database
+'    all_word = AdodcHistory.Recordset.RecordCount
+'    For i = 1 To all_word
+'        TxDisplay.AddItem (AdodcHistory.Recordset.Fields.Item(1).Value)
+'        AdodcHistory.Recordset.MoveNext
+'    Next i
+'End Sub
+
+Private Sub LabelPredict_Click()
+    TxDisplay.text = LabelPredict.Caption
+End Sub
+
+
+Private Sub mButtonAndMouse_Click()
+  MenuButtonMouse.Show
+End Sub
+
+Private Sub mChangeColor_Click()
+    MenuSetColor.Show
+End Sub
+
+Private Sub mCom1_Click()
+    MSComm1.PortOpen = False
+    MSComm1.CommPort = 1
+    mCom1.Checked = True
+    mCom2.Checked = False
+    MSComm1.PortOpen = True
+End Sub
+
+Private Sub mCom2_Click()
+    MSComm1.PortOpen = False
+    MSComm1.CommPort = 2
+    mCom2.Checked = True
+    mCom1.Checked = False
+    MSComm1.PortOpen = True
+End Sub
+
+Private Sub mComPort_Click()
+    MenuPort.Show
+End Sub
+
+'*เมื่อเลือก menu ตั้งปุ่มกับเมาส์
+Private Sub mControlBt_Click()
+  MenuButtonMouse.Show
+End Sub
+
+'* เมื่อเลือก menu เปลี่ยนสี
+Private Sub mColor_Click()
+    MenuSetColor.Show
+End Sub
+Private Sub mExit_Click()
+    End
+End Sub
+
+' **********************************************************************************************
+' *************                             Function for set Keyboard                                 ************
+' **********************************************************************************************
+
+'** Set keyboard normal english
+Sub SetKeyEng()
+    'set key row 1
+    B_r1(0).Caption = "1"
+    B_r1(1).Caption = "2"
+    B_r1(2).Caption = "3"
+    B_r1(3).Caption = "4"
+    B_r1(4).Caption = "5"
+    B_r1(5).Caption = "6"
+    B_r1(6).Caption = "7"
+    B_r1(7).Caption = "8"
+    B_r1(8).Caption = "9"
+    B_r1(9).Caption = "0"
+    B_r1(10).Caption = "-"
+    B_r1(11).Caption = "="
+    'set key row 2
+    B_r2(0).Caption = "q"
+    B_r2(1).Caption = "w"
+    B_r2(2).Caption = "e"
+    B_r2(3).Caption = "r"
+    B_r2(4).Caption = "t"
+    B_r2(5).Caption = "y"
+    B_r2(6).Caption = "u"
+    B_r2(7).Caption = "i"
+    B_r2(8).Caption = "o"
+    B_r2(9).Caption = "p"
+    B_r2(10).Caption = "["
+    B_r2(11).Caption = "]"
+    B_r2(12).Caption = "\"
+    'set key row 3
+    B_r3(0).Caption = "a"
+    B_r3(1).Caption = "s"
+    B_r3(2).Caption = "d"
+    B_r3(3).Caption = "f"
+    B_r3(4).Caption = "g"
+    B_r3(5).Caption = "h"
+    B_r3(6).Caption = "j"
+    B_r3(7).Caption = "k"
+    B_r3(8).Caption = "l"
+    B_r3(9).Caption = ";"
+    B_r3(10).Caption = "'"
+    'set key row 4
+    B_r4(0).Caption = "z"
+    B_r4(1).Caption = "x"
+    B_r4(2).Caption = "c"
+    B_r4(3).Caption = "v"
+    B_r4(4).Caption = "b"
+    B_r4(5).Caption = "n"
+    B_r4(6).Caption = "m"
+    B_r4(7).Caption = ","
+    B_r4(8).Caption = "."
+    B_r4(9).Caption = "/"
+End Sub
+
+'**set Keyboard Capital english
+Sub SetKeyShiftEng()
+    'set key row 1
+    B_r1(0).Caption = "!"
+    B_r1(1).Caption = "@"
+    B_r1(2).Caption = "#"
+    B_r1(3).Caption = "$"
+    B_r1(4).Caption = "%"
+    B_r1(5).Caption = "^"
+    B_r1(6).Caption = "&"
+    B_r1(7).Caption = "*"
+    B_r1(8).Caption = "("
+    B_r1(9).Caption = ")"
+    B_r1(10).Caption = "_"
+    B_r1(11).Caption = "+"
+    'set key row 2
+    B_r2(0).Caption = "Q"
+    B_r2(1).Caption = "W"
+    B_r2(2).Caption = "E"
+    B_r2(3).Caption = "R"
+    B_r2(4).Caption = "T"
+    B_r2(5).Caption = "Y"
+    B_r2(6).Caption = "U"
+    B_r2(7).Caption = "I"
+    B_r2(8).Caption = "O"
+    B_r2(9).Caption = "P"
+    B_r2(10).Caption = "{"
+    B_r2(11).Caption = "}"
+    B_r2(12).Caption = "|"
+    'set key row 3
+    B_r3(0).Caption = "A"
+    B_r3(1).Caption = "S"
+    B_r3(2).Caption = "D"
+    B_r3(3).Caption = "F"
+    B_r3(4).Caption = "G"
+    B_r3(5).Caption = "H"
+    B_r3(6).Caption = "J"
+    B_r3(7).Caption = "K"
+    B_r3(8).Caption = "L"
+    B_r3(9).Caption = ":"
+    B_r3(10).Caption = """"
+    'set key row 4
+    B_r4(0).Caption = "Z"
+    B_r4(1).Caption = "X"
+    B_r4(2).Caption = "C"
+    B_r4(3).Caption = "V"
+    B_r4(4).Caption = "B"
+    B_r4(5).Caption = "N"
+    B_r4(6).Caption = "M"
+    B_r4(7).Caption = "<"
+    B_r4(8).Caption = ">"
+    B_r4(9).Caption = "?"
+End Sub
+
+
+'** set keyboard normal Thai
+Sub SetKeyThai()
+    'set key row 1
+    B_r1(0).Caption = "ๅ"
+    B_r1(1).Caption = "/"
+    B_r1(2).Caption = "-"
+    B_r1(3).Caption = "ภ"
+    B_r1(4).Caption = "ถ"
+    B_r1(5).Caption = "ุ"
+    B_r1(6).Caption = "ึ"
+    B_r1(7).Caption = "ค"
+    B_r1(8).Caption = "ต"
+    B_r1(9).Caption = "จ"
+    B_r1(10).Caption = "ข"
+    B_r1(11).Caption = "ช"
+    'set key row 2
+    B_r2(0).Caption = "ๆ"
+    B_r2(1).Caption = "ไ"
+    B_r2(2).Caption = "ำ"
+    B_r2(3).Caption = "พ"
+    B_r2(4).Caption = "ะ"
+    B_r2(5).Caption = "ั"
+    B_r2(6).Caption = "ี"
+    B_r2(7).Caption = "ร"
+    B_r2(8).Caption = "น"
+    B_r2(9).Caption = "ย"
+    B_r2(10).Caption = "บ"
+    B_r2(11).Caption = "ล"
+    B_r2(12).Caption = "ฃ"
+    'set key row 3
+    B_r3(0).Caption = "ฟ"
+    B_r3(1).Caption = "ห"
+    B_r3(2).Caption = "ก"
+    B_r3(3).Caption = "ด"
+    B_r3(4).Caption = "เ"
+    B_r3(5).Caption = "้"
+    B_r3(6).Caption = "่"
+    B_r3(7).Caption = "า"
+    B_r3(8).Caption = "ส"
+    B_r3(9).Caption = "ว"
+    B_r3(10).Caption = "ง"
+    'set key row 4
+    B_r4(0).Caption = "ผ"
+    B_r4(1).Caption = "ป"
+    B_r4(2).Caption = "แ"
+    B_r4(3).Caption = "อ"
+    B_r4(4).Caption = "ิ"
+    B_r4(5).Caption = "ื"
+    B_r4(6).Caption = "ท"
+    B_r4(7).Caption = "ม"
+    B_r4(8).Caption = "ใ"
+    B_r4(9).Caption = "ฝ"
+End Sub
+
+'** set keyboard Thai shift
+Sub SetKeyShiftThai()
+    'set key row 1
+    B_r1(0).Caption = "+"
+    B_r1(1).Caption = "๑"
+    B_r1(2).Caption = "๒"
+    B_r1(3).Caption = "๓"
+    B_r1(4).Caption = "๔"
+    B_r1(5).Caption = "ู"
+    B_r1(6).Caption = "฿"
+    B_r1(7).Caption = "๕"
+    B_r1(8).Caption = "๖"
+    B_r1(9).Caption = "๗"
+    B_r1(10).Caption = "๘"
+    B_r1(11).Caption = "๙"
+    'set key row 2
+    B_r2(0).Caption = "๐"
+    B_r2(1).Caption = """"
+    B_r2(2).Caption = "ฎ"
+    B_r2(3).Caption = "ฑ"
+    B_r2(4).Caption = "ธ"
+    B_r2(5).Caption = "ํ."
+    B_r2(6).Caption = "๊"
+    B_r2(7).Caption = "ณ"
+    B_r2(8).Caption = "ฯ"
+    B_r2(9).Caption = "ญ"
+    B_r2(10).Caption = "ฐ"
+    B_r2(11).Caption = ","
+    B_r2(12).Caption = "ฅ"
+    'set key row 3
+    B_r3(0).Caption = "ฤ"
+    B_r3(1).Caption = "ฆ"
+    B_r3(2).Caption = "ฏ"
+    B_r3(3).Caption = "โ"
+    B_r3(4).Caption = "ฌ"
+    B_r3(5).Caption = "็"
+    B_r3(6).Caption = "๋"
+    B_r3(7).Caption = "ษ"
+    B_r3(8).Caption = "ศ"
+    B_r3(9).Caption = "ซ"
+    B_r3(10).Caption = "."
+    'set key row 4
+    B_r4(0).Caption = "("
+    B_r4(1).Caption = ")"
+    B_r4(2).Caption = "ฉ"
+    B_r4(3).Caption = "ฮ"
+    B_r4(4).Caption = "ฺ"
+    B_r4(5).Caption = "์"
+    B_r4(6).Caption = "?"
+    B_r4(7).Caption = "ฒ"
+    B_r4(8).Caption = "ฬ"
+    B_r4(9).Caption = "ฦ"
+End Sub
+
+
+' *********************************************************
+' ***** Function send Char when click Char Button *****
+' *********************************************************
+
+'** Char row 1
+Private Sub B_r1_Click(Index As Integer)
+    ch = B_r1(Index).Caption
+    Call SendChar(ch)
+End Sub
+
+'** char row 2
+Private Sub B_r2_Click(Index As Integer)
+    ch = B_r2(Index).Caption
+    Call SendChar(ch)
+End Sub
+
+'** char row 3
+Private Sub B_r3_Click(Index As Integer)
+    ch = B_r3(Index).Caption
+    Call SendChar(ch)
+End Sub
+
+'** char row 4
+Private Sub B_r4_Click(Index As Integer)
+    ch = B_r4(Index).Caption
+    Call SendChar(ch)
+End Sub
+
+'** Char spacebar
+Private Sub B_space_Click()
+    ch = " "
+    Call SendChar(ch)
+End Sub
+
+' ** Numpad 0-9 and '.'
+Private Sub B_num_Click(Index As Integer)
+    ch = B_num(Index).Caption
+    Call SendChar(ch)
+End Sub
+
+' ** Numpad operator and enter
+Private Sub B_numc_Click(Index As Integer)
+    '*index 0-5 เป็นเครื่องหมายคณิตศาสตร์
+    If (Index > 0) And (Index < 5) Then
+        ch = B_numc(Index).Caption
+        Call SendChar(ch)
+    Else
+          '* Numlock pressed
+        If Index = 0 Then
+            Call keybd_event(vbKeyNumlock, 0, KEYEVENTF_KEYUP, 0)   ' release n
+            Call keybd_event(vbKeyNumlock, 0, KEYEVENTF_EXTENDEDKEY, 0)    ' press n
+          '*if enter pressed
+        ElseIf Index = 5 Then B_co2_Click (1)
+        End If
+    End If
+End Sub
+
+'***************************** Send char to active window **************************
+'* ส่งตัวอักษรไปยัง active window และแสดงที่ txDisplay ด้วย
+Sub SendChar(ch As String)
+    '* m -> m_hwnd, tx -> txdisplay, parent -> parent hwnd
+    Dim tx_hwnd, parent_m, parent_pm As Long
+    tx_hwnd = TxDisplay.hwnd
+    parent_m = GetParent(m_hwnd)
+    parent_pm = GetParent(parent_m)
+    Call SetForegroundWindow(m_hwnd)
+    Call StayOnTop(Me.hwnd, True)
+    
+    If (Not ctrl) And (Not alt) Then
+        '*ส่ง char ไปที่ display ของ form
+        text = TxDisplay.text & ch     '*code เก่า
+        TxDisplay.text = text              '*code เก่า
+        
+        '*ส่ง char ไป active window โดยตรวจสอบก่อนว่าไม่ใช่ TxDisplay
+        If ((tx_hwnd <> m_hwnd) And (tx_hwnd <> parent_m) And (tx_hwnd <> parent_pm)) Then
+            'PostMessage m_hwnd, &H102, Asc(ch), 0  '*old code
+            Call SetForegroundWindow(m_hwnd)
+                '*ถ้า ch เป็นตัวอักษรพิเศษใน sendkeys ต้องแปลง ch  ก่อน
+            Select Case ch
+                Case "{": ch = "{{}"
+                Case "}": ch = "{}}"
+                Case "[": ch = "{[}"
+                Case "]": ch = "{]}"
+                Case "~": ch = "{~}"
+                Case "+": ch = "{+}"
+                Case "^": ch = "{^}"
+                Case "%": ch = "{%}"
+            End Select
+            SendKeys ch
+        End If
+    End If
+    
+    '**set key function ต่างๆให้กลับเหมือนเดิม
+    Call EscapeFunctionKey(ch)
+    
+End Sub
+
+Sub EscapeFunctionKey(ch As String)
+    
+    '*set key กลับเหมือนเดิมในกรณีที่มีการกด shift เพื่อคลาย shift
+    If Shift Then
+        If thai Then SetKeyThai Else SetKeyEng
+        Call keybd_event(vbKeyShift, 0, KEYEVENTF_KEYUP, 0)
+        Shift = False
+    End If
+    
+    '*ตรวจสอบว่ามีการกด ctrl หรือ alt หรือไม่
+    If ctrl Or alt Then
+        Dim ch_code As Integer
+        ch_code = Asc(ch) 'แปลงเอาค่า Ascii ของตัวอักษร
+           '*a-z จะมีค่าแอสกี 97-122 ต้องลบ 32 เพื่อเป็นค่าแอสกีของ A-Z ซึ่งนำมาใช้เป็น vbkey
+        If ch_code > 90 Then ch_code = ch_code - 32
+        
+        If ctrl Then Call keybd_event(vbKeyControl, 0, KEYEVENTF_EXTENDEDKEY, 0)    ' press ctrl
+        If alt Then Call keybd_event(vbKeyMenu, 0, KEYEVENTF_EXTENDEDKEY, 0)    ' press Alt
+        '* clear flag of Ctrl and Alt
+        ctrl = False
+        alt = False
+        Call keybd_event(ch_code, 0, KEYEVENTF_EXTENDEDKEY, 0)
+        Call keybd_event(ch_code, 0, KEYEVENTF_KEYUP, 0)
+        Call keybd_event(vbKeyControl, 0, KEYEVENTF_KEYUP, 0)
+        Call keybd_event(vbKeyMenu, 0, KEYEVENTF_KEYUP, 0)
+        LabelCtrl.ForeColor = vbWhite
+        LabelAlt.ForeColor = vbWhite
+    Else
+    End If '*ctrl and alt
+
+End Sub
+
+' ** set control key Ctrl Alt Shift **'
+Sub SetControlKey()
+    '*ถ้ามีการกด ctrl
+    If ctrl Then Call keybd_event(vbKeyControl, 0, KEYEVENTF_EXTENDEDKEY, 0)    ' press Ctrl
+    '*ถ้ามีการกด alt
+    If alt Then Call keybd_event(vbKeyMenu, 0, KEYEVENTF_EXTENDEDKEY, 0)    ' press Alt
+    '*ถ้ามีการกด shift
+    If Shift Then Call keybd_event(vbKeyShift, 0, KEYEVENTF_EXTENDEDKEY, 0) 'press shift
+End Sub
+
+' ** clear cintrol key Ctrl Alt Shift
+Sub ClrControlKey()
+    '* clear การกด ctrl alt shift
+    ctrl = False
+    alt = False
+    Shift = False
+    Call keybd_event(vbKeyControl, 0, KEYEVENTF_KEYUP, 0)   ' release ctrl
+    Call keybd_event(vbKeyMenu, 0, KEYEVENTF_KEYUP, 0)   ' release Alt
+    Call keybd_event(vbKeyShift, 0, KEYEVENTF_KEYUP, 0) ' release Shift
+    LabelCtrl.ForeColor = vbWhite
+    LabelAlt.ForeColor = vbWhite
+End Sub
+
+' ** send function key -> f1-f2, esc, home  ect.
+Sub send_function_key(fKey As Byte)
+    TextHistory.Visible = False
+    Call SetForegroundWindow(m_hwnd)
+    Call StayOnTop(Me.hwnd, True)
+
+    Call SetControlKey  ' ** set control key Ctrl Alt Shift
+
+    Call keybd_event(fKey, 0, KEYEVENTF_EXTENDEDKEY, 0)    ' press
+    Call keybd_event(fKey, 0, KEYEVENTF_KEYUP, 0)   ' release
+    
+    Call ClrControlKey '* clear การกด ctrl alt shift
+    
+End Sub
+
+' ** Esc pressed
+Private Sub B_Esc_Click()
+    send_function_key (vbKeyEscape)
+End Sub
+
+' ** F1 - F12 or prts,scrl,pau Pressed
+Private Sub B_F_Click(Index As Integer)
+    Select Case Index
+        Case 1: send_function_key (vbKeyF1)
+        Case 2: send_function_key (vbKeyF2)
+        Case 3: send_function_key (vbKeyF3)
+        Case 4: send_function_key (vbKeyF4)
+        Case 5: send_function_key (vbKeyF5)
+        Case 6: send_function_key (vbKeyF6)
+        Case 7: send_function_key (vbKeyF7)
+        Case 8: send_function_key (vbKeyF8)
+        Case 9: send_function_key (vbKeyF9)
+        Case 10: send_function_key (vbKeyF10)
+        Case 11: send_function_key (vbKeyF11)
+        Case 12: send_function_key (vbKeyF12)
+        Case 13: send_function_key (vbKeyPrint)
+        Case 14: send_function_key (vbKeyScrollLock)
+        Case 15: send_function_key (vbKeyPause)
+    End Select
+End Sub
+
+' ** ins, hom, pu, del, end, pd Pressed
+Private Sub B_com_Click(Index As Integer)
+    Select Case Index
+        Case 0: send_function_key (vbKeyInsert)
+        Case 1: send_function_key (vbKeyHome)
+        Case 2: send_function_key (vbKeyPageUp)
+        Case 3: send_function_key (vbKeyDelete)
+        Case 4: send_function_key (vbKeyEnd)
+        Case 5: send_function_key (vbKeyPageDown)
+    End Select
+End Sub
+
+' ** arrow key pressed
+Private Sub B_arrow_Click(Index As Integer)
+    Dim arrow_key As Byte
+    
+    Select Case Index
+        Case 0: send_function_key (vbKeyUp)
+        Case 1: send_function_key (vbKeyDown)
+        Case 2: send_function_key (vbKeyLeft)
+        Case 3: send_function_key (vbKeyRight)
+    End Select
+    
+End Sub
+
+'*ใช้ส่ง message เมื่อมีการคลิกปุ่ม send โดยถูกเรียกจาก send
+Sub SendDisplay(text_t As String) '*text_t ใช้รับค่า text ที่ส่งมาจาก send
+    Dim i As Integer
+    Dim l As Integer '*เก็บค่าความยาวของข้อความที่จะส่ง
+    Dim ch As String
+    l = Len(text_t)
+    For i = 1 To l
+            ch = Mid(text_t, i, 1)
+            '*ถ้า ch เป็นตัวอักษรพิเศษใน sendkeys ต้องแปลง ch  ก่อน
+            Select Case ch
+                Case "{": ch = "{{}"
+                Case "}": ch = "{}}"
+                Case "[": ch = "{[}"
+                Case "]": ch = "{]}"
+                Case "~": ch = "{~}"
+                Case "+": ch = "{+}"
+                Case "^": ch = "{^}"
+                Case "%": ch = "{%}"
+            End Select
+            SendKeys ch
+    Next i
+End Sub
+
+
+' ** send text in displat to active window
+Private Sub B_send_Click()
+    Call SetForegroundWindow(m_hwnd)
+    Call StayOnTop(Me.hwnd, True)
+    text = TxDisplay.text
+    Call SendDisplay(text)
+    
+    '*ตรวจสอบว่าเป็นคำที่มีอยู่ใน history หรือไม่ ถ้าไม่มีจะเพิ่มไว้ใน list
+    If TxDisplay.text <> "" Then
+        found_history = Check_history(text)
+        If Not found_history Then
+            TxDisplay.AddItem (text)  '*เพิ่มคำไว้ใน list
+            Call AdodcHis.Recordset.AddNew("History", text)
+        End If
+        TxDisplay.text = ""
+    End If
+End Sub
+
+' *********************************************************
+' ***** Function of command Control Char Button ******
+' *****  T/E, Shift, Caps, Crtl, Alt, Enter, win, tab    ******
+' *********************************************************
+
+' **Coloum 1 clicked => T/E, Tab, Capslock, Shift, Ctrl, win, Alt
+Private Sub B_co1_Click(Index As Integer)
+    Call SetForegroundWindow(m_hwnd)
+
+    Select Case Index
+        Case 0: 'key Thai/Eng pressed
+            'สั่งกด Alt + Shift เพื่อเปลี่ยนภาษาที่ Taskbar
+            'Call keybd_event(vbKeyMenu, 0, KEYEVENTF_EXTENDEDKEY, 0)    ' press
+            'Call keybd_event(vbKeyShift, 0, KEYEVENTF_EXTENDEDKEY, 0)    ' press
+            'Call keybd_event(vbKeyShift, 0, KEYEVENTF_KEYUP, 0)   ' release
+            'Call keybd_event(vbKeyMenu, 0, KEYEVENTF_KEYUP, 0)   ' release
+            'เพื่อความมั่นใจสั่งกด {'} อีกครั้ง ' = 126
+            Call keybd_event(126, 0, KEYEVENTF_EXTENDEDKEY, 0)    ' press n
+            Call keybd_event(126, 0, KEYEVENTF_KEYUP, 0)   ' release n
+            
+            '*สั่งกด Ctrl + Shift เพื่อเปลี่ยนภาษาที่ Taskbar
+'            Call keybd_event(vbKeyControl, 0, KEYEVENTF_EXTENDEDKEY, 0)    ' press
+'            Call keybd_event(vbKeyShift, 0, KEYEVENTF_EXTENDEDKEY, 0)    ' press
+'            Call keybd_event(vbKeyShift, 0, KEYEVENTF_KEYUP, 0)   ' release
+'            Call keybd_event(vbKeyControl, 0, KEYEVENTF_KEYUP, 0)   ' release
+            
+            thai = Not thai
+            If thai Then SetKeyThai Else SetKeyEng
+        Case 1: 'key Tab pressed
+            Call SetControlKey '*ตรวจสอบการกดปุ่ม ctrl alt shift ก่อน
+            Call keybd_event(vbKeyTab, 0, KEYEVENTF_EXTENDEDKEY, 0)    ' press n
+            Call keybd_event(vbKeyTab, 0, KEYEVENTF_KEYUP, 0)   ' release n
+            Call ClrControlKey '* clear การกด ctrl alt shift
+        Case 2: 'key capslock pressed
+            Call keybd_event(vbKeyCapital, 0, KEYEVENTF_EXTENDEDKEY, 0)    ' press n
+            Call keybd_event(vbKeyCapital, 0, KEYEVENTF_KEYUP, 0)   ' release n
+            capslock = Not capslock
+            If capslock Then
+                LabelCaps.ForeColor = vbBlack
+                If thai Then SetKeyShiftThai Else SetKeyShiftEng
+            Else
+                LabelCaps.ForeColor = vbWhite
+                If thai Then SetKeyThai Else SetKeyEng
+            End If
+        Case 3: 'key shift pressed
+            If Shift Then
+                Shift = False
+            Else
+                Shift = True
+                If thai Then SetKeyShiftThai Else SetKeyShiftEng
+            End If
+        Case 4: 'key Ctrl pressed
+            If ctrl <> True Then
+                LabelCtrl.ForeColor = vbBlack
+                ctrl = True
+            Else
+                LabelCtrl.ForeColor = vbWhite
+                ctrl = False
+            End If
+        Case 5: 'key start press
+            Call keybd_event(vbKeyControl, 0, KEYEVENTF_EXTENDEDKEY, 0)    ' press n
+            Call keybd_event(vbKeyEscape, 0, KEYEVENTF_KEYUP, 0)   ' release n
+            Call keybd_event(vbKeyEscape, 0, KEYEVENTF_EXTENDEDKEY, 0)    ' press n
+            Call keybd_event(vbKeyControl, 0, KEYEVENTF_KEYUP, 0)   ' release n
+        Case 6: 'key alt
+            If alt <> True Then
+                LabelAlt.ForeColor = vbBlack
+                alt = True
+            Else
+                LabelAlt.ForeColor = vbWhite
+                alt = False
+            End If
+            Call SetForegroundWindow(m_hwnd)
+            Call keybd_event(vbKeyMenu, 0, KEYEVENTF_EXTENDEDKEY, 0)     'press
+            Call keybd_event(vbKeyMenu, 0, KEYEVENTF_KEYUP, 0)   ' release
+    End Select
+End Sub
+
+
+' **Coloum 2 clicked => backspace
+Private Sub B_co2_Click(Index As Integer)
+    Call SetForegroundWindow(m_hwnd)
+    Call StayOnTop(Me.hwnd, True)
+    Select Case Index
+        Case 0: 'backspace pressed
+            Call SetControlKey '*ตรวจสอบการกดปุ่ม ctrl alt shift ก่อน
+            Call keybd_event(vbKeyBack, 0, KEYEVENTF_EXTENDEDKEY, 0)     'press
+            Call keybd_event(vbKeyBack, 0, KEYEVENTF_KEYUP, 0)   ' release
+            Call ClrControlKey '* clear การกด ctrl alt shift
+            
+            text = TxDisplay.text
+            If text <> "" Then
+                text = Left(text, Len(text) - 1)
+                TxDisplay.text = text
+            End If
+            
+        Case 1: 'enter pressed
+            Call SetControlKey '*ตรวจสอบการกดปุ่ม ctrl alt shift ก่อน
+            Call keybd_event(vbKeyReturn, 0, KEYEVENTF_EXTENDEDKEY, 0)     'press
+            Call keybd_event(vbKeyReturn, 0, KEYEVENTF_KEYUP, 0)   ' release
+            Call ClrControlKey '* clear การกด ctrl alt shift
+        Case 2: 'shift pressed
+            B_co1_Click (3)
+        Case 3: 'crtl pressed
+            B_co1_Click (4)
+        Case 4: 'start pressed
+            B_co1_Click (5)
+        Case 5: 'alt pressed
+            B_co1_Click (6)
+    End Select
+End Sub
+
+'******************************************************************************************
+'******************************************************************************************
+'   ***************                     Group function Auto fill                       ********************
+'******************************************************************************************
+Function Check_history(text_t As String) As Boolean
+    Dim i As Integer
+    For i = 1 To TxDisplay.ListCount
+        If text_t = TxDisplay.List(i) Then
+            Check_history = True
+            Exit Function
+        End If
+    Next i
+    Check_history = False
+End Function
+
+Private Sub mMove_Click()
+    MenuMove.Show
+End Sub
+
+Private Sub mHelp_Click()
+    MenuHelp.Show
+End Sub
+
+Private Sub mWord_Click()
+    MenuWord.Show
+End Sub
+
+Private Sub TimerPort_Timer()
+    TimerDelayDbPort = TimerDelayDbPort + TimerPort.Interval
+End Sub
+
+Private Sub TxDisplay_Click()
+    text = TxDisplay.text
+    TxDisplay.text = text
+    m_hwnd = old_hwnd
+End Sub
+
+'****ถ้ามีการเปลี่ยนแปลง text ให้ทำนายคำที่เป็นไปได้
+Private Sub TxDisplay_Change()
+    Dim ch, s1 As String
+    Dim i As Long, j, position As Long
+    Dim strPartial As String, strTotal As String
+    Dim LenNew As Integer
+    
+    TextHistory.Visible = False '* ซ่อน history text
+    With TxDisplay
+        'Lookup list item matching text so far
+        strPartial = .text
+        i = SendMessage(.hwnd, CB_FINDSTRING, -1, ByVal strPartial)
+        'If match found, append unmatched characters
+        If i <> CB_ERR Then
+            strTotal = .List(i) '*Get full text of matching list item
+            TextHistory.text = strTotal
+            TextHistory.Visible = True '* ถ้าเจอใน history ให้แสดงคำออกมา
+        End If
+    End With
+    
+    '* เริ่มหาคำใกล้เคียงจาก dictionary
+    ch = TxDisplay.text
+    If ch <> "" Then
+        '*ตรวจ อักขระ พิเศษก่อน 20H - 40H
+        For i = 1 To Len(ch)
+            s1 = Mid(ch, i, 1)
+            If ((Asc(s1) >= &H20) And (Asc(s1) <= &H40)) And _
+            ((Asc(s1) >= &H7B) And (Asc(s1) <= &H7E)) Then
+                FindWordFlag = False
+                Exit For
+            End If
+        Next i
+        
+        '*ถ้าไม่มีอักขระพิเศษให้เริ่มทำการค้นหา
+        If FindWordFlag <> False Then
+            LenNew = Len(ch)
+            If LenNew <= LenOld Then
+                s1 = Left(ch, 1)
+                Adodc1.Recordset.MoveFirst
+                Select Case Asc(s1)
+                    Case 65, 66: Adodc1.Recordset.MoveFirst
+                    Case 67, 68: Adodc1.Recordset.Move (9845 - 500) '* -500 เผื่อว่ามีการแทรกคำใน database
+                    Case 69, 70, 71: Adodc1.Recordset.Move (21117 - 500)
+                    Case 71, 72, 73, 74, 75, 76: Adodc1.Recordset.Move (30839 - 500)
+                    Case 77, 78, 79: Adodc1.Recordset.Move (40745 - 500)
+                    Case 80, 81, 82: Adodc1.Recordset.Move (48828 - 500)
+                    Case 83: Adodc1.Recordset.Move (59785 - 500)
+                    Case 84, 85: Adodc1.Recordset.Move (67178 - 500)
+                    Case Is >= 86, Is <= 90: Adodc1.Recordset.Move (75698 - 500)
+                    Case Is >= &HA1, Is <= &HBA, &HCF: Adodc1.Recordset.Move (80395 - 500)
+                    Case Is >= &HBB, Is <= &HCE: Adodc1.Recordset.Move (89103 - 500)
+                End Select
+            End If
+            ch = "'" & ch & "%'"  '* % มีค่าเท่ากับ * ใช้ในการหาคำใน database
+            Adodc1.Recordset.Find "Word like " & ch, 0, adSearchForward, 1
+            LenOld = LenNew
+        End If
+    End If
+    If LabelDic.Caption <> "" Then
+        LabelPredict.Caption = Adodc1.Recordset.Fields(1).Value
+        Exit Sub
+    End If
+
+End Sub
+
+Private Sub TextHistory_Click()
+    TxDisplay.text = TextHistory.text
+    TextHistory.Visible = False
+End Sub
+
+
+'************************************ Timer ********************************************
+'**** Timer ตั้งไว้เพื่อให้โปรแกรมเริ่มทำงานโดยเรียก SpyWindow
+Private Sub TimerStrartProgram_Timer()
+    If Not (callSpy) Then 'ถ้ายังไม่เรียก SpyWindow ให้เรียกขึ้นมา
+        Call StayOnTop(Me.hwnd, True)
+        Call SpyWindow
+        callSpy = True
+    End If
+End Sub
+
+'**** ส่ง mouse event โดยตรวจดูค่า option  ของ FrameMouseEvent
+Private Sub DoMouseEvent()
+    
+    'ถ้า option คือ left mouse
+    If Op_mouse_left.Value = True Then
+        If Op_click.Value = True Then
+            mouse_click = True
+            mouse_press_left
+            mouse_release_left
+        ElseIf Op_dbclick.Value = True Then
+            mouse_click = True
+            mouse_press_left
+            mouse_release_left
+            mouse_press_left
+            mouse_release_left
+            Op_click = True 'ตั้งให้กลับไปทำ click mouse
+        ElseIf Op_drag.Value = True Then
+            If mouse_drag = False Then
+                mouse_drag = True
+                mouse_click = True
+                mouse_press_left  ' กด mouse ค้างไว้
+            Else
+                mouse_drag = False
+                mouse_release_left 'คลาย mouse
+                Op_click = True 'ตั้งให้กลับไปทำ click mouse
+            End If
+        End If
+    'ถ้า option คือ right mouse
+    ElseIf Op_mouse_right.Value = True Then
+        If Op_click.Value = True Then
+            mouse_click = True
+            mouse_press_right
+            mouse_release_right
+            Op_mouse_left.Value = True 'ตั้งให้กลับไปทำที่ left mouse เหมือนเดิม
+        ElseIf Op_dbclick.Value = True Then
+            mouse_click = True
+            mouse_press_right
+            mouse_release_right
+            mouse_press_right
+            mouse_release_right
+            Op_click = True 'ตั้งให้กลับไปทำ click mouse
+            Op_mouse_left.Value = True 'ตั้งให้กลับไปทำที่ left mouse เหมือนเดิม
+        ElseIf Op_drag.Value = True Then
+            If mouse_drag = False Then
+                mouse_drag = True
+                mouse_click = True
+                mouse_press_right  ' กด mouse ค้างไว้
+            Else
+                mouse_drag = False
+                mouse_release_right 'คลาย mouse
+                Op_click = True 'ตั้งให้กลับไปทำ click mouse
+                Op_mouse_left.Value = True 'ตั้งให้กลับไปทำที่ left mouse เหมือนเดิม
+            End If
+        End If
+    End If
+End Sub
+
+'**** Timer จับเวลาเพื่อส่ง event คลิกเมาส์
+Private Sub TimerClickMouse_Timer()
+    Dim ProgStep As Integer
+    Dim position_temp As POINTAPI  '* เก็บค่าตำแหน่งปัจจุบันของเมาส์
+    'ตรวจดูว่าระหว่างจับเวลาเพื่อคลิกเมาส์มีการเลือ่นเมาส์หรือไม่
+    Call GetCursorPos(position_temp)
+    If ((position_temp.X <> mouse_position.X) Or (position_temp.Y <> mouse_position.Y)) Then
+        '*เมื่อเมาส์เคลื่อน
+        pgbMyBar.Value = 0 '* reset progress bar
+        TimerLoopMousemove.Enabled = True '*เริ่มวนลูปตรวจการเคลื่อนที่แล้วหยุดของเมาส์อีกครั้ง
+        TimerClickMouse.Enabled = False '*หยุดการจับเวลาคลิกเมาส์
+        Exit Sub
+    End If
+    ProgStep = mouse_click_period 'กำหนด Step  ของ progress bar
+    pgbMyBar.Max = mouse_click_period * 3 'กำหนด max ของ progress bar
+    pgbMyBar.Value = pgbMyBar.Value + ProgStep '*เพิ่ม progress bar อีก 1 Step
+    If pgbMyBar.Value >= pgbMyBar.Max Then
+    pgbMyBar.Value = 0
+    Call DoMouseEvent '*ส่ง mouse event
+    TimerLoopMousemove.Enabled = True '*เริ่มวนลูปตรวจการเคลื่อนที่แล้วหยุดของเมาส์อีกครั้ง
+    TimerClickMouse.Enabled = False '*หยุดจับเวลาการคลิกเมาส์
+    End If
+End Sub
+
+'**** timer วนตรวจว่า เมาส์เคลื่อนที่หรือไม่ ถ้าหยุดเคลื่อนที่แล้วให้เรียก TimerClickMouse
+Private Sub TimerLoopMousemove_Timer()
+    Dim position_temp As POINTAPI  '* เก็บค่าตำแหน่งปัจจุบันของเมาส์
+    mouse_stop = False
+    Call GetCursorPos(position_temp)
+    If ((position_temp.X <> mouse_position.X) Or (position_temp.Y <> mouse_position.Y)) Then
+            Do Until (mouse_stop) '*วนลูปจนกว่า mouse จะหยุด
+                mouse_position = position_temp
+                Sleep (150)
+                Call GetCursorPos(position_temp)
+                If ((position_temp.X = mouse_position.X) And (position_temp.Y = mouse_position.Y)) Then mouse_stop = True
+            Loop
+            TimerClickMouse.Enabled = True  '*จับเวลาเพื่อคลิกเมาส์
+            TimerLoopMousemove.Enabled = False '*หยุดทำงานจนกว่าจะ คลิกเมาส์ หรือ มีการเลือ่นเมาส์
+    End If
+End Sub
+
+'**** timer วนเพือจับเวลาใช้ในการตรวจสอบ double click
+Private Sub TimerDB_Timer()
+    TimerDelayDb = TimerDelayDb + TimerDB.Interval
+End Sub
+
+
+' *****************************************************************************************
+' *****                                   Function Form_load and unload                                     *****
+' *****************************************************************************************
+
+Private Sub Form_Load()
+    form_hwnd = Me.hwnd
+    Call SetKeyEng  'Set caption of keyboard
+    Call SetStartValueFunction
+    Call LoadListHistory '* load history จาก database
+    Call LoadListProgram
+    Call SetButtonAndMouse
+    Call SetColor
+End Sub
+
+Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
+    Call ClrControlKey
+    gbCancle = True
+    End
+End Sub
+
+Private Sub Form_Resize()
+    FrameTask.Top = Me.Height - FrameTask.Height * 2.8
+    FrameTask.Width = Me.Width
+End Sub
+
+'* นำค่าเริ่มต้นกำหนดให้กับ function
+Sub SetStartValueFunction()
+    Call SetStartValue 'กำหนดค่าเริ่มต้นของตัวแปรต่างๆ
+    
+    TimerClickMouse.Interval = mouse_click_period 'กำหนด period เมาส์
+    '* set port ของอุปกรณ์ switch 2 ปุ่ม
+    MSComm1.Settings = "9600,n,8,1"
+    MSComm1.CommPort = 2
+    MSComm1.InputLen = 1
+    MSComm1.PortOpen = True
+    MSComm1.RThreshold = 1
+End Sub
+
+Sub LoadListHistory()
+    Dim all_word As Long
+    Dim i As Long
+        TxDisplay.Clear
+        all_word = AdodcHis.Recordset.RecordCount
+        If all_word <> 0 Then
+            AdodcHis.Recordset.MoveFirst
+            For i = 1 To all_word
+                TxDisplay.AddItem (AdodcHis.Recordset.Fields.Item(1).Value)
+                AdodcHis.Recordset.MoveNext
+            Next i
+            AdodcHis.Recordset.MoveFirst
+        End If
+End Sub
+'************************************************************************************
+'* Function ตรวจการกดปุ่มบังคับเมาส์ ขึ้น-ลง พร้อม return ค่า Direction
+'************************************************************************************
+
+Function CheckKeyUpDown() As String
+    Dim click_temp As Boolean '*เก็บ click ก่อน CheckDirection ถ้าไม่มีการกดปุ่ม
+        If GetAsyncKeyState(KeyUpDown) Then
+            TimerDB.Enabled = False
+            If StateKeyMoveMouse = True Then 'ถ้ามีการกดมาครั้งหนึ่งแล้ว
+                StateKeyMoveMouse = False '* reset StateKeyMoveMouse
+                If ((TimerDelayDb >= MinTimeDb) And (TimerDelayDb <= MaxTimeDb)) Then 'ถ้ากดอีกครั้งในช่วงเวลาที่กำหนด
+                    click = False
+                    db = True 'กดในเวลาถือว่าเป็น double click
+                    UpFlag = Not UpFlag '* กลับทิศทาง บน-ล่าง
+                Else
+                    click = True ' กดเกินเวลาถือว่าเป็นคลิกอีกครั้งไม่ติดกัน
+                    StateKeyMoveMouse = True ' กำหนดสถานะถือว่าเป็นการกดครั้งใหม่
+                End If
+                '* ตรวจสอบ directtion แล้วส่งค่า direction กลับ
+                Call CheckDirection
+                CheckKeyUpDown = Direction
+                TimerDelayDb = 0 '* ลบค่า TimerDelayDb เพราะเพื่อตรวจจับ double click ครั้งต่อไป
+                db = False '* เพื่อตรวจจับ double click ครั้งต่อไป
+            Else 'ถ้าเพิ่งกดครั้งแรก (StateKeyUpDown=false)
+                StateKeyMoveMouse = True  'ไว้บอกสถานะว่าเคยกดแล้วเพื่อใช้ตรวจสอบกับการกดครั้งที่ 2
+                click = True  'ให้ถือว่าเป็นการคลิกธรรมดาก่อน
+                Call CheckDirection
+                CheckKeyUpDown = Direction
+            End If
+
+            If StateKeyMoveMouse = True Then
+                TimerDelayDb = 0
+                TimerDB.Enabled = True
+            End If
+            '*กำจัดการยกตัวของปุ่มซึ่งจะส่งค่าเสมือนปุ่มถูกกดทำให้เกิด error
+            Do While GetAsyncKeyState(KeyUpDown)
+                'หยุดชั่วครู่แล้วเลือ่นเมาส์
+                Sleep SleepTime
+                Call DoneMoveCursor
+            Loop
+        Else 'ถ้าไม่ได้กดปุ่มให้ clear click ก่อนแล้วเรียก CheckDirection
+            Call CheckDirection
+            CheckKeyUpDown = Direction
+        End If
+End Function
+
+
+'************************************************************************************
+'* Function ตรวจการกดปุ่มบังคับเมาส์ ซ้าย-ขวา พร้อม return ค่า Direction
+'************************************************************************************
+
+Function CheckKeyLeftRight() As String
+    Dim click_temp As Boolean '*เก็บ click ก่อน CheckDirection ถ้าไม่มีการกดปุ่ม
+        If GetAsyncKeyState(KeyLeftRight) Then
+            TimerDB.Enabled = False
+            If StateKeyMoveMouse = True Then 'ถ้ามีการกดมาครั้งหนึ่งแล้ว
+                StateKeyMoveMouse = False '* reset StateKeyMoveMouse
+                If ((TimerDelayDb >= MinTimeDb) And (TimerDelayDb <= MaxTimeDb)) Then 'ถ้ากดอีกครั้งในช่วงเวลาที่กำหนด
+                    click = False
+                    db = True 'กดในเวลาถือว่าเป็น double click
+                    LeftFlag = Not LeftFlag '* กลับทิศ ซ้าย-ขวา
+                Else
+                    click = True ' กดเกินเวลาถือว่าเป็นคลิกอีกครั้งไม่ติดกัน
+                    StateKeyMoveMouse = True ' กำหนดสถานะถือว่าเป็นการกดครั้งใหม่
+                End If
+                '* ตรวจสอบ directtion แล้วส่งค่า direction กลับ
+                Call CheckDirection
+                CheckKeyLeftRight = Direction
+                TimerDelayDb = 0 '* ลบค่า TimerDelayDb เพราะเพื่อตรวจจับ double click ครั้งต่อไป
+                db = False '* เพื่อตรวจจับ double click ครั้งต่อไป
+            Else 'ถ้าเพิ่งกดครั้งแรก (StateKeyUpDown=false)
+                StateKeyMoveMouse = True  'ไว้บอกสถานะว่าเคยกดแล้วเพื่อใช้ตรวจสอบกับการกดครั้งที่ 2
+                click = True  'ให้ถือว่าเป็นการคลิกธรรมดาก่อน
+                Call CheckDirection
+                CheckKeyLeftRight = Direction
+            End If
+
+            If StateKeyMoveMouse = True Then
+                TimerDelayDb = 0
+                TimerDB.Enabled = True
+            End If
+            '*กำจัดการยกตัวของปุ่มซึ่งจะส่งค่าเสมือนปุ่มถูกกดทำให้เกิด error
+            Do While GetAsyncKeyState(KeyLeftRight)
+                'หยุดชั่วครู่แล้วเลือ่นเมาส์
+                Sleep SleepTime
+                Call DoneMoveCursor
+            Loop
+        Else 'ถ้าไม่ได้กดปุ่มให้ clear click ก่อนแล้วเรียก CheckDirection
+            Call CheckDirection
+            CheckKeyLeftRight = Direction
+        End If
+End Function
+
+'************************************************************************************
+'* Function ตรวจการกดปุ่มบังคับเมาส์ด้วยปุ่ม 1 ปุ่ม พร้อม return ค่า Direction
+'************************************************************************************
+
+Function CheckOneKey() As String
+    Dim click_temp As Boolean '*เก็บ click ก่อน CheckDirection1Key ถ้าไม่มีการกดปุ่ม
+        If GetAsyncKeyState(OneKey) Then
+            TimerDB.Enabled = False
+            If StateKeyMoveMouse = True Then 'ถ้ามีการกดมาครั้งหนึ่งแล้ว
+                StateKeyMoveMouse = False '* reset StateKeyMoveMouse
+                If ((TimerDelayDb >= MinTimeDb) And (TimerDelayDb <= MaxTimeDb)) Then 'ถ้ากดอีกครั้งในช่วงเวลาที่กำหนด
+                    click = False
+                    db = True 'กดในเวลาถือว่าเป็น double click
+                    'LeftFlag = Not LeftFlag '* กลับทิศ ซ้าย-ขวา
+                Else
+                    click = True ' กดเกินเวลาถือว่าเป็นคลิกอีกครั้งไม่ติดกัน
+                    StateKeyMoveMouse = True ' กำหนดสถานะถือว่าเป็นการกดครั้งใหม่
+                End If
+                '* ตรวจสอบ directtion แล้วส่งค่า direction กลับ
+                Call CheckDirection1Key
+                CheckOneKey = Direction
+                TimerDelayDb = 0 '* ลบค่า TimerDelayDb เพราะเพื่อตรวจจับ double click ครั้งต่อไป
+                db = False '* เพื่อตรวจจับ double click ครั้งต่อไป
+            Else 'ถ้าเพิ่งกดครั้งแรก (StateKeyUpDown=false)
+                StateKeyMoveMouse = True  'ไว้บอกสถานะว่าเคยกดแล้วเพื่อใช้ตรวจสอบกับการกดครั้งที่ 2
+                click = True  'ให้ถือว่าเป็นการคลิกธรรมดาก่อน
+                Call CheckDirection1Key
+                CheckOneKey = Direction
+            End If
+
+            If StateKeyMoveMouse = True Then
+                TimerDelayDb = 0
+                TimerDB.Enabled = True
+            End If
+            '*กำจัดการยกตัวของปุ่มซึ่งจะส่งค่าเสมือนปุ่มถูกกดทำให้เกิด error
+            Do While GetAsyncKeyState(OneKey)
+                'หยุดชั่วครู่แล้วเลือ่นเมาส์
+                Sleep SleepTime
+                Call DoneMoveCursor
+            Loop
+        Else 'ถ้าไม่ได้กดปุ่มให้ clear click ก่อนแล้วเรียก CheckDirection1Key
+            Call CheckDirection1Key
+            CheckOneKey = Direction
+        End If
+End Function
+
+
+'*****************************************************************************
+'*****************************************************************************
+'                      กลุ่ม function ควบคุมการเคลื่อนที่ของ mouse cursor
+'*****************************************************************************
+'*****************************************************************************
+
+'* ตวรจการกดปุ่มบังคับ mouse cursor พร้อมทั้งเลื่อน mouse cursor
+Sub MoveMouseCursor() ' Start sub
+    Dim Count As Integer ' For-next counter
+        '* ถ้าไม่ใช่การควบคุมด้วยปุ่ม 1 ปุ่ม ให้ check ปุ่มทั้ง 2 ปุ่ม
+        If OnekeyFlag <> True Then
+                If GetAsyncKeyState(KeyUpDown) Then
+                    UpDownFlag = True
+                ElseIf GetAsyncKeyState(KeyLeftRight) Then
+                    LeftRightFlag = True
+                Else
+                    UpDownFlag = False
+                    LeftRightFlag = False
+                End If
+                
+                If UpDownFlag Then
+                    Direction = CheckKeyUpDown
+                ElseIf LeftRightFlag Then
+                    Direction = CheckKeyLeftRight
+                Else
+                    '*clear direction
+                    If Direction <> "0000" Then
+                        OldDirection = Direction
+                        Direction = "0000"
+                    End If
+                End If
+        Else '* ตั้งให้เป็นการควบคุมด้วยปุ่ม 1 ปุ่ม
+                If GetAsyncKeyState(OneKey) Then
+                    Direction = CheckOneKey
+                Else
+                    If Direction <> "0000" Then
+                        OldDirection = Direction
+                        Direction = "0000"
+                    End If
+                End If
+        End If
+                
+            '*สั่งให้เลื่อนตำแหน่งเมาส์
+            Call DoneMoveCursor
+    
+    End Sub
+
+'*สั่งให้มีการเคลื่อน mouse cursor โดยถูกเรียกจาก CheckKeyUpDown และ CheckKeyLeftRight
+Sub DoneMoveCursor() ' Start sub
+        Dim Count As Integer
+        
+        For Count = 1 To 4
+                OldValue(Count) = KeyValue(Count)  'เก็บค่าไว้ใน OldValue ทิ้ง
+                KeyValue(Count) = False 'ลบค่าเก่าทิ้ง
+        Next
+        Select Case Direction
+              Case "1000": KeyValue(1) = True 'Up
+              Case "0100": KeyValue(2) = True 'Down
+              Case "0010": KeyValue(3) = True 'Left
+              Case "0001": KeyValue(4) = True 'Right
+        End Select
+        If (Direction <> "0000") Then ' If any move key(s) are pressed then
+            GetCursorPos position ' Get the current mouse cursor position
+            For Count = 1 To 4 ' Do all 4 movement actions
+                If KeyValue(Count) Then ' If move key is pressed then,
+                    If Not OldValue(Count) Then MoveSpeed(Count) = 0 ' If key has just been pressed then set movement speed to null
+                    If MoveSpeed(Count) < MaxSpeed Then ' If movement speed is lower then 100 then,
+                        MoveSpeed(Count) = MoveSpeed(Count) + AddSpeed ' Increase movement speed
+                    Else
+                        MoveSpeed(Count) = MaxSpeed ' Else, set movement speed as maximum speed limit
+                    End If
+                    Select Case Count ' Select movement direction
+                        Case MoveUp: position.Y = position.Y - MoveSpeed(MoveUp) ' Decrease "Y" position
+                        Case MoveDown: position.Y = position.Y + MoveSpeed(MoveDown) ' Increase "Y" position
+                        Case MoveLeft: position.X = position.X - MoveSpeed(MoveLeft) ' Decrease "X" position
+                        Case MoveRight: position.X = position.X + MoveSpeed(MoveRight) ' Increase "X" position
+                    End Select
+                End If
+            Next Count ' Next movement action
+            SetCursorPos position.X, position.Y ' Set new mouse cursor position
+            mouse_event MOUSEEVENTF_MOVE, 0, 0, 0, 0 ' Inform other programs that mouse has moved
+        End If
+    End Sub
+
+'* หาทิศทางการเคลื่อนที่ของเมาส์และแสดงภาพทิศทาง
+Sub CheckDirection()
+    Direction = OldDirection
+    '* ถ้าบังคับ ขึ้น-ลง
+    If UpDownFlag Then
+        If UpFlag Then
+            Direction = "1000" '*ขึ้น
+            PictureUp.Visible = True
+            PictureDown.Visible = False
+        Else
+            Direction = "0100" '*ลง
+            PictureDown.Visible = True
+            PictureUp.Visible = False
+        End If
+    '* ถ้าบังคับ ซ้าย-ขวา
+    ElseIf LeftRightFlag Then
+        If LeftFlag Then
+            Direction = "0010" '* ซ้าย
+            PictureLeft.Visible = True
+            PictureRight.Visible = False
+        Else
+            Direction = "0001" '* ขวา
+            PictureRight.Visible = True
+            PictureLeft.Visible = False
+        End If
+    Else
+        Direction = "0000"
+    End If
+End Sub
+
+'*ฟังก์ชันตรวจทิศทางของการควบคุมเมาส์ ด้วยปุ่มเพียง 1 ปุ่ม
+Function CheckDirection1Key() As String
+    Direction = OldDirection
+    '* ซ่อนภาพ direction ก่อน
+    If db Then
+        PictureUp.Visible = False
+        PictureDown.Visible = False
+        PictureLeft.Visible = False
+        PictureRight.Visible = False
+        Select Case Direction
+            Case "0000":
+                    Direction = "1000"
+                    PictureUp.Visible = True
+            Case "1000":
+                    Direction = "0100"
+                    PictureDown.Visible = True
+            Case "0100":
+                    Direction = "0010"
+                    PictureLeft.Visible = True
+            Case "0010":
+                    Direction = "0001"
+                    PictureRight.Visible = True
+            Case "0001":
+                    Direction = "1000"
+                    PictureUp.Visible = True
+        End Select
+    End If
+End Function
+
+Sub SetNewValue()
+    TimerClickMouse.Interval = mouse_click_period 'กำหนด period เมาส์
+End Sub
+
+'************************************* SetColor ***********************************
+Sub SetColorForm()
+    FormMain.BackColor = ColorForm
+    FrameMove.BackColor = ColorForm
+    FrameMove2.BackColor = ColorForm
+    FrameMouseEvent.BackColor = ColorForm
+    FrameMouseButton.BackColor = ColorForm
+    Op_click.BackColor = ColorForm
+    Op_dbclick.BackColor = ColorForm
+    Op_drag.BackColor = ColorForm
+    Op_mouse_left.BackColor = ColorForm
+    Op_mouse_right.BackColor = ColorForm
+End Sub
+
+Sub SetColorEsc()
+    Dim i As Integer
+    B_Esc.BackColor = ColorEsc
+    For i = 1 To 12
+        B_F(i).BackColor = ColorEsc
+    Next
+End Sub
+
+Sub SetColorPrint()
+    Dim i As Integer
+    For i = 13 To 15
+        B_F(i).BackColor = ColorPrint
+    Next
+End Sub
+
+Sub SetColorTab()
+    Dim i As Integer
+    For i = 0 To 6
+        B_co1(i).BackColor = ColorTab
+    Next
+    For i = 0 To 5
+        B_co2(i).BackColor = ColorTab
+    Next
+        B_co1(5).BackColor = &H8000000F
+        B_co2(4).BackColor = &H8000000F
+End Sub
+
+Sub SetColorChar()
+    Dim i As Integer
+    For i = 0 To 11
+        B_r1(i).BackColor = ColorChar
+    Next i
+    For i = 0 To 12
+        B_r2(i).BackColor = ColorChar
+    Next i
+    For i = 0 To 10
+        B_r3(i).BackColor = ColorChar
+    Next i
+    For i = 0 To 9
+        B_r4(i).BackColor = ColorChar
+    Next i
+End Sub
+
+Sub SetColorSpace()
+    B_space.BackColor = ColorSpace
+End Sub
+
+Sub SetColorInsert()
+    Dim i As Integer
+    For i = 0 To 5
+        B_com(i).BackColor = ColorInsert
+    Next i
+End Sub
+
+Sub SetColorNum()
+    Dim i As Integer
+    For i = 0 To 10
+        B_num(i).BackColor = ColorNum
+    Next i
+End Sub
+
+Sub SetColorOperator()
+    Dim i As Integer
+    For i = 1 To 4
+        B_numc(i).BackColor = ColorOperator
+    Next i
+End Sub
+
+Sub SetColorNumlock()
+    B_numc(0).BackColor = ColorNumlock
+    B_numc(5).BackColor = ColorNumlock
+End Sub
+
+'* สีเริ่มต้นที่กำหนด
+Sub SetColorDefault()
+    ColorForm = &H80000001
+    ColorEsc = &HFFFF80
+    ColorPrint = &H94D885
+    ColorTab = &H80FF&
+    ColorChar = &H80C0FF
+    ColorSpace = &HC0FFFF
+    ColorInsert = &HC0FFFF
+    ColorNum = &H80FF80
+    ColorOperator = &H8080FF
+    ColorNumlock = &H80ABD7
+End Sub
+
+
+'* วน check ากรเปลี่ยนแปลงค่าต่างๆของเมาส์และปุ่ม
+Private Sub TimerUpdateSetting_Timer()
+    If Change = True Then
+        Call SetNewValue
+        Change = False
+    End If
+    If Change_col = True Then
+        Call SetColorForm
+        Call SetColorEsc
+        Call SetColorPrint
+        Call SetColorTab
+        Call SetColorChar
+        Call SetColorSpace
+        Call SetColorInsert
+        Call SetColorNum
+        Call SetColorOperator
+        Call SetColorNumlock
+        Change_col = False
+    End If
+    If Change_ComPort = True Then
+        MSComm1.PortOpen = False
+        If ComPort = "1" Then
+            MSComm1.CommPort = 1
+        Else
+            MSComm1.CommPort = 2
+        End If
+        MSComm1.PortOpen = True
+        Change_ComPort = False
+    End If
+    If Change_History = True Then
+        Call LoadListHistory
+        Change_History = False
+    End If
+    If Change_Pg = True Then
+        '* ตรวจว่ามีหรือไม่แล้วดูว่ามีใน combo หรือยัง
+        If CheckProgram Then
+            Call LoadListProgram
+        End If
+        Change_Pg = False
+    End If
+End Sub
+
+Function CheckProgram() As Boolean
+    Dim filename_t, fname, fpath, fname_t, fpath_t, ch As String
+    Dim i, l As Integer
+    'หาดูว่ามีโปรแกรมนี้หรือยัง
+    filename_t = LabelPG.Caption
+    fname_t = LabelPGname.Caption
+
+    LabelPG.Caption = ""
+    If AdodcProgram.Recordset.MaxRecords <> 0 Then
+        AdodcProgram.Recordset.MoveFirst
+        AdodcProgram.Recordset.Find "Path = '" & filename & "'"
+    End If
+    
+    '* ถ้ามี
+    If LabelPG.Caption <> "" Then
+        CheckProgram = False
+        fpath = LabelPG.Caption
+    Else 'ถ้าไม่มีให้เพิ่มลงใน combo และ database
+        CheckProgram = True
+        l = Len(filename)
+        ch = Mid(filename, l, 1)
+        Do While ch <> "\" 'หาชื่อไฟล์
+            l = l - 1
+            fname = ch & fname
+            ch = Mid(filename, l, 1)
+        Loop
+        If Len(filename_t) <> 0 Then
+            LabelPG.Caption = filename_t
+            LabelPGname.Caption = fname_t
+            AdodcProgram.Recordset.AddNew
+            AdodcProgram.Recordset("Program") = fname
+            AdodcProgram.Recordset("Path") = filename
+            AdodcProgram.Recordset.Update
+        Else
+            AdodcProgram.Recordset("Program") = fname
+            AdodcProgram.Recordset("Path") = filename
+            AdodcProgram.Recordset.AddNew
+        End If
+    End If
+    Shell filename, vbNormalFocus
+End Function
+
+'* จะ check ที่ port ว่าม่สัญญาณเข้ามาหรือไม่
+Private Sub MSComm1_OnComm()
+    Dim ch As String
+    Dim i As Integer
+    Dim MaxSpeed_t As Double
+    Dim sleeptime_t As Double
+    ch = MSComm1.Input
+    Port_Input = Chr(Asc(ch))
+'    Port_Input = Chr(Asc(MSComm1.Input))
+    sleeptime_t = SleepTime
+    SleepTime = SleepTime * 0
+    Call MoveMouseCursor2
+    MaxSpeed_t = MaxSpeed
+    For i = 1 To 10
+        MaxSpeed = MaxSpeed * 20
+        Call DoneMoveCursor
+    Next i
+    MaxSpeed = MaxSpeed_t
+    SleepTime = sleeptime_t
+End Sub
+
+
+'* check ค่าที่ได้รับจาก port แล้วเคลื่อนเมาส์
+Sub MoveMouseCursor2() ' Start sub
+    Dim Count As Integer ' For-next counter
+            If Port_Input = "2" Then
+                UpDownFlag = True
+            ElseIf Port_Input = "1" Then
+                LeftRightFlag = True
+            Else
+                UpDownFlag = False
+                LeftRightFlag = False
+            End If
+            
+            If UpDownFlag Then
+                Direction = CheckPortUpDown
+            ElseIf LeftRightFlag Then
+                Direction = CheckPortLeftRight
+            Else
+                '*clear direction
+                If Direction <> "0000" Then
+                    OldDirection = Direction
+                    Direction = "0000"
+                End If
+            End If
+                
+            '*สั่งให้เลื่อนตำแหน่งเมาส์
+            Call DoneMoveCursor
+    
+End Sub
+
+
+Function CheckPortLeftRight() As String
+    Dim click_temp As Boolean '*เก็บ click ก่อน CheckDirection ถ้าไม่มีการกดปุ่ม
+        If Port_Input = "1" Then
+            TimerPort.Enabled = False
+            If StateKeyMoveMouse = True Then 'ถ้ามีการกดมาครั้งหนึ่งแล้ว
+                StateKeyMoveMouse = False '* reset StateKeyMoveMouse
+                If ((TimerDelayDbPort >= MinTimeDbPort) And (TimerDelayDbPort <= MaxTimeDbPort)) Then 'ถ้ากดอีกครั้งในช่วงเวลาที่กำหนด
+                    click = False
+                    db = True 'กดในเวลาถือว่าเป็น double click
+                    LeftFlag = Not LeftFlag '* กลับทิศ ซ้าย-ขวา
+                Else
+                    click = True ' กดเกินเวลาถือว่าเป็นคลิกอีกครั้งไม่ติดกัน
+                    StateKeyMoveMouse = True ' กำหนดสถานะถือว่าเป็นการกดครั้งใหม่
+                End If
+                '* ตรวจสอบ directtion แล้วส่งค่า direction กลับ
+                Call CheckDirection
+                CheckPortLeftRight = Direction
+                TimerDelayDbPort = 0 '* ลบค่า TimerDelayDbPort เพราะเพื่อตรวจจับ double click ครั้งต่อไป
+                db = False '* เพื่อตรวจจับ double click ครั้งต่อไป
+            Else 'ถ้าเพิ่งกดครั้งแรก (StateKeyUpDown=false)
+                StateKeyMoveMouse = True  'ไว้บอกสถานะว่าเคยกดแล้วเพื่อใช้ตรวจสอบกับการกดครั้งที่ 2
+                click = True  'ให้ถือว่าเป็นการคลิกธรรมดาก่อน
+                Call CheckDirection
+                CheckPortLeftRight = Direction
+            End If
+
+            If StateKeyMoveMouse = True Then
+                TimerDelayDbPort = 0
+                TimerPort.Enabled = True
+            End If
+        Else 'ถ้าไม่ได้กดปุ่มให้ clear click ก่อนแล้วเรียก CheckDirection
+            Call CheckDirection
+            CheckPortLeftRight = Direction
+        End If
+End Function
+
+
+Function CheckPortUpDown() As String
+    Dim click_temp As Boolean '*เก็บ click ก่อน CheckDirection ถ้าไม่มีการกดปุ่ม
+        If Port_Input = "2" Then
+            TimerPort.Enabled = False
+            If StateKeyMoveMouse = True Then 'ถ้ามีการกดมาครั้งหนึ่งแล้ว
+                StateKeyMoveMouse = False '* reset StateKeyMoveMouse
+                If ((TimerDelayDbPort >= MinTimeDbPort) And (TimerDelayDbPort <= MaxTimeDbPort)) Then 'ถ้ากดอีกครั้งในช่วงเวลาที่กำหนด
+                    click = False
+                    db = True 'กดในเวลาถือว่าเป็น double click
+                    UpFlag = Not UpFlag '* กลับทิศทาง บน-ล่าง
+                Else
+                    click = True ' กดเกินเวลาถือว่าเป็นคลิกอีกครั้งไม่ติดกัน
+                    StateKeyMoveMouse = True ' กำหนดสถานะถือว่าเป็นการกดครั้งใหม่
+                End If
+                '* ตรวจสอบ directtion แล้วส่งค่า direction กลับ
+                Call CheckDirection
+                CheckPortUpDown = Direction
+                TimerDelayDbPort = 0 '* ลบค่า TimerDelayDbPort เพราะเพื่อตรวจจับ double click ครั้งต่อไป
+                db = False '* เพื่อตรวจจับ double click ครั้งต่อไป
+            Else 'ถ้าเพิ่งกดครั้งแรก (StateKeyUpDown=false)
+                StateKeyMoveMouse = True  'ไว้บอกสถานะว่าเคยกดแล้วเพื่อใช้ตรวจสอบกับการกดครั้งที่ 2
+                click = True  'ให้ถือว่าเป็นการคลิกธรรมดาก่อน
+                Call CheckDirection
+                CheckPortUpDown = Direction
+            End If
+
+            If StateKeyMoveMouse = True Then
+                TimerDelayDbPort = 0
+                TimerPort.Enabled = True
+            End If
+        Else 'ถ้าไม่ได้กดปุ่มให้ clear click ก่อนแล้วเรียก CheckDirection
+            Call CheckDirection
+            CheckPortUpDown = Direction
+        End If
+End Function
+
+Sub LoadListProgram()
+    Dim all_word As Long
+    Dim i As Long
+        ComboProgram.Clear
+        ComboProgram.AddItem ("เลือกโปรแกรม..")
+        
+        all_word = AdodcProgram.Recordset.RecordCount
+        If all_word > 1 Then
+            AdodcProgram.Recordset.MoveFirst
+            For i = 1 To all_word
+                ComboProgram.AddItem (AdodcProgram.Recordset.Fields.Item(1).Value)
+                AdodcProgram.Recordset.MoveNext
+            Next i
+            AdodcProgram.Recordset.MoveFirst
+        End If
+End Sub
+

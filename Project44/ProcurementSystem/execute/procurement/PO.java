@@ -1,0 +1,104 @@
+import java.lang.*;
+import java.util.Date;
+
+public class PO{
+	private String itemID;
+	private String type;
+	private String catNo;
+	private int numItems;
+	private String brand;
+	private double price;
+	private int poNo;
+	private int lineNo;
+	//private int wfNo;
+	private String tableName;
+	private String vendorNo;
+	
+	public PO(String itemID, String type, String catNo, int n,String brand,double price,int poNo,int lineNo,String tableName,String vendorNo){
+		this.itemID = itemID;
+		this.numItems = n;
+		this.type = type;
+		this.catNo = catNo;
+		this.price=price;
+		this.brand=brand;
+		this.poNo=poNo;
+		this.lineNo=lineNo;
+		this.vendorNo=vendorNo;
+		//this.wfNo=wfNo;
+		this.tableName=tableName;
+	}//Item order
+
+
+	public String getTableName(){
+		return(tableName);
+	}
+	public int getPoNo(){
+		return(poNo);
+	}
+
+	public String getVendorNo(){
+		return(vendorNo);
+	}
+/*
+	public int getWfNo(){
+		return(wfNo);
+	}
+*/
+	public int getLineNo(){
+		return(lineNo);
+	}
+    
+	public String getBrand(){
+		return(brand);
+	}
+
+	public double getPrice(){
+		return(price);
+	}
+
+	public String getItemID(){
+		return(itemID);
+	}
+
+	protected void setItemID(String itemID){
+		this.itemID=itemID;
+	}
+
+	protected void setnumItems(int numItems){
+	    this.numItems=numItems;
+	}
+
+	protected void setType(String type){
+		this.type=type;
+	}
+
+	protected void setcatNo(String catNo){
+	    this.catNo=catNo;
+	}
+
+	public int getNumItems(){
+		return (numItems);
+	}
+
+	public String  getType() {
+		return(this.type);
+	}
+
+	public String getCatNo() {
+		return(this.catNo);
+	}
+     
+	public void incrementNumItems(int num){
+		this.numItems+=num;
+	}
+
+	public void cancelOrder(){
+		this.numItems=0;
+	}
+
+	public double getTotalCost(){
+		return(numItems*price);
+	}
+
+
+}

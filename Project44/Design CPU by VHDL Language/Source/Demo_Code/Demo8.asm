@@ -1,0 +1,16 @@
+mov r0,#1023;   nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            shr r0,#01;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            jmp #0002;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;

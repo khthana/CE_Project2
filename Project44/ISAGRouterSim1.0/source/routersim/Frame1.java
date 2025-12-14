@@ -1,0 +1,706 @@
+package routersim;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import com.borland.jbcl.layout.*;
+import java.util.*;
+import javax.swing.border.*;
+import javax.swing.JOptionPane;
+
+public class Frame1 extends JFrame {
+  static Vector vRouter = new Vector();
+  static Vector vConsole = new Vector();
+  static Vector[][] pathx;
+  static boolean singleMode;
+  static int senderNumber;
+  static Frame2 f2 = new Frame2();
+  private final int maxRouter = 10;
+//  private
+  Router r1;
+  RouterImg rimg;
+  JPanel contentPane;
+  JMenuBar jMenuBar1 = new JMenuBar();
+  JMenu jMenuFile = new JMenu();
+  JMenuItem menuFileExit = new JMenuItem();
+  JMenu jMenuEdit = new JMenu();
+  JMenuItem menuNewRouter = new JMenuItem();
+  JToolBar jToolBar = new JToolBar();
+  JButton jNewButton = new JButton();
+  JButton jDelButton = new JButton();
+  JButton jViewButton = new JButton();
+  JButton jDetailButton = new JButton();
+//  JButton jSingleButton = new JButton();
+  JButton jNextButton = new JButton();
+  ImageIcon image1;
+  ImageIcon image2;
+  ImageIcon image3;
+  ImageIcon image4;
+  ImageIcon image5;
+  ImageIcon image6;
+  ImageIcon image7;
+  JPanel jPanel1 = new JPanel();
+  XYLayout xYLayout1 = new XYLayout();
+  static JTabbedPane jTabbedPane1 = new JTabbedPane(3);
+  XYLayout xYLayout2 = new XYLayout();
+  JButton jLessonButton = new JButton();
+  Border border1;
+  JMenuItem menuDelRouter = new JMenuItem();
+  JMenuItem menuNetworkView = new JMenuItem();
+  JMenuItem menuTutorials = new JMenuItem();
+  JMenu jMenuHelp = new JMenu();
+  JMenuItem menuAbout = new JMenuItem();
+  Border border2;
+  JMenuItem menuAboutUs = new JMenuItem();
+  Dialog1 d = new Dialog1();
+  JToggleButton jToggleButton1 = new JToggleButton();
+  //--------Start Funciton---------------------//
+  /**Construct the frame*/
+  public Frame1() {
+    enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+    try {
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+  /**Component initialization*/
+  private void jbInit() throws Exception  {
+    singleMode = false;
+    senderNumber = -1;
+    image1 = new ImageIcon(routersim.Frame1.class.getResource("newrouter1.gif"));
+    image2 = new ImageIcon(routersim.Frame1.class.getResource("delrouter1.gif"));
+    image3 = new ImageIcon(routersim.Frame1.class.getResource("view.gif"));
+    image4 = new ImageIcon(routersim.Frame1.class.getResource("lesson1.gif"));
+    image5 = new ImageIcon(routersim.Frame1.class.getResource("feature.gif"));
+    image6 = new ImageIcon(routersim.Frame1.class.getResource("single.gif"));
+    image7 = new ImageIcon(routersim.Frame1.class.getResource("nextstep.gif"));
+    contentPane = (JPanel) this.getContentPane();
+    border1 = BorderFactory.createEmptyBorder(2,4,2,4);
+    border2 = BorderFactory.createEmptyBorder();
+    this.setTitle("Router Simulation");
+    //------Set Layout------------//
+    contentPane.setLayout(xYLayout2);
+    jPanel1.setLayout(xYLayout1);
+    //------Set Border--------//
+    jToolBar.setBackground(new Color(55, 113, 152));
+    jToolBar.setBorder(null);
+    jToolBar.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        jToolBar_keyPressed(e);
+      }
+    });
+    //------Set Position------------//
+    this.setSize(new Dimension(700,500));
+    this.setResizable(false);
+    //--------Set Color-------------//
+    this.getContentPane().setBackground(new Color(55, 113, 152));
+    contentPane.setBackground(new Color(55, 113, 152));
+    jPanel1.setBackground(new Color(55, 113, 152));
+    jPanel1.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        jPanel1_keyPressed(e);
+      }
+    });
+    jTabbedPane1.setBackground(new Color(55, 113, 152));
+    jTabbedPane1.setForeground(new Color(239, 204, 9));
+    jTabbedPane1.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        jTabbedPane1_keyPressed(e);
+      }
+    });
+    f2.getContentPane().setBackground(new Color(55, 113, 152));
+    //-------------Menu-------------//
+    //----File---//
+    jMenuFile.setText("File");
+    menuFileExit.setText("Exit");
+    menuFileExit.addActionListener(new ActionListener()  {
+      public void actionPerformed(ActionEvent e) {
+        menuFileExit_actionPerformed(e);
+      }
+    });
+    //-----Edit------//
+    jMenuEdit.setText("Edit");
+    //Menu New Router
+    menuNewRouter.setText("New Router");
+    menuNewRouter.addActionListener(new ActionListener()  {
+      public void actionPerformed(ActionEvent e) {
+        menuNewRouter_actionPerformed(e);
+      }
+    });
+    //Menu Delete Router
+    menuDelRouter.setActionCommand("Delete Router");
+    menuDelRouter.setText("Delete Route");
+    menuDelRouter.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        menuDelRouter_actionPerformed(e);
+      }
+    });
+    //Menu Network View
+    menuNetworkView.setText("Network View");
+    menuNetworkView.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        menuNetworkView_actionPerformed(e);
+      }
+    });
+    //Menu Tutorials
+    menuTutorials.setText("Tuterials");
+    menuTutorials.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        menuTutorials_actionPerformed(e);
+      }
+    });
+    //------Help-------//
+    jMenuHelp.setText("Help");
+    //About
+    menuAbout.setText("About RouterSim");
+    menuAbout.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        menuAbout_actionPerformed(e);
+      }
+    });
+    //-------Tool Bar------------//
+    //----New Button-----//
+    jNewButton.setIcon(image1);
+    jNewButton.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        jNewButton_keyPressed(e);
+      }
+    });
+    jNewButton.setBackground(new Color(195, 222, 251));
+    jNewButton.setToolTipText("New Router");
+    jNewButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jNewButton_actionPerformed(e);
+      }
+    });
+    //-------Delete Button-----//
+    jDelButton.setIcon(image2);
+    jDelButton.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        jDelButton_keyPressed(e);
+      }
+    });
+    jDelButton.setBackground(new Color(195, 222, 251));
+    jDelButton.setToolTipText("Delete Router");
+    jDelButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jDelButton_actionPerformed(e);
+      }
+    });
+    //------View Button------//
+    jViewButton.setIcon(image3);
+    jViewButton.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        jViewButton_keyPressed(e);
+      }
+    });
+    jViewButton.setBackground(new Color(195, 222, 251));
+    jViewButton.setToolTipText("View Network");
+    jViewButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jViewButton_actionPerformed(e);
+      }
+    });
+    //-----Lesson Button-----//
+    jLessonButton.setIcon(image4);
+    jLessonButton.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        jLessonButton_keyPressed(e);
+      }
+    });
+    jLessonButton.setBackground(new Color(195, 222, 251));
+    jLessonButton.setToolTipText("Lesson");
+    jLessonButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jLessonButton_actionPerformed(e);
+      }
+    });
+    //-----Feature Button-----//
+    jDetailButton.setIcon(image5);
+    jDetailButton.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        jDetailButton_keyPressed(e);
+      }
+    });
+    jDetailButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jDetailButton_actionPerformed(e);
+      }
+    });
+    jDetailButton.setBackground(new Color(195, 222, 251));
+    jDetailButton.setToolTipText("Feature of Router");
+    //-----Single Button-----//
+//    jSingleButton.setIcon(image6);
+//    jSingleButton.setBackground(new Color(195, 222, 251));
+//    jSingleButton.setToolTipText("Detail");
+    //-----Next Button-----//
+    jNextButton.setIcon(image7);
+    jNextButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jNextButton_actionPerformed(e);
+      }
+    });
+    jNextButton.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        jNextButton_keyPressed(e);
+      }
+    });
+    jNextButton.setBackground(new Color(195, 222, 251));
+    jNextButton.setToolTipText("Next Step");
+   //-------Add Component--------//
+    menuAboutUs.setText("About us");
+    menuAboutUs.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        menuAboutUs_actionPerformed(e);
+      }
+    });
+    jToggleButton1.setIcon(image6);
+    jToggleButton1.setToolTipText("Single Step");
+    jToggleButton1.setBackground(new Color(195, 222, 251));
+    jToggleButton1.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        jToggleButton1_keyPressed(e);
+      }
+    });
+    jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jToggleButton1_actionPerformed(e);
+      }
+    });
+    jToolBar.add(jNewButton);
+    jToolBar.add(jDelButton);
+    jToolBar.add(jViewButton);
+    jToolBar.add(jLessonButton);
+    jToolBar.add(jDetailButton);
+    jToolBar.add(jToggleButton1, null);
+//    jToolBar.add(jSingleButton);
+    jToolBar.add(jNextButton);
+    jMenuFile.add(menuFileExit);
+    jMenuEdit.add(menuNewRouter);
+    jMenuEdit.add(menuDelRouter);
+    jMenuEdit.add(menuNetworkView);
+    jMenuEdit.add(menuTutorials);
+    jMenuHelp.add(menuAbout);
+    jMenuHelp.addSeparator();
+    jMenuHelp.add(menuAboutUs);
+    jMenuBar1.add(jMenuFile);
+    jMenuBar1.add(jMenuEdit);
+    jMenuBar1.add(jMenuHelp);
+    this.setJMenuBar(jMenuBar1);
+    //------Add with Position-------//
+    contentPane.add(jPanel1, new XYConstraints(0, 40, 700, 460));
+    jPanel1.add(jTabbedPane1, new XYConstraints(20, 0, 650, 400));
+    contentPane.add(jToolBar, new XYConstraints(0, 0, 700, 40));
+    //---------Read Startup-----------//
+    Command c = new Command();
+    c.readStartUp();
+    //if not any save
+/*    if (Frame1.vRouter.size() < 1){
+      Router r = new Router("Router1");
+      addTab("Router1",r);
+/*      int type = d.getSelectChoice();
+      while (type == 0){
+        type = d.getSelectChoice();
+        System.out.println("flase");
+      }//end while
+      switch (type){
+
+      }
+* /
+    }//end if
+*/
+  }
+  /**Overridden so we can exit when window is closed*/
+  protected void processWindowEvent(WindowEvent e) {
+    super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+      menuFileExit_actionPerformed(null);
+    }
+  }
+  //--------------Button Listener------------//
+  void jNewButton_actionPerformed(ActionEvent e) {
+    int type = d.getSelectChoice();
+    if (type != 0){
+      if (vRouter.size() < maxRouter){
+        boolean dup = true;
+        boolean found = false;
+        String str="";
+        int i=1;
+        while(dup){
+          str = "Router" + i;
+          found = false;
+          for(int a=0; a < Frame1.vRouter.size(); a++){
+            String alreadyName = ((Router)Frame1.vRouter.elementAt(a)).getName();
+            if (alreadyName.equalsIgnoreCase(str)){
+              found = true;
+            }//end if
+          }//end for
+          i++;
+          dup = found;
+        }//end while
+        r1 = new Router(str);
+        r1.setModel(type);
+        RouterConsole rcon = new RouterConsole(r1);
+        Frame1.vRouter.addElement(r1);
+        vConsole.addElement(rcon);
+        jTabbedPane1.addTab(str,rcon);
+        jTabbedPane1.setSelectedIndex(vRouter.size()-1);
+//        System.out.println("debug->"+str+" Model="+r1.getModel());
+        rimg = new RouterImg(r1.getModel());
+        Panel2.vImg.addElement(rimg);
+        switch (type){
+          case 1 : r1.setMaxEth(1);
+                   r1.setMaxSerial(2);
+                   r1.setMaxToken(0);
+                   break;
+          case 2 : r1.setMaxEth(0);
+                   r1.setMaxSerial(2);
+                   r1.setMaxToken(1);
+                   break;
+          case 3 : r1.setMaxEth(1);
+                   r1.setMaxSerial(1);
+                   r1.setMaxToken(2);
+                   break;
+          case 4 : r1.setMaxEth(2);
+                   r1.setMaxSerial(2);
+                   r1.setMaxToken(0);
+                   break;
+          case 5 : r1.setMaxEth(0);
+                   r1.setMaxSerial(2);
+                   r1.setMaxToken(2);
+                   break;
+          case 6 : r1.setMaxEth(10);
+                   r1.setMaxSerial(10);
+                   r1.setMaxToken(10);
+                   break;
+          default : break;
+        }
+      }
+//      System.out.println("Frame1->"+r1.getMaxEth()+":"+r1.getMaxSerial()+":"+r1.getMaxToken());
+    }
+  }
+  void jDelButton_actionPerformed(ActionEvent e) {
+    int numdel = jTabbedPane1.getSelectedIndex();
+//    System.out.println(jTabbedPane1.getTabCount());
+    if (jTabbedPane1.getTabCount() > 1){
+      Router delrouter = (Router)vRouter.elementAt(numdel);
+      Vector vinterface = new Vector();
+      for (int a=0; a<delrouter.getVInt().size(); a++){
+        Interface inf = (Interface)delrouter.getVInt().elementAt(a);
+        vinterface.addElement(inf);
+    }
+/*    if (){
+      for (int a=0; a<Frame1.vRouter.size(); a++){
+        Router rtmp = (Router)Frame1.vRouter.elementAt(a);
+        for (int b=rtmp.getVrt().size(); b>0; b--){
+          RoutingTable rtable = (RoutingTable)rtmp.getVrt().elementAt(b);
+          if ((rtmp.getFlag() == 'r')||(rtmp.getFlag() == 'o')){
+            rtmp.getVrt().removeElementAt(b);
+          }//if flag 'r' or o'
+        }//for routing table
+      }//for router
+    }
+/ *
+      for (int a=0; a < Frame1.vRouter.size(); a++){
+        Router rou = (Router)Frame1.vRouter.elementAt(a);
+        for (int b=rou.getVrt().size()-1; b>-1; b--){
+          RoutingTable rt = (RoutingTable)rou.getVrt().elementAt(b);
+          for (int c=0; c < vinterface.size(); c++){
+            Interface getinf = (Interface)vinterface.elementAt(c);
+            System.out.println(rou.getName() + " : "+ getinf.getNetAddress()+"&"+rt.getIpDestination()+"&"+rt.getGateway());
+            if ((getinf.getNetAddress().equals(rt.getIpDestination())) &&(!rt.getGateway().equals("0.0.0.0"))){
+//              rou.getVrt().removeElementAt(b);
+//            if ((getinf.getNetAddress().equalsIgnoreCase(rt.getIpDestination())) &&(!rt.getGateway().equalsIgnoreCase("0.0.0.0"))){
+              rt.setMatrice(16);
+            }//end if
+          }//end for
+        }//end for
+      }//end for
+*/
+      jTabbedPane1.removeTabAt(numdel);
+      vRouter.removeElementAt(numdel);
+      vConsole.removeElementAt(numdel);
+      Panel2.vImg.removeElementAt(numdel);
+    }//end if
+  }
+  void jViewButton_actionPerformed(ActionEvent e) {
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Dimension frameSize = f2.getSize();
+    if (frameSize.height > screenSize.height) {
+      frameSize.height = screenSize.height;
+    }
+    if (frameSize.width > screenSize.width) {
+      frameSize.width = screenSize.width;
+    }
+    f2.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
+    f2.setVisible(true);
+  }
+  void jLessonButton_actionPerformed(ActionEvent e) {
+    Runtime ed = Runtime.getRuntime();
+    try{
+      ed.exec("explorer .\\tutorials\\index.html");
+    }
+    catch(Exception e1){
+      System.out.println("Error : "+e1);
+    }
+  }
+  //----------Menu Listener-----------//
+  private void menuNewRouter_actionPerformed(ActionEvent e) {
+    jNewButton_actionPerformed(e);
+  }
+  private void menuDelRouter_actionPerformed(ActionEvent e) {
+    jDelButton_actionPerformed(e);
+  }
+  private void menuNetworkView_actionPerformed(ActionEvent e) {
+    jViewButton_actionPerformed(e);
+  }
+  private void menuTutorials_actionPerformed(ActionEvent e) {
+    jLessonButton_actionPerformed(e);
+  }
+  private void menuAbout_actionPerformed(ActionEvent e) {
+    Runtime ed = Runtime.getRuntime();
+    try{
+      ed.exec("notepad readme.txt");
+    }
+    catch(Exception e1){
+      System.out.println("Error : "+e1);
+    }
+  }
+  public void menuFileExit_actionPerformed(ActionEvent e) {
+    System.exit(0);
+  }
+  //----------Static Function---------------//
+  static void closeView(){
+    f2.hide();
+  }
+  static void setTab(String s){
+    int index = jTabbedPane1.getSelectedIndex();
+    jTabbedPane1.setTitleAt(index,s);
+  }
+  static void addTab(String s,Router r){
+    Frame1.vRouter.addElement(r);
+    RouterConsole rcon = new RouterConsole(r);
+    vConsole.addElement(rcon);
+//    System.out.println("debug->"+r.getName()+" Model="+r.getModel());
+    RouterImg rimg = new RouterImg(r.getModel());
+    Panel2.vImg.addElement(rimg);
+    Router r1=new Router();
+    jTabbedPane1.addTab(s,rcon);
+  }
+
+  void menuAboutUs_actionPerformed(ActionEvent e) {
+    JOptionPane.showMessageDialog(null,"This program is power by ISAG room KMITL\nContact us:tweety@thai.com","About Us",JOptionPane.PLAIN_MESSAGE);
+  }
+
+  void jTabbedPane1_keyPressed(KeyEvent e) {
+    int keyCode = e.getKeyCode();
+    if (keyCode == 10){
+      int num = jTabbedPane1.getSelectedIndex();
+      r1 = (Router)Frame1.vRouter.elementAt(num);
+      RouterConsole rcon = (RouterConsole)vConsole.elementAt(num);
+      rcon.enterKey(r1);
+    }
+  }
+
+  void jNewButton_keyPressed(KeyEvent e) {
+    jTabbedPane1_keyPressed(e);
+  }
+  void jDelButton_keyPressed(KeyEvent e) {
+    jTabbedPane1_keyPressed(e);
+  }
+  void jViewButton_keyPressed(KeyEvent e) {
+    jTabbedPane1_keyPressed(e);
+  }
+  void jLessonButton_keyPressed(KeyEvent e) {
+    jTabbedPane1_keyPressed(e);
+  }
+  void jToolBar_keyPressed(KeyEvent e) {
+    jTabbedPane1_keyPressed(e);
+  }
+  void jPanel1_keyPressed(KeyEvent e) {
+    jTabbedPane1_keyPressed(e);
+  }
+  void jDetailButton_keyPressed(KeyEvent e) {
+    jTabbedPane1_keyPressed(e);
+  }
+  void jNextButton_keyPressed(KeyEvent e) {
+    jTabbedPane1_keyPressed(e);
+  }
+
+  void jToggleButton1_keyPressed(KeyEvent e) {
+    jTabbedPane1_keyPressed(e);
+  }
+
+  void jDetailButton_actionPerformed(ActionEvent e) {
+    Dialog2 d2 = new Dialog2();
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Dimension frameSize = d2.getSize();
+    if (frameSize.height > screenSize.height) {
+      frameSize.height = screenSize.height;
+    }
+    if (frameSize.width > screenSize.width) {
+      frameSize.width = screenSize.width;
+    }
+    d2.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
+    d2.setVisible(true);
+  }
+
+  void jToggleButton1_actionPerformed(ActionEvent e) {
+//    System.out.println("//-----------Switch mode--------------//");
+    //--------------Use Single Mode-----------------//
+    if (jToggleButton1.isSelected()){
+      singleMode = true;
+      for (int a=0;a < Frame1.vRouter.size(); a++){
+        Router rout = (Router)Frame1.vRouter.elementAt(a);
+        if (rout.getFlag() == 'r'){
+          Rip ripf = (Rip)rout.getRIP();
+          if (ripf.isAlive()){
+            ripf.stop();
+//            ripf.suspend();
+//            System.out.println(rout.getName()+" is stop at single mode");
+          }//suspend all
+        }//flag 'r'
+        else if(rout.getFlag() == 'o'){
+          Ospf ospff = (Ospf)rout.getOSPF();
+          if (ospff.isAlive()){
+//            ospff.stop();
+            ospff.suspend();
+//            System.out.println(rout.getName()+" is stop at single mode");
+          }//suspend all
+        }//flag o
+      }
+//      System.out.println("select");
+    }//use singlemode
+    //-------------Use Normal Mode------------------//
+    else{
+      singleMode = false;
+      for (int a=0;a < Frame1.vRouter.size(); a++){
+        Router rout = (Router)Frame1.vRouter.elementAt(a);
+        if (rout.getFlag() == 'r'){
+          Rip ripf = new Rip(rout);
+//          if (ripf.isAlive()){
+//            ripf.suspend();
+//          }
+//          ripf.run();
+//          System.out.println(rout.getName()+" run single mode");
+          if(ripf.isAlive()){
+            ripf.resume();
+//            System.out.println(rout.getName()+" resume single mode");
+          }
+          else{
+            ripf.start();
+//            System.out.println(rout.getName()+" start single mode");
+          }
+
+        }
+        else if (rout.getFlag() == 'o'){
+          Ospf ospff = (Ospf)rout.getOSPF();
+          ospff.run();
+//          System.out.println(rout.getName()+" run single mode");
+/*
+          if(ospff.isAlive()){
+            ospff.resume();
+            System.out.println(rout.getName()+" resume single mode from next step");
+          }
+          else{
+            ospff.start();
+            System.out.println(rout.getName()+" start single mode from next step");
+          }
+*/
+        }//flag o
+      }//router
+//      System.out.println("not select");
+    }
+  }
+
+  void jNextButton_actionPerformed(ActionEvent e) {
+//    System.out.println("//-------Next Step------------//");
+    if(singleMode){
+        inc();
+        Router sender = (Router)Frame1.vRouter.elementAt(senderNumber);
+        while(sender.getFlag() != 'r'){
+          inc();
+          sender = (Router)Frame1.vRouter.elementAt(senderNumber);
+        }
+//        System.out.println("Turn is "+ sender.getName());
+        if (sender.getFlag() == 'r'){
+          Rip ripf = (Rip)sender.getRIP();
+          if (ripf.isAlive()){
+            ripf.suspend();
+          }//alive
+          ripf.run();
+//          System.out.println(sender.getName()+" is run at next button");
+/*          if (ripf.isAlive()){
+            ripf.run();
+            System.out.println(sender.getName()+" is run at next button");
+          }
+          else{
+            ripf.start();
+            System.out.println(sender.getName()+" is start at next button");
+          }
+*/
+        }//flag 'r'
+        else if (sender.getFlag() == 'o'){
+
+        }//flag 'o'
+/*
+        for (int a=0;a < Frame1.vRouter.size(); a++){
+          Router rout = (Router)Frame1.vRouter.elementAt(a);
+          if (rout.getFlag() == 'r'){
+            Rip ripf = (Rip)rout.getRIP();
+            ripf.setRecieve(false);
+            if(ripf.isAlive()){
+//              ripf.stop();
+              ripf.suspend();
+              System.out.println(rout.getName()+" suspend from next step");
+            }
+          }//flag 'r'
+          else if(rout.getFlag() == 'o'){
+            Ospf ospff = (Ospf)rout.getOSPF();
+            if(ospff.isAlive()){
+              ospff.suspend();
+              System.out.println(rout.getName()+" suspend from next step");
+            }
+          }//flag 'o'
+        }//for suspend
+        for (int a=0;a < Frame1.vRouter.size(); a++){
+          Router rout = (Router)Frame1.vRouter.elementAt(a);
+          if (rout.getFlag() == 'r'){
+            Rip ripf = (Rip)rout.getRIP();
+            if(ripf.isAlive()){
+              ripf.run();
+              System.out.println(rout.getName()+" run single mode from next step");
+            }
+            else{
+              ripf.start();
+              System.out.println(rout.getName()+" start single mode from next step");
+            }
+          }//flag r
+          else if (rout.getFlag() == 'o'){
+            Ospf ospff = (Ospf)rout.getOSPF();
+            if(ospff.isAlive()){
+              ospff.run();
+              System.out.println(rout.getName()+" run single mode from next step");
+            }
+            else{
+              ospff.start();
+              System.out.println(rout.getName()+" start single mode from next step");
+            }
+          }//flag 'o'
+        }
+*/
+    }//single mode
+  }
+  static int getsenderNumber(){
+    return senderNumber;
+  }
+  static void inc(){
+    senderNumber++;
+    if (senderNumber == Frame1.vRouter.size()){
+      senderNumber=0;
+    }
+  }
+  //------------End Function------------//
+}

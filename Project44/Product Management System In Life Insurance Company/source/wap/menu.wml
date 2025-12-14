@@ -1,0 +1,49 @@
+<?xml version="1.0"?> 
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.3//EN" "http://www.wapforum.org/DTD/wml13.dtd"> 
+ 
+<!-- If WML 1.1 or 1.2 features are required, then use one of the following DOCTYPE instead: 
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml"> 
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN" "http://www.wapforum.org/DTD/wml12.dtd"> 
+  --> 
+ <wml>  
+ <template>
+		<do type ="prev" label="Prev" name="p">
+			<prev/>
+		</do>
+</template>
+<card id="menu" title="Agent Profile" >
+		
+		<p align ="left">
+			<a href="searchcustomer.php">1.Search Customer </a><br/>
+			<a href="#stat">2.Check Statistics </a><br/>
+			<a href="reserve.wml">3.Check Reserved Customer</a><br/>
+			<a href="#mail">4.Mail Box</a><br/>
+			<a href="news.php">5.Check news</a><br/>
+			<a href="logout.php">6.logout</a><br/>
+		</p>
+	</card>
+	<card id="mail" title ="Mail Box">
+	<do type ="accept" label ="Next">
+		<go href ="checkmail.php">
+			<postfield name="Anick" value="$Anick"/> 
+			<postfield name="Apwd" value="$Apwd"/>
+		</go>
+	</do>
+	<p align ="left">
+			Agent Username :<input type ="text"  title="Agent Username" name="Anick"/><br/>
+			Agent Password :<input type ="password"  title="Agent Password" name="Apwd"/><br/>
+	</p>
+	</card>
+	<card id="stat" title="Statistic">
+	<do type ="accept" label ="Next">
+		<go href ="stat.php">
+			<postfield name="Anick" value="$Anick"/> 
+			<postfield name="Aid" value="$Aid"/>
+		</go>
+	</do>
+	<p align ="left">
+			Agent Username :<input type ="text"  title="Agent Username" name="Anick"/><br/>
+			Agent ID :<input type ="text"  title="Agent ID" name="Aid"/><br/>
+	</p>
+	</card>
+</wml>

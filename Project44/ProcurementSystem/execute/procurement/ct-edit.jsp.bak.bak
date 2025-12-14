@@ -1,0 +1,86 @@
+
+<%@page contentType="text/html;  charset=windows-874" %>
+<%@page import ="java.sql.*,java.lang.*,java.util.Date"%> <!-- import  เพื่อใช้ session -->
+<%@page session="true"%><!-- default -->
+<%@include file="th-db.jsp"%>
+
+<%
+	String  cat=MS874ToUnicode(new String(request.getParameter("cat")));
+	%>
+		   <%
+		       String emp = (String) session.getAttribute("emp");
+			   String passwd = (String) session.getAttribute("passwd");
+			   String dept = (String) session.getAttribute("dept");
+			   String name =(String) session.getAttribute("name");
+			   String sname=(String) session.getAttribute("sname");
+			   String level=(String) session.getAttribute("level");
+
+        if ((emp==null) && (passwd==null)){ %>
+
+			 <P>&nbsp;<P>&nbsp;<CENTER><B>ยังไม่ได้ Login กรุณา  Login ก่อนเข้าระบบ</B></CENTER>
+
+<%
+			   }else{//login แล้ว
+	
+				   int lv=Integer.parseInt(level);
+				    if(lv<=1){ //level ไม่พอ
+								out.println("<P>&nbsp;<P>&nbsp;<P><b><div align=\"center\">คุณไม่สามารถแก้ไข  Workflow  ได้</div></b>");  
+					}else{ //level  พอ
+					%>
+	
+	<FORM METHOD=POST ACTION="ct-edit2.jsp">
+<TABLE cellpadding="3" bordercolor="#DF5F2D" border="1" width="350" cellspacing="0">
+<TR bgcolor="#DF572D" height="24">
+	<TD colspan="2" align="left"><FONT COLOR="#FFF0E1"><B> กำหนด Workflow ให้สินค้าแต่ละประเภท</B></FONT></TD>
+</TR>
+<TR>
+	<TD  bgcolor="#FFFFFF">หมายเลข Category :</TD>
+	<TD bgcolor="#FFF0E1" width="120"><FONT COLOR="#DF5F2D"><B><%=cat%></B></FONT></TD>	
+<TR>
+	<TD  bgcolor="#FFFFFF">ชื่อ  Workflow :</TD>
+	<TD bgcolor="#FFF0E1" width="120">	
+	<INPUT TYPE="hidden" NAME="cat" VALUE="<%=cat%>">
+	<SELECT NAME="wf_name">
+ 
+	<%
+try{
+         Class.forName("oracle.jdbc.driver.OracleDriver");
+		 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");
+         Statement stmt = con.createStatement();
+			
+		 String query="SELECT  *  FROM WF_TABLE";
+         ResultSet res=stmt.executeQuery(query);
+		System.out.println(query);
+		while(res.next()){
+			String wf_name=res.getString("WF_TYPE");
+			System.out.println(wf_name);
+			System.out.println("ok");
+			%>
+				<OPTION VALUE="<%=wf_name%>" ><%=wf_name%>
+			<%															
+		}
+		    res.close();
+		 stmt.close();
+		 con.close();
+
+	 } catch(SQLException e) 
+      {
+	      while (e != null) 
+         {
+            out.println("SQLException:<br>");
+  		      out.println("Message:   " + e.getMessage() + "<br>");
+		      out.println("SQLState:  " + e.getSQLState() + "<br>");
+		      out.println("ErrorCode: " + e.getErrorCode() + "<br>");
+		      e = e.getNextException();
+         }
+	   }
+					}}
+%>
+</SELECT>
+</TD>
+</TR>
+<TR>
+<TD bgcolor="#FFF0E1" align="center" valign="middle" colspan="2"><INPUT TYPE="submit"  VALUE="ตกลง">&nbsp;&nbsp;<INPUT TYPE="reset" VALUE="ค่าเริ่มต้น"></TD>
+</TR>
+</TABLE>
+</FORM>

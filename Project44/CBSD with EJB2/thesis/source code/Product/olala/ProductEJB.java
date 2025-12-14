@@ -1,0 +1,179 @@
+
+package olala;
+
+
+import javax.ejb.EntityBean;
+
+import javax.ejb.EntityContext;
+
+import javax.ejb.CreateException;
+
+/**
+ * @stereotype EntityBean
+ * @homeInterface olala.ProductHome
+ * @remoteInterface olala.Product
+ * @persistence Container
+ * @primaryKey java.lang.String
+ */
+public class ProductEJB implements EntityBean
+{
+	/** @field Key VARCHAR(64) olalaDB.dbo.products.productId   */
+	public String productId;
+	/** @field VARCHAR(64) olalaDB.dbo.products.name   */
+	public String name;
+	/** @field NUMERIC(18) olalaDB.dbo.products.basePrice   */
+	public double basePrice;
+	/** @field VARCHAR(64) olalaDB.dbo.products.description   */
+	public String description;
+	/**
+	 * The container assigned reference to the entity
+	 */
+	private EntityContext context;
+
+	public ProductEJB() {
+	} 
+
+	/**
+	 * @return 
+	 * @SBGen Method get productId
+	 */
+	public String getProductId() {
+		// SBgen: Get variable
+		return(productId);
+	} 
+
+	/**
+	 * @return 
+	 * @SBGen Method get name
+	 */
+	public String getName() {
+		// SBgen: Get variable
+		return(name);
+	} 
+
+	/**
+	 * @param name 
+	 * @SBGen Method set name
+	 */
+	public void setName(String name) {
+		// SBgen: Assign variables
+		this.name = name;
+		// SBgen: End Assign
+	} 
+
+	/**
+	 * @return 
+	 * @SBGen Method get basePrice
+	 */
+	public double getBasePrice() {
+		// SBgen: Get variable
+		return(basePrice);
+	} 
+
+	/**
+	 * @param basePrice 
+	 * @SBGen Method set basePrice
+	 */
+	public void setBasePrice(double basePrice) {
+		// SBgen: Assign variables
+		this.basePrice = basePrice;
+		// SBgen: End Assign
+	} 
+
+	/**
+	 * @return 
+	 * @SBGen Method get description
+	 */
+	public String getDescription() {
+		// SBgen: Get variable
+		return(description);
+	} 
+
+	/**
+	 * @param description 
+	 * @SBGen Method set description
+	 */
+	public void setDescription(String description) {
+		// SBgen: Assign variables
+		this.description = description;
+		// SBgen: End Assign
+	} 
+
+	/**
+	 * Sets the context of the bean
+	 * @param ec 
+	 */
+	public void setEntityContext(EntityContext ec) {
+		this.context = ec;
+		// to do: code goes here.
+	} 
+
+	/**
+	 * Clears the context of the bean
+	 */
+	public void unsetEntityContext() {
+		this.context = null;
+		// to do: code goes here.
+	} 
+
+	/**
+	 * This method is called when the container picks this entity object
+	 * and assigns it to a specific entity object. Insert code here to
+	 * acquire any additional resources that it needs when it is in the
+	 * ready state.
+	 */
+	public void ejbActivate() {
+	} 
+
+	/**
+	 * This method is called when the container diassociates the bean
+	 * from the entity object identity and puts the instance back into
+	 * the pool of available instances. Insert code to release any
+	 * resources that should not be held while the instance is in the
+	 * pool.
+	 */
+	public void ejbPassivate() {
+	} 
+
+	/**
+	 * The container invokes this method on the bean whenever it
+	 * becomes necessary to synchronize the bean's state with the
+	 * state in the database. This method is called after the container
+	 * has loaded the bean's state from the database.
+	 */
+	public void ejbLoad() {
+	} 
+
+	/**
+	 * The container invokes this method on the bean whenever it
+	 * becomes necessary to synchronize the state in the database
+	 * with the state of the bean. This method is called before the
+	 * container extracts the fields and writes them into the database.
+	 */
+	public void ejbStore() {
+	} 
+
+
+	/**
+	 * The container invokes this method in response to a client-invoked
+	 * remove request. Insert code to implement any actions before the
+	 * bean is removed from the database.
+	 */
+	public void ejbRemove() {
+	} 
+
+	/**
+	 * @return 
+	 */
+	public String ejbCreate(String productId, String name, String description, double basePrice)
+		throws CreateException {
+		this.productId = productId;
+		this.name = name;
+		this.basePrice = basePrice;
+		this.description = description;
+		return null;
+	} 
+
+	public void ejbPostCreate(String productId, String name, String description, double basePrice) {
+	} 
+}

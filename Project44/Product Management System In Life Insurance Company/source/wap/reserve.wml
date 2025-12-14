@@ -1,0 +1,39 @@
+<?xml version="1.0"?> 
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.3//EN" "http://www.wapforum.org/DTD/wml13.dtd"> 
+ 
+<!-- If WML 1.1 or 1.2 features are required, then use one of the following DOCTYPE instead: 
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml"> 
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN" "http://www.wapforum.org/DTD/wml12.dtd"> 
+  --> 
+ 
+<wml>
+<template>
+		<do type ="prev" label="Prev" name="p">
+			<prev/>
+		</do>
+</template> 
+	 <card id="Check_R" title ="Check Reserved Customer">
+		<p align ="left">
+			<a href ="http://127.0.0.1/project/vc_not_book.php">1.View All Customer Not Reserve</a><br/>
+			<a href ="searchcustomer.php">2.Search Customer</a><br/>
+			<a href ="#reserve">3.Reserve Customer</a><br/>
+			<a href="menu.php">Back to main menu</a><br/>
+		</p>
+	</card>
+	
+	<card id="reserve" title ="Reservd Customer">
+	<do type ="accept" label ="Check this customer with DB">
+			<go href="http://127.0.0.1/project/reserve_c.php">
+			<postfield name="Cid" value="$Cid"/>
+			<postfield name="Anick" value="$Anick"/> 
+			<postfield name="Apwd" value="$Apwd"/>
+			</go>
+	</do>
+		<p align ="left">
+			<small> Please input data customer </small><br/>
+			ID	:<input type="text" title ="Customer ID" name ="Cid" /><br/>
+			Agent Username :<input type ="text"  title="Agent Username" name="Anick"/><br/>
+			Agent Password :<input type ="password"  title="Agent Password" name="Apwd"/><br/>
+		</p>
+	</card>	
+</wml> 

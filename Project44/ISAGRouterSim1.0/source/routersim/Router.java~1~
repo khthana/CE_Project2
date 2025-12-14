@@ -1,0 +1,261 @@
+package routersim;
+
+import java.util.*;
+
+public class Router {
+  static int num=0;
+  private String name;
+  private String status;
+  private int mode;
+  private String prompt;
+  private int time = 30000;//time to sleep
+  private Vector vInt = new Vector();
+  private Table rtable = new Table();
+  //------------------Set Prompt-------------------//
+  public void setPrompt(String s){
+    prompt = s;
+  }
+  public String getPrompt(){
+    return prompt;
+  }
+  //------------------Set Name---------------------//
+  public void setName(String s){
+    name = s;
+  }
+  public String getName(){
+    return name;
+  }
+  //---------------Set Status------------------------//
+  public void setStatus(String s){
+    status = s;
+  }
+  public String getStatus(){
+    return status;
+  }
+  //-----------------Set Mode------------------------//
+  public void setMode(int i){
+    mode = i;
+  }
+  public int getMode(){
+    return mode;
+  }
+  //-------------------Set Time----------------------//
+  public void setTime(int t){
+    time = t;
+  }
+  public int getTime(){
+    return time;
+  }
+  //--------------------Set Table--------------------//
+  public Table getTable(){
+    return rtable;
+  }
+  public Vector getVInt(){
+    return vInt;
+  }
+  //-------------------Send Routeing Table---------------------//
+  public void sendRoutingTable(Table rt){
+    if (rt.getrTable().size() > 0){
+      RoutingTable rtSend = (RoutingTable)rt.getrTable().elementAt(0);
+      String gw="";
+      Interface interf=null;
+      for (int i=0;i < vInt.size(); i++){
+        Interface oldInt = (Interface)vInt.elementAt(i);
+        for (int j=0; j < Frame1.vRouter.size();j++){
+          Router r = (Router)Frame1.vRouter.elementAt(j);
+          if (r.getTable().getFlag() == 'r'){
+            for (int k=0; k < r.getVInt().size();k++){
+              Interface newInt = (Interface)r.getVInt().elementAt(k);
+              //  if adjacent it recieve table
+              if (oldInt.getNetAddress().equalsIgnoreCase(newInt.getNetAddress())&&(oldInt.getStatus().equalsIgnoreCase("down"))&&(newInt.getStatus().equalsIgnoreCase("down"))){
+                for (int a=0;a < rt.getrTable().size();a++){
+//                Table t1 = (Table)rt.getrTable().elementAt(a);
+                  RoutingTable tableGw = (RoutingTable)rt.getrTable().elementAt(a);
+                  if (tableGw.getIpDestination().equalsIgnoreCase(oldInt.getNetAddress())){
+                    gw = tableGw.getGateway();
+                    interf = tableGw.getInterface();
+                  }//end find gw when netaddress are same
+                }//end for each row in table
+                if (!(r.getName().equalsIgnoreCase(this.getName()))){
+                  if (r.getTable().getFlag() == 'r'){
+                    r.recieveTable(rt,gw,interf);
+                  }
+                }
+              }//end same netaddress
+            }//end type = rip
+          }//new interface
+        }//router
+      }//old Interface
+    }
+  }
+  //--------------------------Recieve Table-----------------------//
+  public void recieveTable(Router r){
+    //count router
+    String gw="";
+    int metrics=0;
+    RoutingTable oldrt =null;
+    for (int i=0;i < Frame1.vRouter.size();i++){
+      Router r1 = (Router)Frame1.vRouter.elementAt(i);
+      //-----------------if adjacent-------/
+      Interface oldinf,newinf = null;
+      //count interface of old interface
+      for (int a=0;a < vInt.size();a++){
+        //count interface of new interface
+        for (int b=0;b < r1.getVInt().size();b++){
+          oldinf = (Interface)vInt.elementAt(a);
+          newinf = (Interface)r1.getVInt().elementAt(b);
+          if (oldinf.getNetAddress().equalsIgnoreCase(newinf.getNetAddress())){
+            Table t = r1.getTable();
+            //count Routing Table
+            for (int j=0;j < t.getrTable().size();j++){
+              RoutingTable rt = (RoutingTable)t.getrTable().elementAt(j);
+                boolean found = false;
+                //count old Routing Table
+                for (int k=0;k < r.getTable().getrTable().size();k++){
+                  oldrt = (RoutingTable)r.getTable().getrTable().elementAt(k);
+                  if (oldrt.getIpDestination().equalsIgnoreCase(rt.getIpDestination())){
+                    found = true;
+                    gw=oldrt.getGateway();
+                    metrics = rt.getMatrice();
+                  }//end if
+                }//end count old Routing Table
+                if (found){
+                  //update
+                }//end if
+                else {
+                RoutingTable insert = new RoutingTable();
+                insert.setGateway(gw);
+                insert.setIpDestination(rt.getIpDestination());
+                insert.setMatrice(metrics+1);
+                insert.setInterface(oldinf);
+                insert.setRouteType('r');
+                insert.setSubnet(rt.getSubnet());
+                rtable.getrTable().addElement(insert);
+              }//end else
+            }//end count RoutingTable
+          }//end count interface of new router
+    //-----------end adjacent---------------//
+        }//end count interface of old router
+      }
+    }//end count Router
+  }
+  public void recieveTable(Table rcTable,String newgw,Interface intff){
+    RoutingTable oldadd=null;
+    for (int i=0; i  < rcTable.getrTable().size();i++){
+      // Routing Table you must add in object with you call this method
+      RoutingTable newrt = (RoutingTable)rcTable.getrTable().elementAt(i);
+      for (int j=0; j < vInt.size(); j++){
+        // Table of old Interface must be added
+        Vector oldTable = (Vector)rtable.getrTable();
+        RoutingTable oldrTable = (RoutingTable)rtable.getrTable().elementAt(j);
+//        if (!(newrt.equals(oldrTable))){
+          boolean found=false;
+          for (int a=0;a < oldTable.size();a++){
+            oldadd = (RoutingTable)oldTable.elementAt(a);
+            if(oldadd.getIpDestination().equalsIgnoreCase(newrt.getIpDestination())){
+              found = true;
+            }
+          }
+          if (found){
+            //update table
+          }
+          else {
+            RoutingTable insert = new RoutingTable();
+            insert.setGateway(newgw);
+            insert.setIpDestination(newrt.getIpDestination());
+            insert.setMatrice(newrt.getMatrice()+1);
+            insert.setInterface(intff);
+            insert.setRouteType('r');
+            insert.setSubnet(newrt.getSubnet());
+            rtable.getrTable().addElement(insert);
+          }
+  //      }
+      }
+    }// new
+  }
+  //------------------Recieve Routing table-----------------------//
+
+/*
+  //-------------------Send Routing Table---------------//
+  public void sendRoutingTable(Vector rt){
+    for (int aa=0;aa < vInt.size();aa++){
+      Interface old_intf = (Interface)vInt.elementAt(aa);
+      for (int bb=0;bb<User.vRouter.size();bb++){
+        Router r =(Router)User.vRouter.elementAt(bb);
+          for (int cc=0;cc<r.getVInt().size();cc++){
+            Interface new_intf = (Interface)r.getVInt().elementAt(cc);
+            if (old_intf.getNetAddress().equalsIgnoreCase(new_intf.getNetAddress())){
+              System.out.println("send routeing");
+              r.recieveRoutingTable(rt);
+            }else{}
+          }//for cc
+        }//for bb
+      }//for aa
+    }
+  //----------------Recieve Routing Table--------------//
+boolean checkfound(Vector oldRoutingTable,RoutingTable r_new){
+      boolean check=false;
+      int ii=0;
+      while ((ii<oldRoutingTable.size())&&(!check)){
+        RoutingTable r_old = (RoutingTable)oldRoutingTable.elementAt(ii);
+        if (r_old.getIpDestination().equalsIgnoreCase(r_new.getIpDestination())){
+          System.out.println("check treu");
+           check=true;
+        }else{check =false;System.out.println("not same");}
+        ii++;
+      }
+    return check;
+}
+Interface findNewGateway(Vector newRoutingTable){
+  Interface gw = new Interface();
+  for (int aa=0;aa<newRoutingTable.size();aa++){
+    RoutingTable r_new=(RoutingTable)newRoutingTable.elementAt(aa);
+    for (int bb=0;bb<rtable.getrTable().size();bb++){
+      RoutingTable r_old=(RoutingTable)rtable.getrTable().elementAt(bb);
+      if ((r_new.getIpDestination().equalsIgnoreCase(r_old.getIpDestination()))&&(r_new.getRouteType()=='c')&&(r_old.getRouteType()=='c')){
+           //gw = r_old.getIntf();
+              gw=r_new.getInterface();
+      }else{}
+    }
+  }
+  return gw;
+}
+
+    public void recieveRoutingTable(Vector rt){
+        //------------ Update Routing Table ----------------------//
+        System.out.println("Recieve");
+        for (int ii=0;ii<rt.size() ;ii++ ){
+                RoutingTable r = (RoutingTable)rt.elementAt(ii);
+                if (checkfound(rt,r)){
+                  System.out.println("test check ture");
+                }
+                else{
+                  System.out.println("test check false");
+                   RoutingTable r_to_insert = new RoutingTable();
+                   r_to_insert.setIpDestination(r.getIpDestination());
+                   Interface intf = findNewGateway(rt);
+                    r_to_insert.setGateway(intf.getIpAddress());
+                    r_to_insert.setInterface(intf);
+                    r_to_insert.setMatrice(r.getMatrice()+1);
+                    r_to_insert.setRouteType('r');
+                    rtable.getrTable().addElement(r_to_insert);
+                }//else
+        }//for
+    }// end of recieveRoutingTable
+*/
+  //constructor
+  public Router() {
+    name = "Router";
+    status = "downt";
+    mode = 1;
+    prompt=">";
+    num++;
+  }
+  public Router(String s){
+    name = s;
+    status = "down";
+    mode = 1;
+    prompt=">";
+    num++;
+  }
+}

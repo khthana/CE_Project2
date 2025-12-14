@@ -1,0 +1,167 @@
+<%@page contentType="text/html;  charset=windows-874" %>
+<%@page import ="java.sql.*,java.lang.*,java.util.Date,java.util.*"%> <!-- import  เพื่อใช้ session -->
+<%@page session="true"%><!-- default -->
+<%@include file="th-db.jsp"%>
+<HTML><HEAD><TITLE>:: Online e-Procurement ::</TITLE>
+<LINK href="picture/cssomo1.css" rel=stylesheet type="text/css">
+<META content="text/html; charset=windows-874" http-equiv=Content-Type>
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="Sirirporn J.">
+<META NAME="Description" CONTENT="First page for e-Procurement system">
+</HEAD>
+<BODY  leftMargin=0 topMargin=0 vLink=#0077ff marginheight="0" 
+marginwidth="0"><FONT color=#000000></FONT>
+<TABLE border=0 cellPadding=0 cellSpacing=0 width=760 bgcolor="#FFFFFF" align="center">
+  <TBODY > 
+  <TR>
+    <TD align=left height=75 vAlign=bottom>
+      <%@include file="topmenu.html"%>
+	  </TD></TR>
+  
+  <TR>
+    <TD height=10 bgcolor="#B6B6B6"> 
+    </TD>
+  </TR>
+    <TR>
+    <TD height=30 bgcolor="white"> 
+   <div align="right">  
+   <FONT  COLOR="#658dc1"><B>
+   <%@include file="date.txt"%></B></FONT></div>
+    </TD>
+  </TR>
+   <TR>
+    <TD height=1 bgcolor="#B6B6B6"> 
+    </TD>
+  </TR>
+  <TR colspan="2">
+    <TD bgColor=#bfbfbf height=1 width=760></TD>
+	</TR></TBODY></TABLE>
+<TABLE border=0 cellPadding=0 cellSpacing=0 width=760 align="center">
+  <TBODY> 
+  <TR> 
+    <TD align=middle vAlign=top> 
+      <TABLE width="100%" cellpadding="3" cellspacing="0" border="0">
+        <TR>
+		  <TD bgColor="#bfbfbf" width="27%" align="center" valign="top">
+
+            <%@include file="directory.html"%>
+             <%@include file="shopping.html"%><P><P><BR><BR>
+
+			
+          </TD>
+		  <TD bgColor="#ffffff" width="73%" align="center" valign="top" > 
+
+<%
+	ShoppingCart shoppingCart = (ShoppingCart)session.getAttribute("ShoppingCart");
+	if (shoppingCart == null) {
+		out.println("ไม่มีรายการใน ShoppingCart");
+	}
+	else {
+		Collection itemOrderCollection = shoppingCart.getItemOrdered();
+		Iterator i = itemOrderCollection.iterator();
+		%>	
+			<div align="left"><IMG SRC="picture/shopcart_logo.gif" WIDTH="266" HEIGHT="80" BORDER=0></div>
+			
+<table border="0" align="center" cellpadding="0" cellspacing="1" width="90%">
+    <tr bgcolor="#6699CC">
+	 <td align ="center">รายการ</td>
+	  <td align ="center">ตรา</td>
+      <td align ="center">จำนวน</td>
+      <td align ="center">ราคารวม</td>
+	  <td align ="center">ลบ</td>	
+	  <td align ="center">Favorite</td>	
+     
+     
+    </tr>
+
+	<%
+			int total=0;
+			int ttcost=0;
+		   int ii=0;
+		while(i.hasNext()) {
+			ItemOrder itemOrder = (ItemOrder) i.next();
+              
+			%>
+    <tr bgcolor="#b3d9ff">
+	    
+      <td align ="center"><%=MS874ToUnicode(itemOrder.getType()) %></td>
+	   <td align ="center"><%=itemOrder.getBrand() %></td>
+      <td align ="center"><%=itemOrder.getNumItems()%></td>		
+	  <td align ="center"><%=itemOrder.getTotalCost() %></td>
+       <td align ="center"><A HREF="deletecart.jsp?ii=<%=ii%>">ลบ</A></td>
+      <td align ="center"><A HREF="addtofav.jsp?code=<%=itemOrder.getItemID()%>&tablename=<%=itemOrder.getTableName()%>">เพิ่มเข้า Favorite</A></td>
+    
+    </tr>
+
+			<%        
+						total+=itemOrder.getNumItems();
+						ttcost+=itemOrder.getTotalCost();
+						ii+=1;
+		} // while
+	%>
+   <tr> <!-- //เผื่อว่าอีกหน่อยอยากรวมราคา -->
+      <td></td>
+      <td bgcolor="#ffccff" align="center"><FONT COLOR="red">รวม</FONT></td>
+	 <td bgcolor="#ffccff" align="center"><FONT COLOR="red"><%=total%></FONT></td>
+      <td bgcolor="#ffccff" align="center"><FONT COLOR="red"><%=ttcost%><%
+		  session.setAttribute("totalprice",new Integer(ttcost));%></FONT></td>
+    </tr> 
+</table>
+		  <P>&nbsp;<P><CENTER><FORM METHOD=POST ACTION="index.jsp">
+		  <INPUT TYPE="submit" VALUE="ไปช้อปต่อ">
+		  </FORM></CENTER>
+<p>&nbsp;<P>
+	<%   String emp = (String) session.getAttribute("emp");
+			   String passwd = (String) session.getAttribute("passwd");
+			   String dept = (String) session.getAttribute("dept");
+			   String name =(String) session.getAttribute("name");
+			   String sname=(String) session.getAttribute("sname");
+			   String level=(String) session.getAttribute("level");
+
+        if ((emp==null) && (passwd==null)){ %>
+
+							<CENTER><B>ต้องทำการลงทะเบียนก่อนจึงสามารถออก PR ได้</B></CENTER>
+<%
+}else{
+	%>
+	  
+	  
+	  <FORM METHOD=POST ACTION="servlet/GenPr">
+		  <table  align="center" border="1" bordercolor="#6699CC" cellpadding="3" cellspacing="0" width="400">
+		  <tr bgcolor="#6699CC">
+			  <td>ข้อมูลเพิ่มเติมในการสั่งสินค้า</FONT>
+			  </td>
+		  </tr>
+		  <tr bgcolor="#b3d9ff" align="center">
+		   <td><TEXTAREA NAME="comment" ROWS="5" COLS="50"></TEXTAREA>
+		  </td>
+		  </tr>
+    <tr bgcolor="#6699CC">
+      <td align="center" valign="middle">
+      <INPUT TYPE="submit"  VALUE="ออก PR">
+     </td>
+     
+    </tr>
+</table>
+ </FORM>
+<%   }
+		   
+	} // else
+%>		
+
+		   
+		   </TD>
+	</TR>
+	</TABLE>
+<!-- ******************************************************************* -->	
+
+    </TD>
+  </TR>
+  <TR>
+                <%@include file="bottommenu.html"%>
+                    </TR>
+
+  </TBODY> 
+</TABLE>
+
+</BODY></HTML>

@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<%@page contentType="text/html;  charset=windows-874" %>
+<%@page import ="java.sql.*,java.lang.*,java.util.Date"%> <!-- import  เพื่อใช้ session -->
+<%@page session="true"%><!-- default -->
+<%@include file="th-db.jsp"%>
+
+<HTML>
+<HEAD>
+<TITLE>แก้ไขข้อมูลสินค้าประเภทแฟ้ม</TITLE>
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="Siriporn J.">
+<LINK REL="stylesheet" HREF="procurement.css" TYPE="text/css">
+</HEAD>
+<BODY>
+<% 
+String  code=new String(request.getParameter("code"));   
+try{
+         Class.forName("oracle.jdbc.driver.OracleDriver");
+		 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");
+         Statement stmt = con.createStatement();
+		 String query="SELECT * FROM FILING WHERE CODE='"+code+"'";
+         ResultSet rs=stmt.executeQuery(query);
+         rs.next();
+	     
+         String color=rs.getString("COLOR");
+		 String type=rs.getString("TYPE");
+		 String brand=rs.getString("BRAND");
+		 String  cat=rs.getString("CAT#");
+		 String  thick=rs.getString("THICK");
+		 String paper_size=rs.getString("PAPER_SIZE");  
+		 String detail=rs.getString("DETAIL");
+		 
+		 
+%>
+<FORM method="post" action="file-edit3.jsp?code=<%=code%>&cat=<%=cat%>">
+<TABLE cellpadding="3" bordercolor="#DF5F2D" border="1" frame="above" rules="rhs" width="300" cellspacing="0">
+<TR bgcolor="#DF572D" height="24">
+	<TD colspan="2" align="left"><FONT COLOR="#FFF0E1"><B>แก้ไขข้อมูลสินค้าประเภทแฟ้ม</B></FONT></TD>
+</TR>
+<TR>
+	<TD  bgcolor="#FFFFFF" width="80">รหัสสินค้า :</TD>
+	<TD bgcolor="#FFF0E1" ><%=code%></TD>
+</TR>
+<TR>
+	<TD  bgcolor="#FFFFFF" width="80">ชนิด :</TD>
+	<TD bgcolor="#FFF0E1" ><SELECT NAME="type">
+			  <OPTION VALUE="แฟ้มสันกว้าง" <%if(type.equals("แฟ้มสันกว้าง")){out.print("SELECTED");}%>>แฟ้มสันกว้าง
+			  <OPTION VALUE="แฟ้มคลิปสปริง" <%if(type.equals("แฟ้มคลิปสปริง")){out.print("SELECTED");}%>>แฟ้มคลิปสปริง
+			  <OPTION VALUE="แฟ้ม 2 ห่วง" <%if(type.equals("แฟ้ม 2 ห่วง")){out.print("SELECTED");}%>>แฟ้ม 2 ห่วง
+			  <OPTION VALUE="แฟ้ม 3 ห่วง" <%if(type.equals("แฟ้ม 3 ห่วง")){out.print("SELECTED");}%>>แฟ้ม 3 ห่วง
+			  <OPTION VALUE="แฟ้ม 4 ห่วง" <%if(type.equals("แฟ้ม 4 ห่วง")){out.print("SELECTED");}%>>แฟ้ม 4 ห่วง
+			  <OPTION VALUE="แฟ้มหนีบ" <%if(type.equals("แฟ้มหนีบ")){out.print("SELECTED");}%>>แฟ้มหนีบ
+			  <OPTION VALUE="แฟ้มคอมพิวเตอร์" <%if(type.equals("แฟ้มคอมพิวเตอร์")){out.print("SELECTED");}%>>แฟ้มคอมพิวเตอร์
+			  <OPTION VALUE="แฟ้มแขวน" <%if(type.equals("แฟ้มแขวน")){out.print("SELECTED");}%>>แฟ้มแขวน
+			  <OPTION VALUE="แฟ้มโชว์เอกสาร" <%if(type.equals("แฟ้มโชว์เอกสาร")){out.print("SELECTED");}%>>แฟ้มโชว์เอกสาร
+			  <OPTION VALUE="ซองอเนกประสงค์" <%if(type.equals("ซองอเนกประสงค์")){out.print("SELECTED");}%>>ซองอเนกประสงค์
+			  <OPTION VALUE="แฟ้มเจาะ" <%if(type.equals("แฟ้มเจาะ")){out.print("SELECTED");}%>>แฟ้มเจาะ
+			  <OPTION VALUE="แฟ้มซอง" <%if(type.equals("แฟ้มซอง")){out.print("SELECTED");}%>>แฟ้มซอง
+			  <OPTION VALUE="ซองเอกสารพลาสติก" <%if(type.equals("ซองเอกสารพลาสติก")){out.print("SELECTED");}%>>ซองเอกสารพลาสติก
+				<OPTION VALUE="แฟ้มกระเป๋า" <%if(type.equals("แฟ้มกระเป๋า")){out.print("SELECTED");}%>>แฟ้มกระเป๋า
+				<OPTION VALUE="แฟ้มหีบเพลง" <%if(type.equals("แฟ้มหีบเพลง")){out.print("SELECTED");}%>>แฟ้มหีบเพลง
+				<OPTION VALUE="แฟ้มพับ" <%if(type.equals("แฟ้มพับ")){out.print("SELECTED");}%>>แฟ้มพับ
+			 
+			  </SELECT>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">ยี่ห้อ :</TD>
+	<TD bgcolor="#FFF0E1" ><INPUT TYPE="text" NAME="brand" size="20" VALUE="<%=brand%>"></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">สี :</TD>
+	<TD bgcolor="#FFF0E1" ><B></B>
+		 <SELECT NAME="color">
+		<OPTION VALUE="ไม่ระบุสี"  <%if (color.equals("0")){out.print("SELECTED");}%>>ไม่ระบุสี
+		<OPTION VALUE="ดำ"  <%if (color.equals("ดำ")){out.print("SELECTED");}%>>ดำ
+		<OPTION VALUE="แดง" <%if (color.equals("แดง")){out.print("SELECTED");}%>>แดง
+		<OPTION VALUE="น้ำเงิน" <%if (color.equals("น้ำเงิน")){out.print("SELECTED");}%>>น้ำเงิน
+		<OPTION VALUE="ม่วง" <%if (color.equals("ม่วง")){out.print("SELECTED");}%>>ม่วง
+		<OPTION VALUE="เขียว" <%if (color.equals("เขียว")){out.print("SELECTED");}%>>เขียว
+		<OPTION VALUE="ชมพู" <%if (color.equals("ชมพู")){out.print("SELECTED");}%>>ชมพู
+		<OPTION VALUE="ฟ้า" <%if (color.equals("ฟ้า")){out.print("SELECTED");}%>>ฟ้า
+		<OPTION VALUE="น้ำตาล" <%if (color.equals("น้ำตาล")){out.print("SELECTED");}%>>น้ำตาล
+		<OPTION VALUE="ส้ม" <%if (color.equals("ส้ม")){out.print("SELECTED");}%>>ส้ม
+		<OPTION VALUE="เหลือง" <%if (color.equals("เหลือง")){out.print("SELECTED");}%>>เหลือง
+		<OPTION VALUE="เทา" <%if (color.equals("เทา")){out.print("SELECTED");}%>>เทา
+		<OPTION VALUE="ครีม" <%if (color.equals("ครีม")){out.print("SELECTED");}%>>ครีม
+		<OPTION VALUE="ชา" <%if (color.equals("ชา")){out.print("SELECTED");}%>>ชา
+		<OPTION VALUE="ขาว" <%if (color.equals("ขาว")){out.print("SELECTED");}%>>ขาว
+		<OPTION VALUE="ใส" <%if (color.equals("ใส")){out.print("SELECTED");}%>>ใส	
+		<OPTION VALUE="เงิน" <%if (color.equals("เงิน")){out.print("SELECTED");}%>>เงิน
+		<OPTION VALUE="ทึบ" <%if (color.equals("ทึบ")){out.print("SELECTED");}%>>ทึบ
+	
+		</SELECT></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">ขนาดกระดาษ:</TD>
+	<TD bgcolor="#FFF0E1" ><SELECT NAME="paper_size">
+	<OPTION VALUE="A3" <%if(paper_size.equals("A3")){out.print("SELECTED");}%>>A3 (305x408)
+	<OPTION VALUE="A4" <%if(paper_size.equals("A4")){out.print("SELECTED");}%>>A4 (216x302)
+	<OPTION VALUE="B4" <%if(paper_size.equals("B4")){out.print("SELECTED");}%>>B4 (264x368)
+	<OPTION VALUE="B5" <%if(paper_size.equals("B5")){out.print("SELECTED");}%>>B5 (184x262)
+	<OPTION VALUE="F" <%if(paper_size.equals("F")){out.print("SELECTED");}%>> F
+	<OPTION VALUE="สมุดเช็ค"  <%if(paper_size.equals("สมุดเช็ค")){out.print("SELECTED");}%>>สมุดเช็ค (265x138)
+	<OPTION VALUE="ฟุลสแก็ป" <%if(paper_size.equals("ฟุลสแก็ป")){out.print("SELECTED");}%>>ฟุลแก็ป (390x250)
+	</SELECT> มม.</TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">ใส่กระดาษหนา :</TD>
+	<TD bgcolor="#FFF0E1" ><INPUT TYPE="text" NAME="thick" size="5" VALUE="<%=thick%>">&nbsp;แผ่น/ซอง</TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">รายละเอียดอื่นๆ :</TD>
+	<TD bgcolor="#FFF0E1" ><TEXTAREA NAME="detail" ROWS="7" COLS="40"><%=detail%></TEXTAREA></TD>
+</TR>
+<TR bgcolor="#FFF0E1" valign="center" align="center">
+	<TD colspan="2">
+	<pre> <INPUT TYPE="submit" value="แก้ไข"><INPUT TYPE="reset" value="ข้อมูลก่อนการแก้ไข"></pre>
+ 	</TD>
+</TR>
+</TABLE>
+</FORM>
+	 <%
+		 rs.close();
+		 stmt.close();
+		 con.close();
+
+	 } catch(SQLException e) 
+      {
+	      while (e != null) 
+         {
+            out.println("SQLException:<br>");
+  		      out.println("Message:   " + e.getMessage() + "<br>");
+		      out.println("SQLState:  " + e.getSQLState() + "<br>");
+		      out.println("ErrorCode: " + e.getErrorCode() + "<br>");
+		      e = e.getNextException();
+         }
+	   }
+%>
+</BODY>
+</HTML>

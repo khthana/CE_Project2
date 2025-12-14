@@ -1,0 +1,44 @@
+
+package olala;
+
+import javax.ejb.EJBObject;
+
+import java.rmi.RemoteException;
+
+import java.math.BigDecimal;
+
+public interface Product extends EJBObject
+{
+	/**
+	 * @return 
+	 */
+	public String getProductId()
+		throws RemoteException; 
+
+	/**
+	 * @return 
+	 */
+	public String getName()
+		throws RemoteException; 
+
+	public void setName(String name)
+		throws RemoteException; 
+
+	/**
+	 * @return 
+	 */
+	public double getBasePrice()
+		throws RemoteException; 
+
+	public void setBasePrice(double basePrice)
+		throws RemoteException; 
+
+	/**
+	 * @return 
+	 */
+	public String getDescription()
+		throws RemoteException; 
+
+	public void setDescription(String description)
+		throws RemoteException; 
+}

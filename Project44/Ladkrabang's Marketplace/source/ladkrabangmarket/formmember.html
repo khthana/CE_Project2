@@ -1,0 +1,217 @@
+<html>
+<head>
+<title>สมัครสมาชิก</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+<style type="text/css">
+<!--
+body {  margin: 0px  0px; padding: 0px  0px}
+a:link { color: #005CA2; text-decoration: none}
+a:visited { color: #005CA2; text-decoration: none}
+a:active { color: #0099FF; text-decoration: underline}
+a:hover { color: #0099FF; text-decoration: underline}
+-->
+</style>
+</head>
+
+<body bgcolor="#FFFFFF">
+<form method=post action="register.php" name="webForm" onsubmit="return check()">
+  <table cellspacing=0 cellpadding=3 width="102%" bgcolor=#f5bb41 
+            border=0 height="52">
+    <tbody> 
+    <tr> 
+      <td colspan=2 height="52" bgcolor="#99ccff"> 
+        <center>
+          <font size=+2><b><font face="MS Sans Serif, Microsoft Sans Serif" size="3" color="#0000FF">สมัครสมาชิก</font></b></font> 
+        </center>
+        <font size=2> 
+        <li><font face="MS Sans Serif, Microsoft Sans Serif" size="1">ในช่องกรอกข้อมูลมีเครื่องหมาย 
+          <font 
+                    color=#ff0000>*</font> โปรดกรอกข้อมูลให้ครบถ้วน</font> 
+        </font> </td>
+    </tr>
+    <tr> 
+      <td colspan=2 height=2 bgcolor="#000066"></td>
+    </tr>
+    <tr> 
+      <td width="13%" bgcolor="#eeeeee"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">Username</font></td>
+      <td width="87%" bgcolor="#eeeeee"> 
+        <input onBlur=validate(this) maxlength=20 
+                  name=username>
+        &nbsp;<font color="red" size="2" face="MS Sans Serif, Microsoft Sans Serif">*</font> 
+        <font face="MS Sans Serif, Microsoft Sans Serif" size="1" color="#FF0000">(ภาษาอังกฤษเท่านั้นไม่เกิน 
+        20 ตัวอักษร)</font></td>
+    </tr>
+    <tr> 
+      <td width="13%" bgcolor="#eeeeee"><font size="1" face="MS Sans Serif, Microsoft Sans Serif">รหัสผ่าน 
+        </font></td>
+      <td width="87%" bgcolor="#eeeeee"> 
+        <input type=password maxlength=20 
+                  name=password>
+        &nbsp;<font color="red" size="2" face="MS Sans Serif, Microsoft Sans Serif">* 
+        </font><font face="MS Sans Serif, Microsoft Sans Serif" size="1" color="#FF0000">(ภาษาอังกฤษเท่านั้นไม่เกิน 
+        20 ตัวอักษร)</font><font color="red" size="2" face="MS Sans Serif, Microsoft Sans Serif"> 
+        </font></td>
+    </tr>
+    <tr> 
+      <td width="13%" bgcolor="#eeeeee"><font size="1" face="MS Sans Serif, Microsoft Sans Serif">ยืนยัน 
+        รหัสผ่าน</font></td>
+      <td width="87%" bgcolor="#eeeeee"> 
+        <input type=password maxlength=20 
+                  name=repassword>
+        &nbsp;<font color="red" size="2" face="MS Sans Serif, Microsoft Sans Serif">*</font></td>
+    </tr>
+    <tr> 
+      <td height="23" width="13%" bgcolor="#eeeeee"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">Email 
+        </font></td>
+      <td height="23" width="87%" bgcolor="#eeeeee"> 
+        <input maxlength=50 name=email>
+        &nbsp;<font color="red" size="2" face="MS Sans Serif, Microsoft Sans Serif">*</font> 
+      </td>
+    </tr>
+    <tr> 
+      <td colspan=2 height=2 bgcolor="#000066"></td>
+    </tr>
+    <tr bgcolor="#99ccff"> 
+      <td colspan=2><font size=+2><b><font face="MS Sans Serif, Microsoft Sans Serif" size="2">ข้อมูลสมาชิก 
+        </font></b><font face="MS Sans Serif, Microsoft Sans Serif" size="2"><font size="1" color="#FF0000">(เพื่อประโยชน์ในการค้นหา)</font> 
+        </font></font></td>
+    </tr>
+    <tr> 
+      <td colspan=2 height=2 bgcolor="#000066"></td>
+    </tr>
+    <tr> 
+      <td width="13%" bgcolor="#eeeeee"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">ชื่อ 
+        - นามสกุล</font></td>
+      <td width="87%" bgcolor="#eeeeee"> 
+        <input name=fullname>
+        &nbsp;</td>
+    </tr>
+    <tr> 
+      <td width="13%" bgcolor="#eeeeee"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">ชื่อเล่น</font></td>
+      <td width="87%" bgcolor="#eeeeee"> 
+        <input name=nickname>
+      </td>
+    </tr>
+    <tr> 
+      <td width="13%" bgcolor="#eeeeee"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">ICQ</font></td>
+      <td width="87%" bgcolor="#eeeeee"> 
+        <input name=icq size="20">
+      </td>
+    </tr>
+    <tr> 
+      <td width="13%" bgcolor="#eeeeee"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">Homepage</font></td>
+      <td width="87%" bgcolor="#eeeeee"> 
+        <input name=homepage size="20">
+      </td>
+    </tr>
+    <tr> 
+      <td width="13%" bgcolor="#eeeeee"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">เพจเจอร์</font></td>
+      <td width="87%" bgcolor="#eeeeee"> 
+        <input name=pager size="20">
+      </td>
+    </tr>
+    <tr> 
+      <td width="13%" bgcolor="#eeeeee"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">โทรศัพท์</font></td>
+      <td width="87%" bgcolor="#eeeeee"> 
+        <input name=tel size="20">
+      </td>
+    </tr>
+    <tr> 
+      <td width="13%" bgcolor="#eeeeee"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">รหัสนักศึกษา</font> 
+      </td>
+      <td width="87%" bgcolor="#eeeeee"> 
+        <input name=id size="20">
+      </td>
+    </tr>
+    <tr> 
+      <td width="13%" bgcolor="#eeeeee"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">คณะ</font></td>
+      <td width="87%" bgcolor="#eeeeee"> 
+        <input name=faculty size="20">
+      </td>
+    </tr>
+    <tr> 
+      <td width="13%" bgcolor="#eeeeee"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">ภาควิชา</font></td>
+      <td width="87%" bgcolor="#eeeeee"> 
+        <input name=department size="20">
+      </td>
+    </tr>
+    <tr> 
+      <td width="13%" bgcolor="#eeeeee"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">สาขาวิชา</font></td>
+      <td width="87%" bgcolor="#eeeeee"> 
+        <input name=branch size="20">
+      </td>
+    </tr>
+    <tr> 
+      <td height="15" width="13%" bgcolor="#eeeeee"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">ชั้นปี</font></td>
+      <td height="15" width="87%" bgcolor="#eeeeee"> 
+        <input name=year size="20">
+      </td>
+    </tr>
+    <tr> 
+      <td width="13%" bgcolor="#eeeeee"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">ห้อง</font></td>
+      <td width="87%" bgcolor="#eeeeee"> 
+        <input name=class size="20">
+      </td>
+    </tr>
+    <tr> 
+      <td width="13%" bgcolor="#eeeeee"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">สถานที่ติดต่อได้</font></td>
+      <td width="87%" bgcolor="#eeeeee"> 
+        <input name=addr size="60">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan=2 height=2 bgcolor="#000066"></td>
+    </tr>
+    <tr> 
+      <td colspan=2 height=2 bgcolor="#000066"></td>
+    </tr>
+    <tr bgcolor="#99ccff"> 
+      <td align=middle colspan=2 height="43"> 
+        <p align="center"> 
+          <input onClick=input_verify() type=submit value=สมัครสมาชิก name="Submit">
+          <input type=reset value=ยกเลิกทั้งหมด name="reset">
+        <p align="center"></p>
+      </td>
+    </tr>
+    </tbody> 
+  </table>
+</form>
+<script language="JavaScript">
+<!--
+function check()
+{
+      var v1 = document.webForm.username.value;
+      var v2 = document.webForm.password.value;
+      var v3 = document.webForm.repassword.value;
+	  var v4 = document.webForm.email.value;
+        if ( v1.length==0)
+           {
+           alert("กรุณากำหนด Username");
+           document.webForm.username.focus();           
+           return false;
+           }
+        else if (v2.length==0)
+           {
+           alert("กรุณากำหนด Password");
+           document.webForm.password.focus();           
+		   return false;
+           }
+        else if (v3.length==0)
+           {
+           alert("กรุณาป้อน Password อีกครั้ง");
+           document.webForm.repassword.focus();           
+		   return false;
+           }
+		else if (v4.length==0)
+           {
+           alert("กรุณาป้อน Email Address");
+           document.webForm.email.focus();           
+		   return false;
+           }
+        else
+           return true;
+}
+//-->
+</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+ 
+<%@page contentType="text/html;  charset=windows-874" %>
+<%@page import ="java.sql.*,java.lang.*,java.util.Date"%> <!-- import  เพื่อใช้ session -->
+<%@page session="true"%><!-- default -->
+<%@include file="th-db.jsp"%>
+
+<HTML>
+<HEAD>
+<TITLE>แก้ไขข้อมูลสินค้าประเภทอุปกรณ์การบันทึกข้อมูล</TITLE>
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="Siriporn J.">
+<LINK REL="stylesheet" HREF="procurement.css" TYPE="text/css">
+</HEAD>
+<BODY>
+<% 
+String  code=new String(request.getParameter("code"));   //ง จริงๆต้องเอามาจาก sessionง นะ
+try{
+         Class.forName("oracle.jdbc.driver.OracleDriver");
+		 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");
+         Statement stmt = con.createStatement();
+		 String query="SELECT * FROM DATA_KEEPING_PRODUCTS WHERE CODE='"+code+"'";
+         ResultSet rs=stmt.executeQuery(query);
+         rs.next();
+	     
+	     String speed=rs.getString("SPEED");
+		 String type=rs.getString("TYPE");
+		 String brand=rs.getString("BRAND");
+		 String data_size=rs.getString("DATA_SIZE");  
+		 String detail=rs.getString("DETAIL");
+		 String cat=rs.getString("CAT#");
+		 
+%>
+<FORM method="post" action="cd-edit3.jsp?code=<%=code%>&cat=<%=cat%>">
+<TABLE cellpadding="3" bordercolor="#DF5F2D" border="1" frame="above" rules="rhs" width="300" cellspacing="0">
+<TR bgcolor="#DF572D" height="24">
+	<TD colspan="2" align="left"><FONT COLOR="#FFF0E1"><B>แก้ไขข้อมูลสินค้าประเภทอุปกรณ์การบันทึก</B></FONT></TD>
+</TR>
+<TR>
+	<TD  bgcolor="#FFFFFF" width="80">รหัสสินค้า :</TD>
+	<TD bgcolor="#FFF0E1" ><%=code%></TD>
+</TR>
+<TR>
+	<TD  bgcolor="#FFFFFF" width="80">ชนิด :</TD>
+	<TD bgcolor="#FFF0E1" ><SELECT NAME="type">
+			
+		<OPTION VALUE="แผ่นดิสเก็ต" <%if(type.equals("แผ่นดิสเก็ต")){out.print("SELECTED");}%>>แผ่นดิสเก็ต
+			  <OPTION VALUE="แผ่น CD-R" <%if(type.equals("แผ่น CD-R")){out.print("SELECTED");}%>>แผ่น CD-R
+			    <OPTION VALUE="แผ่น CD-RW" <%if(type.equals("แผ่น CD-RW")){out.print("SELECTED");}%>>แผ่น CD-RW
+			  <OPTION VALUE="เทปบันทึกข้อมูล" <%if(type.equals("เทปบันทึกข้อมูล")){out.print("SELECTED");}%>>เทปบันทึกข้อมูล
+			  <OPTION VALUE="อุปกรณ์จัดเก็บดิสเก็ต" <%if(type.equals("อุปกรณ์จัดเก็บดิสเก็ต")){out.print("SELECTED");}%>>อุปกรณ์จัดเก็บดิสเก็ต
+			  <OPTION VALUE="อุปกรณ์จัดเก็บ CD" <%if(type.equals("อุปกรณ์จัดเก็บ CD")){out.print("SELECTED");}%>>อุปกรณ์จัดเก็บ CD
+			  <OPTION VALUE="ชุดทำความสะอาดแผ่น CD" <%if(type.equals("ชุดทำความสะอาดแผ่น CD")){out.print("SELECTED");}%>>ชุดทำความสะอาดแผ่น CD
+			  <OPTION VALUE="เทปทำความสะอาด" <%if(type.equals("เทปทำความสะอาด")){out.print("SELECTED");}%>>เทปทำความสะอาด</SELECT>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">ยี่ห้อ :</TD>
+	<TD bgcolor="#FFF0E1" ><INPUT TYPE="text" NAME="brand" size="20" VALUE="<%=brand%>"></TD>
+</TR>
+
+<TR>
+	<TD bgcolor="#FFFFFF">ความจุ:</TD>
+	<TD bgcolor="#FFF0E1" ><INPUT TYPE="text" NAME="data_size" size="10" VALUE="<%=data_size%>">&nbsp;มม.</TD>
+</TR>
+ <TR>
+	<TD bgcolor="#FFFFFF">ความเร็วในการบันทึก:</TD>
+	<TD bgcolor="#FFF0E1" ><INPUT TYPE="text" NAME="speed" size="10" VALUE="<%=speed%>">&nbsp;มม.</TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">รายละเอียดอื่นๆ :</TD>
+	<TD bgcolor="#FFF0E1" ><TEXTAREA NAME="detail" ROWS="7" COLS="40"><%=detail%></TEXTAREA></TD>
+</TR>
+<TR bgcolor="#FFF0E1" valign="center" align="center">
+	<TD colspan="2">
+	<pre> <INPUT TYPE="submit" value="แก้ไข"><INPUT TYPE="reset" value="ข้อมูลก่อนการแก้ไข"></pre>
+ 	</TD>
+</TR>
+</TABLE>
+</FORM>
+	 <%
+		 rs.close();
+		 stmt.close();
+		 con.close();
+
+	 } catch(SQLException e) 
+      {
+	      while (e != null) 
+         {
+            out.println("SQLException:<br>");
+  		      out.println("Message:   " + e.getMessage() + "<br>");
+		      out.println("SQLState:  " + e.getSQLState() + "<br>");
+		      out.println("ErrorCode: " + e.getErrorCode() + "<br>");
+		      e = e.getNextException();
+         }
+	   }
+%>
+</BODY>
+</HTML>

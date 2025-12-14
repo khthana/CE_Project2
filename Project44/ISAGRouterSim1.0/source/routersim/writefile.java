@@ -1,0 +1,77 @@
+package routersim;
+
+/***********************new write file*************************************/
+/*
+  void writeFile(String str) throws IOException{
+    FileReader fin = new FileReader("history.dat");
+    BufferedReader bin = new BufferedReader(fin);
+    Vector  oldCMD = new Vector();
+    String s;
+    while ((s = bin.readLine()) != null)
+      oldCMD.addElement(new String(s));
+    bin.close();
+    FileWriter fout = new FileWriter("history.dat");
+    BufferedWriter bout = new BufferedWriter(fout);
+    PrintWriter pout = new PrintWriter(bout);
+    //write old command
+    while (oldCMD.size() != 0){
+      s = (String)oldCMD.firstElement();
+      pout.println(s);
+      oldCMD.removeElementAt(0);
+    }
+    //write new command
+    pout.println(str);
+    pout.close();
+/**************************************************************************/
+/*
+    try{
+      FileWriter fout = new FileWriter("history.dat");
+      BufferedWriter bout = new BufferedWriter(fout);
+      PrintWriter pout = new PrintWriter(bout);
+      try{
+        pout.println(s);
+      }
+      catch(IOException e){
+        JOptionPane.showMessageDialog(null,"Error in write data","Error",JOptionPane.ERROR_MESSAGE);
+      }
+    }
+    catch(IOException e){
+      JOptionPane.showMessageDialog(null,"Error to open file for write","Error",JOptionPane.ERROR_MESSAGE);
+    }
+
+*/
+
+/*
+    FileWriter fout;
+    try{
+      fout = new FileWriter("history.dat");
+      BufferedWriter bout;
+      try{
+        bout = new BufferedWriter(fout);
+        PrintWriter pout;
+        try{
+          pout = new PrintWriter(bout);
+          try{
+            pout.println(s);
+          }
+          catch(IOException e){
+            JOptionPane.showMessageDialog(null,"Error in write data","Error",JOptionPane.ERROR_MESSAGE);
+            System.out.println("erroe");
+          }
+        }
+        catch(IOException e){
+          JOptionPane.showMessageDialog(null,"Error to open file for write","Error",JOptionPane.ERROR_MESSAGE);
+        }//end pout
+      }
+      catch(IOException e){
+        JOptionPane.showMessageDialog(null,"Error to open file for write","Error",JOptionPane.ERROR_MESSAGE);
+      }//end bout
+    }
+//        fout.write('a');
+//      }
+    catch(IOException e){
+        JOptionPane.showMessageDialog(null,"Error to open file for write","Error",JOptionPane.ERROR_MESSAGE);
+    }//end fout
+
+*/
+//  }

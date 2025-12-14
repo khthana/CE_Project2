@@ -1,0 +1,87 @@
+<html>
+<head>
+<title>Lesson 10 --&gt; Cisco Discovery Protocol(CDP)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+<style type="text/css">
+<!--
+body {  margin: 0px  0px; padding: 0px  0px}
+a:link { color: #005CA2; text-decoration: none}
+a:visited { color: #005CA2; text-decoration: none}
+a:active { color: #0099FF; text-decoration: underline}
+a:hover { color: #0099FF; text-decoration: underline}
+-->
+</style>
+</head>
+
+<body bgcolor="#FFFFFF">
+<img src="pics/book2.gif" width="97" height="94" >Lesson 10<br>
+<hr >
+<table width="75%" border="0" align="center">
+  <tr> 
+    <td height="344"> 
+      <h2> Cisco Discovery Protocol</h2>
+      <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspCisco Discovery Protocol 
+        เป็นโพรโตคอลที่ซิสโก้สร้างขึ้นเพื่อ gather information about neighbor 
+        cisco device<br>
+      </p>
+      <ol>
+        <li>ล็อกอินเข้าเราเตอร์ที่ต้องการ หลังจากนั้นเข้าสู่ Privilege โหมดโดยพิมพ์คำสั่ง 
+          <font color="#0000FF">En</font> หรือ <font color="#0000FF">Enable</font> 
+          แล้วกด Enter<br>
+        <li>ที่ R1 พิมพ์คำสั่ง Show cdp แล้ว Enter<br>
+          <br>
+          <img src="pics/pic37.gif" width="700" height="500"><br>
+          <br>
+          ข้อมูลที่แสดงผลออกมาหมายถึง CDP แพ็กเก็ตจะถูกส่งออกไปทุกอินเทอร์เฟสที่ 
+          active ทุกๆ 90 วินาที และมีค่า Holdtime 180 วินาที คือเมื่อได้รับข้อมูลจาก 
+          CDP ก็จะเก็บไว้เป็นเวลา 180 วินาที ถ้า R1 ไม่ได้รับข้อมูลอะไรจาก neighbor 
+          เป็นเวลา 180 วินาที ข้อมูลนั้นจะถูกลบทิ้งไป <br>
+        <li>ถ้าต้องการให้แพ็กเก็ต CDP ถูกส่งออกไปทุกๆ 60 วินาที จะใช้คำสั่ง<br>
+          <b>R1(config)#</b><font color="#0000FF">cdp timer 60</font><br>
+          สำหรับค่าของช่วงเวลาจะอยู่ระหว่าง 5-900<br>
+          <br>
+          <img src="pics/pic38.gif" width="700" height="500"><br>
+          <br>
+        <li>สำหรับคำสั่งที่เกี่ยวกับการดูค่า CDP ของโปรแกรมนี้จะมี 3 คำสั่งหลัก 
+          คือ<br>
+          <ul>
+            <li>Show CDP entry 
+            <li>Show CDP interface 
+            <li>Show CDP neighbors 
+          </ul>
+          <br>
+        <li>คำสั่ง Show CDP entry จะต้องมีการส่ง argument ไปให้ด้วย ซึ่ง argument 
+          นี้ อาจส่งเป็น<br>
+          <ul>
+            <li>Show CDP entry * 
+            <li>Show CDP entry &lt;Router Name&gt;<br>
+          </ul>
+        <li> คำสั่ง Show CDP interface เป็นคำสั่งสำหรับแสดงข้อมูลที่ถูก encapsulate 
+          ไว้ที่อินเทอร์เฟส ซึ่งข้อมูลนี้จะมีการปรับเปลี่ยนทุกๆ 60 วินาที (สามารถเปลี่ยนแปลงได้ตามข้อ 
+          3) และข้อมูลจะถูกเก็บได้ 180 วินาทีตามที่ได้กล่าวในข้อ 2<br>
+          <br>
+        <li>ใช้คำสั่ง Show CDP neighbors เพื่อดูข้อมูลการเชื่อมต่อกับอุปกรณ์อื่นข้างเคียง<br>
+          <br>
+          <br>
+          ข้อมูลของอุปกรณ์ข้างเคียงที่แสดงออกมาจะมีดังนี้<br>
+		<ul>
+			<li>Neighbor Device ID : คือชื่อของเราเตอร์ข้างเคียง ได้จากการที่เราเตอร์มีการแลกเปลี่ยน 
+              CDP information กัน
+            <li>Local interface : คืออินเทอร์เฟสที่เราเตอร์ได้รับข้อมูล CDP มา
+            <li>Holdtime : 
+            <li>Capability : R สำหรับเราเตอร์ และ S สำหรับสวิตซ์
+            <li>Platform : ประเภทของอุปกรณ์
+            <li>Port ID : คืออินเทอร์เฟสของเราเตอร์ที่รับข้อมูล CDP
+          </ul>
+        
+      </ol>
+      <center>สำหรับโหมดการทำงานทั้งหมดของเราเตอร์สามารถดูได้ใน<a href="command.html">สรุปคำสั่งทั้งหมด</a></center><br>
+    </td>
+  </tr>
+</table>
+<br>
+<center>
+  <b><font size="+2"><a href="index.html">Back to Main</a></font></b>
+</center>
+</body>
+</html>

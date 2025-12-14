@@ -1,0 +1,16 @@
+nop;            mov r0,#AAA0;   nop;            nop;
+nop;            mov r3,#0002;   nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            inc r0;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            jmp r1;
+nop;            nop;            nop;            dec r0;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;

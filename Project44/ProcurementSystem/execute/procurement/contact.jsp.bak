@@ -1,0 +1,165 @@
+<%@page contentType="text/html;  charset=windows-874" %>
+<%@page import ="java.sql.*,java.lang.*,java.util.Date"%> <!-- import  เพื่อใช้ session -->
+<%@page session="true"%><!-- default -->
+<%@include file="th-db.jsp"%>
+<%@ page import="java.util.*, javax.mail.*, javax.mail.internet.*,java.sql.*,java.lang.*" %>
+<HTML><HEAD><TITLE>:: Online e-Procurement ::</TITLE>
+<LINK href="picture/cssomo1.css" rel=stylesheet type=text/css>
+<META content="text/html; charset=windows-874" http-equiv=Content-Type>
+<LINK href="picture/cssomo1.css" rel=stylesheet type=text/css>
+<META content="MSHTML 5.00.2920.0" name=GENERATOR>
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="Sirirporn J.">
+<META NAME="Description" CONTENT="First page for e-Procurement system">
+</HEAD>
+<BODY  leftMargin=0 topMargin=0 vLink=#0077ff marginheight="0" 
+marginwidth="0"  height="100%"><FONT color=#000000></FONT>
+<TABLE border=0 cellPadding=0 cellSpacing=0 width=760 bgcolor="#FFFFFF" align="center">
+  <TBODY> 
+  <TR>
+    <TD align=left height=75 vAlign=bottom>
+      <TABLE border=0 cellPadding=0 cellSpacing=0 width=760 bgcolor="#FFFFFF" align="center">
+        <TBODY> 
+        <TR>
+          <TD align=left height=75 vAlign=bottom width=210><IMG SRC="picture/ep_logo.gif" WIDTH="210" HEIGHT="75" BORDER=0 ></TD>
+          <TD height=75 width=545>
+            <TABLE border=0 cellPadding=0 cellSpacing=0 height=75 width=550 bgcolor="#FFFFFF">
+              <TBODY> 
+              <TR>
+                <TD align=right height=45 vAlign=top> 
+                  <TABLE border=0 cellPadding=0 cellSpacing=1 class=GenSmall 
+                  height=40 width=420 bgcolor="#FFFFFF">
+                    <TBODY> 
+                    <TR align=center> 
+                      <TD height=30 width=80><IMG 
+                        src="picture/register.gif"></TD>
+                      <TD height=30 width=80><IMG 
+                        src="picture/help.gif"></TD>
+                      <TD height=30 width=80><IMG 
+                        src="picture/favorite.gif"></TD>
+                      <TD height=30 width=80><IMG 
+                        src="picture/shoppingcart.gif"></TD>
+                      <TD height=30 width=80><IMG 
+                        src="picture/quatationicon.gif"></TD>
+						<TD height=30 width=80><IMG 
+                        src="picture/contact.gif"></TD>
+                    </TR>
+			
+                    <TR align=center vAlign=top> 
+                      <TD width=80><A 
+                        href="register.jsp">register</A></TD>
+                      <TD width=80><A 
+                        href="help.jsp">help</A></TD>
+                      <TD width=80><A HREF="favorite.jsp">favorite<BR> 
+                        items</A></TD>
+                      <TD width=80><A HREF="shopping.jsp">shopping<BR> 
+                        cart</A></TD>              
+					 <TD width=80><A HREF="approve.jsp">approve<BR> PR</A></TD>
+					 <TD width=80><A HREF="monitor.jsp">monitor<BR> PR</A></TD>
+                    </TR>
+                    </TBODY>
+                  </TABLE>
+                </TD></TR>
+              <TR>
+                <TD bgColor=#658dc1 class=menubar 
+                  height=9>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;<A 
+                  class=menubar 
+                  href="index.jsp">Home</A>&nbsp;&nbsp;|&nbsp;&nbsp; <A HREF="forgetpw.jsp" class=menubar >Forget Password</A>&nbsp;&nbsp;|&nbsp;&nbsp; <A HREF="editinfo.jsp" class=menubar >Edit Regeister Information</A>&nbsp;&nbsp;|&nbsp;&nbsp; <A HREF="contact.jsp" class=menubar >Contact Us</A>&nbsp;&nbsp;|&nbsp;&nbsp; 
+				  </TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR>
+  
+  <TR>
+    <TD height=10 bgcolor="#B6B6B6"> 
+    </TD>
+  </TR>
+    <TR>
+    <TD height=30 bgcolor="white"> 
+   <div align="right">  <FONT  COLOR="#658dc1"><B><%@include file="date.txt"%></B></FONT></div>
+    </TD>
+  </TR>
+   <TR>
+    <TD height=1 bgcolor="#B6B6B6"> 
+    </TD>
+  </TR>
+  <TR colspan="2">
+    <TD bgColor=#bfbfbf height=1 width=760></TD>
+	</TR></TBODY></TABLE>
+<TABLE border=0 cellPadding=0 cellSpacing=0 width=760 align="center">
+  <TBODY> 
+  <TR> 
+    <TD align=middle vAlign=top> 
+      <TABLE width="100%" cellpadding="0" cellspacing="0" border="0">
+        <TR>
+		  <TD bgColor="#bfbfbf" width="27%">
+
+            <p><%@include file="directory.html"%></p>
+            <p><%@include file="shopping.html"%></p>
+			 <P><P><BR><BR>
+          </TD>
+		  <TD bgColor="#ffffff" width="73%" valign="top"> 
+            <CENTER>
+			<P>&nbsp;<P><BR>
+
+			<FORM METHOD=POST ACTION="contact2.jsp">
+			<TABLE border="1" width="400" bordercolor="#66669A" cellspacing="0" cellpadding="3">
+			<TR bgcolor="#66669A"  height="25">
+				<TD colspan="2"><FONT  COLOR="#F1F0FF"><B>มีข้อสงสัย หรือสนใจสอบถามรายละเอียดเพิ่มเติม กรุณาติดต่อ</B></FONT></TD>
+			</TR>
+			<TR >
+				<TD bgcolor="#FFFFFF" width="220">E-mail Address ของคุณ :</TD>
+				<TD bgcolor="#F1F0FF"><INPUT TYPE="text" NAME="email" SIZE="30"></TD>
+			</TR>
+			<TR>
+				<TD bgcolor="#FFFFFF" width="220" valign="top">ความคิดเห็น หรือ ข้อสงสัย : </TD>
+				<TD bgcolor="#F1F0FF"><TEXTAREA NAME="suggestion" ROWS="5" COLS="40"></TEXTAREA></TD>
+			</TR>
+			<TR bgcolor="#F1F0FF" colspan="2" height="35">
+				<TD colspan="2"><CENTER><INPUT TYPE="submit" value="ตกลง">&nbsp;&nbsp; <INPUT TYPE="reset" value="เริ่มใหม่"></CENTER>	</TD>
+			</TR>
+			</TABLE>
+			</FORM>
+			</CENTER></TD>
+	</TR>
+	</TABLE>
+    </TD>
+  </TR>
+<TR>
+                <TD bgColor=#658dc1 class=menubar 
+                  height=9>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;<A 
+                  class=menubar 
+                  href="index.jsp">Home</A>&nbsp;&nbsp;|&nbsp;&nbsp; <A HREF="forgetpw.jsp" class=menubar >Forget Password</A>&nbsp;&nbsp;|&nbsp;&nbsp; <A HREF="editinfo.jsp" class=menubar >Edit Regeister Information</A>&nbsp;&nbsp;|&nbsp;&nbsp; <A HREF="contact.jsp" class=menubar >Contact Us</A>&nbsp;&nbsp;|&nbsp;&nbsp; 
+				  </TD></TR>
+				  <TR>
+                <TD align=right height=45 vAlign=top bgcolor="#FFFFFF"> 
+                  <TABLE border=0 cellPadding=0 cellSpacing=1 class=GenSmall 
+                  height=40 width=420 bgcolor="#FFFFFF">
+                    <TBODY> 
+                    <TR align=center> 
+                      <TD height=30 width=80><IMG 
+                        src="picture/register.gif"></TD>
+                      <TD height=30 width=80><IMG 
+                        src="picture/help.gif"></TD>
+                      <TD height=30 width=80><IMG 
+                        src="picture/favorite.gif"></TD>
+                      <TD height=30 width=80><IMG 
+                        src="picture/shoppingcart.gif"></TD>
+                      <TD height=30 width=80><IMG 
+                        src="picture/quatationicon.gif"></TD>
+						<TD height=30 width=80><IMG 
+                        src="picture/contact.gif"></TD>
+                    </TR>
+			
+                    <TR align=center vAlign=top> 
+                      <TD width=80><A 
+                        href="register.jsp">register</A></TD>
+                      <TD width=80><A 
+                        href="help.jsp">help</A></TD>
+                      <TD width=80><A HREF="favorite.jsp">favorite<BR> 
+                        items</A></TD>
+                      <TD width=80><A HREF="shopping.jsp">shopping<BR> 
+                        cart</A></TD>              
+					 <TD width=80><A HREF="approve.jsp">approve<BR> PR</A></TD>
+					 <TD width=80><A HREF="monitor.jsp">monitor<BR> PR</A></TD>
+                    </TR>
+  </TBODY> 
+</TABLE>
+</BODY></HTML>

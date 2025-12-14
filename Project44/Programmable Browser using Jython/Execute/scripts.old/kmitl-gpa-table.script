@@ -1,0 +1,24 @@
+# open file that contains KMITL-based grade report
+
+id = "41014234"
+passwd = ""
+year = "2544"
+term = "1"
+
+kmitl = KMITL()
+html = kmitl.inquireGrade(id, passwd, year, term)
+all = extractGPA(html)
+subs = all.split('\n')
+
+# ============================
+# create result JTable from key
+def createTable(key) :
+  table = []
+  for sub in subs :
+    if sub.find(key) != -1 :
+      table.append(sub.split('|'))
+  head = ('ID', 'Subject', 'Cradit', 'Grade')
+  return JTable(table, head)
+
+# show out the result
+showMessage(createTable('|'))

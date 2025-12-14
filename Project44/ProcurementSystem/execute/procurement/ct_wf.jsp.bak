@@ -1,0 +1,112 @@
+<%@page contentType="text/html;  charset=windows-874" %>
+<%@page import ="java.sql.*,java.lang.*,java.util.Date"%> <!-- import  เพื่อใช้ session -->
+<%@page session="true"%><!-- default -->
+<%@include file="th-db.jsp"%>
+
+<HEAD>
+<TITLE> กำหนดและแก้ไข Workflow ให้สินค้าแต่ละประเภท</TITLE>
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="ศิริพร จังสมบัติศิริ">
+<LINK href="picture/cssomo1.css" rel=stylesheet type="text/css">
+
+</HEAD>
+
+<BODY>
+
+
+<%
+	String  wf_name=MS874ToUnicode(new String(request.getParameter("wf_name")));
+//	String  cat=MS874ToUnicode(new String(request.getParameter("cat")));
+	String  app1=MS874ToUnicode(new String(request.getParameter("app1")));
+	String  viewer=MS874ToUnicode(new String(request.getParameter("viewer")));
+	String  detail=MS874ToUnicode(new String(request.getParameter("detail")));
+	String  app2=MS874ToUnicode(new String(request.getParameter("app2")));
+//	String  adhoc=MS874ToUnicode(new String(request.getParameter("adhoc")));
+String adhoc= new String();
+try{
+         Class.forName("oracle.jdbc.driver.OracleDriver");
+		 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");
+         Statement stmt = con.createStatement();
+
+		String query="INSERT INTO WF_TABLE VALUES('"+wf_name+"','"+viewer+"','"+app1+"','"+app2+"','"+adhoc+"','"detail"')";
+		stmt.executeUpdate(query);
+		 stmt.close();
+		 con.close();
+
+	 } catch(SQLException e) 
+      {
+	      while (e != null) 
+         {
+            out.println("SQLException:<br>");
+  		      out.println("Message:   " + e.getMessage() + "<br>");
+		      out.println("SQLState:  " + e.getSQLState() + "<br>");
+		      out.println("ErrorCode: " + e.getErrorCode() + "<br>");
+		      e = e.getNextException();
+         }
+	   }
+
+
+
+/*	
+	try{
+         Class.forName("oracle.jdbc.driver.OracleDriver");
+		 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");
+         Statement stmt = con.createStatement();
+		 String query="SELECT COUNT(*) FROM CT_WF";
+         ResultSet rs1=stmt.executeQuery(query);
+         rs1.next();
+	     int ii = rs1.getInt("COUNT(*)");
+		 query ="SELECT MAX(CT#) FROM CT_WF";
+         ResultSet rs2=stmt.executeQuery(query);
+         rs2.next();
+		 int max=rs2.getInt("MAX(CT#)");
+       	 query="SELECT * FROM CT_WF";
+		 ResultSet rs3=stmt.executeQuery(query);
+         
+		 int i =0;
+		 while(i<=ii){
+		 rs3.next();
+						String ct_name = rs3.getString("CT_NAME");
+					
+						<P><A HREF="ct_wf_edit.jsp?ct_name=<%=ct_name"><%=ct_name</A>
+
+					
+
+		 }
+
+
+		 rs1.close();
+		 rs2.close();
+		 rs3.close();
+		 stmt.close();
+		 con.close();
+
+	 } catch(SQLException e) 
+      {
+	      while (e != null) 
+         {
+            out.println("SQLException:<br>");
+  		      out.println("Message:   " + e.getMessage() + "<br>");
+		      out.println("SQLState:  " + e.getSQLState() + "<br>");
+		      out.println("ErrorCode: " + e.getErrorCode() + "<br>");
+		      e = e.getNextException();
+         }
+	   } */
+
+%>
+	<!-- <FORM method="post" action="check_ct_wf.jsp">
+<TABLE cellpadding="3" bordercolor="#DF5F2D" border="1" width="450" cellspacing="0">
+<TR bgcolor="#DF572D" height="24">
+	<TD colspan="2" align="left"><FONT COLOR="#FFF0E1"><B> กำหนดและแก้ไข Workflow ให้สินค้าแต่ละประเภท</B></FONT></TD>
+</TR>
+<TR>
+	<TD  bgcolor="#FFFFFF" width="200"> -->
+
+
+	
+	<!-- </TD>
+</TR>
+</TABLE>
+</FORM> -->
+</BODY>
+</HTML>

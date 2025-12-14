@@ -1,0 +1,352 @@
+unit Sdimain;
+
+interface
+
+uses Windows, Classes, Graphics, Forms, Controls, Menus, ADODB,
+  Db, Dialogs, ImgList, StdActns, ActnList, StdCtrls, ComCtrls, ToolWin,
+  Buttons, ExtCtrls, DBTables,CutWord,FileMerge, MPlayer;
+
+type
+    TMainForm = class(TForm)
+    OpenDialog: TOpenDialog;
+    SaveDialog: TSaveDialog;
+    ToolBar1: TToolBar;
+    ToolButton9: TToolButton;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton5: TToolButton;
+    ToolButton6: TToolButton;
+    ActionList1: TActionList;
+    FileNew1: TAction;
+    FileOpen1: TAction;
+    FileSave1: TAction;
+    FileSaveAs1: TAction;
+    FileExit1: TAction;
+    EditCut1: TEditCut;
+    EditCopy1: TEditCopy;
+    EditPaste1: TEditPaste;
+    HelpAbout1: TAction;
+    StatusBar: TStatusBar;
+    ImageList1: TImageList;
+    MainMenu1: TMainMenu;
+    File1: TMenuItem;
+    FileNewItem: TMenuItem;
+    FileOpenItem: TMenuItem;
+    FileSaveItem: TMenuItem;
+    FileSaveAsItem: TMenuItem;
+    N1: TMenuItem;
+    FileExitItem: TMenuItem;
+    Edit1: TMenuItem;
+    CutItem: TMenuItem;
+    CopyItem: TMenuItem;
+    PasteItem: TMenuItem;
+    Help1: TMenuItem;
+    HelpAboutItem: TMenuItem;
+    Memo1: TMemo;
+    ToolButton7: TToolButton;
+    Button2: TButton;
+    ToolButton8: TToolButton;
+    Memo2: TMemo;
+    ADOQuery1: TADOQuery;
+    ADOQuery2: TADOQuery;
+    Memo3: TMemo;
+    MediaPlayer1: TMediaPlayer;
+    Button4: TButton;
+    ToolButton10: TToolButton;
+    Button3: TButton;
+
+    procedure FileNew1Execute(Sender: TObject);
+    procedure FileOpen1Execute(Sender: TObject);
+    procedure FileSave1Execute(Sender: TObject);
+    procedure FileExit1Execute(Sender: TObject);
+    procedure HelpAbout1Execute(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Button3Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+  private
+    { Private declarations }
+
+
+  public
+    { Public declarations }
+     cs:TRTLCriticalSection;
+     head:integer;
+     tail:integer;
+     queueSize:integer;
+     msg:String;
+     full,empty{,playing,timerEnable}:boolean;
+     data:array[1..50]of String;
+     fileMergeType : TFileMerge;
+     CWFlag,FMFlag:boolean;
+     function getHead():integer;
+     function getTail():integer;
+     procedure setHead(h:integer);
+     procedure setTail(t:integer);
+     procedure updateHead();
+     procedure updateTail();
+     function QueuePut(fileName:String):boolean;
+     function QueueGet():String;
+     procedure InitQueue({size:byte});
+     procedure getStringFormMemo1(lineCount:integer);
+
+  end;
+
+var
+   MainForm: TMainForm;
+   cutWords : TCutWords;
+
+implementation
+
+uses About;
+
+{$R *.DFM}
+
+
+
+procedure TMainForm.FileNew1Execute(Sender: TObject);
+begin
+  { Do nothing }
+     if Memo1.Enabled then
+        Memo1.Clear;
+end;
+
+procedure TMainForm.FileOpen1Execute(Sender: TObject);
+begin
+  OpenDialog.Execute;
+  if Memo1.Modified then
+  begin
+        if (MessageDlg('This files has been modified. Do you want to save changes?',mtConfirmation,[mbOK, mbCancel],0) = idOK) then
+        begin
+                MainForm.SaveDialog.Execute;
+        end;
+  end;
+  if(OpenDialog.FileName <> '')then
+  begin
+       Memo1.Lines.Clear;
+       Memo1.Lines.LoadFromFile(OpenDialog.FileName);
+  end;
+end;
+
+procedure TMainForm.FileSave1Execute(Sender: TObject);
+begin
+  SaveDialog.Execute;
+  Memo1.Lines.SaveToFile(SaveDialog.FileName);
+end;
+
+procedure TMainForm.FileExit1Execute(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TMainForm.HelpAbout1Execute(Sender: TObject);
+begin
+  AboutBox.ShowModal;
+end;
+
+//------------------- Queue -------------------------
+procedure TMainForm.InitQueue({size:byte});
+var i:byte;
+begin
+     head :=0;
+     tail:=0;
+     empty := true;
+     full := false;
+     queueSize:= 50;
+   {  SetLength(data,queueSize);}
+     for i:= 1 to {size} 50 do
+     begin
+          data[i]:='';
+     end;
+end;
+function TMainForm.getHead():integer;
+begin
+     EnterCriticalSection(cs);
+
+     getHead := head;
+
+     LeaveCriticalSection(cs);
+end;
+function TMainForm.getTail():integer;
+begin
+     EnterCriticalSection(cs);
+
+     getTail := tail;
+
+     LeaveCriticalSection(cs);
+end;
+procedure TMainForm.setHead(h:integer);
+begin
+     EnterCriticalSection(cs);
+
+     head := h;
+
+     LeaveCriticalSection(cs);
+end;
+procedure TMainForm.setTail(t:integer);
+begin
+     EnterCriticalSection(cs);
+
+     tail := t;
+
+     LeaveCriticalSection(cs);
+end;
+procedure TMainForm.updateHead();
+var nextH,tmpH,tmpT:integer;
+begin
+     tmpH := getHead();
+     nextH := tmpH + 1;
+     if (nextH > queueSize) then
+     begin
+         nextH := 1;
+     end;
+     tmpT := getTail();
+     if (tmpH = tmpT)and(tmpH<>0) then
+        empty := true
+     else
+     begin
+          setHead(nextH);
+     end;
+end;
+procedure TMainForm.updateTail();
+var nextT,tmpT,tmpH:integer;
+begin
+     tmpH := getHead();
+     tmpT := getTail();
+     nextT := tmpT + 1;
+     if (nextT > queueSize) then // check that index value exceed the queue size
+     begin
+          nextT := 1;
+     end;
+     if (nextT = tmpH)and(tmpH <> 0) then
+        full := true
+     else
+     begin
+          setTail(nextT);
+          full := false;
+
+     end;
+end;
+function TMainForm.QueuePut(fileName:String):boolean;
+begin
+     if (not full) then
+     begin
+          updateTail();
+          data[tail] := fileName;
+          QueuePut := true;
+          empty := false;
+     end
+     else
+         QueuePut := false;
+end;
+function TMainForm.QueueGet():String;
+begin
+     updateHead();
+     if (not empty) then
+     begin
+          QueueGet := data[head];
+     end
+     else
+         Queueget := '';
+end;
+//------------------- get String From Memo
+procedure TMainForm.getStringFormMemo1(lineCount:integer);
+begin
+      msg := Memo1.Lines[lineCount];
+end;
+
+procedure TMainForm.Button2Click(Sender: TObject);
+begin
+     if (Button2.Caption = 'พูด')then
+     begin
+   //       InitializeCriticalSection(cs);
+          InitQueue();
+         // MediaPlayer1.TimeFormat := tfMilliseconds;
+         // MediaPlayer1.Wait := true;
+          if (Memo1.GetTextLen <= 2 ) then   //check the Memo that it is not empty
+          begin                            //before proceeding ( cutword )
+              ShowMessage('ไม่มีข้อความ : กรุณาเลือกไฟล์หรือป้อนข้อความ');
+          end
+          else
+          begin
+               cutWords := TCutWords.Create(false);
+               CWFlag := true;
+               fileMergeType := TFileMerge.Create(true); //create but not run immediately
+               fileMergeType.Priority:= tpHigher;
+               fileMergeType.Resume;
+               FMFlag := true;
+               Memo1.Enabled := false;
+               Button2.Caption := 'ยกเลิก';
+               Button4.Enabled := false;
+               Memo2.Clear;
+               Memo3.Clear;
+          end;
+     end
+     else
+     if (Button2.Caption = 'ยกเลิก')then
+     begin
+          MediaPlayer1.Close;
+          cutWords.destroy;
+          CWFlag := false;
+          fileMergeType.destroy;
+          FMFlag := false;
+          Button2.Caption := 'พูด';
+          Memo1.Enabled := true;
+          if(Button3.Caption = 'ต่อไป') then
+            Button3.Caption := 'หยุด';
+     end;
+end;
+
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
+     ShowMessage('Welcome To Thai Voice Synthesis Program');
+     InitializeCriticalSection(cs);
+end;
+
+procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+     DeleteCriticalSection(cs);
+     if CWFlag = true then
+     begin
+         cutWords.destroy;
+         CWFlag := false;
+     end;
+     if FMFlag = true then
+     begin
+         fileMergeType.destroy;
+         FMFlag := false;
+     end;
+end;
+
+procedure TMainForm.Button3Click(Sender: TObject);
+begin
+     if (Button3.Caption = 'หยุด')and ((CWFlag = true)or(CWFlag = true))then
+     begin
+          cutWords.Suspend;
+          fileMergeType.Suspend;
+          Button3.Caption := 'ต่อไป';
+     end
+     else
+     if (Button3.Caption = 'ต่อไป') then
+     begin
+          cutWords.Resume;
+          fileMergeType.Resume;
+          Button3.Caption := 'หยุด';
+     end;
+end;
+
+procedure TMainForm.Button4Click(Sender: TObject);
+begin
+     Button4.Enabled := false;
+     MediaPlayer1.FileName := 'C:\TVSallFile5_2_1\mix.wav';
+     MediaPlayer1.Open;
+     MediaPlayer1.wait := true;
+     MediaPlayer1.Play;
+     MediaPlayer1.Close;
+     Button4.Enabled := true;
+end;
+
+end.

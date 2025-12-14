@@ -1,0 +1,321 @@
+package WapBrowser;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import com.borland.jbcl.layout.*;
+import java.net.*;
+import java.io.*;
+import org.jdom.*;
+
+public class Frame1 extends JFrame {
+  Frame2 f2 = new Frame2();
+  JPanel contentPane;
+  ImageIcon image1;
+  ImageIcon image2;
+  ImageIcon image3;
+  ImageIcon image4;
+  XYLayout xYLayout1 = new XYLayout();
+  JLabel jLabel1 = new JLabel();
+  JMenuBar jMenuBar2 = new JMenuBar();
+  JScrollPane jScrollPane1 = new JScrollPane();
+  static JEditorPane jEditorPane1 = new JEditorPane();
+  JMenu jMenu = new JMenu();
+  static JTextArea InputArea = new JTextArea();
+  JMenuItem jMenuOpenU = new JMenuItem();
+  JMenuItem jMenuSource = new JMenuItem();
+  JButton jButtonPower = new JButton();
+  JButton jButtonOpt = new JButton();
+  JButton jButtonEnd = new JButton();
+  JMenuItem jMenuBack = new JMenuItem();
+  JMenuItem jMenuStop = new JMenuItem();
+  JMenuItem jMenuRefresh = new JMenuItem();
+  JMenuItem jMenuHome = new JMenuItem();
+  JMenuItem jMenuSearch = new JMenuItem();
+  JMenuItem jMenuFav = new JMenuItem();
+  JMenuItem jMenuPrint = new JMenuItem();
+  JMenuItem jMenuAbout = new JMenuItem();
+  JMenuItem jMenuExit = new JMenuItem();
+  JButton jButtonGreen = new JButton();
+  JButton jButtonRed = new JButton();
+  JButton jButtonO = new JButton();
+  JButton jButtonUp = new JButton();
+  JButton jButtonDown = new JButton();
+  JButton jButtonLeft = new JButton();
+  JButton jButtonRight = new JButton();
+
+  /**Construct the frame*/
+  public Frame1() {
+    enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+    try {
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+  /**Component initialization*/
+  private void jbInit() throws Exception  {
+    image1 = new ImageIcon(WapBrowser.Frame1.class.getResource("openFile.gif"));
+    image2 = new ImageIcon(WapBrowser.Frame1.class.getResource("closeFile.gif"));
+    image3 = new ImageIcon(WapBrowser.Frame1.class.getResource("help.gif"));
+    image4 = new ImageIcon(WapBrowser.Frame1.class.getResource("3gl.jpg"));
+    jButtonOpt.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("ok.jpg")));
+    jButtonOpt.setRolloverIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("okonm.jpg")));
+    //jButton6.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("card.gif")));
+    jButtonOpt.setBorderPainted(false);
+    //setIconImage(Toolkit.getDefaultToolkit().createImage(Frame1.class.getResource("[Your Icon]")));
+    contentPane = (JPanel) this.getContentPane();
+    contentPane.setLayout(xYLayout1);
+    contentPane.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        contentPane_mouseClicked(e);
+      }
+    });
+    this.getContentPane().setBackground(Color.white);
+    this.setResizable(false);
+    this.setSize(new Dimension(259, 513));
+    this.setTitle("Thai WAP Browser");
+    jLabel1.setBackground(new Color(231, 255, 255));
+    jLabel1.setForeground(Color.lightGray);
+    jLabel1.setRequestFocusEnabled(false);
+    jLabel1.setDisplayedMnemonic('0');
+    jLabel1.setIcon(image4);
+    jMenuBar2.setToolTipText("");
+    jEditorPane1.setBackground(new Color(231, 234, 235));
+    jEditorPane1.setBorder(null);
+    jEditorPane1.setEditable(false);
+    jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+    jScrollPane1.getViewport().setBackground(UIManager.getColor("Button.focus"));
+    jScrollPane1.setFont(new java.awt.Font("SansSerif", 0, 12));
+    jScrollPane1.setBorder(null);
+    jScrollPane1.setOpaque(false);
+    jMenu.setText("Open");
+    InputArea.setBackground(new Color(231, 234, 235));
+    InputArea.setBorder(null);
+    InputArea.setDisabledTextColor(Color.lightGray);
+    InputArea.setText("http://netsiam.net/wap");
+    jMenuOpenU.setText("Open URL...");
+    jMenuOpenU.addActionListener(new Frame1_jMenuOpenU_actionAdapter(this));
+    jMenuSource.setText("View Source");
+    jMenuSource.addActionListener(new Frame1_jMenuSource_actionAdapter(this));
+    jButtonOpt.addActionListener(new Frame1_jButtonOpt_actionAdapter(this));
+    jButtonEnd.setBorderPainted(false);
+    jButtonEnd.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("no.jpg")));
+    jButtonEnd.setRolloverIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("noonm.jpg")));
+    jButtonPower.setBorder(null);
+    jButtonPower.setBorderPainted(false);
+    jButtonPower.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("power.jpg")));
+    jButtonPower.setRolloverIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("poweronm.jpg")));
+    jButtonGreen.setBorderPainted(false);
+    jButtonGreen.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("green.jpg")));
+    jButtonGreen.setRolloverIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("greenonm.jpg")));
+    jMenuBack.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("Back.gif")));
+    jMenuBack.setText("Back");
+    jMenuBack.setAccelerator(javax.swing.KeyStroke.getKeyStroke(8, 0, false));
+    jMenuStop.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("stop.gif")));
+    jMenuStop.setText("Stop");
+    jMenuStop.setAccelerator(javax.swing.KeyStroke.getKeyStroke(27, 0, false));
+    jMenuRefresh.setText("Refresh");
+    jMenuRefresh.setAccelerator(javax.swing.KeyStroke.getKeyStroke(116, 0, false));
+    jMenuHome.setText("Home");
+    jMenuSearch.setText("Search");
+    jMenuFav.setText("Favorites");
+    jMenuPrint.setText("Print");
+    jMenuAbout.setText("About");
+    jMenuExit.setText("Exit");
+    jButtonRed.setBorderPainted(false);
+    jButtonRed.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("red.jpg")));
+    jButtonRed.setRolloverIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("redonm.jpg")));
+    jButtonO.setBorderPainted(false);
+    jButtonO.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("o.jpg")));
+    jButtonO.setRolloverIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("oonm.jpg")));
+    jButtonUp.setBorderPainted(false);
+    jButtonUp.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("up.jpg")));
+    jButtonUp.setRolloverIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("uponm.jpg")));
+    jButtonDown.setBorderPainted(false);
+    jButtonDown.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("down.jpg")));
+    jButtonDown.setRolloverIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("downonm.jpg")));
+    jButtonLeft.setBorderPainted(false);
+    jButtonLeft.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("left.jpg")));
+    jButtonLeft.setRolloverIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("leftonm.jpg")));
+    jButtonRight.setBorderPainted(false);
+    jButtonRight.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("right.jpg")));
+    jButtonRight.setRolloverIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("rightonm.jpg")));
+    contentPane.add(jButtonOpt, new XYConstraints(45, 305, 42, 21));
+    contentPane.add(jButtonEnd, new XYConstraints(167, 331, 36, 17));
+    contentPane.add(jButtonPower,                         new XYConstraints(185, 20, 30, 30));
+    contentPane.add(jButtonGreen,    new XYConstraints(42, 335, 19, 13));
+    contentPane.add(jButtonRed, new XYConstraints(64, 342, 13, 13));
+    contentPane.add(jButtonO, new XYConstraints(114, 325, 23, 22));
+    contentPane.add(jButtonUp,   new XYConstraints(117, 312, 17, 15));
+    contentPane.add(jButtonDown, new XYConstraints(120, 347, 13, 11));
+    contentPane.add(jButtonLeft, new XYConstraints(102, 330, 13, 14));
+    contentPane.add(jButtonRight, new XYConstraints(137, 329, 11, 13));
+
+    contentPane.add(jScrollPane1,     new XYConstraints(45, 102, 176, 185));
+    jScrollPane1.getViewport().add(jEditorPane1, null);
+    contentPane.add(InputArea, new XYConstraints(45, 103, 175, 184));
+    contentPane.add(jLabel1, new XYConstraints(1, 5, -1, 479));
+    jMenuBar2.add(jMenu);
+    jMenu.add(jMenuBack);
+    jMenu.add(jMenuStop);
+    jMenu.add(jMenuRefresh);
+    jMenu.addSeparator();
+    jMenu.add(jMenuOpenU);
+    jMenu.add(jMenuHome);
+    jMenu.add(jMenuSearch);
+    jMenu.addSeparator();
+    jMenu.add(jMenuSource);
+    jMenu.addSeparator();
+    jMenu.add(jMenuFav);
+    jMenu.add(jMenuPrint);
+    jMenu.add(jMenuAbout);
+    jMenu.addSeparator();
+    jMenu.add(jMenuExit);
+
+  }
+  /**File | Exit action performed*/
+  public void jMenuFileExit_actionPerformed(ActionEvent e) {
+    System.exit(0);
+
+  }
+  /**Help | About action performed*/
+  public void jMenuHelpAbout_actionPerformed(ActionEvent e) {
+  }
+  /**Overridden so we can exit when window is closed*/
+  protected void processWindowEvent(WindowEvent e) {
+    super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+      jMenuFileExit_actionPerformed(null);
+    }
+  }
+
+  void contentPane_mouseClicked(MouseEvent e) {
+    if (e.getModifiers()==4) {
+          JPopupMenu jpmu = new JPopupMenu () ;
+          jpmu.add(jMenuBack) ;
+          jpmu.add(jMenuStop) ;
+          jpmu.add(jMenuRefresh) ;
+          jpmu.addSeparator();
+          jpmu.add(jMenuOpenU) ;
+          jpmu.add(jMenuHome) ;
+          jpmu.add(jMenuSearch) ;
+          jpmu.addSeparator();
+          jpmu.add(jMenuFav) ;
+          jpmu.add(jMenuPrint) ;
+          jpmu.add(jMenuAbout) ;
+          jpmu.addSeparator();
+          jpmu.add(jMenuSource) ;
+          jpmu.addSeparator();
+          jpmu.add(jMenuExit) ;
+          jpmu.show(contentPane,e.getX(),e.getY()) ;
+          }
+  }
+
+  void jMenuOpenU_actionPerformed(ActionEvent e) {
+    InputArea.setText("");
+    InputArea.append("http://netsiam.net/wap");
+    jEditorPane1.setVisible(false);
+    InputArea.setVisible(true);
+    f2.jTextField1.setText(InputArea.getText());
+  }
+
+  void jMenuSource_actionPerformed(ActionEvent e) {
+    f2.show();
+  }
+
+  void jButtonOpt_actionPerformed(ActionEvent e) {
+
+    if (InputArea.getText().substring(0,7).compareTo("http://")==0){
+      try{
+        URL url = new URL(InputArea.getText());
+        InputStream in = url.openStream();
+        DataInputStream dis = new DataInputStream(url.openConnection().getInputStream());
+        Reader reader = new InputStreamReader(in);
+        BufferedReader bufferedReader = new BufferedReader(reader);
+        String line;
+        String tline = new String("");
+        while((line = bufferedReader.readLine()) != null ) {tline += line; tline+='\n';}
+        f2.jTextPane1.setText(tline);
+        bufferedReader.close();
+      }
+      catch(UnknownHostException ex){f2.jTextPane1.setText("Cannot Resolve: "+ex);/*System.err.println("Cannot Resolve: "+ex);*/  }
+      catch(IOException ex){f2.jTextPane1.setText("IOException : "+ex); /*System.err.println("IOException : "+ex);*/ }
+    }
+    else{
+      byte buff[] = new byte [1000];
+        try {
+          InputStream fileIn = new FileInputStream(InputArea.getText());
+          int i = fileIn.read(buff);
+          String s = new String(buff);
+          f2.jTextPane1.setText(s);
+        }
+      catch(FileNotFoundException ex) {f2.jTextPane1.setText("Cannot Resolve: "+ex);}
+      catch(IOException ex) {f2.jTextPane1.setText("IOException : "+ex);}
+    }//end else
+
+    xmlParser xmlparser = new xmlParser(InputArea.getText());
+    try{
+    Element element=xmlparser.par();
+    //jTextPane2.setText(xmlparser.getnumallnode(element)+xmlparser.printElements(element));
+    jEditorPane1.setText(xmlparser.getnumallnode(element)+xmlparser.printElements(element));
+    }
+    catch (JDOMException ex){
+    xmlparser.setstring(ex.getMessage());
+    //jTextPane2.setText(xmlparser.getstring());
+    jEditorPane1.setText(xmlparser.getstring()) ;
+    }
+    catch (IOException ex){
+    xmlparser.setstring(ex.getMessage());
+    //jTextPane2.setText(xmlparser.getstring());
+    jEditorPane1.setText(xmlparser.getstring());
+    }
+    catch (NullPointerException ex){
+    xmlparser.setstring(ex.getMessage());
+    //jTextPane2.setText(xmlparser.getstring());
+    jEditorPane1.setText(xmlparser.getstring());
+    }
+  InputArea.setVisible(false);
+  jEditorPane1.setVisible(true);
+  f2.jTextField1.setText(InputArea.getText());
+  }
+
+
+}
+
+class Frame1_jMenuOpenU_actionAdapter implements java.awt.event.ActionListener {
+  Frame1 adaptee;
+
+  Frame1_jMenuOpenU_actionAdapter(Frame1 adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jMenuOpenU_actionPerformed(e);
+  }
+}
+
+class Frame1_jMenuSource_actionAdapter implements java.awt.event.ActionListener {
+  Frame1 adaptee;
+
+  Frame1_jMenuSource_actionAdapter(Frame1 adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jMenuSource_actionPerformed(e);
+  }
+}
+
+class Frame1_jButtonOpt_actionAdapter implements java.awt.event.ActionListener {
+  Frame1 adaptee;
+
+  Frame1_jButtonOpt_actionAdapter(Frame1 adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButtonOpt_actionPerformed(e);
+  }
+}
+
+

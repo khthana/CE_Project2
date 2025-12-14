@@ -1,0 +1,693 @@
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+import java.util.*;
+import java.sql.*;
+import java.lang.*;
+import java.util.Date;
+import javax.mail.*;
+import javax.mail.internet.*;
+
+
+
+public class GenPr extends HttpServlet {
+  private static final String CONTENT_TYPE = "text/html; charset=MS874";
+  private static final String TARGET_PAGE = "../genpr_fin.jsp";
+
+  /**Initialize global variables*/
+  public void init() throws ServletException {
+  }
+public String UnicodeToMS874( String _in) { 
+StringBuffer strTemp = new StringBuffer( _in ); 
+int code; 
+for( int i = 0; i < _in.length(); i++) { 
+code = (int) strTemp.charAt(i); 
+if ( ( 0xE01 <= code ) && ( code <= 0xE5B ) ) { 
+strTemp.setCharAt( i, (char) ( code - 0xD60 ) ); 
+} 
+} 
+return strTemp.toString(); 
+} 
+
+public String MS874ToUnicode( String _in ) { 
+StringBuffer strTemp = new StringBuffer( _in ); 
+int code; 
+for( int i = 0; i < _in.length(); i++) { 
+code = (int) strTemp.charAt(i); 
+if ( ( 0xA1 <= code ) && ( code <= 0xFB ) ) { 
+strTemp.setCharAt( i, (char) ( code + 0xD60 ) ); 
+} 
+} 
+return strTemp.toString(); 
+} 
+  /**Process the HTTP Get request*/
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    response.setContentType(CONTENT_TYPE);
+    PrintWriter out = response.getWriter();
+
+	HttpSession session = request.getSession(true);
+    String emp = (String)session.getAttribute("emp");
+	String passwd = (String)session.getAttribute("passwd");
+	String name=(String)session.getAttribute("name");
+	String sname=(String)session.getAttribute("sname");
+	String dept=(String)session.getAttribute("dept");
+	String adhoc=(String)session.getAttribute("adhoc");
+	
+	String tmp_comm=request.getParameter("comment");
+	if (tmp_comm==null)
+	{
+		tmp_comm="-";
+	}
+
+	
+	String comment=MS874ToUnicode(tmp_comm);
+	// เรียก Shopping Cart จาก Session
+	 int prnum=0;
+	 int wfnum=0;
+	 int linenum=1;
+	 String app=new String();
+     boolean existpr=false;
+     if (emp==null)
+     {
+		 response.sendRedirect("../login_shop.jsp");
+     }else{
+/******************************** ส่วนเช็ค cat ของสินค้า*************************************/
+		   ShoppingCart shoppingCart=(ShoppingCart)session.getAttribute("ShoppingCart");
+		   PR_collection pr_collection= new PR_collection();
+		   Vector pr_vector= new Vector();
+		   Vector wf_vector= new Vector();
+		   boolean change_remain=false;
+
+			Collection itemOrderCollection = shoppingCart.getItemOrdered();
+			Iterator i = itemOrderCollection.iterator();
+			while (i.hasNext())
+			{   
+				ItemOrder item = (ItemOrder) i.next();
+
+				Collection prCollection = pr_collection.getPr_vector();
+				Iterator ii = prCollection.iterator();
+			//	 existpr=false;
+				while (ii.hasNext())
+				{
+					 
+					
+					PR pr=(PR) ii.next();
+						if (item.getCatNo().equals(pr.getCatNo()))
+						{
+							prnum=pr.getPrNo();
+							wfnum=pr.getWfNo();
+							int tmp_line=pr.getLineNo();
+							    if (tmp_line > linenum)
+							    {
+									linenum=tmp_line;
+							    }//if
+							
+							existpr=true;
+
+						}//if
+					
+				}//while
+				if(!existpr){ //กรณีที่ไม่มี pr นี้เลย
+				
+				//gen pr เอาข้อมูลจาก DB และ gen WF# ด้วย
+				try{
+				
+				DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");
+				Statement stmt = con.createStatement();
+				DatabaseMetaData dmd = con.getMetaData();
+				String query="SELECT MAX(PR#) FROM PR ";
+				ResultSet rs=stmt.executeQuery(query);
+				 rs.next();
+				 prnum=rs.getInt("MAX(PR#)");
+				 prnum+=1;
+				 linenum=0;
+				rs.close();
+				stmt.close();
+					//find max wf and gen new
+				Statement stmt1 =  con.createStatement();
+				query="SELECT MAX(WF#) FROM WORKFLOW";
+				ResultSet rs1=stmt1.executeQuery(query);
+				rs1.next();
+				wfnum=rs1.getInt("MAX(WF#)");
+				wfnum+=1;  //inc new wf#
+				rs1.close();
+				stmt1.close();
+			
+	
+			
+				 Statement stmt2 =  con.createStatement();
+				 // status 1 mail to app1 as default
+				 double totalprice0=0;
+				 String query2="INSERT INTO PR(PR#,EMP#,WF#,DEPT_NAME,DATE1,STATUS,TOTAL_PRICE,EMP_COMM,APP1_COMM,APP2_COMM) VALUES('"+prnum+"','"+emp+"','"+wfnum+"','"+dept+"',sysdate,'1','"+totalprice0+"','"+comment+"','','')";
+				 System.out.println(query2);
+				 stmt2.executeUpdate(query2);	
+		       	stmt2.close();
+		
+			if (!change_remain)
+			{
+				              	Integer total=(Integer) session.getAttribute("totalprice");
+								int totalprice=total.intValue();
+								Statement s1=con.createStatement();
+								String qq1="SELECT REMAIN FROM DEPARTMENT WHERE DEPT_NAME='"+dept+"'";
+								ResultSet r1=s1.executeQuery(qq1);
+								r1.next();
+								double remain=r1.getDouble("REMAIN");
+								remain=remain-totalprice;
+								session.removeAttribute("totalprice");
+								r1.close();
+								s1.close();
+// ลบยอดเงินคงเหลือ
+       
+							Statement s2=con.createStatement();
+								String qq2="UPDATE DEPARTMENT SET REMAIN='"+remain+"' WHERE DEPT_NAME='"+dept+"'";
+							s2.executeUpdate(qq2);
+								s2.close();
+								change_remain=true;
+			} // if chamge remain
+
+
+/**************************************check ว่ามี workflow ไหม*****************************************************************/
+
+							Statement stw = con.createStatement();
+							String qw="SELECT WF_TYPE FROM CATEGORY WHERE CAT#='"+item.getCatNo()+"'";
+							ResultSet rsw=stw.executeQuery(qw);
+							boolean haswf=false;
+							String wf_type= new String();
+							if (rsw.next())
+							{
+									haswf=true;
+									wf_type=rsw.getString("WF_TYPE");
+
+																Statement stw1=con.createStatement();
+																String qw1="SELECT * FROM WF_TABLE WHERE WF_TYPE='"+wf_type+"'";
+																ResultSet rsw1=stw1.executeQuery(qw1);
+																rsw1.next();
+																String viewer=rsw1.getString("VIEWER");
+																String apr1=rsw1.getString("APP1");
+																String apr2=rsw1.getString("APP2");
+																String adh=rsw1.getString("ADHOC");
+
+																if ((viewer==null)&&(apr2==null)&&(adh==null))
+																{
+																	Statement sta2=con.createStatement();
+																String qa2="SELECT * FROM APPROVERS WHERE APPROVER='"+apr1+"'";
+																ResultSet rsa2=sta2.executeQuery(qa2);
+																rsa2.next();
+																int a1sta=rsa2.getInt("STATUS");
+																if (a1sta==0)
+																{
+																	apr1=rsa2.getString("DELEGATE");
+																}
+																rsa2.close();
+																sta2.close();
+																query="INSERT INTO WORKFLOW(WF#,VIEWER,APP1,APP2,ADHOC) VALUES('"+wfnum+"','','"+apr1+"','','')";
+
+																}
+
+																if ((viewer==null)&&(apr2!=null)&&(adh==null))
+																{
+																		
+
+																Statement sta2=con.createStatement();
+																String qa2="SELECT * FROM APPROVERS WHERE APPROVER='"+apr1+"'";
+																ResultSet rsa2=sta2.executeQuery(qa2);
+																rsa2.next();
+																int a1sta=rsa2.getInt("STATUS");
+																if (a1sta==0)
+																{
+																	apr1=rsa2.getString("DELEGATE");
+																}
+																rsa2.close();
+																sta2.close();
+																	
+																Statement sta3=con.createStatement();
+																String qa3="SELECT * FROM APPROVERS WHERE APPROVER='"+apr2+"'";
+																ResultSet rsa3=sta3.executeQuery(qa3);
+																rsa3.next();
+																int a2sta=rsa3.getInt("STATUS");
+																if (a2sta==0)
+																{
+																	apr2=rsa3.getString("DELEGATE");
+																}
+																rsa3.close();
+																sta3.close();
+
+																	query="INSERT INTO WORKFLOW(WF#,VIEWER,APP1,APP2,ADHOC) VALUES('"+wfnum+"','','"+apr1+"','"+apr2+"','')";
+
+																}
+
+																if ((viewer!=null)&&(apr2!=null)&&(adh==null))
+																{	Statement sta1=con.createStatement();
+																String qa1="SELECT * FROM VIEWERS WHERE VIEW#='"+viewer+"'";
+																ResultSet rsa1=sta1.executeQuery(qa1);
+																rsa1.next();
+																int vsta=rsa1.getInt("STATUS");
+																if (vsta==0)
+																{
+																	viewer=rsa1.getString("DELEGATE");
+																}
+																rsa1.close();
+																sta1.close();
+
+																Statement sta2=con.createStatement();
+																String qa2="SELECT * FROM APPROVERS WHERE APPROVER='"+apr1+"'";
+																ResultSet rsa2=sta2.executeQuery(qa2);
+																rsa2.next();
+																int a1sta=rsa2.getInt("STATUS");
+																if (a1sta==0)
+																{
+																	apr1=rsa2.getString("DELEGATE");
+																}
+																rsa2.close();
+																sta2.close();
+
+																	query="INSERT INTO WORKFLOW(WF#,VIEWER,APP1,APP2,ADHOC) VALUES('"+wfnum+"','"+viewer+"','"+apr1+"','','')";
+
+
+													//set STATUS for wait viewer 
+																Statement tmp=con.createStatement();
+																   String q ="UPDATE PR SET STATUS='0' WHERE PR#='"+prnum+"'";
+																   System.out.println(q);
+																   tmp.executeUpdate(q);
+																	tmp.close();
+
+																}
+
+																if ((viewer!=null)&&(apr2!=null)&&(adh!=null))
+																{
+																			
+															Statement sta1=con.createStatement();
+																String qa1="SELECT * FROM VIEWERS WHERE VIEW#='"+viewer+"'";
+																ResultSet rsa1=sta1.executeQuery(qa1);
+																rsa1.next();
+																int vsta=rsa1.getInt("STATUS");
+																if (vsta==0)
+																{
+																	viewer=rsa1.getString("DELEGATE");
+																}
+																rsa1.close();
+																sta1.close();
+
+																Statement sta2=con.createStatement();
+																String qa2="SELECT * FROM APPROVERS WHERE APPROVER='"+apr1+"'";
+																ResultSet rsa2=sta2.executeQuery(qa2);
+																rsa2.next();
+																int a1sta=rsa2.getInt("STATUS");
+																if (a1sta==0)
+																{
+																	apr1=rsa2.getString("DELEGATE");
+																}
+																rsa2.close();
+																sta2.close();
+
+																Statement sta3=con.createStatement();
+																String qa3="SELECT * FROM APPROVERS WHERE APPROVER='"+apr2+"'";
+																ResultSet rsa3=sta3.executeQuery(qa3);
+																rsa3.next();
+																int a2sta=rsa3.getInt("STATUS");
+																if (a2sta==0)
+																{
+																	apr2=rsa3.getString("DELEGATE");
+																}
+																rsa3.close();
+																sta3.close();
+
+																	
+																	query="INSERT INTO WORKFLOW(WF#,VIEWER,APP1,APP2,ADHOC) VALUES('"+wfnum+"','"+viewer+"','"+apr1+"','"+apr2+"','"+adh+"')";
+
+
+													//set STATUS for wait viewer 
+																Statement tmp=con.createStatement();
+																   String q ="UPDATE PR SET STATUS='0' WHERE PR#='"+prnum+"'";
+																   System.out.println(q);
+																   tmp.executeUpdate(q);
+																	tmp.close();
+																}
+
+																rsw1.close();
+																stw1.close();
+
+
+							}
+
+							rsw.close();
+							stw.close();
+							
+/********************************* เช็ค depart เพื่อดู level และใครเป็นหัวหน้า คือ หาชื่อคนที่ approve ได้******************************************/
+/*if ( !haswf ){		
+				try{
+				DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");
+				Statement stmt = con.createStatement();
+				DatabaseMetaData dmd = con.getMetaData();
+				String query="SELECT MANAGER# FROM DEPARTMENT WHERE DEPT_NAME='"+dept+"'";
+				ResultSet rs=stmt.executeQuery(query);
+				 rs.next();
+				app=rs.getString("MANAGER#");
+				rs.close();
+				stmt.close();
+
+				Statement stmt1=con.createStatement();
+				query="SELECT * FROM APPROVERS WHERE APPROVER='"+app+"'";
+				ResultSet rs1=stmt1.executeQuery(query);
+				rs1.next();
+				int status=rs1.getInt("STATUS");
+				String delegate=rs1.getString("DELEGATE");
+				rs1.close();
+				stmt1.close();
+					if (status==0 && delegate==null && adhoc==null)  // delegate condition
+					{
+						response.sendRedirect("../adhoc.jsp");
+
+					}
+
+					if (adhoc!=null)
+					{
+						app=adhoc;
+					}
+
+					if (status==0 && delegate!=null)
+					{//กรณีมีการ delegate
+						app=delegate;
+					
+					}//if
+				  }catch(java.sql.SQLException e)  {
+              System.out.println("SQLException:<br>");
+  		      System.out.println("Message:   " + e.getMessage() + "<br>");
+		      System.out.println("SQLState:  " + e.getSQLState() + "<br>");
+		      System.out.println("ErrorCode: " + e.getErrorCode() + "<br>");
+			  e.printStackTrace();
+					} // catch
+
+*/
+				
+/*************************************************ถ้าไม่มี workflow ให้ทำตามปกติ*********************************************************/				
+	//insert info into workflow table		
+				Statement stmt3 = con.createStatement();
+if ( !haswf ){			
+
+				 stmt = con.createStatement();
+				//DatabaseMetaData dmd = con.getMetaData();
+				query="SELECT MANAGER# FROM DEPARTMENT WHERE DEPT_NAME='"+dept+"'";
+				 rs=stmt.executeQuery(query);
+				 rs.next();
+				app=rs.getString("MANAGER#");
+				rs.close();
+				stmt.close();
+
+				stmt1=con.createStatement();
+				query="SELECT * FROM APPROVERS WHERE APPROVER='"+app+"'";
+				 rs1=stmt1.executeQuery(query);
+				rs1.next();
+				int status=rs1.getInt("STATUS");
+				String delegate=rs1.getString("DELEGATE");
+				rs1.close();
+				stmt1.close();
+					if (status==0 && delegate==null && adhoc==null)  // delegate condition
+					{
+						response.sendRedirect("../adhoc.jsp");
+
+					}
+
+					if (adhoc!=null)
+					{
+						app=adhoc;
+					}
+
+					if (status==0 && delegate!=null)
+					{//กรณีมีการ delegate
+						app=delegate;
+					
+					}//if
+
+
+
+
+
+				//String query3=new String();
+					if(Integer.parseInt(item.getCatNo())<=50){// ไม่ใช่สินค้า commodity  ไม่ต้องการผู้เชียวชาญตรวจสอบ
+							query = "INSERT INTO WORKFLOW(WF#,VIEWER,APP1,APP2,ADHOC) VALUES('"+wfnum+"','','"+app+"','','')";
+					}else{ // ต้องการผู้เชี่ยวชาญ commodity
+								Statement stmt4 =  con.createStatement();
+								 ResultSet rs4= stmt4.executeQuery("SELECT * FROM VIEWERS WHERE CAT#='"+item.getCatNo()+"'");	
+								rs4.next();
+								int s=rs4.getInt("STATUS");
+										if(s==0){ //ผู้เชี่ยวชาญไม่ว่าง
+												String del=rs4.getString("DELEGATE");
+												query = "INSERT INTO WORKFLOW(WF#,VIEWER,APP1,APP2,ADHOC) VALUES('"+wfnum+"','"+del+"','"+app+"','','')";
+											}else{	//ว่างมาตรวจสอบ		
+															String view=rs4.getString("VIEW#");      
+													query = "INSERT INTO WORKFLOW(WF#,VIEWER,APP1,APP2,ADHOC) VALUES('"+wfnum+"','"+view+"','"+app+"','','')";		
+													}
+							rs4.close();
+		       				 stmt4.close();
+
+
+                     //set STATUS for wait viewer 
+							   Statement tmp=con.createStatement();
+							   String q ="UPDATE PR SET STATUS='0' WHERE PR#='"+prnum+"'";
+							   System.out.println(q);
+							   tmp.executeUpdate(q);
+								tmp.close();
+
+					}// else of commodity product
+				} // ไม่มี wfง กำหนด ไว้
+/************************************************************************************************************/
+				System.out.println(query);
+				
+				stmt3.executeUpdate(query);				
+				stmt3.close();
+
+				 con.close();
+
+
+
+				  }catch(java.sql.SQLException e)  {
+              System.out.println("SQLException:<br>");
+  		      System.out.println("Message:   " + e.getMessage() + "<br>");
+		      System.out.println("SQLState:  " + e.getSQLState() + "<br>");
+		      System.out.println("ErrorCode: " + e.getErrorCode() + "<br>");
+			  e.printStackTrace();
+					} // catch
+
+				}//if
+//}//while  ***
+				//สร้าง vector ลง session
+				linenum+=1;
+				PR pr_vec = new PR(item.getItemID(), item.getType(),item.getCatNo(),item.getNumItems(),item.getBrand(),item.getPrice(),prnum,linenum,wfnum,item.getTableName());
+				pr_collection.add(pr_vec);
+				pr_vector.add(new Integer(prnum));	
+				wf_vector.add(new Integer(wfnum));	
+			
+				linenum=0;
+				existpr=false;
+			}//while
+		   
+	            //show  pr collection
+				Collection prCollection = pr_collection.getPr_vector();
+				Iterator ii = prCollection.iterator();
+					while (ii.hasNext())
+				{
+					PR pr=(PR) ii.next();
+					System.out.println("PR no : "+pr.getPrNo()+" Line no : "+pr.getLineNo()+"  CAT No : "+pr.getCatNo()+" Item No : "+pr.getItemID()+" WF No : "+pr.getWfNo()+"  TableName : "+pr.getTableName());	
+					
+				 }
+
+
+/*************************************start to insert pr information to DB**************************************/
+				
+		
+				Collection prCollection0 = pr_collection.getPr_vector();
+				Iterator ii0 = prCollection0.iterator();
+				while(ii0.hasNext()){
+					PR pr=(PR) ii0.next(); 
+					prnum=pr.getPrNo();
+					linenum=pr.getLineNo();
+					String catnum=pr.getCatNo();
+					String codenum=pr.getItemID();
+					int qty=pr.getNumItems();
+					double pri=pr.getPrice();
+					String typ=pr.getType();
+					wfnum=pr.getWfNo();
+					double tpri=pr.getTotalCost();
+					String tablename=pr.getTableName();
+
+				try{  //insert to DB
+				
+				DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");				
+				DatabaseMetaData dmd = con.getMetaData();
+				
+				//insert info into pr_line table ใส่ total price ไปด้วย
+				Statement stmt = con.createStatement();
+				String query="INSERT INTO PR_LINE(PR#,LINE#,PRD#,QTY,TABLE_NAME,PRICE) VALUES('"+prnum+"','"+linenum+"','"+codenum+"','"+qty+"','"+tablename+"','"+pri+"')";
+				stmt.executeUpdate(query);		
+				stmt.close();
+			           	Statement stmt1=con.createStatement();
+				query="SELECT TOTAL_PRICE FROM PR WHERE PR#='"+prnum+"'";
+				ResultSet rs1=stmt1.executeQuery(query);	
+				rs1.next();
+				double tprice=rs1.getDouble("TOTAL_PRICE");
+				tprice+=tpri; //รวมราคา
+				Statement stmt2=con.createStatement();
+				query="UPDATE PR SET TOTAL_PRICE='"+tprice+"' WHERE PR#='"+prnum+"'";
+				stmt2.executeUpdate(query);
+				stmt2.close();
+				rs1.close();
+				stmt1.close();
+				con.close();
+
+
+				  }catch(java.sql.SQLException e)  {
+              		System.out.println("SQLException:<br>");
+  		      System.out.println("Message:   " + e.getMessage() + "<br>");
+		      System.out.println("SQLState:  " + e.getSQLState() + "<br>");
+		      System.out.println("ErrorCode: " + e.getErrorCode() + "<br>");
+			  e.printStackTrace();
+					} // catch
+				}//while
+
+/*************************************************รวมราคาว่าเกินงบไหม***********************************************************/	
+	
+			
+			try{  //insert to DB
+				
+				DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");				
+				DatabaseMetaData dmd = con.getMetaData();
+				
+			//	Collection prCollection1 = pr_vector;
+				Iterator i1 =pr_vector.iterator();
+				while(i1.hasNext()){
+					int prn=((Integer) i1.next()).intValue(); 
+			
+				Statement stmt = con.createStatement();
+				String query="SELECT TOTAL_PRICE FROM PR WHERE PR#='"+prn+"'";
+				ResultSet rs=stmt.executeQuery(query);		
+				rs.next();
+				double pp=rs.getDouble("TOTAL_PRICE");
+				rs.close();
+				stmt.close();
+				Statement stmt1 = con.createStatement();
+				query="SELECT REMAIN,COST_PER_PR FROM DEPARTMENT WHERE DEPT_NAME='"+dept+"'";
+				ResultSet rs1=stmt1.executeQuery(query);		
+				rs1.next();
+				double remain=rs1.getDouble("REMAIN");
+				double cppr=rs1.getDouble("COST_PER_PR");
+
+				rs1.close();
+				stmt1.close();
+				
+				if((pp>cppr) || (pp>remain)){ //ถ้าเกินงบให้ใส่ app2
+				Statement stm2=con.createStatement();
+				query="SELECT * FROM APPROVERS WHERE STATUS='1' AND APP_LEVEL='3' ";
+				 ResultSet  res2=stm2.executeQuery(query);
+				 boolean existApp=false;
+				 String app2= new String();
+				while (res2.next()&&!existApp)  //มีคนว่างเลือกมา 1 คน
+				{
+						app2=res2.getString("APPROVER");
+						existApp=true;
+				} 
+				if (!existApp) //ไม่มีใครว่าง ต้องหา delegate
+				{
+					query ="SELECT * FROM APPROVERS WHERE STATUS='0' AND APP_LEVEL='3' AND DELEGATE IS NOT NULL";
+					res2=stm2.executeQuery(query);
+					res2.next();
+					app2=res2.getString("DELEGATE");
+				}
+				
+				res2.close();
+				stm2.close();
+				Statement stm1 = con.createStatement();
+				query="UPDATE WORKFLOW SET APP2='"+app2+"'";
+				stm1.executeUpdate(query);	
+				stm1.close();
+				}//if 
+				}//while iteration	
+				con.close();
+				  }catch(java.sql.SQLException e)  {
+	              	     System.out.println("SQLException:<br>");
+  		      System.out.println("Message:   " + e.getMessage() + "<br>");
+		      System.out.println("SQLState:  " + e.getSQLState() + "<br>");
+		      System.out.println("ErrorCode: " + e.getErrorCode() + "<br>");
+			  e.printStackTrace();
+					} // catch
+
+/************************************* ส่ง email **************************************************/
+			
+				Iterator i2 =wf_vector.iterator();
+				while(i2.hasNext()){
+					int wfn=((Integer) i2.next()).intValue(); 
+				try{
+				DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");
+				Statement stmt = con.createStatement();
+				Statement stmt1 = con.createStatement();
+				
+				DatabaseMetaData dmd = con.getMetaData();
+				String query="SELECT * FROM WORKFLOW WHERE WF#='"+wfn+"'";
+				ResultSet rs=stmt.executeQuery(query);
+			 	
+				rs.next();
+				String vi = rs.getString("VIEWER");
+				if (vi!=null) //have viewer to view first
+				{
+					System.out.println(vi);
+					query="SELECT EMAIL FROM EMPLOYEE,WORKFLOW WHERE EMP#=VIEWER AND WF#='"+wfn+"'";
+				}else{		//no have viewer to view
+					query="SELECT EMAIL FROM EMPLOYEE,WORKFLOW WHERE EMP#=APP1 AND WF#='"+wfn+"'";
+				}
+				System.out.println(query);
+				ResultSet rs1=stmt1.executeQuery(query);
+				rs1.next();
+				String email=rs1.getString("EMAIL");
+
+				// ยังต้องส่งเมลล์
+				rs1.close();
+				stmt1.close();
+				rs.close();
+				stmt.close();
+
+		Properties props = new Properties();
+		props.put("mail.smtp.host", "chaokhun.kmitl.ac.th");
+		Session s = Session.getInstance(props,null);
+
+		MimeMessage message = new MimeMessage(s);
+
+		InternetAddress from = new InternetAddress("t3official@yahoo.com");
+		message.setFrom(from);
+		String toAddresses = email;
+		message.addRecipients(Message.RecipientType.TO, toAddresses);
+		String subject="You 've got PR to approve !!!";
+		message.setSubject(subject);
+		String mess="You 've got Pr to approve !!! please go to visit page Http://161.246.5.214:8080/procurement/approve.jsp to Check it !!!";
+		message.setText(mess);
+
+		Transport.send(message);
+	
+	   } catch (Exception e) {
+	    e.printStackTrace();
+					}		//catch		
+				}
+/****************************************************************************************/
+				session.removeAttribute("ShoppingCart");
+				session.removeAttribute("adhoc");
+				response.sendRedirect(TARGET_PAGE);
+
+/*****************************************************************************************/				
+	 }//else 
+   
+	
+	
+  }
+
+  /**Process the HTTP Post request*/
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	  doGet(request, response);
+  }
+  /**Clean up resources*/
+  public void destroy() {
+  }
+}

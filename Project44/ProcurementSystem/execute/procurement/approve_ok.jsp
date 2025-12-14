@@ -1,0 +1,148 @@
+<%@page contentType="text/html;  charset=windows-874" %>
+<%@page import ="java.sql.*,java.lang.*,java.util.Date, javax.mail.*, javax.mail.internet.*"%> <!-- import  เพื่อใช้ session -->
+<%@page session="true"%><!-- default -->
+<%@include file="th-db.jsp"%>
+<HTML><HEAD><TITLE>:: Online e-Procurement ::</TITLE>
+<LINK href="picture/cssomo1.css" rel=stylesheet type="text/css">
+<META content="text/html; charset=windows-874" http-equiv=Content-Type>
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="Sirirporn J.">
+<META NAME="Description" CONTENT="First page for e-Procurement system">
+</HEAD>
+<BODY  leftMargin=0 topMargin=0 vLink=#0077ff marginheight="0" 
+marginwidth="0"><FONT color=#000000></FONT>
+<TABLE border=0 cellPadding=0 cellSpacing=0 width=760 bgcolor="#FFFFFF" align="center">
+  <TBODY > 
+  <TR>
+    <TD align=left height=75 vAlign=bottom>
+      
+				  <%@include file="topmenu.html"%></TD></TR>
+  
+  <TR>
+    <TD height=10 bgcolor="#B6B6B6"> 
+    </TD>
+  </TR>
+    <TR>
+    <TD height=30 bgcolor="white"> 
+   <div align="right">  
+   <FONT  COLOR="#658dc1"><B>
+   <%@include file="date.txt"%></B></FONT></div>
+    </TD>
+  </TR>
+   <TR>
+    <TD height=1 bgcolor="#B6B6B6"> 
+    </TD>
+  </TR>
+  <TR colspan="2">
+    <TD bgColor=#bfbfbf height=1 width=760></TD>
+	</TR></TBODY></TABLE>
+<TABLE border=0 cellPadding=0 cellSpacing=0 width=760 align="center">
+  <TBODY> 
+  <TR> 
+    <TD align=middle vAlign=top> 
+      <TABLE width="100%" cellpadding="3" cellspacing="0" border="0">
+        <TR>
+		  <TD bgColor="#bfbfbf" width="27%" align="center" valign="top">
+
+            <%@include file="directory.html"%>
+             <%@include file="shopping.html"%><P><P><BR><BR>
+
+			
+          </TD>
+		  <TD bgColor="#ffffff" width="73%" align="center" valign="top"> 
+		  <%
+					int wfnum=Integer.parseInt(request.getParameter("wfnum"));
+					int prnum=Integer.parseInt(request.getParameter("prnum"));
+					String status=request.getParameter("status"); 
+					String email=new String();
+					boolean sendmail=false;
+					   
+			try {
+                Class.forName("oracle.jdbc.driver.OracleDriver");
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");
+                Statement stmt = con.createStatement();  
+				String query=new String();
+				     if (status.equals("0")){
+
+						 Statement s1=con.createStatement();
+						 ResultSet rs1=s1.executeQuery("SELECT * FROM EMPLOYEE,WORKFLOW WHERE (APP1=EMP#)");
+						 rs1.next();
+						 email=rs1.getString("EMAIL");
+						 rs1.close();
+						 s1.close();
+						 query="UPDATE WORKFLOW SET STATUS='1' WHERE (WF#='"+wfnum+"')" ;
+						 sendmail=true;
+						  
+					 }
+					 if (status.equals("1")){   
+						    Statement stm=con.createStatement();
+							String q="SELECT * FROM WORKFLOW WHERE (WF#='"+wfnum+"')";
+							System.out.println(q);
+							ResultSet rs=stm.executeQuery(q);
+							rs.next();
+							String a=rs.getString("APP2");
+							System.out.println(a);
+							if (a!=null){//commodity
+						Statement s1=con.createStatement();
+						 ResultSet rs1=s1.executeQuery("SELECT * FROM EMPLOYEE,WORKFLOW WHERE (WORKFLOW.APP2=EMPLOYEE.EMP#)");
+						 rs1.next();
+						 email=rs1.getString("EMAIL");
+						  sendmail=true;
+						 rs1.close();
+						 s1.close();
+								 query="UPDATE  PR SET STATUS='2' WHERE (PR#='"+prnum+"')" ;
+							}else{
+											 query="UPDATE  PR SET STATUS='3' WHERE (PR#='"+prnum+"')";
+											  sendmail=false;
+									}
+					 }
+
+					   if (status.equals("2")){
+						 query="UPDATE  PR SET STATUS='3' WHERE (PR#='"+prnum+"')" ;
+							  sendmail=false;
+					 }
+		
+
+if (sendmail) {
+		                            
+		Properties props = new Properties();
+		props.put("mail.smtp.host", "chaokhun.kmitl.ac.th");
+		Session s = Session.getInstance(props,null);
+
+		MimeMessage message = new MimeMessage(s);
+
+		InternetAddress from = new InternetAddress("t3official@yahoo.com");
+		message.setFrom(from);
+		String toAddresses = email;
+		message.addRecipients(Message.RecipientType.TO, toAddresses);
+		String subject="You 've got PR to approve !!!";
+		message.setSubject(subject);
+		String mess="You 've got Pr to approve !!! please go to visit page Http://161.246.5.214:8080/procurement/approve.jsp to Check it !!!";
+		message.setText(mess);
+
+		Transport.send(message);
+}else{
+// อยากได้ว่าส่งเมลล์ ได้ไหมด้วย
+				stmt.executeUpdate(query) ;
+
+}
+				 stmt.close();
+		         con.close();
+		out.println("<B><CENTER><P>&nbsp;<P>อนุมัติ PR เสร็จสิ้น  <A HREF=\" approve.jsp\">กลับไปอนุมัติต่อ</A> </CENTER></B>");
+		 }//try
+     catch (Exception e) {
+	    e.printStackTrace();
+					}		//catch	
+			
+		  
+		  %>
+           </TD>
+	</TR>
+	</TABLE>
+    </TD>
+  </TR>
+  <TR><%@include file="bottommenu.html"%></TR>
+
+  </TBODY> 
+</TABLE>
+</BODY></HTML>

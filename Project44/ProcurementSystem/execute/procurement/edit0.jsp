@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<%@page contentType="text/html;  charset=windows-874" %>
+<%@page import ="java.sql.*,java.lang.*,java.util.Date"%> <!-- import  เพื่อใช้ session -->
+<%@page session="true"%><!-- default -->
+<%@include file="th-db.jsp"%>
+
+<HTML>
+<HEAD>
+<TITLE>แก้ไขข้อมูล</TITLE>
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="Siriporn J.">
+<LINK REL="stylesheet" HREF="procurement.css" TYPE="text/css">
+</HEAD>
+<BODY>
+<% 
+String  id=new String(request.getParameter("id"));   //ง จริงๆต้องเอามาจาก sessionง นะ
+
+try{
+         Class.forName("oracle.jdbc.driver.OracleDriver");
+		 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");
+         Statement stmt = con.createStatement();
+		 String query="SELECT * FROM EMPLOYEE WHERE EMP#='"+id+"'";
+         ResultSet rs=stmt.executeQuery(query);
+         rs.next();
+
+         String name=rs.getString("NAME");
+		 String sname=rs.getString("SNAME");
+		 String passwd=rs.getString("PASSWD");
+		 String email=rs.getString("EMAIL");
+		 String dept=rs.getString("DEPT");
+		 String level=rs.getString("LEVEL#");
+		 String position=rs.getString("POSITION");
+  %>
+<FORM method="post" action="check_edit.jsp?id=<%=id%>">
+<TABLE align="CENTER" cellpadding="3" bordercolor="#66669A" border="1" frame="above" rules="rsh" width="400" cellspacing="0">
+<TR bgcolor="66669A" height="24">
+	<TD colspan="2" align="left"><FONT COLOR="#F1F0FF"><B>แก้ไขข้อมูลส่วนตัว</B></FONT></TD>
+</TR>
+<TR>
+	<TD  bgcolor="#FFFFFF" width="140">รหัสพนักงาน :</TD>
+	<TD bgcolor="#F1F0FF" ><FONT COLOR="#66669A"><B><%=id%></B></FONT></TD>
+</TR>
+<TR>
+	<TD  bgcolor="#FFFFFF" width="140">ชื่อ :</TD>
+	<TD bgcolor="#F1F0FF" ><INPUT TYPE="text" NAME="name" size="30" VALUE="<%=name%>"></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF" width="140">นามสกุล :</TD>
+	<TD bgcolor="#F1F0FF" ><INPUT TYPE="text" NAME="sname" size="30" VALUE="<%=sname%>"></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF" width="140">รหัสผ่าน :</TD>
+	<TD bgcolor="#F1F0FF" ><INPUT TYPE="password" NAME="passwd" size="10" VALUE="<%=passwd%>"></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF" width="140">รหัสผ่านอีกครั้ง : </TD>
+	<TD bgcolor="#F1F0FF" ><INPUT TYPE="password" NAME="passwd1" size="10" VALUE="<%=passwd%>"></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF" width="140">อี-เมลล์ :</TD>
+	<TD bgcolor="#F1F0FF" ><INPUT TYPE="text" NAME="email" size="30" VALUE="<%=email%>"></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF" width="140">แผนก/ฝ่าย :</TD>
+	<TD bgcolor="#F1F0FF" ><SELECT NAME="dept">
+			  <OPTION VALUE="บุคคล" <% if (dept.equals("บุคคล")) {out.print("SELECTED");}%>>บุคคล
+			  <OPTION VALUE="การเงิน" <% if (dept.equals("การเงิน")) {out.print("SELECTED");}%>>การเงิน
+			  <OPTION VALUE="การตลาด" <% if (dept.equals("การตลาด")) {out.print("SELECTED");}%>>การตลาด
+			  <OPTION VALUE="วางแผนและพัฒนา" <% if (dept.equals("วางแผนและพัฒนา")) {out.print("SELECTED");}%>>วางแผนและพัฒนา
+			  <OPTION VALUE="เทคโนโลยีสารสนเทศ" <% if (dept.equals("เทคโนโลยีสารสนเทศ")) {out.print("SELECTED");}%>>เทคโนโลยีสารสนเทศ
+			  <OPTION VALUE="ประชาสัมพันธ์" <% if (dept.equals("ประชาสัมพันธ์")) {out.print("SELECTED");}%>>ประชาสัมพันธ์
+	           <OPTION VALUE="จัดซื้อ" <% if (dept.equals("จัดซื้อ")) {out.print("SELECTED");}%>>จัดซื้อ
+ 	           <OPTION VALUE="บัญชี" <% if (dept.equals("บัญชี")) {out.print("SELECTED");}%>>บัญชี
+	          </SELECT></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF" width="140">ตำแหน่ง : </TD>
+	<TD bgcolor="#F1F0FF" ><SELECT NAME="position">
+		<OPTION VALUE="0" SELECTED>==== ตำแหน่ง ====
+		<OPTION VALUE="ผู้จัดการฝ่าย" <%if (position.equals("ผู้จัดการฝ่าย")) {out.print("SELECTED");}%>>ผู้จัดการฝ่าย
+		<OPTION VALUE="ลูกจ้างทั่วไป"  <%if (position.equals("ลูกจ้างทั่วไป")) {out.print("SELECTED");}%>>ลูกจ้างทั่วไป
+		</SELECT></TD>
+</TR>
+
+<TR>
+	<TD bgcolor="#FFFFFF" width="140">Level : </TD>
+	<TD bgcolor="#F1F0FF" ><INPUT TYPE="text" NAME="level" size="10" VALUE="<%=level%>"></TD>
+</TR>
+
+<TR bgcolor="#F1F0FF" valign="center" align="center">
+	<TD colspan="2">
+	<pre> <INPUT TYPE="submit" value="ตกลง"> <INPUT TYPE="reset" value="ข้อมูลก่อนแก้ไข"></pre>
+ 	</TD>
+</TR>
+</TABLE>
+</FORM>
+
+	 <%
+		 rs.close();
+		 stmt.close();
+		 con.close();
+
+	 } catch(SQLException e) 
+      {
+	      while (e != null) 
+         {
+            out.println("SQLException:<br>");
+  		      out.println("Message:   " + e.getMessage() + "<br>");
+		      out.println("SQLState:  " + e.getSQLState() + "<br>");
+		      out.println("ErrorCode: " + e.getErrorCode() + "<br>");
+		      e = e.getNextException();
+         }
+	   }
+%>
+</BODY>
+</HTML>

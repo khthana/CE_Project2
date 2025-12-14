@@ -1,0 +1,128 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// ODL file generated from Cache Objects Version 4.1.856.0
+//     Feb 12 2002 01:54:20
+//
+////////////////////////////////////////////////////////////////////////////////
+
+#include <olectl.h>
+
+[ uuid(3af1681f-ee16-41ae-a973-08ce3399a2cc), version(1.0),helpstring("Cache Objects Version 4.1.856.0") ]
+library User_SubCourse
+{
+    importlib(STDOLE_TLB);
+    importlib(STDTYPE_TLB);
+
+    [ uuid(f9b66e93-c11a-4f15-884b-a28b00cc0bba),helpstring("Cache Object: User.SubCourse"),hidden ]
+
+    dispinterface CSubCourse
+    {
+        properties:
+            [id(41)]  long        DeleteTag;
+            [id(61)]  IDispatch*  Schedules;
+            [id(62)]  long        SectionNo;
+            [id(63)]  long        StudentInClass;
+            [id(64)]  IDispatch*  Teacher;
+
+        methods:
+            [id(66)]  VARIANT     SYS_BuildIndices(IDispatch* idxlist);
+            [id(16)]  VARIANT     SYS_CheckUnique(IDispatch* idxlist);
+            [id(1)]   BSTR        SYS_ClassName(VARIANT fullname);
+            [id(2)]   VARIANT     SYS_Close();
+            [id(17)]  VARIANT     SYS_Delete(VARIANT oid,long concurrency);
+            [id(19)]  VARIANT     SYS_DeleteExtent(long concurrency,[in,out] BSTR* deletecount,[in,out] BSTR* instancecount);
+            [id(20)]  VARIANT     SYS_DeleteId(BSTR id,long concurrency);
+            [id(21)]  VARIANT     SYS_DowngradeConcurrency(BSTR concurrency);
+            [id(70)]  VARIANT     SYS_Exists(VARIANT oid);
+            [id(71)]  VARIANT     SYS_ExistsId(BSTR id);
+            [id(24)]  VARIANT     SYS_GetSwizzleObject(long force,[in,out] VARIANT* oid);
+            [id(25)]  BSTR        SYS_Id();
+            [id(3)]   void        SYS_IncrementCount();
+            [id(4)]   long        SYS_IsA(BSTR isclass);
+            [id(5)]   long        SYS_IsModified();
+            [id(72)]  VARIANT     SYS_KillExtent();
+            [id(6)]   IDispatch*  SYS_New(BSTR initvalue);
+            [id(7)]   VARIANT     SYS_NormalizeObject();
+            [id(30)]  VARIANT     SYS_Oid();
+            [id(31)]  BSTR        SYS_Open(VARIANT oid,long concurrency);
+            [id(32)]  BSTR        SYS_OpenId(BSTR id,long concurrency);
+            [id(8)]   BSTR        SYS_PackageName();
+            [id(75)]  VARIANT     SYS_PurgeIndices(IDispatch* idxlist);
+            [id(35)]  VARIANT     SYS_RollBack();
+            [id(36)]  VARIANT     SYS_Save(long related);
+            [id(78)]  VARIANT     SYS_SortBegin(IDispatch* idxlist,long excludeunique);
+            [id(79)]  VARIANT     SYS_SortEnd(IDispatch* idxlist,long commit);
+            [id(40)]  VARIANT     SYS_UpgradeConcurrency(BSTR concurrency);
+            [id(10)]  VARIANT     SYS_ValidateObject(long force);
+            [id(57)]  VARIANT     CheckDependency();
+            [id(107)] long        DeleteTagDisplayToLogical(BSTR SYS_val);
+            [id(108)] long        DeleteTagGet();
+            [id(112)] long        DeleteTagIsModified();
+            [id(113)] VARIANT     DeleteTagIsValid(BSTR value);
+            [id(114)] long        DeleteTagIsValidDT(long SYS_val);
+            [id(115)] BSTR        DeleteTagLogicalToDisplay(long SYS_val);
+            [id(117)] long        DeleteTagNormalize(BSTR SYS_val);
+            [id(119)] VARIANT     DeleteTagSet(BSTR newvalue);
+            [id(120)] long        DeleteTagSetModified(long newvalue);
+            [id(185)] VARIANT     ExtentClose(VARIANT qHandle);
+            [id(186)] VARIANT     ExtentExecute([in,out] VARIANT* qHandle);
+            [id(187)] VARIANT     ExtentFetch([in,out] VARIANT* qHandle,[in,out] IDispatch** Row,[in,out] long* AtEnd);
+            [id(189)] VARIANT     ExtentFetchRows([in,out] VARIANT* qHandle,long FetchCount,[in,out] IDispatch** RowSet,[in,out] long* ReturnCount,[in,out] long* AtEnd);
+            [id(190)] VARIANT     ExtentGetInfo([in,out] IDispatch** colinfo,[in,out] IDispatch** parminfo,[in,out] IDispatch** idinfo,[in,out] VARIANT* qHandle);
+            [id(191)] VARIANT     ExtentPrepare([in,out] VARIANT* qHandle,BSTR statement,long containid,BSTR optional);
+            [id(58)]  BSTR        GetClassName();
+            [id(59)]  BSTR        GetParentClass();
+            [id(60)]  void        PrepareDeleting();
+            [id(124)] IDispatch*  SchedulesGet();
+            [id(125)] VARIANT     SchedulesGetObject(long force);
+            [id(126)] BSTR        SchedulesGetObjectId(long force);
+            [id(128)] long        SchedulesIsModified();
+            [id(130)] IDispatch*  SchedulesNewObject();
+            [id(132)] VARIANT     SchedulesSet(BSTR newvalue);
+            [id(133)] long        SchedulesSetModified(long newvalue);
+            [id(137)] long        SectionNoDisplayToLogical(BSTR SYS_val);
+            [id(138)] long        SectionNoGet();
+            [id(142)] long        SectionNoIsModified();
+            [id(143)] VARIANT     SectionNoIsValid(BSTR value);
+            [id(144)] long        SectionNoIsValidDT(long SYS_val);
+            [id(145)] BSTR        SectionNoLogicalToDisplay(long SYS_val);
+            [id(147)] long        SectionNoNormalize(BSTR SYS_val);
+            [id(149)] VARIANT     SectionNoSet(BSTR newvalue);
+            [id(150)] long        SectionNoSetModified(long newvalue);
+            [id(154)] long        StudentInClassDisplayToLogical(BSTR SYS_val);
+            [id(155)] long        StudentInClassGet();
+            [id(159)] long        StudentInClassIsModified();
+            [id(160)] VARIANT     StudentInClassIsValid(BSTR value);
+            [id(161)] long        StudentInClassIsValidDT(long SYS_val);
+            [id(162)] BSTR        StudentInClassLogicalToDisplay(long SYS_val);
+            [id(164)] long        StudentInClassNormalize(BSTR SYS_val);
+            [id(166)] VARIANT     StudentInClassSet(BSTR newvalue);
+            [id(167)] long        StudentInClassSetModified(long newvalue);
+            [id(171)] IDispatch*  TeacherGet();
+            [id(172)] VARIANT     TeacherGetObject(long force);
+            [id(173)] BSTR        TeacherGetObjectId(long force);
+            [id(175)] long        TeacherIsModified();
+            [id(176)] VARIANT     TeacherIsValid(BSTR value);
+            [id(177)] IDispatch*  TeacherNewObject();
+            [id(179)] VARIANT     TeacherSet(BSTR newvalue);
+            [id(180)] long        TeacherSetModified(long newvalue);
+            [id(181)] VARIANT     TeacherSetObject(VARIANT newvalue);
+            [id(182)] VARIANT     TeacherSetObjectId(BSTR newid);
+
+    };
+
+    // Class information for User.SubCourse
+    [ uuid(8da42ebb-5a00-48c1-8255-10772494b308), helpstring("Cache Object: User.SubCourse CoClass"),control ]
+    coclass SubCourse
+    {
+        [default] dispinterface CSubCourse;
+    };
+
+
+};
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// End-of-file
+//
+////////////////////////////////////////////////////////////////////////////////

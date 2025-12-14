@@ -1,0 +1,114 @@
+package routersim;
+import java.util.*;
+
+public class User {
+  static Vector vRouter = new Vector();
+  public User() {
+//    new Vector();
+  }
+  public void mainc(User u){
+    Router r1,r2=null,r3=null;
+    Command cmd= new Command();
+    Config conf = new Config();
+    Prompt pt = new Prompt();
+    //new Router
+
+    for (int i = 1;i  < 4;i++){
+      String intstr = "Router"+Integer.toString(i);
+      r1 = new Router(intstr);
+      u.vRouter.addElement(r1);
+    }
+/*
+    //get Router-
+    for (int i = 0;i < 3;i++){
+      r2 = (Router)u.vRouter.elementAt(i);
+      cmd.showPrompt(r2);
+    }//end for
+*/
+    r1 = (Router)vRouter.elementAt(0);
+    if (pt.enable()){
+      r1.setMode(2);
+    }
+    cmd.showPrompt(r1);
+/*
+    if (Prompt.disable()){
+      r2.setMode(1);
+    }
+    cmd.showPrompt(r2);
+*/
+    if (pt.configT()){
+      r1.setMode(3);
+    }
+    cmd.showPrompt(r1);
+/*
+    if (Prompt.intf()){
+      r2.mode = 4;
+    }
+    Command.showPrompt(r2);
+*/
+    //set hostname
+    conf.setHostname(r1,"RouterA");
+    cmd.showPrompt(r1);
+    if (pt.exitcmd()){
+      r1.setMode(2);
+    }
+    cmd.showPrompt(r1);
+    Interface dear = new Interface();
+    //add new interface
+    conf.addNewInterface(r1,"Eth0");
+    //set ip of interface
+    conf.setIpInterface(r1,"161.246.7.1","255.255.255.0");
+//    conf.setIp(r2,"161.246.7.1","161.246.7.0",0);
+    conf.addNewInterface(r1,"s0");
+    conf.setIpInterface(r1,"161.246.5.1","255.255.255.0");
+//    conf.setIpAddress(r2,"161.246.4.1");
+    conf.addNewInterface(r1,"to0");
+    conf.setIpInterface(r1,"161.246.6.1","255.255.255.0");
+    //static route
+    conf.ipRoute(r1,"161.246.9.0","255.255.255.0","161.246.5.1");
+//    conf.setIpAddress(r2,"161.246.6.1");
+    //get Interface
+//    Interface i = (Interface)r2.getVInt().elementAt(0);
+    //shut / no shut
+//    conf.noShutInt(i);
+    // show interface
+//    cmd.showInterface(r2);
+    //show routing table
+    r2 = (Router)vRouter.elementAt(1);
+    conf.addNewInterface(r2,"eth0");
+    conf.setIpInterface(r2,"161.246.7.2","255.255.255.0");
+    conf.addNewInterface(r2,"s0");
+    conf.setIpInterface(r2,"161.246.10.1","255.255.255.0");
+    r3 = (Router)vRouter.elementAt(2);
+    conf.addNewInterface(r3,"eth0");
+    conf.setIpInterface(r3,"161.246.8.1","255.255.255.0");
+    conf.addNewInterface(r1,"s0");
+    conf.setIpInterface(r3,"161.246.10.2","255.255.255.0");
+//    cmd.showIpRoute(r2);
+/*
+    r1.sendRoutingTable(r1.getTable());
+    r2.sendRoutingTable(r2.getTable());
+    r3.sendRoutingTable(r3.getTable());
+*/
+/*
+    Rip ripf1 = new Rip(r1);
+    ripf1.start();
+    Rip ripf2 = new Rip(r2);
+    ripf2.start();
+    Rip ripf3 = new Rip(r3);
+    ripf3.start();
+*/
+
+    cmd.showIpRoute(r1);
+//    conf.noipRoute(r1,"161.246.5.2","255.255.255.0","161.246.5.1");
+//    conf.noipRoute(r1,"161.246.9.0","255.255.255.0","161.246.5.1");
+//    cmd.showIpRoute(r1);
+//    cmd.showIpRoute(r2);
+//    cmd.showIpRoute(r3);
+  }
+    //-------------------------------Main------------------------------//
+  public static void main(String[] agrs){
+    User u = new User();
+    u.mainc(u);
+    }
+}

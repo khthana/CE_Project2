@@ -1,0 +1,87 @@
+
+<%@page contentType="text/html;  charset=windows-874" %>
+<%@page import ="java.sql.*,java.lang.*,java.util.Date"%> <!-- import  เพื่อใช้ session -->
+<%@page session="true"%><!-- default -->
+<%@include file="th-db.jsp"%>
+
+<HTML>
+<HEAD>
+<TITLE>แก้ไขข้อมูล</TITLE>
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="Siriporn J.">
+<LINK REL="stylesheet" HREF="procurement.css" TYPE="text/css">
+</HEAD>
+<BODY>
+<% 
+    String  code=new String(request.getParameter("code"));
+	String  cat=new String(request.getParameter("cat"));
+	String  color=MS874ToUnicode(new String(request.getParameter("color")));
+	String  type=MS874ToUnicode(new String(request.getParameter("type")));
+	String  brand=MS874ToUnicode(new String(request.getParameter("brand")));
+	String head_size=new String(request.getParameter("head_size"));
+    String  detail=MS874ToUnicode(new String(request.getParameter("detail")));
+	boolean hasExplicit=false;
+	
+
+
+	if ( code.length()==0 || type.equals("0") || brand.length()==0 ){
+	 hasExplicit=false;
+	}else { hasExplicit=true;}	
+	
+	
+	 if(!hasExplicit){
+    out.println("<b><div align=\"center\">ยังกรอกข้อความไม่ครบถ้วน กรุณาย้อนกลับไป 1 หน้าเพื่อทำการแก้ไข</div></b>");
+	}else{
+
+         %>
+
+  <CENTER>
+<FORM method="post"action="p-edit3.jsp?code=<%=code%>&type=<%=type%>&brand=<%=brand%>&color=<%=color%>&head_size=<%=head_size%>&detail=<%=detail%>&cat=<%=cat%>">
+<TABLE cellpadding="3" bordercolor="#DF5F2D" border="1" frame="above" rules="rhs" width="300" cellspacing="0">
+<TR bgcolor="#DF572D" height="24">
+	<TD colspan="2" align="left"><FONT COLOR="#FFF0E1"><B>แก้ไขสินค้าประเภทปากกา</B></FONT></TD>
+</TR>
+<TR>
+	<TD  bgcolor="#FFFFFF" width="100">รหัสสินค้า :</TD>
+	<TD bgcolor="#FFF0E1" ><B><FONT COLOR="#DF572D"><%=code%></FONT></B></TD>
+</TR>
+<TR>
+	<TD  bgcolor="#FFFFFF" width="100">ชนิด :</TD>
+	<TD bgcolor="#FFF0E1" ><B><FONT COLOR="#DF572D"><%=type%></FONT></B></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">ยี่ห้อ :</TD>
+	<TD bgcolor="#FFF0E1" ><B><FONT COLOR="#DF572D"><%=brand%></FONT></B></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">ประเภท :</TD>
+	<TD bgcolor="#FFF0E1" ><B><FONT COLOR="#DF572D"><%=cat%></FONT></B></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">สี :</TD>
+	<TD bgcolor="#FFF0E1" ><B><FONT COLOR="#DF572D"><%=color%></FONT></B></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">ขนาดหัวปากกา:</TD>
+	<TD bgcolor="#FFF0E1" ><B><FONT COLOR="#DF572D"><%=head_size%>&nbsp;มม.</FONT></B></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">รายละเอียดอื่นๆ :</TD>
+	<TD bgcolor="#FFF0E1" ><B><FONT COLOR="#DF572D"><%=detail%></FONT></B></TD>
+</TR>
+
+<TR bgcolor="#FFF0E1" valign="center" align="center">
+	<TR bgcolor="#FFF0E1" valign="center" align="center">
+	<TD colspan="2">
+	<pre> <INPUT TYPE="submit" value="ยืนยัน"></pre>
+ 	</TD>
+</TR>
+</TABLE>
+</FORM>
+</CENTER>
+<%
+		  
+	}
+%>
+</BODY>
+</HTML>

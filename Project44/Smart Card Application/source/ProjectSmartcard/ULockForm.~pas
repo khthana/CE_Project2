@@ -1,0 +1,127 @@
+unit ULockForm;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, jpeg, ExtCtrls,shellapi;
+
+type
+  TLockForm = class(TForm)
+    btnPwdAdmin: TButton;
+    Pwd: TEdit;
+    Image1: TImage;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Timer1: TTimer;
+    procedure LockFormCreate(Sender: TObject);
+    procedure LockFormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnPwdAdminClick(Sender: TObject);
+    procedure LockFormShow(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure AppMessage(var Msg: TMSG; var HAndled: Boolean);
+{...}
+
+  end;
+
+var
+  LockForm: TLockForm;
+  Pass:boolean=False;
+implementation
+ uses UMain;
+{$R *.dfm}
+
+procedure TLockForm.LockFormCreate(Sender: TObject);
+begin
+
+ With LockForm do begin
+  BorderStyle :=bsNone;
+  FormStyle   :=fsStayOnTop;
+  Left        :=0;
+  Top         :=0;
+  Height      :=Screen.Height;
+  Width       :=Screen.Width;
+ end;
+
+end;
+
+
+procedure TLockForm.LockFormClose(Sender: TObject; var Action: TCloseAction);
+var
+ HTaskbar : HWND;
+ OldVal : LongInt;
+begin
+  timer1.Enabled:=false;
+//Find handle of TASKBAR
+  HTaskBar:=FindWindow('Shell_TrayWnd',nil);
+//Turn SYSTEM KEYS Back ON
+  SystemParametersInfo (97, Word (False), @OldVal, 0);
+//Enable the taskbar
+  EnableWindow(HTaskBar,True);
+//Show the taskbar
+  ShowWindow(HTaskbar,SW_SHOW);
+
+end;
+
+
+procedure TLockForm.btnPwdAdminClick(Sender: TObject);
+begin
+  if Pwd.Text = CfgRec.adminPwd then
+  begin
+    Pwd.Clear;
+    LockForm.Close;
+    Pass := True;
+  end
+  else
+  begin
+    Pwd.ReadOnly := True;
+    Pwd.PasswordChar := #0;
+    Pwd.Text := 'รหัสผ่านไม่ถูกต้อง';
+  end;
+
+end;
+
+procedure TLockForm.LockFormShow(Sender: TObject);
+var
+ HTaskbar : HWND;
+ OldVal : LongInt;
+begin
+   timer1.Enabled:=true;
+   warned:=true;
+//disable ALT-F4
+  Application.OnMessage := AppMessage;
+//Find handle of TASKBAR
+  HTaskBar:=FindWindow('Shell_TrayWnd',nil);
+//Turn SYSTEM KEYS off
+//  SystemParametersInfo (97, Word (True), @OldVal, 0) ;
+//Disable the taskbar
+  EnableWindow(HTaskBar,False);
+//Hide the taskbar
+  ShowWindow(HTaskbar,SW_HIDE);
+
+end;
+
+procedure TLockForm.AppMessage(var Msg: TMSG; var Handled: Boolean);
+begin
+  // let application handle all messages initially
+  Handled := FALSE;
+  case Msg.Message of
+    WM_SYSKEYDOWN :
+      if Msg.wParam = VK_F4 then
+        Handled := TRUE; // disable ALT-F4
+  end;
+end;
+
+
+procedure TLockForm.Timer1Timer(Sender: TObject);
+begin
+  //Mainfrm.TerminateProg();
+end;
+
+end.

@@ -1,0 +1,18 @@
+
+<sequential>
+
+def readMail() :
+	mf = EMailFrame()
+	mf.serverTx.text = my.mail.server
+	mf.userTx.text = my.mail.address
+	mf.password.text = my.mail.password
+	mf.onRetrieveMail(None)
+	mf.show()
+
+</sequential>
+
+<event>
+
+my.mail.address@my.mail.server:my.mail.password -> Alert('''You've got new e-mail(s)''', readMail, 40)
+
+</event>

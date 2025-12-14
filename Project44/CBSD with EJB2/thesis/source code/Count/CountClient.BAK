@@ -1,0 +1,81 @@
+import olala.*;
+
+import javax.ejb.*;
+import javax.naming.*;
+import java.util.*;
+
+public class CountClient
+{
+	public static void main(String[] args)
+	{
+		if (args != null && args.length > 0) {
+			for (int i = 0; i < args.length; i++) {
+				switch(i) {
+					case 0:
+					url = args[i];
+					break;
+					case 1:
+					user = args[i];
+					break;
+					case 2:
+					password = args[i];
+					break;
+					default:
+				}
+			}
+		}
+
+		try {
+			Context ctx = getInitialContext();
+			CountHome home = (CountHome) ctx.lookup("Count");
+			
+			Count count[] = new Count[20];
+			int countVal=0;
+			
+			System.out.println("Instantiating beans...");
+			for (int i=0;i<20;i++)
+			{
+			    count[i]=home.create(countVal);
+			    countVal=count[i].count();
+			    System.out.println(countVal);
+			    Thread.sleep(500);
+			}
+			System.out.println("Calling count() on beans...");
+			for (int i=0;i<20;i++)
+			{
+			    countVal=count[i].count();
+			    System.out.println(countVal);
+			    Thread.sleep(500);
+			}
+			for (int i=0;i<20;i++)
+			{
+			    count[i].remove();
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static Context getInitialContext()
+	throws NamingException
+	{
+		Properties p = new Properties();
+		p.put(Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory");
+		p.put(Context.PROVIDER_URL, url);
+
+		if (user != null) {
+			p.put(Context.SECURITY_PRINCIPAL, user);
+			if (password == null)
+				password = "";
+			p.put(Context.SECURITY_CREDENTIALS, password);
+		}
+		return new InitialContext(p);
+	}
+
+	static String url = "t3://172.16.102.11:7001";
+	static String user = null;
+	static String password = null;
+
+}

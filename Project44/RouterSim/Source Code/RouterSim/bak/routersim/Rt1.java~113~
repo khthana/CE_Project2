@@ -1,0 +1,195 @@
+package routersim;
+
+import java.awt.*;
+import com.borland.jbcl.layout.*;
+import javax.swing.*;
+import java.awt.event.*;
+import java.io.*;
+import java.lang.String;
+import java.util.*;
+import java.io.*;
+import javax.swing.border.*;
+
+/***************************************/
+public class Rt1 extends JPanel {
+  private Router router = new Router();
+  private int position = -1;
+  private int promptp = -1;
+  public static String output="";
+  SwitchCMD sw = new SwitchCMD();
+  XYLayout xYLayout1 = new XYLayout();
+  TextArea jTextArea2 = new TextArea();
+  JTextField jTextField1 = new JTextField();
+  JScrollPane jScrollPane1 = new JScrollPane();
+  JTextArea jTextArea1 = new JTextArea();
+
+/*  public void setOutput(String s){
+    output = s;
+  }
+  public String getOutput(){
+    return output;
+  }*/
+  //----------Constructor---------------//
+  public Rt1() {
+    try {
+      jbInit();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+    public Rt1(Router r) {
+    try {
+      router = r;
+      r.getHistory().addElement("");
+      jbInit();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+  void jbInit() throws Exception {
+    //-----Set Layout----------//
+    this.setLayout(xYLayout1);
+    //-----Set Color------------//
+    jScrollPane1.getViewport().setBackground(Color.white);
+    this.setBackground(new Color(131, 181, 215));
+    //-----Set Border--------//
+    jScrollPane1.setBorder(null);
+    jTextField1.setBorder(null);
+    //------Set Size---------//
+    xYLayout1.setWidth(650);
+    xYLayout1.setHeight(400);
+    //------Add Component---------//
+    this.add(jScrollPane1, new XYConstraints(20, 20, 610, 310));
+    this.add(jTextField1, new XYConstraints(20, 330, 610, 25));
+    //--Other--//
+    jTextArea1.setText("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+    jTextArea1.setEditable(false);
+//    jTextArea1.setCursor(null);
+    jTextField1.setText(router.getName()+">");
+    jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    jScrollPane1.getViewport().add(jTextArea1, null);
+    //-----------Add Listener-----------------//
+    jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        jTextField1_keyPressed(e);
+      }
+    });
+    jTextField1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e){
+        jTextField1_actionPerformed(e);
+      }
+    });
+    //---------can del-------------//
+//    jTextArea2.setEditable(false);
+//    jTextArea2.setFont(new java.awt.Font("Serif", 0, 12));
+//    this.add(jTextArea2, new XYConstraints(510, 18, 110, 329));
+    //--------------------------------//
+  }//end jbInit
+  //-----------Function----------------//
+/*  public void showcmd(String s){
+    jTextArea1.append(s);
+  }*/
+  public void showPrompt(String cmd){
+    String prompt = router.getName();
+    switch(router.getMode()){
+      case 0 : prompt = "";break;
+      case 1 : prompt += ">"+cmd;break;
+      case 2 : prompt += "#"+cmd;break;
+      case 3 : prompt += "(config)#"+cmd;break;
+      case 4 : prompt += "(config-if)#"+cmd;break;
+      case 5 : prompt += "(config-router)#"+cmd;break;
+      case 10 : prompt = "Password:";
+      default : break;
+    }
+    jTextField1.setText(prompt);
+  }
+  //--------Listener-----------//
+  void jTextField1_actionPerformed(ActionEvent e){
+    try{
+      String fullcmd = e.getActionCommand();
+      String cmd="";
+      switch(router.getMode()){
+        case 0 : jTextArea1.setText("\n\n\n\n\n");jTextArea1.append("Press RETURN to get started.\n");break;
+        case 1 : cmd = fullcmd.substring(router.getName().length()+1);break;
+        case 2 : cmd = fullcmd.substring(router.getName().length()+1);break;
+        case 3 : cmd = fullcmd.substring(router.getName().length()+9);break;
+        case 4 : cmd = fullcmd.substring(router.getName().length()+12);break;
+        case 5 : cmd = fullcmd.substring(router.getName().length()+16);break;
+        case 10 : cmd = fullcmd.substring(9);break;
+        default : break;
+      }
+      if (cmd.length() > 0){
+        sw.sendCMD(router,cmd);
+      }
+      jTextArea1.append(fullcmd+"\n");
+      jTextArea2.append(router.getName()+"\n");
+      jTextArea2.append(router.getMode()+"\n");
+      jTextArea2.append(router.getFlag()+"\n");
+      jTextArea1.append(output);
+      if(!Rt1.output.startsWith("%  Invalid input detected at '^' marker.")){
+        router.getHistory().add(router.getHistory().size()-1,cmd);
+        position = router.getHistory().size()-1;
+      }
+        showPrompt("");
+    }
+    catch (StringIndexOutOfBoundsException exp){
+      showPrompt("");
+    }
+  }
+  void jTextField1_keyPressed(KeyEvent e) {
+    int keyCode = e.getKeyCode();
+    if (router.getMode() == 3){
+      //when ctrl+z
+      if ((keyCode == 90)&&(e.isControlDown())){
+        router.setMode(2);
+        jTextArea1.append(router.getName());
+        jTextArea1.append("(config)#^z\n");
+        jTextArea1.append("%SYS-5-CONFIG_I: Configured from console by console\n");
+        showPrompt("");
+      }
+    }
+    //Left Arrow
+    if(keyCode == 37){
+      String cmd = jTextField1.getText();
+      System.out.println(cmd);
+      jTextField1.setText(cmd);
+    }
+    //Up Arrow
+    if(keyCode == 38){
+      if (position == -1){
+        position = router.getHistory().size();
+      }//end if
+      else {
+        if (position != 0){
+        position--;
+        }
+      }//end else
+      System.out.println(position);
+      if ((position >-1) && (position < router.getHistory().size())){
+        showPrompt((String)router.getHistory().elementAt(position));
+      }
+    }
+    //Right Arrow
+    if(keyCode == 39){
+      String cmd = jTextField1.getText();
+      jTextField1.setText(cmd);
+    }
+    //Down Arrow
+    if(keyCode == 40){
+      if (position == -1){
+//        position = 0;
+      }//end if
+      else {
+        if(position < router.getHistory().size()-1){
+          position++;
+        }
+      }//end else
+      System.out.println(position);
+      if ((position >-1) && (position < router.getHistory().size())){
+          showPrompt((String)router.getHistory().elementAt(position));
+      }//end if
+    }//end listener
+  }
+}

@@ -1,0 +1,69 @@
+package olala;
+
+import javax.ejb.*;
+import java.util.*;
+import javax.naming.*;
+
+/**
+ * @stereotype SessionBean
+ * @remoteInterface olala.Count
+ * @homeInterface olala.CountHome
+ * @statemode Stateful
+ */
+public class CountEJB implements javax.ejb.SessionBean
+{
+    // private fields
+	private SessionContext ctx;
+    private int val;
+	public CountEJB()
+	{
+	}
+
+	// ---------------------------------------------------------------
+	// SessionBean interface implementation
+	public void ejbActivate()
+	{
+		System.out.println("ejbActivate()");
+	}
+
+	public void ejbPassivate()
+	{
+		System.out.pritnln("ejbPassivate()");
+	}
+
+	public void ejbRemove()
+	{
+		System.out.println("ejbRemove()");
+	}
+
+	public void setSessionContext(SessionContext ctx)
+	{
+		this.ctx = ctx;
+        System.out.println("setSessionContext()");
+	}
+
+	// ---------------------------------------------------------------
+	// create methods
+	public void ejbCreate()
+	{
+		this.val=0;
+        System.out.println("ejbCreate()");
+	}
+
+	public void ejbCreate(int val)
+	{
+		this.val=val;
+        System.out.println("ejbCreate()");
+	}
+
+	// ---------------------------------------------------------------
+	// business methods
+	public int count()
+	{
+		System.out.println("count()");
+		return ++val;
+	}
+
+	// ---------------------------------------------------------------
+
+}

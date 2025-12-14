@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!DOCTYPE weblogic-rdbms-bean PUBLIC '-//BEA Systems, Inc.//DTD WebLogic 5.1.0 EJB RDBMS Persistence//EN' 'http://www.bea.com/servers/wls510/dtd/weblogic-rdbms-persistence.dtd'>
+<weblogic-rdbms-bean>
+    <pool-name>OlalaPool</pool-name>
+    <table-name>products</table-name>
+    <attribute-map>
+        <object-link>
+            <bean-field>description</bean-field>
+            <dbms-column>description</dbms-column>
+        </object-link>
+        <object-link>
+            <bean-field>basePrice</bean-field>
+            <dbms-column>basePrice</dbms-column>
+        </object-link>
+        <object-link>
+            <bean-field>name</bean-field>
+            <dbms-column>name</dbms-column>
+        </object-link>
+        <object-link>
+            <bean-field>productId</bean-field>
+            <dbms-column>productId</dbms-column>
+        </object-link>
+    </attribute-map>
+    <finder-list>
+        <finder>
+            <method-name>findAllProducts</method-name>
+            <finder-query>
+                <![CDATA[(=  1 1)]]>
+            </finder-query>
+        </finder>
+        <finder>
+            <method-name>findCheapProducts</method-name>
+            <method-params>
+                <method-param>double</method-param>
+            </method-params>
+            <finder-query>
+                <![CDATA[(< basePrice $0)]]>
+            </finder-query>
+        </finder>
+        <finder>
+            <method-name>findExpensiveProducts</method-name>
+            <method-params>
+                <method-param>double</method-param>
+            </method-params>
+            <finder-query>
+                <![CDATA[(> basePrice $0)]]>
+            </finder-query>
+        </finder>
+        <finder>
+            <method-name>findByBasePrice</method-name>
+            <method-params>
+                <method-param>double</method-param>
+            </method-params>
+            <finder-query>
+                <![CDATA[(= basePrice $0)]]>
+            </finder-query>
+        </finder>
+        <finder>
+            <method-name>findByDescription</method-name>
+            <method-params>
+                <method-param>java.lang.String</method-param>
+            </method-params>
+            <finder-query>
+                <![CDATA[(= description $0)]]>
+            </finder-query>
+        </finder>
+        <finder>
+            <method-name>findByName</method-name>
+            <method-params>
+                <method-param>java.lang.String</method-param>
+            </method-params>
+            <finder-query>
+                <![CDATA[(= name $0)]]>
+            </finder-query>
+        </finder>
+    </finder-list>
+</weblogic-rdbms-bean>

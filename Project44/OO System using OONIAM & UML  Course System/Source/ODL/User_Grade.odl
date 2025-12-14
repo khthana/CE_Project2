@@ -1,0 +1,110 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// ODL file generated from Cache Objects Version 4.1.856.0
+//     Feb 12 2002 01:54:13
+//
+////////////////////////////////////////////////////////////////////////////////
+
+#include <olectl.h>
+
+[ uuid(30a110bf-026d-4f27-a126-959ea2ec8beb), version(1.0),helpstring("Cache Objects Version 4.1.856.0") ]
+library User_Grade
+{
+    importlib(STDOLE_TLB);
+    importlib(STDTYPE_TLB);
+
+    [ uuid(0ae98556-27f0-4918-a563-98f4b3264910),helpstring("Cache Object: User.Grade"),hidden ]
+
+    dispinterface CGrade
+    {
+        properties:
+            [id(41)]  long        DeleteTag;
+            [id(61)]  BSTR        Grade;
+            [id(62)]  IDispatch*  Subject;
+
+        methods:
+            [id(64)]  VARIANT     SYS_BuildIndices(IDispatch* idxlist);
+            [id(16)]  VARIANT     SYS_CheckUnique(IDispatch* idxlist);
+            [id(1)]   BSTR        SYS_ClassName(VARIANT fullname);
+            [id(2)]   VARIANT     SYS_Close();
+            [id(17)]  VARIANT     SYS_Delete(VARIANT oid,long concurrency);
+            [id(19)]  VARIANT     SYS_DeleteExtent(long concurrency,[in,out] BSTR* deletecount,[in,out] BSTR* instancecount);
+            [id(20)]  VARIANT     SYS_DeleteId(BSTR id,long concurrency);
+            [id(21)]  VARIANT     SYS_DowngradeConcurrency(BSTR concurrency);
+            [id(68)]  VARIANT     SYS_Exists(VARIANT oid);
+            [id(69)]  VARIANT     SYS_ExistsId(BSTR id);
+            [id(24)]  VARIANT     SYS_GetSwizzleObject(long force,[in,out] VARIANT* oid);
+            [id(25)]  BSTR        SYS_Id();
+            [id(3)]   void        SYS_IncrementCount();
+            [id(4)]   long        SYS_IsA(BSTR isclass);
+            [id(5)]   long        SYS_IsModified();
+            [id(70)]  VARIANT     SYS_KillExtent();
+            [id(6)]   IDispatch*  SYS_New(BSTR initvalue);
+            [id(7)]   VARIANT     SYS_NormalizeObject();
+            [id(30)]  VARIANT     SYS_Oid();
+            [id(31)]  BSTR        SYS_Open(VARIANT oid,long concurrency);
+            [id(32)]  BSTR        SYS_OpenId(BSTR id,long concurrency);
+            [id(8)]   BSTR        SYS_PackageName();
+            [id(73)]  VARIANT     SYS_PurgeIndices(IDispatch* idxlist);
+            [id(35)]  VARIANT     SYS_RollBack();
+            [id(36)]  VARIANT     SYS_Save(long related);
+            [id(76)]  VARIANT     SYS_SortBegin(IDispatch* idxlist,long excludeunique);
+            [id(77)]  VARIANT     SYS_SortEnd(IDispatch* idxlist,long commit);
+            [id(40)]  VARIANT     SYS_UpgradeConcurrency(BSTR concurrency);
+            [id(10)]  VARIANT     SYS_ValidateObject(long force);
+            [id(57)]  VARIANT     CheckDependency();
+            [id(105)] long        DeleteTagDisplayToLogical(BSTR SYS_val);
+            [id(106)] long        DeleteTagGet();
+            [id(110)] long        DeleteTagIsModified();
+            [id(111)] VARIANT     DeleteTagIsValid(BSTR value);
+            [id(112)] long        DeleteTagIsValidDT(long SYS_val);
+            [id(113)] BSTR        DeleteTagLogicalToDisplay(long SYS_val);
+            [id(115)] long        DeleteTagNormalize(BSTR SYS_val);
+            [id(117)] VARIANT     DeleteTagSet(BSTR newvalue);
+            [id(118)] long        DeleteTagSetModified(long newvalue);
+            [id(153)] VARIANT     ExtentClose(VARIANT qHandle);
+            [id(154)] VARIANT     ExtentExecute([in,out] VARIANT* qHandle);
+            [id(155)] VARIANT     ExtentFetch([in,out] VARIANT* qHandle,[in,out] IDispatch** Row,[in,out] long* AtEnd);
+            [id(157)] VARIANT     ExtentFetchRows([in,out] VARIANT* qHandle,long FetchCount,[in,out] IDispatch** RowSet,[in,out] long* ReturnCount,[in,out] long* AtEnd);
+            [id(158)] VARIANT     ExtentGetInfo([in,out] IDispatch** colinfo,[in,out] IDispatch** parminfo,[in,out] IDispatch** idinfo,[in,out] VARIANT* qHandle);
+            [id(159)] VARIANT     ExtentPrepare([in,out] VARIANT* qHandle,BSTR statement,long containid,BSTR optional);
+            [id(58)]  BSTR        GetClassName();
+            [id(59)]  BSTR        GetParentClass();
+            [id(122)] BSTR        GradeDisplayToLogical(BSTR SYS_val);
+            [id(123)] BSTR        GradeGet();
+            [id(127)] long        GradeIsModified();
+            [id(128)] VARIANT     GradeIsValid(BSTR value);
+            [id(129)] long        GradeIsValidDT(BSTR SYS_val);
+            [id(130)] BSTR        GradeLogicalToDisplay(BSTR SYS_val);
+            [id(132)] BSTR        GradeNormalize(BSTR SYS_val);
+            [id(134)] VARIANT     GradeSet(BSTR newvalue);
+            [id(135)] long        GradeSetModified(long newvalue);
+            [id(60)]  void        PrepareDeleting();
+            [id(139)] IDispatch*  SubjectGet();
+            [id(140)] VARIANT     SubjectGetObject(long force);
+            [id(141)] BSTR        SubjectGetObjectId(long force);
+            [id(143)] long        SubjectIsModified();
+            [id(144)] VARIANT     SubjectIsValid(BSTR value);
+            [id(145)] IDispatch*  SubjectNewObject();
+            [id(147)] VARIANT     SubjectSet(BSTR newvalue);
+            [id(148)] long        SubjectSetModified(long newvalue);
+            [id(149)] VARIANT     SubjectSetObject(VARIANT newvalue);
+            [id(150)] VARIANT     SubjectSetObjectId(BSTR newid);
+
+    };
+
+    // Class information for User.Grade
+    [ uuid(79e0f239-fafb-4051-b3cc-e58feec33ea1), helpstring("Cache Object: User.Grade CoClass"),control ]
+    coclass Grade
+    {
+        [default] dispinterface CGrade;
+    };
+
+
+};
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// End-of-file
+//
+////////////////////////////////////////////////////////////////////////////////

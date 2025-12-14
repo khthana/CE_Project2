@@ -1,0 +1,1472 @@
+package WapBrowser;
+
+import javax.swing.border.*;
+
+import java.awt.*;
+import javax.swing.*;
+import com.borland.jbcl.layout.*;
+
+import java.awt.*;
+import java.awt.event.*;
+
+import javax.swing.JFrame;
+import javax.swing.*;
+
+import java.lang.* ;
+
+import java.io.*;
+import java.io.File;
+import org.jdom.*;
+import org.jdom.input.SAXBuilder;
+
+import java.util.*;
+import javax.swing.event.*;
+
+import java.net.URL;
+import java.net.MalformedURLException;
+
+public class Browser extends JFrame {
+// -------- member
+Frame2 f2 = new Frame2();
+static public int x=0;
+static public int y=0;
+static public int j=0;
+static public int containerWidth;
+static public int containerHeight;
+static public int height;
+public int numallnode=1;
+static public ElementInfo elem[] = new ElementInfo[100];
+static public Stack history = new Stack();
+private  Font myFont = new Font("AngsanaUPC",1,20);
+private GridBagLayout gbLayout;
+private GridBagConstraints gbConstraints;
+private Container c;
+private Element e;
+private String des;
+private String hostname;
+private String port;
+private String path;
+private String file;
+private String anchor;
+private String protocol;
+private String attrbname;
+private String attrbvalue;
+// -------- end member
+  JPanel contentPane;
+  XYLayout xYLayout1 = new XYLayout();
+  BorderLayout borderLayout = new BorderLayout();
+  JButton jButton8 = new JButton();
+  JButton jButton7 = new JButton();
+  JButton jButton5 = new JButton();
+  JPanel jPanel2 = new JPanel();
+  JButton jButton3 = new JButton();
+  JPanel jPanel1 = new JPanel();
+  JButton jButton2 = new JButton();
+  JButton jButton1 = new JButton();
+  JTextField jTextField1 = new JTextField();
+  XYLayout xYLayout3 = new XYLayout();
+  JEditorPane jEditorPane3 = new JEditorPane();
+  XYLayout xYLayout2 = new XYLayout();
+  JEditorPane jEditorPane2 = new JEditorPane();
+  //XYLayout xYLayout5 = new XYLayout();
+  JLabel jLabel1 = new JLabel();
+  JScrollPane jScrollPane1 = new JScrollPane();
+  JEditorPane jEditorPane1 = new JEditorPane();
+  JEditorPane jEditorPane4 = new JEditorPane();
+  TitledBorder titledBorder1;
+  JPopupMenu jPopupMenu1 = new JPopupMenu();
+  JMenuItem jMenuFav = new JMenuItem();
+  JMenuItem jMenuRefresh = new JMenuItem();
+  JMenuItem jMenuPrint = new JMenuItem();
+  JMenuItem jMenuBack = new JMenuItem();
+  JMenuItem jMenuAbout = new JMenuItem();
+  JMenuItem jMenuStop = new JMenuItem();
+  JMenuItem jMenuSearch = new JMenuItem();
+  JMenuItem jMenuSource = new JMenuItem();
+  JMenuItem jMenuExit = new JMenuItem();
+  JMenuItem jMenuOpenU = new JMenuItem();
+  JMenu jMenuHome = new JMenu();
+  JMenuItem jMenuGo = new JMenuItem();
+  JMenuItem jMenuSet = new JMenuItem();
+  JButton jButtonRed = new JButton();
+  JButton jButtonPower = new JButton();
+  JTextArea InputArea = new JTextArea();
+  JLabel jLabel2 = new JLabel();
+  boolean InputActive = false;
+
+  /**Construct the frame*/
+  public Browser() {
+    enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+    try {
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+  /**Component initialization*/
+  private void jbInit() throws Exception  {
+    //setIconImage(Toolkit.getDefaultToolkit().createImage(Browser.class.getResource("[Your Icon]")));
+    titledBorder1 = new TitledBorder("");
+    this.setResizable(false);
+    Border border1;
+    contentPane = (JPanel) this.getContentPane();
+    jPanel2.setBackground(SystemColor.desktop);
+    jPanel2.setFont(new java.awt.Font("SansSerif", 0, 12));
+    jPanel2.setLayout(xYLayout3);
+    contentPane.setLayout(xYLayout1);
+    this.setSize(new Dimension(260,513));
+
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Dimension frameSize = getSize();
+
+    if (frameSize.height > screenSize.height) {
+      frameSize.height = screenSize.height;
+    }
+    if (frameSize.width > screenSize.width) {
+      frameSize.width = screenSize.width;
+    }
+    this.setLocation(35, (screenSize.height - frameSize.height) / 2 - 30);
+    this.setTitle("áÇç¾ºÃÒÇà«ÍÃìÀÒÉÒä·Â");
+    jPanel1.setBackground(Color.lightGray);
+    jPanel1.setLayout(xYLayout2);
+    jButton1.setBorderPainted(false);
+    jButton1.setIcon(new ImageIcon(WapBrowser.Browser.class.getResource("up.jpg")));
+    jButton1.setRolloverIcon(new ImageIcon(WapBrowser.Browser.class.getResource("uponm.jpg")));
+    jButton2.setBorderPainted(false);
+    jButton2.setIcon(new ImageIcon(WapBrowser.Browser.class.getResource("down.jpg")));
+    jButton2.setRolloverIcon(new ImageIcon(WapBrowser.Browser.class.getResource("downonm.jpg")));
+    jButton3.setBorderPainted(false);
+    jButton3.setIcon(new ImageIcon(WapBrowser.Browser.class.getResource("o.jpg")));
+    jButton3.setRolloverIcon(new ImageIcon(WapBrowser.Browser.class.getResource("oonm.jpg")));
+    jButton5.setBorderPainted(false);
+    jButton5.setIcon(new ImageIcon(WapBrowser.Browser.class.getResource("green.jpg")));
+    jButton5.setRolloverIcon(new ImageIcon(WapBrowser.Browser.class.getResource("greenonm.jpg")));
+    jButton7.setBorderPainted(false);
+    jButton7.setIcon(new ImageIcon(WapBrowser.Browser.class.getResource("ok.jpg")));
+    jButton7.setRolloverIcon(new ImageIcon(WapBrowser.Browser.class.getResource("okonm.jpg")));
+    jButton7.addActionListener(new ActionListener(this));
+    jButton8.setBorderPainted(false);
+    jButton8.setIcon(new ImageIcon(WapBrowser.Browser.class.getResource("no.jpg")));
+    jButton8.setRolloverIcon(new ImageIcon(WapBrowser.Browser.class.getResource("noonm.jpg")));
+    jEditorPane3.setFont(new java.awt.Font("Dialog", 0, 12));
+    jEditorPane3.setEditable(false);
+//    jEditorPane3.setLayout(xYLayout1);
+    jEditorPane3.setLayout(new BorderLayout());
+    jEditorPane2.setFont(new java.awt.Font("Dialog", 0, 12));
+    jEditorPane2.setEditable(false);
+    jEditorPane2.setText("Select");
+    jButton3.setToolTipText("ENTER");
+    jButton5.setToolTipText("home");
+    jButton7.setToolTipText("soft left");
+    jButton8.setToolTipText("soft right");
+    jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+    jScrollPane1.setFont(new java.awt.Font("Dialog", 0, 28));
+    jEditorPane4.setFont(new java.awt.Font("Dialog", 0, 12));
+    jEditorPane4.setBorder(titledBorder1);
+    jEditorPane4.setEditable(false);
+    jEditorPane1.setFont(new java.awt.Font("Dialog", 0, 12));
+    jEditorPane1.setEditable(false);
+    jMenuFav.setText("Favorites");
+    jMenuRefresh.setAccelerator(javax.swing.KeyStroke.getKeyStroke(116, 0, false));
+    jMenuRefresh.setText("Refresh");
+    jMenuPrint.setText("Print");
+    jMenuBack.setAccelerator(javax.swing.KeyStroke.getKeyStroke(8, 0, false));
+    jMenuBack.addActionListener(new Browser_jMenuBack_actionAdapter(this));
+    jMenuBack.setText("Back");
+    jMenuBack.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("Back.gif")));
+    jMenuAbout.setText("About");
+    jMenuStop.setAccelerator(javax.swing.KeyStroke.getKeyStroke(27, 0, false));
+    jMenuStop.setText("Stop");
+    jMenuStop.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("stop.gif")));
+    jMenuSearch.setText("Search");
+    jMenuSource.setText("View Source");
+    jMenuSource.addActionListener(new Browser_jMenuSource_actionAdapter(this));
+    jMenuExit.setText("Exit");
+//    jMenuOpenU1.addActionListener(new Frame1_jMenuOpenU1_actionAdapter(this));
+    jMenuOpenU.setText("Open URL...");
+    jMenuOpenU.addActionListener(new Browser_jMenuOpenU_actionAdapter(this));
+    jMenuHome.setText("Home");
+    jMenuGo.setText("Go Home");
+    jMenuSet.setText("Set Home");
+    jMenuSet.addActionListener(new Browser_jMenuSet_actionAdapter(this));
+    jButtonRed.setToolTipText("Stop");
+    jButtonRed.setBorderPainted(false);
+    jButtonRed.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("red.jpg")));
+    jButtonRed.setRolloverIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("redonm.jpg")));
+    jButtonRed.addActionListener(new java.awt.event.ActionListener() {
+     public void actionPerformed(ActionEvent e) {
+        jButtonRed_actionPerformed(e);
+      }
+    });
+    jButtonPower.setBorder(null);
+    jButtonPower.setToolTipText("Close");
+    jButtonPower.setBorderPainted(false);
+    jButtonPower.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("power.jpg")));
+    jButtonPower.setRolloverIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("poweronm.jpg")));
+    jButtonPower.addActionListener(new java.awt.event.ActionListener() {
+     public void actionPerformed(ActionEvent e) {
+        jButtonPower_actionPerformed(e);
+      }
+    });
+    InputArea.setBackground(new Color(210, 210, 210));
+    InputArea.setBorder(titledBorder1);
+    InputArea.setDisabledTextColor(Color.lightGray);
+    InputArea.setText(des);
+    InputArea.setLineWrap(true);
+    jLabel2.setText("jLabel2");
+    contentPane.add(jPanel2,   new XYConstraints(45, 102, 175, 185));
+    jPanel2.add(jEditorPane3,        new XYConstraints(88, 159, 88, 27));
+    jPanel2.add(jEditorPane2,     new XYConstraints(0, 159, 88, 27));
+    jPanel2.add(jScrollPane1,  new XYConstraints(0, 30, 175, 129));
+    jPanel2.add(InputArea,    new XYConstraints(0, 31, 175, 128));
+    jPanel2.add(jEditorPane4,                  new XYConstraints(0, 0, 176, 31));
+    jPanel2.add(jLabel2,   new XYConstraints(0, 35, 50, 36));
+//    jEditorPane3.setLayout(borderLayout);
+    jScrollPane1.getViewport().add(jEditorPane1, null);
+    jLabel1.setIcon(new ImageIcon(WapBrowser.Browser.class.getResource("3gl.jpg")));
+
+    //contentPane.add(jPanel1,  new XYConstraints(10, 10, -1, -1));
+//    contentPane.add(jTextField1,          new XYConstraints(18, 439, 231, 24));
+    contentPane.add(jButton1,              new XYConstraints(118, 314, 16, 13));
+    contentPane.add(jButton2,  new XYConstraints(119, 349, 13, 11));
+    contentPane.add(jButton5,  new XYConstraints(43, 335, 18, 13));
+    contentPane.add(jButton3,  new XYConstraints(114, 325, 23, 22));
+    contentPane.add(jButton8,  new XYConstraints(167, 331, 36, 17));
+    contentPane.add(jButton7,  new XYConstraints(45, 305, 42, 21));
+    contentPane.add(jButtonRed,   new XYConstraints(64, 342, 13, 13));
+    contentPane.add(jButtonPower,   new XYConstraints(185, 20, 30, 30));
+    contentPane.add(jLabel1,  new XYConstraints(1, -12, 260, 514));
+    jPopupMenu1.add(jMenuBack);
+    jPopupMenu1.add(jMenuStop);
+    jPopupMenu1.add(jMenuRefresh);
+    jPopupMenu1.addSeparator();
+    jPopupMenu1.add(jMenuOpenU);
+    jPopupMenu1.add(jMenuHome);
+    jPopupMenu1.add(jMenuSearch);
+    jPopupMenu1.addSeparator();
+    jPopupMenu1.add(jMenuSource);
+    jPopupMenu1.addSeparator();
+    jPopupMenu1.add(jMenuFav);
+    jPopupMenu1.add(jMenuPrint);
+    jPopupMenu1.add(jMenuAbout);
+    jPopupMenu1.addSeparator();
+    jPopupMenu1.add(jMenuExit);
+    jMenuHome.add(jMenuGo);
+    jMenuHome.add(jMenuSet);
+    jEditorPane1.removeAll();
+    jEditorPane1.repaint();
+     try{
+      FileReader fin = new FileReader("home.txt");
+      BufferedReader bin = new BufferedReader(fin);
+      this.des = bin.readLine();
+      bin.close();
+      }
+    catch(IOException ex){
+      this.jEditorPane1.setText(ex.getMessage());
+    }// read initial hostname form home.txt
+    JTextField l = new JTextField();
+    l.setFont(this.myFont);
+    FontMetrics fm=l.getFontMetrics(myFont);
+    this.height = fm.getHeight();
+    this.history.push(this.des);
+    this.showall();
+    f2.jText2Editor(this.des);
+ //-------- event handling
+/*      InputArea.addActionListener(new java.awt.event.ActionListener() {
+     public void actionPerformed(ActionEvent e) {
+        InputArea_actionPerformed(e);
+      }
+    });*/
+    jButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton1_actionPerformed(e);
+      }
+    });
+    jButton2.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton2_actionPerformed(e);
+      }
+    });
+    jButton3.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton3_actionPerformed(e);
+      }
+    });
+    jButton5.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton5_actionPerformed(e);
+      }
+    });
+    jButton7.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton7_actionPerformed(e);
+      }
+    });
+    jButton8.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton8_actionPerformed(e);
+      }
+    });
+
+    jMenuGo.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton8_actionPerformed(e);
+      }
+    });
+
+    contentPane.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        contentPane_mouseClicked(e);
+      }
+    });
+
+    jEditorPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        jEditorPane1_mouseClicked(e);
+      }
+    });
+
+ //------- end event handling
+
+  }
+  /**Overridden so we can exit when window is closed*/
+  protected void processWindowEvent(WindowEvent e) {
+    super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+      System.exit(0);
+    }
+  }
+  //-------------------------------------------------- UP
+  void jButton1_actionPerformed(ActionEvent e) {
+    this.up_press();
+  }
+// -------------------------------------------------DOWN
+  void jButton2_actionPerformed(ActionEvent e) {
+    this.down_press();
+  }
+  // ------------------------------------------------ENTER
+  void jButton3_actionPerformed(ActionEvent e) {
+    if (InputActive){
+      String destination = new String(InputArea.getText());
+      InputArea.setVisible(false);
+      jScrollPane1.setVisible(true);
+      InputActive = false;
+      this.enter_press(destination);
+    }
+  }
+  //------------------------------------------------- back
+    void jButton4_actionPerformed(ActionEvent e) {
+    String st = new String();
+      if (!this.history.empty()){
+        st = this.history.pop().toString();
+        if ((st==this.des) & (!this.history.empty())){
+          st = this.history.pop().toString();
+        }
+      }
+      if (this.history.empty()){
+          this.history.push(st);
+      }
+      this.des = st;
+      this.showall();
+    }
+  //----------------------------------------------------home
+    void jButton5_actionPerformed(ActionEvent e) {
+    try{
+      FileReader fin = new FileReader("home.txt");
+      BufferedReader bin = new BufferedReader(fin);
+      this.des = bin.readLine();
+      bin.close();
+      this.showall();
+      f2.jText2Editor(this.des);
+      if (!this.history.empty()){
+       if (!this.history.peek().toString().equalsIgnoreCase(this.des))
+        this.history.push(this.des);
+      }
+    }
+      catch(IOException ex){
+      this.jEditorPane1.setText(ex.getMessage());
+      }
+      catch(EmptyStackException ex){
+      this.jEditorPane1.setText(ex.getMessage());
+      }
+
+  }
+  //--------------------------------------------------- set home
+    void jButton6_actionPerformed(ActionEvent e) {
+    try{
+      FileWriter fout = new FileWriter("home.txt");
+      BufferedWriter bout = new BufferedWriter(fout);
+      PrintWriter pout = new PrintWriter(bout);
+      pout.println(this.InputArea.getText());//jTextField1 => InputArea
+      pout.close();
+      }
+    catch(IOException ex){
+      this.jEditorPane1.setText(ex.getMessage());
+    }
+   }
+   // ------------------------------------------------- Soft Left
+  void jButton7_actionPerformed(ActionEvent e) {
+    String destination="";
+     for (int i = 0 ; i < this.numallnode ; i++){ // Find link to
+          if (this.elem[i].getIsHighlight()){
+                destination = this.elem[i].getLinkTo();
+            String[] name = new String[elem[i].getNumattr()];
+            String[] value = new String[elem[i].getNumattr()];
+            name = this.elem[i].getAttrbName();
+            value = this.elem[i].getAttrbValue();
+                  int k=i;
+            }
+      } // end for
+    this.enter_press(destination);
+  }
+  // --------------------------------------------------- Soft Right
+  void jButton8_actionPerformed(ActionEvent e) {
+      String destination ="";
+      for (int i=0;i<this.numallnode;i++){
+        if((this.elem[i].getIsDo()) & (this.elem[i].getCanshow())){
+
+          if(this.elem[i].getName().equalsIgnoreCase("go")){
+            for (int j=0;j<this.elem[i].getNumattr();j++){
+              if (this.attrbname(i,j).equalsIgnoreCase("href")){
+                destination = this.attrbvalue(i,j);
+              }
+            }
+            this.enter_press(destination);
+          }// end tag go
+          else if(this.elem[i].getName().equalsIgnoreCase("prev")){
+             String st = new String();
+             if (!this.history.empty()){
+              st = this.history.pop().toString();
+              if ((st==this.des) & (!this.history.empty())){
+              st = this.history.pop().toString();
+             }
+            }
+            if (this.history.empty()){
+            this.history.push(st);
+            }
+            this.des = st;
+            this.showall();
+          } // end tag prev
+        }// end if do
+      }// end for
+  }
+// ------------------------------- Method
+
+public void UrlInfo(String st1){
+    try{
+    String st;
+    URL url = new URL(st1);
+    this.protocol = url.getProtocol().trim();
+    this.hostname = url.getHost().trim();
+//    this.port = url.getPort();
+    st = url.getFile();
+    if (st1.lastIndexOf('#') != -1){
+    this.anchor = st1.substring(st1.lastIndexOf('#')+1,st1.length()).trim();
+    }
+    else this.anchor="";
+      if (st.lastIndexOf('/') != -1){
+        this.file = st.substring(st.lastIndexOf('/'),st.length()).trim();
+        this.path = st.substring(0,st.lastIndexOf('/')).trim();
+      }
+    }
+     catch (MalformedURLException e){
+      this.jEditorPane1.setText(e.getMessage());
+    }
+
+}
+
+String attrbname(int i,int j){
+    String[] st = new String[this.numallnode];
+    st = this.elem[i].getAttrbName();
+    return st[j];
+}
+String attrbvalue(int i,int j){
+    String[] st = new String[this.numallnode];
+    st = this.elem[i].getAttrbValue();
+    return st[j];
+}
+
+public void getnumallnode(Element e){	//get number of all node in the tree
+  for (Iterator i=e.getChildren().iterator(); i.hasNext(); ) {
+    this.numallnode=++this.numallnode;
+    Element child = (Element)i.next();
+    getnumallnode(child);
+  }
+}                                                       //end getnumallnode
+
+void getAttrb(String st){
+    this.attrbname=st.substring(12,st.indexOf("=")).trim();
+    this.attrbvalue=st.substring(st.indexOf('"')+1,st.length()-2).trim();
+}
+
+void getRoot() throws JDOMException,NullPointerException{
+    SAXBuilder builder= new SAXBuilder();
+    Document doc = builder.build(this.des);
+    this.e = doc.getRootElement();
+}// end getRoot
+
+void par(Element e) throws IOException, JDOMException {
+    String st = new String();
+    st =e.getName();  //element name
+                              this.elem[this.j] =new ElementInfo(st,e.getAttributes().size(),e.getTextTrim());
+                                    String[] tmp1 = new String[e.getAttributes().size()];
+                                    String[] tmp2 = new String[e.getAttributes().size()];
+                               for (int i=0; i<=e.getAttributes().size()-1;++i){
+                                          Object[] ob = e.getAttributes().toArray();
+                                          getAttrb(ob[i].toString());
+                                            tmp1[i]=this.attrbname;
+                                            tmp2[i]=this.attrbvalue;
+                                            this.elem[this.j].setnumchild(e.getChildren().size());
+                                };                        //end for
+                              this.elem[this.j].setAttrbName(tmp1);
+                              this.elem[this.j].setAttrbValue(tmp2);
+                              if(!e.isRootElement()){
+                              this.elem[this.j].setParent(e.getParent().getName());
+                              }
+                              else {this.elem[this.j].setIsRoot(true);}
+                              for (Iterator i=e.getChildren().iterator(); i.hasNext(); ) {
+                              Element child = (Element)i.next();
+                              this.j++;
+                              par(child);		 //Recursive
+
+                      }                           //end for
+
+  }   //end par()
+
+
+private int findWidth(String st,FontMetrics  fm)  {
+    int i = 0;
+    for (int j=0;j < st.length();j++){
+        i = i + fm.charWidth(st.charAt(j));
+    }
+    return i;
+}
+
+
+private void copyStyle(ElementInfo[] elem,int i,int j){
+      elem[j].setI(elem[i].getI());
+      elem[j].setB(elem[i].getB());
+      elem[j].setU(elem[i].getU());
+      elem[j].setSmall(elem[i].getSmall());
+      elem[j].setBig(elem[i].getBig());
+      elem[j].setPosition(elem[i].getPosition());
+      elem[j].setCanshow(elem[i].getCanshow());
+      elem[j].setIsLink(elem[i].getIsLink());
+      elem[j].setIsAnchor(elem[i].getIsAnchor());
+      elem[j].setIsDo(elem[i].getIsDo());
+      elem[j].setIsTable(elem[i].getIsTable());
+  }   //end copyStyle
+
+
+void setStyle(){
+      boolean bol=false;
+      boolean bol2 = false;
+      String st="";
+      JTextField l = new JTextField();
+      l.setFont(this.myFont);
+      FontMetrics fm=l.getFontMetrics(myFont);
+
+      for(int i=0;i<this.numallnode;i++){
+      // ----Copy From Parent
+
+//      if (!this.elem[i].getContent().equals("")){
+//        this.elem[i].setContent(this.speacialChar(this.elem[i].getContent()));
+//      }
+      if  (!this.elem[i].getIsRoot()){
+      int k=i-1;
+        while (!this.elem[i].getParent().equalsIgnoreCase(this.elem[k].getName())){
+         k--;
+        } // end while
+        copyStyle(this.elem,k,i);
+      }   // end if
+
+
+      //------- Set Element by itself
+
+      // tag img
+      if (this.elem[i].getName().equalsIgnoreCase("img")) {
+        String image="";
+        for(int j =0; j < this.elem[i].getNumattr() ; j++){
+          if (this.attrbname(i,j).equalsIgnoreCase("src")){
+            image = this.attrbvalue(i,j);
+          }
+          if (!image.substring(0,7).equalsIgnoreCase("http://")){
+            image = this.protocol+"://"+this.hostname+this.path+'/'+image;
+          }
+          try{
+          URL urlImage = new URL(image);
+          Icon icon = new ImageIcon(urlImage);
+          this.elem[i].setWidth(icon.getIconWidth()); // set width of image
+          this.elem[i].setHeight(icon.getIconHeight()); // set height of image
+          }
+          catch (MalformedURLException e){
+          this.jEditorPane1.setText(e.getMessage());
+          }
+        }
+      }
+      else{
+        this.elem[i].setWidth(this.findWidth(this.elem[i].getContent(),fm)); // set width of text
+        this.elem[i].setHeight(this.height);      // set height of text
+      }
+      // end tag img
+
+      // tag table
+      if(this.elem[i].getName().equalsIgnoreCase("table")){ // find number of column of this table
+        this.elem[i].setIsTable(true);
+        String col="";
+        for (int j=0;j< this.elem[i].getNumattr();j++){
+          if (this.attrbname(i,j).equalsIgnoreCase("columns")){
+            col = this.attrbvalue(i,j);
+          }
+        }
+        this.elem[i].setColumn(Integer.parseInt(col)); // set num column table
+        int j=i;
+        while (!this.elem[j].getName().equalsIgnoreCase("tr")){
+          j++;
+        }
+        int postr = j;
+        j++;
+        int numrow=0;
+        while(this.elem[j].getName().equalsIgnoreCase("td")){
+          numrow++;
+          j++;
+        }
+        this.elem[i].setRow(numrow); // set num row of table
+
+        int temp[] = new int[this.elem[i].getColumn()];
+        int intial = 0;
+        for(int m=0;m<this.elem[i].getColumn();m++){ // to find the maximun width of column
+          int postd = postr+1;
+          System.out.println("test");
+          System.out.println(postd);
+          System.out.println(postr);
+          System.out.println(this.elem[postd].getName());
+          System.out.println(this.elem[postr].getName());
+          if ((this.elem[postr].getName().equalsIgnoreCase("tr"))){
+            int maxwidth = this.findWidth(this.elem[postd].getContent(),fm);
+            postd++;
+            for(int n=0;n < this.elem[i].getRow()-1;n++){
+              System.out.println(this.findWidth(this.elem[postd].getContent(),fm));
+              if(this.findWidth(this.elem[postd].getContent(),fm) > maxwidth){
+                maxwidth = this.findWidth(this.elem[postd].getContent(),fm);
+                postd++;
+              }
+            }// end for n
+            temp[intial] = maxwidth;
+            System.out.println(maxwidth);
+            System.out.println(intial);
+            intial++;
+          }// end if
+          this.elem[i].setColumnWidth(temp);
+          postr = postd;
+        }// end for m
+      }
+      // end tag table
+
+      String[] name1 = new String[this.elem[i].getNumattr()];
+      String[] value = new String[this.elem[i].getNumattr()];
+      name1 = this.elem[i].getAttrbName();
+      value = this.elem[i].getAttrbValue();
+      if (this.elem[i].getName().equalsIgnoreCase("card")){
+        if (this.anchor.equals("")){
+          if (bol2 == false){
+            this.elem[i].setCanshow(true);
+            bol2 = true;
+          }
+       }
+        else {
+           for (int j = 0;j < this.elem[i].getNumattr();j++)
+           {
+            if (name1[j].equalsIgnoreCase("id"))
+            st = value[j];
+           } // end for
+            if (this.anchor.equals(st)){
+            this.elem[i].setCanshow(true);
+
+            }
+        }// end else
+      }
+
+      if ((this.elem[i].getName().equalsIgnoreCase("a")) | (this.elem[i].getName().equalsIgnoreCase("anchor"))){
+          this.elem[i].setIsLink(true);
+          if(this.elem[i].getName().equalsIgnoreCase("anchor")){
+            this.elem[i].setIsAnchor(true);
+          }
+
+      }// End TAG A
+      if(this.elem[i].getName().equalsIgnoreCase("table")){
+        this.elem[i].setIsTable(true);
+      }
+      // set highlight
+      if ((bol == false) &(this.elem[i].getIsLink())&(!this.elem[i].getContent().equals(""))&(this.elem[i].getCanshow())){
+          this.elem[i].setIsHighlight(true);
+          bol = true;
+      }
+      if (this.elem[i].getName().equalsIgnoreCase("do")){
+          this.elem[i].setIsDo(true);
+      }
+      if (this.elem[i].getName().equalsIgnoreCase("p")){
+            if (this.elem[i].getNumattr() != 0){
+                for(int k=0;k<this.elem[i].getNumattr();k++){
+                      if (name1[k].equalsIgnoreCase("align")){
+                        this.elem[i].setPosition(value[k]);
+                      };
+                };
+            }
+      }     //TAG P
+
+
+        if ((this.elem[i].getName().equalsIgnoreCase("b")) |(this.elem[i].getName().equalsIgnoreCase("emphasis"))){
+            this.elem[i].setB(true);
+        }   //TAG B
+
+        else if ((this.elem[i].getName().equalsIgnoreCase("i")) |(this.elem[i].getName().equalsIgnoreCase("strong"))){
+            this.elem[i].setI(true);
+        }   //TAG I
+        else if (this.elem[i].getName().equalsIgnoreCase("u")){
+            this.elem[i].setU(true);
+        }
+        else if (this.elem[i].getName().equalsIgnoreCase("big")){
+            this.elem[i].setBig(true);
+        }
+        else if (this.elem[i].getName().equalsIgnoreCase("small")){
+            this.elem[i].setSmall(true);
+        }
+      }     // end for
+  }   //end setStyle
+
+
+void setCo(){
+        int inity = 5;int x=0;int y=0;int maxHeight=0;
+        for (int i =0 ; i < this.numallnode ; i++){
+    if (this.elem[i].getCanshow()){
+       //  if ((this.elem[i].getIsTable()) & !(this.elem[i].getContent().equals(""))){
+       //  }
+          if ((this.elem[i].getName().equalsIgnoreCase("p")) | (this.elem[i].getName().equalsIgnoreCase("br"))){
+                  int z=0;// number of component to add in a line
+                  int w=0;// length total for a line
+                  y=i+1;
+                  if (y < this.numallnode){
+                   maxHeight = 0;
+                   while (!(this.elem[y].getName().equalsIgnoreCase("p")) & !(this.elem[y].getName().equalsIgnoreCase("br"))){
+                    z++;
+                    w = w + this.elem[y].getWidth();
+                    if (this.elem[y].getHeight() > maxHeight){
+                        maxHeight = this.elem[y].getHeight();
+                    }
+                    y++;
+                    if (y == this.numallnode)
+                    break;
+                   }// end while
+                 }
+                  inity = inity + maxHeight;
+                  if (this.elem[i].getPosition().equalsIgnoreCase("center")){
+                  x=(172 -w)/2;
+                      if (x<0) x=0;
+                  }
+                  else if (this.elem[i].getPosition().equalsIgnoreCase("right")){
+                  x=(172-w);
+                    if (x<0) x=0;
+                  }
+                  else if (this.elem[i].getPosition().equalsIgnoreCase("left")){
+                  x=0;
+                  }
+                    y=i+1;
+                   this.elem[y].setCo_x(x);
+                   this.elem[y].setCo_y(inity-this.elem[y].getHeight());
+
+                  for (int j=0;j<z-1;j++){
+                    y++;
+                    if (y == this.numallnode)
+                    break;
+                    x = x + elem[y-1].getWidth();
+                    this.elem[y].setCo_x(x);
+                    this.elem[y].setCo_y(inity-this.elem[y].getHeight());
+                  }
+              } // end if P
+          }
+        }
+} // end setCo
+
+void initFrame(){
+  this.x=0;
+  this.y=0;
+  this.j=0;
+  this.jEditorPane3.setText("");
+  this.jEditorPane3.removeAll();
+  this.jEditorPane3.repaint();
+
+ }  // end initFrame
+
+void show1(){
+
+    boolean isDo = false;
+    JTextField[] label = new JTextField[this.numallnode];
+    for (int i=0;i < this.numallnode;i++){
+          Border border1;
+        label[i] = new JTextField(this.elem[i].getContent());
+        String style = new String();
+        int x;
+        int font = 0;
+        int fontSize = 20;
+        if ((this.elem[i].getName().equalsIgnoreCase("card")) & (this.elem[i].getCanshow())){  // TAG CARD
+                String[] st1=this.elem[i].getAttrbName();
+                String[] st2=this.elem[i].getAttrbValue();
+                String st=new String();
+            for(int j=0;j<this.elem[i].getNumattr();j++){
+                if (st1[j].equalsIgnoreCase("title")){
+                st = st2[j];
+                }// end if
+            }// end for
+         JTextField  label1 = new JTextField(st);
+         label1.setText("-- "+st+" --");
+         Font myFont = new Font("AngsanaUPC",3,20);
+         FontMetrics fm1=label1.getFontMetrics(myFont);
+         label1.setFont(myFont);
+         border1 = BorderFactory.createEmptyBorder();
+         label1.setBorder(border1);
+         label1.setEditable(false);
+//         label1.setBackground(Color.lightGray);
+         this.jEditorPane4.removeAll();
+         this.jEditorPane4.repaint();
+         this.jEditorPane4.add(label1);
+         label1.setBounds((172-this.findWidth("-- "+st+" --",fm1))/2,2,this.findWidth("-- "+st+" --",fm1),this.height);
+        }// end TITLE
+        if  (!(this.elem[i].getContent().equals(""))   &  !(this.elem[i].getContent().equals(null))){
+           if (this.elem[i].getCanshow()){
+
+               if ((this.elem[i].getB()) & (this.elem[i].getI())){
+                    font = 3;
+               }
+               else if (this.elem[i].getB()){
+                      font = 1;
+               }
+               else if (this.elem[i].getI()){
+                    font = 2;
+               }
+               else{
+                    font = 0;
+               }
+
+               if(this.elem[i].getSmall()){
+                    fontSize = 18;
+               }
+               else if(this.elem[i].getBig()){
+                    fontSize = 22;
+               }
+               else{fontSize = 20;}
+                      label[i].setFont(this.myFont);
+                      Font myFont1 = new Font("AngsanaUPC",font,fontSize);
+                      FontMetrics fm1=label[i].getFontMetrics(myFont1);
+                      label[i].setFont(myFont1);
+                      border1 = BorderFactory.createEmptyBorder();
+                      label[i].setBorder(border1);
+                      label[i].setEditable(false);
+            // check highlight
+                        if (this.elem[i].getIsHighlight())
+                          label[i].setBackground(Color.gray);
+                        else label[i].setBackground(Color.white);
+            // tool tip and link
+                       if (this.elem[i].getIsLink()){
+            // Anchor
+                          if (this.elem[i].getIsAnchor()){
+                            int k=i;
+
+                            if (this.elem[i].getName().equalsIgnoreCase("anchor")){
+                              while((!this.elem[k].getName().equalsIgnoreCase("go")) & (!this.elem[k].getName().equalsIgnoreCase("prev"))){
+                               if (k==this.numallnode-1)
+                               break;
+                               k++;
+                              }
+                            }
+                            else{
+                              while(!this.elem[k].getName().equalsIgnoreCase("anchor") ){
+                               if (k<0)
+                               break;
+                               k--;
+                              }
+                              while((!this.elem[k].getName().equalsIgnoreCase("go")) & (!this.elem[k].getName().equalsIgnoreCase("prev"))){
+                               if (k==this.numallnode-1)
+                               break;
+                               k++;
+                              }
+                            }
+//Anchor Go
+                              if (this.elem[k].getName().equalsIgnoreCase("go")){
+                                for (int j=0;j<this.elem[k].getNumattr();j++){
+                                  if (this.attrbname(k,j).equalsIgnoreCase("href")){
+                                    label[i].setToolTipText(this.attrbvalue(k,j));
+                                    this.elem[i].setLinkTo(this.attrbvalue(k,j));
+                                  }
+                                } //end for
+                              }// end if
+//Anchor PREV
+                              if (this.elem[k].getName().equalsIgnoreCase("prev")){
+                                    label[i].setToolTipText(this.history.peek().toString());
+                                    this.elem[i].setLinkTo(this.history.peek().toString());
+                              }
+                          }// Anchor
+// A
+                          else if (this.elem[i].getName().equalsIgnoreCase("a")){
+                              for (int j=0;j<this.elem[i].getNumattr();j++){
+                                if (this.attrbname(i,j).equalsIgnoreCase("href")){
+                                  label[i].setToolTipText(this.attrbvalue(i,j));
+                                  this.elem[i].setLinkTo(this.attrbvalue(i,j));
+                                }
+                              }
+                          }// tag A
+                          else{// is not tag A tag anchor but is link
+                            int k=i;
+                            while (!this.elem[k].getName().equalsIgnoreCase("a")){
+                              k--;
+                            }
+                            String[] name = new String[this.elem[i].getNumattr()];
+                            String[] value = new String[this.elem[i].getNumattr()];
+                            name = this.elem[k].getAttrbName();
+                            value = this.elem[k].getAttrbValue();
+                              for (int j=0;j<this.elem[k].getNumattr();j++){
+                                if (name[j].equalsIgnoreCase("href")){
+                                  label[i].setToolTipText(value[j]);
+                                  this.elem[i].setLinkTo(value[j]);
+                                }
+                              }
+                          }
+                       }
+                       // end tool tip
+                        this.jEditorPane1.add(label[i]);
+                        label[i].setBounds(elem[i].getCo_x(),this.elem[i].getCo_y(),this.findWidth(this.elem[i].getContent(),fm1),this.height);
+           }//end if can show
+      } // end content <> null
+      // TAG IMG
+      if ((this.elem[i].getName().equalsIgnoreCase("img"))&(this.elem[i].getCanshow())){
+        String image="";
+        for(int j =0; j < this.elem[i].getNumattr() ; j++){
+          if (this.attrbname(i,j).equalsIgnoreCase("src")){
+            image = this.attrbvalue(i,j);
+          }
+          if (!image.substring(0,7).equalsIgnoreCase("http://")){
+            image = this.protocol+"://"+this.hostname+this.path+'/'+image;
+          }
+          try{
+          URL urlImage = new URL(image);
+          Icon icon = new ImageIcon(urlImage);
+          JLabel l = new JLabel(icon);
+          this.jEditorPane1.add(l);
+          l.setBounds(elem[i].getCo_x(),elem[i].getCo_y(),icon.getIconWidth(),icon.getIconHeight());
+          }
+          catch (MalformedURLException e){
+          this.jEditorPane1.setText(e.getMessage());
+          }
+        }
+      }
+      // END TAG IMG
+      // TAG DO
+      if ((this.elem[i].getName().equalsIgnoreCase("do")) & (this.elem[i].getCanshow())){
+      String  type="";
+      String  label1="";
+        for (int j=0;j<this.elem[i].getNumattr();j++ ){
+          if (this.attrbname(i,j).equalsIgnoreCase("type")){
+            type = this.attrbvalue(i,j);
+          }
+        }
+        for (int j=0;j<this.elem[i].getNumattr();j++ ){
+          if (this.attrbname(i,j).equalsIgnoreCase("label")){
+            label1 = this.attrbvalue(i,j);
+          }
+        }
+        if (!label1.equalsIgnoreCase("")){
+         JLabel text = new JLabel();
+         text.setText(label1);
+//        this.jEditorPane3.add(text,BorderLayout.EAST);
+          this.jEditorPane3.setText(label1);
+//        this.jEditorPane3.repaint();
+          }
+        if (type.equalsIgnoreCase("accept")){
+            if (this.elem[i+1].getName().equalsIgnoreCase("go")) {
+            String href="";
+              for (int j=0;j<this.elem[i+1].getNumattr();j++ ){
+                if (this.attrbname(i+1,j).equalsIgnoreCase("href")){
+                href = this.attrbvalue(i+1,j);
+                }
+              }
+              this.elem[i+1].setLinkTo(href);
+            }
+        }
+      } // end Do
+    }   // end for
+    this.jEditorPane2.setText("Select");
+ }    // end show1
+void showall(){
+     try{
+     this.initFrame();
+     this.numallnode = 1;
+     this.jEditorPane1.removeAll();
+     this.jEditorPane1.repaint();
+     this.jEditorPane1.setText("");
+     this.UrlInfo(this.des);
+     this.getRoot();
+     this.getnumallnode(this.e);
+     this.par(this.e);
+     this.setStyle();
+     this.setCo();
+     this.show1();
+     this.InputArea.setText(des);
+ //   this.getContentPane().add(jPanel2,  new XYConstraints(1, 24, 396, 282));
+     }
+     catch (JDOMException ex){
+     this.jEditorPane1.removeAll();
+     this.jEditorPane1.repaint();
+     this.jEditorPane1.setText(ex.getMessage());
+     }
+     catch (IOException ex){
+     this.jEditorPane1.removeAll();
+     this.jEditorPane1.repaint();
+     this.jEditorPane1.setText(ex.getMessage());
+    }
+}
+String speacialChar(String st){
+    String st2,st3="";
+    for (int i = 0 ;i < st.length() ;i++){
+        int j=0;
+        if (st.charAt(i)== '&'){
+          st2 = st.substring(i+1);
+          if (st2.indexOf(";") != -1){
+            st2.substring(0,st2.indexOf(";")-1);
+              if (st2.equals("#34")){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+5;
+                    st3 = st3+'"';
+                  }
+                }
+              } // end #34
+             else if (st2.equals("quot")){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+6;
+                    st3 = st3+'"';
+                  }
+                }
+              }// #quot
+
+            else if ( (st2.equals("#38")) | (st2.equals("amp")) ){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+5;
+                    st3 = st3+'&';
+                  }
+                }
+            }// #38 amp
+            else if (st2.equals("#39")){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+5;
+                    st3 = st3+"'";
+                  }
+                }
+              }// #39
+            else if (st2.equals("apos")){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+6;
+                    st3 = st3+"'";
+                  }
+                }
+              }// #apos
+            else if (st2.equals("#60")){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+5;
+                    st3 = st3+'<';
+                  }
+                }
+              }// #60
+            else if (st2.equals("lt")){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+4;
+                    st3 = st3+'<';
+                  }
+                }
+              }// #lt
+
+            else if (st2.equals("#62")){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+5;
+                    st3 = st3+'>';
+                  }
+                }
+              }// #62
+            else if (st2.equals("gt")){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+4;
+                    st3 = st3+'>';
+                  }
+                }
+              }// #gt
+            else if ((st2.equals("#160")) | (st2.equals("nbsp"))){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+6;
+                    st3 = st3+' ';
+                  }
+
+              }// #160 nbsp
+            st= st3;
+            }
+          }
+        }
+    }
+    return st;
+}// end special char
+// ------------------------------------ If enter URL
+  void InputArea_actionPerformed(ActionEvent e) {
+    if (!this.history.empty()){
+      if (!this.history.peek().toString().equals(this.des))
+      this.history.push(this.des);
+      }
+   // }
+
+    this.des=InputArea.getText();
+    this.showall();
+}
+// UP
+void up_press(){
+  int j=0;int i =0;boolean bol=false;
+             this.initFrame();
+
+        for ( i=0;i < this.numallnode ;i++){
+              if ( i > this.numallnode)
+              break;
+              if (this.elem[i].getIsHighlight()){
+              j = i;
+              }
+        }
+
+      i = j-1;
+        while ((i >= 0) & (bol == false)){
+            if ((this.elem[i].getIsLink()) & !(this.elem[i].getContent().equals("")) & (this.elem[i].getCanshow())){
+            this.elem[i].setIsHighlight(true);
+            this.elem[j].setIsHighlight(false);
+            bol = true;
+            }
+            i--;
+        }
+             this.jEditorPane1.removeAll();
+             this.jEditorPane1.repaint();
+             this.jEditorPane1.setText("");
+             this.show1();
+    JScrollBar vsb = new JScrollBar();
+    vsb = jScrollPane1.getVerticalScrollBar();
+    int go_up= vsb.getValue();
+    System.out.println(go_up+" line(s) go up");
+    vsb.setValue(go_up-10);
+    jScrollPane1.setVerticalScrollBar(vsb);
+  }
+  // DOWN
+  void down_press(){
+          int j=0;int i =0;boolean bol=false;
+       this.initFrame();
+
+        for ( i=0;i < this.numallnode ;i++){
+              if ( i > this.numallnode)
+              break;
+              if (this.elem[i].getIsHighlight()){
+              j = i;
+              }
+        }
+      i = j+1;
+        while ((i < this.numallnode) & (bol == false)){
+            if ((this.elem[i].getIsLink()) & !(this.elem[i].getContent().equals(""))& (this.elem[i].getCanshow())){
+            this.elem[i].setIsHighlight(true);
+            this.elem[j].setIsHighlight(false);
+            bol = true;
+            }
+            i++;
+        }
+             this.jEditorPane1.removeAll();
+             this.jEditorPane1.repaint();
+             this.jEditorPane1.setText("");
+             this.show1();
+   JScrollBar vsb = new JScrollBar();
+   vsb = jScrollPane1.getVerticalScrollBar();
+   int go_down= vsb.getValue();
+   System.out.println(go_down+" line(s) go down");
+   vsb.setValue(go_down+10);
+   jScrollPane1.setVerticalScrollBar(vsb);
+
+        }
+// Enter Press
+public void enter_press(String st1){
+      boolean bol = false;
+      if (!this.history.empty()){
+       if (!this.history.peek().toString().equals(this.des))
+       this.history.push(this.des);
+      }
+      // end for
+    this.des = st1;
+    if (this.des.charAt(0) != '#'){
+      this.UrlInfo(this.des);
+      this.showall();
+    }// end if char <> #
+    else {          // link to same file but another card
+        String[] name = new String[this.numallnode];
+        String[] value = new String[this.numallnode];
+        String st = this.des.substring(1,this.des.length());
+        this.anchor = st;
+//        if (this.port.equals("")){
+          this.des = this.protocol+"://"+this.hostname+this.path+this.file+'#'+this.anchor;
+//        }
+//        else{
+//          this.des = this.protocol+"://"+this.hostname+":"+this.port+this.path+this.file+'#'+this.anchor;
+//        }
+        this.UrlInfo(this.des);
+        for (int i =0 ; i < this.numallnode ; i++ ){
+           name = this.elem[i].getAttrbName();
+           value = this.elem[i].getAttrbValue();
+          if((this.elem[i].getName().equalsIgnoreCase("card")) & (!this.elem[i].getCanshow())){
+              for ( j = 0 ;j< this.elem[i].getNumattr() ; j++){
+                if ((name[j].equalsIgnoreCase("id")) & (value[j].equals(st))){
+                  this.elem[i].setCanshow(true);   // enable new card
+                }
+              }
+            }
+            else if (this.elem[i].getCanshow()){
+                  this.elem[i].setCanshow(false);   // disable old card
+               }
+        }// end for
+        this.x=0;
+        this.y=0;
+        this.setStyle();
+        this.setCo();
+        this.jEditorPane1.removeAll();
+        this.jEditorPane1.repaint();
+        this.jEditorPane1.setText("");
+        this.show1();
+        this.InputArea.setText(this.des);
+        this.UrlInfo(this.des);
+    }
+    f2.jText2Editor(this.des);
+    f2.statusBar.setText("Openning WAP Site : " + this.des);
+}
+
+/*
+static void enter_press(String st1){
+      boolean bol = false;
+      if (!history.empty()){
+       if (!history.peek().toString().equals(des))
+       history.push(des);
+      }
+      // end for
+    des = st1;
+    if (des.charAt(0) != '#'){
+      UrlInfo(des);
+      showall();
+    }// end if char <> #
+    else {          // link to same file but another card
+        String[] name = new String[numallnode];
+        String[] value = new String[numallnode];
+        String st = des.substring(1,des.length());
+        anchor = st;
+//        if (this.port.equals("")){
+          des = protocol+"://"+hostname+path+file+'#'+anchor;
+//        }
+//        else{
+//          this.des = this.protocol+"://"+this.hostname+":"+this.port+this.path+this.file+'#'+this.anchor;
+//        }
+        UrlInfo(des);
+        for (int i =0 ; i < numallnode ; i++ ){
+           name = elem[i].getAttrbName();
+           value = elem[i].getAttrbValue();
+          if((elem[i].getName().equalsIgnoreCase("card")) & (!elem[i].getCanshow())){
+              for ( j = 0 ;j< elem[i].getNumattr() ; j++){
+                if ((name[j].equalsIgnoreCase("id")) & (value[j].equals(st))){
+                  elem[i].setCanshow(true);   // enable new card
+                }
+              }
+            }
+            else if (elem[i].getCanshow()){
+                  elem[i].setCanshow(false);   // disable old card
+               }
+        }// end for
+        x=0;
+        y=0;
+        setStyle();
+        setCo();
+        jEditorPane1.removeAll();
+        jEditorPane1.repaint();
+        jEditorPane1.setText("");
+        show1();
+        InputArea.setText(des);
+        UrlInfo(des);
+    }
+    f2.jText2Editor(des);
+    f2.statusBar.setText("Openning WAP Site : " + des);
+}
+*/
+
+//----------------------Menu's action
+  void jMenuOpenU_actionPerformed(ActionEvent e) {
+    if (InputActive){
+      InputArea.setVisible(false);
+      jScrollPane1.setVisible(true);
+      InputActive = false;
+    }
+    else{
+      jScrollPane1.setVisible(false);
+        //jEditorPane1.setText("MenuOpenU action");
+      InputArea.setText("");
+      InputArea.append(this.des);
+      //IsInput = true; //////////////////Unknown Var
+      InputArea.setVisible(true);
+      InputActive = true;
+    }
+  }
+
+
+  //---------------------end Menu's action
+
+  void contentPane_mouseClicked(MouseEvent e) {
+    if (e.getModifiers()==4) {
+/*          JPopupMenu jpmu = new JPopupMenu () ;//Not need
+          jpmu.add(jMenuBack) ;
+          jpmu.add(jMenuStop) ;
+          jpmu.add(jMenuRefresh) ;
+          jpmu.addSeparator();
+          jpmu.add(jMenuOpenU) ;
+          jpmu.add(jMenuHome) ;
+          jpmu.add(jMenuSearch) ;
+          jpmu.addSeparator();
+          jpmu.add(jMenuFav) ;
+          jpmu.add(jMenuPrint) ;
+          jpmu.add(jMenuAbout) ;
+          jpmu.addSeparator();
+          jpmu.add(jMenuSource) ;
+          jpmu.addSeparator();
+          jpmu.add(jMenuExit) ;
+  */        jPopupMenu1.show(contentPane,e.getX(),e.getY()) ;
+          }
+  }
+
+  void jEditorPane1_mouseClicked(MouseEvent e) {
+    if (e.getModifiers()==4) {
+    jPopupMenu1.show(jEditorPane1,e.getX(),e.getY()) ;
+          }
+  }
+  void jButtonViewSrc_actionPerformed(ActionEvent e) {
+    f2.jTextField1.setText(InputArea.getText());
+    f2.setVisible(true);
+  }
+
+  void jButtonRed_actionPerformed(ActionEvent e) { // ------- Stop
+
+  }
+
+  void jButtonPower_actionPerformed(ActionEvent e) { //------------- Close
+    System.exit(0);
+  }
+
+// ------------------------------- End Method
+}
+
+class Browser_jButton4_actionAdapter implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  Browser_jButton4_actionAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButton4_actionPerformed(e);
+  }
+}
+
+class Browser_jMenuBack_actionAdapter implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  Browser_jMenuBack_actionAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButton4_actionPerformed(e);
+  }
+}
+
+class Browser_jMenuSource_actionAdapter implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  Browser_jMenuSource_actionAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButtonViewSrc_actionPerformed(e);
+  }
+}
+
+class Browser_jMenuSet_actionAdapter implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  Browser_jMenuSet_actionAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButton6_actionPerformed(e);
+  }
+}
+
+class Browser_jButton6_actionAdapter implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  Browser_jButton6_actionAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButton6_actionPerformed(e);
+  }
+}
+
+class Browser_jMenuOpenU_actionAdapter implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  Browser_jMenuOpenU_actionAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jMenuOpenU_actionPerformed(e);
+  }
+}
+
+class Browser_jButton3_actionAdapter implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  Browser_jButton3_actionAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButton3_actionPerformed(e);
+  }
+}
+
+class ActionListener implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  ActionListener(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButton3_actionPerformed(e);
+  }
+}

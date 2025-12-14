@@ -1,0 +1,75 @@
+<isd:service xmlns:isd="http://xml.apache.org/xml-soap/deployment"
+             id="http://olala/BusBooking/">
+  <isd:provider type="java"
+                scope="Application"
+                methods="Reserve Rent Confirm CancelBooking CancelBookingDetail GetBooking GetBookings GetBookingDetails GetSeatBookings ViewBooking ViewRentBooking">
+    <isd:java class="olala.service.bussystem.BookingService" static="false"/>
+  </isd:provider>
+
+  <isd:faultListener>org.apache.soap.server.DOMFaultListener</isd:faultListener>
+
+  <isd:mappings>
+	<!--
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:customerID"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.StringDeserializer"/>
+	-->
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:reservelist"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.ArraySerializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:renItems"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.ArraySerializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:travellers"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.ArraySerializer"/>
+        <!--
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:bookingID"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.StringDeserializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:ItemNo"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.IntDeserializer"/>
+	-->
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:ReserveItem"
+             javaType="olala.bussystem.ReserveItem"
+             java2XMLClassName="olala.service.bussystem.ReserveItemSerialize"
+             xml2JavaClassName="olala.service.bussystem.ReserveItemSerialize"/>  
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:TravellerVO"
+             javaType="olala.bussystem.TravellerVO"
+             java2XMLClassName="olala.service.bussystem.TravellerVOSerialize"
+             xml2JavaClassName="olala.service.bussystem.TravellerVOSerialize"/>  
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:RentItem"
+             javaType="olala.bussystem.RentItem"
+             java2XMLClassName="olala.service.bussystem.RentItemSerialize"
+             xml2JavaClassName="olala.service.bussystem.RentItemSerialize"/>  
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:BookingVO"
+             javaType="olala.bussystem.BookingVO"
+             java2XMLClassName="olala.service.bussystem.BookingVOSerialize"
+             xml2JavaClassName="olala.service.bussystem.BookingVOSerialize"/>  
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:BookingDetailVO"
+             javaType="olala.bussystem.BookingDetailVO"
+             java2XMLClassName="olala.service.bussystem.BookingDetailVOSerialize"
+             xml2JavaClassName="olala.service.bussystem.BookingDetailVOSerialize"/>  
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:TravellerSeat"
+             javaType="olala.bussystem.TravellerSeat"
+             java2XMLClassName="olala.service.bussystem.TravellerSeatSerialize"
+             xml2JavaClassName="olala.service.bussystem.TravellerSeatSerialize"/>  
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:ViewBookInfo"
+             javaType="olala.bussystem.ViewBookInfo"
+             java2XMLClassName="olala.service.bussystem.ViewBookInfoSerialize"
+             xml2JavaClassName="olala.service.bussystem.ViewBookInfoSerialize"/> 
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:ViewRentBookInfo"
+             javaType="olala.bussystem.ViewRentBookInfo"
+             java2XMLClassName="olala.service.bussystem.ViewRentBookInfoSerialize"
+             xml2JavaClassName="olala.service.bussystem.ViewRentBookInfoSerialize"/> 
+  </isd:mappings>  
+</isd:service>

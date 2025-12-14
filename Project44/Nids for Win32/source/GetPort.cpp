@@ -1,0 +1,27 @@
+// GetPort.cpp: implementation of the CGetPort class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "NidsForWin.h"
+#include "GetPort.h"
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+CGetPort::CGetPort()
+{
+
+}
+
+CGetPort::~CGetPort()
+{
+
+}

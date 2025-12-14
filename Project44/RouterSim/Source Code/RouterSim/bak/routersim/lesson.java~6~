@@ -1,0 +1,56 @@
+package routersim;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.JFrame;
+import javax.swing.*;
+import javax.swing.tree.*;
+import javax.swing.event.*;
+
+
+public class lesson extends JFrame implements TreeSelectionListener{
+  private JTree tree;
+  private JTextField currentSelectionField;
+
+  public lesson() {
+
+    super("JTree Selections");
+    enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+//    WindowUtilities.setNativeLookAndFeel();
+//    addWindowListener(new ExitListener());
+    Container content = getContentPane();
+    DefaultMutableTreeNode root =
+    new DefaultMutableTreeNode("Root");
+    DefaultMutableTreeNode child;
+    DefaultMutableTreeNode grandChild;
+    for(int childIndex=1; childIndex<4; childIndex++) {
+      child = new DefaultMutableTreeNode("Child " + childIndex);
+      root.add(child);
+      for(int grandChildIndex=1; grandChildIndex<4; grandChildIndex++) {
+        grandChild =
+          new DefaultMutableTreeNode("Grandchild " + childIndex +
+                                     "." + grandChildIndex);
+        child.add(grandChild);
+      }
+    }
+    tree = new JTree(root);
+    tree.addTreeSelectionListener(this);
+    content.add(new JScrollPane(tree), BorderLayout.CENTER);
+    currentSelectionField = new JTextField("Current Selection: NONE");
+    content.add(currentSelectionField, BorderLayout.SOUTH);
+    setSize(350, 375);
+    setVisible(true);
+
+  }
+  public void valueChanged(TreeSelectionEvent event) {
+    currentSelectionField.setText
+      ("Current Selection: " +
+       tree.getLastSelectedPathComponent().toString());
+  }
+  protected void processWindowEvent(WindowEvent e) {
+    super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+    //      System.exit(0);
+    }
+  }
+}

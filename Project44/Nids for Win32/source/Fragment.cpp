@@ -1,0 +1,27 @@
+// Fragment.cpp: implementation of the Fragment class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "NidsForWin.h"
+#include "Fragment.h"
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+Fragment::Fragment()
+{
+
+}
+
+Fragment::~Fragment()
+{
+
+}

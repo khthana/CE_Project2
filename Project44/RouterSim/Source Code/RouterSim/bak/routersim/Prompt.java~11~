@@ -1,0 +1,140 @@
+package routersim;
+
+public class Prompt extends Network{
+//  protected String promptChar = ">";
+//  public String getPrompt(){
+//    return promptChar;
+//  }
+  //----------------------enable cmd--------------------------//
+  //work enable command
+  public boolean enable(String promptChar){
+    boolean f = false;
+    if (promptChar.equals(">")){
+//      promptChar = "#";
+      f = true;
+    }//end if
+    else {
+      Rt1.output = "%  Invalid input detected at '^' marker. \n";
+//      System.out.println("%  Invalid input detected at '^' marker. \n");
+    }//end else
+    return f;
+  }
+  //----------------------------disable cmd----------------//
+  //work disable command
+  public boolean disable(String promptChar){
+    boolean f = false;
+    if (promptChar.equals("#")){
+      promptChar = ">";
+      f = true;
+    }//end if
+    else {
+      Rt1.output = "%  Invalid input detected at '^' marker. \n";
+//      System.out.println("%  Invalid input detected at '^' marker. \n");
+    }//end else
+    return f;
+  }
+  //-----------------------config t cmd---------------------//
+  //work config terminal command
+  public boolean configT(String promptChar){
+    boolean f = false;
+    if (promptChar.equals("#")){
+//      promptChar = "(config)#";
+      f = true;
+    }//end if
+    else {
+      Rt1.output = "%  Invalid input detected at '^' marker. \n";
+//      System.out.println("%  Invalid input detected at '^' marker. \n");
+    }//end else
+    return f;
+  }
+  //------------------------int cmd----------------------------//
+  //work int command
+  public boolean intf(String promptChar){
+    boolean f = false;
+    if (promptChar.equals("(config)#")){
+//      promptChar = "(config-if)#";
+      f = true;
+    }//end if
+    else {
+      Rt1.output = "%  Invalid input detected at '^' marker. \n";
+    //      System.out.println("%  Invalid input detected at '^' marker. \n");
+    }//end else
+    return f;
+  }
+  //------------------------------exit cmd-----------------------//
+  //work exit command
+  public boolean exitcmd(String promptChar){
+    boolean f = false;
+    if ((promptChar.equals("(config)#"))|| (promptChar.equals("(config-if)#") || (promptChar.equalsIgnoreCase("(config-router)#"))) ){
+//      promptChar = "#";
+      f = true;
+    }//end if
+    else {
+      Rt1.output = "%  Invalid input detected at '^' marker. \n";
+//      System.out.println("%  Invalid input detected at '^' marker. \n");
+    }//end else
+    return f;
+  }
+  //---------------------show history------------------------//
+  public void saveHistory(String s){
+  }
+  //----------------------ping cmd--------------------------//
+  public void ping(){
+  }
+  //----------------------traceroute cmd-----------------//
+  public void traceroute(Router r,String des){
+    int i=0;
+    RoutingTable rt=null;
+    Router tmp = null;
+    Interface inf=(Interface)r.getVInt().elementAt(0);
+    String nextgw = "";
+    String outtext = "";
+    if (r.getTable().getrTable().size() > 0){
+      rt = (RoutingTable)r.getTable().getrTable().elementAt(i);
+    }
+    //search path from routing table when des = des from user command
+    while ((i < r.getTable().getrTable().size()) &&(!rt.getIpDestination().equalsIgnoreCase(inf.findNetAdd(des,rt.getSubnet())))){
+      rt = (RoutingTable)r.getTable().getrTable().elementAt(i);
+      i++;
+      //gateway is interface that adj
+      nextgw = rt.getGateway();
+    }
+    //if found in routing table
+    if (rt.getIpDestination().equalsIgnoreCase(inf.findNetAdd(des,rt.getSubnet()))){//if found
+      //find router that have interface of gateway value
+      for (int j=0;j < Frame1.vRouter.size(); j++){
+        //Router 1
+        tmp = (Router)Frame1.vRouter.elementAt(j);
+        //Interface 1 of Router 1
+        for(int k=0; k < tmp.getVInt().size(); k++){
+          Interface intf = (Interface)tmp.getVInt().elementAt(k);
+          String i1 = intf.getIpAddress();
+          //////////////////////////////////that here///////////////////////////////////////////////
+          if (intf.getIpAddress().equalsIgnoreCase(nextgw)){
+            r = tmp;
+          }//end if found interface
+        }//end for serch interface
+      }//end for search router
+    }//end if search in routing table
+    i = 0;
+    rt = (RoutingTable)r.getTable().getrTable().elementAt(i);
+    while ((i < r.getTable().getrTable().size()) &&(!inf.findNetAdd(rt.getIpDestination(),rt.getSubnet()).equalsIgnoreCase(inf.findNetAdd(des,rt.getSubnet())))){
+      rt = (RoutingTable)r.getTable().getrTable().elementAt(i);
+      i++;
+    }//search gw
+    if(!nextgw.equalsIgnoreCase("0.0.0.0")){
+      Rt1.output = Rt1.output + nextgw + "\n";
+    }
+    if (!rt.getGateway().equalsIgnoreCase("0.0.0.0")){
+      traceroute(r,des);
+    }
+    else {
+      Rt1.output = Rt1.output + des + "\n complete \n";
+//      System.out.println(des);
+//      System.out.println("complete");
+    }
+  }
+  //constructor
+  public Prompt() {
+  }
+}

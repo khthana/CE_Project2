@@ -1,0 +1,152 @@
+# signature definition file for IsagNIDS 1.1 
+# format: 
+#    name transport_protocol src_port dest_port payload_pattern
+#    port number on TCP/UDP 
+#    src_port  = type, dest_port = code on ICMP 
+# payload_pattern 
+#   "..." : case sensitive text pattern
+#   '...' : case insensitive text pattern
+#   |...| between "" or '' : binary data
+
+#NETBIOS
+
+#NETBIOS-nimdaeml      tcp  *  139 "|00|E|00|M|00|L"
+#NETBIOS-nimdanws      tcp  *  139 "|00|N|00|W|00|S"
+#NETBIOS-nimda-RICHED20.DLL     tcp  *  139 "R|00|I|00|C|00|H|00|E|00|D|00|2|00|0"
+NETBIOS-DOS-RFPoison        tcp  *  139  "|5C 00 5C 00 2A 00 53 00 4D 00 42 00 53 00 45 00 52 00 56 00 45 00 52 00 00 00 00 00 01 00 00 00 01 00 00 00 00 00 00 00 FF FF FF FF 00 00 00 00|"
+NETBIOS-NT-NULL-sessio      tcp  *  139  "|00 00 00 00 57 00 69 00 6E 00 64 00 6F 00 77 00 73 00 20 00 4E 00 54 00 20 00 31 00 33 00 38 00 31|"
+NETBIOS-RFParalyze-Attempt       tcp  *  139 "BEAVIS"
+NETBIOS-SMB-ADMIN$access       tcp  *- 139 "\\ADMIN$|00 41 3a 00|"
+NETBIOS-SMB-C$-access           tcp  *  139  "|5c|C$|00 41 3a 00|"
+NETBIOS-SMB-CD..         tcp  *  139 "\\..|2f 00 00 00|"
+NETBIOS-SMB-CD...         tcp  *  139 "\\...|00 00 00|"
+NETBIOS-SMB-D$access    tcp  *  139 "\\D$|00 41 3a 00|"
+NETBIOS-SMB-IPC$access     tcp  *  139 "\\IPC$|00 41 3a 00|"
+NETBIOS-SMB-IPC$access     tcp  *  139 "|5c00|I|00|P|00|C|00|$|000000|IPC|00|"
+NETBIOS-Samba-clientaccess    tcp *  139 "|00|Unix|00|Samba"
+
+
+# FTP
+
+FTP-exploit1			tcp * 21 "|50 57 44 0A 2F 69|"
+FTP-exploit2			tcp * 21 "|58 58 58 58 58 2F|"
+# FTP-nopassword 		tcp * 21 'pass |0d|'
+# FTP-incorrect-login		tcp 21 * "Login incorrect"
+
+# TELNET
+
+# TELNET-Incorrect-login	tcp * 23 "Login incorrect"
+
+# SMTP some of these are converted from snort's smtp-lib
+
+SMTP-exploit1			   tcp * 25 'Croot|09090909090909|Mprog,P=/bin'
+SMTP-exploit2			   tcp * 25 'rcpt to|3a207c| sed '1,/^$/d'|7c|'
+SMTP-exploit3			   tcp * 25 'mail from|3a20227c|'
+SMTP-exploit4			   tcp * 25 'Croot|0d0a|Mprog, P=/bin/'
+SMTP-exploit6			   tcp * 25 'rcpt to|3a| decode'
+SMTP-exploit7(CVE-1999-0204)	   tcp * 25 '|0a|C|3a|daemon|0a|R'
+SMTP-exploit8(CVE-1999-0204)	   tcp * 25 '|0a|Croot|0a|Mprog'
+SMTP-exploit9(CVE-1999-0204)	   tcp * 25 '|0a|Croot|0d0a|Mprog'
+SMTP-exploit10(CVE-1999-0095)	   tcp * 25 '|7c 73 65 64 20 2d 65 20 27 31 2c 2f 5e 24 2f 27|'
+SMTP-exploit11(CVE-1999-0204)	   tcp 113 25 '|0a|D/'
+SMTP-expn-decode		   tcp * 25 'expn decode'
+SMTP-expn-root			   tcp * 25 'expn root'
+SMTP-vrfy-decode		   tcp * 25 'vrfy decode'
+SMTP-Pikachu(Pokey)-Worm	   tcp * 25 'pikachupokemon.exe'
+
+# DNS
+DNS-named-exploit		tcp * 53 "|CD 80 E8 D7 FF FF FF|"
+DNS-zone-transfer		tcp * 53 "|01 00 00 01 00 00 00 00 00 00|"
+
+# HTTP - IIS
+
+IIS-administrator.pwd		tcp * 80 '/_vti_pvt/administrators.pwd'
+IIS-authors.pwd			tcp * 80 '/_vti_pvt/authors.pwd'
+IIS-service.pwd			tcp * 80 '/_vti_pvt/service.pwd'
+IIS-users.pwd			tcp * 80 '/_vti_pvt/users.pwd'
+IIS-iisadmpwd			tcp * 80 'iisadmpwd/aexp3.htr'
+IIS-carbo.dll			tcp * 80 '/carbo.dll'
+IIS-admin-default		tcp * 80 'scripts/iisadmin/'
+IIS-ISM.DLL-Exploit		tcp * 80 '%20%20%20%20%20.htr'
+
+# HTTP - CGI
+
+CGI-aglimpse			tcp * 80 '/cgi-bin/aglimpse'
+CGI-args.bat			tcp * 80 '/cgi-dos/args.bat'
+CGI-bash			tcp * 80 '/cgi-bin/bash'
+CGI-csh				tcp * 80 '/cgi-bin/csh'
+CGI-AnyForm			tcp * 80 '/cgi-bin/AnyForm'
+CGI-AnyForm2			tcp * 80 '/cgi-bin/AnyForm2'
+CGI-AT-admin.cgi		tcp * 80 '/cgi-bin/AT-admin.cgi'
+CGI-bnbform.cgi			tcp * 80 '/cgi-bin/bnbform.cgi'
+CGI-campas			tcp * 80 '/cgi-bin/campas'
+CGI-classifieds.cgi		tcp * 80 '/cgi-bin/classifieds.cgi'
+CGI-environ.cgi			tcp * 80 '/cgi-bin/environ.cgi'
+CGI-faxsurvey			tcp * 80 '/cgi-bin/faxsurvey'
+CGI-filemail.pl			tcp * 80 '/cgi-bin/filemail.pl'
+CGI-files.pl			tcp * 80 '/cgi-bin/files.pl'
+CGI-formmail			tcp * 80 'formmail'
+CGI-fpexplore.exe		tcp * 80 '/cgi-bin/fpexplore.exe'
+CGI-GuestBook(CVE-1999-0237)	tcp * 80 '/cgi-bin/guestbook.cgi'
+CGI-handler(CVE-1999-0148)	tcp * 80 '/cgi-bin/handler'
+CGI-htmlscript			tcp * 80 '/cgi-bin/htmlscript'
+CGI-info2www			tcp * 80 '/cgi-bin/info2www'
+CGI-jj				tcp * 80 '/cgi-bin/jj'
+CGI-MachineInfo			tcp * 80 '/cgi-bin/MachineInfo'
+CGI-maillist.pl			tcp * 80 '/cgi-bin/maillist.pl'
+CGI-man.sh			tcp * 80 '/cgi-bin/man.sh'
+CGI-newdsn.exe			tcp * 80 '/scripts/tools/newdsn.exe'
+CGI-nph-test-cgi(CVE-1999-0045)	tcp * 80 '/cgi-bin/nph-test-cgi'
+CGI-perl			tcp * 80 '/cgi-bin/perl'
+CGI-pfdispaly.cgi		tcp * 80 '/cgi-bin/pfdispaly.cgi'
+CGI-phf(CVE-1999-0067)		tcp * 80 '/cgi-bin/phf'
+CGI-php.cgi			tcp * 80 '/cgi-bin/php.cgi'
+CGI-rsh				tcp * 80 '/cgi-bin/rsh'
+CGI-rksh			tcp * 80 '/cgi-bin/rksh'
+CGI-survey.cgi			tcp * 80 '/cgi-bin/survey.cgi'
+CGI-tcsh			tcp * 80 '/cgi-bin/tcsh'
+CGI-test-cgi			tcp * 80 '/cgi-bin/test-cgi'
+CGI-textcounter.pl		tcp * 80 '/cgi-bin/textcounter.pl'
+CGI-unlg1.1			tcp * 80 '/cgi-bin/unlg1.1'
+CGI-upload			tcp * 80 '/cgi-bin/upload.pl'
+CGI-uploader.exe		tcp * 80 '/cgi-bin/uploader.exe'
+CGI-view-source			tcp * 80 '/cgi-bin/view-source'
+CGI-webdist.cgi			tcp * 80 '/cgi-bin/webdist.cgi'
+CGI-webgais			tcp * 80 '/cgi-bin/webgais'
+CGI-websendmail			tcp * 80 '/cgi-bin/websendmail'
+CGI-whois_raw.cgi		tcp * 80 '/cgi-bin/whois_raw.cgi'
+CGI-win-c-sample.exe		tcp * 80 '/cgi-shl/win-c-sample.exe'
+CGI-wrap			tcp * 80 '/cgi-bin/wrap'
+CGI-wwwadmin			tcp * 80 '/cgi-bin/wwwadmin.pl'
+CGI-wwwboard.pl			tcp * 80 '/cgi-bin/wwwboard.pl'
+CGI-www-sql			tcp * 80 '/cgi-bin/www-sql'
+CGI-wwwuploader.exe		tcp * 80 '/cgi-win/wwwuploader.exe'
+CGI-mlog.phtml			tcp * 80 '/mlog.phtml'
+CGI-mylog.phtml			tcp * 80 '/mylog.phtml'
+CGI-search97.vts		tcp * 80 '/search97.vts'
+CGI-snork.bat			tcp * 80 '/scripts/snork.bat'
+
+# HTTP - other
+
+HTTP-../../../			tcp * 80 "../../../"
+HTTP-/....			tcp * 80 "/...."
+HTTP-ApacheDOS			tcp * 80 "|2f2f2f2f2f2f2f2f|"
+HTTP-PiranhaPasswd.php3		tcp * 80 "passwd.php3"
+
+# RPC
+RPC-portmap-request-rusers	udp * 111 "|01 86 A2 00 00|"
+
+# IMAP
+IMAP-exploit1			tcp * 143 "|bf ff|"
+IMAP-exploit2			tcp * 143 "|E8 C0 FF FF FF|"
+
+# MISC
+
+DOS-Trin00-killme		tcp * 27665 "killme"
+DOS-Trin00-gOrave		tcp * 27665 "gOrave"
+DOS-Trin00-144dsl		udp * 27444 "l44adsl"
+DOS-Trin00-PONG			udp * 31335 "PONG"
+DOS-Trin00-144			udp * 31335 "l44"
+DOS-Trin00-HELLO		udp * 31335 "*HELLO*"
+# DOS-TFN				icmp 0 0 "|73 68 65 6C 6C 20 62 6F 75 6E 64 20 74 6F 20 70 6F 72 74|"
+BD-BackOrifice			udp * 31337 ""

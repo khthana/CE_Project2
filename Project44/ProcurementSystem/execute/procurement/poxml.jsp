@@ -1,0 +1,243 @@
+<%@page contentType="text/html;  charset=windows-874" %>
+<%@page import ="java.sql.*,java.lang.*,java.util.Date"%> <!-- import  เพื่อใช้ session -->
+<%@page session="true"%><!-- default -->
+<%@include file="th-db.jsp"%>
+<HTML><HEAD><TITLE>:: Online e-Procurement ::</TITLE>
+<LINK href="picture/cssomo1.css" rel=stylesheet type="text/css">
+<META content="text/html; charset=windows-874" http-equiv=Content-Type>
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="Sirirporn J.">
+<META NAME="Description" CONTENT="First page for e-Procurement system">
+</HEAD>
+<BODY  leftMargin=0 topMargin=0 vLink=#0077ff marginheight="0" 
+marginwidth="0"><FONT color=#000000></FONT>
+<TABLE border=0 cellPadding=0 cellSpacing=0 width=760 bgcolor="#FFFFFF" align="center">
+  <TBODY > 
+  <TR>
+    <TD align=left height=75 vAlign=bottom>
+      
+				  <%@include file="topmenu.html"%></TD></TR>
+  
+  <TR>
+    <TD height=10 bgcolor="#B6B6B6"> 
+    </TD>
+  </TR>
+    <TR>
+    <TD height=30 bgcolor="white"> 
+   <div align="right">  
+   <FONT  COLOR="#658dc1"><B>
+   <%@include file="date.txt"%></B></FONT></div>
+    </TD>
+  </TR>
+   <TR>
+    <TD height=1 bgcolor="#B6B6B6"> 
+    </TD>
+  </TR>
+  <TR colspan="2">
+    <TD bgColor=#bfbfbf height=1 width=760></TD>
+	</TR></TBODY></TABLE>
+<TABLE border=0 cellPadding=0 cellSpacing=0 width=760 align="center">
+  <TBODY> 
+  <TR> 
+    <TD align=middle vAlign=top> 
+      <TABLE width="100%" cellpadding="3" cellspacing="0" border="0">
+        <TR>
+		  <TD bgColor="#bfbfbf" width="27%" align="center" valign="top">
+
+            <%@include file="directory.html"%>
+             <%@include file="shopping.html"%><P><P><BR><BR>
+
+			
+          </TD>
+		  <TD bgColor="#ffffff" width="73%" align="center" valign="top"> 
+      <%
+		       String emp = (String) session.getAttribute("emp");
+			   String passwd = (String) session.getAttribute("passwd");
+			   String dept = (String) session.getAttribute("dept");
+			   String name =(String) session.getAttribute("name");
+			   String sname=(String) session.getAttribute("sname");
+			   String level=(String) session.getAttribute("level");
+
+        if ((emp==null) && (passwd==null)){ %>
+			 <P>&nbsp;<P>&nbsp;<CENTER><B>ยังไม่ได้ Login กรุณา  Login ก่อนเข้าระบบ</B></CENTER>
+
+			  <!-- </TD>
+	</TR>
+	</TABLE> -->
+<%
+			   }else{//login แล้ว
+			//	int ponum=Integer.parseInt(request.getParameter("ponum"));
+					 try {
+                Class.forName("oracle.jdbc.driver.OracleDriver");
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");
+
+				 Statement stmt2= con.createStatement();
+				String query2="SELECT * FROM PO WHERE PO.STATUS='0'";
+				//"WHERE PO.PO#='"+ponum+"' AND PO.PO#=PO_LINE.PO#" ;
+				System.out.println(query2);		
+				ResultSet tmp2= stmt2.executeQuery(query2);
+				 
+				 if(tmp2.next()){			//ถ้ามี PO
+
+                Statement stmt = con.createStatement();
+				String query="SELECT * FROM PO,PO_LINE WHERE PO.STATUS='0' AND PO.PO#=PO_LINE.PO#";
+				//WHERE PO.PO#='"+ponum+"' AND PO.PO#=PO_LINE.PO#" ;
+				System.out.println(query);		
+				ResultSet tmp = stmt.executeQuery(query) ;
+                 tmp2.close();
+				 stmt2.close();
+				 int x=0;
+%>	<FORM METHOD=POST ACTION="servlet/poxml"><%
+         while (tmp.next()){
+				int ponum=tmp.getInt("PO#");
+				String qu=new String();
+				double total_price=0;
+				double price=0;
+				 
+				 	String vendor=tmp.getString("VENDOR#");
+								String po_date=tmp.getString("DATE1");
+
+																			Statement ss1 = con.createStatement();
+																			String qq1="SELECT NAME FROM VENDOR WHERE VENDOR#='"+vendor+"'";
+																			ResultSet rr1=ss1.executeQuery(qq1);
+																			rr1.next();
+																			String venname=rr1.getString("NAME");
+																			rr1.close();
+																			ss1.close();
+
+				    %>
+						<TABLE align="center" border="1" bordercolor="#FFFFFF" width="540" cellpadding="3" cellspacing="0">
+						<CAPTION align="left"><B><FONT COLOR="#5A8282">
+						<INPUT TYPE="radio" NAME="check" VALUE="<%=x%>">
+						<INPUT TYPE="hidden" NAME="ponum<%=x%>" VALUE="<%=ponum%>">
+						<INPUT TYPE="hidden" NAME="vendor<%=x%>" VALUE="<%=vendor%>">
+							<INPUT TYPE="hidden" NAME="po_date<%=x%>" VALUE="<%=po_date%>">
+						<INPUT TYPE="hidden" NAME="vname<%=x%>" VALUE="<%=venname%>">&nbsp;&nbsp;PO หมายเลข&nbsp;<%=ponum%> &nbsp;&nbsp;ส่งไปยังผู้ขาย&nbsp;<%=venname%></FONT></B></CAPTION>
+						<TR  bgcolor="#5A8282" >
+							<TD><B><FONT COLOR="#F0F0F0">NO</FONT></B></TD>
+							<TD><B><FONT COLOR="#F0F0F0">รหัส</FONT></B></TD>
+							<TD><B><FONT COLOR="#F0F0F0">ประเภท</FONT></B></TD>
+							<TD><B><FONT COLOR="#F0F0F0">ตรา</FONT></B></TD>
+							<TD><B><FONT COLOR="#F0F0F0">จำนวน</FONT></B></TD>
+							<TD><B><FONT COLOR="#F0F0F0">ราคา/หน่วย</FONT></B></TD>
+							<TD><B><FONT COLOR="#F0F0F0">ราคารวม</FONT></B></TD>
+						</TR>					
+					<%
+							x+=1;
+					String q ="SELECT * FROM PO_LINE,PO WHERE (PO.PO#='"+ponum+"') AND (PO_LINE.PO#=PO.PO#)  AND (PO.STATUS= '0')";
+						Statement stm3= con.createStatement();
+						ResultSet tmp3=stm3.executeQuery(q);
+				while(tmp3.next()){  
+						        String code=tmp3.getString("CODE");
+							  int qty=tmp3.getInt("QTY");
+								int  poline=tmp3.getInt("LINE#");
+							
+								total_price=tmp3.getDouble("TOTAL_PRICE");
+								price=tmp3.getDouble("PRICE");
+
+													Statement stm=con.createStatement();
+													String qry="SELECT TABLE_NAME FROM PR_LINE WHERE PRD#='"+code+"'";
+													ResultSet re=stm.executeQuery(qry);
+													re.next();
+													String tablename=re.getString("TABLE_NAME");
+													System.out.println(tablename);
+													re.close();
+													stm.close();
+													
+
+								String req_date=tmp.getString("REQ_DATE");
+
+								    Statement stmt1=con.createStatement();
+									String query8="SELECT * FROM "+tablename+" WHERE CODE='"+code+"'";
+									ResultSet res1=stmt1.executeQuery(query8);
+									res1.next();
+									String type=res1.getString("TYPE");
+									String brand=res1.getString("BRAND");
+									res1.close();
+									stmt1.close();
+									
+								%>
+				
+								<TR bgcolor="#F0F0F0">
+							<TD><%=poline%></TD>
+							<TD><%=code%></TD>
+							<TD><%=type%></TD>
+							<TD><%=brand%></TD>
+							<TD><%=qty%></TD>		
+							<TD><%=price%></TD>
+							<TD><%=price*qty%></TD>
+						</TR>
+		<%							
+				}//while
+			%>
+				
+                              <TR>
+							<TD>
+							<TD>
+							<TD>
+							<TD>
+							<TD>
+							<TD bgcolor="#5A8282"><B><FONT COLOR="#F0F0F0">รวม</B></font>
+							<TD bgcolor="#5A8282"><B><FONT COLOR="#F0F0F0"><%=total_price%></B></font></TD>
+								  </TR>
+
+  <TR>					<TD>
+							<TD>
+							<TD>
+							<TD>
+							<TD>
+							<TD >วันที่ออก PO
+							<TD ><%=po_date%>
+</TR>
+						
+			
+			<%	
+				tmp3.close();
+				stm3.close();
+
+				 }//while//while
+				%>
+		<TR>
+							<TD colspan="7" >
+											<CENTER><TABLE>
+											<TR>
+												<TD><INPUT TYPE="hidden" NAME="all" VALUE="<%=x%>"><INPUT TYPE="submit" VALUE="เลือก"></TD>
+											</TR>
+											</TABLE>
+											</CENTER></TD>
+											</TR>
+</FORM>					
+													</TABLE>
+	  <%   
+									tmp.close();
+									stmt.close();
+
+	  con.close();
+					}else{//if no pr
+	   out.println("<P>&nbsp;<P>&nbsp;<CENTER><B>ไม่มี PO ที่ยังไม่ส่งออกไป</B></CENTER>");
+	  }
+				
+		 }//try
+      catch(SQLException e) 
+      {
+	      while (e != null) 
+         {
+            out.println("SQLException:<br>");
+  		      out.println("Message:   " + e.getMessage() + "<br>");
+		      out.println("SQLState:  " + e.getSQLState() + "<br>");
+		      out.println("ErrorCode: " + e.getErrorCode() + "<br>");
+		      e = e.getNextException();
+         }//while
+	   }//catch
+	
+	%>	<%
+		} // if%>
+  </TABLE>	
+    </TD>
+  </TR>
+  <TR><%@include file="bottommenu.html"%>
+                   </TR>
+
+  </TBODY> 
+</TABLE>
+</BODY></HTML>

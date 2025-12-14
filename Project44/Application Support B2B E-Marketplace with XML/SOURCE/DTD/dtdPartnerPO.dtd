@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT BuyerAddress (#PCDATA)>
+<!ELEMENT BuyerName (#PCDATA)>
+<!ELEMENT BuyerProvince (#PCDATA)>
+<!ELEMENT Buyer_Information (BuyerName, BuyerAddress, BuyerProvince)>
+<!ELEMENT Item (OrderName, NeedDate, OrderShipPrice, OrderQTY, OrderUnit)>
+<!ELEMENT Item_Information (Item+)>
+<!ELEMENT NeedDate (#PCDATA)>
+<!ELEMENT OrderName (#PCDATA)>
+<!ELEMENT OrderQTY (#PCDATA)>
+<!ELEMENT OrderShipPrice (#PCDATA)>
+<!ELEMENT OrderUnit (#PCDATA)>
+<!ELEMENT POAddress (#PCDATA)>
+<!ELEMENT POShipPrice (#PCDATA)>
+<!ELEMENT PO_Information (ServiceID, POAddress, POShipPrice)>
+<!ELEMENT Partner (PO_Information, Buyer_Information, Seller_Information, Item_Information)>
+<!ATTLIST Partner
+	Status CDATA #REQUIRED
+>
+<!ELEMENT SellerAddress (#PCDATA)>
+<!ELEMENT SellerName (#PCDATA)>
+<!ELEMENT SellerProvince (#PCDATA)>
+<!ELEMENT Seller_Information (SellerName, SellerAddress, SellerProvince)>
+<!ELEMENT ServiceID (#PCDATA)>

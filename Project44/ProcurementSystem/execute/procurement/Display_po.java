@@ -1,0 +1,112 @@
+import java.sql.*;
+import java.lang.*;
+import java.util.Date;
+
+public class Display_po {
+	private String itemID;
+	private String type;
+	private String catNo;
+	private String tableName;	
+	private int numItems;
+	private String brand;
+	private double price;
+	
+	public Display_po(String itemID, String type, String catNo, int n,String tableName) {
+		this.itemID = itemID;
+		this.numItems = n;
+		this.type = type;
+		this.catNo = catNo;
+		this.tableName=tableName;
+	
+
+		try{
+         Class.forName("oracle.jdbc.driver.OracleDriver");
+		 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");
+         Statement stmt = con.createStatement();
+		 String query="SELECT * FROM "+tableName+" WHERE CODE='"+itemID+"'";
+         ResultSet rs=stmt.executeQuery(query);
+         rs.next();
+	     
+	   //  this.catNo=rs.getString("CAT#");
+		 this.brand=rs.getString("BRAND");
+		// String detail=rs.getString("DETAIL");
+
+		 query="SELECT AVG(PRICE) FROM VENDOR_VARIETY WHERE PRD#='"+itemID+"'";
+		 rs=stmt.executeQuery(query);
+		 rs.next();
+		this.price =rs.getDouble("AVG(PRICE)");
+					
+		 rs.close();
+		 stmt.close();
+		 con.close();
+
+		} 
+		catch(Exception e)  {
+	
+	   } // catch
+
+
+			this.price=price;
+		
+	}//Item order
+
+	public String getBrand(){
+		return(brand);
+	}
+
+	public double getPrice(){
+		return(price);
+	}
+
+	public String getItemID(){
+		return(itemID);
+	}
+
+	protected void setItemID(String itemID){
+		this.itemID=itemID;
+	}
+
+	protected void setnumItems(int numItems){
+	    this.numItems=numItems;
+	}
+
+	protected void setType(String type){
+		this.type=type;
+	}
+
+	protected void setcatNo(String catNo){
+	    this.catNo=catNo;
+	}
+
+	public int getNumItems(){
+		return (numItems);
+	}
+
+	public String  getType() {
+		return(this.type);
+	}
+
+		public String  getTableName() {
+		return(this.tableName);
+	}
+
+	public String getCatNo() {
+		return(this.catNo);
+	}
+     
+	public void incrementNumItems(int num){
+		this.numItems+=num;
+	}
+
+	public void cancelOrder(){
+		this.numItems=0;
+	}
+
+	public double getTotalCost(){
+		return(numItems*price);
+	}
+
+
+		
+
+}

@@ -1,0 +1,81 @@
+<%@page contentType="text/html;  charset=windows-874" %>
+<%@page import ="java.sql.*,java.lang.*,java.util.Date"%> <!-- import  เพื่อใช้ session -->
+<%@page session="true"%><!-- default -->
+<%@include file="th-db.jsp"%>
+<HTML>
+<HEAD>
+<TITLE> กำหนดประเภทของ Workflow ใหม่</TITLE>
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="ศิริพร จังสมบัติศิริ">
+</HEAD>
+<%
+ 	String  wf_name=MS874ToUnicode(new String(request.getParameter("wf_name")));
+	String  cat=MS874ToUnicode(new String(request.getParameter("cat")));
+	String  app1=MS874ToUnicode(new String(request.getParameter("app1")));
+	String  viewer=MS874ToUnicode(new String(request.getParameter("viewer")));
+	String  detail=MS874ToUnicode(new String(request.getParameter("detail")));
+	String  app2=MS874ToUnicode(new String(request.getParameter("app2")));
+	
+//	String  tb_name=MS874ToUnicode(new String(request.getParameter("tb_name")));
+//	String  workflow=MS874ToUnicode(new String(request.getParameter("workflow")));
+	boolean hasExplicit=false;
+	
+
+
+	if ( wf_name.length()==0 || cat.length()==0 || app1.length()==0 ){
+	 hasExplicit=false;
+	}else { hasExplicit=true;}	
+	
+	
+	 if(!hasExplicit){
+    out.println("<b><div align=\"center\">ยังกรอกข้อความไม่ครบถ้วน กรุณาย้อนกลับไป 1 หน้าเพื่อทำการแก้ไข</div></b>");
+	}else{
+
+
+
+         %>
+<BODY>
+<FORM method="post" action="ct_wf.jsp">
+<TABLE cellpadding="3" bordercolor="#DF5F2D" border="1"  width="450" cellspacing="0">
+<TR bgcolor="#DF572D" height="24">
+	<TD colspan="2" align="left"><FONT COLOR="#FFF0E1"><B>กำหนดประเภทสินค้าใหม่</B></FONT></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">ชื่อ workflow:</TD>
+	<TD bgcolor="#FFF0E1" ><FONT COLOR="#DF572D"><b><%=wf_name%><INPUT TYPE="hidden" NAME="wf_name" VALUE="<%=wf_name%>"></b></FONT>      
+	</TD>
+		</TR>
+<TR>
+	<TD  bgcolor="#FFFFFF" width="200">ชื่อประเภทสินค้า :</TD>
+	<TD bgcolor="#FFF0E1" ><FONT COLOR="#DF572D"><b><%=cat%></b></FONT>
+		<INPUT TYPE="hidden" NAME="cat" VALUE="<%=cat%>"></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">ผู้อนุมัติคนที่ 1 :</TD>
+	<TD bgcolor="#FFF0E1" ><FONT COLOR="#DF572D"><B><%=app1%></B></FONT>
+		<INPUT TYPE="hidden" NAME="app1" VALUE="<%=app1%>"></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">ผู้อนุมัติคนที่ 2 :</TD>
+	<TD bgcolor="#FFF0E1" ><FONT COLOR="#DF572D"><B><%if (app2==null){out.print("-");}else {out.print(app2);}%></B></FONT>
+		<INPUT TYPE="hidden" NAME="app2" VALUE="<%=app2%>"></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">ผู้ตรวจสอบ:</TD>
+	<TD bgcolor="#FFF0E1" ><FONT COLOR="#DF572D"><B><%if (viewer==null){out.print("-");}else {out.print(viewer);}%></B></FONT>
+		<INPUT TYPE="hidden" NAME="viewer" VALUE="<%=viewer%>"></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">รายละเอียด:</TD>
+	<TD bgcolor="#FFF0E1" ><FONT COLOR="#DF572D"><B><%if (detail==null){out.print("-");}else {out.print(detail);}%></B></FONT>
+		<INPUT TYPE="hidden" NAME="detail" VALUE="<%=detail%>"></TD>
+</TR></TR>
+<TR bgcolor="#FFF0E1" valign="center" align="center">
+	<TD colspan="2">
+	<pre> <INPUT TYPE="submit" value="ตกลง"></pre>
+ 	</TD>
+</TR>
+</TABLE>
+</FORM>
+</BODY>
+</HTML>

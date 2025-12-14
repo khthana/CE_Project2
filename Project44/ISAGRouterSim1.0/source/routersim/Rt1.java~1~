@@ -1,0 +1,185 @@
+package routersim;
+
+import java.awt.*;
+import com.borland.jbcl.layout.*;
+import javax.swing.*;
+import java.awt.event.*;
+import java.io.*;
+import java.lang.String;
+import java.util.*;
+/**********************new************/
+import java.io.*;
+import javax.swing.border.*;
+/***************************************/
+public class Rt1 extends JPanel {
+//  public SwitchCMD sw ;
+  private Router router = new Router();
+  XYLayout xYLayout1 = new XYLayout();
+  TextArea jTextArea2 = new TextArea();
+  JTextField jTextField1 = new JTextField();
+  SwitchCMD sw = new SwitchCMD();
+  Command c = new Command();
+  Prompt pt = new Prompt();
+  static String output="";
+  JScrollPane jScrollPane1 = new JScrollPane();
+  JTextArea jTextArea1 = new JTextArea();
+  Border border1;
+  Border border2;
+  public void setOutput(String s){
+    output = s;
+  }
+  public String getOutput(){
+    return output;
+  }
+  public Rt1() {
+    try {
+      jbInit();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+    public Rt1(Router r) {
+    try {
+      router = r;
+      jbInit();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+  void jbInit() throws Exception {
+    border1 = BorderFactory.createEmptyBorder();
+    border2 = BorderFactory.createEmptyBorder();
+    this.setLayout(xYLayout1);
+    jTextField1.setBorder(border1);
+    jTextField1.setText(router.getName()+">");
+    //Check event at jTextField1
+    jTextField1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e){
+        jTextField1_actionPerformed(e);
+      }
+    });
+    jTextArea2.setEditable(false);
+    jTextArea2.setFont(new java.awt.Font("Serif", 0, 12));
+    xYLayout1.setWidth(620);
+    xYLayout1.setHeight(417);
+    this.setBackground(SystemColor.control);
+//    this.add(new JScrollPane(jTextField1));
+    jTextArea1.setCursor(null);
+    jTextArea1.setBorder(border1);
+    jTextArea1.setText("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+    jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    jScrollPane1.setBorder(null);
+    this.add(jTextField1, new XYConstraints(20, 345, 598, 25));
+    this.add(jTextArea2, new XYConstraints(510, 18, 110, 329));
+    this.add(jScrollPane1, new XYConstraints(20, 18, 490, 330));
+    jScrollPane1.getViewport().add(jTextArea1, null);
+//    jTextArea1.setFocusAccelerator('>');
+  }//end jbInit
+/***********************new write file*************************************/
+/*
+  void writeFile(String str) throws IOException{
+    FileReader fin = new FileReader("history.dat");
+    BufferedReader bin = new BufferedReader(fin);
+    Vector  oldCMD = new Vector();
+    String s;
+    while ((s = bin.readLine()) != null)
+      oldCMD.addElement(new String(s));
+    bin.close();
+    FileWriter fout = new FileWriter("history.dat");
+    BufferedWriter bout = new BufferedWriter(fout);
+    PrintWriter pout = new PrintWriter(bout);
+    //write old command
+    while (oldCMD.size() != 0){
+      s = (String)oldCMD.firstElement();
+      pout.println(s);
+      oldCMD.removeElementAt(0);
+    }
+    //write new command
+    pout.println(str);
+    pout.close();
+/**************************************************************************/
+/*
+    try{
+      FileWriter fout = new FileWriter("history.dat");
+      BufferedWriter bout = new BufferedWriter(fout);
+      PrintWriter pout = new PrintWriter(bout);
+      try{
+        pout.println(s);
+      }
+      catch(IOException e){
+        JOptionPane.showMessageDialog(null,"Error in write data","Error",JOptionPane.ERROR_MESSAGE);
+      }
+    }
+    catch(IOException e){
+      JOptionPane.showMessageDialog(null,"Error to open file for write","Error",JOptionPane.ERROR_MESSAGE);
+    }
+
+*/
+
+/*
+    FileWriter fout;
+    try{
+      fout = new FileWriter("history.dat");
+      BufferedWriter bout;
+      try{
+        bout = new BufferedWriter(fout);
+        PrintWriter pout;
+        try{
+          pout = new PrintWriter(bout);
+          try{
+            pout.println(s);
+          }
+          catch(IOException e){
+            JOptionPane.showMessageDialog(null,"Error in write data","Error",JOptionPane.ERROR_MESSAGE);
+            System.out.println("erroe");
+          }
+        }
+        catch(IOException e){
+          JOptionPane.showMessageDialog(null,"Error to open file for write","Error",JOptionPane.ERROR_MESSAGE);
+        }//end pout
+      }
+      catch(IOException e){
+        JOptionPane.showMessageDialog(null,"Error to open file for write","Error",JOptionPane.ERROR_MESSAGE);
+      }//end bout
+    }
+//        fout.write('a');
+//      }
+    catch(IOException e){
+        JOptionPane.showMessageDialog(null,"Error to open file for write","Error",JOptionPane.ERROR_MESSAGE);
+    }//end fout
+
+*/
+//  }
+  public void showcmd(String s){
+    jTextArea1.append(s);
+  }
+  public void showprompt(String s){
+    jTextField1.setText(s);
+  }
+  void jTextField1_actionPerformed(ActionEvent e){
+    String cmd = e.getActionCommand();
+/*
+    try{
+      writeFile(cmd);
+    }
+    catch(IOException evt){
+
+    }
+*/
+    jTextArea1.append(cmd+"\n");
+    String cmd1 = router.getName()+router.getPrompt();
+    cmd = cmd.substring(cmd1.length(),cmd.length());
+    sw.sendCMD(router,cmd);
+//    cmd = sw.getCMD(router,cmd);
+//    router = sw.switchCMD(router,cmd);
+//    jTextArea2.append(+"\n");
+    jTextArea2.append(router.getName()+"\n");
+    jTextArea2.append(router.getPrompt()+"\n");
+    jTextArea2.append(router.getMode()+"\n");
+    jTextArea1.append(output);
+//    c.showPrompt(router);
+    jTextField1.setText(router.getName()+router.getPrompt());
+  }
+}

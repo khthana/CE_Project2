@@ -1,0 +1,48 @@
+Number 1
+version 11.3
+service timestamps debug uptime
+service uimestamps log uptime
+no service password-encryption
+!
+hostname Router1
+!
+interface e0
+ip address 161.246.1.1 255.255.255.0
+no shutdown
+!
+interface s0
+ip address 161.246.2.1 255.255.255.0
+no shutdown
+!
+router rip 
+ !
+no ip classless
+!
+procol rip
+!
+line con 0
+line aux 0
+line vty 0 4
+&
+Number 2
+version 11.3
+service timestamps debug uptime
+service uimestamps log uptime
+no service password-encryption
+!
+hostname Router2
+!
+interface s0
+ip address 161.246.2.2 255.255.255.0
+no shutdown
+!
+interface s1
+ip address 161.246.3.1 255.255.255.0
+no shutdown
+!
+no ip classless
+!
+line con 0
+line aux 0
+line vty 0 4
+&

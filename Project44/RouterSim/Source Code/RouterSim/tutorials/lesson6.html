@@ -1,0 +1,175 @@
+<html>
+<head>
+<title>Lesson 6 --&gt; Static Routes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+<style type="text/css">
+<!--
+body {  margin: 0px  0px; padding: 0px  0px}
+a:link { color: #005CA2; text-decoration: none}
+a:visited { color: #005CA2; text-decoration: none}
+a:active { color: #0099FF; text-decoration: underline}
+a:hover { color: #0099FF; text-decoration: underline}
+-->
+</style>
+</head>
+
+<body bgcolor="#FFFFFF">
+<img src="pics/book2.gif" width="97" height="94" > Lesson 6<br>
+<hr>
+<table width="75%" border="0" align="center">
+  <tr>
+    <td height="7555"> 
+      <h2>Static Routes</h2>
+      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspLab นี้จะให้ลองติดตั้งเราเตอร์ทั้งหมด 
+      3 ตัว โดย click ที่ปุ่ม new ให้มีเราเตอร์ทั้งหมดสามตัวคือ Router1,Router2 
+      และ Router3 ตามลำดับ โดยจะทำการเชื่อมต่อให้เป็นดังรูป<br>
+      <br>
+      <center>
+        <img src="pics/network.gif" width="512" height="155"><br>
+      </center>
+      <ol>
+        <li>เริ่มตั้งชื่อโฮสต์ และกำหนด ip address ให้กับเราเตอร์โดยพิมพ์ตามนี้<br>
+          สำหรับ RouterA :<br>
+          <b>Router1#</b><font color="#0000FF">config t</font><br>
+          <b>Router1(config)#</b><font color="#0000FF">hostname RouterA</font><br>
+          <b>RouterA(config)#</b><font color="#0000FF">int e0</font><br>
+          <b>RouterA(config-if)#</b><font color="#0000FF">ip address 161.246.1.1 
+          255.255.255.0</font><br>
+          <b>RouterA(config-if)#</b><font color="#0000FF">no shut</font><br>
+          <b>RouterA(config-if)#</b><font color="#0000FF">int s0</font><br>
+          <b>RouterA(config-if)#</b><font color="#0000FF">ip address 161.246.3.1 
+          255.255.255.0</font><br>
+          <b>RouterA(config-if)#</b><font color="#0000FF">no shut</font><br>
+          <b>RouterA(config-if)#</b><font color="#0000FF">int to0</font><br>
+          <b>RouterA(config-if)#</b><font color="#0000FF">ip address 161.246.2.1 
+          255.255.255.0</font><br>
+          <b>RouterA(config-if)#</b><font color="#0000FF">ring-speed 16</font><br>
+          <b>RouterA(config-if)#</b><font color="#0000FF">no shut</font><br>
+          สำหรับ RouterB :<br>
+          <b>Router2#</b><font color="#0000FF">config t</font><br>
+          <b>Router2(config)#</b><font color="#0000FF">hostname RouterB</font><br>
+          <b>RouterB(config)#</b><font color="#0000FF">int s0</font><br>
+          <b>RouterB(config-if)#</b><font color="#0000FF">ip address 161.246.3.2 
+          255.255.255.0</font><br>
+          <b>RouterB(config-if)#</b><font color="#0000FF">no shut</font><br>
+          <b>RouterB(config-if)#</b><font color="#0000FF">int s1</font><br>
+          <b>RouterB(config-if)#</b><font color="#0000FF">ip address 161.246.5.1 
+          255.255.255.0</font><br>
+          <b>RouterB(config-if)#</b><font color="#0000FF">no shut</font><br>
+          สำหรับ RouterC:<br>
+          <b>Router3#</b><font color="#0000FF">config t</font><br>
+          <b>Router3(config)#</b><font color="#0000FF">hostname RouterC</font><br>
+          <b>RouterC(config)#</b><font color="#0000FF">int e0</font><br>
+          <b>RouterC(config-if)#</b><font color="#0000FF">ip address 161.246.7.1 
+          255.255.255.0</font><br>
+          <b>RouterC(config-if)#</b><font color="#0000FF">no shut</font><br>
+          <b>RouterC(config-if)#</b><font color="#0000FF">int s0</font><br>
+          <b>RouterC(config-if)#</b><font color="#0000FF">ip address 161.246.5.2 
+          255.255.255.0</font><br>
+          <b>RouterC(config-if)#</b><font color="#0000FF">no shut</font><br>
+          <b>RouterC(config-if)#</b><font color="#0000FF">int to0</font><br>
+          <b>RouterC(config-if)#</b><font color="#0000FF">ip address 161.246.6.1 
+          255.255.255.0</font><br>
+          <b>RouterC(config-if)#</b><font color="#0000FF">ring-speed 16</font> 
+          <br>
+          <b>RouterC(config-if)#</b><font color="#0000FF">no shut</font><br>
+        <li>พิมพ์ <font color="#0000FF">show ip route</font> ในแต่ละเราเตอร์ จะได้ผลดังนี้<br>
+          RouterA <br>
+          <br>
+          <center>
+            <img src="pics/pic19.gif" width="700" height="500"> 
+          </center>
+          <br>
+          Router B<br>
+          <br>
+          <center>
+            <img src="pics/pic20.gif" width="700" height="500"> 
+          </center>
+          <br>
+          Router C<br>
+          <br>
+          <center>
+            <img src="pics/pic21.gif" width="700" height="500"> 
+          </center>
+          <br>
+        <li>ขณะที่ยังไม่มีการเชื่อมต่อกับเราเตอร์ภายนอกเลยให้ทดสอบโดยใช้คำสั่ง 
+          ping เช่น<br>
+          <b>RouterA#</b><font color="#0000FF">ping 161.246.7.1</font> <br>
+          <br>
+          <img src="pics/pic22.gif" width="700" height="500"> <br>
+          <br>
+        
+        <li>สร้าง static route โดยดูที่วง network 161.246.3.0,161.246.5.0<br>
+          <b>RouterA#</b><font color="#0000FF">config t</font><br>
+          <b>RouterA(config)#</b><font color="#0000FF">ip route 161.246.5.0 255.255.255.0 
+          161.246.3.2</font><br>
+          <b>RouterA(config)#</b><font color="#0000FF">ip route 161.246.6.0 255.255.255.0 
+          161.246.3.2</font><br>
+          <b>RouterA(config)#</b><font color="#0000FF">ip route 161.246.7.0 255.255.255.0 
+          161.246.3.2</font><br>
+          ทำการ save configure โดยการพิมพ์ copy run start แล้วกด Enter<br>
+          <b>RouterB#</b><font color="#0000FF">config t</font><br>
+          <b>RouterB(config)#</b><font color="#0000FF">ip route 161.246.1.0 255.255.255.0 
+          161.246.3.1</font><br>
+          <b>RouterB(config)#</b><font color="#0000FF">ip route 161.246.2.0 255.255.255.0 
+          161.246.3.1</font><br>
+          <b>RouterB(config)#</b><font color="#0000FF">ip route 161.246.7.0 255.255.255.0 
+          161.246.5.2</font><br>
+          <b>RouterB(config)#</b><font color="#0000FF">ip route 161.246.6.0 255.255.255.0 
+          161.246.5.2</font><br>
+          ทำการ save configure โดยการพิมพ์ copy run start แล้วกด Enter<br>
+          RouterC#config t<br>
+          <b>RouterC(config)#</b><font color="#0000FF">ip route 161.246.1.0 255.255.255.0 
+          161.246.5.1</font><br>
+          <b>RouterC(config)#</b><font color="#0000FF">ip route 161.246.2.0 255.255.255.0 
+          161.246.5.1</font><br>
+          <b>RouterC(config)#</b><font color="#0000FF">ip route 161.246.3.0 255.255.255.0 
+          161.246.5.1 </font><br>
+          ทำการ save configure โดยการพิมพ์ copy run start แล้วกด Enter<br>
+        <li>ลองพิมพ์ show ip route ที่เราเตอร์ทั้งสามจะได้ผลดังนี้<br>
+          <b>RouterA#</b><font color="#0000FF">show ip route</font><br>
+          <br>
+          <img src="pics/pic23.gif" width="700" height="500"><br>
+          <b><br>
+          RouterB#</b><font color="#0000FF">show ip route</font><br>
+          <br>
+          <img src="pics/pic24.gif" width="700" height="500"><br>
+          <b><br>
+          RouterC#</b><font color="#0000FF">show ip route </font><br>
+          <br>
+          <img src="pics/pic25.gif" width="700" height="500"><br>
+          <br>
+        <li>ลองใช้คำสั่ง ping <br>
+          <b>RouterA#</b><font color="#0000FF">ping 161.246.7.1</font><br>
+          <br>
+          <center>
+            <img src="pics/pic26.gif" width="700" height="500"> 
+          </center>
+          <br>
+          <b>RouterB#</b><font color="#0000FF">ping 161.246.2.1</font><br>
+          <br>
+          <center>
+            <img src="pics/pic27.gif" width="700" height="500"> 
+          </center>
+          <br>
+          <b>RouterC#</b><font color="#0000FF">ping 161.246.1.1</font><br>
+          <br>
+          <center>
+            <img src="pics/pic28.gif" width="700" height="500"><br>
+            <br>
+            <br>
+          </center>
+          <center>
+            สำหรับโหมดการทำงานทั้งหมดของเราเตอร์สามารถดูได้ใน<a href="command.html">สรุปคำสั่งทั้งหมด</a> 
+          </center>
+          <br>
+      </ol>
+      </td>
+  </tr>
+</table>
+<center>
+  <b><font size="+2"><a href="index.html">Back to Main</a> </font></b> or <b><font size="+2"><a href="lesson7.html">Next 
+  to Lesson7</a> </font></b> 
+</center>
+</body>
+</html>

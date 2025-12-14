@@ -1,0 +1,194 @@
+#%>Sec1;
+#%>LastObjId=11;
+#%>LastAttId=20;
+#%>ObjNum=4;
+#%>AttNum=14;
+#%>End Sec1;
+
+#%>Sec2;
+#%>PrefixObjId=1.3.6.1.4.3;
+#%>PrefixAttId=1.3.6.1.4.4;
+#%>End Sec2;
+
+#%>Att Section;
+
+#s_AgentType;
+attributetype ( 1.3.6.1.4.4.1 NAME 'AgentType'
+	EQUALITY caseIgnoreMatch
+	ORDERING caseIgnoreOrderingMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+#e_AgentType;
+#s_AgentID;
+attributetype (1.3.6.1.4.4.2 NAME 'AgentID'
+	EQUALITY caseExactIA5Match
+	ORDERING caseIgnoreOrderingMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+#e_AgentID;
+#s_IP;
+attributetype (1.3.6.1.4.4.4 NAME 'IP'
+	EQUALITY caseIgnoreMatch
+	ORDERING caseIgnoreOrderingMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+#e_IP;
+#s_Refresh;
+attributetype (1.3.6.1.4.4.5 NAME 'Refresh'
+	EQUALITY caseIgnoreMatch
+	ORDERING caseIgnoreOrderingMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+#e_Refresh;
+#s_StartTime;
+attributetype (1.3.6.1.4.4.6 NAME 'StartTime'
+	EQUALITY caseIgnoreMatch
+	ORDERING caseIgnoreOrderingMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+#e_StartTime;
+#s_Status;
+attributetype (1.3.6.1.4.4.18 NAME 'Status'
+	EQUALITY caseIgnoreMatch
+	ORDERING caseIgnoreOrderingMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+#e_Status;
+#s_SRefresh;
+attributetype (1.3.6.1.4.4.19 NAME 'SRefresh'
+	EQUALITY caseIgnoreMatch
+	ORDERING caseIgnoreOrderingMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+#eSRefresh;
+#s_SStartTime;
+attributetype (1.3.6.1.4.4.20 NAME 'SStartTime'
+	EQUALITY caseIgnoreMatch
+	ORDERING caseIgnoreOrderingMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+#e_SStartTime;
+#s_source;
+attributetype (1.3.6.1.4.4.7 NAME 'Source'
+	EQUALITY caseIgnoreMatch
+	ORDERING caseIgnoreOrderingMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+#e_source;
+#s_destination;
+attributetype (1.3.6.1.4.4.8 NAME 'Destination'
+	EQUALITY caseIgnoreMatch
+	ORDERING caseIgnoreOrderingMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+#e_destination;
+#s_service;
+attributetype (1.3.6.1.4.4.9 NAME 'Service'
+	EQUALITY caseIgnoreMatch
+	ORDERING caseIgnoreOrderingMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+#e_service;
+
+#s_action;
+attributetype (1.3.6.1.4.4.10 NAME 'Action'
+	EQUALITY caseIgnoreMatch
+	ORDERING caseIgnoreOrderingMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+#e_action;
+
+#s_IPCap;
+attributetype (1.3.6.1.4.4.11 NAME 'IPCap'
+	EQUALITY caseIgnoreMatch
+	ORDERING caseIgnoreOrderingMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+#e_IPCap;
+
+#s_PortCap;
+attributetype (1.3.6.1.4.4.12 NAME 'PortCap'
+	EQUALITY caseIgnoreMatch
+	ORDERING caseIgnoreOrderingMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+#e_PortCap;
+
+#s_atime;
+attributetype (1.3.6.1.4.4.15 NAME 'atime'
+	EQUALITY caseIgnoreMatch
+	ORDERING caseIgnoreOrderingMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+#e_atime;
+
+#s_attacktype;
+attributetype (1.3.6.1.4.4.16 NAME 'attacktype'
+	EQUALITY caseIgnoreMatch
+	ORDERING caseIgnoreOrderingMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+#e_attacktype;
+#%>End Att;
+
+#%>Obj Section;
+
+#s_agentgroup;
+objectclass (1.3.6.1.4.3.1 NAME 'AgentGroup'
+	SUP top STRUCTURAL
+	MUST (AgentType)
+	MAY description)
+#e_agentgroup;
+
+#s_Firewall;
+objectclass (1.3.6.1.4.3.3 NAME 'Firewall'
+	SUP top STRUCTURAL
+	MUST (AgentID$IP$StartTime$Refresh$Source$Destination$Service$Action$Status$SStartTime$SRefresh)
+	MAY description)
+#e_Firewall;
+
+#s_Stateful;
+objectclass (1.3.6.1.4.3.6 NAME 'Stateful'
+	SUP top STRUCTURAL
+	MUST (AgentID$IP$StartTime$Refresh$IPCap$PortCap$Status$SStartTime$SRefresh)
+	MAY description)
+#e_Stateful;
+
+#s_NIDS;
+objectclass (1.3.6.1.4.3.7 NAME 'NIDS'
+	SUP top STRUCTURAL
+	MUST(Refresh$AgentID$IP$StartTime$source$destination$attacktype$atime$Status$SStartTime$SRefresh)
+	MAY description)
+#e_NIDS;
+#%>End Obj;
+
+
+#%>View Section;
+#--------------
+#Attribute:Type
+#--------------
+# AgentType:caseIngnotring
+# AgentID:caseExactString
+# IP:caseIngnoreString
+# Refresh:caseIngnoreString
+# StartTime:caseIngnoreString
+# Source:caseIngnoreString
+# Status:caseIngnoreString
+# SStartTime:caseIngnoreString
+# SRefresh:caseIngnoreString 
+# Destination:caseIngnoreString
+# Service:caseIngnoreString
+# Action:caseIngnoreString
+# IPCap:caseIngnoreString
+# PortCap:caseIngnoreString
+# attacktype:caseIngnoreString
+#end_att
+#-------------------
+#ObjectClass:Member
+#-------------------
+# Agentgroup:AgentType
+# Firewall:AgentID$IP$StartTime$Refresh$Source$Destination$Service$Action
+# Stateful:AgentID$IP$StartTime$Refresh$Refresh$IPCap$PortCap
+# NIDS:Refresh$AgentID$IP$StartTime$source$destination$attacktype$atime
+#end_obj
+#%>End View;

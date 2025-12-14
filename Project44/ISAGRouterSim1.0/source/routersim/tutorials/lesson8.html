@@ -1,0 +1,166 @@
+<html>
+<head>
+<title>Lesson 8 --&gt; Dynamic Routing with OSPF</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+<style type="text/css">
+<!--
+body {  margin: 0px  0px; padding: 0px  0px}
+a:link { color: #005CA2; text-decoration: none}
+a:visited { color: #005CA2; text-decoration: none}
+a:active { color: #0099FF; text-decoration: underline}
+a:hover { color: #0099FF; text-decoration: underline}
+-->
+</style>
+</head>
+
+<body bgcolor="#FFFFFF">
+<img src="pics/book2.gif" width="97" height="94" > Lesson 8<br>
+<hr>
+
+<table width="75%" border="0" align="center">
+  <tr>
+    <td> 
+      <h2>Dynamic Routing with OSPF</h2>
+      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspการทดลองนี้เป็นการ 
+      <ol>
+        <li>Login ไปยังเราเตอร์ที่ต้องการ เข้าสู่ Privilege Mode โดยพิมพ์ <font color="#0000FF">en</font> 
+          หรือ <font color="#0000FF">enable</font><br>
+        <li>ก่อนที่จะทำ Dynamic Routing แบบ ospf เราต้องแน่ใจก่อนว่าไม่มี rip 
+          routing โดยใช้คำสั่ง no <br>
+          rip ตัวอย่าง :<br>
+          <b>RouterA#</b><font color="#0000FF">config t</font><br>
+          <b>RouterA(config)#</b><font color="#0000FF">no router rip</font><br>
+          เราเตอร์อื่นๆก้อทำเช่นเดียวกัน<br>
+        <li>โดยในการทดลองนี้จะให้ทำการสร้างเน็ตเวิร์คใหม่ดังรูป<br>
+          <br>
+          <img src="pics/ospf.gif" width="700" height="365"> <br>
+          <br>
+          <b><font color="#FF0000">หมายเหต</font></b>ุ เลขไอพีแอดเดรสนี้เป็นลขโดยย่อคือตัดมาเฉพาะ 
+          2 เลขหลัง โดยเลขนำหน้าคือ 161.246 เช่น 1.1 มีความหมายเท่ากับ <br>
+          &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp161.246.1.1 
+          และเลขสีน้ำเงินหมายถึงค่า weight ของเราเตอร์แต่ละคู่ ที่ทำการกำหนดขึ้นมา<br>
+        <li>ทำการกำหนด ip address ดังนี้<br>
+          <b>Router1#</b><font color="#0000FF">config t</font><br>
+          <b>Router1(config)#</b><font color="#0000FF">hostname R1</font><br>
+          <b>R1(config)#</b><font color="#0000FF">int e0</font><br>
+          <b>R1(config-if)#</b><font color="#0000FF">ip address 161.246.1.1 255.255.255.0</font><br>
+          <b>R1(config-if)#</b><font color="#0000FF">no shut</font><br>
+          <b>R1(config-if)#</b><font color="#0000FF">int s0</font><br>
+          <b>R1(config-if)#</b><font color="#0000FF">ip address 161.246.2.1 255.255.255.0</font><br>
+          <b>R1(config-if)#</b><font color="#0000FF">no shut</font><br>
+          <b>R1(config-if)#</b><font color="#0000FF">int s1</font><br>
+          <b>R1(config-if)#</b><font color="#0000FF">ip address 161.246.3.1 255.255.255.0</font><br>
+          <b>R1(config-if)#</b><font color="#0000FF">no shut</font> <br>
+          <br>
+          <b>Router2#</b><font color="#0000FF">config t</font><br>
+          <b>Router2(config)#</b><font color="#0000FF">hostname R2</font><br>
+          <b>R2(config-if)#</b><font color="#0000FF">int s1</font><br>
+          <b>R2(config-if)#</b><font color="#0000FF">ip address 161.246.3.2 255.255.255.0</font><br>
+          <b>R2(config-if)#</b><font color="#0000FF">no shut</font><br>
+          <b>R2(config-if)#</b><font color="#0000FF">int s0</font><br>
+          <b>R2(config-if)#</b><font color="#0000FF">ip address 161.246.4.1 255.255.255.0</font><br>
+          <b>R2(config-if)#</b><font color="#0000FF">no shut</font> <br>
+          <br>
+          <b>Router3#</b><font color="#0000FF">config t</font><br>
+          <b>Router2(config)#</b><font color="#0000FF">hostname R3</font><br>
+          <b>R3(config-if)#</b><font color="#0000FF">int s0</font><br>
+          <b>R3(config-if)#</b><font color="#0000FF">ip address 161.246.1.2 255.255.255.0</font><br>
+          <b>R3(config-if)#</b><font color="#0000FF">no shut</font><br>
+          <b>R3(config-if)#</b><font color="#0000FF">int s1</font><br>
+          <b>R3(config-if)#</b><font color="#0000FF">ip address 161.246.9.1 255.255.255.0</font><br>
+          <b>R3(config-if)#</b><font color="#0000FF">no shut</font><br>
+          <b>R3(config-if)#</b><font color="#0000FF">int e0</font><br>
+          <b>R3(config-if)#</b><font color="#0000FF">ip address 161.246.7.1 255.255.255.0</font><br>
+          <b>R3(config-if)#</b><font color="#0000FF">no shut</font><br>
+          <b>R3(config-if)#</b><font color="#0000FF">int e1</font><br>
+          <b>R3(config-if)#</b><font color="#0000FF">ip address 161.246.5.1 255.255.255.0</font><br>
+          <b>R3(config-if)#</b><font color="#0000FF">no shut </font> <br>
+          <br>
+          <b>Router4#</b><font color="#0000FF">config t</font><br>
+          <b>Router4(config)#</b><font color="#0000FF">hostname R4</font><br>
+          <b>R4(config-if)#</b><font color="#0000FF">int s0</font><br>
+          <b>R4(config-if)#</b><font color="#0000FF">ip address 161.246.4.2 255.255.255.0</font><br>
+          <b>R4(config-if)#</b><font color="#0000FF">no shut</font><br>
+          <b>R4(config-if)#</b><font color="#0000FF">int s1</font><br>
+          <b>R4(config-if)#</b><font color="#0000FF">ip address 161.246.2.2 255.255.255.0</font><br>
+          <b>R4(config-if)#</b><font color="#0000FF">no shut</font><br>
+          <b>R4(config-if)#</b><font color="#0000FF">int e0</font><br>
+          <b>R4(config-if)#</b><font color="#0000FF">ip address 161.246.5.2 255.255.255.0</font><br>
+          <b>R4(config-if)#</b><font color="#0000FF">no shut</font><br>
+          <b>R4(config-if)#</b><font color="#0000FF">int e1</font><br>
+          <b>R4(config-if)#</b><font color="#0000FF">ip address 161.246.6.1 255.255.255.0</font><br>
+          <b>R4(config-if)#</b><font color="#0000FF">no shut</font> <br>
+          <br>
+          <b>Router5#</b><font color="#0000FF">config t</font><br>
+          <b>Router5(config)#</b><font color="#0000FF">hostname R5</font><br>
+          <b>R5(config-if)#</b><font color="#0000FF">int s0</font><br>
+          <b>R5(config-if)#</b><font color="#0000FF">ip address 161.246.8.2 255.255.255.0</font><br>
+          <b>R5(config-if)#</b><font color="#0000FF">no shut</font><br>
+          <b> R5(config-if)#</b><font color="#0000FF">int s1</font><br>
+          <b>R5(config-if)#</b><font color="#0000FF">ip address 161.246.9.1 255.255.255.0</font><br>
+          <b>R5(config-if)#</b><font color="#0000FF">no shut</font> <br>
+          <br>
+          <b>Router6#</b><font color="#0000FF">config t</font><br>
+          <b>Router6(config)#</b><font color="#0000FF">hostname R6</font><br>
+          <b>R6(config-if)#</b><font color="#0000FF">int s0</font><br>
+          <b>R6(config-if)#</b><font color="#0000FF">ip address 161.246.8.1 255.255.255.0</font><br>
+          <b>R6(config-if)#</b><font color="#0000FF">no shut</font><br>
+          <b>R6(config-if)#</b><font color="#0000FF">int e0</font><br>
+          <b>R6(config-if)#</b><font color="#0000FF">ip address 161.246.7.2 255.255.255.0</font><br>
+          <b>R6(config-if)#</b><font color="#0000FF">no shut</font><br>
+          <b>R6(config-if)#</b><font color="#0000FF">int e1</font><br>
+          <b>R6(config-if)#</b><font color="#0000FF">ip address 161.246.6.2 255.255.255.0</font><br>
+          <b>R6(config-if)#</b><font color="#0000FF">no shut</font><br>
+          <br>
+        <li>ทำการ save โดยการกด copy run start <br>
+          <br>
+        <li>ใช้คำสั่งเพื่อทำการเลือกโปรโตคอลแบบ OSPF ดังนี้<br>
+          <b>Router#</b><font color="#0000FF">config t</font><br>
+          <b>Router(config)#</b><font color="#0000FF">router ospf process-id</font><br>
+          โดยทำที่ทุกๆ เราเตอร์เพราะเราต้องการให้ทุกๆเราเตอร์อยู่ในโปรโตคอล OSPF<br>
+          ในที่นี่ process-id เป็นอะไรก็ได้ไม่มีผลต่อโปรแกรมนี้<br>
+          เช่น <br>
+          <b>Router(config)#</b><font color="#0000FF">router ospf 11</font> <br>
+        <li>คำสั่งในการกำหนด weight ให้กับเราเตอร์ทำได้โดยใช้คำสั่ง ip ospf cost 
+          &lt;router_name&gt;&lt;router_name&gt; ดังนี้<br>
+          <b>R1(config)#</b><font color="#0000FF">ip ospf cost R2 30</font><br>
+          <b>R1(config)#</b><font color="#0000FF">ip ospf cost R3 85</font><br>
+          <b>R1(config)#</b><font color="#0000FF">ip ospf cost R4 130</font><br>
+          <br>
+          <b>R2(config)#</b><font color="#0000FF">ip ospf cost R4 115</font><br>
+          <br>
+          <b>R3(config)#</b><font color="#0000FF">ip ospf cost R4 30<br>
+          </font> <b>R3(config)#</b><font color="#0000FF">ip ospf cost R5 95 </font><br>
+          <b>R3(config)#</b><font color="#0000FF">ip ospf cost R6 70</font><br>
+          <br>
+          <b>R4(config)#</b><font color="#0000FF">ip ospf cost R6 95</font><br>
+          <br>
+          <b>R5(config)#</b><font color="#0000FF">ip ospf cost R6 95</font><br>
+          <br>
+        <li>ใช้คำสั่งทดสอบการเชื่อมต่อเช่น<br>
+          <br>
+          <b> R1#</b><font color="#0000FF">show ip ospf neighbors</font><br>
+          <img src="pics/pic31.gif" width="700" height="500"><br>
+          <b><br>
+          R1#</b><font color="#0000FF">show ip ospf interface e0</font><br>
+          <img src="pics/pic32.gif" width="700" height="500"><br>
+          <b><br>
+          R1#</b><font color="#0000FF">tracert 161.246.7.1</font><br>
+          <img src="pics/pic33.gif" width="700" height="500"><br>
+          <b><br>
+          R1#</b><font color="#0000FF">ping 161.246.8.1</font><br>
+          <img src="pics/pic34.gif" width="700" height="500"> <br>
+        
+      </ol>
+      <center>
+        สำหรับโหมดการทำงานทั้งหมดของเราเตอร์สามารถดูได้ใน<a href="command.html">สรุปคำสั่งทั้งหมด</a>
+      </center>
+      <br>
+    </td>
+  </tr>
+</table>
+<p align="center"><b><font size="+2"><a href="index.html">Back to Main</a> <a href="index.html"></a> 
+  </font></b> or <b><font size="+2"><a href="lesson9.html">Next to Lesson9</a> 
+  </font></b></p>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!ELEMENT Document (TransactionPayment, SignatureID)>
+<!ELEMENT DueDate (#PCDATA)>
+<!ELEMENT KeyInfo (KeyUserID, CreateDate)>
+<!ATTLIST KeyInfo
+	xmlns CDATA #REQUIRED
+>
+<!ELEMENT CreateDate (#PCDATA)>
+<!ELEMENT DigestMethod EMPTY>
+<!ATTLIST DigestMethod
+	Algorithm CDATA #REQUIRED
+>
+<!ELEMENT KeyUserID (#PCDATA)>
+<!ELEMENT Manager_market (TransactionID, TotalPayment, DueDate)>
+<!ELEMENT Referances (Transforms, DigestMethod)>
+<!ELEMENT SignatureID (SignedInfo, SignatureValue, KeyInfo)>
+<!ATTLIST SignatureID
+	xmlns CDATA #REQUIRED
+	ID CDATA #REQUIRED
+>
+<!ELEMENT SignatureMethod EMPTY>
+<!ATTLIST SignatureMethod
+	Algorithm CDATA #REQUIRED
+>
+<!ELEMENT SignatureValue (#PCDATA)>
+<!ATTLIST SignatureValue
+	xmlns CDATA #REQUIRED
+>
+<!ELEMENT SignedInfo (SignatureMethod, Referances)>
+<!ATTLIST SignedInfo
+	xmlns CDATA #REQUIRED
+>
+<!ELEMENT TotalPayment (#PCDATA)>
+<!ELEMENT TransactionID (#PCDATA)>
+<!ELEMENT TransactionPayment (Manager_market)>
+<!ATTLIST TransactionPayment
+	Status CDATA #REQUIRED
+>
+<!ELEMENT Transform EMPTY>
+<!ATTLIST Transform
+	Algorithm CDATA #REQUIRED
+>
+<!ELEMENT Transforms (Transform)>

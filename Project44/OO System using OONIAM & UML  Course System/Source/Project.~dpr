@@ -1,0 +1,52 @@
+program Project;
+
+uses
+  Forms,
+  CacheObject_TLB in 'Class\TLB\CacheObject_TLB.pas',
+  CACHELISTLib_TLB in 'Class\TLB\CACHELISTLib_TLB.pas',
+  CACHEQUERYLib_TLB in 'Class\TLB\CACHEQUERYLib_TLB.pas',
+  ArrayOfObjects_TLB in 'Class\TLB\ArrayOfObjects_TLB.pas',
+  Main in 'Class\Main.pas' {Mainform},
+  MyUnits in 'Utilities\MyUnits.pas',
+  command in 'Utilities\command.pas' {CommandForm},
+  constant in 'Utilities\constant.pas',
+  XPMenu in 'Utilities\XPMenu.pas',
+  explorer in 'UserDialogs\explorer.pas' {Explore},
+  dialog in 'Utilities\dialog.pas' {EditDialog},
+  programDlg in 'UserDialogs\programDlg.pas' {ProgramDialog},
+  departmentDlg in 'UserDialogs\departmentDlg.pas' {DepartmentDialog},
+  facultyDlg in 'UserDialogs\facultyDlg.pas' {FacultyDialog},
+  subjectDlg in 'UserDialogs\subjectDlg.pas' {SubjectDialog},
+  resultDlg in 'UserDialogs\resultDlg.pas' {ResultTypeDialog},
+  selectSubjectDlg in 'UserDialogs\selectSubjectDlg.pas' {SelectSubjectDialog},
+  splash in 'Utilities\splash.pas' {frmSplash},
+  Cache in 'Class\Cache.pas',
+  DMU in 'Utilities\DMU.pas' {XDMU: TDataModule},
+  User_Address_TLB in 'TLB\User_Address_TLB.pas',
+  User_Category_TLB in 'TLB\User_Category_TLB.pas',
+  User_Department_TLB in 'TLB\User_Department_TLB.pas',
+  User_Faculty_TLB in 'TLB\User_Faculty_TLB.pas',
+  User_Dummy_TLB in 'TLB\User_Dummy_TLB.pas',
+  User_Course_TLB in 'TLB\User_Course_TLB.pas',
+  User_CourseDescription_TLB in 'TLB\User_CourseDescription_TLB.pas',
+  User_SubjectGrp_TLB in 'TLB\User_SubjectGrp_TLB.pas',
+  User_Subject_TLB in 'TLB\User_Subject_TLB.pas',
+  User_SubjectDescription_TLB in 'TLB\User_SubjectDescription_TLB.pas',
+  User_ResultType_TLB in 'TLB\User_ResultType_TLB.pas',
+  User_SubjectBachelor_TLB in 'TLB\User_SubjectBachelor_TLB.pas',
+  studentDlg in 'UserDialogs\studentDlg.pas' {StudentDialog},
+  teacherDlg in 'UserDialogs\teacherDlg.pas' {TeacherDialog},
+  User_Teacher_TLB in 'TLB\User_Teacher_TLB.pas',
+  User_TeacherDescription_TLB in 'TLB\User_TeacherDescription_TLB.pas',
+  selecSchDlg in 'UserDialogs\selecSchDlg.pas' {SelectSchDialog},
+  User_SubCourse_TLB in 'TLB\User_SubCourse_TLB.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TMainform, Mainform);
+  Application.CreateForm(TXDMU, XDMU);
+  Application.CreateForm(TSelectSchDialog, SelectSchDialog);
+  Application.Run;
+end.

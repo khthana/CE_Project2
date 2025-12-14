@@ -1,0 +1,318 @@
+package routersim;
+
+import java.awt.*;
+import java.awt.image.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.*;
+import javax.swing.JPanel;
+import com.borland.jbcl.layout.*;
+
+
+public class Panel2 extends JPanel {
+  XYLayout xYLayout1 = new XYLayout();
+  public static Vector vImg = new Vector();
+  RouterImg rimg;
+  Image img;
+  boolean pressin = false;
+  //position of mouse
+  int dx,dy;
+  JButton jClose = new JButton();
+  public Panel2() {
+    try {
+      jbInit();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+  void jbInit() throws Exception {
+    jClose.setText("Close");
+    jClose.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jClose_actionPerformed(e);
+      }
+    });
+    this.setBackground(SystemColor.activeCaptionBorder);
+    this.setAlignmentX((float) 0.0);
+    this.setAlignmentY((float) 0.0);
+    this.setSize(690, 379);
+    //---------------------------------------Add Listener ---------------------------------------//
+    this.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+      public void mouseDragged(MouseEvent e) {
+        this_mouseDragged(e);
+      }
+    });
+    this.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        this_mouseClicked(e);
+      }
+      public void mouseReleased(MouseEvent e) {
+        this_mouseReleased(e);
+      }
+      public void mousePressed(MouseEvent e) {
+        this_mousePressed(e);
+      }
+    });
+    //--------------------------------Layout------------------------------------//
+    this.setLayout(xYLayout1);
+//    this.setSize(690,379);
+    rimg = new RouterImg();
+    Panel2.vImg.addElement(rimg);
+//    width = image0.getWidth(this);
+//    height = image0.getHeight(this);
+    xYLayout1.setWidth(690);
+    xYLayout1.setHeight(379);
+    this.add(jClose, new XYConstraints(325, 300, 80, 28));
+  }
+  private void paintText(Interface i,int xpos,int ypos){
+//    int xname
+
+  }
+  //--------------------------Panit-------------------------//
+  public void paintComponent(Graphics g){
+    super.paintComponent(g);
+    g.setColor(Color.black);
+    for (int i=0; i < Frame1.vRouter.size(); i++){
+      Router rt1 = (Router)Frame1.vRouter.elementAt(i);
+      RouterImg r1 = (RouterImg)vImg.elementAt(i);
+      int x1 = r1.getXPos() + (r1.getWide() / 2);
+      int y1 = r1.getYPos() + (r1.getHigh() / 2);
+      for (int int1=0; int1 < rt1.getVInt().size(); int1++){
+        boolean adj = false;
+        Interface i1 = (Interface)rt1.getVInt().elementAt(int1);
+        for (int j=0; j < Frame1.vRouter.size(); j++){
+          Router rt2 = (Router)Frame1.vRouter.elementAt(j);
+          RouterImg r2 = (RouterImg)vImg.elementAt(j);
+          int x2 = r2.getXPos() + (r2.getWide() / 2);
+          int y2 = r2.getYPos() + (r2.getHigh() / 2);
+          for (int int2=0; int2 < rt2.getVInt().size(); int2++){
+            Interface i2 = (Interface)rt2.getVInt().elementAt(int2);
+            if (i1.getNetAddress().equalsIgnoreCase(i2.getNetAddress()) && (!i1.getIpAddress().equalsIgnoreCase(i2.getIpAddress()))){
+              adj = true;
+              if (i < j){
+                int xx1=0,xx2=0,yy1=0,yy2=0;
+                g.drawLine(x1,y1-1,x2,y2-1);
+                g.drawLine(x1,y1,x2,y2);
+                g.drawLine(x1,y1+1,x2,y2+1);
+                if (x1 < x2){
+                  xx1 = x1 + 25;
+                  yy1 = y1 - 40;
+                  xx2 = x2 - 100;
+                  yy2 = y2 - 40;
+                }
+                else {
+                  xx1 = x1 - 100;
+                  yy1 = y1 - 40;
+                  xx2 = x2 + 25;
+                  yy2 = y2 - 40;
+                }
+                g.drawString(i1.getNameInt(),xx1+20,yy1-15);
+                g.drawString(i1.getIpAddress(),xx1,yy1);
+                //network down then print string
+                if (i1.getStatus().equalsIgnoreCase("down")){
+                  g.setColor(Color.red);
+                  g.drawString(i1.getStatus(),xx1+20,yy1+15);
+                  g.setColor(Color.black);
+                }
+                g.drawString(i2.getNameInt(),xx2+20,yy2-15);
+                g.drawString(i2.getIpAddress(),xx2,yy2);
+                //network down then print string
+                if (i2.getStatus().equalsIgnoreCase("down")){
+                  g.setColor(Color.red);
+                  g.drawString(i2.getStatus(),xx2+20,yy2+15);
+                  g.setColor(Color.black);
+                }
+              }
+            }//end adj
+          }//end for interface of router2
+        }//end for router 2
+        if (!adj){
+          if (Frame1.vRouter.size() == 1){
+            g.drawLine(x1,y1-1,x1-80,y1-61);
+            g.drawLine(x1,y1,x1-80,y1-60);
+            g.drawLine(x1,y1+1,x1-80,y1-59);
+            g.drawString(i1.getNameInt(),x1-80,y1-15);
+            g.drawString(i1.getIpAddress(),x1-100,y1);
+            if (i1.getStatus().equalsIgnoreCase("down")){
+              g.setColor(Color.red);
+              g.drawString(i1.getStatus(),x1-80,y1+15);
+              g.setColor(Color.black);
+            }
+//            System.out.println("This one router that " + i1.getIpAddress() +" is not adj");
+          }
+          else {
+            g.drawLine(x1,y1-1,x1-80,y1-61);
+            g.drawLine(x1,y1,x1-80,y1-60);
+            g.drawLine(x1,y1+1,x1-80,y1-59);
+            g.drawString(i1.getNameInt(),x1-80,y1-15);
+            g.drawString(i1.getIpAddress(),x1-100,y1);
+            if (i1.getStatus().equalsIgnoreCase("down")){
+              g.setColor(Color.red);
+              g.drawString(i1.getStatus(),x1-80,y1+15);
+              g.setColor(Color.black);
+            }
+//            System.out.println(i1.getIpAddress() + " is not adj");
+          }
+        }
+      }//end for interface of router1
+      g.drawImage(r1.getImge(),r1.getXPos(),r1.getYPos(),this);
+      g.drawString(rt1.getName(),r1.getXPos(),r1.getYPos()+r1.getHigh());
+    }//end for router 1
+  }
+  /*
+   public void paintComponent(Graphics g){
+   super.paintComponent(g);
+    g.setColor(Color.black);
+//    g.fillRect(rimg.getXPos(),rimg.getYPos(),rimg.getWide(),rimg.gethigh());
+//    System.out.println(rimg);
+    // draw imange at xpos ypos
+    for (int i=0 ; i <vImg.size();i++){
+      RouterImg rtmp = (RouterImg)vImg.elementAt(i);
+      Image itmp = rtmp.getImge();
+      g.drawImage(itmp,rtmp.getXPos(),rtmp.getYPos(),this);
+      if (vImg.size() ==1){
+        Router rt1 = (Router)Frame1.vRouter.elementAt(0);
+        RouterImg r1 = (RouterImg)vImg.elementAt(0);
+        g.drawString(rt1.getName(),r1.getXPos(),r1.getYPos()+r1.getHigh());
+        for (int vint=0;vint < rt1.getVInt().size();vint++){
+          Interface intf = (Interface)rt1.getVInt().elementAt(vint);
+/*
+                g.drawLine(x1,y1,x1-80,y1-70);
+                g.drawString(i1.getType(),x1-80,y1-60);
+                g.drawString(i1.getIpAddress(),x1-80,y1-45);
+                if(i1.getStatus().equalsIgnoreCase("down")){
+                  g.setColor(Color.red);
+                  g.drawString(i1.getStatus(),x1-80,y1+15);
+                  g.setColor(Color.black);
+                }//end status
+    * /
+        }
+      }
+      else if (vImg.size() >= 2){ //----------get else out---//
+        for (int j=0; j< vImg.size(); j++){
+          RouterImg r1 = (RouterImg)vImg.elementAt(j);
+          int x1 = r1.getXPos()+(r1.getWide()/2);
+          int y1 = r1.getYPos()+(r1.getHigh()/2);
+          boolean adj = false;
+          for (int k=j; k < vImg.size(); k++){
+            RouterImg r2 = (RouterImg)vImg.elementAt(k);
+            int x2 = r2.getXPos()+(r2.getWide()/2);
+            int y2 = r2.getYPos()+(r2.getHigh()/2);
+            Router rt1 = (Router)Frame1.vRouter.elementAt(j);
+            g.drawString(rt1.getName(),r1.getXPos(),r1.getYPos()+r1.getHigh());
+            Router rt2 = (Router)Frame1.vRouter.elementAt(k);
+            g.drawString(rt2.getName(),r2.getXPos(),r2.getYPos()+r2.getHigh());
+            //check connected
+            for (int a= 0; a < rt1.getVInt().size();a++){
+              Interface i1 = (Interface)rt1.getVInt().elementAt(a);
+              for (int b=0; b < rt2.getVInt().size(); b++){
+                System.out.println(adj);
+                Interface i2 = (Interface)rt2.getVInt().elementAt(b);
+                if (i1.getNetAdd().equalsIgnoreCase(i2.getNetAdd()) &&(!i1.getIpAddress().equalsIgnoreCase(i2.getIpAddress()))){
+                  adj = true;
+                  System.out.println(adj);
+                  g.drawLine(x1,y1,x2,y2);
+                  //x1 is left and x2 is right
+                  if (x1 < x2){
+                    x1 += 25;
+                    x2 -= 100;
+                  }//end if
+                  else {
+                    x1 -= 100;
+                    x2 +=25;
+                  }//end if
+                  g.drawString(i1.getType(),x1,y1-15);
+                  g.drawString(i1.getIpAddress(),x1,y1);
+                  if (i1.getStatus().equalsIgnoreCase("down")){
+                    g.setColor(Color.red);
+                    g.drawString(i1.getStatus(),x1,y1+15);
+                    g.setColor(Color.black);
+                  }//end if
+                  g.drawString(i2.getType(),x2,y2-15);
+                  g.drawString(i2.getIpAddress(),x2,y2);
+                  if (i2.getStatus().equalsIgnoreCase("down")){
+                    g.setColor(Color.red);
+                    g.drawString(i2.getStatus(),x2,y2+15);
+                    g.setColor(Color.black);
+                  }//end if
+                }//end adj
+              }//end for
+              if(false) {
+                g.drawLine(x1,y1,x1-80,y1-70);
+                g.drawString(i1.getType(),x1-90,y1-15);
+                g.drawString(i1.getIpAddress(),x1-90,y1);
+                if(i1.getStatus().equalsIgnoreCase("down")){
+                  g.setColor(Color.red);
+                  g.drawString(i1.getStatus(),x1-90,y1+15);
+                  g.setColor(Color.black);
+                }//end status
+              }//end adj
+            }//end for
+          }//end for
+        }//end for
+      }//end img > 2
+    }//end for
+  }//end paint
+*/
+  void this_mouseClicked(MouseEvent e) {
+//    dx = e.getX() - xpos;
+//    dy = e.getY() - ypos;
+  }
+  void this_mouseDragged(MouseEvent e) {
+    if (pressin){
+      // in  Frame
+      dx = e.getX();
+      dy = e.getY();
+      if ((dx < this.getWidth()-60) &&(dx >= 0)&& (dy < this.getHeight()-69) && (dy >= 0)){
+        //setposition
+        rimg.setXPos(e.getX());
+        rimg.setYPos(e.getY());
+        repaint();
+      }
+    }
+  }
+  //-----------------Mouse Released--------------------//
+  void this_mouseReleased(MouseEvent e) {
+    pressin = false;
+//    System.out.println(rimg.getXPos()+"&"+rimg.getYPos());
+//    System.out.println("out" +pressin);
+//      Graphics g = getGraphics();
+//      g.clearRect(0,0,this.getWidth(),this.getHeight());
+//      repaint();
+  }
+  //-------------------Mouse Pressed----------------------//
+  void this_mousePressed(MouseEvent e) {
+    int i = 0;
+    pressin = false;
+    rimg = null;
+    while((i < vImg.size()) &&(!pressin)){
+      rimg = (RouterImg)vImg.elementAt(i);
+      //position at mouse press
+      dx = e.getX();
+      dy = e.getY();
+      if ((dx < rimg.getXPos()+rimg.getWide()) && (dx > rimg.getXPos()) && (dy > rimg.getYPos()) && (dy < rimg.getYPos() + rimg.getHigh())){
+        pressin = true;
+      }
+      i++;
+    }
+  /*
+    dx = e.getX() - xpos;
+    dy = e.getY() - ypos;
+    int mousex = e.getX();
+    int mousey = e.getY();
+    if ((mousex < xpos+width)&&(mousey < ypos + height)){
+      pressin = true;
+      System.out.println("in");
+    }
+*/
+  }
+  void jnew_actionPerformed(ActionEvent e) {
+    rimg = new RouterImg();
+    Panel2.vImg.addElement(rimg);
+    repaint();
+  }
+  void jClose_actionPerformed(ActionEvent e) {
+    Frame1.closeView();
+  }
+}

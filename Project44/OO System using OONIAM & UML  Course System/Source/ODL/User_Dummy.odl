@@ -1,0 +1,89 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// ODL file generated from Cache Objects Version 4.1.856.0
+//     Feb 12 2002 01:54:13
+//
+////////////////////////////////////////////////////////////////////////////////
+
+#include <olectl.h>
+
+[ uuid(c96e41ce-cf3f-49fe-a939-12368b800f27), version(1.0),helpstring("Cache Objects Version 4.1.856.0") ]
+library User_Dummy
+{
+    importlib(STDOLE_TLB);
+    importlib(STDTYPE_TLB);
+
+    [ uuid(b0d82fca-1d08-4a21-b7a3-004a37e361ed),helpstring("Cache Object: User.Dummy"),hidden ]
+
+    dispinterface CDummy
+    {
+        properties:
+            [id(41)]  long        DeleteTag;
+
+        methods:
+            [id(43)]  VARIANT     SYS_BuildIndices(IDispatch* idxlist);
+            [id(16)]  VARIANT     SYS_CheckUnique(IDispatch* idxlist);
+            [id(1)]   BSTR        SYS_ClassName(VARIANT fullname);
+            [id(2)]   VARIANT     SYS_Close();
+            [id(17)]  VARIANT     SYS_Delete(VARIANT oid,long concurrency);
+            [id(19)]  VARIANT     SYS_DeleteExtent(long concurrency,[in,out] BSTR* deletecount,[in,out] BSTR* instancecount);
+            [id(20)]  VARIANT     SYS_DeleteId(BSTR id,long concurrency);
+            [id(21)]  VARIANT     SYS_DowngradeConcurrency(BSTR concurrency);
+            [id(47)]  VARIANT     SYS_Exists(VARIANT oid);
+            [id(48)]  VARIANT     SYS_ExistsId(BSTR id);
+            [id(24)]  VARIANT     SYS_GetSwizzleObject(long force,[in,out] VARIANT* oid);
+            [id(25)]  BSTR        SYS_Id();
+            [id(3)]   void        SYS_IncrementCount();
+            [id(4)]   long        SYS_IsA(BSTR isclass);
+            [id(5)]   long        SYS_IsModified();
+            [id(49)]  VARIANT     SYS_KillExtent();
+            [id(6)]   IDispatch*  SYS_New(BSTR initvalue);
+            [id(7)]   VARIANT     SYS_NormalizeObject();
+            [id(30)]  VARIANT     SYS_Oid();
+            [id(31)]  BSTR        SYS_Open(VARIANT oid,long concurrency);
+            [id(32)]  BSTR        SYS_OpenId(BSTR id,long concurrency);
+            [id(8)]   BSTR        SYS_PackageName();
+            [id(52)]  VARIANT     SYS_PurgeIndices(IDispatch* idxlist);
+            [id(35)]  VARIANT     SYS_RollBack();
+            [id(36)]  VARIANT     SYS_Save(long related);
+            [id(55)]  VARIANT     SYS_SortBegin(IDispatch* idxlist,long excludeunique);
+            [id(56)]  VARIANT     SYS_SortEnd(IDispatch* idxlist,long commit);
+            [id(40)]  VARIANT     SYS_UpgradeConcurrency(BSTR concurrency);
+            [id(10)]  VARIANT     SYS_ValidateObject(long force);
+            [id(57)]  VARIANT     CheckDependency();
+            [id(88)]  long        DeleteTagDisplayToLogical(BSTR SYS_val);
+            [id(89)]  long        DeleteTagGet();
+            [id(93)]  long        DeleteTagIsModified();
+            [id(94)]  VARIANT     DeleteTagIsValid(BSTR value);
+            [id(95)]  long        DeleteTagIsValidDT(long SYS_val);
+            [id(96)]  BSTR        DeleteTagLogicalToDisplay(long SYS_val);
+            [id(98)]  long        DeleteTagNormalize(BSTR SYS_val);
+            [id(100)] VARIANT     DeleteTagSet(BSTR newvalue);
+            [id(101)] long        DeleteTagSetModified(long newvalue);
+            [id(106)] VARIANT     ExtentClose(VARIANT qHandle);
+            [id(107)] VARIANT     ExtentExecute([in,out] VARIANT* qHandle);
+            [id(108)] VARIANT     ExtentFetch([in,out] VARIANT* qHandle,[in,out] IDispatch** Row,[in,out] long* AtEnd);
+            [id(110)] VARIANT     ExtentFetchRows([in,out] VARIANT* qHandle,long FetchCount,[in,out] IDispatch** RowSet,[in,out] long* ReturnCount,[in,out] long* AtEnd);
+            [id(111)] VARIANT     ExtentGetInfo([in,out] IDispatch** colinfo,[in,out] IDispatch** parminfo,[in,out] IDispatch** idinfo,[in,out] VARIANT* qHandle);
+            [id(112)] VARIANT     ExtentPrepare([in,out] VARIANT* qHandle,BSTR statement,long containid,BSTR optional);
+            [id(58)]  BSTR        GetClassName();
+            [id(59)]  BSTR        GetParentClass();
+            [id(60)]  void        PrepareDeleting();
+
+    };
+
+    // Class information for User.Dummy
+    [ uuid(6923eaa4-de84-47f7-bb8f-db6deb5c81b0), helpstring("Cache Object: User.Dummy CoClass"),control ]
+    coclass Dummy
+    {
+        [default] dispinterface CDummy;
+    };
+
+
+};
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// End-of-file
+//
+////////////////////////////////////////////////////////////////////////////////

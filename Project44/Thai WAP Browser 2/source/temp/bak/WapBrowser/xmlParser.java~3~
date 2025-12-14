@@ -1,0 +1,74 @@
+package temp;
+
+import java.lang.* ;
+
+import java.io.* ;
+
+import org.jdom.*;
+import org.jdom.input.SAXBuilder;
+
+//import java.util.*;
+
+class  xmlParser{                         //class xml parser
+
+xmlParser(String dest){this.dest = dest;}// constructor
+
+private String dest;                    //destination or URL to Parser
+private Element e;                      //element
+private int numallnode;                 //number of all node in the tree
+protected String st1="";                //String to show detail about result of parsing
+
+protected Element par()throws JDOMException,NullPointerException{ //parsing
+    SAXBuilder builder= new SAXBuilder();
+    Document doc = builder.build(dest);
+    e = doc.getRootElement();
+    return e;
+}                                                          //end parsing
+
+public String getnumallnode(Element e){			//get number of all node in the tree
+  for (Iterator i=e.getChildren().iterator(); i.hasNext(); ) {
+    numallnode=++numallnode;
+    Element child = (Element)i.next();
+    getnumallnode(child);
+  }
+return "จำนวนโหนดทั้งหมดคือ "+String.valueOf(numallnode+1)+"\n";
+}                                                       //end getnumallnode
+
+public String printElements(Element e) throws IOException, JDOMException { //Print all Element and Attribute
+
+			String st = new String();
+			st = e.getName();
+                        if(e.isRootElement()){
+                        st1=st1+"นี่คือ รูท อีลีเมนต์\n";
+				}                                 //end if
+	        	    st1=st1+" -ชื่อแอตทริบิวต์คือ ";
+		            st1=st1+st+"\n";
+				if(!e.getAttributes().isEmpty()){
+                                st1=st1+"   แอตทริบิวต์นี้มี "+e.getAttributes().size()+"  อีลีเมนต์\n";
+					for (int i=0; i<=e.getAttributes().size()-1;++i){
+					 Object[] ob = e.getAttributes().toArray();
+					  st1=st1+"  "+ob[i].toString()+" "+"\n";
+					};                        //end for
+					 st1=st1+"\n";
+				}                                 //end if
+				else  st1=st1+"  อีลีเมนต์นี้ไม่มีแอตทริบิวต์\n";
+				if(!e.getTextTrim().equals("")){
+							 st1=st1+"  คอนเทนต์ในอีลีเมนต์นี้คือ  ";
+							 st1=st1+e.getTextTrim()+"\n";
+						}                 //end if
+              			 st1=st1+"\n";
+				for (Iterator i=e.getChildren().iterator(); i.hasNext(); ) {
+       			        Element child = (Element)i.next();
+
+                        	printElements(child);		 //Recursive
+
+                        }                           //end for
+          return st1;
+        }                                           //end print element
+  protected String getstring(){
+  return st1;
+  }                                                 //end get string
+  protected void setstring(String st){
+  st1=st1+st;
+  }                                                 //end set string
+};                                                  //end class xmlParser

@@ -1,0 +1,116 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// ODL file generated from Cache Objects Version 4.1.856.0
+//     Feb 12 2002 01:54:18
+//
+////////////////////////////////////////////////////////////////////////////////
+
+#include <olectl.h>
+
+[ uuid(a54901fe-23de-4260-8880-afa3e2f48166), version(1.0),helpstring("Cache Objects Version 4.1.856.0") ]
+library User_Faculty
+{
+    importlib(STDOLE_TLB);
+    importlib(STDTYPE_TLB);
+
+    [ uuid(ecffabb7-1b15-4a13-a9dc-af5f0a9612f6),helpstring("Cache Object: User.Faculty"),hidden ]
+
+    dispinterface CFaculty
+    {
+        properties:
+            [id(41)]  long        DeleteTag;
+            [id(61)]  BSTR        EnglishName;
+            [id(62)]  BSTR        ThaiName;
+
+        methods:
+            [id(65)]  VARIANT     SYS_BuildIndices(IDispatch* idxlist);
+            [id(16)]  VARIANT     SYS_CheckUnique(IDispatch* idxlist);
+            [id(1)]   BSTR        SYS_ClassName(VARIANT fullname);
+            [id(2)]   VARIANT     SYS_Close();
+            [id(17)]  VARIANT     SYS_Delete(VARIANT oid,long concurrency);
+            [id(19)]  VARIANT     SYS_DeleteExtent(long concurrency,[in,out] BSTR* deletecount,[in,out] BSTR* instancecount);
+            [id(20)]  VARIANT     SYS_DeleteId(BSTR id,long concurrency);
+            [id(21)]  VARIANT     SYS_DowngradeConcurrency(BSTR concurrency);
+            [id(69)]  VARIANT     SYS_Exists(VARIANT oid);
+            [id(70)]  VARIANT     SYS_ExistsId(BSTR id);
+            [id(24)]  VARIANT     SYS_GetSwizzleObject(long force,[in,out] VARIANT* oid);
+            [id(25)]  BSTR        SYS_Id();
+            [id(3)]   void        SYS_IncrementCount();
+            [id(4)]   long        SYS_IsA(BSTR isclass);
+            [id(5)]   long        SYS_IsModified();
+            [id(71)]  VARIANT     SYS_KillExtent();
+            [id(6)]   IDispatch*  SYS_New(BSTR initvalue);
+            [id(7)]   VARIANT     SYS_NormalizeObject();
+            [id(30)]  VARIANT     SYS_Oid();
+            [id(31)]  BSTR        SYS_Open(VARIANT oid,long concurrency);
+            [id(32)]  BSTR        SYS_OpenId(BSTR id,long concurrency);
+            [id(8)]   BSTR        SYS_PackageName();
+            [id(74)]  VARIANT     SYS_PurgeIndices(IDispatch* idxlist);
+            [id(35)]  VARIANT     SYS_RollBack();
+            [id(36)]  VARIANT     SYS_Save(long related);
+            [id(77)]  VARIANT     SYS_SortBegin(IDispatch* idxlist,long excludeunique);
+            [id(78)]  VARIANT     SYS_SortEnd(IDispatch* idxlist,long commit);
+            [id(40)]  VARIANT     SYS_UpgradeConcurrency(BSTR concurrency);
+            [id(10)]  VARIANT     SYS_ValidateObject(long force);
+            [id(57)]  VARIANT     CheckDependency();
+            [id(106)] long        DeleteTagDisplayToLogical(BSTR SYS_val);
+            [id(107)] long        DeleteTagGet();
+            [id(111)] long        DeleteTagIsModified();
+            [id(112)] VARIANT     DeleteTagIsValid(BSTR value);
+            [id(113)] long        DeleteTagIsValidDT(long SYS_val);
+            [id(114)] BSTR        DeleteTagLogicalToDisplay(long SYS_val);
+            [id(116)] long        DeleteTagNormalize(BSTR SYS_val);
+            [id(118)] VARIANT     DeleteTagSet(BSTR newvalue);
+            [id(119)] long        DeleteTagSetModified(long newvalue);
+            [id(123)] BSTR        EnglishNameDisplayToLogical(BSTR SYS_val);
+            [id(124)] BSTR        EnglishNameGet();
+            [id(128)] long        EnglishNameIsModified();
+            [id(129)] VARIANT     EnglishNameIsValid(BSTR value);
+            [id(130)] long        EnglishNameIsValidDT(BSTR SYS_val);
+            [id(131)] BSTR        EnglishNameLogicalToDisplay(BSTR SYS_val);
+            [id(133)] BSTR        EnglishNameNormalize(BSTR SYS_val);
+            [id(135)] VARIANT     EnglishNameSet(BSTR newvalue);
+            [id(136)] long        EnglishNameSetModified(long newvalue);
+            [id(158)] VARIANT     ExtentClose(VARIANT qHandle);
+            [id(159)] VARIANT     ExtentExecute([in,out] VARIANT* qHandle);
+            [id(160)] VARIANT     ExtentFetch([in,out] VARIANT* qHandle,[in,out] IDispatch** Row,[in,out] long* AtEnd);
+            [id(162)] VARIANT     ExtentFetchRows([in,out] VARIANT* qHandle,long FetchCount,[in,out] IDispatch** RowSet,[in,out] long* ReturnCount,[in,out] long* AtEnd);
+            [id(163)] VARIANT     ExtentGetInfo([in,out] IDispatch** colinfo,[in,out] IDispatch** parminfo,[in,out] IDispatch** idinfo,[in,out] VARIANT* qHandle);
+            [id(164)] VARIANT     ExtentPrepare([in,out] VARIANT* qHandle,BSTR statement,long containid,BSTR optional);
+            [id(58)]  BSTR        GetClassName();
+            [id(59)]  BSTR        GetParentClass();
+            [id(60)]  void        PrepareDeleting();
+            [id(165)] VARIANT     QueryDetailsClose(VARIANT qHandle);
+            [id(166)] VARIANT     QueryDetailsExecute([in,out] VARIANT* qHandle);
+            [id(167)] VARIANT     QueryDetailsFetch([in,out] VARIANT* qHandle,[in,out] IDispatch** Row,[in,out] long* AtEnd);
+            [id(168)] VARIANT     QueryDetailsFetchODBC([in,out] VARIANT* qHandle,[in,out] BSTR* SYS_d,long SYS_qacn,[in,out] long* AtEnd,[in,out] long* SQLCODE);
+            [id(169)] VARIANT     QueryDetailsFetchRows([in,out] VARIANT* qHandle,long FetchCount,[in,out] IDispatch** RowSet,[in,out] long* ReturnCount,[in,out] long* AtEnd);
+            [id(170)] VARIANT     QueryDetailsGetInfo([in,out] IDispatch** colinfo,[in,out] IDispatch** parminfo,[in,out] IDispatch** idinfo,[in,out] VARIANT* qHandle);
+            [id(171)] VARIANT     QueryDetailsPrepare([in,out] VARIANT* qHandle,BSTR statement,long containid,BSTR optional);
+            [id(140)] BSTR        ThaiNameDisplayToLogical(BSTR SYS_val);
+            [id(141)] BSTR        ThaiNameGet();
+            [id(145)] long        ThaiNameIsModified();
+            [id(146)] VARIANT     ThaiNameIsValid(BSTR value);
+            [id(147)] long        ThaiNameIsValidDT(BSTR SYS_val);
+            [id(148)] BSTR        ThaiNameLogicalToDisplay(BSTR SYS_val);
+            [id(150)] BSTR        ThaiNameNormalize(BSTR SYS_val);
+            [id(152)] VARIANT     ThaiNameSet(BSTR newvalue);
+            [id(153)] long        ThaiNameSetModified(long newvalue);
+
+    };
+
+    // Class information for User.Faculty
+    [ uuid(1a34ea8c-2f2f-4925-bd3c-ef83664ef817), helpstring("Cache Object: User.Faculty CoClass"),control ]
+    coclass Faculty
+    {
+        [default] dispinterface CFaculty;
+    };
+
+
+};
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// End-of-file
+//
+////////////////////////////////////////////////////////////////////////////////

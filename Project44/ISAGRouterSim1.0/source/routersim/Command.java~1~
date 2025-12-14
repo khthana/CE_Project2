@@ -1,0 +1,266 @@
+package routersim;
+import java.io.*;
+import java.util.*;
+
+public class Command {
+  //--------------Show Interface---------------//
+  public void showInt(Router r){
+    String s = "   Type \t Name \t      IP \t     Subnet \t Status \n";
+    for (int i=0; i < r.getVInt().size(); i++){
+      Interface intf = (Interface)r.getVInt().elementAt(i);
+      s = s + intf.getType() + "\t" + intf.getNameInt() + "\t" + intf.getIpAddress() + "\t" + intf.getSubnet() + "\t      " + intf.getStatus() + "\n";
+    }//end for
+    Rt1.output = s;
+    System.out.println(s);
+  }
+  public void showInt(Router r,String iname){
+    String s = "   Type \t Name \t      IP \t     Subnet \t Status \n";
+    for (int i=0; i < r.getVInt().size(); i++){
+      Interface intf = (Interface)r.getVInt().elementAt(i);
+      if ((intf.getNameInt().equalsIgnoreCase(iname))||(intf.getIpAddress().equalsIgnoreCase(iname))){
+      s = s + intf.getType() + "\t" + intf.getNameInt() + "\t" + intf.getIpAddress() + "\t" + intf.getSubnet() + "\t      " + intf.getStatus() + "\n";
+      }
+    }//end for
+    Rt1.output = s;
+    System.out.println(s);
+  }
+  //--------------Show Routing Table---------------------------//
+  public void showIpRoute(Router r){
+    String s = "Codes: \t C - connected, S - static, I - IGRP, R - RIP, M - mobile, B - BGP \n"
+                      +"\t D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area \n"
+                      +"\t N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2 \n"
+                      +"\t E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP \n"
+                      +"\t i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, * - candidate default \n"
+                      +"\t U - per-user static route, o - ODR \n\n Gateway of last resort is not set \n";
+    for (int i=0;i < r.getVrt().size();i++){
+      RoutingTable rt = (RoutingTable)r.getVrt().elementAt(i);
+      s = s + rt.getRouteType() + "   " + rt.getIpDestination();
+      switch (rt.getRouteType()){
+        case 'c' : s = s + " is directly connected, "+rt.getInterface().getType()+rt.getInterface().getNameInt().charAt(rt.getInterface().getNameInt().length()-1)+rt.getSubnet()+"\n";break;
+        case 's' : s = s +" [1/0] via, " + rt.getGateway() + " " + rt.getSubnet() + "\n";break;
+        case 'r'  : s = s + "[120/"+rt.getMatrice() +"] via, "+ rt.getGateway() + " " + rt.getSubnet() + "\n";
+      }//end switch
+    }//end for
+    s = s + "\n\n Destination \t Gateway \t Interface \t matric \n----------------------------------------------------------------------------\n";
+    for (int i=0; i < r.getVrt().size();i++){
+      RoutingTable rt = (RoutingTable)r.getVrt().elementAt(i);
+      s = s + rt.getIpDestination() + "\t" + rt.getGateway() + "\t"+rt.getInterface().getNameInt()+"\t" + rt.getMatrice()+"\n";
+    }//end for
+    Rt1.output = s;
+    System.out.println(s);
+  }
+  public void showIpRoute(Router r,char f){
+    String s = "Codes: \t C - connected, S - static, I - IGRP, R - RIP, M - mobile, B - BGP \n"
+                      +"\t D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area \n"
+                      +"\t N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2 \n"
+                      +"\t E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP \n"
+                      +"\t i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, * - candidate default \n"
+                      +"\t U - per-user static route, o - ODR \n\n Gateway of last resort is not set \n";
+    for (int i=0;i < r.getVrt().size();i++){
+      RoutingTable rt = (RoutingTable)r.getVrt().elementAt(i);
+      if (rt.getRouteType() == f){
+        s = s + rt.getRouteType() + "   " + rt.getIpDestination();
+        switch (rt.getRouteType()){
+          case 'c' : s = s + " is directly connected, "+rt.getInterface().getType()+rt.getInterface().getNameInt().charAt(rt.getInterface().getNameInt().length()-1)+rt.getSubnet()+"\n";break;
+          case 's' : s = s +" [1/0] via, " + rt.getGateway() + " " + rt.getSubnet() + "\n";break;
+          case 'r'  : s = s + "[120/"+rt.getMatrice() +"] via, "+ rt.getGateway() + " " + rt.getSubnet() + "\n";
+        }//end switch
+      }//end if
+    }//end for
+    s = s + "\n\n Destination \t Gateway \t Interface \t matric \n----------------------------------------------------------------------------\n";
+    for (int i=0; i < r.getVrt().size();i++){
+      RoutingTable rt = (RoutingTable)r.getVrt().elementAt(i);
+      if (rt.getRouteType() == f){
+        s = s + rt.getIpDestination() + "\t" + rt.getGateway() + "\t"+rt.getInterface().getNameInt()+"\t" + rt.getMatrice()+"\n";
+      }
+    }//end for
+    Rt1.output = s;
+    System.out.println(s);
+  }
+  //----------------Traceroute-----------------//
+  public void trace(Router r,String des){
+    int i=0;
+    RoutingTable rt = null;
+    Router tmp = null;
+    Interface inf = (Interface)r.getVInt().elementAt(0);
+    String nextgw="";
+    boolean found = false;
+    if (r.getVrt().size() > 0){
+      rt = (RoutingTable)r.getVrt().elementAt(i);
+    }//end if
+    //search path from routing table when des = des from user command
+    while((i < r.getVrt().size())&&(!rt.getIpDestination().equalsIgnoreCase(inf.findNetAdd()))){
+      rt = (RoutingTable)r.getVrt().elementAt(i);
+      //gateway is interface that adj
+      nextgw = rt.getGateway();
+      i++;
+    }//end while
+    //if found in routing table
+    if (rt.getIpDestination().equalsIgnoreCase(inf.findNetAdd())){
+      //find route that have interface of gateway value
+      for (int j=0; j < Frame1.vRouter.size(); j++){
+        //Router 1
+        tmp = (Router)Frame1.vRouter.elementAt(j);
+        //Interface 1 of Router 1
+        for(int k=0; k < tmp.getVInt().size(); k++){
+          Interface intf = (Interface)tmp.getVInt().elementAt(k);
+          String i1 = intf.getIpAddress();
+          if (intf.getIpAddress().equalsIgnoreCase(nextgw)){
+            r = tmp;
+          }//end if
+        }//end for
+      }//end for
+    }//end if
+    else{
+      found = false;
+    }//end else
+    i = 0;
+    rt = (RoutingTable)r.getVrt().elementAt(i);
+    while ((i < r.getVrt().size())&&(!inf.findNetAdd(rt.getIpDestination(),rt.getSubnet()).equalsIgnoreCase(inf.findNetAdd(des,rt.getSubnet())))){
+      rt = (RoutingTable)r.getVrt().elementAt(i);
+      i++;
+    }//end while
+    if(!nextgw.equalsIgnoreCase("0.0.0.0")){
+      Rt1.output = Rt1.output + nextgw + "\n";
+    }//end if
+    if ((!rt.getGateway().equalsIgnoreCase("0.0.0.0"))&&(found)){
+      trace(r,des);
+    }//end if
+    else{
+      if (found){
+        Rt1.output = Rt1.output + des + "complete\n";
+      }//end if
+      else {
+        Rt1.output = Rt1.output + "Incorrect Destination\n";
+      }//end else
+    }//end else
+  }
+  //----------------Ping------------//
+  public void ping(Router r,String des){
+    int i=0;
+    RoutingTable rt = null;
+    Router tmp = null;
+    Interface inf = (Interface)r.getVInt().elementAt(0);
+    String nextgw="";
+    boolean found = false;
+    if (r.getVrt().size() > 0){
+      rt = (RoutingTable)r.getVrt().elementAt(i);
+    }//end if
+    //search path from routing table when des = des from user command
+    while((i < r.getVrt().size())&&(!rt.getIpDestination().equalsIgnoreCase(inf.findNetAdd()))){
+      rt = (RoutingTable)r.getVrt().elementAt(i);
+      //gateway is interface that adj
+      nextgw = rt.getGateway();
+      i++;
+    }//end while
+    //if found in routing table
+    if (rt.getIpDestination().equalsIgnoreCase(inf.findNetAdd())){
+      //find route that have interface of gateway value
+      for (int j=0; j < Frame1.vRouter.size(); j++){
+        //Router 1
+        tmp = (Router)Frame1.vRouter.elementAt(j);
+        //Interface 1 of Router 1
+        for(int k=0; k < tmp.getVInt().size(); k++){
+          Interface intf = (Interface)tmp.getVInt().elementAt(k);
+          String i1 = intf.getIpAddress();
+          if (intf.getIpAddress().equalsIgnoreCase(nextgw)){
+            r = tmp;
+          }//end if
+        }//end for
+      }//end for
+    }//end if
+    else{
+      found = false;
+    }//end else
+    i = 0;
+    rt = (RoutingTable)r.getVrt().elementAt(i);
+    while ((i < r.getVrt().size())&&(!inf.findNetAdd(rt.getIpDestination(),rt.getSubnet()).equalsIgnoreCase(inf.findNetAdd(des,rt.getSubnet())))){
+      rt = (RoutingTable)r.getVrt().elementAt(i);
+      i++;
+    }//end while
+    if ((!rt.getGateway().equalsIgnoreCase("0.0.0.0"))&&(found)){
+      ping(r,des);
+    }//end if
+    else{
+      if (found){
+        Rt1.output = Rt1.output + des + " is alive\n";
+      }//end if
+      else {
+        Rt1.output = Rt1.output + "Incorrect Destination\n";
+      }//end else
+    }//end else
+  }
+  public Command() {
+  }
+  //-----------Show History--------------------//
+  public void showHistory(Router r) {
+    for(int i=0; i < r.getHistory().size(); i++){
+      Rt1.output = Rt1.output + (String)r.getHistory().elementAt(i) + "\n";
+    }//end for
+  }//end Show History
+  //--------Read Startup-----------//
+    public void readStartUp()throws IOException{
+    String str = "history.dat";
+    FileReader fin = new FileReader(str);
+    BufferedReader bin = new BufferedReader(fin);
+    String s;
+    Router r=null;
+    Interface i1=new Interface();
+    //while not End of File
+    while ((s = bin.readLine()) != null){
+      //while not end of Router
+      StringTokenizer st = new StringTokenizer(s);
+      if (s.startsWith("hostname")){
+        //set Name of Router
+        if (st.hasMoreTokens()){
+          String name = (String)st.nextToken();
+          name = (String)st.nextToken();
+          r = new Router(name);
+          Frame1.addTab(name,r);
+        }//end if
+      }//end if
+      //add new Interface
+      else if (s.startsWith("interface")){
+        String name = (String)st.nextToken();
+        name = (String)st.nextToken();
+        i1.AddNewInt(r,name);
+      }
+      //set ip address
+      else if (s.startsWith("ip address")){
+        String name = (String)st.nextToken();
+        name = (String)st.nextToken();
+        String ip = (String)st.nextToken();
+        String subnet = (String)st.nextToken();
+        i1.setIpAddress(r,ip,subnet);
+      }
+      //no shut
+      else if (s.startsWith("shutdown")){
+        i1 = (Interface)r.getVInt().lastElement();
+        i1.shutInt(r);
+      }
+      else if (s.startsWith("no shutdown")){
+        i1 = (Interface)r.getVInt().lastElement();
+        i1.noshutInt(r);
+      }
+      else if (s.startsWith("router rip")){
+        Rip ripf = (Rip)r.getRIP();
+        ripf.start();
+      }
+      //end Router
+      else {
+      }
+    }
+  }
+  //---------Erase Startup----------------//
+  public void eraseStartUp()throws IOException{
+
+  }
+  //----------Show Startup------------------//
+  public void showStartUp(){
+
+  }
+  //----------Show Config-------------------//
+  public void showRunningConfig(){
+
+  }
+}

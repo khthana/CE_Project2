@@ -1,0 +1,361 @@
+<html>
+<head>
+<title>advance Search</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+<link rel="stylesheet" type="text/css" href="../style.css">	
+</head>
+
+<body bgcolor="#FFFFFF">
+<br>
+<form method=post action="advsearch.php" name="webForm" onsubmit="return check()">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+      <td height="51" bgcolor="#9999FF"> 
+        <div align="center"><font face="MS Sans Serif" size=1><font 
+                  color=#ffffff size=2><b>:: </b></font><font color="#FFFFFF"><b><font 
+                  face="MS Sans Serif" size=2></font> <font 
+                  face="MS Sans Serif" size=2>บริการค้นหา สินค้า และ บริการแบบละเอียด 
+          (ยิบ) ::<br>
+          </font></b></font><font face="MS Sans Serif" size="1" color="#FFFFFF"><font size=2>ค้นหาง่าย 
+          ๆ ในสินค้าที่คุณต้องการ ทั้งราคาและสภาพ ที่คุณมองหา สะดวกและง่ายมาก</font></font></font></div>
+    </td>
+  </tr>
+  <tr>
+    <td height="191" valign="top"> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="3">
+          <tr> 
+            <td width="16%" height="30" bgcolor="#99CCFF"> 
+              <div align="right"><font color=#000000><b><font 
+                        face="MS Sans Serif" size=1>ความต้องการ ::</font></b></font></div>
+            </td>
+            <td width="84%" height="30" bgcolor="#EEEEEE"><font face="MS Sans Serif" 
+                        size=1> 
+              <select name=status>
+                <option value="all" selected>- รวมทุกประเภท -</option>
+                <option value="ขาย">ขาย</option>
+                <option value="ซื้อ">ซื้อ</option>
+                <option value="เสนอราคา">เสนอราคา</option>
+                <option value="ให้เช่า">ให้เช่า</option>
+                <option value="แจกฟรี">แจกฟรี</option>
+                <option value="จ้าง">จ้าง</option>
+                <option value="รับจ้าง">รับจ้าง</option>
+                <option value="เช่า">เช่า</option>
+                <option value="แลก">แลก</option>
+                <option value="แนะนำ">แนะนำ</option>
+                <option value="ประกาศ">ประกาศ</option>
+              </select>
+              </font><font face="MS Sans Serif"       size=1><font    color=#ff0000></font></font></td>
+          </tr>
+          <tr> 
+            <td width="16%" height="30" bgcolor="#99CCFF"> 
+              <div align="right"><font face="MS Sans Serif" color=#000000 
+                        size=1><b>หมวดสินค้า :: </b></font></div>
+            </td>
+            <td width="84%" height="30"><font face="MS Sans Serif" 
+                        size=2> 
+              <select name=cat>
+                <option value="" selected>- กรุณาเลือก -</option>
+                <option value="B">สิ่งพิมพ์</option>
+                <option value="E">อุปกรณ์การเรียน</option>
+                <option value="V">ยานพาหนะ</option>
+                <option value="F">หาเพื่อน</option>
+                <option value="N">ข่าวประกาศ</option>
+                <option value="H">ที่พัก</option>
+                <option value="A">อื่นๆ</option>
+                <option value="L">ประกาศของหาย</option>
+              </select>
+              </font><font face="MS Sans Serif" 
+                        size=2><font 
+                        color=#ff0000 size=1><b>***</b></font></font></td>
+          </tr>
+          <tr> 
+            <td width="16%" height="50" bgcolor="#99CCFF"> 
+              <div align="right"><font color=#000000><b><font 
+                        face="MS Sans Serif" size=1>Key Word :: </font></b></font></div>
+            </td>
+            <td width="84%" height="50" bgcolor="#EEEEEE"><font size=2> 
+              <input maxlength=50 size=30 name=word>
+              <font size=2><font 
+                        face="MS Sans Serif, Microsoft Sans Serif" size=1><font 
+                        color=#ff0000></font><br>
+              </font><font size=2><font 
+                        face="MS Sans Serif, Microsoft Sans Serif" 
+                        size=1>คำที่ต้องการค้น,รายละเอียด, ยี่ห้อ, รุ่น ฯลฯ ที่ต้องการหา</font></font><font 
+                        face="MS Sans Serif, Microsoft Sans Serif" size=1> </font></font></font></td>
+          </tr>
+          <tr> 
+            <td width="16%" height="30" bgcolor="#99CCFF"> 
+              <div align="right"><font color=#000000><b><font 
+                        face="MS Sans Serif" size=1>ช่วงราคา ::</font></b></font></div>
+            </td>
+            <td width="84%" height="30"><font 
+                        face="MS Sans Serif, Microsoft Sans Serif" 
+                        size=1> 
+              <select name=eprice>
+                <option value="0" selected>-- ทุกราคา ---</option>
+                <option value="1">0-500 บาท</option>
+                <option value="2">501-1,000 บาท</option>
+                <option value="3">1,001-2,000 บาท</option>
+                <option value="4">2,001-5,000 บาท</option>
+                <option value="5">5,001-10,000 บาท</option>
+                <option value="6">10,001-30,000 บาท</option>
+                <option value="7">30,001-50,000 บาท</option>
+                <option value="8">50,001-75,000 บาท</option>
+                <option value="9">75,000-100,000 บาท</option>
+                <option value="10">100,000 บาทขึ้นไป</option>
+              </select>
+              </font></td>
+          </tr>
+          <tr> 
+            <td width="16%" bgcolor="#99CCFF"> 
+              <div align="right"><font face="MS Sans Serif" color=#000000 
+                        size=1><b>สภาพของสินค้า ::</b></font></div>
+            </td>
+            <td width="84%" bgcolor="#EEEEEE"> 
+              <table cellspacing=0 cellpadding=0 width="80%" 
+border=0>
+                <tbody> 
+                <tr> 
+                  <td width=291 height="30"><font 
+                              face="MS Sans Serif, Microsoft Sans Serif" 
+                              size=1> 
+                    <input type=radio value=1     name=con>
+                    ของมือสอง สภาพ 
+                    <select name=percent>
+                      <option value=0 selected>ทุก %</option>
+                      <option 
+                                value=100>100%</option>
+                      <option 
+                                value=99>99%</option>
+                      <option 
+                                value=98>98%</option>
+                      <option 
+                                value=95>95%</option>
+                      <option 
+                                value=90>90%</option>
+                      <option 
+                                value=85>85%</option>
+                      <option 
+                                value=80>80%</option>
+                      <option 
+                                value=75>75%</option>
+                      <option 
+                                value=70>70%</option>
+                      <option 
+                                value=65>65%</option>
+                      <option 
+                                value=60>60%</option>
+                      <option 
+                                value=50>50%</option>
+                      <option 
+                                value=49>&lt;50%</option>
+                    </select>
+                    </font></td>
+                  <td width=235 height="27" align="right"> 
+                    <div align="right"></div>
+                    <font face="MS Sans Serif, Microsoft Sans Serif" size="1">อายุการใช้งาน 
+                    <select name=usedyear>
+                      <option value="0" selected>--- ทุกช่วงปี---</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                      <option value="11">มากกว่า 10 ปี</option>
+                    </select>
+                    </font></td>
+                </tr>
+                <tr> 
+                  <td width=291 height="30"><font 
+                              face="MS Sans Serif, Microsoft Sans Serif" 
+                              size=1> </font></td>
+                  <td width=235 align="right"> 
+                    <div align="right"></div>
+                    <font face="MS Sans Serif, Microsoft Sans Serif" size="1"> 
+                    <select name=usedmonth>
+                      <option value="0" selected>- ทุกช่วงเดือน-</option>
+                      <option 
+                                value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option 
+                                value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option 
+                                value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option 
+                                value="10">10</option>
+                      <option 
+                              value="11">11</option>
+                    </select>
+                    </font></td>
+                </tr>
+                <tr> 
+                  <td width=291 height="30"><font 
+                              face="MS Sans Serif, Microsoft Sans Serif" 
+                              size=1> 
+                    <input type=radio value=2 name=con>
+                    ของใหม่ </font></td>
+                  <td width=235>&nbsp;</td>
+                </tr>
+                <tr> 
+                  <td width=291 height="24"><font 
+                              face="MS Sans Serif, Microsoft Sans Serif" 
+                              size=1> 
+                    <input type=radio value=3 name=con checked>
+                    ทั้งหมด </font></td>
+                  <td width=235 height="21">&nbsp;</td>
+                </tr>
+                </tbody> 
+              </table>
+            </td>
+          </tr>
+          <tr> 
+            <td width="16%" height="30" bgcolor="#99CCFF"> 
+              <div align="right"><font face="MS Sans Serif" size="1" color="#000000"><b>วันที่ลงประกาศ 
+                :: </b></font></div>
+            </td>
+            <td width="84%" height="30"> 
+              <select name="date">
+                <option value="0" selected>-- ทุกวัน --</option>
+                <option value="1">วันนี้</option>
+                <option value="2">ภายใน 3 วัน</option>
+                <option value="3">ภายใน 5 วัน</option>
+                <option value="4">ภายใน 1 สัปดาห์</option>
+                <option value="5">ภายใน 3 สัปดาห์</option>
+                <option value="6">ภายใน 1 เดือน</option>
+                <option value="7">ภายใน 3 เดือน</option>
+                <option value="8">ภายใน 6 เดือน</option>
+                <option value="9">ภายใน 9 เดือน</option>
+                <option value="10">ภายใน 11 เดือน</option>
+              </select>
+            </td>
+          </tr>
+          <tr> 
+            <td width="16%" bgcolor="#99CCFF" height="30"> 
+              <div align="right"><font face="MS Sans Serif, Microsoft Sans Serif" size="1"><b>การรับส่งสินค้า 
+                :: </b></font></div>
+            </td>
+            <td width="84%" bgcolor="#EEEEEE" height="30"> 
+              <select name="howsend1">
+                <option value="0" selected>-- ทุกแบบ --</option>
+                <option value="1">นัดเจอเพื่อมารับสินค้า</option>
+                <option value="2">ส่งสินค้าผ่านไปรษณีย์ (พ.ก.ง) </option>
+              </select>
+            </td>
+          </tr>
+          <tr> 
+            <td width="16%" bgcolor="#99CCFF" height="30"> 
+              <div align="right"><font face="MS Sans Serif" color=#000000 
+                        size=1><b>รูปภาพ::</b></font></div>
+            </td>
+            <td width="84%" height="30"><font face="ms sans serif" 
+                        size=1> 
+              <input type="radio" name="pic" value="1">
+              เฉพาะที่มีรูปภาพ 
+              <input type="radio" name="pic" value="0" checked>
+              ทั้งหมด</font></td>
+          </tr>
+          <tr> 
+            <td width="16%" bgcolor="#99CCFF" height="137"> 
+              <div align="right"><font face="MS Sans Serif, Microsoft Sans Serif" size="1"><b>จากผู้ประกาศ 
+                ::</b></font></div>
+            </td>
+            <td width="84%" height="137" bgcolor="#EEEEEE" valign="top"> 
+              <table width="80%" border="0" cellspacing="0" cellpadding="3">
+                <tr> 
+                  <td width="48%" height="30"> 
+                    <div align="right"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">Username 
+                      <input type="text" name="name" size="15">
+                      </font></div>
+                  </td>
+                  <td width="52%" height="30">&nbsp;</td>
+                </tr>
+                <tr> 
+                  <td width="48%"> 
+                    <div align="right"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">E-mail 
+                      </font> 
+                      <input type="text" name="e_mail" size="15">
+                    </div>
+                  </td>
+                  <td width="52%"> 
+                    <div align="right"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">ICQ</font> 
+                      <input type="text" name="icq" size="15">
+                    </div>
+                  </td>
+                </tr>
+                <tr> 
+                  <td width="48%"> 
+                    <div align="right"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">คณะ 
+                      </font> 
+                      <input type="text" name="fac" size="15">
+                    </div>
+                  </td>
+                  <td width="52%"> 
+                    <div align="right"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">ภาควิชา</font> 
+                      <input type="text" name="bra" size="15">
+                    </div>
+                  </td>
+                </tr>
+                <tr> 
+                  <td width="48%"> 
+                    <div align="right"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">ปี 
+                      </font> 
+                      <input type="text" name="year" size="15">
+                    </div>
+                  </td>
+                  <td width="52%"> 
+                    <div align="right"><font face="MS Sans Serif, Microsoft Sans Serif" size="1">รหัสนักศึกษา 
+                      </font> 
+                      <input type="text" name="id" size="15">
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr> 
+            <td width="16%" bgcolor="#99CCFF">&nbsp;</td>
+            <td width="84%"> 
+              <input type="submit" name="Submit" value="ค้นหา">
+              <input type="submit" name="Submit2" value="ยกเลิก">
+            </td>
+          </tr>
+        </table>
+    </td>
+  </tr>
+</table>
+</form>
+
+  <script language="JavaScript">
+<!--
+function check()
+{
+      var v1 = document.webForm.cat.value;
+      
+
+        if ( v1.length==0)
+           {
+           alert("กรุณาเลือกหมวดประกาศ");
+           document.webForm.cat.focus();           
+           return false;
+           }  
+		
+     
+  
+        else
+           return true;
+}
+//-->
+</script>
+</body>
+</html>

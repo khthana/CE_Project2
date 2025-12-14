@@ -1,0 +1,583 @@
+package routersim;
+
+import java.io.*;
+import java.lang.*;
+import java.util.*;
+public class SwitchCMD {
+/*public String output="aa";
+  public void setOutput(String s){
+    output = s;
+  }
+  public String getOutput(){
+    return output;
+  }
+*/
+/*
+public String output="";
+  static public String arrCMD[] = new String[6];
+  public String notfound="% Invalid input detected at '^' marker. \n";
+  public String debug ="";
+  public String getOutput(){
+    return output;
+  }
+  public String getDebug(){
+    return debug;
+  }
+  public void setOutput(String n){
+    output = n;
+  }
+/*
+  public String getCMD(Router r,String cmd){
+    int lp = r.getPrompt().length();
+    int ls = cmd.length();
+    cmd = cmd.substring(lp,ls);
+    //return command not include prompt
+    return cmd;
+  }
+* /
+  void runStart(Router r,String str) throws IOException{
+    FileReader fin = new FileReader(str);
+    BufferedReader bin = new BufferedReader(fin);
+    String s;
+    while ((s = bin.readLine()) != null){
+      debug = s;
+      switchCMD(r,s);
+    }
+  }
+  void writeFile(String str,String fread,String fwrite) throws IOException{
+    FileReader fin = new FileReader(fread);
+    BufferedReader bin = new BufferedReader(fin);
+    Vector  oldCMD = new Vector();
+    String s;
+    while ((s = bin.readLine()) != null)
+      oldCMD.addElement(new String(s));
+    bin.close();
+    FileWriter fout = new FileWriter(fwrite);
+    BufferedWriter bout = new BufferedWriter(fout);
+    PrintWriter pout = new PrintWriter(bout);
+    //write old command
+    while (oldCMD.size() != 0){
+      s = (String)oldCMD.firstElement();
+      pout.println(s);
+      oldCMD.removeElementAt(0);
+    }
+    //write new command
+    pout.println(str);
+    pout.close();
+  }
+  Router switchCMD(Router x,String c){
+    arrCMD = splitCMD(c);
+    int mode = x.getMode();
+    switch (mode){
+      case 1 : runcmd1(x,c);
+                    break;
+      case 2  : runcmd2(x,c);
+                    break;
+      case 3 : runcmd3(x,c);
+                    break;
+      case 4: runcmd4(x,c);
+                    break;
+      default:  break;
+    }
+    if (!output.equals(notfound)){
+      try{
+        writeFile(c,"history.dat","history.dat");
+      }
+      catch(IOException evt){
+      }
+    }
+    return x;
+  }
+  String findFirstCMD(String c,char separator){
+    int i=0;
+    while ((c.charAt(i) != separator) && (i+1 < c.length())){
+      i++;
+    }
+    return c.substring(0,i+1).trim();
+  }
+  String[] splitCMD(String str){
+    String arrCMD[] = new String[6];
+    for (int i=0;i <6;i++){
+      arrCMD[i] = "";
+    }
+    int i=0;
+    while (str.length() >0){
+      arrCMD[i] = findFirstCMD(str,' ');
+      str = str.substring(arrCMD[i].length()).trim();
+      i++;
+    }
+    return arrCMD;
+  }
+  String[] split_ip(String str){
+    String arr_ip[] = new String[6];
+    int i=0;
+    while (str.length() >0){
+      arr_ip[i] = findFirstCMD(str,'.');
+      str = str.substring(arr_ip[i].length()).trim();
+      i++;
+    }
+    return arr_ip;
+  }
+    //*************************************** Moded 1 *********************************** //
+  Router runcmd1(Router x,String c){
+//  String[] arrCMD= new String[4];
+//  arrCMD = splitCMD(c);
+//  String subC = firstCMD(c);
+//  String value = c.substring(c.lastIndexOf(subC)+subC.length()).trim();
+  if (arrCMD[0].equalsIgnoreCase("?")){
+//    output ="all command1\n";
+
+  }//end ?
+   else if ((arrCMD[0].equalsIgnoreCase("en")) || (arrCMD[0].equalsIgnoreCase("enable"))){
+          x = en(x,c);
+    }//end enable
+    //sh run sh running-config
+    else if ( (arrCMD[0].equalsIgnoreCase("sh")) || (arrCMD[0].equalsIgnoreCase("show"))){
+      if ((arrCMD[1].equalsIgnoreCase("run")) || (arrCMD[1].equalsIgnoreCase("running-config"))){
+        x = sh(x,c);
+      }//end sh run
+      else if (arrCMD[1].equalsIgnoreCase("ip")){
+        if (arrCMD[2].equalsIgnoreCase("route")){
+          show_ip_route(x);
+        }//end show ip route
+        else {output = notfound;}
+      }//end show ip *
+      else {output = notfound;}
+    }//end sh *
+    else (output = notfound);
+    return  x;
+  }
+/*
+  Router en(Router x,String c){
+    x.setMode(2);
+    x.setPrompt(x.findPrompt(x.getMode(),x.getName()));
+    return x;
+  }//end run CMD privilage mode
+  Router sh(Router x,String c){
+    output="sh run test + \n";
+    return x;
+  }
+* /
+     //*************************************** Mode 2 *********************************** //
+  Router runcmd2(Router x,String c){
+    if (arrCMD[0].equalsIgnoreCase("?")){
+      output = "all command2\n";
+    }
+    else if (arrCMD[0].equalsIgnoreCase("disable")){
+            x.setMode(1);
+            x.setPrompt(x.findPrompt(x.getMode(),x.getName()));
+    }
+    else if (arrCMD[0].equalsIgnoreCase("show")){
+      if (arrCMD[1].equalsIgnoreCase("ip")){
+        if (arrCMD[2].equalsIgnoreCase("route")){
+          show_ip_route(x);
+        }//end show ip route
+        else if(arrCMD[2].equalsIgnoreCase("protocol")){
+          show_ip_protocol(x);
+        }//end show ip protocol
+        else {output = notfound;}
+      }
+      else{output = notfound;}//end show ip *
+    }//end show *
+    else if (arrCMD[0].equalsIgnoreCase("config")){
+      if ((arrCMD[1].equalsIgnoreCase("t")) || (arrCMD[1].equalsIgnoreCase("terminal"))){
+        x = config(x,c);
+      }
+      else {output = notfound;}//config t
+    }//config *
+    else if (arrCMD[0].equalsIgnoreCase("copy")){
+      if (arrCMD[1].equalsIgnoreCase("run")){
+        try{
+          writeFile(c,"history.dat","flash.dat");
+        }
+        catch(IOException evt){
+        }//end try
+     }//end copy run
+     else if (arrCMD[1].equalsIgnoreCase("start")){
+        try{
+          runStart(x,"flash.dat");
+        }
+        catch(IOException evt){
+        }//end try
+     }//end copy start
+     else {output=notfound;}
+    }//end copy *
+    else {output = notfound;}
+    return  x;
+  }
+  Router config(Router x,String c){
+    x.setMode(3);
+    x.setPrompt(x.findPrompt(x.getMode(),x.getName()));
+    return x;
+  }
+     //*************************************** Mode 3 *********************************** //
+  Router runcmd3(Router x,String c){
+    if (arrCMD[0].equals("?")){
+      output = "all command3\n";
+    }
+    else if ((arrCMD[0].equalsIgnoreCase("exit"))||(arrCMD[0].equalsIgnoreCase("end"))){
+                  x.setMode(2);
+                  x.setPrompt(x.findPrompt(x.getMode(),x.getName()));
+    }
+    else if (arrCMD[0].equalsIgnoreCase("show")){
+      if (arrCMD[1].equalsIgnoreCase("ip")){
+        if (arrCMD[2].equalsIgnoreCase("route")){
+          show_ip_route(x);
+        }//end show ip route
+        else if(arrCMD[2].equalsIgnoreCase("protocol")){
+          show_ip_protocol(x);
+        }//end show ip protocol
+        else {output = notfound;}
+      }
+      else{output = notfound;}//end show ip *
+    }//end show *
+    else  if (arrCMD[0].equalsIgnoreCase("int")){
+      if (arrCMD[1].length() != 0){
+        x.setMode(4);
+        x.setPrompt(x.findPrompt(x.getMode(),x.getName()));
+        int_e(x,arrCMD[1]);
+      }//end int e0
+      else {output = notfound;}
+    }
+    else if (arrCMD[0].equalsIgnoreCase("hostname")){
+      if (arrCMD[1].length() != 0){
+        Frame1.setTab(arrCMD[1]);
+        x.setName(arrCMD[1]);
+        x.setPrompt(x.findPrompt(x.getMode(),x.getName()));
+      }//end hostname RouterA
+      else {output = notfound;}
+    }
+    else {output = notfound;}
+    return  x;
+  }
+  Router int_e(Router x,String i_name){
+    x.setMode(4);
+    x.setPrompt(x.findPrompt(x.getMode(),x.getName()));
+    boolean check=false;
+    int ii=0;
+       // ----- check redundency -----//
+    while ( (ii<x.getListInt().size())&&( check!=true)){
+      Interface i = (Interface)x.getListInt().elementAt(ii);
+      if (i.getname().equalsIgnoreCase(i_name)){
+        check = true;
+      }//end if
+      ii++;
+    }//end while
+    if (check){
+      Interface tmp = (Interface)x.getListInt().get(ii-1);
+      x.getListInt().removeElementAt(ii-1);
+    }//end redundance
+    else{}
+//    add new Interface
+    Interface i = new Interface();
+    i.setname(i_name);
+    i.setType(i.findType(i_name.charAt(0)));
+    x.addInterface(i);
+    return x;
+  }
+  Router no_shut(Router x){
+    Interface i = (Interface)x.getListInt().lastElement();
+    i.setstatus("Up");
+    return x;
+  }
+  Router rip(Router r){
+    return(r);
+  }
+     //*************************************** Mode 4 *********************************** //
+  Router runcmd4(Router x,String c){
+    if (arrCMD[0].equalsIgnoreCase("?")){
+      output = "all command4\n";
+    }
+    else if (arrCMD[0].equalsIgnoreCase("int")){
+      String type=arrCMD[0];
+      String i_name=arrCMD[1];
+      x = int_e(x,i_name);
+    }
+    else if (arrCMD[0].equalsIgnoreCase("no")){
+      no_shut(x);
+    }
+    else if (arrCMD[0].equalsIgnoreCase("show")){
+      if (arrCMD[1].equalsIgnoreCase("ip")){
+        if (arrCMD[2].equalsIgnoreCase("route")){
+          show_ip_route(x);
+        }//end show ip route
+        else if(arrCMD[2].equalsIgnoreCase("protocol")){
+          show_ip_protocol(x);
+        }//end show ip protocol
+        else {output = notfound;}
+      }
+      else if (arrCMD[1].equalsIgnoreCase("int")){
+        sh_int(x);
+      }
+      else{output = notfound;}//end show ip *
+    }//end show *
+    else if (arrCMD[0].equalsIgnoreCase("ip")){
+      if (arrCMD[1].equalsIgnoreCase("address")){
+        if ((arrCMD[2].length() != 0) && (arrCMD[3].length() != 0)){
+          x = ip_address(x);
+        }//end ip address
+        else if (arrCMD[1].equalsIgnoreCase("route")){
+          if ((arrCMD[2].length() != 0)&&(arrCMD[3].length() != 0)&&(arrCMD[4].length() != 0)){
+            ip_route(x,arrCMD[2],arrCMD[3],arrCMD[4]);
+          }//end ip route
+          else {output = notfound;}
+        }//end ip *
+        else {output = notfound;}//end ip address 161.246.7.12 255.255.255.0
+      }else {output = notfound;}//end ip address *
+    }//end ip *
+    else if ((arrCMD[0].equalsIgnoreCase("exit"))||(arrCMD[0].equalsIgnoreCase("end"))){
+      x.setMode(2);
+      x.setPrompt(x.findPrompt(x.getMode(),x.getName()));
+    }
+    else {output = notfound;}
+    return  x;
+  }// runcmd 4
+//*********************************************************************** //
+//----------- ip address <ip> <subnet> ---------//
+//----------- set ip to last interface ---------------//
+//----------- and add new Routing table ----------//
+
+     Router ip_address(Router x){
+        String ip = arrCMD[2];
+        String subnet = arrCMD[3];
+        String[] arr_ip = new String[4];
+            arr_ip = split_ip(ip);
+        String destination_ip=arr_ip[0]+arr_ip[1]+arr_ip[2]+"0";
+
+        Interface i = (Interface)x.getListInt().lastElement();
+        i.setIP(ip);
+        i.setsubnet(subnet);
+        i.setNetwork_addr(destination_ip);
+
+
+         //add new RoutingTable
+         //directly connected
+
+         RoutingTable r = new RoutingTable();
+
+         r.setDestination_ip(destination_ip);
+         r.setSubnet(subnet);
+         r.setGateway(destination_ip);
+         r.setIntf_name(i.getType()+" "+i.getname());
+
+
+         // set type "C"  for directly connected
+         r.setRouteType('C');
+         x.addRoutingTable(r);
+
+        return x;
+     }
+/*************************** new  *************************** /
+  Router ip_route(Router x,String destination_ip,String subnet,String gateway){
+    x.addStaticRoutingTable(destination_ip,subnet,gateway);
+    return x;
+  }
+/*************************** new  ***************************/
+
+  /*********************************************Function************************************************** /
+  void sh_int(Router x){
+    String s="";
+    s = " Type \t\t Name \t IP\t\t Subnet  \t\tAdmin \n";
+    for (int ii=0;ii<x.getListInt().size() ;ii++ ){
+      Interface i = (Interface)x.getListInt().elementAt(ii);
+      s = s.concat(i.getType()+"\t\t "+i.getname()+"\t "+i.getip()+"\t "+i.getsubnet()+"\t"+i.getstatus()+"\n");
+    }//end for
+    output = s;
+  }
+  /*************new***************** /
+Router show_ip_route(Router x){
+  String s="";
+              s = "Codes: \t C - connected, S - static, I - IGRP, R - RIP, M - mobile, B - BGP \n\t D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area  \n\t N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2  \n\t E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP \n\t i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, * - candidate default \n \t U - per-user static route, o - ODR \n \n Gateway of last resort is not set \n\n";
+  String[] arr_ip = new String[5];
+
+           for (int ii=0;ii<x.getRoutingTable().size() ;ii++ ){
+
+                  RoutingTable r = (RoutingTable)x.getRoutingTable().elementAt(ii);
+                  //if directly connected
+                  if (r.getDestination_ip().equalsIgnoreCase(r.getGateway()) ){
+                       s = s.concat(r.getRoute_type()+"\t"+r.getDestination_ip()+" is directly connected ,"+r.getIntf_name()+"\n");
+                  }
+                  else{
+                       s = s.concat(r.getRoute_type()+"\t"+r.getDestination_ip()+" via ,"+r.getGateway()+" "+r.getSubnet()+", "+r.getIntf_name()+"\n");
+                  }
+          }//for
+  output = s;
+  return x;
+}
+/******************************************************* /
+  Router show_ip_protocol(Router x){
+
+    return(x);
+  }
+*/
+  public String cutPrompt(String s){
+//    String cmd =
+    return s;
+  }
+  String findFirstCMD(String c,char separator){
+    int i=0;
+    while ((c.charAt(i) != separator) && (i+1 < c.length())){
+      i++;
+    }
+    return c.substring(0,i+1).trim();
+  }
+  String[] splitCMD(String str){
+    String arrCMD[] = new String[6];
+    for (int i=0;i <6;i++){
+      arrCMD[i] = "";
+    }
+    int i=0;
+    while (str.length() >0){
+      arrCMD[i] = findFirstCMD(str,' ');
+      str = str.substring(arrCMD[i].length()).trim();
+      i++;
+    }
+    return arrCMD;
+  }
+  public void sendCMD(Router router,String cmdline){
+    Prompt p = new Prompt();
+    Command c = new Command();
+    Config conf = new Config();
+    Rt1 rt = new Rt1();
+    String[] arrCMD= new String[6];
+    arrCMD = splitCMD(cmdline);
+//    output = "dear";
+    if (cmdline.startsWith("?")){
+      switch (router.getMode()){
+        case 1 : c.showCMD1();break;
+        case 2 : c.showCMD2();break;
+        case 3 : c.showCMD3();break;
+        case 4 : c.showCMD4();break;
+        default : c.showCMD1();
+      }//end switch
+    }
+    else if (arrCMD[0].startsWith("en")){
+      if (p.enable(router.getPrompt())){
+        router.setMode(2);
+        router.setPrompt("#");
+        Rt1.output="";
+      }//end if
+    }
+    else if(arrCMD[0].startsWith("dis")){
+      if (p.disable(router.getPrompt())){
+        router.setMode(1);
+        router.setPrompt(">");
+        Rt1.output="";
+      }//end if
+    }
+    else if((arrCMD[0].startsWith("config"))&&(arrCMD[1].startsWith("t"))){
+      if(p.configT(router.getPrompt())){
+        router.setMode(3);
+        router.setPrompt("(config)#");
+        Rt1.output="Enter configuration commands, one per line. End with CNTL/Z.\n";
+      }//end if
+    }
+    else if(arrCMD[0].startsWith("exit")){
+      if(p.exitcmd(router.getPrompt())){
+        switch (router.getMode()){
+          case 3 : router.setMode(2);router.setPrompt("#");Rt1.output="%SYS-5-CONFIG_I: Configured from console by console\n";break;
+          case 4 : router.setMode(3);router.setPrompt("(config)#");Rt1.output="";break;
+          case 5 : router.setMode(2);router.setPrompt("#");Rt1.output="%SYS-5-CONFIG_I: Configured from console by console\n";break;
+          default : router.setMode(2);router.setPrompt("#");Rt1.output="";
+        }//end switch
+      }//end if
+    }
+    else if((arrCMD[0].startsWith("int"))&&(arrCMD[1].length() != 0)){
+      if ((router.getMode() == 3) || (router.getMode() == 4)){
+        router.setMode(4);
+        router.setPrompt("(config-if)#");
+        conf.addNewInterface(router,arrCMD[1]);
+        Rt1.output="";
+      }
+      else {Rt1.output = "%  Invalid input detected at '^' marker. \n";}
+    }
+    else if ((arrCMD[0].startsWith("ip"))&&(arrCMD[1].startsWith("add"))){
+      if (router.getMode() == 4){
+        if ((arrCMD[2].length() != 0)&&(arrCMD[3].length() != 0)){
+          conf.setIpInterface(router,arrCMD[2],arrCMD[3]);
+          Rt1.output="";
+        }//have value
+      }//in proper mode
+      else {Rt1.output = "%  Invalid input detected at '^' marker. \n";}
+    }
+    else if((arrCMD[0].startsWith("no"))&&(arrCMD[1].startsWith("shut"))){
+      if (router.getMode() == 4){
+        Interface inf = (Interface)router.getVInt().lastElement();
+        conf.noShutInt(inf);
+        Rt1.output="%LINEPROTO-5-UPDOWN: Line protocol on Interface "+inf.getType() + inf.getNameInt().charAt(inf.getNameInt().length()-1)+", changed state to up\n%LINK-3-UPDOWN: Interface "+inf.getType() + inf.getNameInt().charAt(inf.getNameInt().length()-1)+", changed state to up\n";
+      }
+      else {Rt1.output = "%  Invalid input detected at '^' marker. \n";}
+    }
+    else if(arrCMD[0].startsWith("shut")){
+      if (router.getMode() == 4){
+        Interface inf = (Interface)router.getVInt().lastElement();
+        conf.shutInt(inf);
+        Rt1.output="%LINEPROTO-5-UPDOWN: Line protocol on Interface "+inf.getType() + inf.getNameInt().charAt(inf.getNameInt().length()-1)+", changed state to down\n%LINK-3-UPDOWN: Interface"+ inf.getType() + inf.getNameInt().charAt(inf.getNameInt().length()-1)+", changed state to administratively down\n";
+      }
+      else {Rt1.output = "%  Invalid input detected at '^' marker. \n";}
+    }
+    else if((arrCMD[0].startsWith("hostname"))&&(arrCMD[1].length() != 0)){
+      if (router.getMode() == 3){
+        conf.setHostname(router,arrCMD[1]);
+        Rt1.output="";
+      }
+      else {Rt1.output = "%  Invalid input detected at '^' marker. \n";}
+    }
+    else if((arrCMD[0].startsWith("no"))&&(arrCMD[1].startsWith("ip"))&&(arrCMD[2].startsWith("route"))){
+      if (router.getMode() == 3){
+        if ((arrCMD[3].length() != 0)&&(arrCMD[4].length() != 0)&&(arrCMD[5].length() != 0)){
+          conf.noipRoute(router,arrCMD[3],arrCMD[4],arrCMD[5]);
+          Rt1.output = "";
+        }
+      }
+      else {Rt1.output = "%  Invalid input detected at '^' marker. \n";}
+    }
+    else if((arrCMD[0].startsWith("ip"))&&(arrCMD[1].startsWith("route"))){
+      if (router.getMode() == 3){
+        if ((arrCMD[2].length() != 0)&&(arrCMD[3].length() != 0)&&(arrCMD[4].length() != 0)){
+          conf.ipRoute(router,arrCMD[2],arrCMD[3],arrCMD[4]);
+          Rt1.output = "";
+        }
+      }
+      else {Rt1.output = "%  Invalid input detected at '^' marker. \n";}
+    }
+    else if ((arrCMD[0].startsWith("sh"))&&(arrCMD[1].startsWith("int"))){
+      if (router.getMode() < 3){
+        c.showInterface(router);
+      }
+      else {Rt1.output = "%  Invalid input detected at '^' marker. \n";}
+    }
+    else if((arrCMD[0].startsWith("sh"))&&(arrCMD[1].startsWith("ip"))&&(arrCMD[2].startsWith("route"))){
+      if (router.getMode() < 3){
+        c.showIpRoute(router);
+      }
+      else {Rt1.output = "%  Invalid input detected at '^' marker. \n";}
+    }
+    else if((arrCMD[0].startsWith("router"))&&(arrCMD[1].startsWith("rip"))){
+      if (router.getMode() == 3){
+        router.getTable().setFlag('r');
+        router.setMode(5);
+        router.setPrompt("(config-router)#");
+        Rt1.output="";
+        Rip ripf = new Rip(router);
+        ripf.start();
+      }
+      else {Rt1.output = "%  Invalid input detected at '^' marker. \n";}
+    }
+    else if((arrCMD[0].startsWith("no")) && (arrCMD[1].startsWith("router")) && (arrCMD[2].startsWith("rip"))){
+      if (router.getMode() == 3){
+        router.getTable().setFlag('s');
+        router.setMode(5);
+        router.setPrompt("(config-router)#");
+        Rt1.output = "";
+      }
+    }
+    else if ((arrCMD[0].startsWith("trace"))&&(arrCMD[1].length() != 0)){
+
+    }
+    else {Rt1.output="%  Invalid input detected at '^' marker. \n";}
+  }
+  //constructor
+  public SwitchCMD() {
+  }
+}

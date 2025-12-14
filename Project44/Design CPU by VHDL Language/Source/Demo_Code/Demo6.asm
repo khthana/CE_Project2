@@ -1,0 +1,16 @@
+mov r1,#2468;   mov r4,#4567;   nop;        nop;
+mov r2,#FFF8;   mov r3,#0AAA;   nop;        nop;
+nop;            nop;            nop;        div r4,r1;
+nop;            nop;            nop;        idiv r2,r3;
+nop;            mov r0,r4;      nop;        nop;
+nop;            nop;            nop;        nop;
+nop;            mov r0,r5;      nop;        nop;
+nop;            nop;            nop;        nop;
+nop;            mov r0,r2;      nop;        nop;
+nop;            nop;            nop;        nop;
+nop;            mov r0,r3;      nop;        nop;
+nop;            nop;            nop;        nop;
+nop;            nop;            nop;        nop;
+nop;            nop;            nop;        nop;
+nop;            nop;            nop;        nop;
+nop;            nop;            nop;        nop;

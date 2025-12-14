@@ -1,0 +1,91 @@
+package routersim;
+
+public class Prompt extends Network{
+  protected String promptChar = ">";
+  //----------------------enable cmd--------------------------//
+  //work enable command
+  public boolean enable(){
+    boolean f = false;
+    if (promptChar.equals(">")){
+      promptChar = "#";
+      f = true;
+    }//end if
+    else {
+      System.out.println("%  Invalid input detected at '^' marker. \n");
+    }//end else
+    return f;
+  }
+  //----------------------------disable cmd----------------//
+  //work disable command
+  public boolean disable(){
+    boolean f = false;
+    if (promptChar.equals("#")){
+      promptChar = ">";
+      f = true;
+    }//end if
+    else {
+      System.out.println("%  Invalid input detected at '^' marker. \n");
+    }//end else
+    return f;
+  }
+  //-----------------------config t cmd---------------------//
+  //work config terminal command
+  public boolean configT(){
+    boolean f = false;
+    if (promptChar.equals("#")){
+      promptChar = "(config)#";
+      f = true;
+    }//end if
+    else {
+      System.out.println("%  Invalid input detected at '^' marker. \n");
+    }//end else
+    return f;
+  }
+  //------------------------int cmd----------------------------//
+  //work int command
+  public boolean intf(){
+    boolean f = false;
+    if (promptChar.equals("(config)#")){
+      promptChar = "(config-if)#";
+      f = true;
+    }//end if
+    else {
+      System.out.println("%  Invalid input detected at '^' marker. \n");
+    }//end else
+    return f;
+  }
+  //------------------------------exit cmd-----------------------//
+  //work exit command
+  public boolean exitcmd(){
+    boolean f = false;
+    if ((promptChar.equals("(config)#"))|| (promptChar.equals("(config-if)#")) ){
+      promptChar = "#";
+      f = true;
+    }//end if
+    else {
+      System.out.println("%  Invalid input detected at '^' marker. \n");
+    }//end else
+    return f;
+  }
+  //---------------------show history------------------------//
+  public void saveHistory(String s){
+  }
+  //----------------------ping cmd--------------------------//
+  public void ping(Router r,String des){
+  }
+  //----------------------traceroute cmd-----------------//
+  public void traceroute(Router r,String des){
+    RoutingTable rt = (RoutingTable)r.getTable().getrTable().elementAt(0);
+    Interface inf = new Interface();
+    while (!(rt.getIpDestination().equalsIgnoreCase(inf.findNetAdd(des,"255.255.255.0")))&&(r.getTable().getrTable().size() > i)){
+      i++;
+      if (i < r.getTable().getrTable().size()){
+        rt = (RoutingTable)r.getTable().getrTable().elementAt(i);
+      }
+
+    }
+  }
+  //constructor
+  public Prompt() {
+  }
+}

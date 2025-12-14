@@ -1,0 +1,1 @@
+VBclient application เป็น execute file ของโปรแกรมประยุกต์บนแลน ดู source file ได้ที่ Source directory

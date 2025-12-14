@@ -1,0 +1,72 @@
+<html>
+<head>
+<title>Lesson 9 --&gt; Telnet</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+<style type="text/css">
+<!--
+body {  margin: 0px  0px; padding: 0px  0px}
+a:link { color: #005CA2; text-decoration: none}
+a:visited { color: #005CA2; text-decoration: none}
+a:active { color: #0099FF; text-decoration: underline}
+a:hover { color: #0099FF; text-decoration: underline}
+-->
+</style>
+</head>
+
+<body bgcolor="#FFFFFF">
+<img src="pics/book2.gif" width="97" height="94" >Lesson 9<br>
+<hr >
+<table width="75%" border="0" align="center">
+  <tr> 
+    <td height="733"> 
+      <h2> Telnet</h2>
+      <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspหลังจากที่ได้กำหนดค่าต่างๆ 
+        ให้กับเราเตอร์แล้ว ยังมีคำสั่ง Telnet ที่ใช้สำหรับกำหนดค่าให้กับเราเตอร์โดยไม่ต้องกำหนดจากหน้า 
+        console คำสั่ง Telnet นี้จะเรียกใช้จาก prompt โดยสามารถกำหนดพาสเวิร์ดในส่วนนี้ที่ 
+        VTY Password<br>
+      </p>
+      <ol>
+        <li>ล็อกอินเข้าเราเตอร์ที่ต้องการ หลังจากนั้นเข้าสู่ Privilege โหมดโดยพิมพ์คำสั่ง 
+          <font color="#0000FF">En</font> หรือ <font color="#0000FF">Enable</font> 
+          แล้วกด Enter<br>
+        <li>ที่ R1# พิมพ์คำสั่ง Telnet 161.246.5.2 เพื่อเข้าไป config R4 แต่จะไม่สามารถเข้าไป 
+          config ได้เนื่องจากพาสเวิร์ดยังไม่ได้กำหนด<br>
+          <br>
+          <img src="pics/pic35.gif" width="700" height="500"><br>
+          <br>
+        <li>การกำหนด VTY Password โดยกำหนดที่ R1 และ R4 ดังนี้<br>
+          <b>R1(config)#</b><font color="#0000FF">line vty 0 4</font><br>
+          <b>R1(config-line)#</b><font color="#0000FF">login</font><br>
+          <b>R1(config-line)#</b><font color="#0000FF">password isag1</font><br>
+          <br>
+          <b>R4(config)#</b><font color="#0000FF">line vty 0 4</font><br>
+          <b>R1(config-line)#</b><font color="#0000FF">login</font> <br>
+          <b>R1(config-line)#</b><font color="#0000FF">password isag4<br>
+          </font><br>
+        <li>กำหนดให้ที่ R2 ไม่มี VTY Password ดังนี้<br>
+          <b>R2(config)#</b><font color="#0000FF">line vty 0 4</font><br>
+          <b>R2(config-line)#</b><font color="#0000FF">no login</font> <br>
+          คำสั่งนี้จะทำให้เวลา Telnet เข้าไปสามารถเข้าไปสู่ prompt ได้โดยไม่ต้องใส่พาสเวิร์ดก่อน<br>
+        <li>หลังจากกำหนดพาสเวิร์ดแล้วให้ลอง Telnet ไปที่ 161.246.5.2 อีกครั้ง 
+          เมื่อเข้าไปแล้วให้พิมพ์คำสั่ง Exit เพื่อกลับมาที่ R1 แต่ถ้าต้องการกลับมาที่ 
+          R1 โดยที่ไม่ต้องล็อกเอาท์ออกจาก R4 ก่อน สามารถทำได้โดยพิมพ์ Ctrl + Shift 
+          + 6 + X<br>
+          <br>
+          <img src="pics/pic36.gif" width="700" height="500"><br>
+          <br>
+        
+        <li>ที่ R1 พิมพ์คำสั่ง Show Session เพื่อแสดงว่า....<br>
+        <li>กลับไปที่ Session ของ R2 แล้วพิมพ์คำสั่ง Exit<br>
+        <li>กลับไปที่ Session ของ R4 แล้วพิมพ์คำสั่ง Exit<br>
+      </ol>
+      <center>สำหรับโหมดการทำงานทั้งหมดของเราเตอร์สามารถดูได้ใน<a href="command.html">สรุปคำสั่งทั้งหมด</a></center><br>
+    </td>
+  </tr>
+</table>
+<br>
+<center>
+  <b><font size="+2"><a href="index.html">Back to Main</a> </font></b> or <b><font size="+2"><a href="lesson10.html">Next 
+  to Lesson10</a> </font></b> 
+</center>
+</body>
+</html>

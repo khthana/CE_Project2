@@ -1,0 +1,12 @@
+LDI     X02
+AND	X00
+ANI	X01
+OUT	M00
+LD      X02
+TIM     00
+        #50
+LDI     T00
+AND     X02
+OR	M00
+OUT	Y00
+END

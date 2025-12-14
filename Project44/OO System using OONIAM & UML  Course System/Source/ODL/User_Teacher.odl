@@ -1,0 +1,143 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// ODL file generated from Cache Objects Version 4.1.856.0
+//     Feb 12 2002 01:54:16
+//
+////////////////////////////////////////////////////////////////////////////////
+
+#include <olectl.h>
+
+[ uuid(539e916c-7c82-4819-9426-94caf65a2a7b), version(1.0),helpstring("Cache Objects Version 4.1.856.0") ]
+library User_Teacher
+{
+    importlib(STDOLE_TLB);
+    importlib(STDTYPE_TLB);
+
+    [ uuid(e0284258-3afc-4ccf-9324-5597174bbabf),helpstring("Cache Object: User.Teacher"),hidden ]
+
+    dispinterface CTeacher
+    {
+        properties:
+            [id(41)]  long        DeleteTag;
+            [id(61)]  IDispatch*  English;
+            [id(62)]  BSTR        ExtTeacherID;
+            [id(63)]  IDispatch*  IsOf;
+            [id(64)]  IDispatch*  PositionEDU;
+            [id(65)]  IDispatch*  Thai;
+
+        methods:
+            [id(67)]  VARIANT     SYS_BuildIndices(IDispatch* idxlist);
+            [id(16)]  VARIANT     SYS_CheckUnique(IDispatch* idxlist);
+            [id(1)]   BSTR        SYS_ClassName(VARIANT fullname);
+            [id(2)]   VARIANT     SYS_Close();
+            [id(17)]  VARIANT     SYS_Delete(VARIANT oid,long concurrency);
+            [id(19)]  VARIANT     SYS_DeleteExtent(long concurrency,[in,out] BSTR* deletecount,[in,out] BSTR* instancecount);
+            [id(20)]  VARIANT     SYS_DeleteId(BSTR id,long concurrency);
+            [id(21)]  VARIANT     SYS_DowngradeConcurrency(BSTR concurrency);
+            [id(71)]  VARIANT     SYS_Exists(VARIANT oid);
+            [id(72)]  VARIANT     SYS_ExistsId(BSTR id);
+            [id(24)]  VARIANT     SYS_GetSwizzleObject(long force,[in,out] VARIANT* oid);
+            [id(25)]  BSTR        SYS_Id();
+            [id(3)]   void        SYS_IncrementCount();
+            [id(4)]   long        SYS_IsA(BSTR isclass);
+            [id(5)]   long        SYS_IsModified();
+            [id(73)]  VARIANT     SYS_KillExtent();
+            [id(6)]   IDispatch*  SYS_New(BSTR initvalue);
+            [id(7)]   VARIANT     SYS_NormalizeObject();
+            [id(30)]  VARIANT     SYS_Oid();
+            [id(31)]  BSTR        SYS_Open(VARIANT oid,long concurrency);
+            [id(32)]  BSTR        SYS_OpenId(BSTR id,long concurrency);
+            [id(8)]   BSTR        SYS_PackageName();
+            [id(76)]  VARIANT     SYS_PurgeIndices(IDispatch* idxlist);
+            [id(35)]  VARIANT     SYS_RollBack();
+            [id(36)]  VARIANT     SYS_Save(long related);
+            [id(79)]  VARIANT     SYS_SortBegin(IDispatch* idxlist,long excludeunique);
+            [id(80)]  VARIANT     SYS_SortEnd(IDispatch* idxlist,long commit);
+            [id(40)]  VARIANT     SYS_UpgradeConcurrency(BSTR concurrency);
+            [id(10)]  VARIANT     SYS_ValidateObject(long force);
+            [id(57)]  VARIANT     CheckDependency();
+            [id(108)] long        DeleteTagDisplayToLogical(BSTR SYS_val);
+            [id(109)] long        DeleteTagGet();
+            [id(113)] long        DeleteTagIsModified();
+            [id(114)] VARIANT     DeleteTagIsValid(BSTR value);
+            [id(115)] long        DeleteTagIsValidDT(long SYS_val);
+            [id(116)] BSTR        DeleteTagLogicalToDisplay(long SYS_val);
+            [id(118)] long        DeleteTagNormalize(BSTR SYS_val);
+            [id(120)] VARIANT     DeleteTagSet(BSTR newvalue);
+            [id(121)] long        DeleteTagSetModified(long newvalue);
+            [id(125)] IDispatch*  EnglishGet();
+            [id(126)] VARIANT     EnglishGetObject(long force);
+            [id(127)] BSTR        EnglishGetObjectId(long force);
+            [id(129)] long        EnglishIsModified();
+            [id(130)] VARIANT     EnglishIsValid(BSTR value);
+            [id(131)] IDispatch*  EnglishNewObject();
+            [id(133)] VARIANT     EnglishSet(BSTR newvalue);
+            [id(134)] long        EnglishSetModified(long newvalue);
+            [id(135)] VARIANT     EnglishSetObject(VARIANT newvalue);
+            [id(136)] VARIANT     EnglishSetObjectId(BSTR newid);
+            [id(138)] BSTR        ExtTeacherIDDisplayToLogical(BSTR SYS_val);
+            [id(139)] BSTR        ExtTeacherIDGet();
+            [id(143)] long        ExtTeacherIDIsModified();
+            [id(144)] VARIANT     ExtTeacherIDIsValid(BSTR value);
+            [id(145)] long        ExtTeacherIDIsValidDT(BSTR SYS_val);
+            [id(146)] BSTR        ExtTeacherIDLogicalToDisplay(BSTR SYS_val);
+            [id(148)] BSTR        ExtTeacherIDNormalize(BSTR SYS_val);
+            [id(150)] VARIANT     ExtTeacherIDSet(BSTR newvalue);
+            [id(151)] long        ExtTeacherIDSetModified(long newvalue);
+            [id(195)] VARIANT     ExtentClose(VARIANT qHandle);
+            [id(196)] VARIANT     ExtentExecute([in,out] VARIANT* qHandle);
+            [id(197)] VARIANT     ExtentFetch([in,out] VARIANT* qHandle,[in,out] IDispatch** Row,[in,out] long* AtEnd);
+            [id(199)] VARIANT     ExtentFetchRows([in,out] VARIANT* qHandle,long FetchCount,[in,out] IDispatch** RowSet,[in,out] long* ReturnCount,[in,out] long* AtEnd);
+            [id(200)] VARIANT     ExtentGetInfo([in,out] IDispatch** colinfo,[in,out] IDispatch** parminfo,[in,out] IDispatch** idinfo,[in,out] VARIANT* qHandle);
+            [id(201)] VARIANT     ExtentPrepare([in,out] VARIANT* qHandle,BSTR statement,long containid,BSTR optional);
+            [id(58)]  BSTR        GetClassName();
+            [id(59)]  BSTR        GetParentClass();
+            [id(155)] IDispatch*  IsOfGet();
+            [id(156)] VARIANT     IsOfGetObject(long force);
+            [id(157)] BSTR        IsOfGetObjectId(long force);
+            [id(159)] long        IsOfIsModified();
+            [id(160)] VARIANT     IsOfIsValid(BSTR value);
+            [id(161)] IDispatch*  IsOfNewObject();
+            [id(163)] VARIANT     IsOfSet(BSTR newvalue);
+            [id(164)] long        IsOfSetModified(long newvalue);
+            [id(165)] VARIANT     IsOfSetObject(VARIANT newvalue);
+            [id(166)] VARIANT     IsOfSetObjectId(BSTR newid);
+            [id(168)] IDispatch*  PositionEDUGet();
+            [id(169)] VARIANT     PositionEDUGetObject(long force);
+            [id(170)] BSTR        PositionEDUGetObjectId(long force);
+            [id(172)] long        PositionEDUIsModified();
+            [id(173)] VARIANT     PositionEDUIsValid(BSTR value);
+            [id(174)] IDispatch*  PositionEDUNewObject();
+            [id(176)] VARIANT     PositionEDUSet(BSTR newvalue);
+            [id(177)] long        PositionEDUSetModified(long newvalue);
+            [id(178)] VARIANT     PositionEDUSetObject(VARIANT newvalue);
+            [id(179)] VARIANT     PositionEDUSetObjectId(BSTR newid);
+            [id(60)]  void        PrepareDeleting();
+            [id(181)] IDispatch*  ThaiGet();
+            [id(182)] VARIANT     ThaiGetObject(long force);
+            [id(183)] BSTR        ThaiGetObjectId(long force);
+            [id(185)] long        ThaiIsModified();
+            [id(186)] VARIANT     ThaiIsValid(BSTR value);
+            [id(187)] IDispatch*  ThaiNewObject();
+            [id(189)] VARIANT     ThaiSet(BSTR newvalue);
+            [id(190)] long        ThaiSetModified(long newvalue);
+            [id(191)] VARIANT     ThaiSetObject(VARIANT newvalue);
+            [id(192)] VARIANT     ThaiSetObjectId(BSTR newid);
+
+    };
+
+    // Class information for User.Teacher
+    [ uuid(48f4e1fb-a081-48a3-bcf4-bf827f3f613b), helpstring("Cache Object: User.Teacher CoClass"),control ]
+    coclass Teacher
+    {
+        [default] dispinterface CTeacher;
+    };
+
+
+};
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// End-of-file
+//
+////////////////////////////////////////////////////////////////////////////////

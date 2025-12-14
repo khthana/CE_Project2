@@ -1,0 +1,124 @@
+<isd:service xmlns:isd="http://xml.apache.org/xml-soap/deployment"
+             id="http://olala/BusService/">
+  <isd:provider type="java"
+                scope="Application"
+                methods="GetBus GetBusModel GetBusSchedule GetCompany GetRoute GetStation GetSubroute GetBusFee GetSeat GetAllBus GetAllBusModel GetAllBusSchedule GetAllCompany GetAllRoute GetAllSubroute GetAllBusFee GetAllFee GetAllSeat Search SearchForRent">
+    <isd:java class="olala.service.bussystem.BusService" static="false"/>
+  </isd:provider>
+
+  <isd:faultListener>org.apache.soap.server.DOMFaultListener</isd:faultListener>
+
+  <isd:mappings>
+	<!--
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:busID"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.StringDeserializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:modelID"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.StringDeserializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:routeID"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.StringDeserializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:subrouteID"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.IntDeserializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:companyID"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.StringDeserializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:stationID"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.StringDeserializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:stationsrcID"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.StringDeserializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:stationdesID"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.StringDeserializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:totalseat"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.StringDeserializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:departdate"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.DateDeserializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:departtime"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.DateDeserializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:company"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.StringDeserializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:toilet"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.BooleanDeserializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:smoking"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.BooleanDeserializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:window"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.BooleanDeserializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:nonstoponly"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.BooleanDeserializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:startdate"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.DateDeserializer"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:stopdate"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.DateDeserializer"/>
+	-->
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:BusVO"
+             javaType="olala.bussystem.BusVO"
+             java2XMLClassName="olala.service.bussystem.BusVOSerialize"
+             xml2JavaClassName="olala.service.bussystem.BusVOSerialize"/>  
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:BusModelVO"
+             javaType="olala.bussystem.BusModelVO"
+             java2XMLClassName="olala.service.bussystem.BusModelVOSerialize"
+             xml2JavaClassName="olala.service.bussystem.BusModelVOSerialize"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:BusScheduleVO"
+             javaType="olala.bussystem.BusScheduleVO"
+             java2XMLClassName="olala.service.bussystem.BusScheduleVOSerialize"
+             xml2JavaClassName="olala.service.bussystem.BusScheduleVOSerialize"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:CompanyVO"
+             javaType="olala.bussystem.CompanyVO"
+             java2XMLClassName="olala.service.bussystem.CompanyVOSerialize"
+             xml2JavaClassName="olala.service.bussystem.CompanyVOSerialize"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:RouteVO"
+             javaType="olala.bussystem.RouteVO"
+             java2XMLClassName="olala.service.bussystem.RouteVOSerialize"
+             xml2JavaClassName="olala.service.bussystem.RouteVOSerialize"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:StationVO"
+             javaType="olala.bussystem.StationVO"
+             java2XMLClassName="olala.service.bussystem.StationVOSerialize"
+             xml2JavaClassName="olala.service.bussystem.StationVOSerialize"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:SubrouteVO"
+             javaType="olala.bussystem.SubrouteVO"
+             java2XMLClassName="olala.service.bussystem.SubrouteVOSerialize"
+             xml2JavaClassName="olala.service.bussystem.SubrouteVOSerialize"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:BusFeeVO"
+             javaType="olala.bussystem.BusFeeVO"
+             java2XMLClassName="olala.service.bussystem.BusFeeVOSerialize"
+             xml2JavaClassName="olala.service.bussystem.BusFeeVOSerialize"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:SeatVO"
+             javaType="olala.bussystem.SeatVO"
+             java2XMLClassName="olala.service.bussystem.SeatVOSerialize"
+             xml2JavaClassName="olala.service.bussystem.SeatVOSerialize"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:BusSeatSearchResult"
+             javaType="olala.bussystem.BusSeatSearchResult"
+             java2XMLClassName="olala.service.bussystem.BusSeatSearchResultSerialize"
+             xml2JavaClassName="olala.service.bussystem.BusSeatSearchResultSerialize"/>
+	<isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:BusRentSearchResult"
+             javaType="olala.bussystem.BusRentSearchResult"
+             java2XMLClassName="olala.service.bussystem.BusRentSearchResultSerialize"
+             xml2JavaClassName="olala.service.bussystem.BusRentSearchResultSerialize"/>
+  </isd:mappings>  
+</isd:service>

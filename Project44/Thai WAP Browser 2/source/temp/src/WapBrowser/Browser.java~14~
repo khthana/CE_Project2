@@ -1,0 +1,1831 @@
+package WapBrowser;
+
+import javax.swing.border.*;
+
+import java.awt.*;
+import javax.swing.*;
+import com.borland.jbcl.layout.*;
+
+import java.awt.*;
+import java.awt.event.*;
+
+import javax.swing.JFrame;
+import javax.swing.*;
+
+import java.lang.* ;
+
+import java.io.*;
+import java.io.File;
+import org.jdom.*;
+import org.jdom.input.SAXBuilder;
+
+import java.util.*;
+import javax.swing.event.*;
+
+import java.net.URL;
+import java.net.MalformedURLException;
+
+public class Browser extends JFrame {
+// -------- member
+static Frame2 f2 = new Frame2();
+static public int x=0;
+static public int y=0;
+static public int j=0;
+static public int containerWidth;
+static public int containerHeight;
+static public int height;
+static public int numallnode=1;
+static private ElementInfo elem[] = new ElementInfo[100];
+static public Stack history = new Stack();
+static private  Font myFont = new Font("CordiaUPC",1,20);
+private GridBagLayout gbLayout;
+private GridBagConstraints gbConstraints;
+private Container c;
+static private Element e;
+static private String des;
+static private String hostname;
+static private String port;
+static private String path;
+static private String file;
+static private String anchor;
+static private String protocol;
+static private String attrbname;
+static private String attrbvalue;
+// -------- end member
+  JPanel contentPane;
+  XYLayout xYLayout1 = new XYLayout();
+  BorderLayout borderLayout = new BorderLayout();
+  JButton jButton8 = new JButton();
+  JButton jButton7 = new JButton();
+  JButton jButton5 = new JButton();
+  JPanel jPanel2 = new JPanel();
+  JButton jButton3 = new JButton();
+  JPanel jPanel1 = new JPanel();
+  JButton jButton2 = new JButton();
+  JButton jButton1 = new JButton();
+  JTextField jTextField1 = new JTextField();
+  XYLayout xYLayout3 = new XYLayout();
+  static JEditorPane jEditorPane3 = new JEditorPane();
+  XYLayout xYLayout2 = new XYLayout();
+  static JEditorPane jEditorPane2 = new JEditorPane();
+  //XYLayout xYLayout5 = new XYLayout();
+  JLabel jLabel1 = new JLabel();
+  static JScrollPane jScrollPane1 = new JScrollPane();
+  static JEditorPane jEditorPane1 = new JEditorPane();
+  static JEditorPane jEditorPane4 = new JEditorPane();
+  TitledBorder titledBorder1;
+  JPopupMenu jPopupMenu1 = new JPopupMenu();
+  JMenuItem jMenuFav = new JMenuItem();
+  JMenuItem jMenuRefresh = new JMenuItem();
+  JMenuItem jMenuPrint = new JMenuItem();
+  JMenuItem jMenuBack = new JMenuItem();
+  JMenuItem jMenuAbout = new JMenuItem();
+  JMenuItem jMenuStop = new JMenuItem();
+  JMenuItem jMenuSearch = new JMenuItem();
+  JMenuItem jMenuSource = new JMenuItem();
+  JMenuItem jMenuExit = new JMenuItem();
+  JMenuItem jMenuOpenU = new JMenuItem();
+  JMenu jMenuHome = new JMenu();
+  JMenuItem jMenuGo = new JMenuItem();
+  JMenuItem jMenuSet = new JMenuItem();
+  JButton jButtonRed = new JButton();
+  JButton jButtonPower = new JButton();
+  static JTextArea InputArea = new JTextArea();
+  boolean InputActive = false;
+  ImageIcon image1;
+  static String [] favlist ;
+  static int favindx;
+  static JFrame frame;
+
+  /**Construct the frame*/
+  public Browser() {
+    enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+    try {
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+  /**Component initialization*/
+  private void jbInit() throws Exception  {
+    //setIconImage(Toolkit.getDefaultToolkit().createImage(Browser.class.getResource("[Your Icon]")));
+    image1 = new ImageIcon(WapBrowser.Browser.class.getResource("open.gif"));
+    this.setIconImage(Toolkit.getDefaultToolkit().getImage(WapBrowser.Browser.class.getResource("icon.jpg")));
+    titledBorder1 = new TitledBorder("");
+    this.getContentPane().setBackground(Color.white);
+    this.setCursor(null);
+    this.setDefaultCloseOperation(3);
+    this.setResizable(false);
+    Border border1;
+    contentPane = (JPanel) this.getContentPane();
+    jPanel2.setBackground(SystemColor.desktop);
+    jPanel2.setFont(new java.awt.Font("SansSerif", 0, 12));
+    jPanel2.setLayout(xYLayout3);
+    contentPane.setLayout(xYLayout1);
+    this.setSize(new Dimension(260,513));
+    this.setState(Frame.ICONIFIED);
+
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Dimension frameSize = getSize();
+
+    if (frameSize.height > screenSize.height) {
+      frameSize.height = screenSize.height;
+    }
+    if (frameSize.width > screenSize.width) {
+      frameSize.width = screenSize.width;
+    }
+    this.setLocation(35, (screenSize.height - frameSize.height) / 2 - 30);
+    this.setTitle("áÇç¾ºÃÒÇà«ÍÃìÀÒÉÒä·Â 2");
+    jPanel1.setBackground(Color.lightGray);
+    jPanel1.setLayout(xYLayout2);
+    jButton1.setBorderPainted(false);
+    jButton1.setIcon(new ImageIcon(WapBrowser.Browser.class.getResource("up.jpg")));
+    jButton1.setRolloverIcon(new ImageIcon(WapBrowser.Browser.class.getResource("uponm.jpg")));
+    jButton1.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+//        jButton1_keyPressed(e);
+      }
+    });
+    jButton2.setBorderPainted(false);
+    jButton2.setIcon(new ImageIcon(WapBrowser.Browser.class.getResource("down.jpg")));
+    jButton2.setRolloverIcon(new ImageIcon(WapBrowser.Browser.class.getResource("downonm.jpg")));
+    jButton3.setBorderPainted(false);
+    jButton3.setIcon(new ImageIcon(WapBrowser.Browser.class.getResource("o.jpg")));
+    jButton3.setRolloverIcon(new ImageIcon(WapBrowser.Browser.class.getResource("oonm.jpg")));
+    jButton5.setBorderPainted(false);
+    jButton5.setIcon(new ImageIcon(WapBrowser.Browser.class.getResource("green.jpg")));
+    jButton5.setRolloverIcon(new ImageIcon(WapBrowser.Browser.class.getResource("greenonm.jpg")));
+    jButton7.setBorderPainted(false);
+    jButton7.setIcon(new ImageIcon(WapBrowser.Browser.class.getResource("ok.jpg")));
+    jButton7.setRolloverIcon(new ImageIcon(WapBrowser.Browser.class.getResource("okonm.jpg")));
+//    jButton7.addActionListener(new ActionListener(this));
+    jButton8.setBorderPainted(false);
+    jButton8.setIcon(new ImageIcon(WapBrowser.Browser.class.getResource("no.jpg")));
+    jButton8.setRolloverIcon(new ImageIcon(WapBrowser.Browser.class.getResource("noonm.jpg")));
+    jEditorPane3.setFont(new java.awt.Font("Dialog", 0, 12));
+    jEditorPane3.setEditable(false);
+//    jEditorPane3.setLayout(xYLayout1);
+    jEditorPane3.setLayout(new BorderLayout());
+    jEditorPane2.setFont(new java.awt.Font("Dialog", 0, 12));
+    jEditorPane2.setEditable(false);
+    jEditorPane2.setText("Select");
+    jButton3.setToolTipText("ENTER");
+    jButton5.setToolTipText("home");
+    jButton7.setToolTipText("soft left");
+    jButton8.setToolTipText("soft right");
+    jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+    jScrollPane1.setFont(new java.awt.Font("Dialog", 0, 28));
+    jEditorPane4.setFont(new java.awt.Font("Dialog", 0, 12));
+    jEditorPane4.setBorder(titledBorder1);
+    jEditorPane4.setEditable(false);
+    jEditorPane1.setFont(new java.awt.Font("Dialog", 0, 12));
+    jEditorPane1.setEditable(false);
+    jMenuFav.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("fav.gif")));
+    jMenuFav.setText("Favorites");
+    jMenuRefresh.addActionListener(new Browser_jMenuRefresh_actionAdapter(this));
+    jMenuRefresh.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("refresh.gif")));
+    jMenuRefresh.setText("Refresh");
+    jMenuPrint.setText("Print");
+    jMenuBack.addActionListener(new Browser_jMenuBack_actionAdapter(this));
+    jMenuBack.setText("Back");
+    jMenuBack.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("Back.gif")));
+    jMenuAbout.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("about.gif")));
+    jMenuAbout.setText("About");
+    jMenuAbout.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jMenuAbout_actionPerformed(e);
+      }
+    });
+    jMenuAbout.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jMenuAbout_actionPerformed(e);
+      }
+    });
+    jMenuAbout.addActionListener(new Browser_jMenuAbout_actionAdapter(this));
+    jMenuStop.setText("Stop");
+    jMenuStop.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("stop.gif")));
+    jMenuSearch.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("search.gif")));
+    jMenuSearch.setText("Portal");
+    jMenuSearch.addActionListener(new Browser_jMenuSearch_actionAdapter(this));
+    jMenuSource.setText("Editor");
+    jMenuSource.addActionListener(new Browser_jMenuSource_actionAdapter(this));
+    jMenuExit.setText("Exit");
+    jMenuExit.addActionListener(new Browser_jMenuExit_actionAdapter(this));
+//    jMenuOpenU1.addActionListener(new Frame1_jMenuOpenU1_actionAdapter(this));
+    jMenuOpenU.setText("Open URL...");
+    jMenuOpenU.addActionListener(new Browser_jMenuOpenU_actionAdapter(this));
+    jMenuHome.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("home.gif")));
+    jMenuHome.setText("Home");
+    jMenuGo.setText("Go Home");
+    jMenuSet.setText("Set Home");
+    jMenuSet.addActionListener(new Browser_jMenuSet_actionAdapter(this));
+    jButtonRed.setToolTipText("Stop");
+    jButtonRed.setBorderPainted(false);
+    jButtonRed.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("red.jpg")));
+    jButtonRed.setRolloverIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("redonm.jpg")));
+    jButtonRed.addActionListener(new java.awt.event.ActionListener() {
+     public void actionPerformed(ActionEvent e) {
+        jButtonRed_actionPerformed(e);
+      }
+    });
+    jButtonPower.setBorder(null);
+    jButtonPower.setToolTipText("Close");
+    jButtonPower.setBorderPainted(false);
+    jButtonPower.setIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("power.jpg")));
+    jButtonPower.setRolloverIcon(new ImageIcon(WapBrowser.Frame1.class.getResource("poweronm.jpg")));
+    jButtonPower.addActionListener(new java.awt.event.ActionListener() {
+     public void actionPerformed(ActionEvent e) {
+        jButtonPower_actionPerformed(e);
+      }
+    });
+    InputArea.setBackground(new Color(210, 210, 210));
+    InputArea.setBorder(titledBorder1);
+    InputArea.setDisabledTextColor(Color.lightGray);
+    InputArea.setText(des);
+    InputArea.setLineWrap(true);
+    InputArea.addKeyListener(new Browser_InputArea_keyAdapter(this));
+//    InputArea.addAncestorListener(new Browser_InputArea_ancestorAdapter(this));
+    contentPane.setBackground(Color.white);
+    contentPane.setForeground(Color.lightGray);
+    contentPane.add(jPanel2,    new XYConstraints(45, 114, 175, 185));
+    jPanel2.add(jEditorPane3,        new XYConstraints(88, 159, 88, 27));
+    jPanel2.add(jEditorPane2,     new XYConstraints(0, 159, 88, 27));
+    jPanel2.add(jScrollPane1,  new XYConstraints(0, 30, 175, 129));
+    jPanel2.add(InputArea,    new XYConstraints(0, 31, 175, 128));
+    jPanel2.add(jEditorPane4,                  new XYConstraints(0, 0, 176, 31));
+//    jEditorPane3.setLayout(borderLayout);
+    jScrollPane1.getViewport().add(jEditorPane1, null);
+    jLabel1.setIcon(new ImageIcon(WapBrowser.Browser.class.getResource("3gl.jpg")));
+
+    //contentPane.add(jPanel1,  new XYConstraints(10, 10, -1, -1));
+//    contentPane.add(jTextField1,          new XYConstraints(18, 439, 231, 24));
+    contentPane.add(jButton1,               new XYConstraints(118, 328, 16, 13));
+    contentPane.add(jButton2,   new XYConstraints(119, 361, 13, 11));
+    contentPane.add(jButton5,     new XYConstraints(42, 348, 18, 13));
+    contentPane.add(jButton3,    new XYConstraints(114, 337, 23, 22));
+    contentPane.add(jButton8,   new XYConstraints(167, 343, 36, 17));
+    contentPane.add(jButton7,   new XYConstraints(45, 317, 42, 21));
+    contentPane.add(jButtonRed,    new XYConstraints(64, 354, 13, 13));
+    contentPane.add(jButtonPower,    new XYConstraints(185, 32, 30, 30));
+    contentPane.add(jLabel1,   new XYConstraints(1, 0, 260, 514));
+    jPopupMenu1.add(jMenuBack);
+    jPopupMenu1.add(jMenuStop);
+    jPopupMenu1.add(jMenuRefresh);
+    jPopupMenu1.addSeparator();
+    jPopupMenu1.add(jMenuOpenU);
+    jPopupMenu1.add(jMenuHome);
+    jPopupMenu1.add(jMenuSearch);
+    jPopupMenu1.addSeparator();
+    jPopupMenu1.add(jMenuSource);
+    jPopupMenu1.addSeparator();
+    jPopupMenu1.add(jMenuFav);
+    //jPopupMenu1.add(jMenuPrint);
+    jPopupMenu1.add(jMenuAbout);
+    jPopupMenu1.addSeparator();
+    jPopupMenu1.add(jMenuExit);
+    jMenuHome.add(jMenuGo);
+    jMenuHome.add(jMenuSet);
+    jEditorPane1.removeAll();
+    jEditorPane1.repaint();
+     try{
+      FileReader fin = new FileReader("home.txt");
+      BufferedReader bin = new BufferedReader(fin);
+      this.des = bin.readLine();
+      bin.close();
+      }
+    catch(IOException ex){
+      //this.jEditorPane1.setText(ex.getMessage());
+      JOptionPane.showMessageDialog(this,
+      "File not Found : \n"+ex.getMessage(),
+      this.getTitle(),
+      JOptionPane.ERROR_MESSAGE);
+    }// read initial hostname form home.txt
+//     try{
+//      FileReader fin = new FileReader("fav.txt");
+//      BufferedReader bin = new BufferedReader(fin);
+//      this.des = bin.readLine();
+//      bin.close();
+//      }
+//    catch(IOException ex){
+//      //this.jEditorPane1.setText(ex.getMessage());
+//      JOptionPane.showMessageDialog(this,
+//      "File not Found : \n"+ex.getMessage(),
+//      this.getTitle(),
+//      JOptionPane.ERROR_MESSAGE);
+//    }// read initial hostname form fav.txt
+    JTextField l = new JTextField();
+    l.setFont(this.myFont);
+    FontMetrics fm=l.getFontMetrics(myFont);
+    this.height = fm.getHeight();
+    this.history.push(this.des);
+    this.showall();
+    InputArea.setVisible(false);
+    jScrollPane1.setVisible(true);
+    f2.jText2Editor(this.des);
+    this.show();
+ //-------- event handling
+/*      InputArea.addActionListener(new java.awt.event.ActionListener() {
+     public void actionPerformed(ActionEvent e) {
+        InputArea_actionPerformed(e);
+      }
+    });*/
+    jButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton1_actionPerformed(e);
+      }
+    });
+    jButton2.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton2_actionPerformed(e);
+      }
+    });
+    jButton3.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton3_actionPerformed(e);
+      }
+    });
+    jButton5.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton5_actionPerformed(e);
+      }
+    });
+    jButton7.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton7_actionPerformed(e);
+      }
+    });
+    jButton8.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton8_actionPerformed(e);
+      }
+    });
+
+    jMenuGo.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton5_actionPerformed(e);
+      }
+    });
+
+    contentPane.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        contentPane_mouseClicked(e);
+      }
+    });
+
+    jEditorPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        jEditorPane1_mouseClicked(e);
+      }
+    });
+
+ //------- end event handling
+    jEditorPane1.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        jEditorPane1_keyPressed(e);
+      }
+    });
+
+  }
+  /**Overridden so we can exit when window is closed*/
+  protected void processWindowEvent(WindowEvent e) {
+    super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+      System.exit(0);
+    }
+  }
+  //-------------------------------------------------- UP
+  void jButton1_actionPerformed(ActionEvent e) {
+    this.up_press();
+  }
+// -------------------------------------------------DOWN
+  void jButton2_actionPerformed(ActionEvent e) {
+    this.down_press();
+  }
+  // ------------------------------------------------ENTER
+  void jButton3_actionPerformed(ActionEvent e) {
+      String destination = new String(InputArea.getText());
+      InputArea.setVisible(false);
+      jScrollPane1.setVisible(true);
+      InputActive = false;
+      this.enter_press(destination);
+      f2.currFileName = null;
+  }
+  //------------------------------------------------- back
+    void jButton4_actionPerformed(ActionEvent e) {
+    String st = new String();
+      if (!this.history.empty()){
+        st = this.history.pop().toString();
+        if ((st==this.des) & (!this.history.empty())){
+          st = this.history.pop().toString();
+        }
+      }
+      if (this.history.empty()){
+          this.history.push(st);
+      }
+      this.des = st;
+      this.showall();
+      InputArea.setVisible(false);
+      jScrollPane1.setVisible(true);
+
+    }
+  //----------------------------------------------------home
+    void jButton5_actionPerformed(ActionEvent e) {
+      try{
+        FileReader fin = new FileReader("home.txt");
+        BufferedReader bin = new BufferedReader(fin);
+        this.des = bin.readLine();
+        bin.close();
+        this.showall();
+        InputArea.setVisible(false);
+        jScrollPane1.setVisible(true);
+        f2.jText2Editor(this.des);
+        if (!this.history.empty()){
+          if (!this.history.peek().toString().equalsIgnoreCase(this.des))
+            this.history.push(this.des);
+        }
+        f2.currFileName = null;
+      }
+      catch(IOException ex){
+      //this.jEditorPane1.setText(ex.getMessage());
+      JOptionPane.showMessageDialog(this,
+      ex.getMessage(),
+      this.getTitle(),
+      JOptionPane.ERROR_MESSAGE);
+      }
+      catch(EmptyStackException ex){
+      //this.jEditorPane1.setText(ex.getMessage());
+      JOptionPane.showMessageDialog(this,
+      "Stack Empty \n"+ex.getMessage(),
+      this.getTitle(),
+      JOptionPane.ERROR_MESSAGE);
+      }
+
+  }
+  //--------------------------------------------------- set home
+    void jButton6_actionPerformed(ActionEvent e) {
+    try{
+      FileWriter fout = new FileWriter("home.txt");
+      BufferedWriter bout = new BufferedWriter(fout);
+      PrintWriter pout = new PrintWriter(bout);
+      pout.println(this.InputArea.getText());//jTextField1 => InputArea
+      pout.close();
+      }
+    catch(IOException ex){
+      //this.jEditorPane1.setText(ex.getMessage());
+      JOptionPane.showMessageDialog(this,
+      "File not Found :" +ex.getMessage(),
+      this.getTitle(),
+      JOptionPane.ERROR_MESSAGE);
+    }
+   }
+   // ------------------------------------------------- Soft Left
+  void jButton7_actionPerformed(ActionEvent e) {
+//    String destination="";
+/*     for (int i = 0 ; i < numallnode ; i++){ // Find link to
+          if (this.elem[i].getIsHighlight()){
+          System.out.println("i "+i);
+          System.out.println("name "+elem[i].getLinkTo());
+                des = elem[i].getLinkTo();
+//            String[] name = new String[elem[i].getNumattr()];
+//            String[] value = new String[elem[i].getNumattr()];
+//            name = elem[i].getAttrbName();
+//            value = elem[i].getAttrbValue();
+//                  int k=i;
+            }
+      } // end for
+  //  des = destination;
+    System.out.println("des "+des);
+    this.enter_press(des);
+    f2.currFileName = null;
+  */
+  Select();
+  }
+  // --------------------------------------------------- Soft Right
+  void jButton8_actionPerformed(ActionEvent e) {
+      String destination ="";
+      for (int i=0;i<this.numallnode;i++){
+        if((this.elem[i].getIsDo()) & (this.elem[i].getCanshow())){
+
+          if(this.elem[i].getName().equalsIgnoreCase("go")){
+            for (int j=0;j<this.elem[i].getNumattr();j++){
+              if (this.attrbname(i,j).equalsIgnoreCase("href")){
+                destination = this.attrbvalue(i,j);
+              }
+            }
+            this.enter_press(destination);
+          }// end tag go
+          else if(this.elem[i].getName().equalsIgnoreCase("prev")){
+             String st = new String();
+             if (!this.history.empty()){
+              st = this.history.pop().toString();
+              if ((st==this.des) & (!this.history.empty())){
+              st = this.history.pop().toString();
+             }
+            }
+            if (this.history.empty()){
+            this.history.push(st);
+            }
+            this.des = st;
+            this.showall();
+            InputArea.setVisible(false);
+            jScrollPane1.setVisible(true);
+          } // end tag prev
+        }// end if do
+      }// end for
+  }
+// ------------------------------- Method
+
+static public void UrlInfo(String st1){
+    try{
+    String st;
+    URL url = new URL(st1);
+    protocol = url.getProtocol().trim();
+    hostname = url.getHost().trim();
+//    this.port = url.getPort();
+    st = url.getFile();
+    if (st1.lastIndexOf('#') != -1){
+    anchor = st1.substring(st1.lastIndexOf('#')+1,st1.length()).trim();
+    }
+    else anchor="";
+      if (st.lastIndexOf('/') != -1){
+        file = st.substring(st.lastIndexOf('/'),st.length()).trim();
+        path = st.substring(0,st.lastIndexOf('/')).trim();
+      }
+    }
+     catch (MalformedURLException e){
+      //jEditorPane1.setText(e.getMessage());
+      JOptionPane.showMessageDialog(frame,
+      "URL Error :" +e.getMessage(),
+      "",
+      JOptionPane.ERROR_MESSAGE);
+    }
+
+}
+
+static String attrbname(int i,int j){
+    String[] st = new String[numallnode];
+    st = elem[i].getAttrbName();
+    return st[j];
+}
+static String attrbvalue(int i,int j){
+    String[] st = new String[numallnode];
+    st = elem[i].getAttrbValue();
+    return st[j];
+}
+
+static public void getnumallnode(Element e){	//get number of all node in the tree
+  for (Iterator i=e.getChildren().iterator(); i.hasNext(); ) {
+    numallnode=++numallnode;
+    Element child = (Element)i.next();
+    getnumallnode(child);
+  }
+}                                                       //end getnumallnode
+
+static void getAttrb(String st){
+    attrbname=st.substring(12,st.indexOf("=")).trim();
+    attrbvalue=st.substring(st.indexOf('"')+1,st.length()-2).trim();
+}
+
+static void getRoot(String des1) throws JDOMException,NullPointerException{
+//addTTag
+    SAXBuilder builder= new SAXBuilder();
+    Document doc = builder.build(des1);
+    e = doc.getRootElement();
+}// end getRoot
+
+static void par(Element e) throws IOException, JDOMException {
+    String st = new String();
+    st =e.getName();  //element name
+                              elem[j] =new ElementInfo(st,e.getAttributes().size(),e.getTextTrim());
+                                    String[] tmp1 = new String[e.getAttributes().size()];
+                                    String[] tmp2 = new String[e.getAttributes().size()];
+                               for (int i=0; i<=e.getAttributes().size()-1;++i){
+                                          Object[] ob = e.getAttributes().toArray();
+                                          getAttrb(ob[i].toString());
+                                            tmp1[i]=attrbname;
+                                            tmp2[i]=attrbvalue;
+                                            elem[j].setnumchild(e.getChildren().size());
+                                };                        //end for
+                              elem[j].setAttrbName(tmp1);
+                              elem[j].setAttrbValue(tmp2);
+                              if(!e.isRootElement()){
+                              elem[j].setParent(e.getParent().getName());
+                              }
+                              else {elem[j].setIsRoot(true);}
+                              for (Iterator i=e.getChildren().iterator(); i.hasNext(); ) {
+                              Element child = (Element)i.next();
+                              j++;
+                              par(child);		 //Recursive
+
+                      }                           //end for
+
+  }   //end par()
+
+
+static private int findWidth(String st,FontMetrics  fm)  {
+    int i = 0;
+    for (int j=0;j < st.length();j++){
+        i = i + fm.charWidth(st.charAt(j));
+    }
+    return i;
+}
+
+
+static private void copyStyle(ElementInfo[] elem,int i,int j){
+      elem[j].setI(elem[i].getI());
+      elem[j].setB(elem[i].getB());
+      elem[j].setU(elem[i].getU());
+      elem[j].setSmall(elem[i].getSmall());
+      elem[j].setBig(elem[i].getBig());
+      elem[j].setPosition(elem[i].getPosition());
+      elem[j].setCanshow(elem[i].getCanshow());
+      elem[j].setIsLink(elem[i].getIsLink());
+      elem[j].setIsAnchor(elem[i].getIsAnchor());
+      elem[j].setIsDo(elem[i].getIsDo());
+      elem[j].setIsTable(elem[i].getIsTable());
+  }   //end copyStyle
+
+
+static void setStyle(){
+      boolean bol=false;
+      boolean bol2 = false;
+      String st="";
+      JTextField l = new JTextField();
+      l.setFont(myFont);
+      FontMetrics fm=l.getFontMetrics(myFont);
+
+      for(int i=0;i<numallnode;i++){
+      // ----Copy From Parent
+      if  (!elem[i].getIsRoot()){
+      int k=i-1;
+        while (!elem[i].getParent().equalsIgnoreCase(elem[k].getName())){
+         k--;
+        } // end while
+        copyStyle(elem,k,i);
+      }   // end if
+
+
+      //------- Set Element by itself
+
+      if ((elem[i].getName().equalsIgnoreCase("a")) | (elem[i].getName().equalsIgnoreCase("anchor"))){
+          elem[i].setIsLink(true);
+          if(elem[i].getName().equalsIgnoreCase("anchor")){
+            elem[i].setIsAnchor(true);
+          }
+
+      }// End TAG A
+
+      // tag img
+      if (elem[i].getName().equalsIgnoreCase("img")) {
+        String image="";
+        for(int j =0; j < elem[i].getNumattr() ; j++){
+          if (attrbname(i,j).equalsIgnoreCase("src")){
+            image = attrbvalue(i,j);
+          }
+          if (!image.substring(0,7).equalsIgnoreCase("http://")){
+            image = protocol+"://"+hostname+path+'/'+image;
+          }
+          try{
+            URL urlImage = new URL(image);
+            Icon icon = new ImageIcon(urlImage);
+            elem[i].setWidth(icon.getIconWidth()); // set width of image
+            elem[i].setHeight(icon.getIconHeight()); // set height of image
+          }
+          catch (MalformedURLException e){
+            //jEditorPane1.setText(e.getMessage());
+            JOptionPane.showMessageDialog(frame,
+            "Image Error "+e.getMessage(),
+            "",
+            JOptionPane.ERROR_MESSAGE);
+          }
+        }
+      }
+      else{
+        if((elem[i].getIsLink()) & !(elem[i].getContent().equals(""))){
+          elem[i].setContent('['+elem[i].getContent()+']');
+        }
+        elem[i].setWidth(findWidth(elem[i].getContent(),fm)); // set width of text
+        elem[i].setHeight(height);      // set height of text
+      }
+      // end tag img
+
+      // tag table
+      if(elem[i].getName().equalsIgnoreCase("table")){ // find number of column of this table
+        elem[i].setIsTable(true);
+        String col="";
+        for (int j=0;j< elem[i].getNumattr();j++){
+          if (attrbname(i,j).equalsIgnoreCase("columns")){
+            col = attrbvalue(i,j);
+          }
+        }
+        elem[i].setColumn(Integer.parseInt(col)); // set num column table
+        String align="";
+        for (int j=0;j< elem[i].getNumattr();j++){
+          if (attrbname(i,j).equalsIgnoreCase("align")){
+            align = attrbvalue(i,j);
+          }
+        }
+        elem[i].setAlignTable(align); // set num column table
+      }
+      // end tag table
+
+      String[] name1 = new String[elem[i].getNumattr()];
+      String[] value = new String[elem[i].getNumattr()];
+      name1 = elem[i].getAttrbName();
+      value = elem[i].getAttrbValue();
+      if (elem[i].getName().equalsIgnoreCase("card")){
+        if (anchor.equals("")){
+          if (bol2 == false){
+            elem[i].setCanshow(true);
+            bol2 = true;
+          }
+       }
+        else {
+           for (int j = 0;j < elem[i].getNumattr();j++)
+           {
+            if (name1[j].equalsIgnoreCase("id"))
+            st = value[j];
+           } // end for
+            if (anchor.equals(st)){
+            elem[i].setCanshow(true);
+
+            }
+        }// end else
+      }
+
+      if(elem[i].getName().equalsIgnoreCase("table")){
+        elem[i].setIsTable(true);
+      }
+      // set highlight
+      if ((bol == false) &(elem[i].getIsLink())&(!elem[i].getContent().equals(""))&(elem[i].getCanshow())){
+          elem[i].setIsHighlight(true);
+          bol = true;
+      }
+      if (elem[i].getName().equalsIgnoreCase("do")){
+          elem[i].setIsDo(true);
+      }
+      if (elem[i].getName().equalsIgnoreCase("p")){
+            if (elem[i].getNumattr() != 0){
+                for(int k=0;k<elem[i].getNumattr();k++){
+                      if (name1[k].equalsIgnoreCase("align")){
+                        elem[i].setPosition(value[k]);
+                      };
+                };
+            }
+      }     //TAG P
+
+
+        if ((elem[i].getName().equalsIgnoreCase("b")) |(elem[i].getName().equalsIgnoreCase("emphasis"))){
+            elem[i].setB(true);
+        }   //TAG B
+
+        else if ((elem[i].getName().equalsIgnoreCase("i")) |(elem[i].getName().equalsIgnoreCase("strong"))){
+            elem[i].setI(true);
+        }   //TAG I
+        else if (elem[i].getName().equalsIgnoreCase("u")){
+            elem[i].setU(true);
+        }   //TAG U
+        else if (elem[i].getName().equalsIgnoreCase("big")){
+            elem[i].setBig(true);
+        }  //TAG BIG
+        else if (elem[i].getName().equalsIgnoreCase("small")){
+            elem[i].setSmall(true);
+        }  //TAG SMALL
+      }     // end for
+  }   //end setStyle
+
+
+static void setCo(){
+  int inity = 5;
+  int x=0;
+  int y=0;
+  int maxHeight=0;
+  int postable=0;
+
+  for (int i =0 ; i < numallnode ; i++){
+    if (elem[i].getCanshow()){
+          if ((elem[i].getName().equalsIgnoreCase("p")) | (elem[i].getName().equalsIgnoreCase("br"))){
+                  int z=0;// number of component to add in a line
+                  int w=0;// length total for a line
+                  boolean hasTable=false; // To check this paragraph has table or not
+                  y=i+1;
+                  if (y < numallnode){
+                   maxHeight = 0;
+                   while (!(elem[y].getName().equalsIgnoreCase("p")) & !(elem[y].getName().equalsIgnoreCase("br"))){
+                    if(elem[y].getName().equalsIgnoreCase("table")){
+                      hasTable = true;
+                    }
+                      if(!elem[y].getIsTable()){
+                        z++;
+                        w = w + elem[y].getWidth();
+                        if (elem[y].getHeight() > maxHeight){
+                            maxHeight = elem[y].getHeight();
+                        }
+                      }
+                    y++;
+                    if (y == numallnode)
+                    break;
+                   }// end while
+                 }// end if y < numallnode
+          y=i+1;
+          System.out.println("y :"+y);
+          System.out.println(hasTable);
+          if(y<numallnode){
+            if (hasTable){
+              System.out.println("test");                                           // has TABLE
+              boolean passTable=false;
+              int inFrontTable=0;
+              int beHindTable=0;
+              int numFront=0;
+              int numBehind=0;
+              y = i+1;
+              while (!(elem[y].getName().equalsIgnoreCase("p")) & !(elem[y].getName().equalsIgnoreCase("br")) &(y < numallnode)){
+
+              if(elem[y].getName().equalsIgnoreCase("table")){
+                  int j=y;    // -- position of tag table
+                  passTable=true;
+                  postable =y;
+                while (!elem[j].getName().equalsIgnoreCase("tr")){
+                    j++;
+                }
+                int postr = j;  // Position pf first TR
+                int numrow=0;
+                while(elem[j].getName().equalsIgnoreCase("tr")){
+                    numrow++;
+                    j = j+elem[y].getColumn()+1;
+                    if (j >= numallnode){
+                      break;
+                    }
+                }
+                elem[y].setRow(numrow); // set num row of table
+
+                      int temp[] = new int[elem[y].getColumn()];
+                      int intial = 0;
+                      int postr1 = postr;
+                      for(int m=0;m<elem[y].getColumn();m++){ // to find the maximun width of column
+                        int postd = postr1+m+1;
+                        if ((elem[postr].getName().equalsIgnoreCase("tr"))){
+                          int maxwidth = elem[postd].getWidth();
+                          for(int n=0;n < elem[y].getRow()-1;n++){
+                            postd=postd+elem[y].getColumn()+1;
+                            if(elem[postd].getWidth() > maxwidth){
+                              maxwidth = elem[postd].getWidth();
+                            }
+                          }// end for n
+                          temp[intial] = maxwidth;
+                          intial++;
+                          postr=postr+elem[y].getColumn()+1;
+                        }// end if
+                        System.out.println("Name "+elem[postable].getName());
+                        elem[postable].setColumnWidth(temp);
+                      }// end for m      // end find position TR and TD and max width for each column
+
+                }// end if table
+                else{
+                  if((!passTable) & !(elem[y].getIsTable())){
+                  inFrontTable = inFrontTable + elem[y].getWidth();
+                  numFront++;
+                  }
+                  else if (!elem[y].getIsTable()){
+                  beHindTable = beHindTable + elem[y].getWidth();
+                  numBehind++;
+                  }
+                }
+                y++;
+                if (y == numallnode)
+                    break;
+              }// end while
+                       int[] columnWidth = new int[elem[postable].getColumn()];
+                       int tableWidth = 0;
+                       int allWidth = 0;
+                       columnWidth = elem[postable].getColumnWidth();
+                       for (int ii=0;ii<elem[postable].getColumn();ii++){
+                        tableWidth = tableWidth + columnWidth[ii];
+                       }
+                      // tableWidth = tableWidth + inFrontTable;
+                       allWidth =  inFrontTable + beHindTable + tableWidth;
+                       System.out.println("table "+tableWidth);
+                       System.out.println("inFront "+inFrontTable);
+                       System.out.println("beHind "+beHindTable);
+                       y=i+1;
+
+                        x=0;
+                        if(elem[y].getPosition().equalsIgnoreCase("center")){
+                          x=(172-allWidth)/2;
+                          if (x<0) x=0;
+                        }
+                        else if(elem[y].getPosition().equalsIgnoreCase("right")){
+                          x=(172-allWidth);
+                          if (x<0) x=0;
+                        }
+                        else{
+                          x=0;
+                        }
+
+                       for(int ii=0;ii<numFront;ii++){
+                          elem[y].setCo_x(x);
+                          elem[y].setCo_y(inity);
+                          x=x+elem[i].getWidth();
+                        y++;
+                       }
+
+                       int l = postable+2; // point to TR
+                       for(int k=0; k < elem[postable].getRow();k++){//row
+                           if(elem[postable].getPosition().equalsIgnoreCase("center")){
+                            x=((172-allWidth)/2)+inFrontTable;
+                            if (x<0) x=0;
+                           }
+                           else if(elem[postable].getPosition().equalsIgnoreCase("right")){
+                            x=172-allWidth+inFrontTable;
+                            if (x<0) x=0;
+                           }
+                           else{
+                            x=inFrontTable;
+                           }
+                        int column = 0;
+                          for( j=0;j<elem[postable].getColumn();j++){//column
+                            elem[l].setCo_x(x);
+                            elem[l].setCo_y(inity);
+                            x = columnWidth[column]+x;
+                            l++;
+                            column++;
+                          }// end for j
+                            if(l<numallnode){
+                                inity = inity + elem[l].getHeight();
+                                l++;
+                            }
+                       }// end for k
+           }// end if has table
+           else{                                             //don't have table
+                  inity = inity + maxHeight;
+                  if (elem[i].getPosition().equalsIgnoreCase("center")){
+                  x=(172 -w)/2;
+                      if (x<0) x=0;
+                  }
+                  else if (elem[i].getPosition().equalsIgnoreCase("right")){
+                  x=(172-w);
+                    if (x<0) x=0;
+                  }
+                  else if (elem[i].getPosition().equalsIgnoreCase("left")){
+                  x=0;
+                  }
+                    y=i+1;
+                  if(y<numallnode){
+                   elem[y].setCo_x(x);
+                   elem[y].setCo_y(inity-elem[y].getHeight());
+                  }
+                  for (int j=0;j<z-1;j++){
+                    y++;
+                    if (y == numallnode)
+                    break;
+                    x = x + elem[y-1].getWidth();
+                    elem[y].setCo_x(x);
+                    elem[y].setCo_y(inity-elem[y].getHeight());
+                  }
+                }// any tag except Table
+              } // end if P
+            }
+          }
+        }
+} // end setCo
+
+static void initFrame(){
+  x=0;
+  y=0;
+  j=0;
+  jEditorPane3.setText("");
+  jEditorPane3.removeAll();
+  jEditorPane3.repaint();
+
+ }  // end initFrame
+
+static void show1(){
+
+    boolean isDo = false;
+    JTextField[] label = new JTextField[numallnode];
+    for (int i=0;i < numallnode;i++){
+          Border border1;
+        label[i] = new JTextField(elem[i].getContent());
+        String style = new String();
+        int x;
+        int font = 0;
+        int fontSize = 20;
+        if ((elem[i].getName().equalsIgnoreCase("card")) & (elem[i].getCanshow())){  // TAG CARD
+                String[] st1=elem[i].getAttrbName();
+                String[] st2=elem[i].getAttrbValue();
+                String st=new String();
+            for(int j=0;j<elem[i].getNumattr();j++){
+                if (st1[j].equalsIgnoreCase("title")){
+                st = st2[j];
+                }// end if
+            }// end for
+         JTextField  label1 = new JTextField(st);
+         label1.setText("-- "+st+" --");
+         Font myFont = new Font("CordiaUPC",3,20);
+         FontMetrics fm1=label1.getFontMetrics(myFont);
+         label1.setFont(myFont);
+         border1 = BorderFactory.createEmptyBorder();
+         label1.setBorder(border1);
+         label1.setEditable(false);
+//         label1.setBackground(Color.lightGray);
+         jEditorPane4.removeAll();
+         jEditorPane4.repaint();
+         jEditorPane4.add(label1);
+         label1.setBounds((172-findWidth("-- "+st+" --",fm1))/2,2,findWidth("-- "+st+" --",fm1),height);
+        }// end TITLE
+        if  (!(elem[i].getContent().equals(""))   &  !(elem[i].getContent().equals(null))){
+           if (elem[i].getCanshow()){
+
+               if ((elem[i].getB()) & (elem[i].getI())){
+                    font = 3;
+               }
+               else if (elem[i].getB()){
+                      font = 1;
+               }
+               else if (elem[i].getI()){
+                    font = 2;
+               }
+               else{
+                    font = 0;
+               }
+
+               if(elem[i].getSmall()){
+                    fontSize = 18;
+               }
+               else if(elem[i].getBig()){
+                    fontSize = 22;
+               }
+               else{fontSize = 20;}
+                      label[i].setFont(myFont);
+                      Font myFont1 = new Font("CordiaUPC",font,fontSize);
+                      FontMetrics fm1=label[i].getFontMetrics(myFont1);
+                      label[i].setFont(myFont1);
+                      border1 = BorderFactory.createEmptyBorder();
+                      if(!elem[i].getIsTable()){ // not table must haven't border
+                      label[i].setBorder(border1);
+                      }
+ //TAG TABLE
+                      else{
+                        int j=i;
+                        int postable=i;
+                        int numColumn=0;
+                        if(elem[i].getName().equalsIgnoreCase("td")){
+                          while(!(elem[j].getName().equalsIgnoreCase("tr"))&(j>0)&(elem[j].getIsTable())){
+                          j--;
+                          numColumn++;
+                          }
+                          while(!(elem[postable].getName().equalsIgnoreCase("table"))&(postable>0)&(elem[postable].getIsTable())){
+                          postable--;
+                          }
+                          int column = elem[postable].getColumn();
+                          int[] columnWidth = new int[column];
+                          columnWidth = elem[postable].getColumnWidth();
+                          String posInColumn = elem[postable].getAlignTable();
+                          if(elem[i].getWidth() != columnWidth[numColumn-1]){
+                            if (posInColumn.charAt(numColumn-1)== 'c'){
+                              int numSpace = ((columnWidth[numColumn-1]-elem[i].getWidth())/6);
+                              System.out.println("1:"+columnWidth[numColumn-1]);
+                              System.out.println("2:"+elem[i].getWidth());
+                              System.out.println("3:"+numSpace);
+                              String  space="";
+                              for(int ii =0;ii<numSpace;ii++){
+                                space=space+' ';
+                              }
+                              label[i].setText(space+label[i].getText());
+                            }
+                            else if(posInColumn.charAt(numColumn-1)=='r'){
+                              int numSpace = (columnWidth[numColumn-1]-elem[i].getWidth())/2;
+                              String  space="";
+                              for(int ii =0;ii<numSpace;ii++){
+                                space=space+' ';
+                              }
+                              label[i].setText(space+label[i].getText());
+                            }
+                          }
+                          /*System.out.println(numColumn-1);
+                          System.out.println(columnWidth[numColumn-1]);
+                          System.out.println("**");*/
+                          label[i].setBorder(BorderFactory.createEtchedBorder());
+                          jEditorPane1.add(label[i]);
+                          label[i].setBounds(elem[i].getCo_x(),elem[i].getCo_y(),columnWidth[numColumn-1]+2,elem[i].getHeight());
+                        }
+                      }
+                      label[i].setEditable(false);
+            // check highlight
+                        if (elem[i].getIsHighlight())
+                          label[i].setBackground(Color.gray);
+                        else label[i].setBackground(Color.white);
+            // tool tip and link
+                       if (elem[i].getIsLink()){
+            // Anchor
+                          if (elem[i].getIsAnchor()){
+                            int k=i;
+
+                            if (elem[i].getName().equalsIgnoreCase("anchor")){
+                              while((!elem[k].getName().equalsIgnoreCase("go")) & (!elem[k].getName().equalsIgnoreCase("prev"))){
+                               if (k==numallnode-1)
+                               break;
+                               k++;
+                              }
+                            }
+                            else{
+                              while(!elem[k].getName().equalsIgnoreCase("anchor") ){
+                               if (k<0)
+                               break;
+                               k--;
+                              }
+                              while((!elem[k].getName().equalsIgnoreCase("go")) & (!elem[k].getName().equalsIgnoreCase("prev"))){
+                               if (k==numallnode-1)
+                               break;
+                               k++;
+                              }
+                            }
+//Anchor Go
+                              if (elem[k].getName().equalsIgnoreCase("go")){
+                                for (int j=0;j<elem[k].getNumattr();j++){
+                                  if (attrbname(k,j).equalsIgnoreCase("href")){
+                                    label[i].setToolTipText(attrbvalue(k,j));
+                                    elem[i].setLinkTo(attrbvalue(k,j));
+                                  }
+                                } //end for
+                              }// end if
+//Anchor PREV
+                              if (elem[k].getName().equalsIgnoreCase("prev")){
+                                    label[i].setToolTipText(history.peek().toString());
+                                    elem[i].setLinkTo(history.peek().toString());
+                              }
+                          }// Anchor
+// A
+                          else if (elem[i].getName().equalsIgnoreCase("a")){
+                              for (int j=0;j<elem[i].getNumattr();j++){
+                                if (attrbname(i,j).equalsIgnoreCase("href")){
+                                  label[i].setToolTipText(attrbvalue(i,j));
+                                  elem[i].setLinkTo(attrbvalue(i,j));
+                                }
+                              }
+                          }// tag A
+                          else{// is not tag A tag anchor but is link
+                            int k=i;
+                            while (!elem[k].getName().equalsIgnoreCase("a")){
+                              k--;
+                            }
+                            String[] name = new String[elem[i].getNumattr()];
+                            String[] value = new String[elem[i].getNumattr()];
+                            name = elem[k].getAttrbName();
+                            value = elem[k].getAttrbValue();
+                              for (int j=0;j<elem[k].getNumattr();j++){
+                                if (name[j].equalsIgnoreCase("href")){
+                                  label[i].setToolTipText(value[j]);
+                                  elem[i].setLinkTo(value[j]);
+                                }
+                              }
+                          }
+                       }
+                       // end tool tip
+                       if(!elem[i].getIsTable()){
+                        jEditorPane1.add(label[i]);
+                        label[i].setBounds(elem[i].getCo_x(),elem[i].getCo_y(),findWidth(elem[i].getContent(),fm1),height);
+                      }
+           }//end if can show
+      } // end content <> null
+      // TAG IMG
+      if ((elem[i].getName().equalsIgnoreCase("img"))&(elem[i].getCanshow())){
+        String image="";
+        for(int j =0; j < elem[i].getNumattr() ; j++){
+          if (attrbname(i,j).equalsIgnoreCase("src")){
+            image = attrbvalue(i,j);
+          }
+          if (!image.substring(0,7).equalsIgnoreCase("http://")){
+            image = protocol+"://"+hostname+path+'/'+image;
+          }
+          try{
+            URL urlImage = new URL(image);
+            Icon icon = new ImageIcon(urlImage);
+            JLabel l = new JLabel(icon);
+            jEditorPane1.add(l);
+            l.setBounds(elem[i].getCo_x(),elem[i].getCo_y(),icon.getIconWidth(),icon.getIconHeight());
+          }
+          catch (MalformedURLException e){
+            //jEditorPane1.setText(e.getMessage());
+            JOptionPane.showMessageDialog(frame,
+            "Image not Found " +e.getMessage(),
+            "",
+            JOptionPane.ERROR_MESSAGE);
+          }
+        }
+      }
+      // END TAG IMG
+      // TAG DO
+      if ((elem[i].getName().equalsIgnoreCase("do")) & (elem[i].getCanshow())){
+      String  type="";
+      String  label1="";
+        for (int j=0;j<elem[i].getNumattr();j++ ){
+          if (attrbname(i,j).equalsIgnoreCase("type")){
+            type = attrbvalue(i,j);
+          }
+        }
+        for (int j=0;j<elem[i].getNumattr();j++ ){
+          if (attrbname(i,j).equalsIgnoreCase("label")){
+            label1 = attrbvalue(i,j);
+          }
+        }
+        if (!label1.equalsIgnoreCase("")){
+         JLabel text = new JLabel();
+         text.setText(label1);
+          jEditorPane3.setText(label1);
+          }
+        if (type.equalsIgnoreCase("accept")){
+            if (elem[i+1].getName().equalsIgnoreCase("go")) {
+            String href="";
+              for (int j=0;j<elem[i+1].getNumattr();j++ ){
+                if (attrbname(i+1,j).equalsIgnoreCase("href")){
+                href = attrbvalue(i+1,j);
+                }
+              }
+              elem[i+1].setLinkTo(href);
+            }
+        }
+      } // end Do
+    }   // end for
+    jEditorPane2.setText("Select");
+ }    // end show1
+static void showall(){
+     try{
+     initFrame();
+     numallnode = 1;
+     jEditorPane1.removeAll();
+     jEditorPane1.repaint();
+     jEditorPane1.setText("");
+     System.out.println("destination2 "+des);
+     UrlInfo(des);
+     getRoot(des);
+     getnumallnode(e);
+     par(e);
+     setStyle();
+     setCo();
+     show1();
+     if (!des.equalsIgnoreCase("file:///c:/tem.wml")){InputArea.setText(des);}
+ //   this.getContentPane().add(jPanel2,  new XYConstraints(1, 24, 396, 282));
+     }
+     catch (JDOMException ex){
+     jEditorPane1.removeAll();
+     jEditorPane1.repaint();
+     //jEditorPane1.setText(ex.getMessage());
+      JOptionPane.showMessageDialog(frame,
+      "Parsing Error " +ex.getMessage(),
+      "",
+      JOptionPane.ERROR_MESSAGE);
+     }
+     catch (IOException ex){
+     jEditorPane1.removeAll();
+     jEditorPane1.repaint();
+     //jEditorPane1.setText(ex.getMessage());
+      JOptionPane.showMessageDialog(frame,
+      "Error " +ex.getMessage(),
+      "",
+      JOptionPane.ERROR_MESSAGE);
+    }
+}
+String speacialChar(String st){
+    String st2,st3="";
+    for (int i = 0 ;i < st.length() ;i++){
+        int j=0;
+        if (st.charAt(i)== '&'){
+          st2 = st.substring(i+1);
+          if (st2.indexOf(";") != -1){
+            st2.substring(0,st2.indexOf(";")-1);
+              if (st2.equals("#34")){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+5;
+                    st3 = st3+'"';
+                  }
+                }
+              } // end #34
+             else if (st2.equals("quot")){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+6;
+                    st3 = st3+'"';
+                  }
+                }
+              }// #quot
+
+            else if ( (st2.equals("#38")) | (st2.equals("amp")) ){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+5;
+                    st3 = st3+'&';
+                  }
+                }
+            }// #38 amp
+            else if (st2.equals("#39")){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+5;
+                    st3 = st3+"'";
+                  }
+                }
+              }// #39
+            else if (st2.equals("apos")){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+6;
+                    st3 = st3+"'";
+                  }
+                }
+              }// #apos
+            else if (st2.equals("#60")){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+5;
+                    st3 = st3+'<';
+                  }
+                }
+              }// #60
+            else if (st2.equals("lt")){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+4;
+                    st3 = st3+'<';
+                  }
+                }
+              }// #lt
+
+            else if (st2.equals("#62")){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+5;
+                    st3 = st3+'>';
+                  }
+                }
+              }// #62
+            else if (st2.equals("gt")){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+4;
+                    st3 = st3+'>';
+                  }
+                }
+              }// #gt
+            else if ((st2.equals("#160")) | (st2.equals("nbsp"))){
+               while(j < st.length()){
+                  st3 = st3+st.charAt(j);
+                   if(j==i){
+                    j=j+6;
+                    st3 = st3+' ';
+                  }
+
+              }// #160 nbsp
+            st= st3;
+            }
+          }
+        }
+    }
+    return st;
+}// end special char
+// ------------------------------------ If enter URL
+  void InputArea_actionPerformed(ActionEvent e) {
+    if (!this.history.empty()){
+      if (!this.history.peek().toString().equals(this.des))
+      this.history.push(this.des);
+      }
+   // }
+
+    this.des=InputArea.getText();
+    this.showall();
+    InputArea.setVisible(false);
+    jScrollPane1.setVisible(true);
+}
+// UP
+void up_press(){
+  int j=0;int i =0;boolean bol=false;
+             this.initFrame();
+
+        for ( i=0;i < this.numallnode ;i++){
+              if ( i > this.numallnode)
+              break;
+              if (this.elem[i].getIsHighlight()){
+              j = i;
+              }
+        }
+
+      i = j-1;
+        while ((i >= 0) & (bol == false)){
+            if ((this.elem[i].getIsLink()) & !(this.elem[i].getContent().equals("")) & (this.elem[i].getCanshow())){
+            this.elem[i].setIsHighlight(true);
+            this.elem[j].setIsHighlight(false);
+            bol = true;
+            }
+            i--;
+        }
+             this.jEditorPane1.removeAll();
+             this.jEditorPane1.repaint();
+             this.jEditorPane1.setText("");
+             this.show1();
+    JScrollBar vsb = new JScrollBar();
+    vsb = jScrollPane1.getVerticalScrollBar();
+    int go_up= vsb.getValue();
+    System.out.println(go_up+" line(s) go up");
+    vsb.setValue(go_up-10);
+    jScrollPane1.setVerticalScrollBar(vsb);
+  }
+  // DOWN
+  void down_press(){
+          int j=0;int i =0;boolean bol=false;
+       this.initFrame();
+
+        for ( i=0;i < this.numallnode ;i++){
+              if ( i > this.numallnode)
+              break;
+              if (this.elem[i].getIsHighlight()){
+              j = i;
+              }
+        }
+      i = j+1;
+        while ((i < this.numallnode) & (bol == false)){
+            if ((this.elem[i].getIsLink()) & !(this.elem[i].getContent().equals(""))& (this.elem[i].getCanshow())){
+            this.elem[i].setIsHighlight(true);
+            this.elem[j].setIsHighlight(false);
+            bol = true;
+            }
+            i++;
+        }
+             this.jEditorPane1.removeAll();
+             this.jEditorPane1.repaint();
+             this.jEditorPane1.setText("");
+             this.show1();
+   JScrollBar vsb = new JScrollBar();
+   vsb = jScrollPane1.getVerticalScrollBar();
+   int go_down= vsb.getValue();
+   System.out.println(go_down+" line(s) go down");
+   vsb.setValue(go_down+10);
+   jScrollPane1.setVerticalScrollBar(vsb);
+
+        }
+// Enter Press
+
+static void enter_press(String st1){
+      boolean bol = false;
+      if (!history.empty()){
+       if (!history.peek().toString().equals(des))
+       history.push(des);
+      }
+      // end for
+    des = st1;
+    if (des.charAt(0) != '#'){
+      UrlInfo(des);
+      //System.out.println("destination "+ des);
+      showall();
+      InputArea.setVisible(false);
+      jScrollPane1.setVisible(true);
+    }// end if char <> #
+    else {          // link to same file but another card
+        String[] name = new String[numallnode];
+        String[] value = new String[numallnode];
+        String st = des.substring(1,des.length());
+        anchor = st;
+//        if (this.port.equals("")){
+          des = protocol+"://"+hostname+path+file+'#'+anchor;
+//        }
+//        else{
+//          this.des = this.protocol+"://"+this.hostname+":"+this.port+this.path+this.file+'#'+this.anchor;
+//        }
+        UrlInfo(des);
+        for (int i =0 ; i < numallnode ; i++ ){
+           name = elem[i].getAttrbName();
+           value = elem[i].getAttrbValue();
+          if((elem[i].getName().equalsIgnoreCase("card")) & (!elem[i].getCanshow())){
+              for ( j = 0 ;j< elem[i].getNumattr() ; j++){
+                if ((name[j].equalsIgnoreCase("id")) & (value[j].equals(st))){
+                  elem[i].setCanshow(true);   // enable new card
+                }
+              }
+            }
+            else if (elem[i].getCanshow()){
+                  elem[i].setCanshow(false);   // disable old card
+               }
+        }// end for
+        x=0;
+        y=0;
+        setStyle();
+        setCo();
+        jEditorPane1.removeAll();
+        jEditorPane1.repaint();
+        jEditorPane1.setText("");
+        show1();
+        if (!des.equalsIgnoreCase("file:///c:/tem.wml")){InputArea.setText(des);}
+        UrlInfo(des);
+    }
+    if (!des.substring(0,8).equalsIgnoreCase("file:///")){
+      f2.jText2Editor(des);
+      f2.statusBar.setText("Openning WAP Site : " + des);
+    }
+    else if (!des.equalsIgnoreCase("file:///c:/tem.wml")){
+      f2.statusBar.setText("Openning : " + des);
+    }
+}
+
+void Favorite(String st)
+{
+//  while (){
+//        FileReader fin = new FileReader("fav.txt");
+//        BufferedReader bin = new BufferedReader(fin);
+//        this.des = bin.readLine();
+//        bin.close();
+//
+//
+//  while (favindx<=10){
+//    if (favlist[ii].equalsIgnoreCase("")){}
+//  }
+}
+
+void Select() {
+     for (int i = 0 ; i < numallnode ; i++){ // Find link to
+          if (this.elem[i].getIsHighlight()){
+          System.out.println("i "+i);
+          System.out.println("name "+elem[i].getLinkTo());
+                des = elem[i].getLinkTo();
+//            String[] name = new String[elem[i].getNumattr()];
+//            String[] value = new String[elem[i].getNumattr()];
+//            name = elem[i].getAttrbName();
+//            value = elem[i].getAttrbValue();
+//                  int k=i;
+            }
+      } // end for
+  //  des = destination;
+    System.out.println("des "+des);
+    this.enter_press(des);
+    f2.currFileName = null;
+}
+//----------------------Menu's action
+  void jMenuOpenU_actionPerformed(ActionEvent e) {
+    if (InputActive){
+      InputArea.setVisible(false);
+      jScrollPane1.setVisible(true);
+      InputActive = false;
+    }
+    else{
+      jScrollPane1.setVisible(false);
+        //jEditorPane1.setText("MenuOpenU action");
+      InputArea.setText("");
+      InputArea.append(this.des);
+      //IsInput = true; //////////////////Unknown Var
+      InputArea.setVisible(true);
+      InputActive = true;
+    }
+  }
+
+
+  //---------------------end Menu's action
+
+  void contentPane_mouseClicked(MouseEvent e) {
+    if (e.getModifiers()==4) {
+/*          JPopupMenu jpmu = new JPopupMenu () ;//Not need
+          jpmu.add(jMenuBack) ;
+          jpmu.add(jMenuStop) ;
+          jpmu.add(jMenuRefresh) ;
+          jpmu.addSeparator();
+          jpmu.add(jMenuOpenU) ;
+          jpmu.add(jMenuHome) ;
+          jpmu.add(jMenuSearch) ;
+          jpmu.addSeparator();
+          jpmu.add(jMenuFav) ;
+          jpmu.add(jMenuPrint) ;
+          jpmu.add(jMenuAbout) ;
+          jpmu.addSeparator();
+          jpmu.add(jMenuSource) ;
+          jpmu.addSeparator();
+          jpmu.add(jMenuExit) ;
+  */        jPopupMenu1.show(contentPane,e.getX(),e.getY()) ;
+          }
+  }
+
+  void jEditorPane1_mouseClicked(MouseEvent e) {
+    if (e.getModifiers()==4) {
+    jPopupMenu1.show(jEditorPane1,e.getX(),e.getY()) ;
+          }
+  }
+  void jButtonViewSrc_actionPerformed(ActionEvent e) {
+    //f2.jTextField1.setText(InputArea.getText());
+    f2.setVisible(true);
+  }
+
+  void jButtonRed_actionPerformed(ActionEvent e) { // ------- Stop
+
+  }
+
+  void jButtonPower_actionPerformed(ActionEvent e) { //------------- Close
+//    try {
+//      process = Runtime.getRuntime().exec("command.com /c "+"deltree /y c:\\temp2 " +"\n");
+//    }catch(IOException errcommand) {System.out.println(errcommand+"command error");}
+    System.exit(0);
+  }
+
+  void InputArea_keyPressed(KeyEvent e) {
+    if ((e.getKeyText(e.getKeyCode()).equalsIgnoreCase("Enter"))&&InputActive){
+      String destination = new String(InputArea.getText());
+      InputArea.setVisible(false);
+      jScrollPane1.setVisible(true);
+      InputActive = false;
+      this.enter_press(destination);
+    }
+  }
+
+  void jMenuSearch_actionPerformed(ActionEvent e) {
+      this.enter_press("http://netsiam.net/wap");
+  }
+
+  void jMenuAbout_actionPerformed(ActionEvent e) {
+    JOptionPane.showMessageDialog(this,
+    "\n                Thai WAP Browser 2\n\n                Copyright (c) 2001\n                BY ICL Lab\n\n",
+    this.getTitle(),
+    JOptionPane.PLAIN_MESSAGE);
+  }
+
+  void jEditorPane1_keyPressed(KeyEvent e) {
+    if (e.getKeyText(e.getKeyCode()).equalsIgnoreCase("Up")){this.up_press();}
+    else  if (e.getKeyText(e.getKeyCode()).equalsIgnoreCase("Down")){this.down_press();}
+    else if((!InputActive)&&(e.getKeyText(e.getKeyCode()).equalsIgnoreCase("Enter"))){Select();}
+  }
+
+
+//  void jButton1_keyPressed(KeyEvent e) {
+//    if (e.getKeyText(e.getKeyCode()).equalsIgnoreCase("Up")){this.up_press();}
+//  }
+//
+//  void jButton2_keyPressed(KeyEvent e) {
+//    if (e.getKeyText(e.getKeyCode()).equalsIgnoreCase("Down")){this.down_press();}
+//  }
+
+// ------------------------------- End Method
+}
+
+class Browser_jButton4_actionAdapter implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  Browser_jButton4_actionAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButton4_actionPerformed(e);
+  }
+}
+
+class Browser_jMenuBack_actionAdapter implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  Browser_jMenuBack_actionAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButton4_actionPerformed(e);
+  }
+}
+
+class Browser_jMenuSource_actionAdapter implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  Browser_jMenuSource_actionAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButtonViewSrc_actionPerformed(e);
+  }
+}
+
+class Browser_jMenuSet_actionAdapter implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  Browser_jMenuSet_actionAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButton6_actionPerformed(e);
+  }
+}
+
+class Browser_jButton6_actionAdapter implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  Browser_jButton6_actionAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButton6_actionPerformed(e);
+  }
+}
+
+class Browser_jMenuOpenU_actionAdapter implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  Browser_jMenuOpenU_actionAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jMenuOpenU_actionPerformed(e);
+  }
+}
+
+class Browser_jButton3_actionAdapter implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  Browser_jButton3_actionAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButton3_actionPerformed(e);
+  }
+}
+
+//class ActionListener implements java.awt.event.ActionListener {
+//  Browser adaptee;
+//
+//  ActionListener(Browser adaptee) {
+//    this.adaptee = adaptee;
+//  }
+//  public void actionPerformed(ActionEvent e) {
+//    adaptee.jButton5_actionPerformed(e);
+//  }
+//}
+
+class Browser_jMenuExit_actionAdapter implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  Browser_jMenuExit_actionAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButtonPower_actionPerformed(e);
+  }
+}
+
+//class Browser_InputArea_ancestorAdapter implements javax.swing.event.AncestorListener {
+//  Browser adaptee;
+//
+//  Browser_InputArea_ancestorAdapter(Browser adaptee) {
+//    this.adaptee = adaptee;
+//  }
+//  public void ancestorAdded(AncestorEvent e) {
+//    adaptee.jButton3_actionPerformed(e);
+//  }
+//  public void ancestorRemoved(AncestorEvent e) {
+//  }
+//  public void ancestorMoved(AncestorEvent e) {
+//  }
+//}
+
+class Browser_InputArea_keyAdapter extends java.awt.event.KeyAdapter {
+  Browser adaptee;
+
+  Browser_InputArea_keyAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void keyPressed(KeyEvent e) {
+    adaptee.InputArea_keyPressed(e);
+  }
+}
+
+class Browser_jMenuRefresh_actionAdapter implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  Browser_jMenuRefresh_actionAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButton3_actionPerformed(e);
+  }
+}
+
+class Browser_jMenuSearch_actionAdapter implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  Browser_jMenuSearch_actionAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jMenuSearch_actionPerformed(e);
+  }
+}
+
+class Browser_jMenuAbout_actionAdapter implements java.awt.event.ActionListener {
+  Browser adaptee;
+
+  Browser_jMenuAbout_actionAdapter(Browser adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jMenuAbout_actionPerformed(e);
+  }
+}

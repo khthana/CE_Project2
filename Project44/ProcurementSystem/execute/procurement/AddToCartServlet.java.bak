@@ -1,0 +1,93 @@
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+import java.util.*;
+import java.sql.*;
+import java.lang.*;
+import java.util.Date;
+
+
+public class AddToCartServlet extends HttpServlet {
+  private static final String CONTENT_TYPE = "text/html; charset=MS874";
+  private static final String TARGET_PAGE = "../shoppingcart.jsp";
+
+  /**Initialize global variables*/
+  public void init() throws ServletException {
+  }
+
+  /**Process the HTTP Get request*/
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    response.setContentType(CONTENT_TYPE);
+    PrintWriter out = response.getWriter();
+
+	// รับ parameter จาก Form
+	String code = request.getParameter("code");
+	String cat = request.getParameter("catNo");
+	String type=request.getParameter("type");
+	
+	String tableName=request.getParameter("tablename");
+	 String getnum=request.getParameter("num");
+	int num=0;
+
+   if ( (getnum != null) && (getnum.trim().length() != 0) )
+   {
+	    getnum.trim();
+	   num = Integer.parseInt(getnum);
+   }	
+  if ( (num==0) || (getnum==null)  || (getnum.trim().length()==0))
+  {
+			response.sendRedirect("../no_num.jsp");
+  }else{
+	// สร้าง session
+
+	HttpSession session = request.getSession(true);
+ 
+	// เรียก Shopping Cart จาก Session
+	ShoppingCart shoppingCart = (ShoppingCart)session.getAttribute("ShoppingCart");
+    if (shoppingCart == null) {
+			;	
+      shoppingCart = new ShoppingCart();
+    }
+
+    Collection itemOrderCollection = shoppingCart.getItemOrdered();
+	Iterator i = itemOrderCollection.iterator();
+
+	boolean exist = false;
+
+	while (i.hasNext())
+	{
+		ItemOrder item = (ItemOrder) i.next();
+		if (code.equals(item.getItemID())) {
+			item.incrementNumItems(num);
+			exist = true;
+		}
+	}//while
+
+    
+	// สร้าง ItemOrder จากข้อมูลที่รับเข้ามา
+	ItemOrder itemOrder = new ItemOrder(code,type,cat,num,tableName);
+
+	// ใส่ ItemOrder เข้าไปใน ShoppingCart
+
+   
+
+
+	if (!exist) {
+		shoppingCart.add(itemOrder);
+	}
+
+	// ใส่ ShoppingCart ลงใน Session
+	session.setAttribute("ShoppingCart", shoppingCart);
+
+	response.sendRedirect(TARGET_PAGE);
+  }//if 
+  }
+
+  /**Process the HTTP Post request*/
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	  doGet(request, response);
+  }
+  /**Clean up resources*/
+  public void destroy() {
+  }
+}

@@ -1,0 +1,20 @@
+<%@page contentType="text/html;  charset=windows-874" %>
+<%@page import ="java.sql.*,java.lang.*,java.util.Date,java.util.*"%> <!-- import  เพื่อใช้ session -->
+<%@page session="true"%><!-- default -->
+<%@include file="th-db.jsp"%>
+<%
+ int index=Integer.parseInt(request.getParameter("ii"));
+ShoppingCart shoppingCart = (ShoppingCart)session.getAttribute("ShoppingCart");
+	if (shoppingCart == null) {
+		out.println("ไม่มีรายการใน ShoppingCart");
+	}
+	else {
+		
+	
+		   shoppingCart.remove(index);
+		   session.setAttribute("ShoppingCart",shoppingCart);
+
+		   response.sendRedirect("shoppingcart.jsp");
+
+	}
+%>

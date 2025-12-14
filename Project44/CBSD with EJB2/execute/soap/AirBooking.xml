@@ -1,0 +1,106 @@
+<isd:service xmlns:isd="http://xml.apache.org/xml-soap/deployment"
+             id="http://olala/AirBooking/">
+  <isd:provider type="java"
+                scope="Application"
+                methods="Reserve Confirm CancelBooking CancelBookingDetail GetBooking  GetBookings GetBookingDetails GetSeatBookings ViewBooking">
+    <isd:java class="olala.service.airlinesystem.BookingService" static="false"/>
+  </isd:provider>
+
+  <isd:faultListener>org.apache.soap.server.DOMFaultListener</isd:faultListener>
+
+  <isd:mappings>
+    <!--
+    <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:customerID"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.StringDeserializer"/>
+     <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:bookingID"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.StringDeserializer"/>
+     <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:ItemNo"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.IntDeserializer"/>
+     -->
+    <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:reservelist"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.ArraySerializer"/>
+     <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="" qname="x:travellers"
+             xml2JavaClassName="org.apache.soap.encoding.soapenc.ArraySerializer"/>
+
+    <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:AircraftClassVO"
+             javaType="olala.airlinesystem.AircraftClassVO"
+             java2XMLClassName="olala.service.airlinesystem.AircraftClassVOSerialize"
+             xml2JavaClassName="olala.service.airlinesystem.AircraftClassVOSerialize"/>
+    <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:AircraftModelVO"
+             javaType="olala.airlinesystem.AircraftModelVO"
+             java2XMLClassName="olala.service.airlinesystem.AircraftModelVOSerialize"
+             xml2JavaClassName="olala.service.airlinesystem.AircraftModelVOSerialize"/>
+    <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:AirlineVO"
+             javaType="olala.airlinesystem.AirlineVO"
+             java2XMLClassName="olala.service.airlinesystem.AirlineVOSerialize"
+             xml2JavaClassName="olala.service.airlinesystem.AirlineVOSerialize"/>
+    <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:AirportVO"
+             javaType="olala.airlinesystem.AirportVO"
+             java2XMLClassName="olala.service.airlinesystem.AirportVOSerialize"
+             xml2JavaClassName="olala.service.airlinesystem.AirportVOSerialize"/>
+    <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:ClassFeeVO"
+             javaType="olala.airlinesystem.ClassFeeVO"
+             java2XMLClassName="olala.service.airlinesystem.ClassFeeVOSerialize"
+             xml2JavaClassName="olala.service.airlinesystem.ClassFeeVOSerialize"/>
+    <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:FlightVO"
+             javaType="olala.airlinesystem.FlightVO"
+             java2XMLClassName="olala.service.airlinesystem.FlightVOSerialize"
+             xml2JavaClassName="olala.service.airlinesystem.FlightVOSerialize"/>
+    <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:FlightScheduleVO"
+             javaType="olala.airlinesystem.FlightScheduleVO"
+             java2XMLClassName="olala.service.airlinesystem.FlightScheduleVOSerialize"
+             xml2JavaClassName="olala.service.airlinesystem.FlightScheduleVOSerialize"/>
+    <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:SeatVO"
+             javaType="olala.airlinesystem.SeatVO"
+             java2XMLClassName="olala.service.airlinesystem.SeatVOSerialize"
+             xml2JavaClassName="olala.service.airlinesystem.SeatVOSerialize"/>
+    <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:SubrouteVO"
+             javaType="olala.airlinesystem.SubrouteVO"
+             java2XMLClassName="olala.service.airlinesystem.SubrouteVOSerialize"
+             xml2JavaClassName="olala.service.airlinesystem.SubrouteVOSerialize"/>
+    <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:AirSeatSearchResult"
+             javaType="olala.airlinesystem.AirSeatSearchResult"
+             java2XMLClassName="olala.service.airlinesystem.AirSeatSearchResultSerialize"
+             xml2JavaClassName="olala.service.airlinesystem.AirSeatSearchResultSerialize"/>
+    <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:ReserveItem"
+             javaType="olala.airlinesystem.ReserveItem"
+             java2XMLClassName="olala.service.airlinesystem.ReserveItemSerialize"
+             xml2JavaClassName="olala.service.airlinesystem.ReserveItemSerialize"/>
+    <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:TravellerVO"
+             javaType="olala.airlinesystem.TravellerVO"
+             java2XMLClassName="olala.service.airlinesystem.TravellerVOSerialize"
+             xml2JavaClassName="olala.service.airlinesystem.TravellerVOSerialize"/>   	
+    <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:TravellerSeat"
+             javaType="olala.airlinesystem.TravellerSeat"
+             java2XMLClassName="olala.service.airlinesystem.TravellerSeatSerialize"
+             xml2JavaClassName="olala.service.airlinesystem.TravellerSeatSerialize"/>
+    <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:BookingVO"
+             javaType="olala.airlinesystem.BookingVO"
+             java2XMLClassName="olala.service.airlinesystem.BookingVOSerialize"
+             xml2JavaClassName="olala.service.airlinesystem.BookingVOSerialize"/>
+    <isd:map encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:x="http://soapinterop.org/xsd" qname="x:ViewBookInfo"
+             javaType="olala.airlinesystem.ViewBookInfo"
+             java2XMLClassName="olala.service.airlinesystem.ViewBookInfoSerialize"
+             xml2JavaClassName="olala.service.airlinesystem.ViewBookInfoSerialize"/>
+    </isd:mappings>  
+</isd:service>

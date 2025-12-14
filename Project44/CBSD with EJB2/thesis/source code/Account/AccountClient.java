@@ -1,0 +1,100 @@
+import olala.*;
+
+import javax.ejb.*;
+import javax.naming.*;
+import java.util.*;
+
+public class AccountClient
+{
+	public static void main(String[] args)
+	{
+		if (args != null && args.length > 0) {
+			for (int i = 0; i < args.length; i++) {
+				switch(i) {
+					case 0:
+					url = args[i];
+					break;
+					case 1:
+					user = args[i];
+					break;
+					case 2:
+					password = args[i];
+					break;
+					default:
+				}
+			}
+		}
+
+		try {
+			Context ctx = getInitialContext();
+			AccountHome home = (AccountHome) ctx.lookup("Account");
+			Account account = null;
+			try {
+				home.create("123-456-7890","John Smith");
+				Enumeration enumeration=home.findByOwnerName("John Smith");
+				if (enumeration!=null)
+				{
+				    account=(Account) enumeration.nextElement();
+				}
+				else
+				{
+				    throw new Exception("Could not find account");
+				}
+				System.out.println("Initial Balance = "+account.getBalance());
+				account.deposit(100);
+				System.out.println("After depositing 100, account balance = "+account.getBalance());
+				
+				AccountPK pk=(AccountPK) account.getPrimaryKey();
+				account=null;
+				account=home.findByPrimaryKey(pk);
+				
+				System.out.println("Found account with ID "+pk+".  Balance = "+account.getBalance());
+				System.out.println("Now trying to withdraw $150, which is more than is "+"currently available.  This should generate an exception..");
+				account.withdraw(150);
+
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+            finally
+            {
+                try
+                {
+                    System.out.println("Destroying account..");
+                    if (account!=null)
+                    {
+                        account.remove();
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static Context getInitialContext()
+	throws NamingException
+	{
+		Properties p = new Properties();
+		p.put(Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory");
+		p.put(Context.PROVIDER_URL, url);
+
+		if (user != null) {
+			p.put(Context.SECURITY_PRINCIPAL, user);
+			if (password == null)
+				password = "";
+			p.put(Context.SECURITY_CREDENTIALS, password);
+		}
+		return new InitialContext(p);
+	}
+
+	static String url = "t3://172.16.102.11:7001";
+	static String user = null;
+	static String password = null;
+
+}

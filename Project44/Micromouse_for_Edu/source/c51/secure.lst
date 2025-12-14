@@ -1,0 +1,2696 @@
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE     1
+
+
+MACRO ASSEMBLER A51 V6.00f
+OBJECT MODULE PLACED IN .\secure.obj
+ASSEMBLER INVOKED BY: d:\program files\Keil\C51\BIN\A51.EXE E:\Lum\program\secure.asm SET(SMALL) PRINT(.\secure.lst) DEB
+                      UG OBJECT(.\secure.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;constant
+  0096                 2     WMCON           EQU     96H
+  000B                 3     Time1L          EQU     0BH
+  00FE                 4     Time1H          EQU     0FEH
+  0000                 5     Time0L          EQU     00H
+  0000                 6     Time0H          EQU     00H
+  0096                 7     Output1         EQU     P1.6            ;pulse 1 KHz 
+  0097                 8     Output2         EQU     P1.7            ;hign for on
+  0090                 9     Sensor1         EQU     P1.0
+  0091                10     Sensor2         EQU     P1.1
+  0092                11     Sensor3         EQU     P1.2
+  0093                12     Sensor4         EQU     P1.3
+  0020                13     Blank           EQU     20H     
+  0001                14     PassWD1_        EQU     1
+  0002                15     PassWD2_        EQU     2
+  0003                16     PassWD3_        EQU     3
+  0000                17     AlarmTime1_     EQU     0
+  0000                18     AlarmTime2_     EQU     0
+  0005                19     AlarmTime3_     EQU     5
+  0000                20     AlarmDelay1_    EQU     0
+  0000                21     AlarmDelay2_    EQU     0
+  0003                22     AlarmDelay3_    EQU     3
+                      23     
+  0048                24     PosSensor1      EQU     48H
+  0049                25     PosSensor2      EQU     49H
+  004A                26     PosSensor3      EQU     4AH
+  004B                27     PosSensor4      EQU     4BH
+  004D                28     PosPassWD1      EQU     4DH
+  004E                29     PosPassWD2      EQU     4EH
+  004F                30     PosPassWD3      EQU     4FH
+  000D                31     PosAlarm        EQU     0DH
+  0040                32     PosMode         EQU     40H
+  0044                33     PosNew          EQU     44H
+  0040                34     PosOld          EQU     40H
+                      35     
+                      36     ;Lcd define
+  0080                37     PortLCD         EQU     P0
+  0001                38     ClearDispCmd    EQU     01H
+  0002                39     ReturnHomeCmd   EQU     02H
+  0006                40     EntryModeCmd    EQU     06H             ;Entry mode set Inc & cursor right
+  000F                41     DispOnOffCmd    EQU     0FH             ;Display On/Off set on & cursor Blink
+  0014                42     DispShiftCmd    EQU     14H             ;Shift char on screen to left 1 pos
+  0033                43     FunctionCmd81   EQU     33H             
+  0032                44     FunctionCmd82   EQU     32H             
+  0028                45     FunctionCmd4    EQU     28H             ;4 bits interfaces, 4 Lines, 5X7 dots
+  0080                46     SetDDRam1Cmd    EQU     80H             ;address 00H   16 X 4
+  00C0                47     SetDDRam2Cmd    EQU     0C0H            ;address 40H
+  0090                48     SetDDRam3Cmd    EQU     90H             ;address 10H
+  00D0                49     SetDDRam4Cmd    EQU     0D0H            ;address 50H
+  00F0                50     SetDDRam5Cmd    EQU     0F0H            ;address 70H
+                      51     
+  0080                52     LcdRS           EQU     P0.0
+  0081                53     LcdR_W          EQU     P0.1
+  0082                54     LcdEna          EQU     P0.2
+  0004                55     LCDEnable       EQU     00000100b       
+                      56     
+                      57     ;define memory in eeprom
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE     2
+
+                      58     
+                      59     ;--------------------------------------------------------
+                      60     ;;;key board
+                      61       ;scan key
+  00A0                62     PortKey         EQU     P2
+  00A0                63     Col0            EQU     P2.0            ;read col 0
+  00A1                64     Col1            EQU     P2.1            ;read col 1
+  00A2                65     Col2            EQU     P2.2            ;read col 2
+                      66     
+                      67       ;pin out for scan key
+  00A7                68     KeyRowMenu      EQU     P2.7            ;Scan key Out
+  00EF                69     Row0            EQU     11101111b       ;Scan row 0
+  00DF                70     Row1            EQU     11011111b       ;Scan row 1
+  00BF                71     Row2            EQU     10111111b       ;Scan row 2
+  007F                72     Row3            EQU     01111111b       ;Scan row 3
+  007F                73     ScanMenuRow     EQU     01111111b       ;Scan menu key only
+  000F                74     AllRow          EQU     00001111b       ;On all row
+                      75     
+                      76       ;pin in for scan key
+  00A2                77     KeyColStar      EQU     P2.2            ;Scan Key In
+                      78     
+                      79       ;Key value
+  00FF                80     NotData         EQU     0ffh            ;not data use to fill when cut < 10
+  0000                81     KeyPad0         EQU     0               ;Key 0 from WaitKey
+  0001                82     KeyPad1         EQU     1               ;Key 1
+  0002                83     KeyPad2         EQU     2               ;Key 2
+  0003                84     KeyPad3         EQU     3               ;Key 3
+  0004                85     KeyPad4         EQU     4               ;Key 4
+  0005                86     KeyPad5         EQU     5               ;Key 5
+  0006                87     KeyPad6         EQU     6               ;Key 6
+  0007                88     KeyPad7         EQU     7               ;Key 7
+  0008                89     KeyPad8         EQU     8               ;Key 8
+  0009                90     KeyPad9         EQU     9               ;Key 9
+  000A                91     KeyPadStar      EQU     0Ah             ;Key *
+  000B                92     KeyPadSquare    EQU     0Bh             ;Key #
+  000E                93     KeyMenuOnly     EQU     00001110b       ;Key menu only
+  00F0                94     KeyNone         EQU     0F0H            ;no Key press
+                      95     
+                      96     
+                      97     ;---------------------------------------------------
+                      98     ;constant for program run
+  0000                99     MODE_HOME       EQU     0
+  0001               100     MODE_AWAY       EQU     1
+  0002               101     MODE_STBY       EQU     2
+  0073               102     SavedFlag       EQu     73H
+                     103     
+                     104     ;byte ram
+  0028               105     TempFlag        EQU     28h
+  0020               106     Flag            EQU     20H
+                     107     
+  0040               108     LCDFlag         EQU     40h
+  0041               109     PassWD1         EQU     41H             ;keep password digit1
+  0042               110     PassWD2         EQU     42H             ;keep password digit2
+  0043               111     PassWD3         EQU     43H             ;keep password digit3
+  0044               112     MODE            EQU     44H             ;what mode now 0-7
+  0045               113     TimeCount       EQU     45H             ;count time on second
+  0046               114     TempPassWD1     EQU     46H
+  0047               115     TempPassWD2     EQU     47H
+  0048               116     TempPassWD3     EQU     48H
+  0049               117     GotPass         EQU     49H
+  004A               118     PassWDCount     EQU     4AH
+  004B               119     Second1         EQU     4BH
+  004C               120     Second2         EQU     4CH
+  004D               121     Second3         EQU     4DH
+  004E               122     LastMode        EQU     4EH
+  004F               123     MOdeSelect      EQU     4FH
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE     3
+
+  0050               124     AlarmTime1      EQU     50H
+  0051               125     AlarmTime2      EQU     51H
+  0052               126     AlarmTime3      EQU     52H
+  0053               127     AlarmDelay1     EQU     53H
+  0054               128     AlarmDelay2     EQU     54H
+  0055               129     AlarmDelay3     EQU     55H
+  0056               130     TempAlarmTime1  EQU     56H
+  0057               131     TempAlarmTime2  EQU     57H
+  0058               132     TempAlarmTime3  EQU     58H
+  0059               133     TempAlarmDelay1 EQU     59H
+  005A               134     TempAlarmDelay2 EQU     5AH
+  005B               135     TempAlarmDelay3 EQU     5BH
+                     136     
+                     137     ;bit ram
+  0000               138     AlarmFlag       EQU     Flag.0
+  0001               139     FirstFlag       EQU     Flag.1
+  0002               140     DelayFlag       EQU     Flag.2
+                     141     
+                     142     ;EEPROM ADDRESS
+  0000               143     MEMFLag         EQU     00H
+  0001               144     MEMAlarmTime1   EQU     01H             
+  0002               145     MEMAlarmTime2   EQU     02H             
+  0003               146     MEMAlarmTime3   EQU     03H             
+  0004               147     MEMAlarmDelay1  EQU     04H             
+  0005               148     MEMAlarmDelay2  EQU     05H             
+  0006               149     MEMAlarmDelay3  EQU     06H             
+  0007               150     MEMPassWD1      EQU     07H             
+  0008               151     MEMPassWD2      EQU     08H             
+  0009               152     MEMPassWD3      EQU     09H             
+  000A               153     MEMMODE         EQU     0AH             
+  000B               154     MEMLASTMODE     EQU     0BH             
+                     155     
+                     156     
+                     157     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0000                 158                     ORG     0000h
+0000 803E            159                     jmp     Main
+                     160     
+000B                 161                     ORG     000BH
+000B 020D1F          162                     jmp     T0_ISR
+                     163     
+001B                 164                     ORG     001BH
+001B 020D0E          165                     jmp     T1_ISR
+                     166     
+0040                 167                     ORG     0040h
+0040 12092B          168     Main:           call    Init            ;init and show title
+0043 120BEF          169                     call    DelayASec
+0046 120BEF          170                     call    DelayASec
+                     171     
+0049 900000          172                     mov     dptr,#MEMFlag
+004C 120CE0          173                     call    ReadEEPROM
+004F B4735A          174                     cjne    a,#SavedFlag,NewProcess
+0052 900001          175                     mov     dptr,#MEMAlarmTime1     ;read alarm time 1
+0055 120CE0          176                     call    ReadEEPROM
+0058 F550            177                     mov     AlarmTime1,a
+005A 900002          178                     mov     dptr,#MEMAlarmTime2     ;read alarm time 2
+005D 120CE0          179                     call    ReadEEPROM
+0060 F551            180                     mov     AlarmTime2,a
+0062 900003          181                     mov     dptr,#MEMAlarmTime3     ;read alarm time 3
+0065 120CE0          182                     call    ReadEEPROM
+0068 F552            183                     mov     AlarmTime3,a
+006A 900004          184                     mov     dptr,#MEMAlarmDelay1    ;read alarm delay 1
+006D 120CE0          185                     call    ReadEEPROM
+0070 F553            186                     mov     AlarmDelay1,a
+0072 900005          187                     mov     dptr,#MEMAlarmDelay2    ;read alarm delay 2
+0075 120CE0          188                     call    ReadEEPROM
+0078 F554            189                     mov     AlarmDelay2,a
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE     4
+
+007A 900006          190                     mov     dptr,#MEMAlarmDelay3    ;read alarm delay 3
+007D 120CE0          191                     call    ReadEEPROM
+0080 F555            192                     mov     AlarmDelay3,a
+0082 900007          193                     mov     dptr,#MEMPassWD1        ;read password digit 1
+0085 120CE0          194                     call    ReadEEPROM
+0088 F541            195                     mov     PassWD1,a
+008A 900008          196                     mov     dptr,#MEMPassWD2        ;read password digit 2
+008D 120CE0          197                     call    ReadEEPROM
+0090 F542            198                     mov     PassWD2,a
+0092 900009          199                     mov     dptr,#MEMPassWD3        ;read password digit 3
+0095 120CE0          200                     call    ReadEEPROM
+0098 F543            201                     mov     PassWD3,a
+009A 90000A          202                     mov     dptr,#MEMMODE           ;read run mode
+009D 120CE0          203                     call    ReadEEPROM
+00A0 F544            204                     mov     MODE,a  
+00A2 90000B          205                     mov     dptr,#MEMLASTMODE       ;read last mode
+00A5 120CE0          206                     call    ReadEEPROM
+00A8 F54E            207                     mov     LastMode,a      
+00AA 8000            208                     jmp     RunProcess
+                     209     
+00AC                 210     NewProcess:             
+                     211     
+00AC                 212     RunProcess:     
+00AC E544            213     ProcessLoop:    mov     a,Mode
+                     214     ;-------------------------------------------------------
+00AE B40004          215                     cjne    a,#0,CheckMode1
+                     216                     ;mode 0
+00B1 713E            217                     call    Mode0
+00B3 2123            218                     jmp     EndCheckMode
+                     219     
+                     220     ;-------------------------------------------------------
+00B5 B40104          221     CheckMode1:     cjne    a,#1,CheckMode2
+                     222                     ;mode 1
+00B8 7155            223                     call    Mode1
+00BA 2123            224                     jmp     EndCheckMode
+                     225     
+                     226     ;-------------------------------------------------------
+00BC B4020F          227     CheckMode2:     cjne    a,#2,CheckMode3
+                     228                     ;mode 2
+00BF 754A01          229                     mov     PassWDCount,#1
+00C2 3174            230                     call    SaveAllPara
+00C4 91FF            231                     call    Mode2
+00C6 754E02          232                     mov     LastMode,#2
+00C9 754408          233                     mov     Mode,#8         ;mode main
+00CC 8055            234                     jmp     EndCheckMode
+                     235     
+                     236     ;-------------------------------------------------------
+00CE B40318          237     CheckMode3:     cjne    a,#3,CheckMode4
+                     238                     ;mode 3
+00D1 754A01          239                     mov     PassWDCount,#1
+00D4 754B00          240                     mov     Second1,#0
+00D7 754C00          241                     mov     Second2,#0
+00DA 754D00          242                     mov     Second3,#0
+00DD 3174            243                     call    SaveAllPara
+00DF D118            244                     call    Mode3
+00E1 754E03          245                     mov     LastMode,#3
+00E4 754408          246                     mov     Mode,#8         ;mode main
+00E7 803A            247                     jmp     EndCheckMode            
+                     248     
+                     249     ;-------------------------------------------------------
+00E9 B40418          250     CheckMode4:     cjne    a,#4,CheckMode5
+                     251                     ;mode 4
+00EC 754A01          252                     mov     PassWDCount,#1
+00EF 754B00          253                     mov     Second1,#0
+00F2 754C00          254                     mov     Second2,#0
+00F5 754D00          255                     mov     Second3,#0
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE     5
+
+00F8 3174            256                     call    SaveAllPara
+00FA F179            257                     call    Mode4
+00FC 754E04          258                     mov     LastMode,#4
+00FF 754408          259                     mov     Mode,#8         ;mode main
+0102 801F            260                     jmp     EndCheckMode
+                     261     
+                     262     ;-------------------------------------------------------
+0104 B40506          263     CheckMode5:     cjne    a,#5,CheckMode6
+                     264                     ;mode 5
+0107 31D9            265                     call    Mode5
+0109 3127            266                     call    SavePara
+010B 8016            267                     jmp     EndCheckMode
+                     268     
+                     269     ;-------------------------------------------------------
+010D B40606          270     CheckMode6:     cjne    a,#6,CheckMode7
+                     271                     ;mode 6
+0110 5150            272                     call    Mode6
+0112 3127            273                     call    SavePara
+0114 800D            274                     jmp     EndCheckMode
+                     275     
+                     276     ;-------------------------------------------------------
+0116 B40706          277     CheckMode7:     cjne    a,#7,CheckMode8
+                     278                     ;mode 7
+0119 51C7            279                     call    Mode7
+011B 3127            280                     call    SavePara
+011D 8004            281                     jmp     EndCheckMode
+                     282     
+                     283     ;-------------------------------------------------------
+011F                 284     CheckMode8:     ;mode 8
+011F 716C            285                     call    Mode8
+0121 8000            286                     jmp     EndCheckMode
+                     287     
+                     288     ;-------------------------------------------------------
+0123 8087            289     EndCheckMode:   jmp     ProcessLoop
+                     290     
+0125 80FE            291                     jmp     $
+                     292     
+                     293     ;-------------------------------------------------------
+0127 C0E0            294     SavePara:       push    acc
+0129 900001          295                     mov     dptr,#MEMAlarmTime1     ;write alarm time 1
+012C E550            296                     mov     a,AlarmTime1
+012E 120CF2          297                     call    WriteEEPROM
+0131 900002          298                     mov     dptr,#MEMAlarmTime2     ;write alarm time 2
+0134 E551            299                     mov     a,AlarmTime2
+0136 120CF2          300                     call    WriteEEPROM
+0139 900003          301                     mov     dptr,#MEMAlarmTime3     ;write alarm time 3
+013C E552            302                     mov     a,AlarmTime3
+013E 120CF2          303                     call    WriteEEPROM
+0141 900004          304                     mov     dptr,#MEMAlarmDelay1    ;write alarm delay 1
+0144 E553            305                     mov     a,AlarmDelay1
+0146 120CF2          306                     call    WriteEEPROM
+0149 900005          307                     mov     dptr,#MEMAlarmDelay2    ;write alarm delay 2
+014C E554            308                     mov     a,AlarmDelay2
+014E 120CF2          309                     call    WriteEEPROM
+0151 900006          310                     mov     dptr,#MEMAlarmDelay3    ;write alarm delay 3
+0154 E555            311                     mov     a,AlarmDelay3
+0156 120CF2          312                     call    WriteEEPROM
+0159 900007          313                     mov     dptr,#MEMPassWD1        ;write password digit 1
+015C E541            314                     mov     a,PassWD1
+015E 120CF2          315                     call    WriteEEPROM
+0161 900008          316                     mov     dptr,#MEMPassWD2        ;write password digit 2
+0164 E542            317                     mov     a,PassWD2
+0166 120CF2          318                     call    WriteEEPROM
+0169 900009          319                     mov     dptr,#MEMPassWD3        ;write password digit 3
+016C E543            320                     mov     a,PassWD3
+016E 120CF2          321                     call    WriteEEPROM
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE     6
+
+0171 D0E0            322                     pop     acc
+0173 22              323                     ret
+                     324                     
+                     325     ;-------------------------------------------------------
+0174 C0E0            326     SaveAllPara:    push    acc
+0176 900001          327                     mov     dptr,#MEMAlarmTime1     ;write alarm time 1
+0179 E550            328                     mov     a,AlarmTime1
+017B 120CF2          329                     call    WriteEEPROM
+017E 900002          330                     mov     dptr,#MEMAlarmTime2     ;write alarm time 2
+0181 E551            331                     mov     a,AlarmTime2
+0183 120CF2          332                     call    WriteEEPROM
+0186 900003          333                     mov     dptr,#MEMAlarmTime3     ;write alarm time 3
+0189 E552            334                     mov     a,AlarmTime3
+018B 120CF2          335                     call    WriteEEPROM
+018E 900004          336                     mov     dptr,#MEMAlarmDelay1    ;write alarm delay 1
+0191 E553            337                     mov     a,AlarmDelay1
+0193 120CF2          338                     call    WriteEEPROM
+0196 900005          339                     mov     dptr,#MEMAlarmDelay2    ;write alarm delay 2
+0199 E554            340                     mov     a,AlarmDelay2
+019B 120CF2          341                     call    WriteEEPROM
+019E 900006          342                     mov     dptr,#MEMAlarmDelay3    ;write alarm delay 3
+01A1 E555            343                     mov     a,AlarmDelay3
+01A3 120CF2          344                     call    WriteEEPROM
+01A6 900007          345                     mov     dptr,#MEMPassWD1        ;write password digit 1
+01A9 E541            346                     mov     a,PassWD1
+01AB 120CF2          347                     call    WriteEEPROM
+01AE 900008          348                     mov     dptr,#MEMPassWD2        ;write password digit 2
+01B1 E542            349                     mov     a,PassWD2
+01B3 120CF2          350                     call    WriteEEPROM
+01B6 900009          351                     mov     dptr,#MEMPassWD3        ;write password digit 3
+01B9 E543            352                     mov     a,PassWD3
+01BB 120CF2          353                     call    WriteEEPROM
+01BE 90000A          354                     mov     dptr,#MEMMODE           ;write run mode
+01C1 E544            355                     mov     a,MODE  
+01C3 120CF2          356                     call    WriteEEPROM
+01C6 90000B          357                     mov     dptr,#MEMLASTMODE       ;write last mode
+01C9 E54E            358                     mov     a,LastMode      
+01CB 120CF2          359                     call    WriteEEPROM
+01CE 900000          360                     mov     dptr,#MEMFLAG           ;save flag
+01D1 7473            361                     mov     a,#SavedFlag
+01D3 120CF2          362                     call    WriteEEPROM
+01D6 D0E0            363                     pop     acc
+01D8 22              364                     ret
+                     365                     
+                     366     
+                     367     ;-----------------------------------------------------
+                     368     ;alarm set
+01D9 C0E0            369     Mode5:          push    acc
+01DB 1209AF          370                     call    ScrnMode5Sub
+01DE 855056          371                     mov     TempAlarmTime1,AlarmTime1
+01E1 855157          372                     mov     TempAlarmTime2,AlarmTime2
+01E4 855258          373                     mov     TempAlarmTime3,AlarmTime3
+01E7 7440            374                     mov     a,#PosOld
+01E9 120AC7          375                     call    CursorMove
+01EC E550            376                     mov     a,AlarmTime1
+01EE 120A3F          377                     call    ShowKey
+01F1 E551            378                     mov     a,AlarmTime2
+01F3 120A3F          379                     call    ShowKey         
+01F6 E552            380                     mov     a,AlarmTime3
+01F8 120A3F          381                     call    ShowKey
+01FB 743D            382                     mov     a,#'='
+01FD 120B0F          383                     call    LCDByte
+                     384     
+0200 7444            385     Mode5Loop:      mov     a,#PosNew
+0202 120AC7          386                     call    CursorMove
+0205 E556            387                     mov     a,TempAlarmTime1
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE     7
+
+0207 120A3F          388                     call    ShowKey
+020A E557            389                     mov     a,TempAlarmTime2
+020C 120A3F          390                     call    ShowKey
+020F E558            391                     mov     a,TempAlarmTime3
+0211 120A3F          392                     call    ShowKey
+0214 120AE2          393                     call    CursorHide
+0217 120C6B          394                     call    WaitKey
+                     395     
+021A B40A0B          396                     cjne    a,#KeyPadStar,Mode5KeySquare
+021D 855056          397                     mov     TempAlarmTime1,AlarmTime1
+0220 855157          398                     mov     TempAlarmTime2,AlarmTime2
+0223 855258          399                     mov     TempAlarmTime3,AlarmTime3
+0226 80D8            400                     jmp     Mode5Loop
+                     401     
+0228 B40B18          402     Mode5KeySquare: cjne    a,#KeyPadSquare,Mode5KeyNum
+022B 855650          403                     mov     AlarmTime1,TempAlarmTime1
+022E 855751          404                     mov     AlarmTime2,TempAlarmTime2
+0231 855852          405                     mov     AlarmTime3,TempAlarmTime3
+0234 754408          406                     mov     Mode,#8
+0237 E550            407                     mov     a,AlarmTime1
+0239 2551            408                     add     a,AlarmTime2
+023B 2552            409                     add     a,AlarmTime3
+023D 700E            410                     jnz     EndMode5
+023F 0552            411                     inc     AlarmTime3
+0241 800A            412                     jmp     EndMode5
+                     413     
+0243 855756          414     Mode5KeyNum:    mov     TempAlarmTime1,TempAlarmTime2
+0246 855857          415                     mov     TempAlarmTime2,TempAlarmTime3
+0249 F558            416                     mov     TempAlarmTime3,a
+024B 80B3            417                     jmp     Mode5Loop
+                     418     
+024D D0E0            419     EndMode5:       pop     acc
+024F 22              420                     ret
+                     421     
+                     422     ;-----------------------------------------------------
+                     423     ;alarm delay
+0250 C0E0            424     Mode6:          push    acc
+0252 1209BB          425                     call    ScrnMode6Sub
+0255 855359          426                     mov     TempAlarmDelay1,AlarmDelay1
+0258 85545A          427                     mov     TempAlarmDelay2,AlarmDelay2
+025B 85555B          428                     mov     TempAlarmDelay3,AlarmDelay3
+025E 7440            429                     mov     a,#PosOld
+0260 120AC7          430                     call    CursorMove
+0263 E553            431                     mov     a,AlarmDelay1
+0265 120A3F          432                     call    ShowKey
+0268 E554            433                     mov     a,AlarmDelay2
+026A 120A3F          434                     call    ShowKey         
+026D E555            435                     mov     a,AlarmDelay3
+026F 120A3F          436                     call    ShowKey
+0272 743D            437                     mov     a,#'='
+0274 120B0F          438                     call    LCDByte
+                     439     
+0277 7444            440     Mode6Loop:      mov     a,#PosNew
+0279 120AC7          441                     call    CursorMove
+027C E559            442                     mov     a,TempAlarmDelay1
+027E 120A3F          443                     call    ShowKey
+0281 E55A            444                     mov     a,TempAlarmDelay2
+0283 120A3F          445                     call    ShowKey
+0286 E55B            446                     mov     a,TempAlarmDelay3
+0288 120A3F          447                     call    ShowKey
+028B 120AE2          448                     call    CursorHide
+028E 120C6B          449                     call    WaitKey
+                     450     
+0291 B40A0B          451                     cjne    a,#KeyPadStar,Mode6KeySquare
+0294 855359          452                     mov     TempAlarmDelay1,AlarmDelay1
+0297 85545A          453                     mov     TempAlarmDelay2,AlarmDelay2
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE     8
+
+029A 85555B          454                     mov     TempAlarmDelay3,AlarmDelay3
+029D 80D8            455                     jmp     Mode6Loop
+                     456     
+029F B40B18          457     Mode6KeySquare: cjne    a,#KeyPadSquare,Mode6KeyNum
+02A2 855953          458                     mov     AlarmDelay1,TempAlarmDelay1
+02A5 855A54          459                     mov     AlarmDelay2,TempAlarmDelay2
+02A8 855B55          460                     mov     AlarmDelay3,TempAlarmDelay3
+02AB 754408          461                     mov     Mode,#8
+02AE E553            462                     mov     a,AlarmDelay1
+02B0 2554            463                     add     a,AlarmDelay2
+02B2 2555            464                     add     a,AlarmDelay3
+02B4 700E            465                     jnz     EndMode6
+02B6 0555            466                     inc     AlarmDelay3
+02B8 800A            467                     jmp     EndMode6
+                     468     
+02BA 855A59          469     Mode6KeyNum:    mov     TempAlarmDelay1,TempAlarmDelay2
+02BD 855B5A          470                     mov     TempAlarmDelay2,TempAlarmDelay3
+02C0 F55B            471                     mov     TempAlarmDelay3,a
+02C2 80B3            472                     jmp     Mode6Loop
+                     473     
+02C4 D0E0            474     EndMode6:       pop     acc
+02C6 22              475                     ret
+                     476     
+                     477     ;-----------------------------------------------------
+                     478     ;Pass word set
+02C7 C0E0            479     Mode7:          push    acc
+02C9 1209C7          480                     call    ScrnMode7Sub
+02CC 854146          481                     mov     TempPassWD1,PassWD1
+02CF 854247          482                     mov     TempPassWD2,PassWD2
+02D2 854348          483                     mov     TempPassWD3,PassWD3
+02D5 7440            484                     mov     a,#PosOld
+02D7 120AC7          485                     call    CursorMove
+02DA E541            486                     mov     a,PassWD1
+02DC 120A3F          487                     call    ShowKey
+02DF E542            488                     mov     a,PassWD2
+02E1 120A3F          489                     call    ShowKey         
+02E4 E543            490                     mov     a,PassWD3
+02E6 120A3F          491                     call    ShowKey
+02E9 743D            492                     mov     a,#'='
+02EB 120B0F          493                     call    LCDByte
+                     494     
+02EE 7444            495     Mode7Loop:      mov     a,#PosNew
+02F0 120AC7          496                     call    CursorMove
+02F3 E546            497                     mov     a,TempPassWD1
+02F5 120A3F          498                     call    ShowKey
+02F8 E547            499                     mov     a,TempPassWD2
+02FA 120A3F          500                     call    ShowKey
+02FD E548            501                     mov     a,TempPassWD3
+02FF 120A3F          502                     call    ShowKey
+0302 120AE2          503                     call    CursorHide
+0305 120C6B          504                     call    WaitKey
+                     505     
+0308 B40A0B          506                     cjne    a,#KeyPadStar,Mode7KeySquare
+030B 854146          507                     mov     TempPassWD1,PassWD1
+030E 854247          508                     mov     TempPassWD2,PassWD2
+0311 854348          509                     mov     TempPassWD3,PassWD3
+0314 4177            510                     jmp     Mode6Loop
+                     511     
+0316 B40B18          512     Mode7KeySquare: cjne    a,#KeyPadSquare,Mode7KeyNum
+0319 854641          513                     mov     PassWD1,TempPassWD1
+031C 854742          514                     mov     PassWD2,TempPassWD2
+031F 854843          515                     mov     PassWD3,TempPassWD3
+0322 754408          516                     mov     Mode,#8
+0325 E541            517                     mov     a,PassWD1
+0327 2542            518                     add     a,PassWD2
+0329 2543            519                     add     a,PassWD3
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE     9
+
+032B 700E            520                     jnz     EndMode7
+032D 0543            521                     inc     PassWD3
+032F 800A            522                     jmp     EndMode7
+                     523     
+0331 854746          524     Mode7KeyNum:    mov     TempPassWD1,TempPassWD2
+0334 854847          525                     mov     TempPassWD2,TempPassWD3
+0337 F548            526                     mov     TempPassWD3,a
+0339 80B3            527                     jmp     Mode7Loop
+                     528     
+033B D0E0            529     EndMode7:       pop     acc
+033D 22              530                     ret
+                     531     
+                     532     
+                     533     ;-----------------------------------------------------
+                     534     ;off siren
+033E C0E0            535     Mode0:          push    acc
+0340 120997          536                     call    ScrnMode0Sub
+0343 C28E            537                     clr     TR1
+0345 C296            538                     clr     Output1
+0347 C297            539                     clr     Output2
+0349 120C6B          540     Mode0Loop:      call    WaitKey
+034C B40AFA          541                     cjne    a,#KeyPadStar,Mode0Loop
+034F 754408          542                     mov     Mode,#8
+0352 D0E0            543                     pop     acc
+0354 22              544                     ret
+                     545     
+                     546     ;-----------------------------------------------------
+                     547     ;on siren
+0355 C0E0            548     Mode1:          push    acc
+0357 1209A3          549                     call    ScrnMode1Sub
+035A D28E            550                     setb    TR1
+035C D296            551                     setb    Output1
+035E D297            552                     setb    Output2
+0360 120C6B          553     Mode1Loop:      call    WaitKey
+0363 B40AE3          554                     cjne    a,#KeyPadStar,Mode0Loop
+0366 754408          555                     mov     Mode,#8
+0369 D0E0            556                     pop     acc
+036B 22              557                     ret
+                     558     
+                     559     ;-----------------------------------------------------
+036C C0E0            560     Mode8:          push    acc
+036E 1209D3          561                     call    ScrnMode
+0371 754F08          562                     mov     ModeSelect,#8
+                     563     
+0374 120C6B          564     LoopMode8:      call    WaitKey
+0377 B40A05          565                     cjne    a,#KeyPadStar,ChkSquare
+037A 854E44          566                     mov     Mode,LastMode
+037D 81FC            567                     jmp     EndMode8
+                     568     
+037F B40B05          569     ChkSquare:      cjne    a,#KeyPadSquare,ChkSubMode0
+0382 854F44          570                     mov     Mode,ModeSelect
+0385 81FC            571                     jmp     EndMode8
+                     572     
+0387 B4002B          573     ChkSubMode0:    cjne    a,#0,ChkSubMode1
+038A 7440            574                     mov     a,#PosMode
+038C 120AC7          575                     call    CursorMove
+038F 7430            576                     mov     a,#'0'
+0391 120B0F          577                     call    LCDByte
+0394 743D            578                     mov     a,#'='
+0396 120B0F          579                     call    LCDByte
+0399 744F            580                     mov     a,#'O'
+039B 120B0F          581                     call    LCDByte
+039E 7446            582                     mov     a,#'F'
+03A0 120B0F          583                     call    LCDByte
+03A3 7446            584                     mov     a,#'F'
+03A5 120B0F          585                     call    LCDByte
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    10
+
+03A8 7420            586                     mov     a,#' '
+03AA 120B0F          587                     call    LCDByte
+03AD 120AE2          588                     call    CursorHide
+03B0 754F00          589                     mov     ModeSelect,#0
+03B3 80BF            590                     jmp     LoopMode8
+                     591     
+03B5 B4012B          592     ChkSubMode1:    cjne    a,#1,ChkSubMode2
+03B8 7440            593                     mov     a,#PosMode
+03BA 120AC7          594                     call    CursorMove
+03BD 7431            595                     mov     a,#'1'
+03BF 120B0F          596                     call    LCDByte
+03C2 743D            597                     mov     a,#'='
+03C4 120B0F          598                     call    LCDByte
+03C7 7420            599                     mov     a,#' '
+03C9 120B0F          600                     call    LCDByte
+03CC 744F            601                     mov     a,#'O'
+03CE 120B0F          602                     call    LCDByte
+03D1 744E            603                     mov     a,#'N'
+03D3 120B0F          604                     call    LCDByte
+03D6 7420            605                     mov     a,#' '
+03D8 120B0F          606                     call    LCDByte
+03DB 120AE2          607                     call    CursorHide
+03DE 754F01          608                     mov     ModeSelect,#1
+03E1 8091            609                     jmp     LoopMode8
+                     610     
+03E3 B4022B          611     ChkSubMode2:    cjne    a,#2,ChkSubMode3
+03E6 7440            612                     mov     a,#PosMode
+03E8 120AC7          613                     call    CursorMove
+03EB 7432            614                     mov     a,#'2'
+03ED 120B0F          615                     call    LCDByte
+03F0 743D            616                     mov     a,#'='
+03F2 120B0F          617                     call    LCDByte
+03F5 7453            618                     mov     a,#'S'
+03F7 120B0F          619                     call    LCDByte
+03FA 7454            620                     mov     a,#'T'
+03FC 120B0F          621                     call    LCDByte
+03FF 7442            622                     mov     a,#'B'
+0401 120B0F          623                     call    LCDByte
+0404 7459            624                     mov     a,#'Y'
+0406 120B0F          625                     call    LCDByte
+0409 120AE2          626                     call    CursorHide
+040C 754F02          627                     mov     ModeSelect,#2
+040F 6174            628                     jmp     LoopMode8
+                     629     
+0411 B4032B          630     ChkSubMode3:    cjne    a,#3,ChkSubMode4
+0414 7440            631                     mov     a,#PosMode
+0416 120AC7          632                     call    CursorMove
+0419 7433            633                     mov     a,#'3'
+041B 120B0F          634                     call    LCDByte
+041E 743D            635                     mov     a,#'='
+0420 120B0F          636                     call    LCDByte
+0423 7448            637                     mov     a,#'H'
+0425 120B0F          638                     call    LCDByte
+0428 744F            639                     mov     a,#'O'
+042A 120B0F          640                     call    LCDByte
+042D 744D            641                     mov     a,#'M'
+042F 120B0F          642                     call    LCDByte
+0432 7445            643                     mov     a,#'E'
+0434 120B0F          644                     call    LCDByte
+0437 120AE2          645                     call    CursorHide
+043A 754F03          646                     mov     ModeSelect,#3
+043D 6174            647                     jmp     LoopMode8
+                     648     
+043F B4042B          649     ChkSubMode4:    cjne    a,#4,ChkSubMode5
+0442 7440            650                     mov     a,#PosMode
+0444 120AC7          651                     call    CursorMove
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    11
+
+0447 7434            652                     mov     a,#'4'
+0449 120B0F          653                     call    LCDByte
+044C 743D            654                     mov     a,#'='
+044E 120B0F          655                     call    LCDByte
+0451 7441            656                     mov     a,#'A'
+0453 120B0F          657                     call    LCDByte
+0456 7457            658                     mov     a,#'W'
+0458 120B0F          659                     call    LCDByte
+045B 7441            660                     mov     a,#'A'
+045D 120B0F          661                     call    LCDByte
+0460 7459            662                     mov     a,#'Y'
+0462 120B0F          663                     call    LCDByte
+0465 120AE2          664                     call    CursorHide
+0468 754F04          665                     mov     ModeSelect,#4
+046B 6174            666                     jmp     LoopMode8
+                     667     
+046D B4052B          668     ChkSubMode5:    cjne    a,#5,ChkSubMode6
+0470 7440            669                     mov     a,#PosMode
+0472 120AC7          670                     call    CursorMove
+0475 7435            671                     mov     a,#'5'
+0477 120B0F          672                     call    LCDByte
+047A 743D            673                     mov     a,#'='
+047C 120B0F          674                     call    LCDByte
+047F 7441            675                     mov     a,#'A'
+0481 120B0F          676                     call    LCDByte
+0484 744C            677                     mov     a,#'L'
+0486 120B0F          678                     call    LCDByte
+0489 7452            679                     mov     a,#'R'
+048B 120B0F          680                     call    LCDByte
+048E 744D            681                     mov     a,#'M'
+0490 120B0F          682                     call    LCDByte
+0493 120AE2          683                     call    CursorHide
+0496 754F05          684                     mov     ModeSelect,#5
+0499 6174            685                     jmp     LoopMode8
+                     686     
+049B B4062B          687     ChkSubMode6:    cjne    a,#6,ChkSubMode7
+049E 7440            688                     mov     a,#PosMode
+04A0 120AC7          689                     call    CursorMove
+04A3 7436            690                     mov     a,#'6'
+04A5 120B0F          691                     call    LCDByte
+04A8 743D            692                     mov     a,#'='
+04AA 120B0F          693                     call    LCDByte
+04AD 7444            694                     mov     a,#'D'
+04AF 120B0F          695                     call    LCDByte
+04B2 744C            696                     mov     a,#'L'
+04B4 120B0F          697                     call    LCDByte
+04B7 7441            698                     mov     a,#'A'
+04B9 120B0F          699                     call    LCDByte
+04BC 7459            700                     mov     a,#'Y'
+04BE 120B0F          701                     call    LCDByte
+04C1 120AE2          702                     call    CursorHide
+04C4 754F06          703                     mov     ModeSelect,#6
+04C7 6174            704                     jmp     LoopMode8
+                     705     
+04C9 B4072B          706     ChkSubMode7:    cjne    a,#7,ChkSubMode8
+04CC 7440            707                     mov     a,#PosMode
+04CE 120AC7          708                     call    CursorMove
+04D1 7437            709                     mov     a,#'7'
+04D3 120B0F          710                     call    LCDByte
+04D6 743D            711                     mov     a,#'='
+04D8 120B0F          712                     call    LCDByte
+04DB 7450            713                     mov     a,#'P'
+04DD 120B0F          714                     call    LCDByte
+04E0 7441            715                     mov     a,#'A'
+04E2 120B0F          716                     call    LCDByte
+04E5 7453            717                     mov     a,#'S'
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    12
+
+04E7 120B0F          718                     call    LCDByte
+04EA 7453            719                     mov     a,#'S'
+04EC 120B0F          720                     call    LCDByte
+04EF 120AE2          721                     call    CursorHide
+04F2 754F07          722                     mov     ModeSelect,#7
+04F5 6174            723                     jmp     LoopMode8
+                     724     
+04F7 754F08          725     ChkSubMode8:    mov     ModeSelect,#8
+04FA 6174            726                     jmp     LoopMode8
+                     727     
+04FC D0E0            728     EndMode8:       pop     acc
+04FE 22              729                     ret
+                     730     
+                     731     ;-----------------------------------------------------
+04FF C0E0            732     Mode2:          push    acc
+0501 C000            733                     push    0
+0503 1209DF          734                     call    ScrnStandby
+                     735     
+0506                 736     LoopMode2:
+                     737     
+                     738                     ;check sensor 
+0506 20900F          739                     jb      Sensor1,Mode2Sensor1On
+0509 7448            740                     mov     a,#PosSensor1
+050B 120AC7          741                     call    CursorMove
+050E 7420            742                     mov     a,#Blank
+0510 120B0F          743                     call    LCDByte
+0513 120AE2          744                     call    CursorHide
+0516 800D            745                     jmp     Mode2Sensor2
+0518 7448            746     Mode2Sensor1On: mov     a,#PosSensor1
+051A 120AC7          747                     call    CursorMove
+051D 7431            748                     mov     a,#'1'
+051F 120B0F          749                     call    LCDByte
+0522 120AE2          750                     call    CursorHide
+                     751     
+                     752     
+0525                 753     Mode2Sensor2:   
+0525 20910F          754                     jb      Sensor2,Mode2Sensor2On
+0528 7449            755                     mov     a,#PosSensor2
+052A 120AC7          756                     call    CursorMove
+052D 7420            757                     mov     a,#Blank
+052F 120B0F          758                     call    LCDByte
+0532 120AE2          759                     call    CursorHide
+0535 800D            760                     jmp     Mode2Sensor3
+0537 7449            761     Mode2Sensor2On: mov     a,#PosSensor2
+0539 120AC7          762                     call    CursorMove
+053C 7432            763                     mov     a,#'2'
+053E 120B0F          764                     call    LCDByte
+0541 120AE2          765                     call    CursorHide
+                     766     
+                     767     
+0544                 768     Mode2Sensor3:   
+0544 20920F          769                     jb      Sensor3,Mode2Sensor3On
+0547 744A            770                     mov     a,#PosSensor3
+0549 120AC7          771                     call    CursorMove
+054C 7420            772                     mov     a,#Blank
+054E 120B0F          773                     call    LCDByte
+0551 120AE2          774                     call    CursorHide
+0554 800D            775                     jmp     Mode2Sensor4
+0556 744A            776     Mode2Sensor3On: mov     a,#PosSensor3
+0558 120AC7          777                     call    CursorMove
+055B 7433            778                     mov     a,#'3'
+055D 120B0F          779                     call    LCDByte
+0560 120AE2          780                     call    CursorHide
+                     781     
+                     782     
+0563                 783     Mode2Sensor4:   
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    13
+
+0563 20930F          784                     jb      Sensor4,Mode2Sensor4On
+0566 744B            785                     mov     a,#PosSensor4
+0568 120AC7          786                     call    CursorMove
+056B 7420            787                     mov     a,#Blank
+056D 120B0F          788                     call    LcdByte
+0570 120AE2          789                     call    CursorHide
+0573 800D            790                     jmp     EndChkMode2
+0575 744B            791     Mode2Sensor4On: mov     a,#PosSensor4
+0577 120AC7          792                     call    CursorMove
+057A 7434            793                     mov     a,#'4'
+057C 120B0F          794                     call    LCDByte
+057F 120AE2          795                     call    CursorHide
+                     796     
+                     797     
+                     798     
+0582                 799     EndChkMode2:    
+0582 C297            800     NoAlarmMode2:   clr     Output2
+0584 C28E            801                     clr     TR1
+0586 740D            802                     mov     a,#PosAlarm
+0588 120AC7          803                     call    CursorMove
+058B 744F            804                     mov     a,#'O'
+058D 120B0F          805                     call    LCDByte
+0590 7446            806                     mov     a,#'F'
+0592 120B0F          807                     call    LCDByte
+0595 7446            808                     mov     a,#'F'
+0597 120B0F          809                     call    LCDByte
+059A 120AE2          810                     call    CursorHide
+                     811     
+059D                 812     EndMode2:       
+059D 120C8F          813                     call    CheckKey
+05A0 B4F002          814                     cjne    a,#KeyNone,Mode2PassIn
+05A3 A106            815                     jmp     LoopMode2
+05A5 F8              816     Mode2PassIn:    mov     r0,a            ;save passwd
+05A6 E54A            817                     mov     a,PassWDCount
+05A8 B40113          818                     cjne    a,#1,Mode2PassWD2
+                     819     
+05AB 744D            820     Mode2PassWD1:   mov     a,#PosPassWD1
+05AD 120AC7          821                     call    CursorMove
+05B0 742A            822                     mov     a,#'*'
+05B2 120B0F          823                     call    LCDByte
+05B5 120AE2          824                     call    CursorHide
+05B8 8846            825                     mov     TempPassWD1,r0
+05BA 054A            826                     inc     PassWDCount
+05BC A106            827                     jmp     LoopMode2
+                     828     
+05BE B40213          829     Mode2PassWD2:   cjne    a,#2,Mode2PassWD3
+05C1 744E            830                     mov     a,#PosPassWD2
+05C3 120AC7          831                     call    CursorMove
+05C6 742A            832                     mov     a,#'*'
+05C8 120B0F          833                     call    LCDByte
+05CB 120AE2          834                     call    CursorHide
+05CE 8847            835                     mov     TempPassWD2,r0
+05D0 054A            836                     inc     PassWDCount
+05D2 A106            837                     jmp     LoopMode2
+                     838     
+05D4 744F            839     Mode2PassWD3:   mov     a,#PosPassWD3
+05D6 120AC7          840                     call    CursorMove
+05D9 742A            841                     mov     a,#'*'
+05DB 120B0F          842                     call    LCDByte
+05DE 120AE2          843                     call    CursorHide
+05E1 8848            844                     mov     TempPassWD3,r0
+05E3 120BEF          845                     call    DelayASec
+05E6 E546            846                     mov     a,TempPassWD1
+05E8 B5410C          847                     cjne    a,PassWD1,Mode2PassWDFail
+05EB E547            848                     mov     a,TempPassWD2
+05ED B54207          849                     cjne    a,PassWD2,Mode2PassWDFail
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    14
+
+05F0 E548            850                     mov     a,TempPassWD3
+05F2 B54302          851                     cjne    a,PassWD3,Mode2PassWDFail
+                     852                     ;; if passs word ok
+05F5 8018            853                     jmp     ExitMode2
+                     854     
+05F7                 855     Mode2PassWDFail:
+05F7 744D            856                     mov     a,#PosPassWD1
+05F9 120AC7          857                     call    CursorMove
+05FC 7420            858                     mov     a,#' '
+05FE 120B0F          859                     call    LCDByte
+0601 120B0F          860                     call    LCDByte
+0604 120B0F          861                     call    LCDByte
+0607 120AE2          862                     call    CursorHide
+060A 754A01          863                     mov     PassWDCount,#1
+060D A106            864                     jmp     LoopMode2
+                     865             
+060F C28C            866     ExitMode2:      clr     TR0
+0611 C28E            867                     clr     TR1
+0613 D000            868                     pop     0
+0615 D0E0            869                     pop     acc
+0617 22              870                     ret
+                     871     ;-----------------------------------------------------
+0618 C0E0            872     Mode3:          push    acc
+061A C000            873                     push    0
+061C 1209EB          874                     call    ScrnHome
+                     875     
+061F C200            876     LoopMode3:      clr     AlarmFlag
+                     877     
+                     878                     ;check sensor 
+0621 20900F          879                     jb      Sensor1,Mode3Sensor1On
+0624 7448            880                     mov     a,#PosSensor1
+0626 120AC7          881                     call    CursorMove
+0629 7420            882                     mov     a,#Blank
+062B 120B0F          883                     call    LCDByte
+062E 120AE2          884                     call    CursorHide
+0631 800F            885                     jmp     Mode3Sensor2
+0633 7448            886     Mode3Sensor1On: mov     a,#PosSensor1
+0635 120AC7          887                     call    CursorMove
+0638 7431            888                     mov     a,#'1'
+063A 120B0F          889                     call    LCDByte
+063D 120AE2          890                     call    CursorHide
+0640 D200            891                     setb    AlarmFlag
+                     892     
+0642                 893     Mode3Sensor2:   
+0642 20910F          894                     jb      Sensor2,Mode3Sensor2On
+0645 7449            895                     mov     a,#PosSensor2
+0647 120AC7          896                     call    CursorMove
+064A 7420            897                     mov     a,#Blank
+064C 120B0F          898                     call    LCDByte
+064F 120AE2          899                     call    CursorHide
+0652 800F            900                     jmp     Mode3Sensor3
+0654 7449            901     Mode3Sensor2On: mov     a,#PosSensor2
+0656 120AC7          902                     call    CursorMove
+0659 7432            903                     mov     a,#'2'
+065B 120B0F          904                     call    LCDByte
+065E 120AE2          905                     call    CursorHide
+0661 D200            906                     setb    AlarmFlag
+                     907     
+0663                 908     Mode3Sensor3:   
+0663 20920F          909                     jb      Sensor3,Mode3Sensor3On
+0666 744A            910                     mov     a,#PosSensor3
+0668 120AC7          911                     call    CursorMove
+066B 7420            912                     mov     a,#Blank
+066D 120B0F          913                     call    LCDByte
+0670 120AE2          914                     call    CursorHide
+0673 800F            915                     jmp     Mode3Sensor4
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    15
+
+0675 744A            916     Mode3Sensor3On: mov     a,#PosSensor3
+0677 120AC7          917                     call    CursorMove
+067A 7433            918                     mov     a,#'3'
+067C 120B0F          919                     call    LCDByte
+067F 120AE2          920                     call    CursorHide
+0682 D200            921                     setb    AlarmFlag
+                     922     
+0684                 923     Mode3Sensor4:   
+0684 20930F          924                     jb      Sensor4,Mode3Sensor4On
+0687 744B            925                     mov     a,#PosSensor4
+0689 120AC7          926                     call    CursorMove
+068C 7420            927                     mov     a,#Blank
+068E 120B0F          928                     call    LcdByte
+0691 120AE2          929                     call    CursorHide
+0694 800F            930                     jmp     EndChkMode3
+0696 744B            931     Mode3Sensor4On: mov     a,#PosSensor4
+0698 120AC7          932                     call    CursorMove
+069B 7434            933                     mov     a,#'4'
+069D 120B0F          934                     call    LCDByte
+06A0 120AE2          935                     call    CursorHide
+06A3 D200            936                     setb    AlarmFlag
+                     937     
+                     938     
+06A5 300032          939     EndChkMode3:    jnb     AlarmFlag,NoAlarmMode3
+06A8 E54B            940                     mov     a,Second1
+06AA B5500E          941                     cjne    a,AlarmTime1,Mode3OnOutput
+06AD E54C            942                     mov     a,Second2
+06AF B55109          943                     cjne    a,AlarmTime2,Mode3OnOutput
+06B2 E54D            944                     mov     a,Second3
+06B4 B55204          945                     cjne    a,AlarmTime3,Mode3OnOutput
+                     946                     ;if alarm time reach out
+06B7 C28C            947                     clr     TR0
+06B9 8028            948                     jmp     NoAlarmMode3_
+                     949                     
+06BB D297            950     Mode3OnOutput:  setb    Output2                 ;on output
+06BD D28E            951                     setb    TR1                     ;on pulse 1 KHz
+06BF D28C            952                     setb    TR0
+06C1 740D            953                     mov     a,#PosAlarm
+06C3 120AC7          954                     call    CursorMove
+06C6 744F            955                     mov     a,#'O'
+06C8 120B0F          956                     call    LCDByte
+06CB 744E            957                     mov     a,#'N'
+06CD 120B0F          958                     call    LCDByte
+06D0 7420            959                     mov     a,#' '
+06D2 120B0F          960                     call    LCDByte
+06D5 120AE2          961                     call    CursorHide
+06D8 8024            962                     jmp     End_Mode3
+                     963     
+06DA 754B00          964     NoAlarmMode3:   mov     Second1,#0              ;if no sensor reset alarm reach out
+06DD 754C00          965                     mov     Second2,#0
+06E0 754D00          966                     mov     Second3,#0
+06E3 C297            967     NoAlarmMode3_:  clr     Output2
+06E5 C28E            968                     clr     TR1
+06E7 740D            969                     mov     a,#PosAlarm
+06E9 120AC7          970                     call    CursorMove
+06EC 744F            971                     mov     a,#'O'
+06EE 120B0F          972                     call    LCDByte
+06F1 7446            973                     mov     a,#'F'
+06F3 120B0F          974                     call    LCDByte
+06F6 7446            975                     mov     a,#'F'
+06F8 120B0F          976                     call    LCDByte
+06FB 120AE2          977                     call    CursorHide
+                     978     
+06FE 120C8F          979     End_Mode3:      call    CheckKey
+0701 B4F002          980                     cjne    a,#KeyNone,Mode3PassIn
+0704 C11F            981                     jmp     LoopMode3
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    16
+
+0706 F8              982     Mode3PassIn:    mov     r0,a            ;save passwd
+0707 E54A            983                     mov     a,PassWDCount
+0709 B40113          984                     cjne    a,#1,Mode3PassWD2
+                     985     
+070C 744D            986     Mode3PassWD1:   mov     a,#PosPassWD1
+070E 120AC7          987                     call    CursorMove
+0711 742A            988                     mov     a,#'*'
+0713 120B0F          989                     call    LCDByte
+0716 120AE2          990                     call    CursorHide
+0719 8846            991                     mov     TempPassWD1,r0
+071B 054A            992                     inc     PassWDCount
+071D C11F            993                     jmp     LoopMode3
+                     994     
+071F B40213          995     Mode3PassWD2:   cjne    a,#2,Mode3PassWD3
+0722 744E            996                     mov     a,#PosPassWD2
+0724 120AC7          997                     call    CursorMove
+0727 742A            998                     mov     a,#'*'
+0729 120B0F          999                     call    LCDByte
+072C 120AE2         1000                     call    CursorHide
+072F 8847           1001                     mov     TempPassWD2,r0
+0731 054A           1002                     inc     PassWDCount
+0733 C11F           1003                     jmp     LoopMode3
+                    1004     
+0735 744F           1005     Mode3PassWD3:   mov     a,#PosPassWD3
+0737 120AC7         1006                     call    CursorMove
+073A 742A           1007                     mov     a,#'*'
+073C 120B0F         1008                     call    LCDByte
+073F 120AE2         1009                     call    CursorHide
+0742 8848           1010                     mov     TempPassWD3,r0
+0744 120BEF         1011                     call    DelayASec
+0747 E546           1012                     mov     a,TempPassWD1
+0749 B5410C         1013                     cjne    a,PassWD1,Mode3PassWDFail
+074C E547           1014                     mov     a,TempPassWD2
+074E B54207         1015                     cjne    a,PassWD2,Mode3PassWDFail
+0751 E548           1016                     mov     a,TempPassWD3
+0753 B54302         1017                     cjne    a,PassWD3,Mode3PassWDFail
+                    1018                     ;; if passs word ok
+0756 8018           1019                     jmp     ExitMode3
+                    1020     
+0758                1021     Mode3PassWDFail:
+0758 744D           1022                     mov     a,#PosPassWD1
+075A 120AC7         1023                     call    CursorMove
+075D 7420           1024                     mov     a,#' '
+075F 120B0F         1025                     call    LCDByte
+0762 120B0F         1026                     call    LCDByte
+0765 120B0F         1027                     call    LCDByte
+0768 120AE2         1028                     call    CursorHide
+076B 754A01         1029                     mov     PassWDCount,#1
+076E C11F           1030                     jmp     LoopMode3
+                    1031     
+0770 C28C           1032     ExitMode3:      clr     TR0
+0772 C28E           1033                     clr     TR1
+0774 D000           1034                     pop     0
+0776 D0E0           1035                     pop     acc
+0778 22             1036                     ret
+                    1037     
+                    1038     
+                    1039     ;-----------------------------------------------------
+0779 C0E0           1040     Mode4:          push    acc
+077B C000           1041                     push    0
+077D 1209F7         1042                     call    ScrnAway
+0780 D28C           1043                     setb    TR0
+0782 C202           1044                     clr     DelayFlag
+                    1045     
+0784 C200           1046     LoopMode4:      clr     AlarmFlag
+                    1047     
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    17
+
+                    1048                     ;check sensor 
+0786 20900F         1049                     jb      Sensor1,Mode4Sensor1On
+0789 7448           1050                     mov     a,#PosSensor1
+078B 120AC7         1051                     call    CursorMove
+078E 7420           1052                     mov     a,#Blank
+0790 120B0F         1053                     call    LCDByte
+0793 120AE2         1054                     call    CursorHide
+0796 800F           1055                     jmp     Mode4Sensor2
+0798 7448           1056     Mode4Sensor1On: mov     a,#PosSensor1
+079A 120AC7         1057                     call    CursorMove
+079D 7431           1058                     mov     a,#'1'
+079F 120B0F         1059                     call    LCDByte
+07A2 120AE2         1060                     call    CursorHide
+07A5 D200           1061                     setb    AlarmFlag
+                    1062     
+07A7                1063     Mode4Sensor2:   
+07A7 20910F         1064                     jb      Sensor2,Mode4Sensor2On
+07AA 7449           1065                     mov     a,#PosSensor2
+07AC 120AC7         1066                     call    CursorMove
+07AF 7420           1067                     mov     a,#Blank
+07B1 120B0F         1068                     call    LCDByte
+07B4 120AE2         1069                     call    CursorHide
+07B7 800F           1070                     jmp     Mode4Sensor3
+07B9 7449           1071     Mode4Sensor2On: mov     a,#PosSensor2
+07BB 120AC7         1072                     call    CursorMove
+07BE 7432           1073                     mov     a,#'2'
+07C0 120B0F         1074                     call    LCDByte
+07C3 120AE2         1075                     call    CursorHide
+07C6 D200           1076                     setb    AlarmFlag
+                    1077     
+07C8                1078     Mode4Sensor3:   
+07C8 20920F         1079                     jb      Sensor3,Mode4Sensor3On
+07CB 744A           1080                     mov     a,#PosSensor3
+07CD 120AC7         1081                     call    CursorMove
+07D0 7420           1082                     mov     a,#Blank
+07D2 120B0F         1083                     call    LCDByte
+07D5 120AE2         1084                     call    CursorHide
+07D8 800F           1085                     jmp     Mode4Sensor4
+07DA 744A           1086     Mode4Sensor3On: mov     a,#PosSensor3
+07DC 120AC7         1087                     call    CursorMove
+07DF 7433           1088                     mov     a,#'3'
+07E1 120B0F         1089                     call    LCDByte
+07E4 120AE2         1090                     call    CursorHide
+07E7 D200           1091                     setb    AlarmFlag
+                    1092     
+07E9                1093     Mode4Sensor4:   
+07E9 20930F         1094                     jb      Sensor4,Mode4Sensor4On
+07EC 744B           1095                     mov     a,#PosSensor4
+07EE 120AC7         1096                     call    CursorMove
+07F1 7420           1097                     mov     a,#Blank
+07F3 120B0F         1098                     call    LcdByte
+07F6 120AE2         1099                     call    CursorHide
+07F9 800D           1100                     jmp     EndChkMode4
+07FB 744B           1101     Mode4Sensor4On: mov     a,#PosSensor4
+07FD 120AC7         1102                     call    CursorMove
+0800 7434           1103                     mov     a,#'4'
+0802 710F           1104                     call    LCDByte
+0804 51E2           1105                     call    CursorHide
+0806 D200           1106                     setb    AlarmFlag
+                    1107     
+                    1108     
+0808                1109     EndChkMode4:    ;check for delay before on alarm
+0808 20021C         1110                     jb      DelayFlag,NotChkFlag
+080B E54B           1111                     mov     a,Second1
+080D B55350         1112                     cjne    a,AlarmDelay1,NoAlarmMode4_
+0810 E54C           1113                     mov     a,Second2
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    18
+
+0812 B5544B         1114                     cjne    a,AlarmDelay2,NoAlarmMode4_
+0815 E54D           1115                     mov     a,Second3
+0817 B55546         1116                     cjne    a,AlarmDelay3,NoAlarmMode4_
+081A C28C           1117                     clr     TR0
+081C 754B00         1118                     mov     Second1,#0
+081F 754C00         1119                     mov     Second2,#0
+0822 754D00         1120                     mov     Second3,#0
+0825 D202           1121                     setb    DelayFlag
+                    1122     
+0827 30002D         1123     NotChkFlag:     jnb     AlarmFlag,NoAlarmMode4
+082A E54B           1124                     mov     a,Second1
+082C B5500E         1125                     cjne    a,AlarmTime1,Mode4OnOutput
+082F E54C           1126                     mov     a,Second2
+0831 B55109         1127                     cjne    a,AlarmTime2,Mode4OnOutput
+0834 E54D           1128                     mov     a,Second3
+0836 B55204         1129                     cjne    a,AlarmTime3,Mode4OnOutput
+                    1130                     ;if alarm time reach out
+0839 C28C           1131                     clr     TR0
+083B 8023           1132                     jmp     NoAlarmMode4_
+                    1133                     
+083D D297           1134     Mode4OnOutput:  setb    Output2                 ;on output
+083F D28E           1135                     setb    TR1                     ;on pulse 1 KHz
+0841 D28C           1136                     setb    TR0
+0843 740D           1137                     mov     a,#PosAlarm
+0845 51C7           1138                     call    CursorMove
+0847 744F           1139                     mov     a,#'O'
+0849 710F           1140                     call    LCDByte
+084B 744E           1141                     mov     a,#'N'
+084D 710F           1142                     call    LCDByte
+084F 7420           1143                     mov     a,#' '
+0851 710F           1144                     call    LCDByte
+0853 51E2           1145                     call    CursorHide
+0855 801F           1146                     jmp     EndMode4
+                    1147     
+0857 754B00         1148     NoAlarmMode4:   mov     Second1,#0      
+085A 754C00         1149                     mov     Second2,#0
+085D 754D00         1150                     mov     Second3,#0
+0860 C297           1151     NoAlarmMode4_:  clr     Output2
+0862 C28E           1152                     clr     TR1
+0864 740D           1153                     mov     a,#PosAlarm
+0866 51C7           1154                     call    CursorMove
+0868 744F           1155                     mov     a,#'O'
+086A 710F           1156                     call    LCDByte
+086C 7446           1157                     mov     a,#'F'
+086E 710F           1158                     call    LCDByte
+0870 7446           1159                     mov     a,#'F'
+0872 710F           1160                     call    LCDByte
+0874 51E2           1161                     call    CursorHide
+                    1162     
+0876 918F           1163     EndMode4:       call    CheckKey
+0878 B4F003         1164                     cjne    a,#KeyNone,Mode4PassIn
+087B 020784         1165                     jmp     LoopMode4
+087E F8             1166     Mode4PassIn:    mov     r0,a            ;save passwd
+087F E54A           1167                     mov     a,PassWDCount
+0881 B40111         1168                     cjne    a,#1,Mode4PassWD2
+                    1169     
+0884 744D           1170     Mode4PassWD1:   mov     a,#PosPassWD1
+0886 51C7           1171                     call    CursorMove
+0888 742A           1172                     mov     a,#'*'
+088A 710F           1173                     call    LCDByte
+088C 51E2           1174                     call    CursorHide
+088E 8846           1175                     mov     TempPassWD1,r0
+0890 054A           1176                     inc     PassWDCount
+0892 020784         1177                     jmp     LoopMode4
+                    1178     
+0895 B40211         1179     Mode4PassWD2:   cjne    a,#2,Mode4PassWD3
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    19
+
+0898 744E           1180                     mov     a,#PosPassWD2
+089A 51C7           1181                     call    CursorMove
+089C 742A           1182                     mov     a,#'*'
+089E 710F           1183                     call    LCDByte
+08A0 51E2           1184                     call    CursorHide
+08A2 8847           1185                     mov     TempPassWD2,r0
+08A4 054A           1186                     inc     PassWDCount
+08A6 020784         1187                     jmp     LoopMode4
+                    1188     
+08A9 744F           1189     Mode4PassWD3:   mov     a,#PosPassWD3
+08AB 51C7           1190                     call    CursorMove
+08AD 742A           1191                     mov     a,#'*'
+08AF 710F           1192                     call    LCDByte
+08B1 51E2           1193                     call    CursorHide
+08B3 8848           1194                     mov     TempPassWD3,r0
+08B5 71EF           1195                     call    DelayASec
+08B7 E546           1196                     mov     a,TempPassWD1
+08B9 B5410C         1197                     cjne    a,PassWD1,Mode4PassWDFail
+08BC E547           1198                     mov     a,TempPassWD2
+08BE B54207         1199                     cjne    a,PassWD2,Mode4PassWDFail
+08C1 E548           1200                     mov     a,TempPassWD3
+08C3 B54302         1201                     cjne    a,PassWD3,Mode4PassWDFail
+                    1202                     ;; if passs word ok
+08C6 8014           1203                     jmp     ExitMode4
+                    1204     
+08C8                1205     Mode4PassWDFail:
+08C8 744D           1206                     mov     a,#PosPassWD1
+08CA 51C7           1207                     call    CursorMove
+08CC 7420           1208                     mov     a,#' '
+08CE 710F           1209                     call    LCDByte
+08D0 710F           1210                     call    LCDByte
+08D2 710F           1211                     call    LCDByte
+08D4 51E2           1212                     call    CursorHide
+08D6 754A01         1213                     mov     PassWDCount,#1
+08D9 020784         1214                     jmp     LoopMode4
+                    1215             
+08DC C28C           1216     ExitMode4:      clr     TR0
+08DE C28E           1217                     clr     TR1
+08E0 D000           1218                     pop     0
+08E2 D0E0           1219                     pop     acc
+08E4 22             1220                     ret
+                    1221                     
+                    1222                     
+                    1223     ;-----------------------------------------------------
+                    1224     ;test keyboard
+08E5 C0E0           1225     TestKeyboard:   push    acc
+08E7 916B           1226     LoopTestKB:     call    WaitKey
+08E9 51BC           1227                     call    ClearLCD
+08EB 513F           1228                     call    ShowKey
+08ED 80F8           1229                     jmp     LoopTestKB
+08EF D0E0           1230                     pop     acc
+08F1 22             1231                     ret
+                    1232     
+                    1233     ;-----------------------------------------------------
+08F2 758000         1234     Test51:         mov     P0,#00
+08F5 759000         1235                     mov     P1,#00
+08F8 75A000         1236                     mov     P2,#00
+08FB 75B000         1237                     mov     P3,#00
+08FE 71EF           1238                     call    DelayASec
+0900 7580FF         1239                     mov     P0,#0FFH
+0903 7590FF         1240                     mov     P1,#0FFH
+0906 75A0FF         1241                     mov     P2,#0FFH
+0909 75B0FF         1242                     mov     P3,#0FFH
+090C 71EF           1243                     call    DelayASec
+090E 80E2           1244                     jmp     Test51
+                    1245     
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    20
+
+                    1246     
+                    1247     ;-----------------------------------------------------
+0910                1248     Test:           
+                    1249     
+0910 758000         1250                     mov     PortLCD,#0
+0913 71EF           1251     LoopTest:       call    DelayASec
+0915 0580           1252                     inc     PortLCD
+0917 80FA           1253                     jmp     LoopTest
+0919 22             1254                     ret
+                    1255     
+                    1256     ;-----------------------------------------------------
+                    1257     ;; power on delay
+091A C000           1258     PowerOnDelay:   push    0
+091C C001           1259                     push    1
+                    1260     
+091E 7800           1261                     mov     r0,#00
+0920 7900           1262     loop1:          mov     r1,#00
+0922 D9FE           1263                     djnz    r1,$
+0924 D8FA           1264                     djnz    r0,loop1
+                    1265     
+0926 D001           1266                     pop     1
+0928 D000           1267                     pop     0
+092A 22             1268                     ret
+                    1269     
+                    1270     ;-----------------------------------------------------
+092B 7400           1271     Init:           mov     A,#00h
+092D 4404           1272                     orl     a,#LCDEnable
+092F F580           1273                     mov     PortLCD,A
+0931 311A           1274                     call    PowerOnDelay
+0933 712B           1275                     call    InitLCD
+0935 51BC           1276                     call    ClearLCD
+0937 318B           1277                     call    ScrnTitle
+0939 754400         1278                     mov     MODE,#MODE_HOME
+093C 755000         1279                     mov     AlarmTime1,#AlarmTime1_
+093F 755100         1280                     mov     AlarmTime2,#AlarmTime2_
+0942 755205         1281                     mov     AlarmTime3,#AlarmTime3_
+0945 755300         1282                     mov     AlarmDelay1,#AlarmDelay1_
+0948 755400         1283                     mov     AlarmDelay2,#AlarmDelay2_
+094B 755503         1284                     mov     AlarmDelay3,#AlarmDelay3_
+094E 754101         1285                     mov     PassWD1,#PassWD1_
+0951 754202         1286                     mov     PassWD2,#PassWD2_
+0954 754303         1287                     mov     PassWD3,#PassWD3_
+0957 754403         1288                     mov     MODE,#3
+095A 754E03         1289                     mov     LastMode,#3
+095D C201           1290                     clr     FirstFlag
+095F 754500         1291                     mov     TimeCount,#0
+0962 754B00         1292                     mov     Second1,#0
+0965 754C00         1293                     mov     Second2,#0
+0968 754D00         1294                     mov     Second3,#0
+                    1295     
+                    1296                     ;init timer 1 for gen pulse on output1
+096B 758911         1297                     mov     TMOD,#11h       ;16 bit timer 1 for output
+096E 758B0B         1298                     mov     TL1,#Time1L      ;for pulse 1 KHz
+0971 758DFE         1299                     mov     TH1,#Time1H
+0974 758A00         1300                     mov     TL0,#Time0L      ;for count 1 sec
+0977 758C00         1301                     mov     TH0,#Time0H
+097A D2AF           1302                     setb    EA
+097C D2AB           1303                     setb    ET1
+097E D2A9           1304                     setb    ET0
+0980 C28C           1305                     clr     TR0             
+                    1306     
+                    1307                     ;off output
+0982 C28E           1308                     clr     TR1             ;off pulse 1KHz on output1
+0984 C296           1309                     clr     Output1
+0986 C297           1310                     clr     Output2
+0988 C200           1311                     clr     AlarmFlag
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    21
+
+098A 22             1312                     ret
+                    1313     
+                    1314     ;=======================================================
+                    1315     ; LCD module
+                    1316     ;-----------------------------------------
+                    1317     ;Show Screen Title on screen
+098B                1318     ScrnTitle:
+098B 51BC           1319                     call    ClearLcd
+098D 51D0           1320                     call    CursorFront
+098F 900D4E         1321                     mov     dptr,#ScrnTitle1
+0992 5103           1322                     call    ShowScreen
+0994 51E2           1323                     call    CursorHide
+0996 22             1324                     ret
+                    1325     
+                    1326     ;-----------------------------------------
+                    1327     ;Show Screen Title on screen
+0997                1328     ScrnMode0Sub:
+0997 51BC           1329                     call    ClearLcd
+0999 51D0           1330                     call    CursorFront
+099B 900E1A         1331                     mov     dptr,#ScrnMode0Sub1
+099E 5103           1332                     call    ShowScreen
+09A0 51E2           1333                     call    CursorHide
+09A2 22             1334                     ret
+                    1335     
+                    1336     ;-----------------------------------------
+                    1337     ;Show Screen Title on screen
+09A3                1338     ScrnMode1Sub:
+09A3 51BC           1339                     call    ClearLcd
+09A5 51D0           1340                     call    CursorFront
+09A7 900E3C         1341                     mov     dptr,#ScrnMode1Sub1
+09AA 5103           1342                     call    ShowScreen
+09AC 51E2           1343                     call    CursorHide
+09AE 22             1344                     ret
+                    1345     
+                    1346     ;-----------------------------------------
+                    1347     ;Show Screen Title on screen
+09AF                1348     ScrnMode5Sub:
+09AF 51BC           1349                     call    ClearLcd
+09B1 51D0           1350                     call    CursorFront
+09B3 900E5E         1351                     mov     dptr,#ScrnMode5Sub1
+09B6 5103           1352                     call    ShowScreen
+09B8 51E2           1353                     call    CursorHide
+09BA 22             1354                     ret
+                    1355     
+                    1356     ;-----------------------------------------
+                    1357     ;Show Screen Title on screen
+09BB                1358     ScrnMode6Sub:
+09BB 51BC           1359                     call    ClearLcd
+09BD 51D0           1360                     call    CursorFront
+09BF 900E80         1361                     mov     dptr,#ScrnMode6Sub1
+09C2 5103           1362                     call    ShowScreen
+09C4 51E2           1363                     call    CursorHide
+09C6 22             1364                     ret
+                    1365     
+                    1366     ;-----------------------------------------
+                    1367     ;Show Screen Title on screen
+09C7                1368     ScrnMode7Sub:
+09C7 51BC           1369                     call    ClearLcd
+09C9 51D0           1370                     call    CursorFront
+09CB 900EA2         1371                     mov     dptr,#ScrnMode7Sub1
+09CE 5103           1372                     call    ShowScreen
+09D0 51E2           1373                     call    CursorHide
+09D2 22             1374                     ret
+                    1375     
+                    1376     ;-----------------------------------------
+                    1377     ;Show Screen Title on screen
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    22
+
+09D3                1378     ScrnMode:
+09D3 51BC           1379                     call    ClearLcd
+09D5 51D0           1380                     call    CursorFront
+09D7 900DD6         1381                     mov     dptr,#ScrnMode1
+09DA 5103           1382                     call    ShowScreen
+09DC 51E2           1383                     call    CursorHide
+09DE 22             1384                     ret
+                    1385     
+                    1386     ;-----------------------------------------
+                    1387     ;Show Screen Title on screen
+09DF                1388     ScrnStandby:
+09DF 51BC           1389                     call    ClearLcd
+09E1 51D0           1390                     call    CursorFront
+09E3 900DB4         1391                     mov     dptr,#ScrnStandby1
+09E6 5103           1392                     call    ShowScreen
+09E8 51E2           1393                     call    CursorHide
+09EA 22             1394                     ret
+                    1395     
+                    1396     ;-----------------------------------------
+                    1397     ;Show Screen Title on screen
+09EB                1398     ScrnHome:
+09EB 51BC           1399                     call    ClearLcd
+09ED 51D0           1400                     call    CursorFront
+09EF 900D92         1401                     mov     dptr,#ScrnHome1
+09F2 5103           1402                     call    ShowScreen
+09F4 51E2           1403                     call    CursorHide
+09F6 22             1404                     ret
+                    1405     
+                    1406     ;-----------------------------------------
+                    1407     ;Show Screen Title on screen
+09F7                1408     ScrnAway:
+09F7 51BC           1409                     call    ClearLcd
+09F9 51D0           1410                     call    CursorFront
+09FB 900D70         1411                     mov     dptr,#ScrnAway1
+09FE 5103           1412                     call    ShowScreen
+0A00 51E2           1413                     call    CursorHide
+0A02 22             1414                     ret
+                    1415     
+                    1416     
+                    1417     ;****************** Routine For LCD ******************
+                    1418     ;-----------------------------------------
+                    1419     ;print string on screen all position
+                    1420     ; DPTR = address of data to show on screen
+0A03 C083           1421     ShowScreen:     push    dph
+0A05 C082           1422                     push    dpl
+0A07 C0E0           1423                     push    acc
+0A09 C000           1424                     push    0
+                    1425     
+0A0B 7400           1426                     mov     a,#0
+0A0D 93             1427                     movc    a,@a+dptr       ;get counter
+0A0E 04             1428                     inc     a
+0A0F F8             1429                     mov     r0,a
+                    1430     
+0A10 51BC           1431                     call    ClearLcd
+0A12 7112           1432                     call    LcdString       ;write first line
+0A14 E582           1433                     mov     a,dpl           ;add dptr with 17, Next string
+0A16 28             1434                     add     a,r0
+0A17 F582           1435                     mov     dpl,a
+0A19 E583           1436                     mov     a,dph
+0A1B 3400           1437                     addc    a,#0
+0A1D F583           1438                     mov     dph,a
+                    1439     
+0A1F 74C0           1440                     mov     a,#SetDDRam2Cmd
+0A21 51C7           1441                     call    CursorMove
+0A23 7112           1442                     call    LcdString       ;write second line
+                    1443     
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    23
+
+0A25 D000           1444                     pop     0
+0A27 D0E0           1445                     pop     acc
+0A29 D082           1446                     pop     dpl
+0A2B D083           1447                     pop     dph
+0A2D 22             1448                     ret
+                    1449     
+                    1450     ;----------------------------------------
+                    1451     ; Extend delay for clear lcd and return home command
+                    1452     ; delay for > 1.64 ms (40us done on lcdcommand)
+0A2E C000           1453     ExtendDelay:    push    0
+0A30 C001           1454                     push    1
+0A32 78D0           1455                     mov     r0,#0D0H        ;0A0
+0A34 7980           1456     ExtendDelay1:   mov     r1,#80H
+0A36 D9FE           1457                     djnz    r1,$
+0A38 D8FA           1458                     djnz    r0,ExtendDelay1
+0A3A D001           1459                     pop     1
+0A3C D000           1460                     pop     0
+0A3E 22             1461                     ret
+                    1462     
+                    1463     ;----------------------------------------
+                    1464     ;Show key on Lcd
+                    1465     ;A = Key
+                    1466     ; not destroy acc!!!!
+0A3F C0E0           1467     ShowKey:        push    acc
+0A41 C000           1468                     push    0
+0A43 C083           1469                     push    dph
+0A45 C082           1470                     push    dpl
+0A47 23             1471                     rl      a               ;multiply by 2 for locate data
+0A48 F8             1472                     mov     r0,a
+0A49 08             1473                     inc     r0
+0A4A 900EC4         1474                     mov     dptr,#TestStr
+0A4D A3             1475     ShowKeyLoop:    inc     dptr
+0A4E D8FD           1476                     djnz    r0,ShowKeyLoop  ;calculate address
+0A50 7112           1477                     call    LcdString
+0A52 D082           1478                     pop     dpl
+0A54 D083           1479                     pop     dph
+0A56 D000           1480                     pop     0
+0A58 D0E0           1481                     pop     acc
+0A5A 22             1482                     ret
+                    1483     
+                    1484     ;----------------------------------------
+                    1485     ;Show key on Lcd but 0a is 11
+                    1486     ;A = Key
+                    1487     ; not destroy acc!!!!
+0A5B C0E0           1488     ShowKey_:       push    acc
+0A5D C000           1489                     push    0
+0A5F C083           1490                     push    dph
+0A61 C082           1491                     push    dpl
+0A63 B40A0C         1492                     cjne    a,#0Ah,ShowNormalKey
+0A66 900EC7         1493                     mov     dptr,#TestStr1
+0A69 7112           1494                     call    LcdString
+0A6B 900EC5         1495                     mov     dptr,#TestStr0
+0A6E 7112           1496                     call    LcdString
+0A70 417D           1497                     jmp     EndShowKey_
+0A72 23             1498     ShowNorMalKey:  rl      a               ;multiply by 2 for locate data
+0A73 F8             1499                     mov     r0,a
+0A74 08             1500                     inc     r0
+0A75 900EC4         1501                     mov     dptr,#TestStr
+0A78 A3             1502     ShowKeyLoop_:    inc     dptr
+0A79 D8FD           1503                     djnz    r0,ShowKeyLoop_ ;calculate address
+0A7B 7112           1504                     call    LcdString
+0A7D D082           1505     EndShowKey_:    pop     dpl
+0A7F D083           1506                     pop     dph
+0A81 D000           1507                     pop     0
+0A83 D0E0           1508                     pop     acc
+0A85 22             1509                     ret
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    24
+
+                    1510     
+                    1511     ;----------------------------------------
+                    1512     ;Show data on Lcd 00-FF
+                    1513     ;A = data
+0A86 C000           1514     ShowData:       push    0
+0A88 F8             1515                     mov     r0,a
+0A89 54F0           1516                     anl     a,#0F0H
+0A8B C4             1517                     swap    a
+0A8C 513F           1518                     call    ShowKey
+0A8E E8             1519                     mov     a,r0
+0A8F 540F           1520                     anl     a,#0FH
+0A91 513F           1521                     call    ShowKey
+0A93 D000           1522                     pop     0
+0A95 22             1523                     ret
+                    1524     
+                    1525     ;----------------------------------------
+                    1526     ;Show num on Lcd 0 - 255
+                    1527     ;A = number
+0A96 C000           1528     ShowNum:        push    0
+0A98 C0E0           1529                     push    acc
+0A9A 75F00A         1530                     mov     b,#10
+0A9D 84             1531                     div     ab
+0A9E A8F0           1532                     mov     r0,b
+0AA0 75F00A         1533                     mov     b,#10
+0AA3 84             1534                     div     ab
+0AA4 6008           1535                     jz      LessThan100
+0AA6 513F           1536                     call    ShowKey
+0AA8 E5F0           1537                     mov     a,b
+0AAA 513F           1538                     call    ShowKey
+0AAC 41B4           1539                     jmp     LessThan10
+0AAE E5F0           1540     LessThan100:    mov     a,b
+0AB0 6002           1541                     jz      LessThan10
+0AB2 513F           1542                     call    ShowKey
+0AB4 E8             1543     LessThan10:     mov     a,r0
+0AB5 513F           1544                     call    ShowKey
+0AB7 D0E0           1545                     pop     acc
+0AB9 D000           1546                     pop     0
+0ABB 22             1547                     ret
+                    1548     
+                    1549     ;-----------------------------------------
+                    1550     ;Clear LCD Display
+0ABC                1551     ClearLcd:
+0ABC C0E0           1552                     push    acc
+0ABE 7401           1553                     mov     a,#ClearDispCmd
+0AC0 715D           1554                     call    LcdCommand
+0AC2 512E           1555                     call    ExtendDelay
+0AC4 D0E0           1556                     pop     acc
+0AC6 22             1557                     ret
+                    1558     
+                    1559     ;-----------------------------------------
+                    1560     ;Move Cursor to any position
+                    1561     ; A = Position of cursor
+0AC7 C0E0           1562     CursorMove:     push    acc
+0AC9 4480           1563                     orl     a,#80h
+0ACB 715D           1564                     call    LcdCommand
+0ACD D0E0           1565                     pop     acc
+0ACF 22             1566                     ret
+                    1567     
+                    1568     ;-----------------------------------------
+                    1569     ;Move Cursor to first address
+0AD0 C0E0           1570     CursorFront:    push    acc
+0AD2 7480           1571                     mov     a,#SetDDRam1Cmd
+0AD4 715D           1572                     call    LcdCommand
+0AD6 D0E0           1573                     pop     acc
+0AD8 22             1574                     ret
+                    1575     
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    25
+
+                    1576     ;-----------------------------------------
+                    1577     ;Move Cursore to nineth address
+0AD9 C0E0           1578     CursorBack:     push    acc
+0ADB 7490           1579                     mov     a,#SetDDRam3Cmd
+0ADD 715D           1580                     call    LcdCommand
+0ADF D0E0           1581                     pop     acc
+0AE1 22             1582                     ret
+                    1583     
+                    1584     ;-----------------------------------------
+                    1585     ;Move Cursor out of screen
+0AE2 C0E0           1586     CursorHide:     push    acc
+0AE4 74F0           1587                     mov     a,#SetDDRam5Cmd
+0AE6 715D           1588                     call    LcdCommand
+0AE8 D0E0           1589                     pop     acc
+0AEA 22             1590                     ret
+                    1591     
+                    1592     ;-----------------------------------------
+                    1593     ;Move Cursor to first line
+0AEB C0E0           1594     CursorLine1:    push    acc
+0AED 7480           1595                     mov     a,#SetDDRam1Cmd
+0AEF 715D           1596                     call    LcdCommand
+0AF1 D0E0           1597                     pop     acc
+0AF3 22             1598                     ret
+                    1599     
+                    1600     ;-----------------------------------------
+                    1601     ;Move Cursor to line 2
+0AF4 C0E0           1602     CursorLine2:    push    acc
+0AF6 74C0           1603                     mov     a,#SetDDRam2Cmd
+0AF8 715D           1604                     call    LcdCommand
+0AFA D0E0           1605                     pop     acc
+0AFC 22             1606                     ret
+                    1607     
+                    1608     ;-----------------------------------------
+                    1609     ;Move Cursor to line 3
+0AFD C0E0           1610     CursorLine3:    push    acc
+0AFF 7490           1611                     mov     a,#SetDDRam3Cmd
+0B01 715D           1612                     call    LcdCommand
+0B03 D0E0           1613                     pop     acc
+0B05 22             1614                     ret
+                    1615     
+                    1616     ;-----------------------------------------
+                    1617     ;Move Cursor to line 4
+0B06 C0E0           1618     CursorLine4:    push    acc
+0B08 74D0           1619                     mov     a,#SetDDRam4Cmd
+0B0A 715D           1620                     call    LcdCommand
+0B0C D0E0           1621                     pop     acc
+0B0E 22             1622                     ret
+                    1623     
+                    1624     ;-----------------------------------------
+                    1625     ;Write one byte to LCD at current position
+                    1626     ;A = Data in
+0B0F 7184           1627     LcdByte:        call    LcdData
+0B11 22             1628                     ret
+                    1629     
+                    1630     ;-----------------------------------------
+                    1631     ;Write String <= 8 bytes to LCD start at current position
+                    1632     ;first byte is length --> '06','Hello!'
+                    1633     ;DPTR = Address of data
+0B12 C0E0           1634     LcdString:      push    acc
+0B14 C000           1635                     push    0
+0B16 C001           1636                     push    1
+                    1637     
+0B18 7900           1638                     mov     r1,#0
+0B1A E9             1639                     mov     a,r1
+0B1B 93             1640                     movc    a,@a+dptr       ;get first byte as counter
+0B1C F8             1641                     mov     r0,a            ;save counter
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    26
+
+0B1D 09             1642     LcdStr1:        inc     r1              ;next data
+0B1E E9             1643                     mov     a,r1
+0B1F 93             1644                     movc    a,@a+dptr
+0B20 7184           1645                     call    Lcddata
+0B22 D8F9           1646                     djnz    r0,LcdStr1
+                    1647     
+0B24 D001           1648                     pop     1
+0B26 D000           1649                     pop     0
+0B28 D0E0           1650                     pop     acc
+0B2A 22             1651                     ret
+                    1652     
+                    1653     ;-----------------------------------------
+0B2B C0E0           1654     InitLcd:        push    acc
+0B2D 71AB           1655                     call    LcdPowerOnReset
+0B2F E540           1656                     mov     a,LCDFlag
+0B31 B47802         1657                     cjne    a,#78h,NotBeenInit
+0B34 613B           1658                     jmp     HasBeenInit
+0B36 7148           1659     NotBeenInit:    call    Interface4Bits
+0B38 754078         1660                     mov     LCDFlag,#78h
+0B3B                1661     HasBeenInit:    
+0B3B 7406           1662                     mov     a,#EntryModeCmd
+0B3D 715D           1663                     call    LcdCommand
+0B3F 740F           1664                     mov     a,#DispOnOffCmd
+0B41 715D           1665                     call    LcdCommand
+0B43 51BC           1666                     call    ClearLcd
+0B45 D0E0           1667                     pop     acc
+0B47 22             1668                     ret
+                    1669     
+                    1670     ;-----------------------------------------
+                    1671     ;****  Send command to interface 4 bit ********************
+0B48 C0E0           1672     Interface4Bits: push    acc
+0B4A 7428           1673                     mov     a,#FunctionCmd4
+0B4C 54F0           1674                     anl     a,#0F0h         ;send high nibble only;
+0B4E 4404           1675                     orl     a,#LCDEnable
+0B50 F580           1676                     mov     PortLCD,a       ;send command on high nibble only
+0B52 C281           1677                     clr     LcdR_W          ;write to LCD
+0B54 C280           1678                     clr     LcdRS           ;write to command register
+0B56 71BE           1679                     call    EnablePulse
+0B58 71C9           1680                     call    LcdDelay        ;Delay > 4.1ms
+0B5A D0E0           1681                     pop     acc
+0B5C 22             1682                     ret
+                    1683     
+                    1684     ;-----------------------------------------
+                    1685     ;****  Send command to LCD ***
+0B5D C0E0           1686     LcdCommand:     push    acc
+0B5F C000           1687                     push    0
+                    1688                     ;4 bits connection, send high nible first
+0B61 F8             1689                     mov     r0,a            ;save command
+                    1690     
+                    1691                     ;send high nibble
+0B62 E8             1692                     mov     a,r0
+0B63 54F0           1693                     anl     a,#0F0h         ;send high nibble first
+0B65 4404           1694                     orl     a,#LCDEnable
+0B67 F580           1695                     mov     PortLCD,a       ;send command on high nibble first
+0B69 C281           1696                     clr     LcdR_W          ;write to LCD
+0B6B C280           1697                     clr     LcdRS           ;write to command register
+0B6D 71BE           1698                     call    EnablePulse
+                    1699     ;;                call    LcdDelay        ;Delay > 4.1ms
+                    1700     
+                    1701                     ;send low nibble
+0B6F E8             1702                     mov     a,r0
+0B70 540F           1703                     anl     a,#0Fh          ;send low nibble
+0B72 C4             1704                     swap    a               ;bring data to high nibble position
+0B73 4404           1705                     orl     a,#LCDEnable
+0B75 F580           1706                     mov     PortLCD,a       ;send command on low nibble
+0B77 C281           1707                     clr     LcdR_W          ;write to LCD
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    27
+
+0B79 C280           1708                     clr     LcdRS           ;write to command register
+0B7B 71BE           1709                     call    EnablePulse
+0B7D 71C9           1710                     call    LcdDelay        ;Delay > 4.1ms
+                    1711     
+0B7F D000           1712                     pop     0
+0B81 D0E0           1713                     pop     acc
+0B83 22             1714                     ret
+                    1715     
+                    1716     ;-----------------------------------------
+                    1717     ;****  Send data to LCD ***
+0B84 C0E0           1718     LcdData:        push    acc
+0B86 C000           1719                     push    0
+                    1720                     ;4 bits connection, send high nible first
+0B88 F8             1721                     mov     r0,a            ;save data
+                    1722     
+                    1723                     ;send high nibble
+0B89 E8             1724                     mov     a,r0
+0B8A 54F0           1725                     anl     a,#0F0h         ;send high nibble first
+0B8C 4404           1726                     orl     a,#LCDEnable
+0B8E F580           1727                     mov     PortLCD,a       ;send data on high nibble first
+0B90 C281           1728                     clr     LcdR_W          ;write to LCD
+0B92 D280           1729                     setb    LcdRS           ;write to data register
+0B94 71BE           1730                     call    EnablePulse
+                    1731     ;;                call    LcdDelay        ;Delay > 4.1ms
+                    1732     
+                    1733                     ;send low nibble
+0B96 E8             1734                     mov     a,r0
+0B97 540F           1735                     anl     a,#0Fh          ;send low nibble
+0B99 C4             1736                     swap    a               ;bring data to high nibble position
+0B9A 4404           1737                     orl     a,#LCDEnable
+0B9C F580           1738                     mov     PortLCD,a       ;send data on low nibble
+0B9E C281           1739                     clr     LcdR_W          ;write to LCD
+0BA0 D280           1740                     setb    LcdRS           ;write to data register
+0BA2 71BE           1741                     call    EnablePulse
+0BA4 71C9           1742                     call    LcdDelay        ;Delay > 4.1ms
+                    1743     
+0BA6 D000           1744                     pop     0
+0BA8 D0E0           1745                     pop     acc
+0BAA 22             1746                     ret
+                    1747     
+                    1748     ;-----------------------------------------
+                    1749     ;***** Delay for LCD Power On Reset > 15 ms ******
+0BAB                1750     LcdPowerOnReset:
+0BAB C000           1751                     push    0
+0BAD C001           1752                     push    1
+0BAF 7800           1753                     mov    r0,#0
+0BB1 7930           1754     LcdPOR1:        mov     r1,#30h         ;20h
+0BB3 00             1755     LcdPOR2:        nop
+0BB4 00             1756                     nop
+0BB5 D9FC           1757                     djnz    r1,LcdPOR2
+0BB7 D8F8           1758                     djnz    r0,LcdPOR1
+0BB9 D001           1759                     pop     1
+0BBB D000           1760                     pop     0
+0BBD 22             1761                     ret
+                    1762     
+                    1763     ;-----------------------------------------
+                    1764     ;**** Generate enable pluse **** active low
+0BBE C000           1765     EnablePulse:    push    0
+0BC0 00             1766                     nop     
+0BC1 C282           1767                     clr     LcdEna          ;Fall enable signal
+0BC3 00             1768                     nop     
+0BC4 D282           1769                     setb    LcdEna          ;Riase enable signal
+0BC6 D000           1770                     pop     0
+0BC8 22             1771                     ret
+                    1772     
+                    1773     ;-----------------------------------------
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    28
+
+                    1774     ;***   Delay for each command to LCD > 40 us ****
+0BC9 C000           1775     LcdDelay:       push    0
+0BCB C001           1776                     push    1
+0BCD 783C           1777                     mov     r0,#60            ;Dealy > 40 us ;;40
+0BCF D8FE           1778                     djnz    r0,$
+0BD1 D001           1779                     pop     1
+0BD3 D000           1780                     pop     0
+0BD5 22             1781                     ret
+                    1782     
+                    1783     ;-----------------------------------------
+0BD6 C000           1784     DelayTemp:      push    0
+0BD8 C001           1785                     push    1
+0BDA C002           1786                     push    2
+0BDC 7807           1787                     mov     r0,#7           ;5
+0BDE 7900           1788     DelayTempLoop2: mov     r1,#0
+0BE0 7A00           1789     DelayTempLoop1: mov     r2,#0
+0BE2 DAFE           1790                     djnz    r2,$
+0BE4 D9FA           1791                     djnz    r1,DelayTempLoop1
+0BE6 D8F6           1792                     djnz    r0,DelayTempLoop2
+0BE8 D002           1793                     pop     2
+0BEA D001           1794                     pop     1
+0BEC D000           1795                     pop     0
+0BEE 22             1796                     ret
+                    1797     
+                    1798     
+                    1799     ;------------------------------------------
+                    1800     ;Delay a sec
+0BEF C000           1801     DelayASec:      push    0
+0BF1 C001           1802                     push    1
+0BF3 C002           1803                     push    2
+0BF5 7800           1804                     mov     r0,#00h
+0BF7 7900           1805     LoopASec2:      mov     r1,#00h
+0BF9 7A03           1806     LoopASec1:      mov     r2,#03h
+0BFB DAFE           1807                     djnz    r2,$
+0BFD D9FA           1808                     djnz    r1,LoopASec1
+0BFF D8F6           1809                     djnz    r0,LoopASec2
+0C01 D002           1810                     pop     2
+0C03 D001           1811                     pop     1
+0C05 D000           1812                     pop     0
+0C07 22             1813                     ret
+                    1814     
+                    1815     
+                    1816     ;-------------------------------------------
+                    1817     ;**************** Routine for keyboard *****
+                    1818     
+                    1819     ;-----------------------------------------
+                    1820     ;find out what key press
+                    1821     ;A = Key
+                    1822     ; for keyboard 4X3 type
+0C08 75A0EF         1823     ScanKey:        mov     PortKey,#Row0
+0C0B 30A052         1824                     jnb     Col0,Key1
+0C0E 30A153         1825                     jnb     Col1,Key2
+0C11 30A254         1826                     jnb     Col2,Key3
+0C14 75A0DF         1827                     mov     PortKey,#Row1
+0C17 30A026         1828                     jnb     Col0,Key4
+0C1A 30A11F         1829                     jnb     Col1,Key5
+0C1D 30A228         1830                     jnb     Col2,Key6
+0C20 75A0BF         1831                     mov     PortKey,#Row2
+0C23 30A02A         1832                     jnb     Col0,Key7
+0C26 30A123         1833                     jnb     Col1,Key8
+0C29 30A228         1834                     jnb     Col2,Key9
+0C2C 75A07F         1835                     mov     PortKey,#Row3
+0C2F 30A026         1836                     jnb     Col0,KeyStar
+0C32 30A10F         1837                     jnb     Col1,Key0
+0C35 30A224         1838                     jnb     Col2,KeySquare
+                    1839                     ;if no key press
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    29
+
+0C38 74F0           1840                     mov     a,#KeyNone
+0C3A 816A           1841                     jmp     EndScanKey
+                    1842     
+0C3C 7405           1843     Key5:           mov     a,#KeyPad5
+0C3E 816A           1844                     jmp     EndScanKey
+0C40 7404           1845     Key4:           mov     a,#KeyPad4
+0C42 816A           1846                     jmp     EndScanKey
+0C44 7400           1847     Key0:           mov     a,#KeyPad0
+0C46 816A           1848                     jmp     EndScanKey
+0C48 7406           1849     key6:           mov     a,#KeyPad6
+0C4A 816A           1850                     jmp     EndScanKey
+0C4C 7408           1851     key8:           mov     a,#KeyPad8
+0C4E 816A           1852                     jmp     EndScanKey
+0C50 7407           1853     key7:           mov     a,#KeyPad7
+0C52 816A           1854                     jmp     EndScanKey
+0C54 7409           1855     key9:           mov     a,#KeyPad9
+0C56 816A           1856                     jmp     EndScanKey
+0C58 740A           1857     KeyStar:        mov     a,#KeyPadStar
+0C5A 816A           1858                     jmp     EndScanKey
+0C5C 740B           1859     KeySquare:      mov     a,#KeyPadSquare
+0C5E 816A           1860                     jmp     EndScanKey
+0C60 7401           1861     Key1:           mov     a,#KeyPad1
+0C62 816A           1862                     jmp     EndScanKey
+0C64 7402           1863     Key2:           mov     a,#KeyPad2
+0C66 816A           1864                     jmp     EndScanKey
+0C68 7403           1865     Key3:           mov     a,#KeyPad3
+0C6A 22             1866     EndScanKey:     ret
+                    1867     
+                    1868     ;-----------------------------------------
+                    1869     ;Wait key press and release
+                    1870     ;A = Key
+0C6B C000           1871     WaitKey:        push    0
+0C6D 75A00F         1872                     mov     PortKey,#AllRow         ;on all row '0'
+0C70 91B7           1873     WaitKey1:       call    ReadKey
+0C72 B40F02         1874                     cjne    a,#0fh,KeyPress         ;until key pressed
+0C75 80F9           1875                     jmp     WaitKey1
+0C77 91D7           1876     KeyPress:       call    WaitSureKey             ;debouse
+0C79 91B7           1877                     call    ReadKey
+0C7B B40F02         1878                     cjne    a,#0fh,FoundKey
+0C7E 80EB           1879                     jmp     WaitKey                 ;if key press < debouse
+0C80 9108           1880     FoundKey:       call    ScanKey                 ;find out what key pressed
+0C82 F8             1881                     mov     r0,a
+0C83 75A00F         1882                     mov     PortKey,#AllRow         ;on all row
+0C86 91B7           1883     WaitRelease:    call    ReadKey                 ;wait key release
+0C88 B40FFB         1884                     cjne    a,#0fh,WaitRelease
+0C8B E8             1885                     mov     a,r0
+0C8C D000           1886                     pop     0
+0C8E 22             1887                     ret
+                    1888     
+                    1889     ;-----------------------------------------
+                    1890     ;Check key press if have some key pressed read it, If not by pass this routine
+                    1891     ;A = Key, 0F0H if no key pressed
+0C8F C000           1892     CheckKey:       push    0
+0C91 75A00F         1893                     mov     PortKey,#AllRow         ;on all row '0'
+0C94 91B7           1894                     call    ReadKey
+0C96 B40F04         1895                     cjne    a,#0fh,CheckKeyPress    ;until key pressed
+0C99 74F0           1896                     mov     a,#KeyNone
+0C9B 81B4           1897                     jmp     EndCheckKey
+0C9D 91D7           1898     CheckKeyPress:  call    WaitSureKey             ;debouse
+0C9F 91B7           1899                     call    ReadKey
+0CA1 B40F04         1900                     cjne    a,#0fh,CheckFoundKey
+0CA4 74F0           1901                     mov     a,#KeyNone
+0CA6 81B4           1902                     jmp     EndCheckKey
+0CA8 9108           1903     CheckFoundKey:  call    ScanKey                 ;find out what key pressed
+0CAA F8             1904                     mov     r0,a
+0CAB 75A00F         1905                     mov     PortKey,#AllRow         ;on all row
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    30
+
+0CAE 91B7           1906     ChkWaitRelease: call    ReadKey                 ;wait key release
+0CB0 B40FFB         1907                     cjne    a,#0fh,ChkWaitRelease
+0CB3 E8             1908                     mov     a,r0
+0CB4 D000           1909     EndCheckKey:    pop     0
+0CB6 22             1910                     ret
+                    1911     
+                    1912     
+                    1913     ;-----------------------------------------
+                    1914     ;Read key status to accumulator
+0CB7 E5A0           1915     ReadKey:        mov     a,PortKey
+0CB9 540F           1916                     anl     a,#0fh
+0CBB 22             1917                     ret
+                    1918     
+                    1919     ;-----------------------------------------
+                    1920     ;Wait menu key press and release
+0CBC 75A0FF         1921     WaitMenuKey:    mov     PortKey,#0ffh           ;off all row '1'
+0CBF C2A7           1922                     clr     KeyRowMenu              ;on menu row '0'
+0CC1                1923     WaitMenuLoop:  
+0CC1 20A2FD         1924                     jb      KeyColStar,WaitMenuLoop ;wait press menu
+0CC4 91D7           1925                     call    WaitSureKey
+0CC6 75A07F         1926                     mov     PortKey,#ScanMenuRow    ;Scan only menu key on row
+0CC9 91B7           1927                     call    ReadKey                 ;get key
+                    1928     ;                jb      KeyColStar,WaitMenukey  ;wait key unpress
+0CCB B40EEE         1929                     cjne    a,#KeyMenuOnly,WaitMenuKey  ;only key *
+0CCE 30A2FD         1930                     jnb     KeyColStar,$            ;wait key unpress
+0CD1 91D7           1931                     call    WaitSureKey
+0CD3 75A0FF         1932                     mov     PortKey,#0ffh           ;off all Row
+0CD6 22             1933                     ret
+                    1934     
+                    1935     ;-----------------------------------------
+                    1936     ;Delay for debouse switch
+0CD7 C000           1937     WaitSureKey:    push    0
+0CD9 7820           1938                     mov     r0,#20h
+0CDB D8FE           1939                     djnz    r0,$
+0CDD D000           1940                     pop     0
+0CDF 22             1941                     ret
+                    1942     
+                    1943     
+                    1944     
+                    1945     ;****************************************************************
+                    1946     ;for read write EEPROM on AT89S8252
+                    1947     ;****************************************************************
+                    1948     ;dpte = address to read
+                    1949     ;a    = data
+0CE0 E596           1950     ReadEEPROM:     mov     a,WMCON         ;select EEPROM
+0CE2 D2E3           1951                     setb    acc.3           ;setb EEMEN
+0CE4 F596           1952                     mov     WMCON,a
+0CE6 E0             1953                     movx    a,@dptr         ;read data
+0CE7 C0E0           1954                     push    acc
+0CE9 E596           1955                     mov     a,WMCON         ;deselect EEPROM
+0CEB C2E3           1956                     clr     acc.3           ;clr EEMEN
+0CED F596           1957                     mov     WMCON,a
+0CEF D0E0           1958                     pop     acc
+                    1959     
+0CF1 22             1960                     ret
+                    1961     
+                    1962     ;dptr = address to write
+                    1963     ;a    = data to write
+0CF2 C0E0           1964     WriteEEPROM:    push    acc
+0CF4 E596           1965                     mov     a,WMCON
+0CF6 D2E4           1966                     setb    acc.4           ;setb EEMWE, enable write to EEPROM
+0CF8 D2E3           1967                     setb    acc.3           ;setb EEMEN, select EEPROM
+0CFA F596           1968                     mov     WMCON,a
+0CFC D0E0           1969                     pop     acc
+0CFE F0             1970                     movx    @dptr,a         ;write data
+0CFF E596           1971     Wait_W:         mov     a,WMCON
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    31
+
+0D01 30E1FB         1972                     jnb     acc.1,Wait_W    ;check RDY/BSY, wait for writing
+0D04 E596           1973                     mov     a,WMCON
+0D06 C2E3           1974                     clr     acc.3           ;clr EEMEN, deselect EEPROM
+0D08 C2E4           1975                     clr     acc.4           ;clr EEMWE, disable write to EEPROM
+0D0A F596           1976                     mov     WMCON,a
+0D0C C3             1977                     clr     c               ;no timeout found
+0D0D 22             1978                     ret
+                    1979     
+                    1980     
+                    1981     ;===========================================================
+0D0E C0D0           1982     T1_ISR:         push    psw
+0D10 C0E0           1983                     push    acc
+0D12 758B0B         1984                     mov     TL1,#Time1L
+0D15 758DFE         1985                     mov     TH1,#Time1H
+                    1986     
+0D18 B296           1987                     cpl     Output1         ;gen pluse
+                    1988     
+0D1A D0E0           1989                     pop     acc
+0D1C D0D0           1990                     pop     psw
+0D1E 32             1991                     reti
+                    1992     
+                    1993     ;===========================================================
+0D1F C0D0           1994     T0_ISR:         push    psw
+0D21 C0E0           1995                     push    acc
+0D23 758A00         1996                     mov     TL0,#Time0L
+0D26 758C00         1997                     mov     TH0,#Time0H
+                    1998     
+0D29 0545           1999                     inc     TimeCount
+0D2B E545           2000                     mov     a,TimeCount
+0D2D B40F19         2001                     cjne    a,#15,NotSecond
+                    2002                     ;if 1 second
+0D30 754500         2003                     mov     TimeCount,#0
+0D33 054D           2004                     inc     Second3
+0D35 E54D           2005                     mov     a,Second3
+0D37 B40A0F         2006                     cjne    a,#10,CountOK
+0D3A 754D00         2007                     mov     Second3,#0
+0D3D 054C           2008                     inc     Second2
+0D3F E54C           2009                     mov     a,Second2
+0D41 B40A05         2010                     cjne    a,#10,CountOK
+0D44 754C00         2011                     mov     Second2,#0
+0D47 054B           2012                     inc     Second1
+0D49                2013     CountOK:
+                    2014     
+0D49                2015     NotSecond:
+0D49 D0E0           2016                     pop     acc
+0D4B D0D0           2017                     pop     psw
+0D4D 32             2018                     reti
+                    2019     
+                    2020     
+                    2021     ;===========================================
+                    2022     ;Message defind
+0D4E 10205769       2023     ScrnTitle1:     DB      16,' Wireless Gaurd '
+0D52 72656C65                
+0D56 73732047                
+0D5A 61757264                
+0D5E 20                      
+0D5F 10202056       2024     ScrnTitle2:     DB      16,'  Version 2.21  '
+0D63 65727369                
+0D67 6F6E2032                
+0D6B 2E323120                
+0D6F 20                      
+                    2025     
+0D70 10204157       2026     ScrnAway1:      DB      16,' AWAY: ALARM=   '
+0D74 41593A20                
+0D78 414C4152                
+0D7C 4D3D2020                
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    32
+
+0D80 20                      
+0D81 10205A4F       2027     ScrnAway2:      DB      16,' ZONE =         '
+0D85 4E45203D                
+0D89 20202020                
+0D8D 20202020                
+0D91 20                      
+                    2028     
+0D92 1020484F       2029     ScrnHome1:      DB      16,' HOME: ALARM=   '
+0D96 4D453A20                
+0D9A 414C4152                
+0D9E 4D3D2020                
+0DA2 20                      
+0DA3 10205A4F       2030     ScrnHome2:      DB      16,' ZONE =         '
+0DA7 4E45203D                
+0DAB 20202020                
+0DAF 20202020                
+0DB3 20                      
+                    2031     
+0DB4 10205354       2032     ScrnStandby1:   DB      16,' STBY: ALARM=OFF'
+0DB8 42593A20                
+0DBC 414C4152                
+0DC0 4D3D4F46                
+0DC4 46                      
+0DC5 10205A4F       2033     ScrnStandby2:   DB      16,' ZONE =         '
+0DC9 4E45203D                
+0DCD 20202020                
+0DD1 20202020                
+0DD5 20                      
+                    2034     
+0DD6 10454E54       2035     ScrnMode1:      DB      16,'ENTER NUMBER 0-9'
+0DDA 4552204E                
+0DDE 554D4245                
+0DE2 5220302D                
+0DE6 39                      
+0DE7 10202020       2036     ScrnMode2:      DB      16,'       *=ESC#=OK' 
+0DEB 20202020                
+0DEF 2A3D4553                
+0DF3 43233D4F                
+0DF7 4B                      
+                    2037     
+0DF8 10454E54       2038     ScrnSubMode1:   DB      16,'ENTER           '
+0DFC 45522020                
+0E00 20202020                
+0E04 20202020                
+0E08 20                      
+0E09 10202020       2039     ScrnSubMode2:   DB      16,'       *=ESC#=OK' 
+0E0D 20202020                
+0E11 2A3D4553                
+0E15 43233D4F                
+0E19 4B                      
+                    2040     
+0E1A 10454E54       2041     ScrnMode0Sub1:  DB      16,'ENTER   0 = OFF '
+0E1E 45522020                
+0E22 2030203D                
+0E26 204F4646                
+0E2A 20                      
+0E2B 1053726E       2042     ScrnMode0Sub2:  DB      16,'SrnOFF *=ESC#=OK' 
+0E2F 4F464620                
+0E33 2A3D4553                
+0E37 43233D4F                
+0E3B 4B                      
+                    2043     
+0E3C 10454E54       2044     ScrnMode1Sub1:  DB      16,'ENTER   1 = ON  '
+0E40 45522020                
+0E44 2031203D                
+0E48 204F4E20                
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    33
+
+0E4C 20                      
+0E4D 1053726E       2045     ScrnMode1Sub2:  DB      16,'Srn ON *=ESC#=OK' 
+0E51 204F4E20                
+0E55 2A3D4553                
+0E59 43233D4F                
+0E5D 4B                      
+                    2046     
+0E5E 10454E54       2047     ScrnMode5Sub1:  DB      16,'ENTER 5=ALRM SET'
+0E62 45522035                
+0E66 3D414C52                
+0E6A 4D205345                
+0E6E 54                      
+0E6F 10202020       2048     ScrnMode5Sub2:  DB      16,'       *=ESC#=OK' 
+0E73 20202020                
+0E77 2A3D4553                
+0E7B 43233D4F                
+0E7F 4B                      
+                    2049     
+0E80 10454E54       2050     ScrnMode6Sub1:  DB      16,'ENTER 6=ALRM DLY'
+0E84 45522036                
+0E88 3D414C52                
+0E8C 4D20444C                
+0E90 59                      
+0E91 10202020       2051     ScrnMode6Sub2:  DB      16,'       *=ESC#=OK' 
+0E95 20202020                
+0E99 2A3D4553                
+0E9D 43233D4F                
+0EA1 4B                      
+                    2052     
+0EA2 10454E54       2053     ScrnMode7Sub1:  DB      16,'ENTER 7=Password'
+0EA6 45522037                
+0EAA 3D506173                
+0EAE 73776F72                
+0EB2 64                      
+0EB3 10202020       2054     ScrnMode7Sub2:  DB      16,'       *=ESC#=OK' 
+0EB7 20202020                
+0EBB 2A3D4553                
+0EBF 43233D4F                
+0EC3 4B                      
+                    2055     
+                    2056     
+                    2057     
+0EC4 01             2058     TestStr:        DB      01
+0EC5 0130           2059     TestStr0:       DB      01,'0'
+0EC7 0131           2060     TestStr1:       DB      01,'1'
+0EC9 0132           2061     TestStr2:       DB      01,'2'
+0ECB 0133           2062     TestStr3:       DB      01,'3'
+0ECD 0134           2063     TestStr4:       DB      01,'4'
+0ECF 0135           2064     TestStr5:       DB      01,'5'
+0ED1 0136           2065     TestStr6:       DB      01,'6'
+0ED3 0137           2066     TestStr7:       DB      01,'7'
+0ED5 0138           2067     TestStr8:       DB      01,'8'
+0ED7 0139           2068     TestStr9:       DB      01,'9'
+0ED9 0141           2069     TestStrA:       DB      01,'A'     ;10
+0EDB 0142           2070     TestStrB:       DB      01,'B'     ;11
+0EDD 0143           2071     TestStrC:       DB      01,'C'     ;12
+0EDF 0144           2072     TestStrD:       DB      01,'D'     ;13
+0EE1 0145           2073     TestStrE:       DB      01,'E'     ;14
+0EE3 0146           2074     TestStrF:       DB      01,'F'     ;15
+0EE5 0147           2075     TestStrG:       DB      01,'G'     ;16
+0EE7 0148           2076     TestStrH:       DB      01,'H'     ;17
+0EE9 0149           2077     TestStrI:       DB      01,'I'     ;18
+0EEB 014A           2078     TestStrJ:       DB      01,'J'     ;19
+0EED 014B           2079     TestStrK:       DB      01,'K'     ;20
+0EEF 014C           2080     TestStrL:       DB      01,'L'     ;21
+0EF1 014D           2081     TestStrM:       DB      01,'M'     ;22
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    34
+
+0EF3 014E           2082     TestStrN:       DB      01,'N'     ;23
+0EF5 014F           2083     TestStrO:       DB      01,'O'     ;24
+0EF7 0150           2084     TestStrP:       DB      01,'P'     ;25
+0EF9 0151           2085     TestStrQ:       DB      01,'Q'     ;26
+0EFB 0152           2086     TestStrR:       DB      01,'R'     ;27
+0EFD 0153           2087     TestStrS:       DB      01,'S'     ;28
+0EFF 0154           2088     TestStrT:       DB      01,'T'     ;29
+0F01 0155           2089     TestStrU:       DB      01,'U'     ;30
+0F03 0156           2090     TestStrV:       DB      01,'V'     ;31
+0F05 0157           2091     TestStrW:       DB      01,'W'     ;32
+0F07 0158           2092     TestStrX:       DB      01,'X'     ;33
+0F09 0159           2093     TestStrY:       DB      01,'Y'     ;34
+0F0B 015A           2094     TestStrZ:       DB      01,'Z'     ;35
+0F0D 012D           2095     TestStrMinus:   DB      01,'-'
+0F0F 012C           2096     TestStrComma:   DB      01,','
+                    2097     
+                    2098     
+                    2099     END
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    35
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+ALARMDELAY1. . . .  N NUMB   0053H   A   
+ALARMDELAY1_ . . .  N NUMB   0000H   A   
+ALARMDELAY2. . . .  N NUMB   0054H   A   
+ALARMDELAY2_ . . .  N NUMB   0000H   A   
+ALARMDELAY3. . . .  N NUMB   0055H   A   
+ALARMDELAY3_ . . .  N NUMB   0003H   A   
+ALARMFLAG. . . . .  B ADDR   0020H.0 A   
+ALARMTIME1 . . . .  N NUMB   0050H   A   
+ALARMTIME1_. . . .  N NUMB   0000H   A   
+ALARMTIME2 . . . .  N NUMB   0051H   A   
+ALARMTIME2_. . . .  N NUMB   0000H   A   
+ALARMTIME3 . . . .  N NUMB   0052H   A   
+ALARMTIME3_. . . .  N NUMB   0005H   A   
+ALLROW . . . . . .  N NUMB   000FH   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+BLANK. . . . . . .  N NUMB   0020H   A   
+CHECKFOUNDKEY. . .  C ADDR   0CA8H   A   
+CHECKKEY . . . . .  C ADDR   0C8FH   A   
+CHECKKEYPRESS. . .  C ADDR   0C9DH   A   
+CHECKMODE1 . . . .  C ADDR   00B5H   A   
+CHECKMODE2 . . . .  C ADDR   00BCH   A   
+CHECKMODE3 . . . .  C ADDR   00CEH   A   
+CHECKMODE4 . . . .  C ADDR   00E9H   A   
+CHECKMODE5 . . . .  C ADDR   0104H   A   
+CHECKMODE6 . . . .  C ADDR   010DH   A   
+CHECKMODE7 . . . .  C ADDR   0116H   A   
+CHECKMODE8 . . . .  C ADDR   011FH   A   
+CHKSQUARE. . . . .  C ADDR   037FH   A   
+CHKSUBMODE0. . . .  C ADDR   0387H   A   
+CHKSUBMODE1. . . .  C ADDR   03B5H   A   
+CHKSUBMODE2. . . .  C ADDR   03E3H   A   
+CHKSUBMODE3. . . .  C ADDR   0411H   A   
+CHKSUBMODE4. . . .  C ADDR   043FH   A   
+CHKSUBMODE5. . . .  C ADDR   046DH   A   
+CHKSUBMODE6. . . .  C ADDR   049BH   A   
+CHKSUBMODE7. . . .  C ADDR   04C9H   A   
+CHKSUBMODE8. . . .  C ADDR   04F7H   A   
+CHKWAITRELEASE . .  C ADDR   0CAEH   A   
+CLEARDISPCMD . . .  N NUMB   0001H   A   
+CLEARLCD . . . . .  C ADDR   0ABCH   A   
+COL0 . . . . . . .  B ADDR   00A0H.0 A   
+COL1 . . . . . . .  B ADDR   00A0H.1 A   
+COL2 . . . . . . .  B ADDR   00A0H.2 A   
+COUNTOK. . . . . .  C ADDR   0D49H   A   
+CURSORBACK . . . .  C ADDR   0AD9H   A   
+CURSORFRONT. . . .  C ADDR   0AD0H   A   
+CURSORHIDE . . . .  C ADDR   0AE2H   A   
+CURSORLINE1. . . .  C ADDR   0AEBH   A   
+CURSORLINE2. . . .  C ADDR   0AF4H   A   
+CURSORLINE3. . . .  C ADDR   0AFDH   A   
+CURSORLINE4. . . .  C ADDR   0B06H   A   
+CURSORMOVE . . . .  C ADDR   0AC7H   A   
+DELAYASEC. . . . .  C ADDR   0BEFH   A   
+DELAYFLAG. . . . .  B ADDR   0020H.2 A   
+DELAYTEMP. . . . .  C ADDR   0BD6H   A   
+DELAYTEMPLOOP1 . .  C ADDR   0BE0H   A   
+DELAYTEMPLOOP2 . .  C ADDR   0BDEH   A   
+DISPONOFFCMD . . .  N NUMB   000FH   A   
+DISPSHIFTCMD . . .  N NUMB   0014H   A   
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    36
+
+DPH. . . . . . . .  D ADDR   0083H   A   
+DPL. . . . . . . .  D ADDR   0082H   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ENABLEPULSE. . . .  C ADDR   0BBEH   A   
+ENDCHECKKEY. . . .  C ADDR   0CB4H   A   
+ENDCHECKMODE . . .  C ADDR   0123H   A   
+ENDCHKMODE2. . . .  C ADDR   0582H   A   
+ENDCHKMODE3. . . .  C ADDR   06A5H   A   
+ENDCHKMODE4. . . .  C ADDR   0808H   A   
+ENDMODE2 . . . . .  C ADDR   059DH   A   
+ENDMODE4 . . . . .  C ADDR   0876H   A   
+ENDMODE5 . . . . .  C ADDR   024DH   A   
+ENDMODE6 . . . . .  C ADDR   02C4H   A   
+ENDMODE7 . . . . .  C ADDR   033BH   A   
+ENDMODE8 . . . . .  C ADDR   04FCH   A   
+ENDSCANKEY . . . .  C ADDR   0C6AH   A   
+ENDSHOWKEY_. . . .  C ADDR   0A7DH   A   
+END_MODE3. . . . .  C ADDR   06FEH   A   
+ENTRYMODECMD . . .  N NUMB   0006H   A   
+ET0. . . . . . . .  B ADDR   00A8H.1 A   
+ET1. . . . . . . .  B ADDR   00A8H.3 A   
+EXITMODE2. . . . .  C ADDR   060FH   A   
+EXITMODE3. . . . .  C ADDR   0770H   A   
+EXITMODE4. . . . .  C ADDR   08DCH   A   
+EXTENDDELAY. . . .  C ADDR   0A2EH   A   
+EXTENDDELAY1 . . .  C ADDR   0A34H   A   
+FIRSTFLAG. . . . .  B ADDR   0020H.1 A   
+FLAG . . . . . . .  N NUMB   0020H   A   
+FOUNDKEY . . . . .  C ADDR   0C80H   A   
+FUNCTIONCMD4 . . .  N NUMB   0028H   A   
+FUNCTIONCMD81. . .  N NUMB   0033H   A   
+FUNCTIONCMD82. . .  N NUMB   0032H   A   
+GOTPASS. . . . . .  N NUMB   0049H   A   
+HASBEENINIT. . . .  C ADDR   0B3BH   A   
+INIT . . . . . . .  C ADDR   092BH   A   
+INITLCD. . . . . .  C ADDR   0B2BH   A   
+INTERFACE4BITS . .  C ADDR   0B48H   A   
+KEY0 . . . . . . .  C ADDR   0C44H   A   
+KEY1 . . . . . . .  C ADDR   0C60H   A   
+KEY2 . . . . . . .  C ADDR   0C64H   A   
+KEY3 . . . . . . .  C ADDR   0C68H   A   
+KEY4 . . . . . . .  C ADDR   0C40H   A   
+KEY5 . . . . . . .  C ADDR   0C3CH   A   
+KEY6 . . . . . . .  C ADDR   0C48H   A   
+KEY7 . . . . . . .  C ADDR   0C50H   A   
+KEY8 . . . . . . .  C ADDR   0C4CH   A   
+KEY9 . . . . . . .  C ADDR   0C54H   A   
+KEYCOLSTAR . . . .  B ADDR   00A0H.2 A   
+KEYMENUONLY. . . .  N NUMB   000EH   A   
+KEYNONE. . . . . .  N NUMB   00F0H   A   
+KEYPAD0. . . . . .  N NUMB   0000H   A   
+KEYPAD1. . . . . .  N NUMB   0001H   A   
+KEYPAD2. . . . . .  N NUMB   0002H   A   
+KEYPAD3. . . . . .  N NUMB   0003H   A   
+KEYPAD4. . . . . .  N NUMB   0004H   A   
+KEYPAD5. . . . . .  N NUMB   0005H   A   
+KEYPAD6. . . . . .  N NUMB   0006H   A   
+KEYPAD7. . . . . .  N NUMB   0007H   A   
+KEYPAD8. . . . . .  N NUMB   0008H   A   
+KEYPAD9. . . . . .  N NUMB   0009H   A   
+KEYPADSQUARE . . .  N NUMB   000BH   A   
+KEYPADSTAR . . . .  N NUMB   000AH   A   
+KEYPRESS . . . . .  C ADDR   0C77H   A   
+KEYROWMENU . . . .  B ADDR   00A0H.7 A   
+KEYSQUARE. . . . .  C ADDR   0C5CH   A   
+KEYSTAR. . . . . .  C ADDR   0C58H   A   
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    37
+
+LASTMODE . . . . .  N NUMB   004EH   A   
+LCDBYTE. . . . . .  C ADDR   0B0FH   A   
+LCDCOMMAND . . . .  C ADDR   0B5DH   A   
+LCDDATA. . . . . .  C ADDR   0B84H   A   
+LCDDELAY . . . . .  C ADDR   0BC9H   A   
+LCDENA . . . . . .  B ADDR   0080H.2 A   
+LCDENABLE. . . . .  N NUMB   0004H   A   
+LCDFLAG. . . . . .  N NUMB   0040H   A   
+LCDPOR1. . . . . .  C ADDR   0BB1H   A   
+LCDPOR2. . . . . .  C ADDR   0BB3H   A   
+LCDPOWERONRESET. .  C ADDR   0BABH   A   
+LCDRS. . . . . . .  B ADDR   0080H.0 A   
+LCDR_W . . . . . .  B ADDR   0080H.1 A   
+LCDSTR1. . . . . .  C ADDR   0B1DH   A   
+LCDSTRING. . . . .  C ADDR   0B12H   A   
+LESSTHAN10 . . . .  C ADDR   0AB4H   A   
+LESSTHAN100. . . .  C ADDR   0AAEH   A   
+LOOP1. . . . . . .  C ADDR   0920H   A   
+LOOPASEC1. . . . .  C ADDR   0BF9H   A   
+LOOPASEC2. . . . .  C ADDR   0BF7H   A   
+LOOPMODE2. . . . .  C ADDR   0506H   A   
+LOOPMODE3. . . . .  C ADDR   061FH   A   
+LOOPMODE4. . . . .  C ADDR   0784H   A   
+LOOPMODE8. . . . .  C ADDR   0374H   A   
+LOOPTEST . . . . .  C ADDR   0913H   A   
+LOOPTESTKB . . . .  C ADDR   08E7H   A   
+MAIN . . . . . . .  C ADDR   0040H   A   
+MEMALARMDELAY1 . .  N NUMB   0004H   A   
+MEMALARMDELAY2 . .  N NUMB   0005H   A   
+MEMALARMDELAY3 . .  N NUMB   0006H   A   
+MEMALARMTIME1. . .  N NUMB   0001H   A   
+MEMALARMTIME2. . .  N NUMB   0002H   A   
+MEMALARMTIME3. . .  N NUMB   0003H   A   
+MEMFLAG. . . . . .  N NUMB   0000H   A   
+MEMLASTMODE. . . .  N NUMB   000BH   A   
+MEMMODE. . . . . .  N NUMB   000AH   A   
+MEMPASSWD1 . . . .  N NUMB   0007H   A   
+MEMPASSWD2 . . . .  N NUMB   0008H   A   
+MEMPASSWD3 . . . .  N NUMB   0009H   A   
+MODE . . . . . . .  N NUMB   0044H   A   
+MODE0. . . . . . .  C ADDR   033EH   A   
+MODE0LOOP. . . . .  C ADDR   0349H   A   
+MODE1. . . . . . .  C ADDR   0355H   A   
+MODE1LOOP. . . . .  C ADDR   0360H   A   
+MODE2. . . . . . .  C ADDR   04FFH   A   
+MODE2PASSIN. . . .  C ADDR   05A5H   A   
+MODE2PASSWD1 . . .  C ADDR   05ABH   A   
+MODE2PASSWD2 . . .  C ADDR   05BEH   A   
+MODE2PASSWD3 . . .  C ADDR   05D4H   A   
+MODE2PASSWDFAIL. .  C ADDR   05F7H   A   
+MODE2SENSOR1ON . .  C ADDR   0518H   A   
+MODE2SENSOR2 . . .  C ADDR   0525H   A   
+MODE2SENSOR2ON . .  C ADDR   0537H   A   
+MODE2SENSOR3 . . .  C ADDR   0544H   A   
+MODE2SENSOR3ON . .  C ADDR   0556H   A   
+MODE2SENSOR4 . . .  C ADDR   0563H   A   
+MODE2SENSOR4ON . .  C ADDR   0575H   A   
+MODE3. . . . . . .  C ADDR   0618H   A   
+MODE3ONOUTPUT. . .  C ADDR   06BBH   A   
+MODE3PASSIN. . . .  C ADDR   0706H   A   
+MODE3PASSWD1 . . .  C ADDR   070CH   A   
+MODE3PASSWD2 . . .  C ADDR   071FH   A   
+MODE3PASSWD3 . . .  C ADDR   0735H   A   
+MODE3PASSWDFAIL. .  C ADDR   0758H   A   
+MODE3SENSOR1ON . .  C ADDR   0633H   A   
+MODE3SENSOR2 . . .  C ADDR   0642H   A   
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    38
+
+MODE3SENSOR2ON . .  C ADDR   0654H   A   
+MODE3SENSOR3 . . .  C ADDR   0663H   A   
+MODE3SENSOR3ON . .  C ADDR   0675H   A   
+MODE3SENSOR4 . . .  C ADDR   0684H   A   
+MODE3SENSOR4ON . .  C ADDR   0696H   A   
+MODE4. . . . . . .  C ADDR   0779H   A   
+MODE4ONOUTPUT. . .  C ADDR   083DH   A   
+MODE4PASSIN. . . .  C ADDR   087EH   A   
+MODE4PASSWD1 . . .  C ADDR   0884H   A   
+MODE4PASSWD2 . . .  C ADDR   0895H   A   
+MODE4PASSWD3 . . .  C ADDR   08A9H   A   
+MODE4PASSWDFAIL. .  C ADDR   08C8H   A   
+MODE4SENSOR1ON . .  C ADDR   0798H   A   
+MODE4SENSOR2 . . .  C ADDR   07A7H   A   
+MODE4SENSOR2ON . .  C ADDR   07B9H   A   
+MODE4SENSOR3 . . .  C ADDR   07C8H   A   
+MODE4SENSOR3ON . .  C ADDR   07DAH   A   
+MODE4SENSOR4 . . .  C ADDR   07E9H   A   
+MODE4SENSOR4ON . .  C ADDR   07FBH   A   
+MODE5. . . . . . .  C ADDR   01D9H   A   
+MODE5KEYNUM. . . .  C ADDR   0243H   A   
+MODE5KEYSQUARE . .  C ADDR   0228H   A   
+MODE5LOOP. . . . .  C ADDR   0200H   A   
+MODE6. . . . . . .  C ADDR   0250H   A   
+MODE6KEYNUM. . . .  C ADDR   02BAH   A   
+MODE6KEYSQUARE . .  C ADDR   029FH   A   
+MODE6LOOP. . . . .  C ADDR   0277H   A   
+MODE7. . . . . . .  C ADDR   02C7H   A   
+MODE7KEYNUM. . . .  C ADDR   0331H   A   
+MODE7KEYSQUARE . .  C ADDR   0316H   A   
+MODE7LOOP. . . . .  C ADDR   02EEH   A   
+MODE8. . . . . . .  C ADDR   036CH   A   
+MODESELECT . . . .  N NUMB   004FH   A   
+MODE_AWAY. . . . .  N NUMB   0001H   A   
+MODE_HOME. . . . .  N NUMB   0000H   A   
+MODE_STBY. . . . .  N NUMB   0002H   A   
+NEWPROCESS . . . .  C ADDR   00ACH   A   
+NOALARMMODE2 . . .  C ADDR   0582H   A   
+NOALARMMODE3 . . .  C ADDR   06DAH   A   
+NOALARMMODE3_. . .  C ADDR   06E3H   A   
+NOALARMMODE4 . . .  C ADDR   0857H   A   
+NOALARMMODE4_. . .  C ADDR   0860H   A   
+NOTBEENINIT. . . .  C ADDR   0B36H   A   
+NOTCHKFLAG . . . .  C ADDR   0827H   A   
+NOTDATA. . . . . .  N NUMB   00FFH   A   
+NOTSECOND. . . . .  C ADDR   0D49H   A   
+OUTPUT1. . . . . .  B ADDR   0090H.6 A   
+OUTPUT2. . . . . .  B ADDR   0090H.7 A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+PASSWD1. . . . . .  N NUMB   0041H   A   
+PASSWD1_ . . . . .  N NUMB   0001H   A   
+PASSWD2. . . . . .  N NUMB   0042H   A   
+PASSWD2_ . . . . .  N NUMB   0002H   A   
+PASSWD3. . . . . .  N NUMB   0043H   A   
+PASSWD3_ . . . . .  N NUMB   0003H   A   
+PASSWDCOUNT. . . .  N NUMB   004AH   A   
+PORTKEY. . . . . .  D ADDR   00A0H   A   
+PORTLCD. . . . . .  D ADDR   0080H   A   
+POSALARM . . . . .  N NUMB   000DH   A   
+POSMODE. . . . . .  N NUMB   0040H   A   
+POSNEW . . . . . .  N NUMB   0044H   A   
+POSOLD . . . . . .  N NUMB   0040H   A   
+POSPASSWD1 . . . .  N NUMB   004DH   A   
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    39
+
+POSPASSWD2 . . . .  N NUMB   004EH   A   
+POSPASSWD3 . . . .  N NUMB   004FH   A   
+POSSENSOR1 . . . .  N NUMB   0048H   A   
+POSSENSOR2 . . . .  N NUMB   0049H   A   
+POSSENSOR3 . . . .  N NUMB   004AH   A   
+POSSENSOR4 . . . .  N NUMB   004BH   A   
+POWERONDELAY . . .  C ADDR   091AH   A   
+PROCESSLOOP. . . .  C ADDR   00ACH   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+READEEPROM . . . .  C ADDR   0CE0H   A   
+READKEY. . . . . .  C ADDR   0CB7H   A   
+RETURNHOMECMD. . .  N NUMB   0002H   A   
+ROW0 . . . . . . .  N NUMB   00EFH   A   
+ROW1 . . . . . . .  N NUMB   00DFH   A   
+ROW2 . . . . . . .  N NUMB   00BFH   A   
+ROW3 . . . . . . .  N NUMB   007FH   A   
+RUNPROCESS . . . .  C ADDR   00ACH   A   
+SAVEALLPARA. . . .  C ADDR   0174H   A   
+SAVEDFLAG. . . . .  N NUMB   0073H   A   
+SAVEPARA . . . . .  C ADDR   0127H   A   
+SCANKEY. . . . . .  C ADDR   0C08H   A   
+SCANMENUROW. . . .  N NUMB   007FH   A   
+SCRNAWAY . . . . .  C ADDR   09F7H   A   
+SCRNAWAY1. . . . .  C ADDR   0D70H   A   
+SCRNAWAY2. . . . .  C ADDR   0D81H   A   
+SCRNHOME . . . . .  C ADDR   09EBH   A   
+SCRNHOME1. . . . .  C ADDR   0D92H   A   
+SCRNHOME2. . . . .  C ADDR   0DA3H   A   
+SCRNMODE . . . . .  C ADDR   09D3H   A   
+SCRNMODE0SUB . . .  C ADDR   0997H   A   
+SCRNMODE0SUB1. . .  C ADDR   0E1AH   A   
+SCRNMODE0SUB2. . .  C ADDR   0E2BH   A   
+SCRNMODE1. . . . .  C ADDR   0DD6H   A   
+SCRNMODE1SUB . . .  C ADDR   09A3H   A   
+SCRNMODE1SUB1. . .  C ADDR   0E3CH   A   
+SCRNMODE1SUB2. . .  C ADDR   0E4DH   A   
+SCRNMODE2. . . . .  C ADDR   0DE7H   A   
+SCRNMODE5SUB . . .  C ADDR   09AFH   A   
+SCRNMODE5SUB1. . .  C ADDR   0E5EH   A   
+SCRNMODE5SUB2. . .  C ADDR   0E6FH   A   
+SCRNMODE6SUB . . .  C ADDR   09BBH   A   
+SCRNMODE6SUB1. . .  C ADDR   0E80H   A   
+SCRNMODE6SUB2. . .  C ADDR   0E91H   A   
+SCRNMODE7SUB . . .  C ADDR   09C7H   A   
+SCRNMODE7SUB1. . .  C ADDR   0EA2H   A   
+SCRNMODE7SUB2. . .  C ADDR   0EB3H   A   
+SCRNSTANDBY. . . .  C ADDR   09DFH   A   
+SCRNSTANDBY1 . . .  C ADDR   0DB4H   A   
+SCRNSTANDBY2 . . .  C ADDR   0DC5H   A   
+SCRNSUBMODE1 . . .  C ADDR   0DF8H   A   
+SCRNSUBMODE2 . . .  C ADDR   0E09H   A   
+SCRNTITLE. . . . .  C ADDR   098BH   A   
+SCRNTITLE1 . . . .  C ADDR   0D4EH   A   
+SCRNTITLE2 . . . .  C ADDR   0D5FH   A   
+SECOND1. . . . . .  N NUMB   004BH   A   
+SECOND2. . . . . .  N NUMB   004CH   A   
+SECOND3. . . . . .  N NUMB   004DH   A   
+SENSOR1. . . . . .  B ADDR   0090H.0 A   
+SENSOR2. . . . . .  B ADDR   0090H.1 A   
+SENSOR3. . . . . .  B ADDR   0090H.2 A   
+SENSOR4. . . . . .  B ADDR   0090H.3 A   
+SETDDRAM1CMD . . .  N NUMB   0080H   A   
+SETDDRAM2CMD . . .  N NUMB   00C0H   A   
+SETDDRAM3CMD . . .  N NUMB   0090H   A   
+SETDDRAM4CMD . . .  N NUMB   00D0H   A   
+SETDDRAM5CMD . . .  N NUMB   00F0H   A   
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    40
+
+SHOWDATA . . . . .  C ADDR   0A86H   A   
+SHOWKEY. . . . . .  C ADDR   0A3FH   A   
+SHOWKEYLOOP. . . .  C ADDR   0A4DH   A   
+SHOWKEYLOOP_ . . .  C ADDR   0A78H   A   
+SHOWKEY_ . . . . .  C ADDR   0A5BH   A   
+SHOWNORMALKEY. . .  C ADDR   0A72H   A   
+SHOWNUM. . . . . .  C ADDR   0A96H   A   
+SHOWSCREEN . . . .  C ADDR   0A03H   A   
+T0_ISR . . . . . .  C ADDR   0D1FH   A   
+T1_ISR . . . . . .  C ADDR   0D0EH   A   
+TEMPALARMDELAY1. .  N NUMB   0059H   A   
+TEMPALARMDELAY2. .  N NUMB   005AH   A   
+TEMPALARMDELAY3. .  N NUMB   005BH   A   
+TEMPALARMTIME1 . .  N NUMB   0056H   A   
+TEMPALARMTIME2 . .  N NUMB   0057H   A   
+TEMPALARMTIME3 . .  N NUMB   0058H   A   
+TEMPFLAG . . . . .  N NUMB   0028H   A   
+TEMPPASSWD1. . . .  N NUMB   0046H   A   
+TEMPPASSWD2. . . .  N NUMB   0047H   A   
+TEMPPASSWD3. . . .  N NUMB   0048H   A   
+TEST . . . . . . .  C ADDR   0910H   A   
+TEST51 . . . . . .  C ADDR   08F2H   A   
+TESTKEYBOARD . . .  C ADDR   08E5H   A   
+TESTSTR. . . . . .  C ADDR   0EC4H   A   
+TESTSTR0 . . . . .  C ADDR   0EC5H   A   
+TESTSTR1 . . . . .  C ADDR   0EC7H   A   
+TESTSTR2 . . . . .  C ADDR   0EC9H   A   
+TESTSTR3 . . . . .  C ADDR   0ECBH   A   
+TESTSTR4 . . . . .  C ADDR   0ECDH   A   
+TESTSTR5 . . . . .  C ADDR   0ECFH   A   
+TESTSTR6 . . . . .  C ADDR   0ED1H   A   
+TESTSTR7 . . . . .  C ADDR   0ED3H   A   
+TESTSTR8 . . . . .  C ADDR   0ED5H   A   
+TESTSTR9 . . . . .  C ADDR   0ED7H   A   
+TESTSTRA . . . . .  C ADDR   0ED9H   A   
+TESTSTRB . . . . .  C ADDR   0EDBH   A   
+TESTSTRC . . . . .  C ADDR   0EDDH   A   
+TESTSTRCOMMA . . .  C ADDR   0F0FH   A   
+TESTSTRD . . . . .  C ADDR   0EDFH   A   
+TESTSTRE . . . . .  C ADDR   0EE1H   A   
+TESTSTRF . . . . .  C ADDR   0EE3H   A   
+TESTSTRG . . . . .  C ADDR   0EE5H   A   
+TESTSTRH . . . . .  C ADDR   0EE7H   A   
+TESTSTRI . . . . .  C ADDR   0EE9H   A   
+TESTSTRJ . . . . .  C ADDR   0EEBH   A   
+TESTSTRK . . . . .  C ADDR   0EEDH   A   
+TESTSTRL . . . . .  C ADDR   0EEFH   A   
+TESTSTRM . . . . .  C ADDR   0EF1H   A   
+TESTSTRMINUS . . .  C ADDR   0F0DH   A   
+TESTSTRN . . . . .  C ADDR   0EF3H   A   
+TESTSTRO . . . . .  C ADDR   0EF5H   A   
+TESTSTRP . . . . .  C ADDR   0EF7H   A   
+TESTSTRQ . . . . .  C ADDR   0EF9H   A   
+TESTSTRR . . . . .  C ADDR   0EFBH   A   
+TESTSTRS . . . . .  C ADDR   0EFDH   A   
+TESTSTRT . . . . .  C ADDR   0EFFH   A   
+TESTSTRU . . . . .  C ADDR   0F01H   A   
+TESTSTRV . . . . .  C ADDR   0F03H   A   
+TESTSTRW . . . . .  C ADDR   0F05H   A   
+TESTSTRX . . . . .  C ADDR   0F07H   A   
+TESTSTRY . . . . .  C ADDR   0F09H   A   
+TESTSTRZ . . . . .  C ADDR   0F0BH   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TIME0H . . . . . .  N NUMB   0000H   A   
+TIME0L . . . . . .  N NUMB   0000H   A   
+A51 MACRO ASSEMBLER  SECURE                                                               03/03/2002 18:19:36 PAGE    41
+
+TIME1H . . . . . .  N NUMB   00FEH   A   
+TIME1L . . . . . .  N NUMB   000BH   A   
+TIMECOUNT. . . . .  N NUMB   0045H   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+WAITKEY. . . . . .  C ADDR   0C6BH   A   
+WAITKEY1 . . . . .  C ADDR   0C70H   A   
+WAITMENUKEY. . . .  C ADDR   0CBCH   A   
+WAITMENULOOP . . .  C ADDR   0CC1H   A   
+WAITRELEASE. . . .  C ADDR   0C86H   A   
+WAITSUREKEY. . . .  C ADDR   0CD7H   A   
+WAIT_W . . . . . .  C ADDR   0CFFH   A   
+WMCON. . . . . . .  N NUMB   0096H   A   
+WRITEEEPROM. . . .  C ADDR   0CF2H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

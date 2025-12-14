@@ -1,0 +1,86 @@
+<%@page import ="java.util.*"%>
+<style type="text/css">
+<!--
+body {  margin: 0px  0px; padding: 0px  0px}
+a:link { color: #005CA2; text-decoration: none}
+a:visited { color: #005CA2; text-decoration: none}
+a:active { color: #0099FF; text-decoration: underline}
+a:hover { color: #0099FF; text-decoration: underline}
+-->
+</style>
+</head>
+<body bgcolor="#FFFFFF">
+<P>&nbsp;
+<table width="196" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr> 
+    <td><img src="images/shopcart.gif" width="196" height="20"></td>
+  </tr>
+  <tr> 
+    <td width="196" bgcolor="#FFFFFF">
+<TABLE border="1" bordercolor="#F19C48" cellspacing="0"  width="100%" height="50">
+<TR bgcolor="#bfbfbf">
+	<TD width="25%" align="center" valign="middle"><B>QTY</B></TD>
+	<TD width="75%" align="center" valign="middle"><B>Products</B></TD>
+</TR>
+<TR>
+
+	     <%
+		ShoppingCart shoppingCart1 = (ShoppingCart)session.getAttribute("ShoppingCart");
+    if (shoppingCart1== null) {
+      		%>
+	<TD width="25%" align="center" valign="top">&nbsp;</TD>
+	<TD width="25%" align="center" valign="top">
+	<FONT COLOR="#F19C48"><B>
+			<P>&nbsp;<P>&nbsp;
+             คุณยังไม่มีสินค้าใน Cart</b></FONT>
+			<!--  <P><P><P>
+			 <div align="right"><A HREF="shoppingcart.jsp">...รายละเอียด...</A></div> -->
+	<%
+		}else{
+
+	Collection itemOrderCollection = shoppingCart1.getItemOrdered();
+	Iterator i = itemOrderCollection.iterator();
+	Collection itemOrderCollection2 = shoppingCart1.getItemOrdered();
+	Iterator i2 = itemOrderCollection2.iterator();
+%>
+
+ <TD width="25%" align="center" valign="top">
+<%
+	while (i2.hasNext())
+	{
+		ItemOrder item2 = (ItemOrder) i2.next();
+	%>
+	<BR>
+		<%=item2.getNumItems()%>			
+
+	<%}
+
+%><BR>
+</TD>
+	<TD width="25%" align="center" valign="top">
+<!-- ลองเปลี่ยนสีจาก  "#F19C48" เป็น 000000-->
+	<FONT COLOR="#F19C48"><B>
+<%
+	while (i.hasNext())
+	{
+		ItemOrder item = (ItemOrder) i.next();
+	%>
+	<BR>
+		<%=MS874ToUnicode(item.getType())%>
+	<!-- เริ่มส่วนที่เขียนเพิ่ม ->
+		
+	<!-- จบส่วนที่เขียนเพิ่ม -->
+	<%}
+	}%></B></FONT>
+	<BR>&nbsp;<P>
+			 <div align="right"><A HREF="shoppingcart.jsp">...รายละเอียด...</A></div>
+	</TD>
+</TR>
+</TABLE>
+    </td>
+  </tr>
+  <tr> 
+    <td><img src="images/shopcart_btm.gif" width="196" height="20"></td>
+  </tr>
+</table>
+

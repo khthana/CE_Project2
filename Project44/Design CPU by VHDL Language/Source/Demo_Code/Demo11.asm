@@ -1,0 +1,16 @@
+mov r0,#0000;   mov r2,#0001;   nop;            nop;
+mov r1,#0FA2;   mov r6,#0018;   nop;            nop;
+mov r3,r2;      mov r4,r2;      nop;            nop;
+mov r5,r0;      nop;            nop;            nop;
+mov r7,r6;      nop;            add r3,#0002;   add r4,#0005;
+nop;            nop;            shl r0,r3;      rol r5,r4;
+nop;            nop;            and r0,r5;      sub r7,r2;
+nop;            nop;            add r0,r1;      shr r7,r2;
+nop;            nop;            sub r0,r7;      inc r2;
+nop;            nop;            nop;            cmp r2,#0006;
+nop;            nop;            nop;            jl #0002;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;

@@ -1,0 +1,280 @@
+package routersim;
+import java.util.Vector;
+import java.lang.String;
+
+public class Ospf extends Thread{
+  Router r;
+  // constructure
+
+
+  Ospf (Router r){
+    this.r = r;
+  }
+
+  public void run()
+  {
+
+    sendHelloPackage(r);
+
+    flooding(r);
+
+    String[][] arr = shortest_path();
+
+    setRoutingTable(arr);
+
+    try{
+          sleep(r.getTime());
+          run();
+       }//end try
+    catch(InterruptedException e)
+    {}//end catch
+  }// end run
+
+  private void sendHelloPackage(Router rin)
+  {
+   for (int aa=0;aa<rin.getVInt().size();aa++){
+        Interface This_intf = (Interface)rin.getVInt().elementAt(aa);
+        for (int bb=0;bb<Frame1.vRouter.size();bb++){
+          Router rVrouter =(Router)Frame1.vRouter.elementAt(bb);
+          for (int cc=0;cc<rVrouter.getVInt().size();cc++){
+            Interface new_intf = (Interface)rVrouter.getVInt().elementAt(cc);
+            if ((This_intf.getNetAddress().equalsIgnoreCase(new_intf.getNetAddress()))&&(This_intf.getIpAddress()!=new_intf.getIpAddress())){
+              if (!checkRedunce(rin.getHello(),rVrouter)){
+                rin.getHello().addElement(new Hello(rin,rVrouter,10));
+              }else{};
+            }else{}
+          }//for cc
+        }//for bb
+      }//for aa
+  }// End sendHelloPackage
+
+  private boolean checkRedunce(Vector v,Router r){
+    boolean check=false;
+    int i=0;
+    while  ((i<v.size())&&(!check)){
+      Hello h=(Hello)v.elementAt(i);
+      if (h.getDesRouter().getName().equalsIgnoreCase(r.getName())){
+              check=true;
+      }else{}
+      i++;
+    }
+    return check;
+  }
+
+  private void flooding(Router rin)
+  {
+      for (int bb=0;bb<Frame1.vRouter.size();bb++){
+          Router rVrouter =(Router)Frame1.vRouter.elementAt(bb);
+          rVrouter.recieveHelloTable(rin.getHello(),rin.getName());
+      }
+  }// End flooding
+  private String[][] shortest_path(){
+      int maxW = 800;
+      int w  = Frame1.vRouter.size();
+      int[][] arr = new int[w][w];
+      for (int i=0;i<w;i++)
+      {
+        for (int j=0;j<w;j++)
+        {
+          arr[i][j] = 0;
+        }
+      }
+      int size = Frame1.vRouter.size();
+      String[] routerName = new String[w];
+
+     Router rr = (Router)Frame1.vRouter.elementAt(0) ;
+     for (int ii=0;ii<rr.getVHello().size();ii++)
+     {
+        Vector v = (Vector)rr.getVHello().elementAt(ii);
+        for (int jj=0;jj<v.size();jj++)
+        {
+          Hello h = (Hello)v.elementAt(jj);
+          int x = find(h.getStartRouter().getName());
+          int y = find(h.getDesRouter().getName());
+          if ((x==-1) || (y==-1)){}
+          else{
+                    arr[x][y]=h.getWeight();
+                  }
+        }
+     }
+    int[][] Q = new int[w][w];
+    String[][] path = new String[w][w];
+
+    System.out.println("**************  Initialize ***************");
+
+    //---------------step 1-----------------//
+    for (int a=0;a<w;a++)
+    {
+      for (int b=0;b<w;b++)
+      {
+        if (a==b){Q[a][b]=0;}
+        else {
+                    if (arr[a][b] == 0) {Q[a][b]=maxW;}
+                    else {Q[a][b]=arr[a][b];}
+                  }
+      }
+    }
+
+    //System.out.println("**************  Step 1 ***************");
+    //printArr(Q,w);
+
+    //---------------step 2-----------------//
+    for (int k=0;k<w;k++)
+    {
+      for (int i=0;i<w;i++)
+      {
+        for (int j=0;j<w;j++)
+        {
+          int tmp1 = Q[i][j];
+          int tmp2 = Q[i][k]+Q[k][j];
+
+  	  if (min(Q[i][j],Q[i][k]+Q[k][j])==Q[i][j]){}
+	  else {
+            Q[i][j] = min(Q[i][j],Q[i][k]+Q[k][j]);
+
+            Router r1 = (Router)Frame1.vRouter.elementAt(i);
+            Router r2 = (Router)Frame1.vRouter.elementAt(j);
+            Router r3 = (Router)Frame1.vRouter.elementAt(k);
+
+
+            if (tmp1==Q[i][j])
+	    {
+	      if (r2.getName()!=null)
+	      path[i][j]=r2.getName();
+	      //J[i][j]=J[i][j]+r1.getName()+p+r2.getName()+p;
+	    }
+            else
+	    {
+	      if (r3.getName()!=null)
+	      path[i][j]=r3.getName();
+	      //J[i][j]=J[i][j]+r1.getName()+p+r3.getName()+p+r2.getName()+p;
+	    }
+
+	  }
+        }
+
+      }
+    }
+
+    /*System.out.println("************** print task ***************");
+
+    for (int i=0;i<w;i++)
+    {
+      for (int j=0;j<w;j++)
+      {
+	int aa =i+1;
+	int bb = j+1;
+        System.out.print("\t"+aa+","+bb+"=");
+        System.out.print(path[i][j]);
+      }
+      System.out.println();
+    }*/
+
+    return path;
+  }
+  private void setRoutingTable(String[][] arr){
+      RoutingTable rt = new RoutingTable();
+      int w=Frame1.vRouter.size();
+      for (int i=0;i<w;i++)
+      {
+	Router r1= (Router)Frame1.vRouter.elementAt(i);
+	for (int j=0;j<w;j++)
+	{
+	  Router r2= (Router)Frame1.vRouter.elementAt(j);
+
+	  if (arr[i][j]==null && i!=j){
+	      Interface iadj=findIAdj(r1,r2);
+	      addRoutingOspf(r1,iadj);
+	  }else
+	  if (arr[i][j]==null && i==j){
+
+	  }else
+	  if (arr[i][j]!=null){
+	    Router rr = findR(arr[i][j]);
+	    Interface iadj=findIAdj(r1,rr);
+	  }
+	}
+      }
+  }
+  private Interface findIAdj(Router r1,Router r2){
+    Interface intf=null;
+    for (int i=0;i<r1.getVInt().size();i++)
+    {
+	Interface i1 = (Interface)r1.getVInt().elementAt(i);
+	for (int j=0;j<r2.getVInt().size();j++)
+	{
+	  Interface i2 = (Interface)r2.getVInt().elementAt(j);
+	  if (i1.getNetAddress().equalsIgnoreCase(i2.getNetAddress()))
+	  {
+	    intf = i2;
+	  }
+	}
+    }
+    return intf;
+  }
+  private void printArr(int[][] a,int w){
+    for (int i=0;i<w;i++)
+    {
+        for (int j=0;j<w;j++)
+        {
+	  int aa=i+1;
+	  int bb=j+1;
+          System.out.print(aa+","+bb+"=");
+          System.out.print(a[i][j]);
+          System.out.print("\t");
+      }
+      System.out.println();
+    }
+  }
+  /*---------------------------------------------------------------------------------*/
+   private int min(int a,int b){
+      if (a<=b){return a;}
+      else {return b;}
+   }
+   private int find(String rName){
+    int x=-1;
+    for (int i=0;i < Frame1.vRouter.size(); i++){
+      if (((Router)Frame1.vRouter.elementAt(i)).getName().equalsIgnoreCase(rName)){
+        x = i;
+      }
+    }
+    return x;
+   }
+   private Router findR(String name)
+   {
+      boolean found=false;
+      int i=0;
+      while (i<Frame1.vRouter.size()&&found)
+      {
+	Router r = (Router)Frame1.vRouter.elementAt(i);
+	if (name.equalsIgnoreCase(r.getName())){
+	  found=true;
+          //return r;
+	}
+	i++;
+      }
+      return r;
+   }
+   public void setWeight(String rName,String neighborName,int w){
+
+    Router r = findR(rName);
+    Router neighbor = findR(neighborName);
+
+    for (int i=0;i<r.getHello().size();i++)
+    {
+      Hello h =(Hello)r.getHello().elementAt(i);
+      if (h.getStartRouter().getName().equalsIgnoreCase(r.getName()) &(h.getDesRouter().getName().equalsIgnoreCase(neighbor.getName())))
+      {
+        h.setWeight(w);
+      }
+    }
+    for (int i=0;i<neighbor.getHello().size();i++)
+    {
+      Hello h =(Hello)neighbor.getHello().elementAt(i);
+      if (h.getStartRouter().getName().equalsIgnoreCase(neighbor.getName()) &(h.getDesRouter().getName().equalsIgnoreCase(r.getName())))
+      {
+        h.setWeight(w);
+      }
+    }
+  }
+  }

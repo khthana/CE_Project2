@@ -1,0 +1,86 @@
+#ext.schema
+#my schema
+#att OID prefix => 1.3.6.1.4.1.4203.1.3
+#kmitl => .161246
+#attributetype ( 1.3.6.1.4.1.4203.1.3.161246.1 NAME 'AgentType'
+#	EQUALITY generalizedTimeMatch
+#	ORDERING generalizedTimeOrderingMatch
+#	SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+#	SINGLE-VALUE NO-USER-MODIFICATION USAGE directoryOperation )
+
+attributetype ( 1.3.6.1.4.1.4203.1.3.161246.1 NAME 'AgentType'
+	EQUALITY  caseIgnoreMatch  
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.1.4203.1.3.161246.2 NAME 'AgentID'
+	EQUALITY  caseIgnoreMatch  
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.1.4203.1.3.161246.3 NAME 'Responsibility'
+	EQUALITY  caseIgnoreMatch  
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.1.4203.1.3.161246.4 NAME 'IP'
+	EQUALITY  caseIgnoreMatch  
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.1.4203.1.3.161246.5 NAME 'StartTime'
+	EQUALITY  caseIgnoreMatch  
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.1.4203.1.3.161246.6 NAME 'Status'
+	EQUALITY  caseIgnoreMatch  
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+#Stateful attr
+attributetype ( 1.3.6.1.4.1.4203.1.3.161246.7 NAME 'Capture'
+	EQUALITY  caseIgnoreMatch  
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+#Firewall attr
+attributetype ( 1.3.6.1.4.1.4203.1.3.161246.8 NAME 'FirewallRule'
+	EQUALITY  caseIgnoreMatch  
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+#NIDS attr
+attributetype ( 1.3.6.1.4.1.4203.1.3.161246.9 NAME 'Intrusion'
+	EQUALITY  caseIgnoreMatch  
+	ORDERING  caseIgnoreOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.1.4203.1.3.161246.10 NAME 'testint'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27)
+
+
+#obj OID prefix => 1.3.6.1.4.1.4203.1.4
+#kmitl => .161246
+
+#obj stateful
+objectclass  ( 1.3.6.1.4.1.4203.1.4.161246.2 NAME 'Stateful'
+	SUP top STRUCTURAL 
+	MUST (AgentID$Responsibility$IP$StartTime$Status$Capture)
+	MAY description)
+
+#obj firewall
+objectclass  ( 1.3.6.1.4.1.4203.1.4.161246.3 NAME 'Firewall'
+	SUP top STRUCTURAL 
+	MUST (AgentID$Responsibility$IP$StartTime$Status$FirewallRule)
+	MAY description)
+
+#obj 
+objectclass  ( 1.3.6.1.4.1.4203.1.4.161246.4 NAME 'NIDS'
+	SUP top STRUCTURAL 
+	MUST (AgentID$Responsibility$IP$StartTime$Status$Intrusion)
+	MAY description)
+
+objectclass  ( 1.3.6.1.4.1.4203.1.4.161246.5 NAME 'test'
+	SUP top STRUCTURAL 
+	MAY description)

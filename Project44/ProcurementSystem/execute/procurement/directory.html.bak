@@ -1,0 +1,122 @@
+<%
+
+
+  if ((em==null) && (pwd==null)){
+						   %>
+	<P>&nbsp;<form action="login.jsp" method="post">		    
+<TABLE align="CENTER" cellpadding="3" bordercolor="#66669A" border="1" cellspacing="0" width="95%">
+    <TR bgcolor="#66669A" height="24">
+	<TD colspan="2" align="left"><FONT COLOR="#F1F0FF"><B>Login เข้าสู่ระบบ</B></FONT></TD>
+</TR>
+<TR>
+	<TD  bgcolor="#FFFFFF" width="50"> รหัส</TD>
+	<TD bgcolor="#F1F0FF" ><input type="text" name="username" size="15" maxlength="20"></TD>
+</TR>
+<TR>
+	<TD  bgcolor="#FFFFFF" width="50">รหัสผ่าน</TD>
+	<TD bgcolor="#F1F0FF" ><input type="password" name="passwd" size="15" maxlength="15"></TD>
+</TR>
+<TR>
+<TD colspan="2" bgcolor="#F1F0FF" height="35" >
+	<CENTER><INPUT TYPE="submit" value="ตกลง">&nbsp;&nbsp; <INPUT TYPE="reset" value="เริ่มใหม่"></CENTER>	
+ </TD>
+ </TR>	
+</table>
+
+</form>
+						   <%
+						   
+						   }else{
+		
+						   
+		try{
+System.out.println("yoyo");                         
+				DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+				Connection mcon = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");
+				Statement  mstmt = mcon.createStatement();
+				                    String mdept=(String) session.getAttribute("dept");
+									String mname=(String) session.getAttribute("name");
+									String msname=(String) session.getAttribute("sname");
+								    String mquery="SELECT REMAIN FROM DEPARTMENT WHERE DEPT_NAME='" +mdept+"'";
+System.out.println(mdept);
+System.out.println(mname);
+System.out.println(msname);
+System.out.println(mquery);
+									ResultSet mrs=mstmt.executeQuery(mquery);
+									mrs.next();
+									double remain=mrs.getDouble("REMAIN");
+									
+
+				%><P>&nbsp;
+									<TABLE valign="middle" align="center" width="95%" cellpadding="3" cellspacing="0" border="1" bordercolor="#66669A">
+									<TR bgcolor="#66669A" valign="middle" valign="center">
+										<TD><CENTER><FONT COLOR="#F1F0FF"><B>ยินดีต้อนรับ</B></FONT></CENTER></TD>
+									</TR>
+									<TR bgcolor="#FFFFFF">
+										<TD><FONT COLOR="#66669A"><CENTER>คุณ <%=mname%>&nbsp;<%=msname%><BR>แผนก<%=mdept%></CENTER></FONT></TD>
+									</TR>
+									<TR bgcolor="#66669A" valign="middle" valign="center">
+										<TD><CENTER><FONT COLOR="#F1F0FF"><B>งบที่เหลือ &nbsp;<%=remain%>&nbsp;บาท</B></FONT></CENTER></TD>
+									</TR>
+									</TABLE>
+				
+				<%
+
+									mrs.close();
+									mstmt.close();
+									mcon.close();
+
+									}catch(java.sql.SQLException e)  {
+															  System.out.println("SQLException:<br>");
+															  System.out.println("Message:   " + e.getMessage() + "<br>");
+															  System.out.println("SQLState:  " + e.getSQLState() + "<br>");
+															  System.out.println("ErrorCode: " + e.getErrorCode() + "<br>");
+															  e.printStackTrace();
+								} // catch
+						   
+						   
+						   }
+
+
+%>
+<style type="text/css">
+<!--
+body {  margin: 0px  0px; padding: 0px  0px}
+a:link { color: #005CA2; text-decoration: none}
+a:visited { color: #005CA2; text-decoration: none}
+a:active { color: #0099FF; text-decoration: underline}
+a:hover { color: #0099FF; text-decoration: underline}
+-->
+</style>
+</head>
+
+<body bgcolor="#FFFFFF">
+<P><P><P><BR>
+<table width="196" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr> 
+    <td colspan="3"><img src="images/directory.gif" width="196" height="20"></td>
+  </tr>
+  <tr > 
+    <td width="1" bgcolor="#6699CC">&nbsp;</td>
+    <td width="194" bgcolor="#FFFFFF">
+<TABLE  bgcolor="#FFFFFF" border="0" cellpadding="10" cellspacing="0">
+<TR>
+	<TD><A HREF="pen.jsp?type=1">อุปกรณ์เพื่อการเขียนและลบคำผิด</A>
+   <BR><A HREF="glue.jsp?type=1">กาว เทป และอุปกรณ์เพื่อการบรรจุ</A>
+   <BR><A HREF="com.jsp?type=1">ผลิตภัณฑ์สำหรับคอมพิวเตอร์</A>
+   <BR><A HREF="access.jsp?type=1">อุปกรณ์สำนักงานเบ็ดเตล็ด</A>
+   <BR><A HREF="paper.jsp?type=1">ผลิตภัณฑ์กระดาษ</A>
+   <BR><A HREF="file.jsp?type=1">แฟ้มและอุปกรณ์จัดเก็บเอกสาร</A>
+   <BR><A HREF="present.jsp?type=1">อุปกรณ์เพื่อการประชุมและนำเสนอ</A>
+  
+   </TD>
+</TR>
+</TABLE>
+   
+</td>
+    <td width="1" bgcolor="#6699CC">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td colspan="3"><img src="images/directory_btm.gif" width="196" height="20"></td>
+  </tr>
+</table>

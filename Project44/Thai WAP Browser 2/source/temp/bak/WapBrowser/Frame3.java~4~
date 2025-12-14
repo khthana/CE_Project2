@@ -1,0 +1,47 @@
+package temp;
+
+import java.awt.*;
+import javax.swing.JFrame;
+import com.borland.jbcl.layout.*;
+import com.borland.primetime.ide.ContentManager;
+
+public class Frame3 extends JFrame {
+  XYLayout xYLayout1 = new XYLayout();
+  public static void initOpenTool(byte majorVersion, byte minorVersion) {
+    if (majorVersion == PrimeTime.CURRENT_MAJOR_VERSION) {
+      ContentManager.registerContextActionProvider(new ContextActionProvider() {
+        public Action getContextAction(Browser browser, Node[] nodes) {
+          if (browser.getActiveProject() != null) {
+            return WIZARD_MyWizard;
+          }
+          return null;
+        }
+      });
+    }
+  }
+
+  public static final WizardAction WIZARD_MyWizard = new WizardAction (
+    "My wizard...", 'w', "My ContentManager wizard",
+    BrowserIcons.ICON_BLANK,
+    BrowserIcons.ICON_BLANK,
+      false) {
+    protected Wizard createWizard() {
+      return new MyWizard();
+    }
+  };
+
+  public Frame3() {
+    try {
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+  private void jbInit() throws Exception {
+    xYLayout1.setWidth(399);
+    xYLayout1.setHeight(299);
+    this.getContentPane().setLayout(xYLayout1);
+
+  }
+}

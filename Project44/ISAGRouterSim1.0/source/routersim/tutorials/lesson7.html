@@ -1,0 +1,84 @@
+<html>
+<head>
+<title>Lesson 7 --&gt; Dynamic Routing with RIP</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+<style type="text/css">
+<!--
+body {  margin: 0px  0px; padding: 0px  0px}
+a:link { color: #005CA2; text-decoration: none}
+a:visited { color: #005CA2; text-decoration: none}
+a:active { color: #0099FF; text-decoration: underline}
+a:hover { color: #0099FF; text-decoration: underline}
+-->
+</style>
+</head>
+
+<body bgcolor="#FFFFFF">
+<img src="pics/book2.gif" width="97" height="94" > Lesson 7<br>
+<hr>
+<table width="75%" border="0" align="center">
+  <tr> 
+    <td>
+      <h2>Dynamic Routing with RIP</h2>
+      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspการทดลองนี้เป็นการ<br>
+		<ol>
+      <li>Login ไปยังเราเตอร์ที่ต้องการ เข้าสู่ Privilege Mode โดยพิมพ์ <font color="#0000FF">en</font> 
+      หรือ <font color="#0000FF">enable</font><br>
+      <li>ก่อนที่จะทำ Dynamic Routing เราต้องแน่ใจก่อนว่าไม่มี static routing โดยใช้คำสั่ง 
+      no ip route <br>
+      ตัวอย่าง :<br>
+      <b>RouterA#</b><font color="#0000FF">config t</font><br>
+      <b>RouterA(config)#</b><font color="#0000FF">no ip route 161.246.5.0 255.255.255.0 
+      161.246.3.2</font><br>
+      <b>RouterA(config)#</b><font color="#0000FF">no ip route 161.246.7.0 255.255.255.0 
+      161.246.3.2</font><br>
+      <b>RouterA(config)#</b><font color="#0000FF">no ip route 161.246.6.0 255.255.255.0 
+      161.246.3.2 </font> <b><br>
+      RouterB#</b><font color="#0000FF">config t</font><br>
+        <b>RouterB(config)#</b><font color="#0000FF">no ip route 161.246.1.0 255.255.255.0 
+        161.246.3.1</font><br>
+        <b>RouterB(config)#</b><font color="#0000FF">no ip route 161.246.2.0 255.255.255.0 
+        161.246.3.1</font><br>
+        <b>RouterB(config)#</b><font color="#0000FF">no ip route 161.246.7.0 255.255.255.0 
+        161.246.5.2</font><br>
+      <b>RouterB(config)#</b><font color="#0000FF">no ip route 161.246.6.0 255.255.255.0 
+      161.246.5.2</font><br>
+      <font color="#0000FF">RouterC#config t</font><br>
+        <b>RouterC(config)#</b><font color="#0000FF">no ip route 161.246.1.0 255.255.255.0 
+        161.246.5.1</font><br>
+        <b>RouterC(config)#</b><font color="#0000FF">no ip route 161.246.2.0 255.255.255.0 
+        161.246.5.1</font><br>
+        <b>RouterC(config)#</b><font color="#0000FF">no ip route 161.246.3.0 255.255.255.0 
+        161.246.5.1</font>
+<br>
+        <li>ไปที่ Configuration Mode ของทุกเราเตอร์แล้วพิมพ์คำสั่ง <font color="#0000FF">Router 
+          Rip</font> เช่นที่ RouterA<br>
+      <b>RouterA#</b><font color="#0000FF">config t</font><br>
+      <b>RouterA(config)#</b><font color="#0000FF">router rip</font><br>
+        <li>ใส่วง network ที่ต้องการลงไปโดยพิมพ์<br>
+      <b>RouterA(config-router)#</b><font color="#0000FF">network 161.246.0.0 
+      </font><br>
+        <li> ออกจาก configuration mode แล้วพิมพ์<br>
+          <b>RouterB#</b><font color="#0000FF">show ip route</font><br>
+      <center>
+            <img src="pics/pic29.gif" width="700" height="500"> 
+          </center><br>
+          <b>Router#</b><font color="#0000FF">show ip protocol</font><br>
+      <center>
+            <img src="pics/pic30.gif" width="700" height="500">
+</center><br>
+      <li>ทำการบันทึกค่าคอนฟิคโดยการพิมพ์ <font color="#0000FF">copy run start</font><br>
+	</ol>
+      <center>
+        สำหรับโหมดการทำงานทั้งหมดของเราเตอร์สามารถดูได้ใน<a href="command.html">สรุปคำสั่งทั้งหมด</a>
+      </center>
+      <br>
+    </td>
+  </tr>
+</table>
+<center>
+  <b><font size="+2"><a href="index.html">Back to Main</a> </font></b> or <b><font size="+2"><a href="lesson8.html">Next 
+  to Lesson8</a> </font></b> 
+</center>
+</body>
+</html>

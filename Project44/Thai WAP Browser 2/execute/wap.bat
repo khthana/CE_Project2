@@ -1,0 +1,1 @@
+start java -classpath ".\temp\classes;.\temp\jbcl.jar;.\temp\dx.jar;.\temp\beandt.jar;.\temp\jdom.jar;.\temp\xerces.jar;.\temp\dbswing.jar;.\temp\Java2Demo.jar;.\temp\i18n.jar;.\temp\jaws.jar;.\temp\rt.jar;.\temp\sunrsasign.jar;.\temp\dt.jar;.\temp\tools.jar"  WapBrowser.Application1 

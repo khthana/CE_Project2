@@ -1,0 +1,180 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// ODL file generated from Cache Objects Version 4.1.856.0
+//     Feb 12 2002 01:54:13
+//
+////////////////////////////////////////////////////////////////////////////////
+
+#include <olectl.h>
+
+[ uuid(cb83e3b9-6d7c-4c4e-b86f-f3ce5697b591), version(1.0),helpstring("Cache Objects Version 4.1.856.0") ]
+library User_CourseMaster
+{
+    importlib(STDOLE_TLB);
+    importlib(STDTYPE_TLB);
+
+    [ uuid(eaea5f15-23e3-4704-8634-b37e377c72ea),helpstring("Cache Object: User.CourseMaster"),hidden ]
+
+    dispinterface CCourseMaster
+    {
+        properties:
+            [id(61)]  IDispatch*  Categories;
+            [id(88)]  long        CourseLevel;
+            [id(41)]  long        DeleteTag;
+            [id(63)]  IDispatch*  English;
+            [id(64)]  BSTR        ExtCourseID;
+            [id(65)]  IDispatch*  IsOf;
+            [id(66)]  BSTR        Objective;
+            [id(67)]  BSTR        Period;
+            [id(68)]  IDispatch*  PostGraduate;
+            [id(69)]  double      Require;
+            [id(70)]  IDispatch*  Thai;
+
+        methods:
+            [id(90)]  VARIANT     SYS_BuildIndices(IDispatch* idxlist);
+            [id(16)]  VARIANT     SYS_CheckUnique(IDispatch* idxlist);
+            [id(1)]   BSTR        SYS_ClassName(VARIANT fullname);
+            [id(2)]   VARIANT     SYS_Close();
+            [id(17)]  VARIANT     SYS_Delete(VARIANT oid,long concurrency);
+            [id(19)]  VARIANT     SYS_DeleteExtent(long concurrency,[in,out] BSTR* deletecount,[in,out] BSTR* instancecount);
+            [id(20)]  VARIANT     SYS_DeleteId(BSTR id,long concurrency);
+            [id(21)]  VARIANT     SYS_DowngradeConcurrency(BSTR concurrency);
+            [id(94)]  VARIANT     SYS_Exists(VARIANT oid);
+            [id(95)]  VARIANT     SYS_ExistsId(BSTR id);
+            [id(24)]  VARIANT     SYS_GetSwizzleObject(long force,[in,out] VARIANT* oid);
+            [id(25)]  BSTR        SYS_Id();
+            [id(3)]   void        SYS_IncrementCount();
+            [id(4)]   long        SYS_IsA(BSTR isclass);
+            [id(5)]   long        SYS_IsModified();
+            [id(96)]  VARIANT     SYS_KillExtent();
+            [id(6)]   IDispatch*  SYS_New(BSTR initvalue);
+            [id(7)]   VARIANT     SYS_NormalizeObject();
+            [id(30)]  VARIANT     SYS_Oid();
+            [id(31)]  BSTR        SYS_Open(VARIANT oid,long concurrency);
+            [id(32)]  BSTR        SYS_OpenId(BSTR id,long concurrency);
+            [id(8)]   BSTR        SYS_PackageName();
+            [id(99)]  VARIANT     SYS_PurgeIndices(IDispatch* idxlist);
+            [id(35)]  VARIANT     SYS_RollBack();
+            [id(36)]  VARIANT     SYS_Save(long related);
+            [id(102)] VARIANT     SYS_SortBegin(IDispatch* idxlist,long excludeunique);
+            [id(103)] VARIANT     SYS_SortEnd(IDispatch* idxlist,long commit);
+            [id(40)]  VARIANT     SYS_UpgradeConcurrency(BSTR concurrency);
+            [id(10)]  VARIANT     SYS_ValidateObject(long force);
+            [id(131)] IDispatch*  CategoriesGet();
+            [id(132)] VARIANT     CategoriesGetObject(long force);
+            [id(133)] BSTR        CategoriesGetObjectId(long force);
+            [id(135)] long        CategoriesIsModified();
+            [id(137)] IDispatch*  CategoriesNewObject();
+            [id(139)] VARIANT     CategoriesSet(BSTR newvalue);
+            [id(140)] long        CategoriesSetModified(long newvalue);
+            [id(57)]  VARIANT     CheckDependency();
+            [id(144)] long        CourseLevelDisplayToLogical(BSTR SYS_val);
+            [id(145)] long        CourseLevelGet();
+            [id(149)] long        CourseLevelIsModified();
+            [id(150)] VARIANT     CourseLevelIsValid(BSTR value);
+            [id(151)] long        CourseLevelIsValidDT(long SYS_val);
+            [id(152)] BSTR        CourseLevelLogicalToDisplay(long SYS_val);
+            [id(154)] long        CourseLevelNormalize(BSTR SYS_val);
+            [id(156)] VARIANT     CourseLevelSet(BSTR newvalue);
+            [id(157)] long        CourseLevelSetModified(long newvalue);
+            [id(161)] long        DeleteTagDisplayToLogical(BSTR SYS_val);
+            [id(162)] long        DeleteTagGet();
+            [id(166)] long        DeleteTagIsModified();
+            [id(167)] VARIANT     DeleteTagIsValid(BSTR value);
+            [id(168)] long        DeleteTagIsValidDT(long SYS_val);
+            [id(169)] BSTR        DeleteTagLogicalToDisplay(long SYS_val);
+            [id(171)] long        DeleteTagNormalize(BSTR SYS_val);
+            [id(173)] VARIANT     DeleteTagSet(BSTR newvalue);
+            [id(174)] long        DeleteTagSetModified(long newvalue);
+            [id(178)] IDispatch*  EnglishGet();
+            [id(182)] long        EnglishIsModified();
+            [id(183)] VARIANT     EnglishIsValid(BSTR value);
+            [id(184)] IDispatch*  EnglishNewObject();
+            [id(186)] VARIANT     EnglishSet(BSTR newvalue);
+            [id(187)] long        EnglishSetModified(long newvalue);
+            [id(191)] BSTR        ExtCourseIDDisplayToLogical(BSTR SYS_val);
+            [id(192)] BSTR        ExtCourseIDGet();
+            [id(196)] long        ExtCourseIDIsModified();
+            [id(197)] VARIANT     ExtCourseIDIsValid(BSTR value);
+            [id(198)] long        ExtCourseIDIsValidDT(BSTR SYS_val);
+            [id(199)] BSTR        ExtCourseIDLogicalToDisplay(BSTR SYS_val);
+            [id(201)] BSTR        ExtCourseIDNormalize(BSTR SYS_val);
+            [id(203)] VARIANT     ExtCourseIDSet(BSTR newvalue);
+            [id(204)] long        ExtCourseIDSetModified(long newvalue);
+            [id(299)] VARIANT     ExtentClose(VARIANT qHandle);
+            [id(300)] VARIANT     ExtentExecute([in,out] VARIANT* qHandle);
+            [id(301)] VARIANT     ExtentFetch([in,out] VARIANT* qHandle,[in,out] IDispatch** Row,[in,out] long* AtEnd);
+            [id(303)] VARIANT     ExtentFetchRows([in,out] VARIANT* qHandle,long FetchCount,[in,out] IDispatch** RowSet,[in,out] long* ReturnCount,[in,out] long* AtEnd);
+            [id(304)] VARIANT     ExtentGetInfo([in,out] IDispatch** colinfo,[in,out] IDispatch** parminfo,[in,out] IDispatch** idinfo,[in,out] VARIANT* qHandle);
+            [id(305)] VARIANT     ExtentPrepare([in,out] VARIANT* qHandle,BSTR statement,long containid,BSTR optional);
+            [id(86)]  BSTR        GetClassName();
+            [id(87)]  BSTR        GetParentClass();
+            [id(208)] IDispatch*  IsOfGet();
+            [id(209)] VARIANT     IsOfGetObject(long force);
+            [id(210)] BSTR        IsOfGetObjectId(long force);
+            [id(212)] long        IsOfIsModified();
+            [id(213)] VARIANT     IsOfIsValid(BSTR value);
+            [id(214)] IDispatch*  IsOfNewObject();
+            [id(216)] VARIANT     IsOfSet(BSTR newvalue);
+            [id(217)] long        IsOfSetModified(long newvalue);
+            [id(218)] VARIANT     IsOfSetObject(VARIANT newvalue);
+            [id(219)] VARIANT     IsOfSetObjectId(BSTR newid);
+            [id(221)] BSTR        ObjectiveGet();
+            [id(225)] long        ObjectiveIsModified();
+            [id(226)] VARIANT     ObjectiveIsValid(BSTR value);
+            [id(229)] VARIANT     ObjectiveSet(BSTR newvalue);
+            [id(230)] long        ObjectiveSetModified(long newvalue);
+            [id(234)] BSTR        PeriodDisplayToLogical(BSTR SYS_val);
+            [id(235)] BSTR        PeriodGet();
+            [id(239)] long        PeriodIsModified();
+            [id(240)] VARIANT     PeriodIsValid(BSTR value);
+            [id(241)] long        PeriodIsValidDT(BSTR SYS_val);
+            [id(242)] BSTR        PeriodLogicalToDisplay(BSTR SYS_val);
+            [id(244)] BSTR        PeriodNormalize(BSTR SYS_val);
+            [id(246)] VARIANT     PeriodSet(BSTR newvalue);
+            [id(247)] long        PeriodSetModified(long newvalue);
+            [id(251)] BSTR        PostGraduateDisplayToLogical(BSTR SYS_val);
+            [id(252)] IDispatch*  PostGraduateGet();
+            [id(253)] VARIANT     PostGraduateGetObject(long force);
+            [id(254)] BSTR        PostGraduateGetObjectId(long force);
+            [id(256)] long        PostGraduateIsModified();
+            [id(258)] long        PostGraduateIsValidDT(BSTR SYS_val);
+            [id(259)] BSTR        PostGraduateLogicalToDisplay(BSTR SYS_val);
+            [id(260)] IDispatch*  PostGraduateNewObject();
+            [id(261)] BSTR        PostGraduateNormalize(BSTR SYS_val);
+            [id(263)] VARIANT     PostGraduateSet(BSTR newvalue);
+            [id(264)] long        PostGraduateSetModified(long newvalue);
+            [id(60)]  void        PrepareDeleting();
+            [id(268)] double      RequireDisplayToLogical(BSTR SYS_val);
+            [id(269)] double      RequireGet();
+            [id(273)] long        RequireIsModified();
+            [id(274)] VARIANT     RequireIsValid(BSTR value);
+            [id(275)] long        RequireIsValidDT(double SYS_val);
+            [id(276)] BSTR        RequireLogicalToDisplay(double SYS_val);
+            [id(278)] double      RequireNormalize(BSTR SYS_val);
+            [id(280)] VARIANT     RequireSet(BSTR newvalue);
+            [id(281)] long        RequireSetModified(long newvalue);
+            [id(285)] IDispatch*  ThaiGet();
+            [id(289)] long        ThaiIsModified();
+            [id(290)] VARIANT     ThaiIsValid(BSTR value);
+            [id(291)] IDispatch*  ThaiNewObject();
+            [id(293)] VARIANT     ThaiSet(BSTR newvalue);
+            [id(294)] long        ThaiSetModified(long newvalue);
+
+    };
+
+    // Class information for User.CourseMaster
+    [ uuid(cc383a6f-86a5-4ff0-bf16-a53676cbd271), helpstring("Cache Object: User.CourseMaster CoClass"),control ]
+    coclass CourseMaster
+    {
+        [default] dispinterface CCourseMaster;
+    };
+
+
+};
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// End-of-file
+//
+////////////////////////////////////////////////////////////////////////////////

@@ -1,0 +1,144 @@
+<%@page contentType="text/html;  charset=windows-874" %>
+<%@page import ="java.sql.*,java.lang.*,java.util.Date"%> <!-- import  เพื่อใช้ session -->
+<%@page session="true"%><!-- default -->
+<%@include file="th-db.jsp"%>
+<HTML><HEAD><TITLE>:: Online e-Procurement ::</TITLE>
+<LINK href="picture/cssomo1.css" rel=stylesheet type="text/css">
+<META content="text/html; charset=windows-874" http-equiv=Content-Type>
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="Sirirporn J.">
+<META NAME="Description" CONTENT="First page for e-Procurement system">
+</HEAD>
+<BODY  leftMargin=0 topMargin=0 vLink=#0077ff marginheight="0" 
+marginwidth="0"><FONT color=#000000></FONT>
+<TABLE border=0 cellPadding=0 cellSpacing=0 width=760 bgcolor="#FFFFFF" align="center">
+  <TBODY > 
+  <TR>
+    <TD align=left height=75 vAlign=bottom>
+      
+				  <%@include file="topmenu.html"%></TD></TR>
+  
+  <TR>
+    <TD height=10 bgcolor="#B6B6B6"> 
+    </TD>
+  </TR>
+    <TR>
+    <TD height=30 bgcolor="white"> 
+   <div align="right">  
+   <FONT  COLOR="#658dc1"><B>
+   <%@include file="date.txt"%></B></FONT></div>
+    </TD>
+  </TR>
+   <TR>
+    <TD height=1 bgcolor="#B6B6B6"> 
+    </TD>
+  </TR>
+  <TR colspan="2">
+    <TD bgColor=#bfbfbf height=1 width=760></TD>
+	</TR></TBODY></TABLE>
+<TABLE border=0 cellPadding=0 cellSpacing=0 width=760 align="center">
+  <TBODY> 
+  <TR> 
+    <TD align=middle vAlign=top> 
+      <TABLE width="100%" cellpadding="3" cellspacing="0" border="0">
+        <TR>
+		  <TD bgColor="#bfbfbf" width="27%" align="center" valign="top">
+
+            <%@include file="directory.html"%>
+             <%@include file="shopping.html"%><P><P><BR><BR>
+
+			
+          </TD>
+		  <TD bgColor="#ffffff" width="73%" align="center" valign="top"> 
+           <% 
+	String  wf_name=MS874ToUnicode(new String(request.getParameter("wf_name")));
+
+try{
+         Class.forName("oracle.jdbc.driver.OracleDriver");
+		 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");
+         Statement stmt = con.createStatement();
+		 String query="SELECT * FROM WF_TABLE WHERE WF_TYPE='"+wf_name+"'";
+         ResultSet rs=stmt.executeQuery(query);
+		 System.out.println(query);
+      	if(rs.next()){
+//		 String wf_name=rs.getString("WF_TYPE");
+	//	 if (wf_name==null){ wf_name="-";}
+//		 String cat=rs.getString("CAT#");
+//		 if (tb_name==null){ tb_name="-";}
+		 String viewer=rs.getString("VIEWER");
+//		 if (viewer==null){viewer="-";}
+		String  app1=rs.getString("APP1");
+		 System.out.println(app1);
+	//	 if (app1==null){app1="-";}
+	String  app2=rs.getString("APP2");
+//		 if (app2==null){app2="-";}
+	 String  adhoc=rs.getString("ADHOC");
+	//	 if (adhoc==null){adhoc="-";} 
+		 String  detail=rs.getString("DETAIL");
+//		 if (detail==null){detail="-";} 
+%>
+	<P>&nbsp;<P>&nbsp;
+<FORM method="post" action="wf-edit2.jsp">
+<TABLE cellpadding="3" bordercolor="#DF5F2D" border="1"width="450" cellspacing="0">
+<TR bgcolor="#DF572D" height="24">
+	<TD colspan="2" align="left"><FONT COLOR="#FFF0E1"><B>แก้ไขข้อมูล Workflow</B></FONT></TD>
+</TR>
+<TR>
+	<TD  bgcolor="#FFFFFF" width="200">ชื่อ Workflow :</TD>
+	<TD bgcolor="#FFF0E1" ><%=wf_name%>
+	<INPUT TYPE="hidden" NAME="wf_name" VALUE="<%=wf_name%>"></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">ผู้ตรวจสอบ</TD>
+	<TD bgcolor="#FFF0E1" ><INPUT TYPE="text" NAME="viewer" size="30" value="<%if (viewer==null){viewer=new String();} out.print(viewer);%>"></TD>
+</TR>
+	<TR>
+	<TD bgcolor="#FFFFFF">ผู้อนุมัติคนที่ 1</TD>
+	<TD bgcolor="#FFF0E1" ><INPUT TYPE="text" NAME="app1" size="30" value="<%=app1%>"></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">ผู้อนุมัติคนที่2</TD>
+	<TD bgcolor="#FFF0E1" ><INPUT TYPE="text" NAME="app2" size="30" value="<%if (app2==null){app2=new String();} out.print(app2);%>"></TD>
+</TR>
+<TR>
+	<TD bgcolor="#FFFFFF">รายละเอียด</TD>
+	<TD bgcolor="#FFF0E1" ><INPUT TYPE="text" NAME="detail" size="50" value="<%if (detail==null){detail=new String();} out.print(detail);%>"></TD>
+</TR>
+
+<TR bgcolor="#FFF0E1" valign="center" align="center">
+	<TD colspan="2">
+	<pre> <INPUT TYPE="submit" value="ตกลง"><INPUT TYPE="reset" value="เริ่มกรอกข้อมูลใหม่"></pre>
+ 	</TD>
+</TR>
+
+</TABLE>
+</FORM>
+		 <% 
+		}//if
+	     rs.close();
+		 stmt.close();
+		 con.close();
+
+	 } catch(SQLException e) 
+      {
+	      while (e != null) 
+         {
+            out.println("SQLException:<br>");
+  		      out.println("Message:   " + e.getMessage() + "<br>");
+		      out.println("SQLState:  " + e.getSQLState() + "<br>");
+		      out.println("ErrorCode: " + e.getErrorCode() + "<br>");
+		      e = e.getNextException();
+         }
+	   }
+%></TD>
+	</TR>
+	</TABLE>
+    </TD>
+  </TR>
+  <TR><%@include file="bottommenu.html"%>
+              
+                    </TR>
+
+  </TBODY> 
+</TABLE>
+</BODY></HTML>

@@ -1,0 +1,111 @@
+create row type company_row_type (
+  company_id		CHAR(1) not null,--pk
+  company_name		CHAR(50) not null,
+  company_tel		CHAR(20),
+  company_addr		CHAR(100));
+
+create row type officer_row_type (
+  officer_id		CHAR(3) not null,--pk
+  officer_name		CHAR(50) not null,
+  section_id		CHAR(3) not null);
+
+create row type section_row_type (
+  section_id		CHAR(3) not null,--pk
+  section_name		CHAR(50) not null);
+
+create row type section_with_budget_row_type (
+  budget		MONEY(16,2) not null)
+under section_row_type;
+
+create row type section_with_limit_row_type
+under section_row_type;
+
+create row type request_limit_row_type (
+  section_id	CHAR(3) not null,--pk
+  stock_id	CHAR(4) not null,--pk
+  limit		INTEGER not null);
+
+create row type stock_row_type (
+  stock_id		CHAR(4) not null,--pk
+  stock_type_id		CHAR(2) not null,
+  stock_name		CHAR(50) not null,
+  stock_unit		CHAR(20) not null,
+  current_number	INTEGER not null);
+
+create row type stock_type_row_type (
+  stock_type_id		CHAR(2) not null,--pk
+  stock_type_name	CHAR(50) not null);
+
+create row type stock_count_row_type (
+  stock_counter		INTEGER not null,--pk
+  stock_id		CHAR(4) not null,--pk
+  current_number	INTEGER not null,
+  price_per_unit	MONEY(16,2) not null);
+
+create row type pay_detail_row_type (
+  budget_year		CHAR(4) not null,--pk
+  stock_pay_id		CHAR(4) not null,--pk
+  stock_pay_date	CHAR(10) not null,--pk
+  stock_id		CHAR(4) not null,--pk
+  stock_counter		INTEGER not null,--pk
+  amount_pay		INTEGER not null,
+  pay_value		MONEY(16,2) not null);
+
+create row type stock_pay_row_type (
+  budget_year		CHAR(4) not null,--pk
+  stock_pay_id		CHAR(4) not null,--pk
+  stock_request_id	CHAR(4) not null,
+  section_id		CHAR(3) not null,
+  stock_pay_date	CHAR(10) not null);--pk
+
+create row type receive_detail_row_type (
+  invoice_id		CHAR(4) not null,--pk
+  company_id		CHAR(1) not null,--pk
+  stock_id		CHAR(4) not null,--pk
+  stock_counter		INTEGER not null,
+  amount_receive	INTEGER not null,
+  price_per_unit	MONEY(16,2) not null);
+
+create row type stock_receive_row_type (
+  invoice_id		CHAR(4) not null,--pk
+  company_id		CHAR(1) not null,--pk
+  invoice_date		CHAR(10) not null);
+
+create row type request_detail_row_type (
+  budget_year		CHAR(4) not null,--pk
+  stock_request_id	CHAR(4) not null,--pk
+  stock_request_date	CHAR(10) not null,--pk
+  stock_id		CHAR(4) not null,--pk
+  stock_counter		INTEGER not null,--pk
+  amount_request	INTEGER not null);
+
+create row type stock_request_row_type (
+  budget_year		CHAR(4) not null,--pk
+  stock_request_id	CHAR(4) not null,--pk
+  section_id		CHAR(3) not null,
+  request_state		CHAR(1) not null,
+  stock_request_date	CHAR(10) not null,--pk
+  request_expire_date	CHAR(10) not null,
+  request_value		MONEY(16,2));
+
+
+
+create table company of type company_row_type;
+create table officer of type officer_row_type;
+create table section of type section_row_type;
+create table section_with_budget of type section_with_budget_row_type;
+create table section_with_limit of type section_with_limit_row_type;
+create table request_limit of type request_limit_row_type;
+create table stock of type stock_row_type;
+create table stock_type of type stock_type_row_type;
+create table stock_count of type stock_count_row_type;
+create table pay_detail of type pay_detail_row_type;
+create table stock_pay of type stock_pay_row_type;
+create table receive_detail of type receive_detail_row_type;
+create table stock_receive of type stock_receive_row_type;
+create table request_detail of type request_detail_row_type;
+create table stock_request of type stock_request_row_type;
+
+
+
+

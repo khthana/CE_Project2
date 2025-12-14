@@ -1,0 +1,30 @@
+REGEDIT
+; This .REG file may be used by your SETUP program.
+;   If a SETUP program is not available, the entries below will be
+;   registered in your InitInstance automatically with a call to
+;   CWinApp::RegisterShellFileTypes and COleObjectFactory::UpdateRegistryAll.
+
+HKEY_CLASSES_ROOT\.sig = Signature.Document
+HKEY_CLASSES_ROOT\Signature.Document\shell\open\command = SIGNATURE.EXE %1
+HKEY_CLASSES_ROOT\Signature.Document\shell\open\ddeexec = [open("%1")]
+HKEY_CLASSES_ROOT\Signature.Document\shell\open\ddeexec\application = SIGNATURE
+    ; note: the application is optional
+    ;  (it defaults to the app name in "command")
+
+HKEY_CLASSES_ROOT\Signature.Document = Signat Document
+HKEY_CLASSES_ROOT\Signature.Document\protocol\StdFileEditing\server = SIGNATURE.EXE
+HKEY_CLASSES_ROOT\Signature.Document\protocol\StdFileEditing\verb\0 = &Edit
+HKEY_CLASSES_ROOT\Signature.Document\Insertable =
+HKEY_CLASSES_ROOT\Signature.Document\CLSID = {F65842E3-0F2E-11D6-BB32-00E07D0326BE}
+
+HKEY_CLASSES_ROOT\CLSID\{F65842E3-0F2E-11D6-BB32-00E07D0326BE} = Signat Document
+HKEY_CLASSES_ROOT\CLSID\{F65842E3-0F2E-11D6-BB32-00E07D0326BE}\DefaultIcon = SIGNATURE.EXE,1
+HKEY_CLASSES_ROOT\CLSID\{F65842E3-0F2E-11D6-BB32-00E07D0326BE}\LocalServer32 = SIGNATURE.EXE
+HKEY_CLASSES_ROOT\CLSID\{F65842E3-0F2E-11D6-BB32-00E07D0326BE}\ProgId = Signature.Document
+HKEY_CLASSES_ROOT\CLSID\{F65842E3-0F2E-11D6-BB32-00E07D0326BE}\MiscStatus = 32
+HKEY_CLASSES_ROOT\CLSID\{F65842E3-0F2E-11D6-BB32-00E07D0326BE}\AuxUserType\3 = Signature
+HKEY_CLASSES_ROOT\CLSID\{F65842E3-0F2E-11D6-BB32-00E07D0326BE}\AuxUserType\2 = Signat
+HKEY_CLASSES_ROOT\CLSID\{F65842E3-0F2E-11D6-BB32-00E07D0326BE}\Insertable = 
+HKEY_CLASSES_ROOT\CLSID\{F65842E3-0F2E-11D6-BB32-00E07D0326BE}\verb\1 = &Open,0,2
+HKEY_CLASSES_ROOT\CLSID\{F65842E3-0F2E-11D6-BB32-00E07D0326BE}\verb\0 = &Edit,0,2
+HKEY_CLASSES_ROOT\CLSID\{F65842E3-0F2E-11D6-BB32-00E07D0326BE}\InprocHandler32 = ole32.dll

@@ -1,0 +1,200 @@
+<%@page contentType="text/html;  charset=windows-874" %>
+<%@page import ="java.sql.*,java.lang.*,java.util.Date,java.util.*"%> <!-- import  เพื่อใช้ session -->
+<%@page session="true"%><!-- default -->
+<%@include file="th-db.jsp"%>
+<HTML><HEAD><TITLE>:: Online e-Procurement ::</TITLE>
+<LINK href="picture/cssomo1.css" rel=stylesheet type="text/css">
+<META content="text/html; charset=windows-874" http-equiv=Content-Type>
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="Sirirporn J.">
+<META NAME="Description" CONTENT="First page for e-Procurement system">
+</HEAD>
+<BODY  leftMargin=0 topMargin=0 vLink=#0077ff marginheight="0" 
+marginwidth="0"><FONT color=#000000></FONT>
+<TABLE border=0 cellPadding=0 cellSpacing=0 width=760 bgcolor="#FFFFFF" align="center">
+  <TBODY > 
+  <TR>
+    <TD align=left height=75 vAlign=bottom>
+      <%@include file="topmenu.html"%></TD></TR>
+  
+  <TR>
+    <TD height=10 bgcolor="#B6B6B6"> 
+    </TD>
+
+  </TR>
+    <TR>
+    <TD height=30 bgcolor="white"> 
+   <div align="right">  
+   <FONT  COLOR="#658dc1"><B>
+   <%@include file="date.txt"%></B></FONT></div>
+    </TD>
+  </TR>
+   <TR>
+    <TD height=1 bgcolor="#B6B6B6"> 
+    </TD>
+  </TR>
+  <TR colspan="2">
+    <TD bgColor=#bfbfbf height=1 width=760></TD>
+	</TR></TBODY></TABLE>
+<TABLE border=0 cellPadding=0 cellSpacing=0 width=760 align="center">
+  <TBODY> 
+  <TR> 
+    <TD align=middle vAlign=top> 
+      <TABLE width="100%" cellpadding="3" cellspacing="0" border="0">
+        <TR>
+		  <TD bgColor="#bfbfbf" width="27%" align="center" valign="top">
+
+            <%@include file="directory.html"%>
+             <%@include file="shopping.html"%><P><P><BR><BR>
+
+			
+          </TD>
+		  <TD bgColor="#ffffff" width="73%" align="center" valign="top"> 
+
+
+<%
+
+   String emp = (String)session.getAttribute("emp");
+	String passwd = (String)session.getAttribute("passwd");
+	String name=(String)session.getAttribute("name");
+	String sname=(String)session.getAttribute("sname");
+	String dept=(String)session.getAttribute("dept");
+	String adhoc=(String)session.getAttribute("adhoc");
+	
+				TMP_PO_collection TMP_PoCart = (TMP_PO_collection)session.getAttribute("TMP_PoCart");
+				PO_collection PoCart=(PO_collection)session.getAttribute("PoCart");
+				Vector po_vector=(Vector)session.getAttribute("po_vector");
+				Vector code_vector=(Vector)session.getAttribute("code_vector");
+				ItemVector itemVec = (ItemVector) session.getAttribute("item_vector");
+
+if ((TMP_PoCart==null)&&(PoCart==null)&&(po_vector==null)&&(code_vector==null))
+{            out.println("<P>&nbsp;<P><CENTER>ไม่มี  TMP PO ที่ต้องการออกเป็น PO</CENTER>");       
+
+}else{
+
+	try{
+				
+                     Collection PoItemCollection = PoCart.getPo_vector();
+					Iterator it = PoItemCollection.iterator();
+												int x=0;
+												while (it.hasNext()){
+														PO  poitem= (PO) it.next();
+
+														int   ponum=poitem.getPoNo();
+														int   poline=poitem.getLineNo();
+														int	  qty = poitem.getNumItems();
+														double price = poitem.getPrice();
+														String  code = poitem.getItemID();
+
+														String  vendor=poitem.getVendorNo();
+				
+																DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+																Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");
+																DatabaseMetaData dmd = con.getMetaData();
+														 		Statement stmt = con.createStatement();
+														  
+																String query="INSERT INTO PO_LINE(PO#,LINE#,CODE,QTY,PRICE,STATUS,REQ_DATE) VALUES('"+ponum+"','"+poline+"','"+code+"','"+qty+"','"+price+"','0','0' )";
+																System.out.println(query);
+																stmt.executeUpdate(query);
+																	System.out.println("executed");
+																	   Collection itemCol = itemVec.getItemVector();
+																	Iterator tt = itemCol.iterator();
+	
+																		while (tt.hasNext())
+																		{
+																			Item itm=(Item) tt.next();
+
+																			System.out.println(itm.getPoNo()+"  "+ponum);
+																			System.out.println(itm.getPoLineNo()+"  "+poline);
+																			System.out.println(itm.getPrLineNo());
+																						if  (  (itm.getPoNo()==ponum) &&  (itm.getPoLineNo()==poline)  )
+																						{
+
+																							System.out.println("test");
+																							     Statement stm = con.createStatement();
+																							 query="UPDATE PR_LINE SET PO#='"+ponum+"',PO_LINE#='"+poline+"' WHERE (PR#='"+itm.getPrNo()+"') AND (LINE#='"+itm.getPrLineNo()+"')";
+																							 System.out.println(query);
+																								stm.executeUpdate(query);
+																							  	stm.close();
+
+																		
+																						}//if
+																					 
+																			
+																		}//while
+
+												
+															  System.out.println(query);
+																
+																stmt.close();									
+																con.close();
+												}//while
+				
+																		Collection itemCol = itemVec.getItemVector();
+																			Iterator tt = itemCol.iterator();
+																		while (tt.hasNext())
+																		{
+																			Item itm=(Item) tt.next();
+																			  if ((itm.getPoNo()!=0) && (itm.getPoLineNo()!=0)) {
+																		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+																		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");
+																		Statement stmt1 = con.createStatement();
+																	  
+																	  String query="UPDATE PR SET STATUS='5' WHERE PR#='"+itm.getPrNo()+"'";
+																	  stmt1.executeUpdate(query);
+																
+																	   stmt1.close();
+																	   con.close();
+																			  }//if
+
+																		}//while
+	
+																			
+																  // ลงข้อมูลใน DB
+													/*			       Iterator i1 =po_vector.iterator();
+																	while (i1.hasNext()){
+																		int pon=((Integer) i1.next()).intValue(); 
+																			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+																Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:orcl", "sys", "maimee");
+																	   Statement stmt1 = con.createStatement();
+													//			    String  query="UPDATE PR_LINE SET (STATUS='5')  WHERE PO#='"+pon+"'" ;
+																		
+																	  stmt1.executeUpdate(query);
+																
+																	   stmt1.close();
+																	   con.close();*/
+														//			}
+
+																		session.removeAttribute("TMP_PoCart");
+																		session.removeAttribute("PoCart");
+																		session.removeAttribute("code_vector");
+																		session.removeAttribute("po_vector");
+																		session.removeAttribute("item_vector");
+																		//response.sendRedirect("genpo.jsp");
+																		%>
+																			<CENTER><P>&nbsp;<P>&nbsp;<B>PO  ถูกสร้างเรียบร้อยแล้ว</B></CENTER>
+																		
+																		<%
+
+																  }catch(java.sql.SQLException e)  {
+															  System.out.println("SQLException:<br>");
+															  System.out.println("Message:   " + e.getMessage() + "<br>");
+															  System.out.println("SQLState:  " + e.getSQLState() + "<br>");
+															  System.out.println("ErrorCode: " + e.getErrorCode() + "<br>");
+															  e.printStackTrace();
+																	} // catch
+		}
+												
+%>
+</TD>
+	</TR>
+	</TABLE>
+    </TD>
+  </TR>
+  <TR>
+                <%@include file="bottommenu.html"%>
+                    </TR>
+
+  </TBODY> 
+</TABLE>
+</BODY></HTML>

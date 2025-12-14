@@ -1,0 +1,57 @@
+file = createfile "c:\a.txt"
+
+bMesh = $Plane01.mesh
+
+format "Maetee \n \n" to:file
+
+format "vertices \n" to:file
+
+
+bMesh.numverts
+
+
+for i = 1 to bMesh.numverts do 
+(
+	verts1 = getvert bMesh i
+	format "% , % , %\n"  verts1.x verts1.z verts1.y to:file
+)
+
+ format "\n index all is % \n" bMesh.numfaces to:file
+
+
+for x = 1 to bMesh.numfaces do
+(
+	face = getface bMesh x
+	p0 = face.x as integer
+	p1 = face.y as integer
+	p2 = face.z as integer
+	
+	format "% , % , % \n" p0 p2 p1 to:file
+)
+
+
+
+format "\n tu tv  all is % \n" bMesh.numtverts to:file
+
+ for xx = 1 to bMesh.numfaces do
+(
+	face = geTVface bMesh xx
+	p0 = face.x 
+	p1 = face.y 
+	p2 = face.z 
+	
+	format "% , % , % \n" p0 p2 p1 to:file
+)
+
+
+--for xx = 1 to bMesh.numtverts do
+--(
+--	face = gettvert bMesh xx
+
+--	p0 = face.x 
+--	p1 = face.y
+--	p2 = face.z 
+	
+--	format "% , % , % \n" p0 p1 p2 to:file
+--)
+

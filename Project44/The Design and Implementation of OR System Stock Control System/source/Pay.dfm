@@ -1,0 +1,209 @@
+object frmpay: Tfrmpay
+  Left = 211
+  Top = 107
+  Width = 706
+  Height = 593
+  Caption = #3585#3634#3619#3592#3656#3634#3618#3623#3633#3626#3604#3640
+  Color = clCream
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  OnCreate = FormCreate
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel3: TPanel
+    Left = 24
+    Top = 24
+    Width = 649
+    Height = 217
+    BevelInner = bvLowered
+    Color = clMoneyGreen
+    TabOrder = 0
+    object Label12: TLabel
+      Left = 424
+      Top = 40
+      Width = 21
+      Height = 13
+      Caption = #3623#3633#3609#3607#3637#3656
+    end
+    object Label13: TLabel
+      Left = 343
+      Top = 99
+      Width = 55
+      Height = 13
+      Caption = #3648#3621#3586#3607#3637#3656#3651#3610#3592#3656#3634#3618
+    end
+    object Label14: TLabel
+      Left = 55
+      Top = 97
+      Width = 56
+      Height = 13
+      Caption = #3648#3621#3586#3607#3637#3656#3651#3610#3648#3610#3636#3585
+    end
+    object Label1: TLabel
+      Left = 56
+      Top = 139
+      Width = 66
+      Height = 13
+      Caption = 'Request Date'
+    end
+    object Label2: TLabel
+      Left = 346
+      Top = 140
+      Width = 55
+      Height = 13
+      Caption = 'Expire Date'
+    end
+    object Label3: TLabel
+      Left = 58
+      Top = 180
+      Width = 36
+      Height = 13
+      Caption = 'Section'
+    end
+    object Label4: TLabel
+      Left = 352
+      Top = 180
+      Width = 29
+      Height = 13
+      Caption = 'Value'
+    end
+    object StaticText2: TStaticText
+      Left = 242
+      Top = 24
+      Width = 120
+      Height = 33
+      Caption = #3585#3634#3619#3592#3656#3634#3618#3623#3633#3626#3604#3640
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clTeal
+      Font.Height = -24
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 0
+    end
+    object edtstkreq: TMaskEdit
+      Left = 130
+      Top = 94
+      Width = 121
+      Height = 21
+      TabOrder = 1
+      OnKeyUp = edtstkreqKeyUp
+    end
+    object edtstkpay: TMaskEdit
+      Left = 424
+      Top = 95
+      Width = 121
+      Height = 21
+      TabOrder = 2
+    end
+    object edtdate: TEdit
+      Left = 464
+      Top = 36
+      Width = 121
+      Height = 21
+      TabOrder = 3
+    end
+    object edtreqdate: TEdit
+      Left = 130
+      Top = 136
+      Width = 121
+      Height = 21
+      TabOrder = 4
+    end
+    object edtexpdate: TEdit
+      Left = 424
+      Top = 136
+      Width = 121
+      Height = 21
+      TabOrder = 5
+    end
+    object edtsection: TEdit
+      Left = 130
+      Top = 176
+      Width = 121
+      Height = 21
+      TabOrder = 6
+    end
+    object edtbudget: TEdit
+      Left = 424
+      Top = 176
+      Width = 121
+      Height = 21
+      TabOrder = 7
+    end
+  end
+  object Panel4: TPanel
+    Left = 24
+    Top = 254
+    Width = 649
+    Height = 265
+    BevelInner = bvLowered
+    Color = clMoneyGreen
+    TabOrder = 1
+    object StringGrid2: TStringGrid
+      Left = 40
+      Top = 32
+      Width = 569
+      Height = 201
+      RowCount = 2
+      ScrollBars = ssVertical
+      TabOrder = 0
+      ColWidths = (
+        64
+        65
+        272
+        67
+        75)
+    end
+  end
+  object Button1: TButton
+    Left = 487
+    Top = 528
+    Width = 107
+    Height = 25
+    Caption = #3585#3621#3633#3610#3648#3617#3609#3641#3627#3621#3633#3585
+    TabOrder = 2
+    OnClick = Button1Click
+  end
+  object Button4: TButton
+    Left = 136
+    Top = 528
+    Width = 89
+    Height = 25
+    Caption = #3610#3633#3609#3607#3638#3585#3585#3634#3619#3592#3656#3634#3618
+    TabOrder = 3
+    OnClick = Button4Click
+  end
+  object Button2: TButton
+    Left = 320
+    Top = 528
+    Width = 75
+    Height = 25
+    Caption = #3621#3610
+    TabOrder = 4
+    OnClick = Button2Click
+  end
+  object Database1: TDatabase
+    AliasName = 'Stock'
+    DatabaseName = 'initdb'
+    LoginPrompt = False
+    Params.Strings = (
+      'USERNAME=informix'
+      'PASSWORD=informix')
+    SessionName = 'Default'
+    Left = 208
+  end
+  object initquery: TQuery
+    DatabaseName = 'initdb'
+    Left = 288
+  end
+  object DataSource1: TDataSource
+    DataSet = initquery
+    Left = 368
+  end
+end

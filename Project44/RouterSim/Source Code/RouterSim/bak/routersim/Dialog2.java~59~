@@ -1,0 +1,50 @@
+package routersim;
+
+import java.awt.*;
+import javax.swing.*;
+import com.borland.jbcl.layout.*;
+import java.awt.event.*;
+import java.util.*;
+import java.lang.*;
+
+public class Dialog2 extends JDialog {
+  JPanel panel1 = new JPanel();
+  ImageIcon image1;
+
+  public Dialog2(Frame frame, String title, boolean modal) {
+    super(frame, title, modal);
+    try {
+      jbInit();
+      pack();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  public Dialog2() {
+    this(null, "Detail of Serie", true);
+  }
+  void jbInit() throws Exception {
+    image1 = new ImageIcon(routersim.Frame1.class.getResource("series.gif"));
+    panel1.setLayout(borderLayout1);
+    panel1.setBackground(Color.white);
+    panel1.setMinimumSize(new Dimension(500, 96));
+    panel1.setPreferredSize(new Dimension(500, 96));
+    panel1.setRequestFocusEnabled(false);
+    this.setEnabled(false);
+    this.setTitle("");
+    jLabel1.setIcon(image1);
+    getContentPane().add(panel1);
+    panel1.add(jLabel1, BorderLayout.CENTER);
+
+  }
+  protected void processWindowEvent(WindowEvent e) {
+    super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+      this.dispose();
+    }
+  }
+  BorderLayout borderLayout1 = new BorderLayout();
+  JLabel jLabel1 = new JLabel();
+}

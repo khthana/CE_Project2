@@ -1,0 +1,148 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// ODL file generated from Cache Objects Version 4.1.856.0
+//     Feb 12 2002 01:54:18
+//
+////////////////////////////////////////////////////////////////////////////////
+
+#include <olectl.h>
+
+[ uuid(49c1b72d-b3c1-4baa-ba44-accc98859dfd), version(1.0),helpstring("Cache Objects Version 4.1.856.0") ]
+library User_Department
+{
+    importlib(STDOLE_TLB);
+    importlib(STDTYPE_TLB);
+
+    [ uuid(6f3e06c5-0d2c-444b-9a0e-583e73dceaf8),helpstring("Cache Object: User.Department"),hidden ]
+
+    dispinterface CDepartment
+    {
+        properties:
+            [id(41)]  long        DeleteTag;
+            [id(61)]  BSTR        EnglishName;
+            [id(62)]  IDispatch*  IsOf;
+            [id(63)]  BSTR        ThaiName;
+
+        methods:
+            [id(69)]  VARIANT     SYS_BuildIndices(IDispatch* idxlist);
+            [id(16)]  VARIANT     SYS_CheckUnique(IDispatch* idxlist);
+            [id(1)]   BSTR        SYS_ClassName(VARIANT fullname);
+            [id(2)]   VARIANT     SYS_Close();
+            [id(17)]  VARIANT     SYS_Delete(VARIANT oid,long concurrency);
+            [id(19)]  VARIANT     SYS_DeleteExtent(long concurrency,[in,out] BSTR* deletecount,[in,out] BSTR* instancecount);
+            [id(20)]  VARIANT     SYS_DeleteId(BSTR id,long concurrency);
+            [id(21)]  VARIANT     SYS_DowngradeConcurrency(BSTR concurrency);
+            [id(73)]  VARIANT     SYS_Exists(VARIANT oid);
+            [id(74)]  VARIANT     SYS_ExistsId(BSTR id);
+            [id(24)]  VARIANT     SYS_GetSwizzleObject(long force,[in,out] VARIANT* oid);
+            [id(25)]  BSTR        SYS_Id();
+            [id(3)]   void        SYS_IncrementCount();
+            [id(4)]   long        SYS_IsA(BSTR isclass);
+            [id(5)]   long        SYS_IsModified();
+            [id(75)]  VARIANT     SYS_KillExtent();
+            [id(6)]   IDispatch*  SYS_New(BSTR initvalue);
+            [id(7)]   VARIANT     SYS_NormalizeObject();
+            [id(30)]  VARIANT     SYS_Oid();
+            [id(31)]  BSTR        SYS_Open(VARIANT oid,long concurrency);
+            [id(32)]  BSTR        SYS_OpenId(BSTR id,long concurrency);
+            [id(8)]   BSTR        SYS_PackageName();
+            [id(78)]  VARIANT     SYS_PurgeIndices(IDispatch* idxlist);
+            [id(35)]  VARIANT     SYS_RollBack();
+            [id(36)]  VARIANT     SYS_Save(long related);
+            [id(81)]  VARIANT     SYS_SortBegin(IDispatch* idxlist,long excludeunique);
+            [id(82)]  VARIANT     SYS_SortEnd(IDispatch* idxlist,long commit);
+            [id(40)]  VARIANT     SYS_UpgradeConcurrency(BSTR concurrency);
+            [id(10)]  VARIANT     SYS_ValidateObject(long force);
+            [id(57)]  VARIANT     CheckDependency();
+            [id(110)] long        DeleteTagDisplayToLogical(BSTR SYS_val);
+            [id(111)] long        DeleteTagGet();
+            [id(115)] long        DeleteTagIsModified();
+            [id(116)] VARIANT     DeleteTagIsValid(BSTR value);
+            [id(117)] long        DeleteTagIsValidDT(long SYS_val);
+            [id(118)] BSTR        DeleteTagLogicalToDisplay(long SYS_val);
+            [id(120)] long        DeleteTagNormalize(BSTR SYS_val);
+            [id(122)] VARIANT     DeleteTagSet(BSTR newvalue);
+            [id(123)] long        DeleteTagSetModified(long newvalue);
+            [id(127)] BSTR        EnglishNameDisplayToLogical(BSTR SYS_val);
+            [id(128)] BSTR        EnglishNameGet();
+            [id(132)] long        EnglishNameIsModified();
+            [id(133)] VARIANT     EnglishNameIsValid(BSTR value);
+            [id(134)] long        EnglishNameIsValidDT(BSTR SYS_val);
+            [id(135)] BSTR        EnglishNameLogicalToDisplay(BSTR SYS_val);
+            [id(137)] BSTR        EnglishNameNormalize(BSTR SYS_val);
+            [id(139)] VARIANT     EnglishNameSet(BSTR newvalue);
+            [id(140)] long        EnglishNameSetModified(long newvalue);
+            [id(175)] VARIANT     ExtentClose(VARIANT qHandle);
+            [id(176)] VARIANT     ExtentExecute([in,out] VARIANT* qHandle);
+            [id(177)] VARIANT     ExtentFetch([in,out] VARIANT* qHandle,[in,out] IDispatch** Row,[in,out] long* AtEnd);
+            [id(179)] VARIANT     ExtentFetchRows([in,out] VARIANT* qHandle,long FetchCount,[in,out] IDispatch** RowSet,[in,out] long* ReturnCount,[in,out] long* AtEnd);
+            [id(180)] VARIANT     ExtentGetInfo([in,out] IDispatch** colinfo,[in,out] IDispatch** parminfo,[in,out] IDispatch** idinfo,[in,out] VARIANT* qHandle);
+            [id(181)] VARIANT     ExtentPrepare([in,out] VARIANT* qHandle,BSTR statement,long containid,BSTR optional);
+            [id(58)]  BSTR        GetClassName();
+            [id(59)]  BSTR        GetParentClass();
+            [id(144)] IDispatch*  IsOfGet();
+            [id(145)] VARIANT     IsOfGetObject(long force);
+            [id(146)] BSTR        IsOfGetObjectId(long force);
+            [id(148)] long        IsOfIsModified();
+            [id(149)] VARIANT     IsOfIsValid(BSTR value);
+            [id(150)] IDispatch*  IsOfNewObject();
+            [id(152)] VARIANT     IsOfSet(BSTR newvalue);
+            [id(153)] long        IsOfSetModified(long newvalue);
+            [id(154)] VARIANT     IsOfSetObject(VARIANT newvalue);
+            [id(155)] VARIANT     IsOfSetObjectId(BSTR newid);
+            [id(60)]  void        PrepareDeleting();
+            [id(182)] VARIANT     QueryCourseCountClose(VARIANT qHandle);
+            [id(183)] VARIANT     QueryCourseCountExecute([in,out] VARIANT* qHandle,IDispatch* deptid);
+            [id(184)] VARIANT     QueryCourseCountFetch([in,out] VARIANT* qHandle,[in,out] IDispatch** Row,[in,out] long* AtEnd);
+            [id(185)] VARIANT     QueryCourseCountFetchODBC([in,out] VARIANT* qHandle,[in,out] BSTR* SYS_d,long SYS_qacn,[in,out] long* AtEnd,[in,out] long* SQLCODE);
+            [id(186)] VARIANT     QueryCourseCountFetchRows([in,out] VARIANT* qHandle,long FetchCount,[in,out] IDispatch** RowSet,[in,out] long* ReturnCount,[in,out] long* AtEnd);
+            [id(187)] VARIANT     QueryCourseCountGetInfo([in,out] IDispatch** colinfo,[in,out] IDispatch** parminfo,[in,out] IDispatch** idinfo,[in,out] VARIANT* qHandle);
+            [id(188)] VARIANT     QueryCourseCountPrepare([in,out] VARIANT* qHandle,BSTR statement,long containid,BSTR optional);
+            [id(189)] VARIANT     QueryDetailsClose(VARIANT qHandle);
+            [id(190)] VARIANT     QueryDetailsExecute([in,out] VARIANT* qHandle);
+            [id(191)] VARIANT     QueryDetailsFetch([in,out] VARIANT* qHandle,[in,out] IDispatch** Row,[in,out] long* AtEnd);
+            [id(192)] VARIANT     QueryDetailsFetchODBC([in,out] VARIANT* qHandle,[in,out] BSTR* SYS_d,long SYS_qacn,[in,out] long* AtEnd,[in,out] long* SQLCODE);
+            [id(193)] VARIANT     QueryDetailsFetchRows([in,out] VARIANT* qHandle,long FetchCount,[in,out] IDispatch** RowSet,[in,out] long* ReturnCount,[in,out] long* AtEnd);
+            [id(194)] VARIANT     QueryDetailsGetInfo([in,out] IDispatch** colinfo,[in,out] IDispatch** parminfo,[in,out] IDispatch** idinfo,[in,out] VARIANT* qHandle);
+            [id(195)] VARIANT     QueryDetailsPrepare([in,out] VARIANT* qHandle,BSTR statement,long containid,BSTR optional);
+            [id(196)] VARIANT     QueryIsOfClose(VARIANT qHandle);
+            [id(197)] VARIANT     QueryIsOfExecute([in,out] VARIANT* qHandle,IDispatch* facID);
+            [id(198)] VARIANT     QueryIsOfFetch([in,out] VARIANT* qHandle,[in,out] IDispatch** Row,[in,out] long* AtEnd);
+            [id(199)] VARIANT     QueryIsOfFetchODBC([in,out] VARIANT* qHandle,[in,out] BSTR* SYS_d,long SYS_qacn,[in,out] long* AtEnd,[in,out] long* SQLCODE);
+            [id(200)] VARIANT     QueryIsOfFetchRows([in,out] VARIANT* qHandle,long FetchCount,[in,out] IDispatch** RowSet,[in,out] long* ReturnCount,[in,out] long* AtEnd);
+            [id(201)] VARIANT     QueryIsOfGetInfo([in,out] IDispatch** colinfo,[in,out] IDispatch** parminfo,[in,out] IDispatch** idinfo,[in,out] VARIANT* qHandle);
+            [id(202)] VARIANT     QueryIsOfPrepare([in,out] VARIANT* qHandle,BSTR statement,long containid,BSTR optional);
+            [id(203)] VARIANT     QuerySubjectCountClose(VARIANT qHandle);
+            [id(204)] VARIANT     QuerySubjectCountExecute([in,out] VARIANT* qHandle,IDispatch* depid);
+            [id(205)] VARIANT     QuerySubjectCountFetch([in,out] VARIANT* qHandle,[in,out] IDispatch** Row,[in,out] long* AtEnd);
+            [id(206)] VARIANT     QuerySubjectCountFetchODBC([in,out] VARIANT* qHandle,[in,out] BSTR* SYS_d,long SYS_qacn,[in,out] long* AtEnd,[in,out] long* SQLCODE);
+            [id(207)] VARIANT     QuerySubjectCountFetchRows([in,out] VARIANT* qHandle,long FetchCount,[in,out] IDispatch** RowSet,[in,out] long* ReturnCount,[in,out] long* AtEnd);
+            [id(208)] VARIANT     QuerySubjectCountGetInfo([in,out] IDispatch** colinfo,[in,out] IDispatch** parminfo,[in,out] IDispatch** idinfo,[in,out] VARIANT* qHandle);
+            [id(209)] VARIANT     QuerySubjectCountPrepare([in,out] VARIANT* qHandle,BSTR statement,long containid,BSTR optional);
+            [id(157)] BSTR        ThaiNameDisplayToLogical(BSTR SYS_val);
+            [id(158)] BSTR        ThaiNameGet();
+            [id(162)] long        ThaiNameIsModified();
+            [id(163)] VARIANT     ThaiNameIsValid(BSTR value);
+            [id(164)] long        ThaiNameIsValidDT(BSTR SYS_val);
+            [id(165)] BSTR        ThaiNameLogicalToDisplay(BSTR SYS_val);
+            [id(167)] BSTR        ThaiNameNormalize(BSTR SYS_val);
+            [id(169)] VARIANT     ThaiNameSet(BSTR newvalue);
+            [id(170)] long        ThaiNameSetModified(long newvalue);
+
+    };
+
+    // Class information for User.Department
+    [ uuid(19829ab6-5e8c-46dd-9be3-0411275dd7fa), helpstring("Cache Object: User.Department CoClass"),control ]
+    coclass Department
+    {
+        [default] dispinterface CDepartment;
+    };
+
+
+};
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// End-of-file
+//
+////////////////////////////////////////////////////////////////////////////////

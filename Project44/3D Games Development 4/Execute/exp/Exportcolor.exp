@@ -1,0 +1,33 @@
+fileMap = createfile "c:\abc.map"
+
+fileMai = createfile "c:\abc.mai"
+
+fileMac = createfile "c:\abc.mac"
+
+bMesh = $Box01.mesh
+
+
+
+
+format "Maetee Supreanruey and Anusorn Krasantisuk format\n\n" to:fileMap 
+format "Maetee Supreanruey and Anusorn Krasantisuk format\n\n" to:fileMai 
+format "Maetee Supreanruey and Anusorn Krasantisuk format\n\n" to:fileMac
+
+
+format "%\n" bMesh.numverts to:fileMap
+for i = 1 to bMesh.numverts do 
+(
+	verts1 = getvert bMesh i
+	format "% % %\n"  verts1.x verts1.z verts1.y to:fileMap 
+)
+ 
+all = getNumCPVVerts bMesh
+
+format "%\n"  all  to:fileMac 
+
+
+
+
+close fileMap
+close fileMai 
+close fileMac

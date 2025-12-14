@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<?providerDefinition version="2.0"?>
+<!DOCTYPE provider [
+<!ENTITY virtualRoot "/jpdk/">
+<!ENTITY physicalRoot "D:\oracle\ora9ias\Apache\Apache\htdocs\jpdk\">
+]>
+<provider class="oracle.portal.provider.v1.http.DefaultProvider">
+   <session>true</session>
+
+<portlet class="oracle.portal.provider.v1.http.DefaultPortlet">
+  <id>1</id>
+  <name>Login_JSP</name>
+  <title>Welcome</title>
+  <description>Login with JSP code</description>
+  <timeout>30</timeout>
+  <timeoutMessage>Login is timed out</timeoutMessage>
+  <acceptContentType>text/html</acceptContentType>
+ 
+  <renderer class="oracle.portal.provider.v1.RenderManager">
+  <appPath>&virtualRoot;project</appPath>
+  <appRoot>&physicalRoot;project</appRoot>
+  <renderContainer>true</renderContainer>
+  <contentType>text/html</contentType>
+  <showPage class="oracle.portal.provider.v1.http.JspRenderer">
+  <name>login.jsp</name>
+  </showPage>
+  </renderer>
+</portlet>
+ 
+  <portlet class="oracle.portal.provider.v1.http.DefaultPortlet" >
+      <id>2</id>
+      <name>register</name>
+      <title>Register..</title>
+      <description>Register form.</description>
+      <timeout>30</timeout>
+      <timeoutMessage>Register form timed out</timeoutMessage>
+      <acceptContentType>text/html</acceptContentType>
+      <renderer class="oracle.portal.provider.v1.RenderManager" >
+	     <appPath>&virtualRoot;project</appPath>
+	     <appRoot>&physicalRoot;project</appRoot>
+	     <renderContainer>true</renderContainer>
+	     <showPage class="oracle.portal.provider.v1.http.JspRenderer">
+	     <name>register_form.jsp</name>
+	     </showPage>
+      </renderer>
+ </portlet>
+
+  <portlet class="oracle.portal.provider.v1.http.DefaultPortlet" >
+      <id>3</id>
+      <name>result_register</name>
+      <title>Result of Register</title>
+      <description>Result Register form.</description>
+      <timeout>30</timeout>
+      <timeoutMessage>Result Register form timed out</timeoutMessage>
+      <acceptContentType>text/html</acceptContentType>
+      <renderer class="oracle.portal.provider.v1.RenderManager" >
+	     <appPath>&virtualRoot;project</appPath>
+	     <appRoot>&physicalRoot;project</appRoot>
+	     <renderContainer>true</renderContainer>
+	     <showPage class="oracle.portal.provider.v1.http.JspRenderer">
+	     <name>result_register.jsp</name>
+	     </showPage>
+      </renderer>
+ </portlet>
+
+   <portlet class="oracle.portal.provider.v1.http.DefaultPortlet" >
+      <id>4</id>
+      <name>Detail_Register</name>
+      <title>Detail of new register</title>
+      <description>detail Register form.</description>
+      <timeout>30</timeout>
+      <timeoutMessage>Detail Register form timed out</timeoutMessage>
+      <acceptContentType>text/html</acceptContentType>
+      <renderer class="oracle.portal.provider.v1.RenderManager" >
+	     <appPath>&virtualRoot;project</appPath>
+	     <appRoot>&physicalRoot;project</appRoot>
+	     <renderContainer>true</renderContainer>
+	     <showPage class="oracle.portal.provider.v1.http.JspRenderer">
+	     <name>detail_user.jsp</name>
+	     </showPage>
+      </renderer>
+ </portlet>
+
+  <portlet class="oracle.portal.provider.v1.http.DefaultPortlet">
+    <id>5</id>
+    <name>select_report</name>
+    <title>Monitor</title>
+    <description>Main radio browsing portlet.</description>
+    <timeout>100</timeout>
+    <timeoutMessage>Browsing Report Portlet timeout.</timeoutMessage>
+    <acceptContentType>text/html</acceptContentType>
+    <renderer class="oracle.portal.provider.v1.RenderManager">
+	  <appPath>&virtualRoot;project</appPath>
+	  <appRoot>&physicalRoot;project</appRoot>
+	  <renderContainer>true</renderContainer>
+	  <showPage class="oracle.portal.provider.v1.http.JspRenderer">
+	  <name>select_report.jsp</name>
+	  </showPage>
+   </renderer>
+  </portlet>
+
+<portlet class="oracle.portal.provider.v1.http.DefaultPortlet" >
+      <id>6</id>
+      <name>report_parameter</name>
+      <title>Report Form</title>
+      <description>Form for each browsing report.</description>
+      <timeout>30</timeout>
+      <timeoutMessage>Form Browsing Portlet timed out</timeoutMessage>
+      <acceptContentType>text/html</acceptContentType>
+      <renderer class="oracle.portal.provider.v1.RenderManager" >
+             <appPath>&virtualRoot;project</appPath>
+	     <appRoot>&physicalRoot;project</appRoot>
+	     <renderContainer>true</renderContainer>
+	     <showPage>report_parameter.jsp</showPage>
+      </renderer>
+ </portlet>
+
+ <portlet class="oracle.portal.provider.v1.http.DefaultPortlet" >
+      <id>7</id>
+      <name>graph_browsing</name>
+      <title>Graph</title>
+      <description>Graph for each browsing report.</description>
+      <timeout>30</timeout>
+      <timeoutMessage>Graph Browsing Portlet timed out</timeoutMessage>
+      <acceptContentType>text/html</acceptContentType>
+      <renderer class="oracle.portal.provider.v1.RenderManager" >
+             <appPath>&virtualRoot;project</appPath>
+	     <appRoot>&physicalRoot;project</appRoot>
+	     <renderContainer>true</renderContainer>
+	     <showPage>graph.jsp</showPage>
+      </renderer>
+ </portlet>
+
+</provider>
+

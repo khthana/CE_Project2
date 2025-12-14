@@ -1,0 +1,16 @@
+mov r0,#0000;   mov r4,#0002;   nop;        nop;
+nop;            nop;            nop;        nop;
+nop;            nop;            nop;        nop;
+nop;            nop;            nop;        nop;
+nop;            nop;            nop;        stc;
+nop;            nop;            nop;        nop;
+nop;            nop;            nop;        adc r0,r4;
+nop;            nop;            nop;        nop;
+nop;            nop;            nop;        nop;
+nop;            nop;            nop;        nop;
+nop;            nop;            nop;        jmp #0003;
+nop;            nop;            nop;        nop;
+nop;            nop;            nop;        nop;
+nop;            nop;            nop;        nop;
+nop;            nop;            nop;        nop;
+nop;            nop;            nop;        nop;

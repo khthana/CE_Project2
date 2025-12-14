@@ -1,0 +1,12 @@
+
+id = '41014234'
+passwd = 'Mf3Gmm'
+
+kmitl = KMITL()
+html = kmitl.inquireTotGrade(id, passwd) #, "2541", '1')
+
+body = kmitl.extractGPA(html)
+header = ['ID', 'Subject', 'Credit', 'Grade']
+
+table = createTable("Total Grade Point Average", body, header)
+table.show()

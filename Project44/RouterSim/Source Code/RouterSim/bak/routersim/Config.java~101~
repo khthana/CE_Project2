@@ -1,0 +1,133 @@
+package routersim;
+import java.util.*;
+
+public class Config {
+  //what is it?
+/*
+  public void setIp(Router r,String des,String gw,int hop){
+    RoutingTable rt= new RoutingTable();
+    rt.addNewRouting(r,des,gw,hop);
+  }
+*/
+  public void setInt(Interface intf){
+  }
+  //work int e0
+  public void addNewInterface(Router r,String s){
+    s = s.toLowerCase();
+    Interface intf = new Interface();
+    Vector v = r.getVInt();
+    intf.setNameInt(s);
+    switch (s.charAt(0)){
+      case 'e' : intf.setType("Ethernet");break;
+      case 's' : intf.setType("Serial");break;
+      case 't'  : intf.setType("TokenRing");break;
+      default : intf.setType("None");
+    }
+    boolean found = false;
+    Interface oldintf = new Interface();
+    if (r.getVInt().size() > 0){
+      oldintf = (Interface)r.getVInt().elementAt(0);
+    }
+    int i = 0,j=0;
+    String old = "";
+    while (i < r.getVInt().size()){
+      oldintf = (Interface)r.getVInt().elementAt(i);
+      if ((oldintf.getNameInt().charAt(0) == s.charAt(0)) && (oldintf.getNameInt().charAt(oldintf.getNameInt().length()-1) == s.charAt(s.length()-1))){
+        r.getVInt().removeElementAt(i);
+      }// end if
+      i++;
+    }//end while
+    r.getVInt().addElement(intf);
+  }
+  //work ip address 161.246.4.1 255.255.255.0
+  public void setIpInterface(Router r,String ip,String subnet){
+    Interface i = (Interface)r.getVInt().elementAt(r.getVInt().size()-1);
+    if ((i.isIp(ip))&&(i.isIp(subnet))){
+      r.getVInt().removeElementAt(r.getVInt().size()-1);
+      i.setIpAddress(ip);
+      i.setSubnet(subnet);
+      i.setNetAddress(i.findNetAdd(ip,subnet));
+      r.getVInt().addElement(i);
+      int j = 0;
+      while (j < r.getTable().getrTable().size()){
+        RoutingTable rt = (RoutingTable)r.getTable().getrTable().elementAt(0);
+        rt  = (RoutingTable)r.getTable().getrTable().elementAt(j);
+        if ((rt.getInterface().getNameInt().charAt(0) == i.getNameInt().charAt(0)) && (rt.getInterface().getNameInt().charAt(rt.getInterface().getNameInt().length()-1) == i.getNameInt().charAt(i.getNameInt().length()-1))){
+          r.getTable().getrTable().removeElementAt(j);
+        }// end if
+        j++;
+      }//end while
+      ipRoute(r,ip,subnet);
+    }// end if
+  }
+  //work hostname RouterA
+  public void setHostname(Router r,String s){
+    r.setName(s);
+  }
+  public void setProtocol(){
+  }
+  //work shut
+  public void shutInt(Interface intf){
+    intf.setStatus("down");
+  }
+  //work no shut
+  public void noShutInt(Interface intf){
+    intf.setStatus("up");
+  }
+  //work set ip route 161.246.7.0 255.255.255.0 161.246.7.1
+  public void ipRoute(Router r,String des,String subnet,String gw){
+    RoutingTable rt = new RoutingTable();
+    int i=0;
+    Interface intf = (Interface)r.getVInt().elementAt(i);
+    while ((!(intf.getIpAddress().equalsIgnoreCase(gw)))){
+      i++;
+      if (i < r.getVInt().size() ){
+        intf = (Interface)r.getVInt().elementAt(i);
+      }
+    }//end while
+    rt.setIpDestination(des);
+    rt.setGateway(gw);
+    rt.setSubnet(subnet);
+    rt.setMatrice(0);
+    rt.setRouteType('s');
+    rt.setInterface(intf);
+    r.getTable().getrTable().addElement(rt);
+  }
+  public void noipRoute(Router r,String des,String subnet,String gw){
+    int i=0;
+    Table t = (Table)r.getTable();
+    Vector v = t.getrTable();
+    RoutingTable rt = (RoutingTable)v.elementAt(0);
+    boolean found = rt.getIpDestination().equalsIgnoreCase(des) && rt.getSubnet().equalsIgnoreCase(subnet) && rt.getGateway().equalsIgnoreCase(gw);
+    while ((!found) && (i < v.size())){
+      i++;
+      if (i < v.size()){
+        rt = (RoutingTable)v.elementAt(i);
+        found = rt.getIpDestination().equalsIgnoreCase(des) && rt.getSubnet().equalsIgnoreCase(subnet) && rt.getGateway().equalsIgnoreCase(gw);
+      }
+    }//end while
+    if ((rt.getIpDestination().equalsIgnoreCase(des))&&(rt.getSubnet().equalsIgnoreCase(subnet))&&(rt.getGateway().equalsIgnoreCase(gw))){
+      v.removeElementAt(i);
+    }
+    else {System.out.println("not found route");}
+  }
+  //work config Routing Table with direct connected
+  public void ipRoute(Router r,String ip,String subnet){
+    RoutingTable rt = new RoutingTable();
+    Interface i = (Interface)r.getVInt().elementAt(r.getVInt().size()-1);
+    String netAdd = i.findNetAdd(ip,subnet);
+    int j=0;
+    Interface intf = (Interface)r.getVInt().elementAt(j);
+    while (!(intf.getIpAddress().equalsIgnoreCase(ip))){
+      j++;
+      intf = (Interface)r.getVInt().elementAt(j);
+    }//end while
+    rt.setIpDestination(netAdd);
+    rt.setGateway(ip);
+    rt.setMatrice(0);
+    rt.setInterface(intf);
+    r.getTable().getrTable().addElement(rt);
+  }
+  public Config() {
+  }
+}

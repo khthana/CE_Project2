@@ -1,0 +1,16 @@
+mov r0,#0000;   mov r1,#1111;   nop;            nop;
+mov r2,#2222;   mov r3,#3333;   nop;            nop;
+nop;            mov r0,r1;      nop;            nop;
+push r3;        mov r5,#0000;   nop;            nop;
+push r2;        mov r0,r2;      nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            mov r0,r3;      nop;            nop;
+nop;            nop;            nop;            nop;
+pop r0;         nop;            nop;            nop;
+pop r0;         nop;            nop;            nop;
+mov [r5],#6789; nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+mov r0,[r5];    nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;

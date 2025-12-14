@@ -1,0 +1,100 @@
+
+
+ --model\\man_002.map
+--model\\man_001.mai
+--model\\man_001.mau
+--Texture\\man.bmp
+--model\\man_001.mac
+
+Obj = $Box01
+
+fileMaf = createfile "C:\export\frame\Box01.maf"
+
+	format "Maetee Supreanruey and Anusorn Krasantisuk format\n\n" to:fileMaf 
+	format "model\\Box01.map\n" to:fileMaf 
+	format "model\\Box01.mai\n" to:fileMaf 
+	format "model\\Box01.mau\n" to:fileMaf 
+	format "Texture\\hand.bmp\n"   to:fileMaf 
+	format "model\\Box01.mac\n" to:fileMaf 
+	
+close fileMaf 
+
+
+fileMap = createfile "C:\export\model\Box01.map"
+
+fileMai = createfile "C:\export\model\Box01.mai"
+
+fileMau = createfile "C:\export\model\Box01.mau"
+
+fileMac = createfile "C:\export\model\Box01.mac"
+
+
+
+bMesh = Obj.mesh
+
+
+
+format "Maetee Supreanruey and Anusorn Krasantisuk format\n\n" to:fileMap 
+format "Maetee Supreanruey and Anusorn Krasantisuk format\n\n" to:fileMai 
+format "Maetee Supreanruey and Anusorn Krasantisuk format\n\n" to:fileMau
+format "Maetee Supreanruey and Anusorn Krasantisuk format\n\n" to:fileMac
+
+format "%\n" bMesh.numverts to:fileMap
+for i = 1 to bMesh.numverts do 
+(
+	verts = getvert bMesh i
+	x = ( Obj.transform[1].x * verts.x ) + ( Obj.transform[2].x * verts.y ) + ( Obj.transform[3].x * verts.z ) + Obj.transform[4].x
+	y = ( Obj.transform[1].y * verts.x ) + ( Obj.transform[2].y * verts.y ) + ( Obj.transform[3].y * verts.z ) + Obj.transform[4].y
+	z = ( Obj.transform[1].z * verts.x ) + ( Obj.transform[2].z * verts.y ) + ( Obj.transform[3].z * verts.z ) + Obj.transform[4].z
+
+	format "% % %\n"  x z y to:fileMap 
+)
+
+
+format "%\n" bMesh.numfaces to:fileMai 
+for x = 1 to bMesh.numfaces do
+(
+	face = getface bMesh x
+	p0 = face.x as integer
+	p2 = face.y as integer
+	p1 = face.z as integer
+	
+	format "% % %\n" (p0-1) (p1-1) (p2-1) to:fileMai 
+)
+
+
+format "%\n" (bMesh.numfaces*3) to:fileMau
+for abc = 1 to bMesh.numfaces do
+(
+	test = getTVface bMesh abc
+
+	p0 = test.x  as integer
+	p2 = test.y  as integer
+	p1 = test.z  as integer	
+
+	face0 = gettvert bMesh p0
+	format "% %\n" face0.x face0.y  to:fileMau
+
+	face1 = gettvert bMesh p1
+	format "% %\n" face1.x face1.y  to:fileMau
+
+	face2 = gettvert bMesh p2
+	format "% %\n" face2.x face2.y  to:fileMau
+)
+
+nvc = getNumCpvVerts bMesh
+
+format "%\n" (nvc) to:fileMac
+for abc = 1 to nvc do
+(
+	cv = getvertcolor bMesh abc
+	format "%\n" cv to:fileMac
+)
+
+close fileMap
+close fileMai 
+close fileMau
+close fileMac
+
+
+

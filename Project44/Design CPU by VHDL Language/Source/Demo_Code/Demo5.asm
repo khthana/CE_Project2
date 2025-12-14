@@ -1,0 +1,16 @@
+mov r4,#0001;   mov r0,#4567;   nop;            nop;
+nop;            mov r1,#2468;   nop;            nop;
+nop;            mov r2,#FFF8;   nop;            nop;
+nop;            mov r3,#0AAA;   nop;            mul r0,r1;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            imul r2,r3;
+nop;            mov r0,r1;      nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            mov r0,r2;      nop;            inc r4;
+nop;            nop;            nop;            nop;
+nop;            mov r0,r3;      nop;            nop;
+nop;            nop;            nop;            cmp r4,#0003;
+nop;            nop;            nop;            jl #0003;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;

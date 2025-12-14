@@ -1,0 +1,87 @@
+fileMap = createfile "c:\abc.map"
+
+fileMai = createfile "c:\abc.mai"
+
+fileMau = createfile "c:\abc.mau"
+
+fileMac = createfile "c:\abc.mac"
+
+bMesh = $plane01.mesh
+
+
+
+format "Maetee Supreanruey and Anusorn Krasantisuk format\n\n" to:fileMap 
+format "Maetee Supreanruey and Anusorn Krasantisuk format\n\n" to:fileMai 
+format "Maetee Supreanruey and Anusorn Krasantisuk format\n\n" to:fileMau
+format "Maetee Supreanruey and Anusorn Krasantisuk format\n\n" to:fileMac
+
+format "%\n" bMesh.numverts to:fileMap
+for i = 1 to bMesh.numverts do 
+(
+	verts1 = getvert bMesh i
+	format "% % %\n"  verts1.x verts1.z verts1.y to:fileMap 
+)
+
+
+format "%\n" bMesh.numfaces to:fileMai 
+for x = 1 to bMesh.numfaces do
+(
+	face = getface bMesh x
+	p0 = face.x as integer
+	p2 = face.y as integer
+	p1 = face.z as integer
+	
+	format "% % %\n" (p0-1) (p1-1) (p2-1) to:fileMai 
+)
+
+--format "%\n" (bMesh.numfaces*3) to:fileMau
+--for abc = 1 to bMesh.numfaces do
+--(
+--	test = getTVface bMesh abc
+--
+--	p0 = test.x  as integer
+--	p2 = test.y  as integer
+--	p1 = test.z  as integer	
+--
+--	face0 = gettvert bMesh p0
+--	format "% %\n" face0.x face0.y  to:fileMau
+--
+--	face1 = gettvert bMesh p1
+--	format "% %\n" face1.x face1.y  to:fileMau
+--
+--	face2 = gettvert bMesh p2
+--	format "% %\n" face2.x face2.y  to:fileMau
+--)
+
+format "%\n" (bMesh.numfaces*3) to:fileMau
+for abc = 1 to bMesh.numfaces do
+(
+	test = getTVface bMesh abc
+
+	p0 = test.x  as integer
+	p2 = test.y  as integer
+	p1 = test.z  as integer	
+
+	face0 = gettvert bMesh p0
+	format "% %\n" face0.x face0.y  to:fileMau
+
+	face1 = gettvert bMesh p1
+	format "% %\n" face1.x face1.y  to:fileMau
+
+	face2 = gettvert bMesh p2
+	format "% %\n" face2.x face2.y  to:fileMau
+)
+
+nvc = getNumCpvVerts bMesh
+
+format "%\n" (nvc) to:fileMac
+for abc = 1 to nvc do
+(
+	cv = getvertcolor bMesh abc
+	format "%\n" cv to:fileMac
+)
+
+close fileMap
+close fileMai 
+close fileMau
+close fileMac

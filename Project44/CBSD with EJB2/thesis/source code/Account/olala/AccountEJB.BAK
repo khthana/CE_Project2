@@ -1,0 +1,522 @@
+
+package olala;
+
+import java.math.BigDecimal;
+
+import javax.ejb.EntityBean;
+
+import javax.ejb.EntityContext;
+
+import java.sql.Connection;
+
+import javax.ejb.EJBException;
+import java.sql.SQLException;
+import javax.sql.DataSource;
+import javax.naming.InitialContext;
+
+import javax.ejb.FinderException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import javax.ejb.CreateException;
+
+import javax.ejb.RemoveException;
+
+import java.util.Enumeration;
+import java.util.Vector;
+
+import javax.naming.Context;
+import javax.naming.NamingException;
+
+/**
+ * @stereotype EntityBean
+ * @homeInterface olala.AccountHome
+ * @remoteInterface olala.Account
+ * @primaryKey olala.AccountPK
+ */
+public class AccountEJB implements EntityBean
+{
+	/** @field Key VARCHAR(64) olalaDB.dbo.accounts.id   */
+	private String id;
+	/** @field VARCHAR(64) olalaDB.dbo.accounts.ownername   */
+	private String ownername;
+	/** @field NUMERIC(18) olalaDB.dbo.accounts.balance   */
+	private double balance;
+	/**
+	 * The container assigned reference to the entity
+	 */
+	private EntityContext context;
+
+	public AccountEJB() {
+	} 
+
+	/**
+	 * @return 
+	 * @SBGen Method get id
+	 */
+	public String getId() {
+		// SBgen: Get variable
+		return(id);
+	} 
+
+	/**
+	 * @param id 
+	 * @SBGen Method set id
+	 */
+	public void setId(String id) {
+		// SBgen: Assign variables
+		this.id = id;
+		// SBgen: End Assign
+	} 
+
+	/**
+	 * @return 
+	 * @SBGen Method get ownername
+	 */
+	public String getOwnername() {
+		// SBgen: Get variable
+		return(ownername);
+	} 
+
+	/**
+	 * @param ownername 
+	 * @SBGen Method set ownername
+	 */
+	public void setOwnername(String ownername) {
+		// SBgen: Assign variables
+		this.ownername = ownername;
+		// SBgen: End Assign
+	} 
+
+	/**
+	 * @return 
+	 * @SBGen Method get balance
+	 */
+	public double getBalance() {
+		// SBgen: Get variable
+		return(balance);
+	} 
+
+	/**
+	 * Sets the context of the bean
+	 * @param ec 
+	 */
+	public void setEntityContext(EntityContext ec) {
+		context = ec;
+		// to do: code goes here.
+	} 
+
+	/**
+	 * Clears the context of the bean
+	 */
+	public void unsetEntityContext() {
+		this.context = null;
+		// to do: code goes here.
+	} 
+
+	/**
+	 * This method is called when the container picks this entity object
+	 * and assigns it to a specific entity object. Insert code here to
+	 * acquire any additional resources that it needs when it is in the
+	 * ready state.
+	 */
+	public void ejbActivate() {
+	} 
+
+	/**
+	 * This method is called when the container diassociates the bean
+	 * from the entity object identity and puts the instance back into
+	 * the pool of available instances. Insert code to release any
+	 * resources that should not be held while the instance is in the
+	 * pool.
+	 */
+	public void ejbPassivate() {
+	} 
+
+	/**
+	 * The method returns a jdbc connection to the database.
+	 * @exception javax.ejb.EJBException 
+	 * @return jdbc connection to database
+	 */
+	private Connection getConnection()
+		throws EJBException {
+		// to do: modify datasource below to match your server
+		final String DATASOURCE = "java:comp/env/jdbc/OlalaDB";
+		try {
+			InitialContext ic = new InitialContext();
+			DataSource ds = (DataSource)ic.lookup(DATASOURCE);
+			return ds.getConnection();
+		}
+		catch (Exception ex) {
+			throw new EJBException(ex.getMessage());
+		}
+	} 
+
+	/**
+	 * The method reads the data from database fields into this
+	 * bean.
+	 * @param key Primary Key used to load the bean
+	 * @exception javax.ejb.FinderException 
+	 * @exception javax.ejb.EJBException 
+	 */
+	private void readData(AccountPK key)
+		throws FinderException, EJBException {
+		Exception ex = null;
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			con = getConnection();
+
+			// Load from the data base
+			ps = con.prepareStatement("select ownername,balance from olalaDB.dbo.accounts where id = ?");
+			ps.setString(1, key.id);
+			ResultSet rs = ps.executeQuery();
+			if (!rs.next()) 
+				ex = new FinderException("Record not found");
+			else {
+				id = key.id;
+				ownername = rs.getString(1);
+				balance = rs.getDouble(2);
+			}
+			rs.close();
+		}
+		catch (EJBException ee) {
+			ex = ee;
+		}
+		catch (SQLException se) {
+			ex = new EJBException(se.getMessage());
+		}
+
+		// Clean-up resources
+		try {
+			ps.close();
+			con.close();
+		}
+		catch (Exception e) {} 
+
+		// Throw exception if error occurred
+		if (ex != null) {
+			if (ex instanceof EJBException) 
+				throw (EJBException)ex;
+			if (ex instanceof FinderException) 
+				throw (FinderException)ex;
+		}
+	} 
+
+	/**
+	 * The container invokes this method on the bean as a result of a
+	 * client-invoked find. This method is required for an entity bean.
+	 * @return Returns the primary key
+	 * @param key Primary Key to load the bean
+	 * @exception javax.ejb.FinderException 
+	 */
+	public AccountPK ejbFindByPrimaryKey(AccountPK key)
+		throws FinderException {
+		try {
+			readData(key);
+			return key;
+		}
+		catch (EJBException ee) {
+			throw new FinderException(ee.getMessage());
+		}
+	} 
+
+	/**
+	 * The container invokes this method on the bean whenever it
+	 * becomes necessary to synchronize the bean's state with the
+	 * state in the database.
+	 */
+	public void ejbLoad() {
+		// Get the primary key
+		AccountPK key = (AccountPK)context.getPrimaryKey();
+
+		// Now load from the database
+		try {
+			readData(key);
+		}
+		catch(Exception ex) {
+			throw new RuntimeException(ex.getMessage());
+		}
+	} 
+
+	/**
+	 * The container invokes this method on the bean whenever it
+	 * becomes necessary to synchronize the state in the database
+	 * with the state of the bean.
+	 */
+	public void ejbStore() {
+		RuntimeException ex = null;
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			con = getConnection();
+
+			// Get the primary key
+			AccountPK key = (AccountPK)context.getPrimaryKey();
+
+			// Update the database
+			ps = con.prepareStatement("update olalaDB.dbo.accounts set ownername = ?,balance = ? where id = ?");
+			if (ownername != null) 
+				ps.setString(1, ownername);
+			else 
+				ps.setNull(1, java.sql.Types.VARCHAR);
+
+				ps.setDouble(2, balance);
+
+			if (id != null) 
+				ps.setString(3, key.id);
+			else 
+				ps.setNull(3, java.sql.Types.VARCHAR);
+			int ret = ps.executeUpdate();
+			if (ret == 0) 
+				ex = new RuntimeException("ejbStore: Execute failed");
+		}
+		catch (EJBException ee) {
+			ex = new RuntimeException(ee.getMessage());
+		}
+		catch (SQLException se) {
+			ex = new RuntimeException(se.getMessage());
+		}
+
+		// Clean-up resources
+		try {
+			ps.close();
+			con.close();
+		}
+		catch (Exception e) {} 
+
+		// Throw exception if error occurred
+		if (ex != null) 
+			throw ex;
+	} 
+
+	/**
+	 * This method is invoked when a client invokes the matching create()
+	 * on the home interface.
+	 * @param id 
+	 * @param ownername 
+	 * @param balance 
+	 * @exception javax.ejb.CreateException 
+	 * @return Returns the primary key of the new entity
+	 */
+	public AccountPK ejbCreate(String id, String ownername, double balance)
+		throws CreateException {
+		this.id = id;
+		this.ownername = ownername;
+		this.balance = balance;
+
+		CreateException ce = null;
+		Connection con = null;
+		PreparedStatement ps = null;
+		AccountPK key = null;
+		try {
+			con = getConnection();
+
+			// Insert into the data base
+			ps = con.prepareStatement("insert into olalaDB.dbo.accounts (id, ownername, balance) values (?, ?, ?)");
+			if (id != null) 
+				ps.setString(1, id);
+			else 
+				ps.setNull(1, java.sql.Types.VARCHAR);
+			if (ownername != null) 
+				ps.setString(2, ownername);
+			else 
+				ps.setNull(2, java.sql.Types.VARCHAR);
+			
+			ps.setDouble(3, balance);
+
+			int ret = ps.executeUpdate();
+			if (ret != 1) 
+				ce = new CreateException("Create failed");
+			key = new AccountPK();
+			key.id = id;
+		}
+		catch (EJBException ee) {
+			ce = new CreateException(ee.getMessage());
+		}
+		catch (SQLException se) {
+			ce = new CreateException(se.getMessage());
+		}
+
+		// Clean-up resources
+		try {
+			ps.close();
+			con.close();
+		}
+		catch (Exception e) {} 
+
+		// Throw exception if error occurred
+		if (ce != null) 
+			throw ce;
+		return key;
+	} 
+
+	/**
+	 * The container invokes this method after invoking the ejbCreate
+	 * method with the same arguments.
+	 * @param id 
+	 * @param ownername 
+	 * @param balance 
+	 */
+	public void ejbPostCreate(String id, String ownername, double balance) {
+	} 
+
+	/**
+	 * The container invokes this method in response to a client-invoked
+	 * remove request. The bean's representation is removed from the
+	 * database.
+	 * @exception javax.ejb.RemoveException 
+	 */
+	public void ejbRemove()
+		throws RemoveException {
+		RemoveException re = null;
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			con = getConnection();
+
+			// Get the primary key
+			AccountPK key = (AccountPK)context.getPrimaryKey();
+
+			// Delete from the data base
+			ps = con.prepareStatement("delete from olalaDB.dbo.accounts where id = ?");
+			ps.setString(1, key.id);
+			int result = ps.executeUpdate();
+			if (result == 0) 
+				re = new RemoveException("Remove failed");
+		}
+		catch (EJBException ee) {
+			re = new RemoveException(ee.getMessage());
+		}
+		catch (SQLException se) {
+			re = new RemoveException(se.getMessage());
+		}
+
+		// Clean-up resources
+		try {
+			ps.close();
+			con.close();
+		}
+		catch (Exception e) {} 
+
+		// Throw exception if error occurred
+		if (re != null) 
+			throw re;
+	} 
+
+	/**
+	 * @return 
+	 */
+	public AccountPK ejbCreate(String id, String ownername)
+		throws CreateException {
+		this.id = id;
+		this.ownername = ownername;
+		this.balance = 0;
+
+		CreateException ce = null;
+		Connection con = null;
+		PreparedStatement ps = null;
+		AccountPK key = null;
+		try {
+			con = getConnection();
+
+			// Insert into the data base
+			ps = con.prepareStatement("insert into accounts (id, ownername, balance) values (?, ?, ?)");
+			if (id != null) 
+				ps.setString(1, id);
+			else 
+				ps.setNull(1, java.sql.Types.VARCHAR);
+			if (ownername != null) 
+				ps.setString(2, ownername);
+			else 
+				ps.setNull(2, java.sql.Types.VARCHAR);
+			ps.setDouble(3, balance);
+			int ret = ps.executeUpdate();
+			if (ret != 1) 
+				ce = new CreateException("Create failed");
+			key = new AccountPK();
+			key.id = id;
+		}
+		catch (EJBException ee) {
+			ce = new CreateException(ee.getMessage());
+		}
+		catch (SQLException se) {
+			ce = new CreateException(se.getMessage());
+		}
+
+		// Clean-up resources
+		try {
+			ps.close();
+			con.close();
+		}
+		catch (Exception e) {} 
+
+		// Throw exception if error occurred
+		if (ce != null) 
+			throw ce;
+		return key;
+	} 
+
+	public void ejbPostCreate(String id, String ownername) {
+	} 
+
+	/**
+	 * @return 
+	 */
+	public Enumeration ejbFindByOwnerName(String name)
+		throws FinderException {
+		// to do: code goes here.
+		PreparedStatement pstmt=null;
+		Connection con=null;
+		Vector v=new Vector();
+		try
+		{
+		    System.out.println("ejbFindByOwnerName("+name+") called");
+		    con=getConnection();
+		    pstmt=con.prepareStatement("select id from accounts where ownerName=?");
+		    pstmt.setString(1,name);
+		    ResultSet rs=pstmt.executeQuery();
+		    while (rs.next())
+		    {
+		        String id=rs.getString("id");
+		        v.addElement(new AccountPK(id));
+		    }
+		    return v.elements();
+		}
+		catch(Exception e)
+		{
+		    throw new FinderException(e.toString());
+		}
+		finally
+		{
+		    try
+		    {
+		        pstmt.close();
+		    }
+		    catch (Exception e) {}
+		    try
+		    {
+		        con.close();
+		    }
+		    catch (Exception e)
+		    {}
+		}
+	} 
+
+	public void deposit(double amt) 
+	{
+	    System.out.println("deposit("+amt+") called.");
+	    balance+=amt;
+	} 
+
+	public void withdraw(double amt) throws AccountException
+	{
+	    System.out.println("withdraw("+amt+") called.");
+	    if (amt>balance)
+	    {
+	        throw new AccountException("Your balance is "+balance+"!  You cannot withdraw "+amt+"!");
+	    }
+	    balance-=amt;
+	} 
+
+}

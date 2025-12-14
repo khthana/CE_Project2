@@ -1,0 +1,99 @@
+import java.sql.*;
+import java.lang.*;
+import java.util.Date;
+
+public class PR{
+	private String itemID;
+	private String type;
+	private String catNo;
+	private int numItems;
+	private String brand;
+	private double price;
+	private int prNo;
+	private int lineNo;
+	private int wfNo;
+	private String tableName;
+	
+	public PR(String itemID, String type, String catNo, int n,String brand,double price,int prNo,int lineNo,int wfNo,String tableName){
+		this.itemID = itemID;
+		this.numItems = n;
+		this.type = type;
+		this.catNo = catNo;
+		this.price=price;
+		this.brand=brand;
+		this.prNo=prNo;
+		this.lineNo=lineNo;
+		this.wfNo=wfNo;
+		this.tableName=tableName;
+	}//Item order
+
+
+	public String getTableName(){
+		return(tableName);
+	}
+	public int getPrNo(){
+		return(prNo);
+	}
+
+	public int getWfNo(){
+		return(wfNo);
+	}
+
+	public int getLineNo(){
+		return(lineNo);
+	}
+    
+	public String getBrand(){
+		return(brand);
+	}
+
+	public double getPrice(){
+		return(price);
+	}
+
+	public String getItemID(){
+		return(itemID);
+	}
+
+	protected void setItemID(String itemID){
+		this.itemID=itemID;
+	}
+
+	protected void setnumItems(int numItems){
+	    this.numItems=numItems;
+	}
+
+	protected void setType(String type){
+		this.type=type;
+	}
+
+	protected void setcatNo(String catNo){
+	    this.catNo=catNo;
+	}
+
+	public int getNumItems(){
+		return (numItems);
+	}
+
+	public String  getType() {
+		return(this.type);
+	}
+
+	public String getCatNo() {
+		return(this.catNo);
+	}
+     
+	public void incrementNumItems(int num){
+		this.numItems+=num;
+	}
+
+	public void cancelOrder(){
+		this.numItems=0;
+	}
+
+	public double getTotalCost(){
+		return(numItems*price);
+	}
+
+
+}

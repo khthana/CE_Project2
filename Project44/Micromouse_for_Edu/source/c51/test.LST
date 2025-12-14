@@ -1,0 +1,113 @@
+C51 COMPILER V6.00i TEST                                                                   02/21/2002 18:32:34 PAGE 1   
+
+
+C51 COMPILER 6.00i, COMPILATION OF MODULE TEST
+OBJECT MODULE PLACED IN .\test.OBJ
+COMPILER INVOKED BY: d:\program files\Keil\C51\BIN\C51.EXE .\test.c OBJECTEXTEND DEBUG
+
+stmt level    source
+
+   1          #include <reg51.h>
+   2          
+   3          sbit DIGIT0 = P3^2;
+   4          sbit DIGIT1 = P3^3;
+   5          sbit KEY = P3^0;
+   6          sbit RELAY = P3^7;
+   7          sbit DOT = P1^7;
+   8          
+   9          bit flag, zero, dot;
+  10          unsigned char sec,min;
+  11          
+  12          void convert(unsigned char *prt)    // convert hex to 7-seg. code
+  13          {
+  14   1          unsigned char code table[]={0xc0,0xf9,0xa4,0xb0,0x99,
+  15   1                                      0x92,0x82,0xf8,0x80,0x90};
+  16   1          *prt++ = table[min/10];
+  17   1          *prt = table[min%10];
+  18   1      }
+  19          
+  20          void initialize(void)
+  21          {
+  22   1          RELAY = 0; DIGIT0 = 0; DIGIT1 = 0; P1=0xff;     // clear I/O
+  23   1          TMOD = 0x22;
+  24   1          TL0 = 0x06;
+  25   1          TH0 = 0x06;
+  26   1          ET0 = 1;
+  27   1          EA = 1;
+  28   1          TR0 = 1;
+  29   1          flag=0;
+  30   1          zero=0;
+  31   1      }
+  32          
+  33          timer0() interrupt 1 using 1
+  34          {
+  35   1          static unsigned int count = 0;
+  36   1          if(++count == 4000)
+  37   1          {
+  38   2              dot = !dot;
+  39   2               if(sec-- == 0)
+  40   2               {
+  41   3                  sec = 59;
+  42   3                  if(min-- == 0)
+  43   3                      zero=1;
+  44   3              }
+  45   2              flag = 1;
+  46   2              count = 0;
+  47   2          }
+  48   1      }
+  49          
+  50          
+  51          main()
+  52          {
+  53   1          unsigned char delay=255;
+  54   1          unsigned char disbuf[2];
+  55   1          disbuf[0]=0xff;
+C51 COMPILER V6.00i TEST                                                                   02/21/2002 18:32:34 PAGE 2   
+
+  56   1          disbuf[1]=0xff;
+  57   1          sec=0;
+  58   1          min=3;
+  59   1          initialize();
+  60   1          convert(disbuf);
+  61   1          do
+  62   1          {
+  63   2              DIGIT1 = 1;
+  64   2              P1=disbuf[0];
+  65   2              DIGIT0 = 0;
+  66   2              while(--delay);
+  67   2      
+  68   2              DIGIT0 = 1;
+  69   2              P1=disbuf[1];
+  70   2              DOT = dot;
+  71   2              DIGIT1 = 0;
+  72   2              while(--delay);
+  73   2      
+  74   2              if(flag)
+  75   2              {
+  76   3                  flag = 0;
+  77   3                  convert(disbuf);
+  78   3                  if(zero)
+  79   3                  {
+  80   4                      dot = 1;
+  81   4                      EA = 0;
+  82   4                      min = 0;
+  83   4                  }
+  84   3              }            
+  85   2          }while(1);
+  86   1      }
+  87          
+  88          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    212    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      3    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

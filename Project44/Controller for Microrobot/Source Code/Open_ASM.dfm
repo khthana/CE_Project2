@@ -1,0 +1,101 @@
+object Form1: TForm1
+  Left = 279
+  Top = 240
+  Width = 488
+  Height = 477
+  Caption = 'Open Assembly file'
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 22
+    Top = 37
+    Width = 48
+    Height = 13
+    Caption = 'File ASM :'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label2: TLabel
+    Left = 8
+    Top = 112
+    Width = 32
+    Height = 13
+    Caption = 'Output'
+  end
+  object Asm_File: TEdit
+    Left = 99
+    Top = 32
+    Width = 225
+    Height = 21
+    TabOrder = 0
+  end
+  object Button1: TButton
+    Left = 332
+    Top = 32
+    Width = 75
+    Height = 25
+    Caption = 'Browse...'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 1
+    OnClick = Button1Click
+  end
+  object Button2: TButton
+    Left = 157
+    Top = 66
+    Width = 74
+    Height = 25
+    Caption = 'OK'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 2
+    OnClick = Button2Click
+  end
+  object Button3: TButton
+    Left = 237
+    Top = 66
+    Width = 75
+    Height = 25
+    Caption = 'Cancle'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 3
+    OnClick = Button3Click
+  end
+  object Memo1: TMemo
+    Left = 8
+    Top = 128
+    Width = 465
+    Height = 305
+    ScrollBars = ssBoth
+    TabOrder = 4
+  end
+  object OpenDialog1: TOpenDialog
+    Filter = 'Asm File(*.asm)|*.asm'
+    Left = 16
+    Top = 64
+  end
+end

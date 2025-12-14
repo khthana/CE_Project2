@@ -1,0 +1,16 @@
+nop;            mov r2,#000A;   nop;            nop;
+nop;            nop;            nop;            nop;
+mov [r2],#0069; nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+mov r0,[r2];    nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            sub r0,#0005;
+nop;            nop;            nop;            nop;
+mov [r2],r0;    nop;            nop;            cmp r0,#0000;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            jnz #0004;
+nop;            nop;            nop;            nop;
+nop;            mov r0,#AAAA;   nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;
+nop;            nop;            nop;            nop;

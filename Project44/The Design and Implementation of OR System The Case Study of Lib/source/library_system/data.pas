@@ -1,0 +1,381 @@
+unit data;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ComCtrls, TabNotBk ,classmodule;
+
+type
+  Tdataform = class(TForm)
+    Button1: TButton;
+    TabbedNotebook1: TTabbedNotebook;
+    Label1: TLabel;
+    EditBookSerial: TEdit;
+    Label2: TLabel;
+    EditBookCall_no: TEdit;
+    Label3: TLabel;
+    EditBookIsbn: TEdit;
+    Label4: TLabel;
+    EditBookName: TEdit;
+    Label5: TLabel;
+    EditBookAuthor1: TEdit;
+    Label6: TLabel;
+    EditBookAuthor2: TEdit;
+    Label7: TLabel;
+    EditBookAuthor3: TEdit;
+    Label8: TLabel;
+    EditPage_num: TEdit;
+    Label9: TLabel;
+    EditBookPublish: TEdit;
+    Label10: TLabel;
+    EditBookEdition: TEdit;
+    Label11: TLabel;
+    EditReceived_date: TEdit;
+    ButtonBookCancel: TButton;
+    ButtonBookDelete: TButton;
+    ButtonBookSave: TButton;
+    Label12: TLabel;
+    EditMagSerial: TEdit;
+    Label13: TLabel;
+    EditMagCall_no: TEdit;
+    Label14: TLabel;
+    EditMagIssn: TEdit;
+    Label15: TLabel;
+    EditMagName: TEdit;
+    Label16: TLabel;
+    EditMagVol: TEdit;
+    Label17: TLabel;
+    EditMagYear: TEdit;
+    Label18: TLabel;
+    EditMagNo: TEdit;
+    Label19: TLabel;
+    EditMagPage_num: TEdit;
+    Label20: TLabel;
+    EditMagPublish: TEdit;
+    ButtonMagCancel: TButton;
+    ButtonMagDelete: TButton;
+    ButtonMagSave: TButton;
+    Label21: TLabel;
+    EditMagRdate: TEdit;
+    procedure Button1Click(Sender: TObject);
+    procedure ButtonBookSaveClick(Sender: TObject);
+    procedure ButtonBookCancelClick(Sender: TObject);
+    procedure EditBookSerialKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure EditBookCall_noKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure ButtonBookDeleteClick(Sender: TObject);
+    procedure EditMagSerialKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure ButtonMagCancelClick(Sender: TObject);
+    procedure EditMagCall_noKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure ButtonMagSaveClick(Sender: TObject);
+    procedure ButtonMagDeleteClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dataform: Tdataform;
+
+implementation
+
+uses mainmenu, module;
+
+{$R *.dfm}
+
+procedure Tdataform.Button1Click(Sender: TObject);
+begin
+	menuform.Show;
+   dataform.Hide;
+end;
+
+procedure Tdataform.ButtonBookSaveClick(Sender: TObject);
+var book1 : Tbook;
+    sid,callno,isbn1,nam,edi,pub,rdate,pnum,a1,a2,a3 : string;
+begin
+	sid := EditBookSerial.Text;
+   callno := EditBookCall_no.Text;
+   isbn1 := EditBookIsbn.Text;
+ 	nam := EditBookName.Text;
+	edi := EditBookEdition.Text;
+	pub := EditBookPublish.Text;
+	rdate := EditReceived_date.Text;
+   pnum := EditPage_num.Text;
+	a1 := EditBookAuthor1.Text;
+   a2 := EditBookAuthor2.Text;
+   a3 := EditBookAuthor3.Text;
+
+	if (sid = '') or (callno = '') or (nam = '') or (isbn1 = '') or (rdate = '') or (a1 = '') then
+		ShowMessage('กรุณากรอกรายละเอียดให้ครบถ้วน')
+   else
+   begin
+   	book1 := Tbook.Create;
+   	book1.apply_library(sid,callno,isbn1,nam,edi,pub,rdate,pnum,a1,a2,a3);
+		book1.Destroy;
+   end;
+end;
+
+procedure Tdataform.ButtonBookCancelClick(Sender: TObject);
+begin
+  	EditBookSerial.Clear;
+   EditBookCall_no.Clear;
+   EditBookIsbn.Clear;
+   EditBookName.Clear;
+   EditBookEdition.Clear;
+   EditBookPublish.Clear;
+   EditReceived_date.Clear;
+   EditPage_num.Clear;
+   EditBookAuthor1.Clear;
+   EditBookAuthor2.Clear;
+   EditBookAuthor3.Clear;
+end;
+
+procedure Tdataform.EditBookSerialKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var bsid : string;
+	 book1 : Tbook;
+begin
+	bsid := EditBookSerial.Text;
+	book1 := Tbook.Create;
+   book1.retrivedb(bsid);
+
+   with Databasemd.DataSource1.DataSet do
+   begin
+     	EditBookCall_no.Text := FieldByname('call_no').AsString;
+   	EditBookIsbn.Text := FieldByname('isbn').AsString;
+      EditBookName.Text := FieldByname('name').AsString;
+      EditPage_num.Text := FieldByname('page_num').AsString;
+      EditBookPublish.Text := FieldByname('publish').AsString;
+      EditBookEdition.Text := FieldByname('edition').AsString;
+      EditReceived_date.Text := FieldByname('recieve_date').AsString;
+      EditBookAuthor1.Text := FieldByname('author1').AsString;
+      EditBookAuthor2.Text := FieldByname('author2').AsString;
+      EditBookAuthor3.Text := FieldByname('author3').AsString;
+   end;
+   book1.Destroy;
+end;
+
+procedure Tdataform.EditBookCall_noKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var bcn : string;
+begin
+	bcn := EditBookCall_no.Text;
+   with Databasemd.Query1 do
+    begin
+       Close;
+       SQL.Clear;
+       SQL.Add('Select * from book_title where call_no = "'+bcn+'"');
+       Open;
+    end;
+
+   with Databasemd.DataSource1.DataSet do
+   begin
+   	EditBookIsbn.Text := FieldByname('isbn').AsString;
+      EditBookName.Text := FieldByname('name').AsString;
+      EditPage_num.Text := FieldByname('page_num').AsString;
+      EditBookPublish.Text := FieldByname('publish').AsString;
+      EditBookEdition.Text := FieldByname('edition').AsString;
+      EditReceived_date.Text := FieldByname('recieve_date').AsString;
+      EditBookAuthor1.Text := FieldByname('author1').AsString;
+      EditBookAuthor2.Text := FieldByname('author2').AsString;
+      EditBookAuthor3.Text := FieldByname('author3').AsString;
+   end;
+
+end;
+
+procedure Tdataform.ButtonBookDeleteClick(Sender: TObject);
+var sid,cn : string;
+	 dr : integer;
+    book1 : Tbook;
+begin
+	 sid := EditBookSerial.Text;
+    cn := EditBookCall_no.Text;
+    if (sid = '') or (cn = '') then
+   	ShowMessage('กรุณาใส่รหัสหนังสือ และเลขหมู่')
+    else
+    begin
+    	with Databasemd.Query1 do
+    	begin
+      	Close;
+      	SQL.Clear;
+      	SQL.Add('Select serialno from book where serialno = "'+sid+'"');
+      	Open;
+    	end;
+      if (Databasemd.DataSource1.DataSet.IsEmpty) then
+      	ShowMessage('ไม่พบข้อมูลของสมาชิกรหัส '+sid)
+      else
+      begin
+         //found record
+         dr := MessageDlg('ต้องการลบรหัสหนังสือ '+sid+' หรือไม่',mtConfirmation,[mbYes,mbNo],0);
+         if dr = 1 then;
+         begin
+         	//delete record
+         	book1 := Tbook.Create;
+         	try
+         		book1.delete_library(sid,cn);
+         	finally
+         		book1.Destroy;
+         	end;
+            EditBookSerial.Clear;
+   			EditBookCall_no.Clear;
+   			EditBookIsbn.Clear;
+   			EditBookName.Clear;
+   			EditBookEdition.Clear;
+   			EditBookPublish.Clear;
+   			EditReceived_date.Clear;
+   			EditPage_num.Clear;
+   			EditBookAuthor1.Clear;
+   			EditBookAuthor2.Clear;
+   			EditBookAuthor3.Clear;
+      	end;
+      end;
+    end;
+end;
+
+procedure Tdataform.EditMagSerialKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var msid : string;
+	 mag1 : Tmag;
+begin
+	msid := EditMagSerial.Text;
+	mag1 := Tmag.Create;
+   mag1.retrivedb(msid);
+
+   with Databasemd.DataSource1.DataSet do
+   begin
+     	EditMagCall_no.Text := FieldByname('call_no').AsString;
+   	EditMagIssn.Text := FieldByname('issn').AsString;
+      EditMagName.Text := FieldByname('name').AsString;
+      EditMagVol.Text := FieldByname('vol').AsString;
+      EditMagYear.Text := FieldByname('years').AsString;
+      EditMagNo.Text := FieldByname('no').AsString;
+      EditMagPage_num.Text := FieldByname('page_num').AsString;
+      EditMagPublish.Text := FieldByname('publish').AsString;
+      EditMagRdate.Text := FieldByname('recieve_date').AsString;
+
+   end;
+   mag1.Destroy;
+
+end;
+
+procedure Tdataform.ButtonMagCancelClick(Sender: TObject);
+begin
+		EditMagSerial.Clear;
+		EditMagCall_no.Clear;
+   	EditMagIssn.Clear;
+      EditMagName.Clear;
+      EditMagVol.Clear;
+      EditMagYear.Clear;
+      EditMagNo.Clear;
+      EditMagPage_num.Clear;
+      EditMagPublish.Clear;
+      EditMagRdate.Clear;
+end;
+
+procedure Tdataform.EditMagCall_noKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var mcn : string;
+begin
+	mcn := EditMagCall_no.Text;
+   with Databasemd.Query1 do
+    begin
+       Close;
+       SQL.Clear;
+       SQL.Add('Select * from magazine_title where call_no = "'+mcn+'"');
+       Open;
+    end;
+
+   with Databasemd.DataSource1.DataSet do
+   begin
+   	EditMagIssn.Text := FieldByname('issn').AsString;
+      EditMagName.Text := FieldByname('name').AsString;
+      EditMagVol.Text := FieldByname('vol').AsString;
+      EditMagYear.Text := FieldByname('years').AsString;
+      EditMagNo.Text := FieldByname('no').AsString;
+      EditMagPage_num.Text := FieldByname('page_num').AsString;
+      EditMagPublish.Text := FieldByname('publish').AsString;
+      EditMagRdate.Text := FieldByname('recieve_date').AsString;
+   end;
+
+end;
+
+
+procedure Tdataform.ButtonMagSaveClick(Sender: TObject);
+var mag1 : Tmag;
+    sid,callno,issn1,nam,yrs,vol1,no1,pub,rdate,pnum : string;
+begin
+	sid := EditMagSerial.Text;
+   callno := EditMagCall_no.Text;
+   issn1 := EditMagIssn.Text;
+ 	nam := EditMagName.Text;
+   yrs := EditMagYear.Text;
+   vol1 := EditMagVol.Text;
+   no1 := EditMagNo.Text;
+	pub := EditMagPublish.Text;
+	rdate := EditMagRdate.Text;
+   pnum := EditMagPage_num.Text;
+
+	if (sid = '') or (callno = '') or (nam = '') or (issn1 = '') or (rdate = '')
+   or (yrs = '') or (vol1 = '') or (no1 = '') then
+		ShowMessage('กรุณากรอกรายละเอียดให้ครบถ้วน')
+   else
+   begin
+   	mag1 := Tmag.Create;
+   	mag1.apply_library(sid,callno,issn1,nam,yrs,vol1,no1,pub,rdate,pnum);
+		mag1.Destroy;
+   end;
+end;
+
+procedure Tdataform.ButtonMagDeleteClick(Sender: TObject);
+var sid,cn : string;
+    mag1 : Tmag;
+begin
+	 sid := EditMagSerial.Text;
+    cn := EditMagCall_no.Text;
+    if (sid = '') or (cn = '') then
+   	ShowMessage('กรุณาใส่รหัสหนังสือ และเลขหมู่')
+    else
+    begin
+    	with Databasemd.Query1 do
+    	begin
+      	Close;
+      	SQL.Clear;
+      	SQL.Add('Select serialno from magazine where serialno = "'+sid+'"');
+      	Open;
+    	end;
+      if (Databasemd.DataSource1.DataSet.IsEmpty) then
+      	ShowMessage('ไม่พบข้อมูลของสมาชิกรหัส '+sid)
+      else
+      begin
+         //found record
+         if MessageDlg('ต้องการลบรหัสหนังสือ '+sid+' หรือไม่',mtConfirmation,[mbYes,mbNo],0) = mrYes then;
+         begin
+         	//delete record
+         	mag1 := Tmag.Create;
+         	try
+         		mag1.delete_library(sid,cn);
+         	finally
+         		mag1.Destroy;
+         	end;
+            EditMagSerial.Clear;
+				EditMagCall_no.Clear;
+   			EditMagIssn.Clear;
+    		   EditMagName.Clear;
+		      EditMagVol.Clear;
+      		EditMagYear.Clear;
+		      EditMagNo.Clear;
+      		EditMagPage_num.Clear;
+		      EditMagPublish.Clear;
+      		EditMagRdate.Clear;
+      	end;
+      end;
+    end;
+
+end;
+
+end.

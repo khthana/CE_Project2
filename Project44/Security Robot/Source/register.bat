@@ -1,0 +1,1 @@
+Regsvr32 ezvidC60.ocx

@@ -1,0 +1,69 @@
+package routersim;
+
+import java.awt.*;
+import javax.swing.*;
+import com.borland.jbcl.layout.*;
+import java.awt.event.*;
+import java.util.*;
+import java.lang.*;
+
+public class Dialog2 extends JDialog {
+  JPanel panel1 = new JPanel();
+  JTable jDataTable,jHeadTable;
+  ImageIcon image1,image2,image3,image4,image5,image6;
+
+  public Dialog2(Frame frame, String title, boolean modal) {
+    super(frame, title, modal);
+    try {
+      jbInit();
+      pack();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  public Dialog2() {
+    this(null, "Detail of Serie", true);
+  }
+  void jbInit() throws Exception {
+    image1 = new ImageIcon(routersim.Frame1.class.getResource("redrouter.gif"));
+    image2 = new ImageIcon(routersim.Frame1.class.getResource("newrouter1.gif"));
+    image3 = new ImageIcon(routersim.Frame1.class.getResource("newrouter1.gif"));
+    image4 = new ImageIcon(routersim.Frame1.class.getResource("newrouter1.gif"));
+    image5 = new ImageIcon(routersim.Frame1.class.getResource("newrouter1.gif"));
+    image6 = new ImageIcon(routersim.Frame1.class.getResource("newrouter1.gif"));
+    Object hh1[] = {"Series","MAX Ethernet","MAX Serial","MAX Token Ring","Router Color"};
+    Object dd1[][] = {{"    Cisco Router","    Ethernet Port","      Serial Port"," Token Ring Port","    Router Color"}};
+    Object dd2[][] = {{"     Cisco 2501","              1","              2","              0","           Red"},
+                     {"     Cisco 2502","              0","              2","              1","           Green"},
+                     {"     Cisco 2513","              1","              1","              2","            Blue"},
+                     {"     Cisco 2514","              2","              2","              0","            Gray"},
+                     {"     Cisco 2515","              0","              2","              2","           Orange"}
+                    };
+    jHeadTable = new JTable(dd1,hh1);
+    jDataTable = new JTable(dd2,hh1);
+    panel1.setLayout(borderLayout1);
+    jDataTable.setEnabled(false);
+    jDataTable.setRequestFocusEnabled(false);
+    jDataTable.setToolTipText("");
+    panel1.setBackground(Color.white);
+    panel1.setMinimumSize(new Dimension(500, 96));
+    panel1.setPreferredSize(new Dimension(500, 96));
+    panel1.setRequestFocusEnabled(false);
+    this.setEnabled(false);
+    this.setTitle("");
+    jHeadTable.setRequestFocusEnabled(false);
+    getContentPane().add(panel1);
+    panel1.add(jDataTable, BorderLayout.CENTER);
+    panel1.add(jHeadTable, BorderLayout.NORTH);
+
+  }
+  protected void processWindowEvent(WindowEvent e) {
+    super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+      this.dispose();
+    }
+  }
+  BorderLayout borderLayout1 = new BorderLayout();
+}

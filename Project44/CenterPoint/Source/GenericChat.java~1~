@@ -1,0 +1,54 @@
+import java.io.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class GenericChat {
+	protected InputStream in;
+	protected OutputStream out;
+	
+	public GenericChat (InputStream in, OutputStream out) {
+		this.in = in;
+		this.out = out;
+		initAWT ();
+	}
+	
+	protected Frame frame;
+	protected ChatboardClient cb;
+	protected WhiteboardClient wb;
+	
+	protected void initAWT () {
+		frame = new Frame ("Generic Chat");
+		frame.setLayout (new GridLayout (2, 1));
+		cb = new ChatboardClient ();
+		wb = new WhiteboardClient ();
+		frame.add (wb);
+		frame.add (cb);
+		frame.pack ();
+		
+		frame.addWindowListener (new WindowAdapter() {
+			public void windowClosing (WindowEvent event) {
+				try {
+					stop ();
+				} catch (IOException ex) {
+					ex.printStackTrace ();
+				}
+			}
+		});
+	}
+	
+	protected GenericClient client;
+	
+	public void start () throws IOException {
+		client = new GenericClient (in, out);
+		client.register ("chat", cb);
+		client.register ("wb", wb);
+		client.start ();
+		frame.setVisible (true);
+	}
+	
+	public void stop () throws IOException {
+		frame.setVisible (false);
+		client.shutdown ();
+	}
+	
+}

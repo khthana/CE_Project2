@@ -1,0 +1,220 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// ODL file generated from Cache Objects Version 4.1.856.0
+//     Feb 12 2002 01:54:21
+//
+////////////////////////////////////////////////////////////////////////////////
+
+#include <olectl.h>
+
+[ uuid(3ccd6898-912e-4f03-87af-b61326dc647c), version(1.0),helpstring("Cache Objects Version 4.1.856.0") ]
+library User_SubjectDoctor
+{
+    importlib(STDOLE_TLB);
+    importlib(STDTYPE_TLB);
+
+    [ uuid(55f0bda3-497f-4fdb-91ae-ef61ee44d511),helpstring("Cache Object: User.SubjectDoctor"),hidden ]
+
+    dispinterface CSubjectDoctor
+    {
+        properties:
+            [id(61)]  double      Credit;
+            [id(62)]  double      Credit1;
+            [id(63)]  double      Credit2;
+            [id(41)]  long        DeleteTag;
+            [id(64)]  IDispatch*  English;
+            [id(65)]  BSTR        ExtSubjectID;
+            [id(66)]  IDispatch*  IsOf;
+            [id(67)]  IDispatch*  PossibleGrades;
+            [id(68)]  IDispatch*  Prerequisites;
+            [id(69)]  VARIANT     Status;
+            [id(70)]  IDispatch*  SubCourses;
+            [id(71)]  long        SubjectLevel;
+            [id(72)]  IDispatch*  Thai;
+
+        methods:
+            [id(76)]  VARIANT     SYS_BuildIndices(IDispatch* idxlist);
+            [id(16)]  VARIANT     SYS_CheckUnique(IDispatch* idxlist);
+            [id(1)]   BSTR        SYS_ClassName(VARIANT fullname);
+            [id(2)]   VARIANT     SYS_Close();
+            [id(17)]  VARIANT     SYS_Delete(VARIANT oid,long concurrency);
+            [id(19)]  VARIANT     SYS_DeleteExtent(long concurrency,[in,out] BSTR* deletecount,[in,out] BSTR* instancecount);
+            [id(20)]  VARIANT     SYS_DeleteId(BSTR id,long concurrency);
+            [id(21)]  VARIANT     SYS_DowngradeConcurrency(BSTR concurrency);
+            [id(80)]  VARIANT     SYS_Exists(VARIANT oid);
+            [id(81)]  VARIANT     SYS_ExistsId(BSTR id);
+            [id(24)]  VARIANT     SYS_GetSwizzleObject(long force,[in,out] VARIANT* oid);
+            [id(25)]  BSTR        SYS_Id();
+            [id(3)]   void        SYS_IncrementCount();
+            [id(4)]   long        SYS_IsA(BSTR isclass);
+            [id(5)]   long        SYS_IsModified();
+            [id(82)]  VARIANT     SYS_KillExtent();
+            [id(6)]   IDispatch*  SYS_New(BSTR initvalue);
+            [id(7)]   VARIANT     SYS_NormalizeObject();
+            [id(30)]  VARIANT     SYS_Oid();
+            [id(31)]  BSTR        SYS_Open(VARIANT oid,long concurrency);
+            [id(32)]  BSTR        SYS_OpenId(BSTR id,long concurrency);
+            [id(8)]   BSTR        SYS_PackageName();
+            [id(85)]  VARIANT     SYS_PurgeIndices(IDispatch* idxlist);
+            [id(35)]  VARIANT     SYS_RollBack();
+            [id(36)]  VARIANT     SYS_Save(long related);
+            [id(88)]  VARIANT     SYS_SortBegin(IDispatch* idxlist,long excludeunique);
+            [id(89)]  VARIANT     SYS_SortEnd(IDispatch* idxlist,long commit);
+            [id(40)]  VARIANT     SYS_UpgradeConcurrency(BSTR concurrency);
+            [id(10)]  VARIANT     SYS_ValidateObject(long force);
+            [id(57)]  VARIANT     CheckDependency();
+            [id(134)] double      Credit1DisplayToLogical(BSTR SYS_val);
+            [id(135)] double      Credit1Get();
+            [id(139)] long        Credit1IsModified();
+            [id(140)] VARIANT     Credit1IsValid(BSTR value);
+            [id(141)] long        Credit1IsValidDT(double SYS_val);
+            [id(142)] BSTR        Credit1LogicalToDisplay(double SYS_val);
+            [id(144)] double      Credit1Normalize(BSTR SYS_val);
+            [id(146)] VARIANT     Credit1Set(BSTR newvalue);
+            [id(147)] long        Credit1SetModified(long newvalue);
+            [id(151)] double      Credit2DisplayToLogical(BSTR SYS_val);
+            [id(152)] double      Credit2Get();
+            [id(156)] long        Credit2IsModified();
+            [id(157)] VARIANT     Credit2IsValid(BSTR value);
+            [id(158)] long        Credit2IsValidDT(double SYS_val);
+            [id(159)] BSTR        Credit2LogicalToDisplay(double SYS_val);
+            [id(161)] double      Credit2Normalize(BSTR SYS_val);
+            [id(163)] VARIANT     Credit2Set(BSTR newvalue);
+            [id(164)] long        Credit2SetModified(long newvalue);
+            [id(117)] double      CreditDisplayToLogical(BSTR SYS_val);
+            [id(118)] double      CreditGet();
+            [id(122)] long        CreditIsModified();
+            [id(123)] VARIANT     CreditIsValid(BSTR value);
+            [id(124)] long        CreditIsValidDT(double SYS_val);
+            [id(125)] BSTR        CreditLogicalToDisplay(double SYS_val);
+            [id(127)] double      CreditNormalize(BSTR SYS_val);
+            [id(129)] VARIANT     CreditSet(BSTR newvalue);
+            [id(130)] long        CreditSetModified(long newvalue);
+            [id(168)] long        DeleteTagDisplayToLogical(BSTR SYS_val);
+            [id(169)] long        DeleteTagGet();
+            [id(173)] long        DeleteTagIsModified();
+            [id(174)] VARIANT     DeleteTagIsValid(BSTR value);
+            [id(175)] long        DeleteTagIsValidDT(long SYS_val);
+            [id(176)] BSTR        DeleteTagLogicalToDisplay(long SYS_val);
+            [id(178)] long        DeleteTagNormalize(BSTR SYS_val);
+            [id(180)] VARIANT     DeleteTagSet(BSTR newvalue);
+            [id(181)] long        DeleteTagSetModified(long newvalue);
+            [id(185)] IDispatch*  EnglishGet();
+            [id(186)] VARIANT     EnglishGetObject(long force);
+            [id(187)] BSTR        EnglishGetObjectId(long force);
+            [id(189)] long        EnglishIsModified();
+            [id(190)] VARIANT     EnglishIsValid(BSTR value);
+            [id(191)] IDispatch*  EnglishNewObject();
+            [id(193)] VARIANT     EnglishSet(BSTR newvalue);
+            [id(194)] long        EnglishSetModified(long newvalue);
+            [id(195)] VARIANT     EnglishSetObject(VARIANT newvalue);
+            [id(196)] VARIANT     EnglishSetObjectId(BSTR newid);
+            [id(198)] BSTR        ExtSubjectIDDisplayToLogical(BSTR SYS_val);
+            [id(199)] BSTR        ExtSubjectIDGet();
+            [id(203)] long        ExtSubjectIDIsModified();
+            [id(204)] VARIANT     ExtSubjectIDIsValid(BSTR value);
+            [id(205)] long        ExtSubjectIDIsValidDT(BSTR SYS_val);
+            [id(206)] BSTR        ExtSubjectIDLogicalToDisplay(BSTR SYS_val);
+            [id(208)] BSTR        ExtSubjectIDNormalize(BSTR SYS_val);
+            [id(210)] VARIANT     ExtSubjectIDSet(BSTR newvalue);
+            [id(211)] long        ExtSubjectIDSetModified(long newvalue);
+            [id(315)] VARIANT     ExtentClose(VARIANT qHandle);
+            [id(316)] VARIANT     ExtentExecute([in,out] VARIANT* qHandle);
+            [id(317)] VARIANT     ExtentFetch([in,out] VARIANT* qHandle,[in,out] IDispatch** Row,[in,out] long* AtEnd);
+            [id(319)] VARIANT     ExtentFetchRows([in,out] VARIANT* qHandle,long FetchCount,[in,out] IDispatch** RowSet,[in,out] long* ReturnCount,[in,out] long* AtEnd);
+            [id(320)] VARIANT     ExtentGetInfo([in,out] IDispatch** colinfo,[in,out] IDispatch** parminfo,[in,out] IDispatch** idinfo,[in,out] VARIANT* qHandle);
+            [id(321)] VARIANT     ExtentPrepare([in,out] VARIANT* qHandle,BSTR statement,long containid,BSTR optional);
+            [id(58)]  BSTR        GetClassName();
+            [id(59)]  BSTR        GetParentClass();
+            [id(215)] IDispatch*  IsOfGet();
+            [id(216)] VARIANT     IsOfGetObject(long force);
+            [id(217)] BSTR        IsOfGetObjectId(long force);
+            [id(219)] long        IsOfIsModified();
+            [id(220)] VARIANT     IsOfIsValid(BSTR value);
+            [id(221)] IDispatch*  IsOfNewObject();
+            [id(223)] VARIANT     IsOfSet(BSTR newvalue);
+            [id(224)] long        IsOfSetModified(long newvalue);
+            [id(225)] VARIANT     IsOfSetObject(VARIANT newvalue);
+            [id(226)] VARIANT     IsOfSetObjectId(BSTR newid);
+            [id(228)] IDispatch*  PossibleGradesGet();
+            [id(229)] VARIANT     PossibleGradesGetObject(long force);
+            [id(230)] BSTR        PossibleGradesGetObjectId(long force);
+            [id(232)] long        PossibleGradesIsModified();
+            [id(234)] IDispatch*  PossibleGradesNewObject();
+            [id(236)] VARIANT     PossibleGradesSet(BSTR newvalue);
+            [id(237)] long        PossibleGradesSetModified(long newvalue);
+            [id(60)]  void        PrepareDeleting();
+            [id(241)] IDispatch*  PrerequisitesGet();
+            [id(242)] VARIANT     PrerequisitesGetObject(long force);
+            [id(243)] BSTR        PrerequisitesGetObjectId(long force);
+            [id(245)] long        PrerequisitesIsModified();
+            [id(247)] IDispatch*  PrerequisitesNewObject();
+            [id(249)] VARIANT     PrerequisitesSet(BSTR newvalue);
+            [id(250)] long        PrerequisitesSetModified(long newvalue);
+            [id(322)] VARIANT     QueryIsOfClose(VARIANT qHandle);
+            [id(323)] VARIANT     QueryIsOfExecute([in,out] VARIANT* qHandle,IDispatch* deptid);
+            [id(324)] VARIANT     QueryIsOfFetch([in,out] VARIANT* qHandle,[in,out] IDispatch** Row,[in,out] long* AtEnd);
+            [id(325)] VARIANT     QueryIsOfFetchODBC([in,out] VARIANT* qHandle,[in,out] BSTR* SYS_d,long SYS_qacn,[in,out] long* AtEnd,[in,out] long* SQLCODE);
+            [id(326)] VARIANT     QueryIsOfFetchRows([in,out] VARIANT* qHandle,long FetchCount,[in,out] IDispatch** RowSet,[in,out] long* ReturnCount,[in,out] long* AtEnd);
+            [id(327)] VARIANT     QueryIsOfGetInfo([in,out] IDispatch** colinfo,[in,out] IDispatch** parminfo,[in,out] IDispatch** idinfo,[in,out] VARIANT* qHandle);
+            [id(328)] VARIANT     QueryIsOfPrepare([in,out] VARIANT* qHandle,BSTR statement,long containid,BSTR optional);
+            [id(329)] VARIANT     QuerySelectClose(VARIANT qHandle);
+            [id(330)] VARIANT     QuerySelectExecute([in,out] VARIANT* qHandle,BSTR x);
+            [id(331)] VARIANT     QuerySelectFetch([in,out] VARIANT* qHandle,[in,out] IDispatch** Row,[in,out] long* AtEnd);
+            [id(332)] VARIANT     QuerySelectFetchODBC([in,out] VARIANT* qHandle,[in,out] BSTR* SYS_d,long SYS_qacn,[in,out] long* AtEnd,[in,out] long* SQLCODE);
+            [id(333)] VARIANT     QuerySelectFetchRows([in,out] VARIANT* qHandle,long FetchCount,[in,out] IDispatch** RowSet,[in,out] long* ReturnCount,[in,out] long* AtEnd);
+            [id(334)] VARIANT     QuerySelectGetInfo([in,out] IDispatch** colinfo,[in,out] IDispatch** parminfo,[in,out] IDispatch** idinfo,[in,out] VARIANT* qHandle);
+            [id(335)] VARIANT     QuerySelectPrepare([in,out] VARIANT* qHandle,BSTR statement,long containid,BSTR optional);
+            [id(254)] VARIANT     StatusDisplayToLogical(BSTR SYS_val);
+            [id(255)] VARIANT     StatusGet();
+            [id(259)] long        StatusIsModified();
+            [id(260)] VARIANT     StatusIsValid(BSTR value);
+            [id(261)] long        StatusIsValidDT(VARIANT SYS_val);
+            [id(262)] BSTR        StatusLogicalToDisplay(VARIANT SYS_val);
+            [id(264)] long        StatusNormalize(BSTR SYS_val);
+            [id(266)] VARIANT     StatusSet(BSTR newvalue);
+            [id(267)] long        StatusSetModified(long newvalue);
+            [id(271)] IDispatch*  SubCoursesGet();
+            [id(272)] VARIANT     SubCoursesGetObject(long force);
+            [id(273)] BSTR        SubCoursesGetObjectId(long force);
+            [id(275)] long        SubCoursesIsModified();
+            [id(277)] IDispatch*  SubCoursesNewObject();
+            [id(279)] VARIANT     SubCoursesSet(BSTR newvalue);
+            [id(280)] long        SubCoursesSetModified(long newvalue);
+            [id(284)] long        SubjectLevelDisplayToLogical(BSTR SYS_val);
+            [id(285)] long        SubjectLevelGet();
+            [id(289)] long        SubjectLevelIsModified();
+            [id(290)] VARIANT     SubjectLevelIsValid(BSTR value);
+            [id(291)] long        SubjectLevelIsValidDT(long SYS_val);
+            [id(292)] BSTR        SubjectLevelLogicalToDisplay(long SYS_val);
+            [id(294)] long        SubjectLevelNormalize(BSTR SYS_val);
+            [id(296)] VARIANT     SubjectLevelSet(BSTR newvalue);
+            [id(297)] long        SubjectLevelSetModified(long newvalue);
+            [id(301)] IDispatch*  ThaiGet();
+            [id(302)] VARIANT     ThaiGetObject(long force);
+            [id(303)] BSTR        ThaiGetObjectId(long force);
+            [id(305)] long        ThaiIsModified();
+            [id(306)] VARIANT     ThaiIsValid(BSTR value);
+            [id(307)] IDispatch*  ThaiNewObject();
+            [id(309)] VARIANT     ThaiSet(BSTR newvalue);
+            [id(310)] long        ThaiSetModified(long newvalue);
+            [id(311)] VARIANT     ThaiSetObject(VARIANT newvalue);
+            [id(312)] VARIANT     ThaiSetObjectId(BSTR newid);
+
+    };
+
+    // Class information for User.SubjectDoctor
+    [ uuid(b8f21665-fa70-40dd-8ab8-fdd0c0e5de40), helpstring("Cache Object: User.SubjectDoctor CoClass"),control ]
+    coclass SubjectDoctor
+    {
+        [default] dispinterface CSubjectDoctor;
+    };
+
+
+};
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// End-of-file
+//
+////////////////////////////////////////////////////////////////////////////////

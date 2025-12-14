@@ -1,0 +1,505 @@
+unit custom3;
+
+interface
+
+uses
+  SysUtils, Windows, Messages, Classes, Graphics, Controls,
+  StdCtrls, ExtCtrls, Forms, QDialogs, ComCtrls;
+
+type
+  TCustomStep2 = class(TForm)
+    Button1: TButton;
+    ProgressBar1: TProgressBar;
+    Timer1: TTimer;
+    GroupBox1: TGroupBox;
+    GroupBox2: TGroupBox;
+    Label1: TLabel;
+    procedure FormActivate(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure ResetProgressbar();
+    procedure importrowtype();
+    procedure importtable();
+    procedure importroutine();
+    procedure Button1Click(Sender: TObject);
+  end;
+
+var
+  CustomStep2: TCustomStep2;
+
+implementation
+
+uses custom2,customdbmodule, custom4, custom1;
+
+{$R *.DFM}
+
+procedure TCustomStep2.importrowtype();
+begin
+    with datamodule1.query1 do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('create row type address_t(house_id CHAR(15),street CHAR(30),tumbon CHAR(30),amphor CHAR(30),province	CHAR(30),box CHAR(10),phone	CHAR(30));');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create row type book_title_t(call_no CHAR(20) not null,isbn CHAR(30),name CHAR(30),author1	char(50),author2 char(50),author3 char(50),edition	CHAR(2),publish	CHAR(30),recieve_date Char(20),page_num	integer);');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create row type magazine_title_t(call_no CHAR(20) not null,issn CHAR(30),name CHAR(30),years CHAR(5),vol char(4),no char(5),publish CHAR(20),recieve_date	char(20),page_num integer);');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create row type circulation_t(id_mem CHAR(20) not null,serialno char(20) not null,borrow_date	char(20),due_date  char(20),id_mem_hold	char(20),flag_cir char(1));');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create row type library_t(serialno	CHAR(20) not null,call_no char(20),flag_lib	CHAR(1));');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create row type book_t under library_t;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create row type magazine_t under library_t;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create row type member_t(id_mem CHAR(20) not null,name	CHAR(30),lastname  CHAR(50),apply_date	char(20),status	CHAR(50),organize CHAR(50),division	CHAR(50),address address_t,flag_mem	CHAR(1),num_book integer,num_mag integer);');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create row type staff_t under member_t;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create row type student_t(major CHAR(50),expire_date char(20),class CHAR(1)) under member_t;');
+        Execsql;
+
+    end;
+
+
+end;
+
+procedure TCustomStep2.importtable();
+begin
+    with datamodule1.query1 do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('create table member of type member_t;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create table student of type student_t under member;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create table staff of type staff_t under member;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create table library of type library_t;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create table book of type book_t under library;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create table magazine of type magazine_t under library;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create table book_title of type book_title_t;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create table magazine_title of type magazine_title_t;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create table circulation of type circulation_t;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create table addrresult(hid char(15),street char(30),tumbon char(30),amphor char(30),province	char(30),box char(10),phone	char(30));');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create table rule(name char(30), detail char(50));');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create table overreserve(idmemhold char(20), serialno char(20), resdate char(20), cancleresdate char(20));');
+        Execsql;
+    end;
+end;
+
+procedure TCustomStep2.importroutine();
+begin
+    //member
+    with datamodule1.query1 do
+    begin
+        Close;
+        {
+        SQL.Clear;
+        SQL.Add('CREATE PROCEDURE apply_member(id char(20),nam char(30),las char(50),app char(20),sta char(50),org char(50),divi char(50),hid char(15),st char(30),tum char(30),amp char(30),pro char(30),box char(10),ph char(30))');
+        SQL.Add('insert into staff values(id,nam,las,app,sta,org,divi,row(hid,st,tum,amp,pro,box,ph)::address_t,"1",0,0);');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('CREATE PROCEDURE apply_member(id char(20),nam char(30),las char(50),app char(20),sta char(50),org char(50),divi char(50),hid char(15),st char(30),tum char(30),amp char(30),pro char(30),box char(10),ph char(30),maj char(50),expi char(20),cla char(1)) ');
+        SQL.Add('insert into student ');
+        SQL.Add('values (id,nam,las,app,sta,org,divi,ROW(hid,st,tum,amp,pro,box,ph)::address_t,"1",0,0,maj,expi,cla);');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+        }
+
+        SQL.Clear;
+        SQL.Add('Create Procedure delete_staff(id char(20)) ');
+        SQL.Add('delete from staff where id_mem = id; ');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('Create Procedure delete_std(id char(20)) ');
+        SQL.Add('delete from student where id_mem = id; ');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        {
+        SQL.Clear;
+        SQL.Add('CREATE PROCEDURE edit_member(id char(20),nam char(30),las char(50),sta char(50),org char(50),divi char(50),hid char(15),st char(30),tum char(30),amp char(30),pro char(30),box char(10),ph char(30)) ');
+        SQL.Add('update staff set name= nam,lastname= las,status= sta,organize= org,division= divi,address= ROW(hid,st,tum,amp,pro,box,ph)::address_t where id_mem= id; ');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('CREATE PROCEDURE edit_member(id char(20),nam char(30),las char(50),sta char(50),org char(50),divi char(50),hid char(15),st char(30),tum char(30),amp char(30),pro char(30),box char(10),ph char(30),maj char(50),cla char(1)) ');
+        SQL.Add('update student set name= nam,lastname= las,status= sta,organize= org,division= divi,address= ROW(hid,st,tum,amp,pro,box,ph)::address_t,major= maj,class= cla where id_mem= id; ');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+        }
+
+        SQL.Clear;
+        SQL.Add('Create Procedure retrive_addr_staff(id char(20)) ');
+        SQL.Add('define addr address_t; ');
+        SQL.Add('select address into addr from staff where id_mem like id; ');
+        SQL.Add('insert into addrresult values(addr.house_id,addr.street,addr.tumbon,addr.amphor,addr.province,addr.box,addr.phone); ');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('Create Procedure retrive_addr_std(id char(20)) ');
+        SQL.Add('define addr address_t; ');
+        SQL.Add('select address into addr from student where id_mem like id; ');
+        SQL.Add('insert into addrresult values(addr.house_id,addr.street,addr.tumbon,addr.amphor,addr.province,addr.box,addr.phone); ');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+    end;
+
+    //library_item
+    with datamodule1.query1 do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('CREATE PROCEDURE apply_book(callno char(20),isbn char(30),nam char(30),a1 char(50),a2 char(50),a3 char(50),edition char(2),publish char(30),rdate char(20),pnum int) ');
+        SQL.Add('insert into book_title ');
+        SQL.Add('values (callno,isbn,nam,a1,a2,a3,edition,publish,rdate,pnum);');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('CREATE PROCEDURE apply_booknotitle(sid char(20),callno char(20)) ');
+        SQL.Add('insert into book values(sid,callno,"0"); ');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('CREATE PROCEDURE apply_mag(callno CHAR(20),issn1 CHAR(30),nam CHAR(30),yrs CHAR(5),vol1 CHAR(4),no1 CHAR(5),pub CHAR(20),rdate CHAR(20),pnum INT) ');
+        SQL.Add('insert into magazine_title ');
+        SQL.Add('values (callno,issn1,nam,yrs,vol1,no1,pub,rdate,pnum);');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('CREATE PROCEDURE apply_magnotitle(sid char(20),callno char(20)) ');
+        SQL.Add('insert into magazine values(sid,callno,"0"); ');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('Create Procedure delete_book(sid char(20),callno char(20)) ');
+        SQL.Add('define f char(20); ');
+        SQL.Add('delete from book where serialno = sid;');
+        SQL.Add('select flag_lib into f from book where call_no = callno;');
+        SQL.Add('if f is null then delete from book_title where call_no = callno;');
+        SQL.Add('end if;');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('Create Procedure delete_mag(sid char(20),callno char(20)) ');
+        SQL.Add('define f char(20); ');
+        SQL.Add('delete from magazine where serialno = sid;');
+        SQL.Add('select flag_lib into f from magazine where call_no = callno;');
+        SQL.Add('if f is null then delete from magazine_title where call_no = callno;');
+        SQL.Add('end if;');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure edit_book(callno char(20),isbn1 char(30),nam char(30),a1 char(50),a2 char(50),a3 char(50),edi char(2),pub char(30),rdate char(20),pnum int) ');
+        SQL.Add('update book_title set isbn= isbn1,name= nam,author1= a1,author2= a2,author3= a3,edition= edi,publish= pub,recieve_date= rdate,page_num= pnum where call_no= callno; ');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure edit_mag(callno CHAR(20),issn1 CHAR(30),nam CHAR(30),yrs CHAR(5),vol1 CHAR(4),no1 CHAR(5),pub CHAR(20),rdate CHAR(20),pnum INT) ');
+        SQL.Add('update magazine_title set call_no= callno,issn= issn1,name= nam,years= yrs,vol= vol1,no= no1,publish= pub,recieve_date= rdate,page_num= pnum where call_no= callno; ');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+    end;
+
+    //circulation
+    with datamodule1.query1 do
+    begin
+        Close;
+        SQL.Clear;
+        SQL.Add('create procedure insert_rule() ');
+        SQL.Add('insert into rule values("StuBook_Fee","5"); ');
+        SQL.Add('insert into rule values("StuMag_Fee","5");');
+        SQL.Add('insert into rule values("StaBook_Fee","5");');
+        SQL.Add('insert into rule values("StaMag_Fee","5");');
+        SQL.Add('insert into rule values("StuBook_NoBorrowDay","5");');
+        SQL.Add('insert into rule values("StuMag_NoBorrowDay","5");');
+        SQL.Add('insert into rule values("StaBook_NoBorrowDay","7");');
+        SQL.Add('insert into rule values("StaMag_NoBorrowDay","7");');
+        SQL.Add('insert into rule values("StuBook_NoBorrow","3");');
+        SQL.Add('insert into rule values("StuMag_NoBorrow","3");');
+        SQL.Add('insert into rule values("StaBook_NoBorrow","5");');
+        SQL.Add('insert into rule values("StaMag_NoBorrow","5");');
+        SQL.Add('insert into rule values("StuBook_NoReserveDay","5");');
+        SQL.Add('insert into rule values("StaBook_NoReserveDay","5");');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('execute procedure insert_rule();');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure over_reserve(memidhold char(20),sid char(20),resdate char(20),candate char(20)) ');
+        SQL.Add('insert into overreserve values(memidhold,sid,resdate,candate); ');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure sta_borrow_book(id char(20),sid char(20),bdate char(20),ddate char(20),nbook int) ');
+        SQL.Add('insert into circulation values(id,sid,bdate,ddate,null,"0"); ');
+        SQL.Add('update book set flag_lib = "1" where serialno = sid;');
+        SQL.Add('update staff set num_book = nbook where id_mem = id;');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure sta_borrow_mag(id char(20),sid char(20),bdate char(20),ddate char(20),nmag int) ');
+        SQL.Add('insert into circulation values(id,sid,bdate,ddate,null,"0"); ');
+        SQL.Add('update magazine set flag_lib = "1" where serialno = sid;');
+        SQL.Add('update staff set num_mag = nmag where id_mem = id;');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure sta_borrow_resbook(idmemhold char(20),sid char(20),bdate char(20),ddate char(20)) ');
+        SQL.Add('delete from circulation where id_mem_hold = idmemhold and serialno = sid; ');
+        SQL.Add('insert into circulation values(idmemhold,sid,bdate,ddate,null,"0");');
+        SQL.Add('update book set flag_lib = "1" where serialno = sid;');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure sta_overres1(Rid char(20),Sid char(20),Bid char(20)) ');
+        SQL.Add('update circulation set id_mem_hold = null where id_mem = Bid and serialno = Sid; ');
+        SQL.Add('update book set flag_lib = "1" where serialno = Sid;');
+        SQL.Add('update staff set num_book = num_book-1 where id_mem = Rid;');
+        SQL.Add('delete from overreserve where idmemhold = Rid and serialno = sid;');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure sta_overres2(Rid char(20),Sid char(20),Bid char(20)) ');
+        SQL.Add('delete from circulation where id_mem = Bid and serialno = Sid; ');
+        SQL.Add('update book set flag_lib = "0" where serialno = Sid;');
+        SQL.Add('update staff set num_book = num_book-1 where id_mem = Rid;');
+        SQL.Add('delete from overreserve where idmemhold = Rid and serialno = sid;');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure sta_res_book(Rid char(20),Sid char(20),Bid char(20),nbook int) ');
+        SQL.Add('update circulation set id_mem_hold = Rid where id_mem = Bid and serialno = Sid; ');
+        SQL.Add('update book set flag_lib = "2" where serialno = Sid;');
+        SQL.Add('update staff set num_book = nbook where id_mem = Rid;');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure sta_ret_book(flag char(1),idmem char(20),sno char(20),nbook int) ');
+        SQL.Add('if flag = "2" then ');
+        SQL.Add('update circulation set flag_cir = "1" where id_mem = idmem and serialno = sno;');
+        SQL.Add('update book set flag_lib = "3" where serialno = sno;');
+        SQL.Add('update staff set num_book = nbook where id_mem = idmem;');
+        SQL.Add('else ');
+        SQL.Add('delete from circulation where id_mem=idmem and serialno = sno;');
+        SQL.Add('update book set flag_lib = "0" where serialno = sno;');
+        SQL.Add('update staff set num_book = nbook where id_mem = idmem;');
+        SQL.Add('end if ');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure sta_ret_mag(idmem char(20),sno char(20),nmag int) ');
+        SQL.Add('delete from circulation where id_mem=idmem and serialno = sno; ');
+        SQL.Add('update magazine set flag_lib = "0" where serialno = sno;');
+        SQL.Add('update staff set num_mag = nmag where id_mem = idmem;');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure std_borrow_book(id char(20),sid char(20),bdate char(20),ddate char(20),nbook int) ');
+        SQL.Add('insert into circulation values(id,sid,bdate,ddate,null,"0"); ');
+        SQL.Add('update book set flag_lib = "1" where serialno = sid;');
+        SQL.Add('update student set num_book = nbook where id_mem = id;');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure std_borrow_mag(id char(20),sid char(20),bdate char(20),ddate char(20),nmag int) ');
+        SQL.Add('insert into circulation values(id,sid,bdate,ddate,null,"0"); ');
+        SQL.Add('update magazine set flag_lib = "1" where serialno = sid;');
+        SQL.Add('update student set num_mag = nmag where id_mem = id;');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure std_borrow_resbook(idmemhold char(20),sid char(20),bdate char(20),ddate char(20)) ');
+        SQL.Add('delete from circulation where id_mem_hold = idmemhold and serialno = sid; ');
+        SQL.Add('insert into circulation values(idmemhold,sid,bdate,ddate,null,"0");');
+        SQL.Add('update book set flag_lib = "1" where serialno = sid;');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure std_overres1(Rid char(20),Sid char(20),Bid char(20)) ');
+        SQL.Add('update circulation set id_mem_hold = null where id_mem = Bid and serialno = Sid; ');
+        SQL.Add('update book set flag_lib = "1" where serialno = Sid;');
+        SQL.Add('update student set num_book = num_book-1 where id_mem = Rid;');
+        SQL.Add('delete from overreserve where idmemhold = Rid and serialno = sid;');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure std_overres2(Rid char(20),Sid char(20),Bid char(20)) ');
+        SQL.Add('delete from circulation where id_mem = Bid and serialno = Sid; ');
+        SQL.Add('update book set flag_lib = "0" where serialno = Sid;');
+        SQL.Add('update student set num_book = num_book-1 where id_mem = Rid;');
+        SQL.Add('delete from overreserve where idmemhold = Rid and serialno = sid;');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure stu_res_book(Rid char(20),Sid char(20),Bid char(20),nbook int) ');
+        SQL.Add('update circulation set id_mem_hold = Rid where id_mem = Bid and serialno = Sid; ');
+        SQL.Add('update book set flag_lib = "2" where serialno = Sid;');
+        SQL.Add('update student set num_book = nbook where id_mem = Rid;');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure stu_ret_book(flag char(1),idmem char(20),sno char(20),nbook int) ');
+        SQL.Add('if flag = "2" then ');
+        SQL.Add('update circulation set flag_cir = "1" where id_mem = idmem and serialno = sno;');
+        SQL.Add('update book set flag_lib = "3" where serialno = sno;');
+        SQL.Add('update student set num_book = nbook where id_mem = idmem;');
+        SQL.Add('else ');
+        SQL.Add('delete from circulation where id_mem=idmem and serialno = sno;');
+        SQL.Add('update book set flag_lib = "0" where serialno = sno;');
+        SQL.Add('update student set num_book = nbook where id_mem = idmem;');
+        SQL.Add('end if ');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+        SQL.Clear;
+        SQL.Add('create procedure stu_ret_mag(idmem char(20),sno char(20),nmag int) ');
+        SQL.Add('delete from circulation where id_mem=idmem and serialno = sno; ');
+        SQL.Add('update magazine set flag_lib = "0" where serialno = sno;');
+        SQL.Add('update student set num_mag = nmag where id_mem = idmem;');
+        SQL.Add('END PROCEDURE;');
+        Execsql;
+
+    end;
+end;
+
+Procedure TCustomStep2.ResetProgressbar();
+begin
+    with CustomStep2 do
+    begin
+        Timer1.Enabled := false;
+        Button1.Enabled := true;
+        Progressbar1.Position := Progressbar1.Min;
+    end;
+end;
+
+procedure TCustomStep2.FormActivate(Sender: TObject);
+begin
+    if MessageDlg('ต้องการสร้างตารางและฟังก์ชันการทำงานของระบบห้องสมุดหรือไม่', mtConfirmation, [mbYes, mbNo], 0) = 3 then
+    begin
+
+        importrowtype();
+        importtable();
+        importroutine();
+
+        Timer1.Enabled := true;
+        Timer1.Interval := Progressbar1.Step;
+        Button1.Enabled := false;
+        GroupBox2.Visible := false;
+        Label1.Visible := false;
+
+    end
+    else
+    begin
+        CustomForm1.Close;
+    end;
+end;
+
+procedure TCustomStep2.Timer1Timer(Sender: TObject);
+var i : integer;
+begin
+
+    progressbar1.StepIt;
+    if progressbar1.Position >= progressbar1.Max then
+    begin
+        Resetprogressbar;
+        progressbar1.Visible := false;
+        GroupBox1.Visible := false;
+        Button1.Enabled := true;
+        GroupBox2.Visible := true;
+        Label1.Visible := true;
+    end;
+
+end;
+
+procedure TCustomStep2.Button1Click(Sender: TObject);
+begin
+    if CustomStep3 = nil then
+        Application.CreateForm(TCustomStep3,CustomStep3);
+    CustomStep3.show;
+    CustomStep2.Hide;
+
+end;
+
+end.
