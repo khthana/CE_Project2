@@ -1,0 +1,273 @@
+package switchsim;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import com.borland.jbcl.layout.*;
+
+public class Frame2 extends JFrame {
+  JPanel contentPane;
+  XYLayout xYLayout1 = new XYLayout();
+  JPanel panel1 = new JPanel();
+  JComboBox jComboBox1 = new JComboBox();
+  JComboBox jComboBox2 = new JComboBox();
+  JRadioButton jRadioButton1 = new JRadioButton();
+  JRadioButton jRadioButton2 = new JRadioButton();
+  JComboBox jComboBox3 = new JComboBox();
+  JTextField jTextField1 = new JTextField();
+  JLabel jLabel1 = new JLabel();
+  JLabel jLabel2 = new JLabel();
+  JRadioButton jRadioButton3 = new JRadioButton();
+  JRadioButton jRadioButton4 = new JRadioButton();
+  JComboBox jComboBox4 = new JComboBox();
+  JTextField jTextField2 = new JTextField();
+  JButton jButton1 = new JButton();
+  JButton jButton2 = new JButton();
+  JButton jButton3 = new JButton();
+  ButtonGroup Group1 = new ButtonGroup();
+  ButtonGroup Group2 = new ButtonGroup();
+  XYLayout xYLayout2 = new XYLayout();
+
+  /**Construct the frame*/
+  public Frame2() {
+    enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+    try {
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+  /**Component initialization*/
+  private void jbInit() throws Exception  {
+    //setIconImage(Toolkit.getDefaultToolkit().createImage(Frame2.class.getResource("[Your Icon]")));
+    contentPane = (JPanel) this.getContentPane();
+    panel1.setLayout(xYLayout2);
+    contentPane.setLayout(xYLayout1);
+    this.setSize(new Dimension(420, 320));
+    this.setTitle("Connect Switch");
+    jRadioButton1.setText("Select Port");
+    jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jRadioButton1_actionPerformed(e);
+      }
+    });
+    jRadioButton2.setText("New Port");
+    jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jRadioButton2_actionPerformed(e);
+      }
+    });
+    jLabel1.setText("Select Switch 1");
+    jLabel2.setText("Select Switch 2");
+    jRadioButton3.setText("Select Port");
+    jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jRadioButton3_actionPerformed(e);
+      }
+    });
+    jRadioButton4.setText("New Port");
+    jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jRadioButton4_actionPerformed(e);
+      }
+    });
+    jButton1.setToolTipText("");
+    jButton1.setText("Continue");
+    jButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton1_actionPerformed(e);
+      }
+    });
+    jButton2.setText("Done");
+    jButton2.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton2_actionPerformed(e);
+      }
+    });
+    jButton3.setText("Cancel");
+    jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jComboBox1_actionPerformed(e);
+      }
+    });
+    jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jComboBox2_actionPerformed(e);
+      }
+    });
+    this.setTitle("Connect Switch");
+    getContentPane().add(panel1, BorderLayout.CENTER);
+    panel1.add(jRadioButton1,        new XYConstraints(130, 65, 90, 22));
+    panel1.add(jComboBox2,    new XYConstraints(125, 135, 150, 25));
+    panel1.add(jRadioButton2,        new XYConstraints(130, 95, 90, 23));
+    panel1.add(jComboBox3,            new XYConstraints(220, 65, 120, 20));
+    panel1.add(jTextField1,             new XYConstraints(220, 95, 120, 20));
+    panel1.add(jComboBox1,        new XYConstraints(125, 30, 150, 25));
+    panel1.add(jLabel1,       new XYConstraints(30, 30, 91, 26));
+    panel1.add(jLabel2,      new XYConstraints(30, 135, 91, 25));
+    panel1.add(jRadioButton3,     new XYConstraints(130, 170, -1, -1));
+    panel1.add(jRadioButton4,    new XYConstraints(130, 200, -1, -1));
+    panel1.add(jComboBox4,     new XYConstraints(220, 170, 120, 20));
+    panel1.add(jTextField2,   new XYConstraints(220, 200, 120, 20));
+    panel1.add(jButton1,         new XYConstraints(50, 245, 85, 25));
+    panel1.add(jButton2,        new XYConstraints(150, 245, 90, 25));
+    panel1.add(jButton3,       new XYConstraints(255, 245, 90, 25));
+
+    Group1.add(jRadioButton1);
+    Group1.add(jRadioButton2);
+    Group2.add(jRadioButton3);
+    Group2.add(jRadioButton4);
+  }
+  /**Overridden so we can exit when window is closed*/
+  protected void processWindowEvent(WindowEvent e) {
+    super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+//      System.exit(0);
+    }
+  }
+
+  public void initValue() {
+    jComboBox1.removeAllItems();
+    jComboBox2.removeAllItems();
+    jComboBox1.addItem("Select Switch");
+    jComboBox2.addItem("Select Switch");
+    for (int i=0; i<Frame1.vSwitch.size(); i++) {
+      Switch sw = (Switch)Frame1.vSwitch.elementAt(i);
+      if (!sw.getName().equals(jComboBox2.getSelectedItem()))
+        jComboBox1.addItem(sw.getName());
+    }
+    for (int i=0; i<Frame1.vSwitch.size(); i++) {
+      Switch sw = (Switch)Frame1.vSwitch.elementAt(i);
+      if (!sw.getName().equals(jComboBox1.getSelectedItem()))
+        jComboBox2.addItem(sw.getName());
+    }
+  }
+
+  void jComboBox1_actionPerformed(ActionEvent e) {
+    jComboBox3.removeAllItems();
+    for (int i=0; i<Frame1.vSwitch.size(); i++) {
+      Switch sw = (Switch)Frame1.vSwitch.elementAt(i);
+      if ((sw.getVInt()!=null) && (sw.getName().equals(jComboBox1.getSelectedItem()))) {
+        for (int j=0; j<sw.getVInt().size(); j++) {
+          Interface intf = (Interface)sw.getVInt().elementAt(j);
+          if ((intf.getCom()==null) && (intf.getSwitch()==null)) {
+            jComboBox3.addItem(intf.getNameInt());
+          }
+        }
+      }
+    }
+  }
+
+  void jComboBox2_actionPerformed(ActionEvent e) {
+    jComboBox4.removeAllItems();
+    for (int i=0; i<Frame1.vSwitch.size(); i++) {
+      Switch sw = (Switch)Frame1.vSwitch.elementAt(i);
+      if ((sw.getVInt()!=null) && (sw.getName().equals(jComboBox2.getSelectedItem()))) {
+        for (int j=0; j<sw.getVInt().size(); j++) {
+          Interface intf = (Interface)sw.getVInt().elementAt(j);
+          if ((intf.getCom()==null) && (intf.getSwitch()==null)) {
+            jComboBox4.addItem(intf.getNameInt());
+          }
+        }
+      }
+    }
+  }
+
+  void jRadioButton1_actionPerformed(ActionEvent e) {
+    jComboBox3.enable();
+    jTextField1.disable();
+  }
+
+  void jRadioButton2_actionPerformed(ActionEvent e) {
+    jTextField1.enable();
+    jComboBox3.disable();
+  }
+
+  void jRadioButton3_actionPerformed(ActionEvent e) {
+    jComboBox4.enable();
+    jTextField2.disable();
+  }
+
+  void jRadioButton4_actionPerformed(ActionEvent e) {
+    jTextField2.enable();
+    jComboBox4.disable();
+  }
+
+  void jButton2_actionPerformed(ActionEvent e) {
+    Switch sw1 = new Switch();
+    Switch sw2 = new Switch();
+    Interface i1 = new Interface();
+    Interface i2 = new Interface();
+    for (int i=0; i<Frame1.vSwitch.size(); i++) {
+      Switch tmp = (Switch)Frame1.vSwitch.elementAt(i);
+      if (tmp.getName().equals(jComboBox1.getSelectedItem())) {
+        sw1=tmp;
+      }
+      if (tmp.getName().equals(jComboBox2.getSelectedItem())) {
+        sw2=tmp;
+      }
+    }
+    System.out.println("Check 1.");
+    if ((!sw1.equals(sw2)) && (!jComboBox1.getSelectedItem().equals("Select Switch")) && (!jComboBox2.getSelectedItem().equals("Select Switch"))) {
+      System.out.println("Check 2.");
+      if (jRadioButton1.isSelected()) {
+        System.out.println("Check 3.");
+        for (int i=0; i<sw1.getVInt().size(); i++) {
+          Interface intf = (Interface)sw1.getVInt().elementAt(i);
+          System.out.println("Check 4. "+intf.getNameInt());
+          if (jComboBox3.getSelectedItem().equals(intf.getNameInt())) {
+            System.out.println("Check 5.");
+            i1=intf;
+            i1.addNewIntSwitch(sw1,intf.getNameInt(),sw2);
+          }
+        }
+      }
+      else if (jRadioButton2.isSelected()) {
+        String n = jTextField1.getText();
+        i1.addNewIntSwitch(sw1,jTextField1.getText(),sw2);
+        i1.addNewInt(sw1,jTextField1.getText());
+      }
+      if (jRadioButton3.isSelected()) {
+        for (int i=0; i<sw2.getVInt().size(); i++) {
+          Interface intf = (Interface)sw2.getVInt().elementAt(i);
+          if (jComboBox4.getSelectedItem().equals(intf.getNameInt())) {
+            i2=intf;
+            i2.addNewIntSwitch(sw2,intf.getNameInt(),sw1);
+          }
+        }
+      }
+      else if (jRadioButton4.isSelected()) {
+        i2.addNewIntSwitch(sw2,jTextField2.getText(),sw1);
+        i2.addNewInt(sw2,jTextField2.getText());
+      }
+    }
+    else if ((jComboBox1.getSelectedItem().equals("Select Switch")) || (jComboBox2.getSelectedItem().equals("Select Switch"))) {
+      System.out.println("Please select Switch");
+    }
+    else if (sw1.equals(sw2)) {
+      System.out.println("Please select different Switches.");
+    }
+    this.setVisible(false);
+  }
+
+  void jButton1_actionPerformed(ActionEvent e) {
+    Switch sw1 = new Switch();
+    Switch sw2 = new Switch();
+    Interface i1 = new Interface();
+    Interface i2 = new Interface();
+    for (int i=0; i<Frame1.vSwitch.size(); i++) {
+      Switch tmp = (Switch)Frame1.vSwitch.elementAt(i);
+      if (tmp.getName().equals(jComboBox1.getSelectedItem())) {
+        sw1=tmp;
+      }
+      if (tmp.getName().equals(jComboBox2.getSelectedItem())) {
+        sw2=tmp;
+      }
+    }
+    try {
+      i1.addNewInt(sw1,"");
+    }
+    catch(Exception a) {}
+  }
+}

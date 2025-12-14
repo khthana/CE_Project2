@@ -1,0 +1,106 @@
+package Information; 
+
+import weblogic.jws.*; 
+import weblogic.jws.control.*; 
+import java.sql.SQLException; 
+import center.*;
+
+/** 
+ * Defines a new database control. 
+ * 
+ * The @jws:connection tag indicates which WebLogic data source will be used by 
+ * this database control. Please change this to suit your needs. You can see a 
+ * list of available data sources by going to the WebLogic console in a browser 
+ * (typically http://localhost:7001/console) and clicking Services, JDBC, 
+ * Data Sources. 
+ * 
+ * @jws:connection data-source-jndi-name="MyDataSource" 
+ */ 
+public interface db_informationControl extends DatabaseControl 
+{ 
+    // Sample database function.  Uncomment to use 
+
+    // static public class Customer 
+    // { 
+    //   public int id; 
+    //   public String name; 
+    // } 
+    // 
+    // /** 
+    //  * @jws:sql statement="SELECT ID, NAME FROM CUSTOMERS WHERE ID = {id}" 
+    //  */ 
+    // Customer findCustomer(int id);
+
+    // Add "throws SQLException" to request that SQLExeptions be thrown on errors.
+
+    /**
+     * @jws:sql statement::
+     *     insert into information (news, type, date)
+     *     values ({news}, {type}, curdate())
+     * ::
+     */
+    public void insert_news(String news, String type);
+
+    /**
+     * @jws:sql statement::
+     *     select username, name, email, email_way, application_way
+     *     from inner_member
+     *     where category like {key} and (email_way like '1%' or application_way like '1%')
+     * ::
+     */
+    public user_news[] search_user_new_book(String key);
+
+    /**
+     * @jws:sql statement::
+     *     select username, name, email, email_way, application_way
+     *     from inner_member
+     *     where email_way like '_1%' or application_way like '_1%'
+     * ::
+     */
+    public user_news[] search_user_movie();
+
+    /**
+     * @jws:sql statement::
+     *     select username, name, email, email_way, application_way
+     *     from inner_member
+     *     where email_way like '__1%' or application_way like '__1%'
+     * ::
+     */
+    public user_news[] search_user_seminar();
+
+    /**
+     * @jws:sql statement::
+     *     select username, name, email, email_way, application_way
+     *     from inner_member
+     *     where email_way like '%1' or application_way like '%1'
+     * ::
+     */
+    public user_news[] search_user_general();
+
+    /**
+     * @jws:sql statement::
+     *     select username, name, email
+     *     from inner_member
+     * ::
+     */
+    public user_news[] search_user_all();
+
+    /**
+     * @jws:sql statement::
+     *     select username, name, email
+     *     from inner_member, book
+     *     where book.return_date <= curdate() and inner_member.username=book.username_use
+     * ::
+     */
+    public user_news[] search_user_book_exceed();
+
+
+    /**
+     * @jws:sql statement::
+     *     select inner_member.username, name, email
+     *     from inner_member, reservation
+     *     where inner_member.username=reservation.username and reservation.receive_date=curdate()
+     * ::
+     */
+    public user_news[] search_user_reservation();
+}

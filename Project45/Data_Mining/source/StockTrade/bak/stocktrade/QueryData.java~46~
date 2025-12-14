@@ -1,0 +1,234 @@
+package stocktrade;
+
+import java.sql.*;
+import java.util.Vector;
+import java.util.Date;
+import java.math.*;
+import java.lang.*;
+
+public class QueryData {
+
+  private AccessDatabase database;
+  public QueryData() {
+  }
+  public void qconnect(){
+    try{
+      this.database = new Database();
+      database.connect();
+    }
+    catch(Exception e){
+    }
+  }
+  public void qclose(){
+    try{
+      this.database.close();
+    }
+    catch(Exception e){
+    }
+  }
+  public Vector getdataday( String stock ){
+    Vector data = new Vector();
+    Date today = new Date();
+    int dd;int mm;int yy;int ss;int min;int ho;
+    float price = 0;float vol = 0;int voll;
+    dd  = today.getDate();
+    mm  = today.getMonth();
+    ss  = today.getSeconds();
+    min = today.getMinutes();
+    ho  = today.getHours();
+    yy  = today.getYear();
+    yy  = 1900+yy;
+    mm  = ++mm;
+
+    String dmax = new String();
+    String dmin = new String();
+    String temp = new String();
+
+      dmax = Integer.toString( yy )+"-"+Integer.toString( mm )+"-"+
+           Integer.toString( dd )+" 17:00:00.000";
+
+      dmin = Integer.toString( yy )+"-"+Integer.toString( mm )+"-"+
+           Integer.toString( dd )+" 09:30:00.000";
+
+    dmax = "2003-03-26 15:30:00.000";
+    dmin = "2003-03-26 00:00:00.000";
+    String hh = "00";
+    String mi = "00";
+    String se = "00";
+    if( ho<10 ){
+      hh="0"+Integer.toString(ho);
+    }
+    else if( ho>=10 ){
+      hh=Integer.toString(ho);
+    }
+    if( min<10 ){
+      mi="0"+Integer.toString(min);
+    }
+    else if( min>=10 ){
+      mi=Integer.toString(min);
+    }
+    if( ss<10 ){
+      se="0"+Integer.toString(ss);
+    }
+    else if( ss>=10 ){
+      se=Integer.toString(ss);
+    }
+    temp = "1|"+hh+"|"+mi+"|"+se+"|1";
+    data.add(new String(temp));
+    try{
+      database = new Database();
+      database.connect();
+      float avg = 0f;
+      //avg = database.getAvgPrice( stock );
+      ResultSet rs = database.getDataIntraday( dmin,dmax,stock );
+      rs.next();
+      ho  = rs.getInt(1);
+      min = rs.getInt(2);
+      ss  = rs.getInt(3);
+      price = rs.getFloat(4);
+      vol = rs.getFloat(5);
+      avg = rs.getFloat(6);
+      vol = vol*100f;
+      avg = Math.round(avg*100f)/100f;
+      temp = avg+"|09|30|00|0";
+      data.add(new String(temp));
+      price = Math.round( price*100f )/100f;
+      if( ho<10 ){
+        hh="0"+Integer.toString(ho);
+      }
+      else if( ho>=10 ){
+        hh=Integer.toString(ho);
+      }
+      if( min<10 ){
+        mi="0"+Integer.toString(min);
+      }
+      else if( min>=10 ){
+        mi=Integer.toString(min);
+      }
+      if( ss<10 ){
+        se="0"+Integer.toString(ss);
+      }
+      else if( ss>=10 ){
+        se=Integer.toString(ss);
+      }
+      dmax = Float.toString( price )+"|"+hh+"|"+
+           mi+"|"+se+"|"+Math.round(vol);
+      System.out.print( dmax );
+      System.out.println(" : ");
+      data.add( new String(dmax) );
+
+        while( rs.next() ){
+          ho  = rs.getInt(1);
+          min = rs.getInt(2);
+          ss  = rs.getInt(3);
+          price = rs.getFloat(4);
+          vol = rs.getFloat(5);
+          vol = vol*100f;
+
+          price = Math.round( price*100f )/100f;
+
+          if( ho<10 ){
+            hh="0"+Integer.toString(ho);
+          }
+          else if( ho>=10 ){
+            hh=Integer.toString(ho);
+          }
+          if( min<10 ){
+            mi="0"+Integer.toString(min);
+          }
+          else if( min>=10 ){
+           mi=Integer.toString(min);
+          }
+          if( ss<10 ){
+            se="0"+Integer.toString(ss);
+          }
+          else if( ss>=10 ){
+            se=Integer.toString(ss);
+          }
+          dmax = Float.toString( price )+"|"+hh+"|"+
+                 mi+"|"+se+"|"+Math.round(vol);
+          System.out.print( dmax );
+          System.out.println(" : ");
+          data.add( new String(dmax) );
+
+        }
+        database.close();
+        return data;
+    }
+    catch( Exception sqle ){
+      System.out.println( "database" );
+      System.out.print( sqle );
+      return null;
+    }
+  }
+  public Vector getQuat( String stock ){
+    Vector ngee = new Vector();
+    try{
+      stock = stock.toUpperCase();
+      if( stock.equals("B-LAND") ){
+        stock = "B_LAND";
+      }
+      database = new Database();
+      database.connect();
+      ResultSet rs = database.getPredict( stock );
+      if( rs.next() ){
+        ngee.addElement( new Float(rs.getFloat(1)) );
+        ngee.addElement( new Integer(rs.getInt(2)) );
+        ngee.addElement( new Integer(rs.getInt(3)) );
+        ngee.addElement( new Float(rs.getFloat(4)) );
+        ngee.addElement( new Float(rs.getFloat(5)) );
+        ngee.addElement( new Float(rs.getFloat(6)) );
+        ngee.addElement( new Float(rs.getFloat(7)) );
+        ngee.addElement( new Float(rs.getFloat(8)) );
+        ngee.addElement( new Float(rs.getFloat(9)) );
+        ngee.addElement( new Float(rs.getFloat(10)) );
+        ngee.addElement( new Float(rs.getFloat(11)) );
+        database.close();
+        return ngee;
+      }
+      else { database.close();return null;}
+    }
+    catch( Exception e ){
+      System.out.println(e);
+      System.out.println(" quat ");
+      return null;
+    }
+  }
+
+  public int getPred( String stock ){
+    try{
+      int r =0;
+      r = this.database.getRealPred( stock );
+      return r;
+    }
+    catch( Exception e ){
+      System.out.println(e);
+      return 0;
+    }
+  }
+  public Vector getNgee(){
+    try{
+      Vector ngee = new Vector();
+      ResultSet rs = this.database.getNgee();
+      while( rs.next() ){
+        ngee.addElement( new String(rs.getString(1)) );
+      }
+      return ngee;
+    }
+    catch( Exception e ){
+      System.out.println(e);
+      return null;
+    }
+  }
+  public int getDD( String stock ){
+    try{
+      int r =0;
+      r = this.database.getDD( stock );
+      return r;
+    }
+    catch( Exception e ){
+      System.out.println(e);
+      return 0;
+    }
+  }
+}

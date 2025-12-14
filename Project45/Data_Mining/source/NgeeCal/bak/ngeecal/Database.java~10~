@@ -1,0 +1,432 @@
+package ngeecal;
+
+import java.sql.*;
+
+public class Database implements AccessDatabase {
+
+  // refer connection
+  Connection connection;
+  // refer constructor
+   private Database() {
+   }
+   // refer singlrton class Database
+   private static Database database = new Database();
+   // refer static get Instance from class Database
+   public static Database getDatabase(){
+     return database;
+   }
+////////////////////////////////////////////////////////////////////////////////
+   // refer method connect database
+   public void connect() throws Exception{
+
+     String driver ="sun.jdbc.odbc.JdbcOdbcDriver";
+     String url    ="jdbc:odbc:Stock";
+     System.out.print("ngee:)");
+     Class.forName( driver );
+
+     connection = DriverManager.getConnection(url);
+     connection.setAutoCommit(false);
+   }
+
+   // refer method close connect database
+  public void close(){
+    try{
+      connection.close();// close connection database
+    }
+    catch( Exception e ){
+      System.out.println(e);
+    }
+  }
+////////////////////////////////////////////////////////////////////////////////
+   // refer get ResultSet find data for make ema
+  public ResultSet findEma( String stock_code,String dmax,String dmin )
+      throws DataException{
+    try{
+      PreparedStatement sql;
+      sql = connection.prepareStatement("select distinct(day_trade), z_close, ema_9, "+
+                                             "ema_12, ema_25, ema_75, ema_200,macd,sig "+
+                                             "from "+stock_code+" "+
+                                             "where day_trade <= '"+dmax+"' "+
+                                             "and day_trade >= '"+dmin+"' "+
+                                             "order by day_trade DESC ", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+      ResultSet rs = sql.executeQuery();
+
+      if( rs != null ){
+        return rs;
+      }
+      else return null;
+    }
+    catch( SQLException e ){
+      System.out.println(e);
+      System.out.println("  findEma  ");
+      return null;
+    }
+  }
+
+  // refer update ema of data
+  public boolean updateEma( String day_trade, String stock_code,
+                           float ema9, float ema12, float ema25,
+                           float ema75, float ema200,float macd,float sig )
+      throws DataException{
+    try{
+      PreparedStatement sql;
+      sql = connection.prepareStatement("update "+stock_code+" "+
+                                               "set ema_9 = "+ema9+" "+
+                                               ",ema_12 = "+ema12+" "+
+                                               ",ema_25 = "+ema25+" "+
+                                               ",ema_75 = "+ema75+" "+
+                                               ",ema_200= "+ema200+" "+
+                                               ",macd= "+macd+" "+
+                                               ",sig= "+sig+" "+
+                                               "where day_trade = '"+day_trade+"' ", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+      int rs = sql.executeUpdate();
+      if( rs == 0 ){
+        connection.rollback();
+        return false;
+      }
+      else{
+        connection.commit();
+        return true;
+      }
+
+    }
+    catch( SQLException e ){
+
+      try{
+       System.out.println(e);
+       connection.rollback();
+       return false;
+      }
+      catch( SQLException ex ){
+        throw new DataException( ex );
+      }
+    }
+  }
+
+  // refer get ResultSet find z_close for make RSI
+public ResultSet findOnlyClose( String stock_code,String dmax,String dmin )
+    throws DataException{
+  try{
+    PreparedStatement sqlOnlyClose;
+    sqlOnlyClose = connection.prepareStatement("select distinct(day_trade), z_close,p_slope,delslope "+
+                                             "from "+stock_code+" "+
+                                             "where day_trade <= '"+dmax+"' "+
+                                             "and day_trade >= '"+dmin+"' "+
+                                             "order by day_trade DESC ", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+    ResultSet rs = sqlOnlyClose.executeQuery();
+    if( rs != null ){
+      return rs;
+    }
+    else return null;
+  }
+  catch( SQLException e ){
+    System.out.println(e);
+    System.out.println("  findOnlyClose ");
+    return null;
+  }
+  }
+
+  // refer update 14RSI
+  public boolean updateRSI( String day_trade, String stock_code,
+                           float rsi)
+      throws DataException{
+    try{
+      PreparedStatement sqlUpdateRSI;
+      sqlUpdateRSI = connection.prepareStatement("update "+stock_code+" "+
+                                                 "set rsi = "+rsi+" "+
+                                                 "where day_trade = '"+day_trade+"' ", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+      int rs = sqlUpdateRSI.executeUpdate();
+      if( rs == 0 ){
+        connection.rollback();
+        return false;
+      }
+      else{
+        connection.commit();
+        return true;
+      }
+
+    }
+    catch( SQLException e ){
+
+      try{
+       System.out.println(e);
+       System.out.println(" update RSI ");
+       connection.rollback();
+       return false;
+      }
+      catch( SQLException ex ){
+        throw new DataException( ex );
+      }
+    }
+  }
+
+  // refer find Per K
+  public ResultSet findPerK( String stock_code,String dmax,String dmin )
+     throws DataException{
+
+    try{
+      PreparedStatement sqlFindPerK;
+      sqlFindPerK = connection.prepareStatement("select distinct(day_trade),z_close, "+
+                                              "z_high, z_low "+
+                                              "from "+stock_code+" "+
+                                              "where day_trade <= '"+dmax+"' "+
+                                              "and day_trade >= '"+dmin+"' "+
+                                              "and z_close >= 0 "+
+                                             "order by day_trade DESC ", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+     ResultSet rs = sqlFindPerK.executeQuery();
+     if( rs != null ){
+       return rs;
+     }
+     else return null;
+   }
+   catch( SQLException e ){
+     System.out.println(e);
+     System.out.println("  findPerK ");
+     return null;
+   }
+  }
+
+  // refer update %K
+  public boolean updatePerK( String day_trade, String stock_code,
+                           float perk)
+      throws DataException{
+    try{
+      PreparedStatement sqlUpdatePerK;
+      sqlUpdatePerK = connection.prepareStatement("update "+stock_code+" "+
+                                                  "set k = "+perk+" "+
+                                                  "where day_trade = '"+day_trade+"' ", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+      int rs = sqlUpdatePerK.executeUpdate();
+      if( rs == 0 ){
+        connection.rollback();
+        return false;
+      }
+      else{
+        connection.commit();
+        return true;
+      }
+
+    }
+    catch( SQLException e ){
+
+      try{
+       System.out.println(e);
+       System.out.println(" update K ");
+       connection.rollback();
+       return false;
+      }
+      catch( SQLException ex ){
+        throw new DataException( ex );
+      }
+    }
+  }
+  // refer find Per D
+  public ResultSet findPerD( String stock_code,String dmax,String dmin )
+     throws DataException{
+
+    try{
+      PreparedStatement sqlFindPerD;
+      sqlFindPerD = connection.prepareStatement("select distinct(day_trade),k "+
+                                              "from "+stock_code+" "+
+                                              "where day_trade <= '"+dmax+"' "+
+                                              "and day_trade >= "+dmin+" "+
+                                              "and z_close >= 0 "+
+                                             "order by day_trade DESC ", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+     ResultSet rs = sqlFindPerD.executeQuery();
+     if( rs != null ){
+       return rs;
+     }
+     else return null;
+   }
+   catch( SQLException e ){
+     System.out.println(e);
+     System.out.println("  findPerD ");
+     return null;
+   }
+  }
+////////////////////////////////////////////////////////////////////////////////
+  // refer update %D
+  public boolean updatePerD( String day_trade, String stock_code,
+                           float perd)
+      throws DataException{
+    try{
+      PreparedStatement sqlUpdatePerD;
+      sqlUpdatePerD = connection.prepareStatement("update "+stock_code+" "+
+                                                 "set d = "+perd+" "+
+                                                 "where day_trade = '"+day_trade+"' ", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+      int rs = sqlUpdatePerD.executeUpdate();
+      if( rs == 0 ){
+        connection.rollback();
+        return false;
+      }
+      else{
+        connection.commit();
+        return true;
+      }
+
+    }
+    catch( SQLException e ){
+
+      try{
+       System.out.println(e);
+       System.out.println(" update D ");
+       connection.rollback();
+       return false;
+      }
+      catch( SQLException ex ){
+        throw new DataException( ex );
+      }
+    }
+  }
+////////////////////////////////////////////////////////////////////////////////
+  public ResultSet RangeTest( String stock_code, String dmax, String dmin )
+      throws DataException{
+    try{
+      PreparedStatement sqlRange;
+      sqlRange = connection.prepareStatement("select distinct(p1.day_trade), p1.z_close, ((z_high+z_low)/2), "+
+                                             "p2.range, p1.deciss "+
+                                             "from "+stock_code+" p1, volume_range p2 "+
+                                             "where p1.day_trade <= '"+dmax+"' "+
+                                             "and p1.day_trade >= '"+dmin+"' "+
+                                             "and p2.volume = "+
+                                             "( select max(p3.volume) "+
+                                             "from volume_range p3 "+
+                                             "where p3.volume <= p1.z_volume*10 ) "+
+                                             "order by day_trade DESC",ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+      ResultSet rs = sqlRange.executeQuery();
+      if( rs != null ){
+        return rs;
+      }
+      else return null;
+
+    }
+    catch( SQLException ex ){
+        throw new DataException( ex );
+      }
+  }
+////////////////////////////////////////////////////////////////////////////////
+  // refer update deciss
+ public boolean updateDeciss1( String day_trade, String stock_code,
+                          int deciss)
+     throws DataException{
+
+   try{
+     PreparedStatement sqlUpdateDeciss1;
+     sqlUpdateDeciss1 = connection.prepareStatement("update "+stock_code+" "+
+                                                  "set deciss2 = "+deciss+" "+
+                                                  "where day_trade = '"+day_trade+"' ", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+     int rs = sqlUpdateDeciss1.executeUpdate();
+     if( rs == 0 ){
+       connection.rollback();
+       return false;
+     }
+     else{
+       connection.commit();
+       return true;
+     }
+
+   }
+   catch( SQLException e ){
+
+     try{
+      System.out.println(e);
+      System.out.println(" update Deciss ");
+      connection.rollback();
+      return false;
+     }
+     catch( SQLException ex ){
+       throw new DataException( ex );
+     }
+   }
+
+  }
+///////////////////////////////////////////////////////////////////////////////
+  // refer get ResultSet SET Value
+  public ResultSet findSETValue( String dmax,String dmin )
+     throws DataException{
+
+    try{
+      PreparedStatement sqlSETValue;
+      sqlSETValue   = connection.prepareStatement("select z_value*10 "+
+                                                  "from SET_INDEX "+
+                                                  "where day_trade <= '"+dmax+"' "+
+                                                  "and day_trade >= '"+dmin+"' "+
+                                                  "order by day_trade DESC", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+     ResultSet rs = sqlSETValue.executeQuery();
+     if( rs != null ){
+       return rs;
+     }
+     else return null;
+   }
+   catch( SQLException e ){
+     System.out.println(e);
+     System.out.println("  find SET Value ");
+     return null;
+   }
+  }
+////////////////////////////////////////////////////////////////////////////////
+  // refer update deciss
+public boolean updatePara( String day_trade, String stock_code,
+                         float slope, float del, int pred)
+    throws DataException{
+
+  try{
+    PreparedStatement sqlUpdatePara;
+    sqlUpdatePara = connection.prepareStatement("update "+stock_code+" "+
+                                                  "set p_slope = "+slope+" "+
+                                                  ", delslope = "+del+" "+
+                                                  ", pred = "+pred+" "+
+                                                  "where day_trade = '"+day_trade+"' and ", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+    int rs = sqlUpdatePara.executeUpdate();
+    if( rs == 0 ){
+      connection.rollback();
+      return false;
+    }
+    else{
+      connection.commit();
+      return true;
+    }
+
+  }
+  catch( SQLException e ){
+
+    try{
+     System.out.println(e);
+     System.out.println(" update slope ");
+     connection.rollback();
+     return false;
+    }
+    catch( SQLException ex ){
+      throw new DataException( ex );
+    }
+  }
+
+  }
+////////////////////////////////////////////////////////////////////////////////
+  // refer get ResultSet I SECTOR
+  public int findI_Sector( String stock_code )
+     throws DataException{
+    String stock = "";
+    int i =101;
+    try{
+      if( stock_code.equals("B_LAND") ){
+        stock = "B-LAND";
+      }
+      else stock = stock_code;
+      PreparedStatement sqlSETValue;
+      sqlSETValue   = connection.prepareStatement("select i_sector from stock "+
+                                                  "where symbol = '"+stock+"' ", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+     ResultSet rs = sqlSETValue.executeQuery();
+     if( rs != null ){
+       rs.next();
+       i = rs.getInt(1);
+       return i;
+     }
+     else return 101;
+   }
+   catch( SQLException e ){
+     System.out.println(e);
+     System.out.println("  find I Sector ");
+     return 101;
+   }
+  }
+}

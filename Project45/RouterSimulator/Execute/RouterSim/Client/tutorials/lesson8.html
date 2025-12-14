@@ -1,0 +1,116 @@
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=">
+</head>
+<LINK REL="stylesheet"
+			HREF="base2.css"
+			TYPE="text/css">
+<body bgcolor="#FFFFFF" text="#000000">
+<table width="94%" border="0">
+  <tr> 
+    <td colspan="2"><img src="picture/l8.gif" width="281" height="33"></td>
+    <td width="63%"><font face="Verdana, Arial, Helvetica, sans-serif" size="4"><b><font color="#006699">Dynamic 
+      Routing with RIP</font></b></font></td>
+  </tr>
+  <tr> 
+    <td width="5%"><font face="AngsanaUPC"></font></td>
+    <td colspan="2"><font face="AngsanaUPC" size="5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;การทดลองนี้เป็นการกำหนดโพรดตคอลค้นหาเส้นทางของเราเตอร์แบบไดนามิกด้วย 
+      โพรโตคอลอาร์ไอพี </font></td>
+  </tr>
+  <tr> 
+    <td width="5%"><font face="AngsanaUPC"></font></td>
+    <td colspan="2"><font face="AngsanaUPC" size="5">1. Login ไปยังเราเตอร์ที่ต้องการ 
+      เข้าสู่ Privilege Mode โดยพิมพ์ en หรือ enable </font></td>
+  </tr>
+  <tr> 
+    <td width="5%" rowspan="6"><font face="AngsanaUPC"></font></td>
+    <td colspan="2"><font face="AngsanaUPC" size="5">2. ตัวอย่าง :<br>
+      RouterA#config t<br>
+      RouterA(config)#no ip route 161.246.5.0 255.255.255.0 161.246.3.2<br>
+      RouterA(config)#no ip route 161.246.7.0 255.255.255.0 161.246.3.2<br>
+      RouterA(config)#no ip route 161.246.6.0 255.255.255.0 161.246.3.2 </font></td>
+  </tr>
+  <tr> 
+    <td colspan="2"> 
+      <div align="center"><img src="picture/p1_l8.gif" width="621" height="494"></div>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="2"><font face="CordiaUPC" size="5">RouterB#config t<br>
+      RouterB(config)#no ip route 161.246.1.0 255.255.255.0 161.246.3.1<br>
+      RouterB(config)#no ip route 161.246.2.0 255.255.255.0 161.246.3.1<br>
+      RouterB(config)#no ip route 161.246.7.0 255.255.255.0 161.246.5.2<br>
+      RouterB(config)#no ip route 161.246.6.0 255.255.255.0 161.246.5.2</font></td>
+  </tr>
+  <tr> 
+    <td colspan="2"> 
+      <div align="center"><img src="picture/p2_l8.gif" width="623" height="493"></div>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="2"><font face="CordiaUPC" size="5">RouterC#config t<br>
+      RouterC(config)#no ip route 161.246.1.0 255.255.255.0 161.246.5.1<br>
+      RouterC(config)#no ip route 161.246.2.0 255.255.255.0 161.246.5.1<br>
+      RouterC(config)#no ip route 161.246.3.0 255.255.255.0 161.246.5.1 </font></td>
+  </tr>
+  <tr> 
+    <td colspan="2"> 
+      <div align="center"><img src="picture/p3_l8.gif" width="623" height="494"></div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="AngsanaUPC" size="5">3. ไปที่ Configuration Mode 
+      ของทุกเราเตอร์แล้วพิมพ์คำสั่ง Router Rip เช่นที่ RouterA<br>
+      RouterA#config t<br>
+      RouterA(config)#router rip<br>
+      </font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="AngsanaUPC" size="5">4. ใส่วง network ที่ต้องการลงไปโดยพิมพ์<br>
+      RouterA(config-router)#network 161.246.0.0 <br>
+      </font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="AngsanaUPC" size="5">5. ออกจาก configuration mode 
+      แล้วพิมพ์<br>
+      RouterB#show ip route</font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5"></font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">6<font face="AngsanaUPC">. 
+      ทำการบันทึกค่าคอนฟิคโดยการพิมพ์ copy run start</font><br>
+      </font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"> 
+      <div align="center"><font color="#336699" size="5" face="CordiaUPC"><b><font face="AngsanaUPC">สำหรับโหมดการทำงานทั้งหมดของเราเตอร์สามารถดูได้ที่ 
+        Command</font></b></font></div>
+    </td>
+  </tr>
+</table>
+<table width="31%" border="0" align="center" bgcolor="#006699">
+  <tr> 
+    <td width="35%" bgcolor="#336699"> 
+      <div align="left"><font color="#FF9900" face="Verdana, Arial, Helvetica, sans-serif" size="2"><a href="lesson7.html"><font color="#FFFFFF">Lesson 
+        7 &lt;--</font></a></font></div>
+    </td>
+    <td width="28%"> 
+      <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><a href="command.html"><font color="#FFCC00">command</font></a></font></div>
+    </td>
+    <td width="37%"> 
+      <div align="right"><font color="#FF9900" face="Verdana, Arial, Helvetica, sans-serif" size="2"><a href="lesson9.html"><font color="#FFFFFF"> 
+        --&gt; Lesson 9</font></a></font></div>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

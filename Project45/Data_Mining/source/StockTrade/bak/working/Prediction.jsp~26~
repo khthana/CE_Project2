@@ -1,0 +1,567 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+<style type="text/css">
+<!--
+A:link { text-decoration: none; color:#0088FF}
+A:active { text-decoration: none}
+A:visited { text-decoration: none; color:#0088FF }
+A:hover {text-decoration: none}
+-->
+</style>
+<style>
+.menulines{
+border:1px solid #ffffff;
+}
+
+.menulines a{
+text-decoration:none;
+color:#0088FF;
+}
+</style>
+
+<script language="JavaScript1.2">
+function borderize(what,color){
+what.style.borderColor=color
+}
+
+function borderize_on(e){
+if (document.all)
+source3=event.srcElement
+else if (document.getElementById)
+source3=e.target
+if (source3.className=="menulines"){
+borderize(source3,"ffff3333" )
+}
+else{
+while(source3.tagName!="TABLE"){
+source3=document.getElementById? source3.parentNode : source3.parentElement
+if (source3.className=="menulines")
+borderize(source3,"#ff3333")
+}
+}
+}
+
+function borderize_off(e){
+if (document.all)
+source4=event.srcElement
+else if (document.getElementById)
+source4=e.target
+if (source4.className=="menulines")
+borderize(source4,"white")
+else{
+while(source4.tagName!="TABLE"){
+source4=document.getElementById? source4.parentNode : source4.parentElement
+if (source4.className=="menulines")
+borderize(source4,"white")
+}
+}
+}
+var rate = 20; // Increase amount(The degree of the transmutation)
+var obj; // The object which event occured in
+var act = 0; // Flag during the action
+var elmH = 0; // Hue
+var elmS = 128; // Saturation
+var elmV = 255; // Value
+var clrOrg; // A color before the change
+var TimerID; // Timer ID
+if (navigator.appName.indexOf("Microsoft",0) != -1 && parseInt(navigator.appVersion) >= 4) {
+Browser = true;
+} else {
+Browser = false;
+}
+if (Browser) {
+document.onmouseover = doRainbowAnchor;
+document.onmouseout = stopRainbowAnchor;
+}
+function doRainbow()
+{
+if (Browser && act != 1) {
+act = 1;
+obj = event.srcElement;
+clrOrg = obj.style.color;
+TimerID = setInterval("ChangeColor()",100);
+}
+}
+function stopRainbow()
+{
+if (Browser && act != 0) {
+obj.style.color = clrOrg;
+clearInterval(TimerID);
+act = 0;
+}
+}
+function doRainbowAnchor()
+{
+if (Browser && act != 1) {
+obj = event.srcElement;
+while (obj.tagName != 'A' && obj.tagName != 'BODY') {
+obj = obj.parentElement;
+if (obj.tagName == 'A' || obj.tagName == 'BODY')
+break;
+}
+if (obj.tagName == 'A' && obj.href != '') {
+act = 1;
+clrOrg = obj.style.color;
+TimerID = setInterval("ChangeColor()",100);
+}
+}
+}
+function stopRainbowAnchor()
+{
+if (Browser && act != 0) {
+if (obj.tagName == 'A') {
+obj.style.color = clrOrg;
+clearInterval(TimerID);
+act = 0;
+}
+}
+}
+function ChangeColor()
+{
+obj.style.color = makeColor();
+}
+function makeColor()
+{
+if (elmS == 0) {
+elmR = elmV; elmG = elmV; elmB = elmV;
+}
+else {
+t1 = elmV;
+t2 = (255 - elmS) * elmV / 255;
+t3 = elmH % 60;
+t3 = (t1 - t2) * t3 / 60;
+if (elmH < 60) {
+elmR = t1; elmB = t2; elmG = t2 + t3;
+}
+else if (elmH < 120) {
+elmG = t1; elmB = t2; elmR = t1 - t3;
+}
+else if (elmH < 180) {
+elmG = t1; elmR = t2; elmB = t2 + t3;
+}
+else if (elmH < 240) {
+elmB = t1; elmR = t2; elmG = t1 - t3;
+}
+else if (elmH < 300) {
+elmB = t1; elmG = t2; elmR = t2 + t3;
+}
+else if (elmH < 360) {
+elmR = t1; elmG = t2; elmB = t1 - t3;
+}
+else {
+elmR = 0; elmG = 0; elmB = 0;
+}
+}
+elmR = Math.floor(elmR);
+elmG = Math.floor(elmG);
+elmB = Math.floor(elmB);
+clrRGB = '#' + elmR.toString(16) + elmG.toString(16) + elmB.toString(16);
+elmH = elmH + rate;
+if (elmH >= 360)
+elmH = 0;
+return clrRGB;
+}
+</script>
+</head>
+<body>
+
+<%@ page import = "java.sql.*" %>
+<%@ page import = "java.util.Vector" %>
+<%@ page import = "java.math.*" %>
+<%@ page import = "stocktrade.*" %>
+
+<table width="70%" height="90" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="70" colspan="5"><img src="../../../My%20Documents/My%20Received%20Files/PIC/BarFinal.jpg" width="700" height="70"></td>
+  </tr>
+  <tr bordercolor="#000000" bgcolor="#CCCC99" >
+    <td width="19%" height="20"><div align="center"><a href="Index.jsp" target="_blank"><font face="System">HOME</font></a>
+        </div></td>
+    <td width="18%"><div align="center"><a href="Graphs.jsp" target="_parent">กราฟราคาหุ้น</a></div></td>
+    <td width="22%"><div align="center"><a href="Prediction.jsp" target="_blank">ดูผลการทำนาย</a></div></td>
+    <td width="21%"><div align="center"><a href="Technical.htm" target="_blank">องค์ความรู้</a></div></td>
+    <td width="20%"><div align="center"><a href="Index.jsp" target="_self"><font face="System">ABOUT
+        US</font></a></div></td>
+  </tr>
+</table>
+<form name = "StockCode" action="Prediction.jsp" method = "get" >
+<%
+  String stock = "";
+      float price = 0f;
+      int deciss =0;
+      int pred = 0;
+      float ema9=0f;
+      float ema25=0f;
+      float ema75=0f;
+      float rsi=0f;
+      float k=0f;
+      float d=0f;
+      float macd=0f;
+    float sig=0f;
+    try{
+      stock = request.getParameter( "Stock" );
+      Vector ngee = new Vector();
+      if( stock == null ){
+        stock = "ASL";
+      }
+      stocktrade.QueryData database = new QueryData();
+      stock = stock.toUpperCase();
+      ngee = database.getdataday( stock );
+      System.out.println(ngee);
+      System.out.println(stock);
+      price = Float.parseFloat( ngee.elementAt(0).toString() );
+      deciss = Integer.parseInt( ngee.elementAt(1).toString() );
+      pred = Integer.parseInt( ngee.elementAt(2).toString() );
+      ema9 = Float.parseFloat( ngee.elementAt(3).toString() );
+      ema25 = Float.parseFloat( ngee.elementAt(4).toString() );
+      ema75 = Float.parseFloat( ngee.elementAt(5).toString() );
+      rsi = Float.parseFloat( ngee.elementAt(6).toString() );
+      k = Float.parseFloat( ngee.elementAt(7).toString() );
+      d = Float.parseFloat( ngee.elementAt(8).toString() );
+      macd = Float.parseFloat( ngee.elementAt(9).toString() );
+      sig = Float.parseFloat( ngee.elementAt(10).toString() );
+    }
+    catch( Exception ee ){
+      System.out.println(ee);
+    }
+
+%>
+
+  <table width="75%" border="0">
+    <tr>
+      <td height="22" colspan="5"> <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
+          <tr>
+            <td><font color="#999933">ดูผลทำนาย</font></td>
+          </tr>
+          <tr>
+            <td bgcolor="#ADCBF7"    height="1" ></td>
+          </tr>
+          <tr>
+            <td bgcolor = "#FFFFFF"height="1" ></td>
+          </tr>
+          <tr>
+            <td bgcolor="#ADCBF7"  height="1"></td>
+          </tr>
+        </table></td>
+    </tr>
+    <tr>
+      <td width="10%" height="27"><font color="#3366FF">Enter Stock </font></td>
+      <td width="14%">
+        <input name="stock" type="text" id="stock" size="15">
+        </td>
+      <td width="4%"><img src="../../../My%20Documents/My%20Received%20Files/PIC/go2.gif" width="21" height="17"></td>
+      <td width="71%">&nbsp;</td>
+      <td width="1%" rowspan="3">&nbsp;</td>
+    </tr>
+    <tr>
+      <td height="386" colspan="4">
+<table width="100%" border="2" cellpadding="0" cellspacing="0" bordercolor="#FF9900">
+          <tr bgcolor="#6666FF">
+            <td colspan="6"><font color="#66FF99" size="3">โมเดลของทางผู้จัดทำ</font></td>
+          </tr>
+          <tr>
+            <td height="40" colspan="6"><div align="left">
+<%
+   if( deciss==0 ){
+     out.print("มีแนวโน้มที่ไม่แน่นอน ควรอยู่เฉยๆ");
+   }
+   else if( deciss==1 ){
+     out.print("มีแนวโน้มขึ้น สามารซื้อ หรือถือเพื่อทำกำไรได้");
+   }
+   else if( deciss==-1 ){
+     out.print("แนวโน้มลง ทยอยขาย หรือขาย");
+   }
+   else if( deciss==3 ){
+     out.print("มีการกระตุ้น ราคาขึ้นในระยะสั้น");
+   }
+   else if( deciss==4 ){
+     out.print("แนวโน้มยังขึ้นอยู่ แต่เริ่มมีแรงขาย");
+   }
+%>
+</div></td>
+          </tr>
+          <tr bgcolor="#6699FF">
+            <td colspan="6"><font color="#66FF99" size="3">โมเดลของดร.ปัญญา เปรมปรีด์</font></td>
+          </tr>
+          <tr>
+            <td height="40" colspan="6"><div align="left">
+<%
+if( pred==0 ){
+  out.print("ควรอยู่เฉยๆ");
+}
+else if( pred==1 ){
+  out.print("ควรซื้อ");
+}
+else if( pred==-1 ){
+  out.print(" ควรขาย");
+}
+%>
+</div></td>
+          </tr>
+          <tr>
+            <td colspan="3" bgcolor="#6699FF"><div align="center"><font color="#66FF99" size="2">Exponential
+                Moving Average</font></div></td>
+            <td colspan="3" bgcolor="#6699FF"> <div align="center"><font color="#66FF99" size="2">Exponential
+                Moving Average Result</font></div></td>
+          </tr>
+          <tr>
+            <td width="15%" bgcolor="#FFFFCC"><div align="center"><font size="2"><font color="#6666FF">ema
+                10 </font></font></div></td>
+            <td width="17%" bgcolor="#FFFFCC"><div align="center"><font size="2"><font color="#6666FF">ema
+                25</font></font></div></td>
+            <td width="15%" bgcolor="#FFFFCC"><div align="center"><font color="#6666FF" size="2">ema
+                75 </font></div></td>
+            <td width="17%" bgcolor="#FFFFCC"> <div align="center"><font size="2"><font color="#6666FF">ST</font></font></div></td>
+            <td width="18%" bgcolor="#FFFFCC"> <div align="center"><font size="2"><font color="#6666FF">ST-MT</font></font></div></td>
+            <td width="18%" bgcolor="#FFFFCC"> <div align="center"><font size="2"><font color="#6666FF">MT</font></font></div></td>
+          </tr>
+          <tr>
+            <td><div align="center"><%out.print(Math.round(ema9*100f)/100f);%></div></td>
+            <td><div align="center"><%out.print(Math.round(ema25*100f)/100f);%></div></td>
+            <td><div align="center"><%out.print(Math.round(ema75*100f)/100f);%></div></td>
+            <td><div align="center">
+            <%
+              if( price >= ema9 ){
+                out.print("Bullish");
+              }
+              else if( price < ema9 ){
+                out.print("Bearish");
+              }
+            %>
+            </div></td>
+            <td><div align="center">
+            <%
+              if( price >= ema25 ){
+                out.print("Bullish");
+              }
+              else if( price < ema25 ){
+                out.print("Bearish");
+              }
+            %>
+            </div></td>
+            <td><div align="center">
+            <%
+              if( price >= ema75 ){
+                out.print("Bullish");
+              }
+              else if( price < ema75 ){
+                out.print("Bearish");
+              }
+            %>
+            </div></td>
+          </tr>
+          <tr bgcolor="#FFFFCC">
+            <td colspan="6"><font size="2"><font color="#6666FF">ST</font> <font color="#6666FF" size="3">ระยะสั้น</font></font></td>
+          </tr>
+          <tr>
+            <td colspan="6"><font color="#6699FF" size="2">Bullish</font> <font size="2"><font color="#6699FF">
+              = closed price &gt; eam 10 </font><font size="2"><font size="2"><font color="#6699FF">=</font></font>
+              <font color="#6699FF">ระยะสั้นดี</font> </font></font></td>
+          </tr>
+          <tr>
+            <td colspan="6"><font color="#6699FF" size="2">Bearish</font> <font size="2"><font color="#6699FF">
+              = closed price &lt; eam 10 </font><font size="2"><font size="2"><font color="#6699FF">=</font></font>
+              <font color="#6699FF">ระยะสั้นไม่ดี</font> </font></font></td>
+          </tr>
+          <tr bgcolor="#FFFFCC">
+            <td colspan="6"><font size="2"><font color="#6666FF">ST-MT</font>
+              <font color="#6666FF" size="3">ระยะสั้น-ระยะกลาง</font></font></td>
+          </tr>
+          <tr>
+            <td colspan="6"><font color="#6699FF" size="2">Bullish</font> <font size="2"><font color="#6699FF">
+              = closed price &gt; eam 25</font><font size="2"><font size="2"><font color="#6699FF">=</font></font>
+              <font color="#6699FF">ระยะสั้น-ระยะกลางดี</font> </font></font></td>
+          </tr>
+          <tr>
+            <td colspan="6"><font color="#6699FF" size="2">Bearish</font> <font size="2"><font color="#6699FF">
+              = closed price &lt; eam 25</font><font size="2"><font size="2"><font color="#6699FF">=</font></font>
+              <font color="#6699FF">ระยะสั้น<font size="2"><font size="2">-ระยะกลาง</font></font>ไม่ดี</font>
+              </font></font></td>
+          </tr>
+          <tr bgcolor="#FFFFCC">
+            <td colspan="6"><font size="2"><font color="#6666FF">MT</font><font color="#6666FF">
+              </font><font size="2"><font color="#6666FF" size="3">ระยะกลาง</font></font><font size="2"></font></font></td>
+          </tr>
+          <tr>
+            <td colspan="6"><font color="#6699FF" size="2">Bullish</font> <font size="2"><font color="#6699FF">
+              = closed price &gt; eam 75</font><font size="2"><font size="2"><font color="#6699FF">=</font></font>
+              <font color="#6699FF">ระยะกลางดี</font> </font></font></td>
+          </tr>
+          <tr>
+            <td colspan="6"><font color="#6699FF" size="2">Bearish</font> <font size="2"><font color="#6699FF">
+              = closed price &lt; eam 75</font><font size="2"><font size="2"><font color="#6699FF">=</font></font>
+              <font color="#6699FF"><font size="2"><font size="2">ระยะกลาง</font></font>ไม่ดี</font>
+              </font></font></td>
+          </tr>
+        </table></td>
+    </tr>
+    <tr>
+      <td height="515" colspan="4">
+<table width="100%" height="448" border="2" cellpadding="0" cellspacing="0" bordercolor="#FF9900">
+          <tr bgcolor="#6699FF">
+            <td width="57" rowspan="2"> <div align="center"><font color="#66FF99" size="2">14RSI</font></div></td>
+            <td colspan="2"> <div align="center"><font color="#66FF99" size="2">Stochastic</font></div></td>
+            <td colspan="2"> <div align="center"><font color="#66FF99" size="2">MACD</font></div></td>
+            <td colspan="3"> <div align="center"><font color="#66FF99" size="2">Oscillators
+                Result</font></div></td>
+          </tr>
+          <tr>
+            <td width="56" bgcolor="#6699FF"> <div align="center"><font color="#66FF99" size="2">%K</font></div></td>
+            <td width="56" bgcolor="#6699FF"> <div align="center"><font color="#66FF99" size="2">%D</font></div></td>
+            <td width="66" bgcolor="#6699FF"> <div align="center"><font color="#66FF99" size="2">MACD</font></div></td>
+            <td width="63" bgcolor="#6699FF"> <div align="center"><font color="#66FF99" size="2">Signal</font></div></td>
+            <td width="89" bgcolor="#6699FF"> <div align="center"><font color="#66FF99" size="2">RSI</font></div></td>
+            <td width="91" bgcolor="#6699FF"> <div align="center"><font color="#66FF99" size="2">Stochastic</font></div></td>
+            <td width="195" bgcolor="#6699FF"> <div align="center"><font color="#66FF99" size="2">MACD</font></div></td>
+          </tr>
+          <tr>
+            <td><div align="center"><%out.print(Math.round(rsi*100f)/100f);%></div></td>
+            <td><div align="center"><%out.print(Math.round(k*100f)/100f);%></div></td>
+            <td><div align="center"><%out.print(Math.round(d*100f)/100f);%></div></td>
+            <td><div align="center"><%out.print(Math.round(macd*1000f)/1000f);%></div></td>
+            <td><div align="center"><%out.print(Math.round(sig*1000f)/1000f);%></div></td>
+            <td><div align="center">
+            <%
+              if( rsi>80f ){
+                out.print("Overbought");
+              }
+              else if( (rsi<=80f)&&(rsi>=20f) ){
+                out.print("O");
+              }
+              else
+              if( rsi<20f ){
+                out.print("Oversold");
+              }
+            %>
+            </div></td>
+            <td><div align="center">
+            <%
+              if( (k>80f)&&(k>d) ){
+                out.print("+Overbought");
+              }
+              else if( (k>80f)&&(k<=d) ){
+                out.print("-Overbought");
+              }
+              else if( (k<=80f)&&(k>=20f)&&(k>d) ){
+                out.print("+O");
+              }
+              else if( (k<=80f)&&(k>=20f)&&(k<d) ){
+                out.print("-O");
+              }
+              else if( (k<20f)&&(k>d) ){
+                out.print("+Oversold");
+              }
+              else if( (k<80f)&&(k<=d) ){
+                out.print("-Oversold");
+              }
+            %>
+            </div></td>
+            <td><div align="center">
+            <%
+            if( (macd>0)&&(macd>sig) ){
+              out.print( "+Bullish" );
+            }
+            else if( (macd>0)&&(macd<sig) ){
+              out.print( "-Bullish" );
+            }
+            else if( (macd<=0)&&(macd>sig) ){
+              out.print( "+Bearish" );
+            }
+            else if( (macd<=0)&&(macd<sig) ){
+              out.print( "-Bearish" );
+            }
+            %>
+            </div></td>
+          </tr>
+          <tr bgcolor="#FFFFCC">
+            <td colspan="8"><font size="2"><font color="#6666FF">Stochastic</font>
+              <font color="#6666FF" size="3">สัญญาณระยะสั้น</font></font></td>
+          </tr>
+          <tr>
+            <td colspan="8"><font color="#6699FF" size="2">+Overbought = %K &gt;
+              80% and %K &gt; %D = </font><font color="#6699FF" size="3" face="AngsanaUPC, BrowalliaUPC, CordiaUPC, MS Serif">ถือเพื่อรอขาย</font></td>
+          </tr>
+          <tr>
+            <td colspan="8"><font color="#6699FF" size="2">-Overbought</font>
+              <font color="#6699FF" size="2">=</font> <font color="#6699FF" size="2">%K
+              &gt; 80% and %K &lt;%D</font> <font color="#6699FF" size="2">=</font>
+              <font color="#6699FF" size="3" face="AngsanaUPC, BrowalliaUPC, CordiaUPC, MS Serif">ขายเพื่อทำกำไร</font>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="8"><font color="#6699FF" size="2">+O</font> <font color="#6699FF" size="2">=</font>
+              <font color="#6699FF" size="2">%K <font size="3" face="AngsanaUPC, BrowalliaUPC, CordiaUPC, MS Serif">อยู่ระหว่าง
+              </font>20-80% and %K &gt;%D</font> <font color="#6699FF" size="2">=</font>
+              <font color="#6699FF" size="3" face="AngsanaUPC, BrowalliaUPC, CordiaUPC, MS Serif">ซื้อ
+              และ ถือลงทุน</font></td>
+          </tr>
+          <tr>
+            <td colspan="8"><font color="#6699FF" size="2">-O = %K <font size="3" face="AngsanaUPC, BrowalliaUPC, CordiaUPC, MS Serif">อยู่ระหว่าง</font><font face="AngsanaUPC, BrowalliaUPC, CordiaUPC, MS Serif">
+              </font>20-80% and %K &lt;%D = <font color="#6699FF" size="3" face="AngsanaUPC, BrowalliaUPC, CordiaUPC, MS Serif">ขายไป
+              และถือเงินสด </font></font></td>
+          </tr>
+          <tr>
+            <td colspan="8"><font color="#6699FF" size="2">+Oversold = %K &lt;20%
+              and %K &gt;%D = </font><font color="#6699FF" size="3" face="AngsanaUPC, BrowalliaUPC, CordiaUPC, MS Serif">สัญญาณซื้อและลงทุน</font></td>
+          </tr>
+          <tr>
+            <td colspan="8"><font color="#6699FF" size="2">-Oversold</font> <font color="#6699FF" size="2">=</font>
+              <font color="#6699FF" size="2">%K &lt;20% and %K &lt;%D</font> <font color="#6699FF" size="2">=</font>
+              <font color="#6699FF" size="3" face="AngsanaUPC, BrowalliaUPC, CordiaUPC, MS Serif">รอสัญญาณซื้อ</font>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="8" bgcolor="#FFFFCC"><font size="2"><font color="#6666FF">14
+              RSI</font><font color="#6666FF"> </font><font size="2"><font color="#6666FF" size="3">สัญญาณระยะสั้น</font></font><font color="#6666FF">
+              -<font size="3"> กลาง</font></font></font></td>
+          </tr>
+          <tr>
+            <td colspan="8"><font color="#6699FF" size="2">Overbought = <font color="#6699FF" size="2">14
+              RSI &gt; 80%</font></font><font color="#6699FF" size="2"> = </font><font color="#6699FF" size="3" face="AngsanaUPC, BrowalliaUPC, CordiaUPC, MS Serif">ความเสี่ยงระดับสูง</font></td>
+          </tr>
+          <tr>
+            <td colspan="8"><font color="#6699FF" size="2">O = <font color="#6699FF" size="2">14
+              RSI <font color="#6699FF" size="2"><font size="3" face="AngsanaUPC, BrowalliaUPC, CordiaUPC, MS Serif">อยู่ระหว่าง</font></font><font face="AngsanaUPC, BrowalliaUPC, CordiaUPC, MS Serif">
+              </font>20-80%</font> = <font color="#6699FF" size="3" face="AngsanaUPC, BrowalliaUPC, CordiaUPC, MS Serif">ความเสี่ยงระดับปานกลาง</font></font></td>
+          </tr>
+          <tr>
+            <td colspan="8"><font color="#6699FF" size="2">Oversold = <font color="#6699FF" size="2">14
+              RSI &lt; 20%</font></font><font color="#6699FF" size="2"> <font color="#6699FF" size="2">=</font>
+              </font><font color="#6699FF" size="3" face="AngsanaUPC, BrowalliaUPC, CordiaUPC, MS Serif">ความเสี่ยงระดับต่ำ</font><font color="#6699FF" size="2">&nbsp;
+              </font></td>
+          </tr>
+          <tr bgcolor="#FFFFCC">
+            <td height="22" colspan="8"><font color="#6666FF" size="2">MACD สัญญาณระยะกลาง</font></td>
+          </tr>
+          <tr>
+            <td colspan="8"><font color="#6699FF" size="2">+Bullish</font> <font size="2"><font color="#6699FF">
+              = MACD &gt; 0 &amp; MACD &gt; signal </font><font size="2"><font size="2"><font color="#6699FF">=</font></font>
+              <font color="#6699FF">ขาขึ้นระยะกลาง ซื้อและลงทุน</font></font></font></td>
+          </tr>
+          <tr>
+            <td colspan="8"><font color="#6699FF" size="2">-Bullish</font> <font size="2"><font color="#6699FF">=
+              MACD &gt; 0 &amp; MACD &lt; signal <font size="2"><font size="2"><font size="2">=</font></font></font></font>
+              <font color="#6699FF">ปรับตัวในขาขึ้นระยะกลาง ลดพอร์ต</font> </font></td>
+          </tr>
+          <tr>
+            <td colspan="8"><font size="2"><font color="#6699FF" size="2">+Bearish
+              </font><font size="2"><font color="#6699FF">=</font></font> <font color="#6699FF">MACD
+              &lt; 0 &amp; MACD &gt; signal <font size="2"><font size="2"><font size="2"><font size="2">=</font></font></font></font></font>
+              </font><font color="#6699FF" size="2">ดีดกลับในขาลงระยะกลาง ซื้อเก็งกำไร</font><font size="2">
+              <font color="#6699FF" size="2">&nbsp; </font></font></td>
+          </tr>
+          <tr>
+            <td colspan="8" bgcolor="#6699FF">&nbsp;</td>
+          </tr>
+        </table></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+</form>
+<%out.println("<param name=\"Stock\"  value=\""+stock+"\" >");%>
+</body>
+</html>

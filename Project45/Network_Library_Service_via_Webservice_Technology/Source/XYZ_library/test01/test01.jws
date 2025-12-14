@@ -1,0 +1,48 @@
+package test01; 
+
+import weblogic.jws.control.JwsContext;
+import java.io.*;
+
+
+
+public class test01
+{ 
+
+    public Callback callback;
+
+    public interface Callback
+    {
+        /**
+         * @jws:conversation phase="finish"
+         * @jws:message-buffer enable="true"
+         */
+        public void onCreditReportDone(Applicant currentApplicant, String responseMessage);
+    }
+    public static class Applicant implements Serializable{
+        public String taxID;
+        public String firstName;
+        public String lastName;
+        public boolean currentlyBankrupt;
+        public int availableCCCredit;
+        public int creditScore;
+        public String approvalLevel;
+        public Applicant(String taxID){
+            this.taxID=taxID;    
+        }
+        public Applicant(){}
+    }
+    Applicant m_currentApplicant=new Applicant();
+    /** @jws:context */ 
+    JwsContext context; 
+
+    /**
+     * @jws:operation
+     * @jws:conversation phase="start"
+     * @jws:message-buffer enable="true"
+     */
+    public void requestCreditReportAsynch(String taxID)
+    {
+        m_currentApplicant.taxID=taxID;
+        callback.onCreditReportDone(m_currentApplicant, null);
+    }
+} 

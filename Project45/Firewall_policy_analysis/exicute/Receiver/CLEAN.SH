@@ -1,0 +1,2 @@
+rm *.cap
+rm *.rep

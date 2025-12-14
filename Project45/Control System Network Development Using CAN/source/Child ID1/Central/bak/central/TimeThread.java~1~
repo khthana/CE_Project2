@@ -1,0 +1,32 @@
+package central;
+
+import java.util.Date;
+
+/**
+Provide Time on Status Tab
+*/
+
+class TimeThread extends Thread {
+
+  private static String nowstr;
+
+  TimeThread(String s) {
+    super(s);
+  }
+  public void run() {
+    while (true)
+    {
+      Date now = new Date();
+      nowstr = now.toString();
+      nowstr = nowstr.substring(11, 19);
+      if (!nowstr.equals(StatusTab.currenttime))
+        StatusTab.currenttime = nowstr;
+//      MainFrame.devicetab.repaint();
+      try {
+        sleep(200);
+      }
+      catch(Exception e) {
+      }
+    }
+  }
+}

@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://tempuri.org/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://tempuri.org/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:import namespace="http://www.w3.org/2001/XMLSchema" />
+      <s:element name="GetInfoProductByName">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="NameProduct" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Detail" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PriceStr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInfoProductByNameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInfoProductByNameResult" type="s0:ArrayOfReturnProduct" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfReturnProduct">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ReturnProduct" type="s0:ReturnProduct" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ReturnProduct">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Detail" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Unit" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Price" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Picture" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IDSeller" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetInfoProductByID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IDProduct" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInfoProductByIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetInfoProductByIDResult" type="s0:ReturnProduct" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DateOrder" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDProduct" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Quantity" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDBuyer" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="province" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="zipcode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="WayPay" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddOrderResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SearchOrder">
+        <s:complexType />
+      </s:element>
+      <s:element name="SearchOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SearchOrderResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DateOrder" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDProduct" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDBuyer" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="send" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="getmoney" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateOrderResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ArrayOfReturnProduct" nillable="true" type="s0:ArrayOfReturnProduct" />
+      <s:element name="ReturnProduct" type="s0:ReturnProduct" />
+      <s:element name="boolean" type="s:boolean" />
+      <s:element name="DataSet" nillable="true">
+        <s:complexType>
+          <s:sequence>
+            <s:element ref="s:schema" />
+            <s:any />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </types>
+  <message name="GetInfoProductByNameSoapIn">
+    <part name="parameters" element="s0:GetInfoProductByName" />
+  </message>
+  <message name="GetInfoProductByNameSoapOut">
+    <part name="parameters" element="s0:GetInfoProductByNameResponse" />
+  </message>
+  <message name="GetInfoProductByIDSoapIn">
+    <part name="parameters" element="s0:GetInfoProductByID" />
+  </message>
+  <message name="GetInfoProductByIDSoapOut">
+    <part name="parameters" element="s0:GetInfoProductByIDResponse" />
+  </message>
+  <message name="AddOrderSoapIn">
+    <part name="parameters" element="s0:AddOrder" />
+  </message>
+  <message name="AddOrderSoapOut">
+    <part name="parameters" element="s0:AddOrderResponse" />
+  </message>
+  <message name="SearchOrderSoapIn">
+    <part name="parameters" element="s0:SearchOrder" />
+  </message>
+  <message name="SearchOrderSoapOut">
+    <part name="parameters" element="s0:SearchOrderResponse" />
+  </message>
+  <message name="UpdateOrderSoapIn">
+    <part name="parameters" element="s0:UpdateOrder" />
+  </message>
+  <message name="UpdateOrderSoapOut">
+    <part name="parameters" element="s0:UpdateOrderResponse" />
+  </message>
+  <message name="GetInfoProductByNameHttpGetIn">
+    <part name="NameProduct" type="s:string" />
+    <part name="Detail" type="s:string" />
+    <part name="PriceStr" type="s:string" />
+  </message>
+  <message name="GetInfoProductByNameHttpGetOut">
+    <part name="Body" element="s0:ArrayOfReturnProduct" />
+  </message>
+  <message name="GetInfoProductByIDHttpGetIn">
+    <part name="IDProduct" type="s:string" />
+  </message>
+  <message name="GetInfoProductByIDHttpGetOut">
+    <part name="Body" element="s0:ReturnProduct" />
+  </message>
+  <message name="AddOrderHttpGetIn">
+    <part name="DateOrder" type="s:string" />
+    <part name="IDProduct" type="s:string" />
+    <part name="Quantity" type="s:string" />
+    <part name="IDBuyer" type="s:string" />
+    <part name="Name" type="s:string" />
+    <part name="Address" type="s:string" />
+    <part name="province" type="s:string" />
+    <part name="zipcode" type="s:string" />
+    <part name="WayPay" type="s:string" />
+  </message>
+  <message name="AddOrderHttpGetOut">
+    <part name="Body" element="s0:boolean" />
+  </message>
+  <message name="SearchOrderHttpGetIn" />
+  <message name="SearchOrderHttpGetOut">
+    <part name="Body" element="s0:DataSet" />
+  </message>
+  <message name="UpdateOrderHttpGetIn">
+    <part name="DateOrder" type="s:string" />
+    <part name="IDProduct" type="s:string" />
+    <part name="IDBuyer" type="s:string" />
+    <part name="send" type="s:string" />
+    <part name="getmoney" type="s:string" />
+  </message>
+  <message name="UpdateOrderHttpGetOut">
+    <part name="Body" element="s0:boolean" />
+  </message>
+  <message name="GetInfoProductByNameHttpPostIn">
+    <part name="NameProduct" type="s:string" />
+    <part name="Detail" type="s:string" />
+    <part name="PriceStr" type="s:string" />
+  </message>
+  <message name="GetInfoProductByNameHttpPostOut">
+    <part name="Body" element="s0:ArrayOfReturnProduct" />
+  </message>
+  <message name="GetInfoProductByIDHttpPostIn">
+    <part name="IDProduct" type="s:string" />
+  </message>
+  <message name="GetInfoProductByIDHttpPostOut">
+    <part name="Body" element="s0:ReturnProduct" />
+  </message>
+  <message name="AddOrderHttpPostIn">
+    <part name="DateOrder" type="s:string" />
+    <part name="IDProduct" type="s:string" />
+    <part name="Quantity" type="s:string" />
+    <part name="IDBuyer" type="s:string" />
+    <part name="Name" type="s:string" />
+    <part name="Address" type="s:string" />
+    <part name="province" type="s:string" />
+    <part name="zipcode" type="s:string" />
+    <part name="WayPay" type="s:string" />
+  </message>
+  <message name="AddOrderHttpPostOut">
+    <part name="Body" element="s0:boolean" />
+  </message>
+  <message name="SearchOrderHttpPostIn" />
+  <message name="SearchOrderHttpPostOut">
+    <part name="Body" element="s0:DataSet" />
+  </message>
+  <message name="UpdateOrderHttpPostIn">
+    <part name="DateOrder" type="s:string" />
+    <part name="IDProduct" type="s:string" />
+    <part name="IDBuyer" type="s:string" />
+    <part name="send" type="s:string" />
+    <part name="getmoney" type="s:string" />
+  </message>
+  <message name="UpdateOrderHttpPostOut">
+    <part name="Body" element="s0:boolean" />
+  </message>
+  <portType name="ServiceSell2Soap">
+    <operation name="GetInfoProductByName">
+      <documentation>ใช้ในการค้นหารายการสินค้าโดยใช้ชื่อสินค้าในการค้นหา(Search)</documentation>
+      <input message="s0:GetInfoProductByNameSoapIn" />
+      <output message="s0:GetInfoProductByNameSoapOut" />
+    </operation>
+    <operation name="GetInfoProductByID">
+      <documentation>ใช้ในการค้นหารายการสินค้าโดยใช้รหัสสินค้าในการค้นหา(Search)</documentation>
+      <input message="s0:GetInfoProductByIDSoapIn" />
+      <output message="s0:GetInfoProductByIDSoapOut" />
+    </operation>
+    <operation name="AddOrder">
+      <documentation>ใช้ในการค้นหารายการสินค้าโดยใช้ชื่อสินค้าในการค้นหา(Search)</documentation>
+      <input message="s0:AddOrderSoapIn" />
+      <output message="s0:AddOrderSoapOut" />
+    </operation>
+    <operation name="SearchOrder">
+      <documentation>ใช้ในการค้นหารายการสินค้าที่ต้องส่ง(Search)</documentation>
+      <input message="s0:SearchOrderSoapIn" />
+      <output message="s0:SearchOrderSoapOut" />
+    </operation>
+    <operation name="UpdateOrder">
+      <documentation>ใช้ในการปรับปรุงรายการสินค้าที่ต้องส่ง(Search)</documentation>
+      <input message="s0:UpdateOrderSoapIn" />
+      <output message="s0:UpdateOrderSoapOut" />
+    </operation>
+  </portType>
+  <portType name="ServiceSell2HttpGet">
+    <operation name="GetInfoProductByName">
+      <documentation>ใช้ในการค้นหารายการสินค้าโดยใช้ชื่อสินค้าในการค้นหา(Search)</documentation>
+      <input message="s0:GetInfoProductByNameHttpGetIn" />
+      <output message="s0:GetInfoProductByNameHttpGetOut" />
+    </operation>
+    <operation name="GetInfoProductByID">
+      <documentation>ใช้ในการค้นหารายการสินค้าโดยใช้รหัสสินค้าในการค้นหา(Search)</documentation>
+      <input message="s0:GetInfoProductByIDHttpGetIn" />
+      <output message="s0:GetInfoProductByIDHttpGetOut" />
+    </operation>
+    <operation name="AddOrder">
+      <documentation>ใช้ในการค้นหารายการสินค้าโดยใช้ชื่อสินค้าในการค้นหา(Search)</documentation>
+      <input message="s0:AddOrderHttpGetIn" />
+      <output message="s0:AddOrderHttpGetOut" />
+    </operation>
+    <operation name="SearchOrder">
+      <documentation>ใช้ในการค้นหารายการสินค้าที่ต้องส่ง(Search)</documentation>
+      <input message="s0:SearchOrderHttpGetIn" />
+      <output message="s0:SearchOrderHttpGetOut" />
+    </operation>
+    <operation name="UpdateOrder">
+      <documentation>ใช้ในการปรับปรุงรายการสินค้าที่ต้องส่ง(Search)</documentation>
+      <input message="s0:UpdateOrderHttpGetIn" />
+      <output message="s0:UpdateOrderHttpGetOut" />
+    </operation>
+  </portType>
+  <portType name="ServiceSell2HttpPost">
+    <operation name="GetInfoProductByName">
+      <documentation>ใช้ในการค้นหารายการสินค้าโดยใช้ชื่อสินค้าในการค้นหา(Search)</documentation>
+      <input message="s0:GetInfoProductByNameHttpPostIn" />
+      <output message="s0:GetInfoProductByNameHttpPostOut" />
+    </operation>
+    <operation name="GetInfoProductByID">
+      <documentation>ใช้ในการค้นหารายการสินค้าโดยใช้รหัสสินค้าในการค้นหา(Search)</documentation>
+      <input message="s0:GetInfoProductByIDHttpPostIn" />
+      <output message="s0:GetInfoProductByIDHttpPostOut" />
+    </operation>
+    <operation name="AddOrder">
+      <documentation>ใช้ในการค้นหารายการสินค้าโดยใช้ชื่อสินค้าในการค้นหา(Search)</documentation>
+      <input message="s0:AddOrderHttpPostIn" />
+      <output message="s0:AddOrderHttpPostOut" />
+    </operation>
+    <operation name="SearchOrder">
+      <documentation>ใช้ในการค้นหารายการสินค้าที่ต้องส่ง(Search)</documentation>
+      <input message="s0:SearchOrderHttpPostIn" />
+      <output message="s0:SearchOrderHttpPostOut" />
+    </operation>
+    <operation name="UpdateOrder">
+      <documentation>ใช้ในการปรับปรุงรายการสินค้าที่ต้องส่ง(Search)</documentation>
+      <input message="s0:UpdateOrderHttpPostIn" />
+      <output message="s0:UpdateOrderHttpPostOut" />
+    </operation>
+  </portType>
+  <binding name="ServiceSell2Soap" type="s0:ServiceSell2Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <operation name="GetInfoProductByName">
+      <soap:operation soapAction="http://tempuri.org/GetInfoProductByName" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetInfoProductByID">
+      <soap:operation soapAction="http://tempuri.org/GetInfoProductByID" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="AddOrder">
+      <soap:operation soapAction="http://tempuri.org/AddOrder" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SearchOrder">
+      <soap:operation soapAction="http://tempuri.org/SearchOrder" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="UpdateOrder">
+      <soap:operation soapAction="http://tempuri.org/UpdateOrder" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="ServiceSell2HttpGet" type="s0:ServiceSell2HttpGet">
+    <http:binding verb="GET" />
+    <operation name="GetInfoProductByName">
+      <http:operation location="/GetInfoProductByName" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="GetInfoProductByID">
+      <http:operation location="/GetInfoProductByID" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="AddOrder">
+      <http:operation location="/AddOrder" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="SearchOrder">
+      <http:operation location="/SearchOrder" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="UpdateOrder">
+      <http:operation location="/UpdateOrder" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="ServiceSell2HttpPost" type="s0:ServiceSell2HttpPost">
+    <http:binding verb="POST" />
+    <operation name="GetInfoProductByName">
+      <http:operation location="/GetInfoProductByName" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="GetInfoProductByID">
+      <http:operation location="/GetInfoProductByID" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="AddOrder">
+      <http:operation location="/AddOrder" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="SearchOrder">
+      <http:operation location="/SearchOrder" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="UpdateOrder">
+      <http:operation location="/UpdateOrder" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+  </binding>
+  <service name="ServiceSell2">
+    <port name="ServiceSell2Soap" binding="s0:ServiceSell2Soap">
+      <soap:address location="http://161.246.6.4/projecttumbolthai/Seller2/Webservice/Servicesell2.asmx" />
+    </port>
+    <port name="ServiceSell2HttpGet" binding="s0:ServiceSell2HttpGet">
+      <http:address location="http://161.246.6.4/projecttumbolthai/Seller2/Webservice/Servicesell2.asmx" />
+    </port>
+    <port name="ServiceSell2HttpPost" binding="s0:ServiceSell2HttpPost">
+      <http:address location="http://161.246.6.4/projecttumbolthai/Seller2/Webservice/Servicesell2.asmx" />
+    </port>
+  </service>
+</definitions>

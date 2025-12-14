@@ -1,0 +1,382 @@
+Attribute VB_Name = "tapiMessage"
+Option Explicit
+
+Public Function TapiErrMsg(dwMsg As Long) As String
+  Dim strTemp As String
+
+  Select Case dwMsg
+    Case LINEERR_ALLOCATED                       ' &H80000001
+      strTemp = "LINEERR_ALLOCATED"
+    Case LINEERR_BADDEVICEID                     ' &H80000002
+      strTemp = "LINEERR_BADDEVICEID"
+    Case LINEERR_BEARERMODEUNAVAIL               ' &H80000003
+      strTemp = "LINEERR_BEARERMODEUNAVAIL"
+    Case LINEERR_CALLUNAVAIL                     ' &H80000005
+      strTemp = "LINEERR_CALLUNAVAIL"
+    Case LINEERR_COMPLETIONOVERRUN               ' &H80000006
+      strTemp = "LINEERR_COMPLETIONOVERRUN"
+    Case LINEERR_CONFERENCEFULL                  ' &H80000007
+      strTemp = "LINEERR_CONFERENCEFULL"
+    Case LINEERR_DIALBILLING                     ' &H80000008
+      strTemp = "LINEERR_DIALBILLING"
+    Case LINEERR_DIALDIALTONE                    ' &H80000009
+      strTemp = "LINEERR_DIALDIALTONE"
+    Case LINEERR_DIALPROMPT                      ' &H8000000A
+      strTemp = "LINEERR_DIALPROMPT"
+    Case LINEERR_DIALQUIET                       ' &H8000000B
+      strTemp = "LINEERR_DIALQUIET"
+    Case LINEERR_INCOMPATIBLEAPIVERSION          ' &H8000000C
+      strTemp = "LINEERR_INCOMPATIBLEAPIVERSION"
+    Case LINEERR_INCOMPATIBLEEXTVERSION          ' &H8000000D
+      strTemp = "LINEERR_INCOMPATIBLEEXTVERSION"
+    Case LINEERR_INIFILECORRUPT                  ' &H8000000E
+      strTemp = "LINEERR_INIFILECORRUPT"
+    Case LINEERR_INUSE                           ' &H8000000F
+      strTemp = "LINEERR_INUSE"
+    Case LINEERR_INVALADDRESS                    ' &H80000010
+      strTemp = "LINEERR_INVALADDRESS"
+    Case LINEERR_INVALADDRESSID                  ' &H80000011
+      strTemp = "LINEERR_INVALADDRESSID"
+    Case LINEERR_INVALADDRESSMODE                ' &H80000012
+      strTemp = "LINEERR_INVALADDRESSMODE"
+    Case LINEERR_INVALADDRESSSTATE               ' &H80000013
+      strTemp = "LINEERR_INVALADDRESSSTATE"
+    Case LINEERR_INVALAPPHANDLE                  ' &H80000014
+      strTemp = "LINEERR_INVALAPPHANDLE"
+    Case LINEERR_INVALAPPNAME                    ' &H80000015
+      strTemp = "LINEERR_INVALAPPNAME"
+    Case LINEERR_INVALBEARERMODE                 ' &H80000016
+      strTemp = "LINEERR_INVALBEARERMODE"
+    Case LINEERR_INVALCALLCOMPLMODE              ' &H80000017
+      strTemp = "LINEERR_INVALCALLCOMPLMODE"
+    Case LINEERR_INVALCALLHANDLE                 ' &H80000018
+      strTemp = "LINEERR_INVALCALLHANDLE"
+    Case LINEERR_INVALCALLPARAMS                 ' &H80000019
+      strTemp = "LINEERR_INVALCALLPARAMS"
+    Case LINEERR_INVALCALLPRIVILEGE              ' &H8000001A
+      strTemp = "LINEERR_INVALCALLPRIVILEGE"
+    Case LINEERR_INVALCALLSELECT                 ' &H8000001B
+      strTemp = "LINEERR_INVALCALLSELECT"
+    Case LINEERR_INVALCALLSTATE                  ' &H8000001C
+      strTemp = "LINEERR_INVALCALLSTATE"
+    Case LINEERR_INVALCALLSTATELIST              ' &H8000001D
+      strTemp = "LINEERR_INVALCALLSTATELIST"
+    Case LINEERR_INVALCARD                       ' &H8000001E
+      strTemp = "LINEERR_INVALCARD"
+    Case LINEERR_INVALCOMPLETIONID               ' &H8000001F
+      strTemp = "LINEERR_INVALCOMPLETIONID"
+    Case LINEERR_INVALCONFCALLHANDLE             ' &H80000020
+      strTemp = "LINEERR_INVALCONFCALLHANDLE"
+    Case LINEERR_INVALCONSULTCALLHANDLE          ' &H80000021
+      strTemp = "LINEERR_INVALCONSULTCALLHANDLE"
+    Case LINEERR_INVALCOUNTRYCODE                ' &H80000022
+      strTemp = "LINEERR_INVALCOUNTRYCODE"
+    Case LINEERR_INVALDEVICECLASS                ' &H80000023
+      strTemp = "LINEERR_INVALDEVICECLASS"
+    Case LINEERR_INVALDEVICEHANDLE               ' &H80000024
+      strTemp = "LINEERR_INVALDEVICEHANDLE"
+    Case LINEERR_INVALDIALPARAMS                 ' &H80000025
+      strTemp = "LINEERR_INVALDIALPARAMS"
+    Case LINEERR_INVALDIGITLIST                  ' &H80000026
+      strTemp = "LINEERR_INVALDIGITLIST"
+    Case LINEERR_INVALDIGITMODE                  ' &H80000027
+      strTemp = "LINEERR_INVALDIGITMODE"
+    Case LINEERR_INVALDIGITS                     ' &H80000028
+      strTemp = "LINEERR_INVALDIGITS"
+    Case LINEERR_INVALEXTVERSION                 ' &H80000029
+      strTemp = "LINEERR_INVALEXTVERSION"
+    Case LINEERR_INVALGROUPID                    ' &H8000002A
+      strTemp = "LINEERR_INVALGROUPID"
+    Case LINEERR_INVALLINEHANDLE                 ' &H8000002B
+      strTemp = "LINEERR_INVALLINEHANDLE"
+    Case LINEERR_INVALLINESTATE                  ' &H8000002C
+      strTemp = "LINEERR_INVALLINESTATE"
+    Case LINEERR_INVALLOCATION                   ' &H8000002D
+      strTemp = "LINEERR_INVALLOCATION"
+    Case LINEERR_INVALMEDIALIST                  ' &H8000002E
+      strTemp = "LINEERR_INVALMEDIALIST"
+    Case LINEERR_INVALMEDIAMODE                  ' &H8000002F
+      strTemp = "LINEERR_INVALMEDIAMODE"
+    Case LINEERR_INVALMESSAGEID                  ' &H80000030
+      strTemp = "LINEERR_INVALMESSAGEID"
+    Case LINEERR_INVALPARAM                      ' &H80000032
+      strTemp = "LINEERR_INVALPARAM"
+    Case LINEERR_INVALPARKID                     ' &H80000033
+      strTemp = "LINEERR_INVALPARKID"
+    Case LINEERR_INVALPARKMODE                   ' &H80000034
+      strTemp = "LINEERR_INVALPARKMODE"
+    Case LINEERR_INVALPOINTER                    ' &H80000035
+      strTemp = "LINEERR_INVALPOINTER"
+    Case LINEERR_INVALPRIVSELECT                 ' &H80000036
+      strTemp = "LINEERR_INVALPRIVSELECT"
+    Case LINEERR_INVALRATE                       ' &H80000037
+      strTemp = "LINEERR_INVALRATE"
+    Case LINEERR_INVALREQUESTMODE                ' &H80000038
+      strTemp = "LINEERR_INVALREQUESTMODE"
+    Case LINEERR_INVALTERMINALID                 ' &H80000039
+      strTemp = "LINEERR_INVALTERMINALID"
+    Case LINEERR_INVALTERMINALMODE               ' &H8000003A
+      strTemp = "LINEERR_INVALTERMINALMODE"
+    Case LINEERR_INVALTIMEOUT                    ' &H8000003B
+      strTemp = "LINEERR_INVALTIMEOUT"
+    Case LINEERR_INVALTONE                       ' &H8000003C
+      strTemp = "LINEERR_INVALTONE"
+    Case LINEERR_INVALTONELIST                   ' &H8000003D
+      strTemp = "LINEERR_INVALTONELIST"
+    Case LINEERR_INVALTONEMODE                   ' &H8000003E
+      strTemp = "LINEERR_INVALTONEMODE"
+    Case LINEERR_INVALTRANSFERMODE               ' &H8000003F
+      strTemp = "LINEERR_INVALTRANSFERMODE"
+    Case LINEERR_LINEMAPPERFAILED                ' &H80000040
+      strTemp = "LINEERR_LINEMAPPERFAILED"
+    Case LINEERR_NOCONFERENCE                    ' &H80000041
+      strTemp = "LINEERR_NOCONFERENCE"
+    Case LINEERR_NODEVICE                        ' &H80000042
+      strTemp = "LINEERR_NODEVICE"
+    Case LINEERR_NODRIVER                        ' &H80000043
+      strTemp = "LINEERR_NODRIVER"
+    Case LINEERR_NOMEM                           ' &H80000044
+      strTemp = "LINEERR_NOMEM"
+    Case LINEERR_NOREQUEST                       ' &H80000045
+      strTemp = "LINEERR_NOREQUEST"
+    Case LINEERR_NOTOWNER                        ' &H80000046
+      strTemp = "LINEERR_NOTOWNER"
+    Case LINEERR_NOTREGISTERED                   ' &H80000047
+      strTemp = "LINEERR_NOTREGISTERED"
+    Case LINEERR_OPERATIONFAILED                 ' &H80000048
+      strTemp = "LINEERR_OPERATIONFAILED"
+    Case LINEERR_OPERATIONUNAVAIL                ' &H80000049
+      strTemp = "LINEERR_OPERATIONUNAVAIL"
+    Case LINEERR_RATEUNAVAIL                     ' &H8000004A
+      strTemp = "LINEERR_RATEUNAVAIL"
+    Case LINEERR_RESOURCEUNAVAIL                 ' &H8000004B
+      strTemp = "LINEERR_RESOURCEUNAVAIL"
+    Case LINEERR_REQUESTOVERRUN                  ' &H8000004C
+      strTemp = "LINEERR_REQUESTOVERRUN"
+    Case LINEERR_STRUCTURETOOSMALL               ' &H8000004D
+      strTemp = "LINEERR_STRUCTURETOOSMALL"
+    Case LINEERR_TARGETNOTFOUND                  ' &H8000004E
+      strTemp = "LINEERR_TARGETNOTFOUND"
+    Case LINEERR_TARGETSELF                      ' &H8000004F
+      strTemp = "LINEERR_TARGETSELF"
+    Case LINEERR_UNINITIALIZED                   ' &H80000050
+      strTemp = "LINEERR_UNINITIALIZED"
+    Case LINEERR_USERUSERINFOTOOBIG              ' &H80000051
+      strTemp = "LINEERR_USERUSERINFOTOOBIG"
+    Case LINEERR_REINIT                          ' &H80000052
+      strTemp = "LINEERR_REINIT"
+    Case LINEERR_ADDRESSBLOCKED                  ' &H80000053
+      strTemp = "LINEERR_ADDRESSBLOCKED"
+    Case LINEERR_BILLINGREJECTED                 ' &H80000054
+      strTemp = "LINEERR_BILLINGREJECTED"
+    Case LINEERR_INVALFEATURE                    ' &H80000055
+      strTemp = "LINEERR_INVALFEATURE"
+    Case LINEERR_NOMULTIPLEINSTANCE              ' &H80000056
+      strTemp = "LINEERR_NOMULTIPLEINSTANCE"
+    ' TAPI 2.0 only
+    Case LINEERR_INVALAGENTID                    ' &H80000057      // TAPI v2.0
+      strTemp = "LINEERR_INVALAGENTID"
+    Case LINEERR_INVALAGENTGROUP                 ' &H80000058      // TAPI v2.0
+      strTemp = "LINEERR_INVALAGENTGROUP"
+    Case LINEERR_INVALPASSWORD                   ' &H80000059      // TAPI v2.0
+      strTemp = "LINEERR_INVALPASSWORD"
+    Case LINEERR_INVALAGENTSTATE                 ' &H8000005A      // TAPI v2.0
+      strTemp = "LINEERR_INVALAGENTSTATE"
+    Case LINEERR_INVALAGENTACTIVITY              ' &H8000005B      // TAPI v2.0
+      strTemp = "LINEERR_INVALAGENTACTIVITY"
+    Case LINEERR_DIALVOICEDETECT                 ' &H8000005C      // TAPI v2.0
+      strTemp = "LINEERR_DIALVOICEDETECT"
+    Case Else
+      strTemp = "Unknown TAPI Error!"
+  End Select
+  
+  TapiErrMsg = strTemp & " [" & Hex(dwMsg) & "]"
+End Function
+
+Public Function LineMsg(lngMsg) As String
+  Dim strTemp As String
+
+  Select Case lngMsg
+    Case Is = LINE_ADDRESSSTATE ' 0&
+      strTemp = "LINE_ADDRESSSTATE"
+    Case Is = LINE_CALLINFO ' 1&
+      strTemp = "LINE_CALLINFO"
+    Case Is = LINE_CALLSTATE ' 2&
+      strTemp = "LINE_CALLSTATE"
+    Case Is = LINE_CLOSE ' 3&
+      strTemp = "LINE_CLOSE"
+    Case Is = LINE_DEVSPECIFIC ' 4&
+      strTemp = "LINE_DEVSPECIFIC"
+    Case Is = LINE_DEVSPECIFICFEATURE ' 5&
+      strTemp = "LINE_DEVSPECIFICFEATURE"
+    Case Is = LINE_GATHERDIGITS ' 6&
+      strTemp = "LINE_GATHERDIGITS"
+    Case Is = LINE_GENERATE ' 7&
+      strTemp = "LINE_GENERATE"
+    Case Is = LINE_LINEDEVSTATE ' 8&
+      strTemp = "LINE_LINEDEVSTATE"
+    Case Is = LINE_MONITORDIGITS ' 9&
+      strTemp = "LINE_MONITORDIGITS"
+    Case Is = LINE_MONITORMEDIA ' 10&
+      strTemp = "LINE_MONITORMEDIA"
+    Case Is = LINE_MONITORTONE ' 11&
+      strTemp = "LINE_MONITORTONE"
+    Case Is = LINE_REPLY ' 12&
+      strTemp = "LINE_REPLY"
+    Case Is = LINE_REQUEST ' 13&
+      strTemp = "LINE_REQUEST"
+    Case Is = PHONE_BUTTON ' 14&
+      strTemp = "PHONE_BUTTON"
+    Case Is = PHONE_CLOSE ' 15&
+      strTemp = "PHONE_CLOSE"
+    Case Is = PHONE_DEVSPECIFIC ' 16&
+      strTemp = "PHONE_DEVSPECIFIC"
+    Case Is = PHONE_REPLY ' 17&
+      strTemp = "PHONE_REPLY"
+    Case Is = PHONE_STATE ' 18&
+      strTemp = "PHONE_STATE"
+    Case Else
+      strTemp = "Unknown Message"
+  End Select
+
+  LineMsg = strTemp & " [" & Hex(lngMsg) & "]"
+End Function
+
+Public Function LineCallStateMsg(lngMsg As Long) As String
+  Dim strTemp As String
+
+  Select Case lngMsg
+    Case LINECALLSTATE_IDLE  ' &H1&
+      strTemp = "LINECALLSTATE_IDLE"
+    Case LINECALLSTATE_OFFERING  ' &H2&
+      strTemp = "LINECALLSTATE_OFFERING"
+    Case LINECALLSTATE_ACCEPTED  ' &H4&
+      strTemp = "LINECALLSTATE_ACCEPTED"
+    Case LINECALLSTATE_DIALTONE  ' &H8&
+      strTemp = "LINECALLSTATE_DIALTONE"
+    Case LINECALLSTATE_DIALING  ' &H10&
+      strTemp = "LINECALLSTATE_DIALING"
+    Case LINECALLSTATE_RINGBACK  ' &H20&
+      strTemp = "LINECALLSTATE_RINGBACK"
+    Case LINECALLSTATE_BUSY  ' &H40&
+      strTemp = "LINECALLSTATE_BUSY"
+    Case LINECALLSTATE_SPECIALINFO  ' &H80&
+      strTemp = "LINECALLSTATE_SPECIALINFO"
+    Case LINECALLSTATE_CONNECTED  ' &H100&
+      strTemp = "LINECALLSTATE_CONNECTED"
+    Case LINECALLSTATE_PROCEEDING  ' &H200&
+      strTemp = "LINECALLSTATE_PROCEEDING"
+    Case LINECALLSTATE_ONHOLD  ' &H400&
+      strTemp = "LINECALLSTATE_ONHOLD"
+    Case LINECALLSTATE_CONFERENCED  ' &H800&
+      strTemp = "LINECALLSTATE_CONFERENCED"
+    Case LINECALLSTATE_ONHOLDPENDCONF  ' &H1000&
+      strTemp = "LINECALLSTATE_ONHOLDPENDCONF"
+    Case LINECALLSTATE_ONHOLDPENDTRANSFER  ' &H2000&
+      strTemp = "LINECALLSTATE_ONHOLDPENDTRANSFER"
+    Case LINECALLSTATE_DISCONNECTED  ' &H4000&
+      strTemp = "LINECALLSTATE_DISCONNECTED"
+    Case LINECALLSTATE_UNKNOWN  ' &H8000&
+      strTemp = "LINECALLSTATE_UNKNOWN"
+    Case Else
+      strTemp = "Unknown Call State"
+  End Select
+
+  LineCallStateMsg = strTemp & " [" & Hex(lngMsg) & "]"
+End Function
+
+Public Function LineDevStateMsg(lngMsg As Long) As String
+  Dim strTemp As String
+
+  Select Case lngMsg
+    Case LINEDEVSTATE_OTHER:
+      strTemp = "LINEDEVSTATE_OTHER:"
+    Case LINEDEVSTATE_RINGING:  'The only LineDevState case we use..
+      strTemp = "LINEDEVSTATE_RINGING:"
+    Case LINEDEVSTATE_CONNECTED:
+      strTemp = "LINEDEVSTATE_CONNECTED:"
+    Case LINEDEVSTATE_DISCONNECTED:
+      strTemp = "LINEDEVSTATE_DISCONNECTED:"
+    Case LINEDEVSTATE_MSGWAITON:
+      strTemp = "LINEDEVSTATE_MSGWAITON:"
+    Case LINEDEVSTATE_MSGWAITOFF:
+      strTemp = "LINEDEVSTATE_MSGWAITOFF:"
+    Case LINEDEVSTATE_INSERVICE:
+      strTemp = "LINEDEVSTATE_INSERVICE:"
+    Case LINEDEVSTATE_OUTOFSERVICE:
+      strTemp = "LINEDEVSTATE_OUTOFSERVICE:"
+    Case LINEDEVSTATE_MAINTENANCE:
+      strTemp = "LINEDEVSTATE_MAINTENANCE:"
+    Case LINEDEVSTATE_OPEN:
+      strTemp = "LINEDEVSTATE_OPEN:"
+    Case LINEDEVSTATE_CLOSE:
+      strTemp = "LINEDEVSTATE_CLOSE:"
+    Case LINEDEVSTATE_NUMCALLS:
+      strTemp = "LINEDEVSTATE_NUMCALLS:"
+    Case LINEDEVSTATE_NUMCOMPLETIONS:
+      strTemp = "LINEDEVSTATE_NUMCOMPLETIONS:"
+    Case LINEDEVSTATE_TERMINALS:
+      strTemp = "LINEDEVSTATE_TERMINALS:"
+    Case LINEDEVSTATE_ROAMMODE:
+      strTemp = "LINEDEVSTATE_ROAMMODE:"
+    Case LINEDEVSTATE_BATTERY:
+      strTemp = "LINEDEVSTATE_BATTERY:"
+    Case LINEDEVSTATE_SIGNAL:
+      strTemp = "LINEDEVSTATE_SIGNAL:"
+    Case LINEDEVSTATE_DEVSPECIFIC:
+      strTemp = "LINEDEVSTATE_DEVSPECIFIC:"
+    Case LINEDEVSTATE_REINIT:
+      strTemp = "LINEDEVSTATE_REINIT:"
+    Case LINEDEVSTATE_LOCK:
+      strTemp = "LINEDEVSTATE_LOCK:"
+    Case LINEDEVSTATE_CAPSCHANGE:
+      strTemp = "LINEDEVSTATE_CAPSCHANGE:"
+    Case LINEDEVSTATE_CONFIGCHANGE:
+      strTemp = "LINEDEVSTATE_CONFIGCHANGE:"
+    Case LINEDEVSTATE_TRANSLATECHANGE:
+      strTemp = "LINEDEVSTATE_TRANSLATECHANGE:"
+    Case LINEDEVSTATE_COMPLCANCEL:
+      strTemp = "LINEDEVSTATE_COMPLCANCEL:"
+    Case LINEDEVSTATE_REMOVED:
+      strTemp = "LINEDEVSTATE_REMOVED:"
+    Case Else:
+      strTemp = "LINEDEVSTATE_UNKNOWN:"
+  End Select
+
+  LineDevStateMsg = strTemp & " [" & Hex(lngMsg) & "]"
+End Function
+
+Public Function LineDisconnectModeMsg(lngMsg) As String
+  Dim strTemp As String
+
+  Select Case lngMsg
+    Case LINEDISCONNECTMODE_NORMAL
+      strTemp = "LINEDISCONNECTMODE_NORMAL"
+    Case LINEDISCONNECTMODE_UNKNOWN
+      strTemp = "LINEDISCONNECTMODE_UNKNOWN"
+    Case LINEDISCONNECTMODE_REJECT
+      strTemp = "LINEDISCONNECTMODE_REJECT"
+    Case LINEDISCONNECTMODE_PICKUP
+      strTemp = "LINEDISCONNECTMODE_PICKUP"
+    Case LINEDISCONNECTMODE_FORWARDED
+      strTemp = "LINEDISCONNECTMODE_FORWARDED"
+    Case LINEDISCONNECTMODE_BUSY
+      strTemp = "LINEDISCONNECTMODE_BUSY"
+    Case LINEDISCONNECTMODE_NOANSWER
+      strTemp = "LINEDISCONNECTMODE_NOANSWER"
+    Case LINEDISCONNECTMODE_BADADDRESS
+      strTemp = "LINEDISCONNECTMODE_BADADDRESS"
+    Case LINEDISCONNECTMODE_UNREACHABLE
+      strTemp = "LINEDISCONNECTMODE_UNREACHABLE"
+    Case LINEDISCONNECTMODE_CONGESTION
+      strTemp = "LINEDISCONNECTMODE_CONGESTION"
+    Case LINEDISCONNECTMODE_INCOMPATIBLE
+      strTemp = "LINEDISCONNECTMODE_INCOMPATIBLE"
+    Case LINEDISCONNECTMODE_UNAVAIL
+      strTemp = "LINEDISCONNECTMODE_UNAVAIL"
+    Case LINEDISCONNECTMODE_NODIALTONE
+      strTemp = "LINEDISCONNECTMODE_NODIALTONE"
+  End Select
+
+  LineDisconnectModeMsg = strTemp & " [" & Hex(lngMsg) & "]"
+End Function

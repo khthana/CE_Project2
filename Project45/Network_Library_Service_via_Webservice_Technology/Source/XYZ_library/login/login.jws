@@ -1,0 +1,25 @@
+package login; 
+
+import weblogic.jws.control.JwsContext;
+import center.*;
+
+public class login
+{ 
+
+    /**
+     * @jws:control
+     */
+    private dbControl db;
+    /** @jws:context */ 
+    JwsContext context; 
+
+    /**
+     * @jws:operation
+     */
+    public user_profile checkUsername(String username, String passwd)
+    {
+        user_profile user=db.select_member(username, passwd);
+        if (user!=null) user.library="xyz";
+        return user;
+    }
+} 

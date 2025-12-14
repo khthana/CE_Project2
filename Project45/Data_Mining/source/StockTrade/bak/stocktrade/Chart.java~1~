@@ -1,0 +1,82 @@
+package stocktrade;
+
+import java.applet.Applet;
+import java.applet.AppletContext;
+import java.awt.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class Chart extends Applet {
+  private boolean isStandalone = false;
+  // refer set parameter
+    float x;float x2;float height;float width;float vals;float labs;
+    int laboffset;int border;float xmax;float price_max;float xmin;float price_min;
+    int i;float xcounter;float ycounter;
+    float xfactor;float yfactor;float xincrement;float xincrement2;
+    float v1y;float v1x;float v2y;float v2x;
+    String v1;String v2;String title; boolean grid=true;
+    float xfq;float yfq;
+
+  //Get a parameter value
+  public String getParameter(String key, String def) {
+    return isStandalone ? System.getProperty(key, def) :
+      (getParameter(key) != null ? getParameter(key) : def);
+  }
+
+  //Construct the applet
+  public Chart() {
+  }
+  //Initialize the applet
+  public void init() {
+
+      setBackground(Color.white);
+      border = 40;
+      x = 60;
+      x2 = 60;
+      title = getParameter("stock");
+      // refer get price min
+      try{
+            price_min = Float.parseFloat( getParameter("price_min") );
+      }
+      catch(NumberFormatException _ex){
+            price_min = 0.00f;
+      }
+      // refer get price max
+      try{
+           price_max = Float.parseFloat( getParameter("price_max") );
+      }
+      catch(NumberFormatException _ex){
+           price_max = 0.40f;
+      }
+      height = getSize().height - border * 2;
+      width = (float)(getSize().width - (border + 5)) - x;
+      yfq = getFrequency( price_max - price_min );
+      ycounter = price_min;
+      yfactor = height / (price_max - price_min);
+      vals = Integer.parseInt(getParameter("NumberOfData"));
+
+      // refer set time in x axis
+      xmax = 1630f;
+      xmin = 1030f;
+      xfactor = width / (float)(xmax - xmin);
+      xfq = 1f;//x frequency
+      xcounter = xmin;
+  }
+  // refer Ggraphic for daraw graph
+  public void paint(Graphics g){
+        init();
+        g.setFont(new Font("Arial", 0, 10));
+        g.setColor(new Color(200, 200, 200));
+        g.fillRect(getSize().width - 170, 0, 170, 12);
+        g.setColor(Color.black);
+  }
+  // refer method get frequency
+  public float getFrequency(float j){
+    float a;
+
+    if( j>=0 && j<=0.40 )
+      a=0.10f;
+    else a=( Math.round(j/4)*100 )/100;
+    return a;
+  }
+}

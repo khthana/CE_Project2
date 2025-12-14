@@ -1,0 +1,419 @@
+package switchsim;
+
+import java.util.*;
+
+public class Switch {
+  static int num=0;
+  private String name;
+  private String MACAddr;
+  private int mode;
+  private String password;
+  private String consolePasswd;
+  private Vector vInt = new Vector();
+  private Vector vIntCom = new Vector();
+  private Vector vIntSwitch = new Vector();
+  private Vector MACTable = new Vector();
+  private Vector vCom = new Vector();
+  private Vector vSwitch = new Vector();
+  private Vector vFrame = new Vector();
+  private Vector history = new Vector();
+  private int maxHistory;
+  private boolean enablepasswd;
+  private boolean enableConsole;
+  private boolean terminalEdit;
+  private int oldMode;
+  private int time = 10000;
+  private int lineMode = -1;
+
+
+  Switch() {
+    name = "Switch";
+    MACAddr = "";
+    mode = 1;
+    num++;
+    password = null;
+    consolePasswd = null;
+    maxHistory = 10;
+    enablepasswd = false;
+    enableConsole = false;
+    terminalEdit = true;
+    oldMode = -1;
+  }
+
+  Switch(String n) {
+    name = n;
+    MACAddress m = new MACAddress();
+    MACAddr = m.getMACAddress();
+    mode = 1;
+    num++;
+    password = null;
+    consolePasswd = null;
+    maxHistory = 10;
+    enablepasswd = false;
+    enableConsole = false;
+    terminalEdit = true;
+    oldMode = -1;
+  }
+
+  Switch(String n, String mac) {
+    name = n;
+    MACAddress m = new MACAddress();
+    MACAddr = mac;
+    mode = 1;
+    num++;
+    password = null;
+    consolePasswd = null;
+    maxHistory = 10;
+    enablepasswd = false;
+    enableConsole = false;
+    terminalEdit = true;
+    oldMode = -1;
+  }
+  public String getName() {
+    return name;
+  }
+
+  public String getMACAddress() {
+    return MACAddr;
+  }
+
+  public Vector getMACTable() {
+    return MACTable;
+  }
+
+  public int getMode() {
+    return mode;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public String getConsolePasswd() {
+    return consolePasswd;
+  }
+
+  public boolean getEnablePasswd(){
+    return enablepasswd;
+  }
+
+  public Vector getVInt() {
+    return vInt;
+  }
+
+  public Vector getVIntCom() {
+    return vIntCom;
+  }
+
+  public Vector getVIntSwitch() {
+    return vIntSwitch;
+  }
+
+  public Vector getVCom() {
+    return vCom;
+  }
+
+  public Vector getVFrame() {
+    return vFrame;
+  }
+
+  public Vector getHistory() {
+    return history;
+  }
+
+  public int getMaxHistory(){
+    return maxHistory;
+  }
+
+  public boolean getEnableConsole() {
+    return enableConsole;
+  }
+
+  public boolean getTerminalEdit() {
+    return terminalEdit;
+  }
+
+  public int getTime() {
+    return time;
+  }
+
+  public void setName(String n) {
+    name = n;
+  }
+
+  public void setMode(int m) {
+    mode = m;
+  }
+
+  public void setPassword(String passwd) {
+    password = passwd;
+  }
+
+  public void setConsolePasswd(String passwd) {
+    consolePasswd=passwd;
+  }
+
+  public void setMaxHistory(int i){
+    maxHistory = i;
+  }
+
+  public void setLineMode(int i){
+    lineMode = i;
+  }
+
+  public void setEnableConsole(boolean b) {
+    enableConsole=b;
+  }
+
+  public void setTerminalEdit(boolean b) {
+    terminalEdit=b;
+  }
+
+  public void addNewInt(Interface i) {
+    this.vInt.addElement(i);
+  }
+
+  public void accessMACAddressTable(String mac, Interface port) {
+    String tuple[] = new String[2];
+    String tmp[] = new String[2];
+    boolean exist=false;
+    boolean insert=false;
+    tuple[0]=mac;
+    tuple[1]=port.getNameInt();
+    // Check MAC-Address is in MAC-Address Table but different Port
+    for (int j=0; j<MACTable.size(); j++) {
+      try {
+        tmp=(String[])MACTable.elementAt(j);
+        if (tmp[0].equals(tuple[0])) {
+          if (!tmp[1].equals(tuple[1])) {
+            MACTable.removeElementAt(j) ;
+            MACTable.insertElementAt(tuple,j);
+          }
+          exist=true;
+        }
+      }
+      catch (Exception e) {
+      }
+    }
+    // MAC-Address is not in MAC-Address Table
+    if (!exist) {
+      for (int j=0; j<MACTable.size(); j++) {
+        tmp=(String[])MACTable.elementAt(j);
+        for (int k=0; k<14; k++) {
+          if ((k!=4)&&(k!=9)) {
+            if(tuple[0].charAt(k)<tmp[0].charAt(k)) {
+              MACTable.insertElementAt(tuple,j);
+              insert=true;
+              k=14;
+              j=MACTable.size();
+            }
+            else if(tuple[0].charAt(k)>tmp[0].charAt(k)) {
+              k=14;
+            }
+          }
+        }
+      }
+      if (!insert) {
+        MACTable.addElement(tuple);
+      }
+    }
+  }
+
+  public void sendFrame(String frame, String port) {
+    Interface int_rc = new Interface(); // Interface that received frame
+    boolean sent = false;
+    MACAddress mac = new MACAddress();
+    boolean isVlan = false;
+    int vlan = 1; // VLAN of Source Computer
+    for (int i=0; i<this.vInt.size(); i++) {
+      Interface int_tmp = (Interface)vInt.elementAt(i);
+      if (int_tmp.getNameInt().equals(port)) {
+        int_rc = int_tmp;
+        vlan = int_rc.getVLAN();
+      }
+    }
+    if (frame.length()>96) {
+      vlan = Integer.parseInt(frame.substring(96),2);
+      isVlan = true;
+    }
+    // Check MAC-Address Table
+    for (int i=0; i<this.MACTable.size(); i++) {
+      String[] tuple = (String[])MACTable.elementAt(i);
+      if (tuple[0].equals(mac.cBinToHex(frame.substring(48,96)))) {
+        // COMPUTER Receive
+        for (int j=0; j<this.vIntCom.size(); j++) {
+          Interface intCom = (Interface)this.vIntCom.elementAt(j);
+          if (intCom.getStatus().equals("up")) {
+            // VLAN Frame ==> Check Access Link && VLAN number && MAC-Address
+            if ((isVlan) && (intCom.getVLANLink()==0) && (intCom.getVLAN()==vlan) && (intCom.getNameInt().equals(tuple[1]))) {
+              Workstation com_rc = (Workstation)intCom.getCom();
+              System.out.println(this.getName()+" is sending Frame to "+com_rc.getName()+" at "+tuple[1]);
+              com_rc.receiveFrame(frame.substring(0,96));
+              sent = true;
+            }
+            // Ethernet Frame ==> Check MAC-Address
+            else if ((!isVlan) && (intCom.getVLANLink()==0) && (intCom.getNameInt().equals(tuple[1]))) {
+              Workstation com_rc = (Workstation)intCom.getCom();
+              System.out.println(this.getName()+" is sending Frame to "+com_rc.getName()+" at "+tuple[1]);
+              com_rc.receiveFrame(frame.substring(0,96));
+              sent = true;
+            }
+          }
+        }
+        // SWITCH Receive
+        for (int j=0; j<this.vIntSwitch.size(); j++) {
+          Interface intSw = (Interface)this.vIntSwitch.elementAt(j);
+          if (intSw.getStatus().equals("up")) {
+            // VLAN Frame & Access Link ==> Check VLAN number & MAC-Address
+            if ((isVlan) && (intSw.getVLANLink()==0) && (intSw.getVLAN()==vlan) && (intSw.getNameInt().equals(tuple[1]))) {
+              Switch sw_rc = (Switch)intSw.getSwitch();
+              System.out.println(this.getName()+" is sending Frame to "+sw_rc.getName()+" at "+tuple[1]);
+              sw_rc.receiveFrameSwitch(frame.substring(0,96), this);
+              sent = true;
+            }
+            // VLAN Frame & Trunk Link ==> Check VLAN allowed & MAC-Address
+            else if ((isVlan) && (intSw.getVLANLink()==1) && (intSw.VLANIsAllowed(vlan)) && (intSw.getNameInt().equals(tuple[1]))) {
+              Switch sw_rc = (Switch)intSw.getSwitch();
+              System.out.println(this.getName()+" is sending Frame to "+sw_rc.getName()+" at "+tuple[1]);
+              sw_rc.receiveFrameSwitch(frame, this);
+              sent = true;
+            }
+            // Ethernet Frame & Access Link ==> Check MAC-Address
+            else if ((!isVlan) && (intSw.getVLANLink()==0) && (intSw.getNameInt().equals(tuple[1]))) {
+              Switch sw_rc = (Switch)intSw.getSwitch();
+              System.out.println(this.getName()+" is sending Frame to "+sw_rc.getName()+" at "+tuple[1]);
+              sw_rc.receiveFrameSwitch(frame.substring(0,96), this);
+              sent = true;
+            }
+            // Ehernet Frame & Trunk Link ==> Check VLAN allowed && MAC-Address
+            else if ((!isVlan) && (intSw.getVLANLink()==1) && (intSw.VLANIsAllowed(vlan)) && (intSw.getNameInt().equals(tuple[1]))) {
+              Switch sw_rc = (Switch)intSw.getSwitch();
+              System.out.println(this.getName()+" is sending Frame to "+sw_rc.getName()+" at "+tuple[1]);
+              String vlan_s = Integer.toBinaryString(int_rc.getVLAN());
+              String pad = "";
+              for (int k=vlan_s.length(); k<16; k++) {
+                pad = pad+"0";
+              }
+              vlan_s = pad+vlan_s;
+              sw_rc.receiveFrameSwitch(frame+vlan_s, this);
+              sent = true;
+            }
+          }
+        }
+      }
+    }
+    // NOT FOUND in MAC-Address Table
+    // BROADCAST through all port
+    if (!sent) {
+      // broadcast to all computer
+      for (int i=0; i<this.vIntCom.size(); i++) {
+        Interface intCom = (Interface)this.vIntCom.elementAt(i);
+        // VLAN Frame ==> Check Access Link & VLAN number & not sending port
+        if (intCom.getStatus().equals("up")) {
+          if ((isVlan) && (intCom.getVLANLink()==0) && (intCom.getVLAN()==vlan) && (!intCom.getNameInt().equals(port))) {
+            Workstation com_rc = (Workstation)intCom.getCom();
+            System.out.println(this.getName()+" is sending Frame to "+com_rc.getName());
+            com_rc.receiveFrame(frame.substring(0,96));
+          }
+          // Ethernet Frame ==> Check Access Link & VLAN number & not sending port
+          else if ((!isVlan) && (intCom.getVLANLink()==0) && (intCom.getVLAN()==int_rc.getVLAN()) && (!intCom.getNameInt().equals(port))) {
+            Workstation com_rc = (Workstation)intCom.getCom();
+            System.out.println(this.getName()+" is sending Frame to "+com_rc.getName());
+            com_rc.receiveFrame(frame.substring(0,96));
+          }
+        }
+      }
+      // broadcast to all switch
+      for (int i=0; i<this.vIntSwitch.size(); i++) {
+        Interface intSw = (Interface)this.vIntSwitch.elementAt(i);
+        if (intSw.getStatus().equals("up")) {
+          if (!intSw.getNameInt().equals(port)) {
+            Switch sw_rc = (Switch)intSw.getSwitch();
+            // Trunk Link ==> Check VLAN allowed
+            if ((intSw.getVLANLink()==1) && (intSw.VLANIsAllowed(vlan))) {
+              // VLAN Frame
+              if (isVlan) {
+                System.out.println(this.getName()+" is sending Frame to "+sw_rc.getName());
+                sw_rc.receiveFrameSwitch(frame, this);
+              }
+              // Ethernet Frame ==> encapsulate Ethernet Frame to VLAN Frame
+              else {
+                String vlan_s = Integer.toBinaryString(int_rc.getVLAN());
+                String pad = "";
+                for (int j=vlan_s.length(); j<16; j++) {
+                  pad = pad+"0";
+                }
+                vlan_s = pad+vlan_s;
+                System.out.println(this.getName()+" is sending Frame to "+sw_rc.getName());
+                sw_rc.receiveFrameSwitch(frame+vlan_s, this);
+              }
+            }
+            // Access Link && Check VLAN number
+            else if ((intSw.getVLANLink()==0) && (intSw.getVLAN()==vlan)){
+              System.out.println(this.getName()+" is sending Frame to "+sw_rc.getName());
+              sw_rc.receiveFrameSwitch(frame.substring(0,96), this);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  public void receiveFrameCom(String frame) {
+    String port_r = new String();
+    MACAddress mac = new MACAddress();
+//    System.out.println(this.getName()+" is receiving Frame.");
+    for (int i=0; i<this.vIntCom.size(); i++) {
+      Interface intCom = (Interface)this.vIntCom.elementAt(i);
+      if ((intCom.getStatus().equals("up")) && (mac.cBinToHex(frame.substring(0,48)).equals(intCom.getCom().getMACAddress()))) {
+        String[] frame_r = new String[2];
+        port_r = intCom.getNameInt();
+        frame_r[0] = frame;
+        frame_r[1] = port_r;
+        this.vFrame.addElement(frame_r);
+        try {
+          this.accessMACAddressTable(mac.cBinToHex(frame.substring(0,48)), intCom);
+        }
+        catch (Exception e) {
+        }
+      }
+    }
+  }
+
+  public void receiveFrameSwitch(String frame, Switch sw_s) {
+    String port_r = new String();
+    Interface int_s = new Interface();
+    MACAddress mac = new MACAddress();
+    boolean isVlan = false;
+    int vlan = 1;
+    if (frame.length()>96) {
+      isVlan = true;
+    }
+    for (int i=0; i<sw_s.vIntSwitch.size(); i++) {
+      Interface int_tmp = (Interface)sw_s.vIntSwitch.elementAt(i);
+      if ((int_tmp.getSwitch().equals(this))) {
+        int_s = int_tmp;
+        vlan = int_s.getVLAN();
+      }
+    }
+    for (int i=0; i<this.vIntSwitch.size(); i++) {
+      try {
+        Interface int_rc = (Interface)this.vIntSwitch.elementAt(i);
+        if ((int_rc.getStatus().equals("up")) && (sw_s.equals(int_rc.getSwitch()))) {
+          if (((isVlan) && (int_rc.getVLANLink()==1) && (int_rc.VLANIsAllowed(vlan))) ||
+              ((!isVlan) && (int_rc.getVLANLink()==0) && (int_rc.getVLAN()==vlan))) {
+//          System.out.println(this.getName()+" is receiving Frame.");
+          String[] frame_r = new String[2];
+          port_r = int_rc.getNameInt();
+          frame_r[0] = frame;
+          frame_r[1] = port_r;
+          this.vFrame.addElement(frame_r);
+          this.accessMACAddressTable(mac.cBinToHex(frame.substring(0,48)), int_rc);
+          }
+        }
+      }
+      catch (Exception e) {
+      }
+    }
+  }
+}

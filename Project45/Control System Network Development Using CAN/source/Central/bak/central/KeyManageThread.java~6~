@@ -1,0 +1,58 @@
+package central;
+
+/**
+ * <p>Title: </p>
+ * <p>Description: </p>
+ * <p>Copyright: Copyright (c) 2003</p>
+ * <p>Company: </p>
+ * @author unascribed
+ * @version 1.0
+ */
+
+class KeyManageThread extends Thread{
+
+  private static int time;
+  private static KeySpec newkey[] = { new KeySpec(MainFrame.Des[0].getKey()), new KeySpec(MainFrame.Des[1].getKey()), new KeySpec(MainFrame.Des[2].getKey()) };
+  private static HighLayerBuffer highbuffer;
+
+  public KeyManageThread(String s, int timearg) {
+    super(s);
+    time = timearg;
+    highbuffer = new HighLayerBuffer();
+  }
+
+  public void setTime(int timearg){
+    time = timearg;
+  }
+
+  public void run() {
+    try{
+      sleep(time);
+    }
+    catch(Exception e) {}
+    for (int i = 0; i < 3; i++) {
+      highbuffer.setID(i + 1);
+      highbuffer.setFlag(0x40);
+      try {
+        String keystr = "";
+        int sum = 0;
+        sum += 5;
+        sum += 0;
+        sum ^= 0xff;
+        sum += 1;
+        sum &= 0x0ff;
+        keystr += (char) sum;
+        keystr += (char) 5;
+        keystr += (char) 0;
+//        for (int j = 0; j < 8; j++) {
+          keystr += newkey[i].getKey();
+//        }
+        highbuffer.setData(keystr);
+        MainFrame.TBx.setShareData(highbuffer);
+      }
+      catch (Exception e) {
+        System.out.println("Exception from KeyManage Thread : " + e);
+      }
+    }
+  }
+}

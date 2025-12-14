@@ -1,0 +1,24 @@
+vtun for DEBIAN
+----------------------
+
+the installed /etc/vtund.conf file is empty except for explanatory comments.
+
+I split up the original example file into two files: one for a server
+configuration and one for a client configuration.  These examples are
+located in /usr/doc/vtun
+
+By default, vtund doesn't start at all, you need to edit /etc/vtund.conf
+and set it up for your requirements.  See the docs and examples for
+details.
+
+you also need to edit /etc/vtund-start.conf and define whether vtund is
+being run as a client or as a server.  See the man page.
+
+you'll also need to create proper device nodes for the tun
+devices. 2.2 kernels there is now a tun-source package in debian.
+2.4 kernels, the tun/tap driver is integrated. You'll need to create
+the device yourself.
+
+mknod /dev/misc/net/tun c 10 200
+
+Greg Olszewski <noop@debian.org>

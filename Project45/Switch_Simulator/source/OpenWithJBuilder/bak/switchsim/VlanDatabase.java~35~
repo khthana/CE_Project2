@@ -1,0 +1,209 @@
+package switchsim;
+
+import java.util.*;
+
+public class VlanDatabase {
+  int vlanID;
+  String vlanName;
+  String status;
+  String type;
+  String said;
+  String mtu;
+  String parent;
+  String ringNo;
+  String brdgNo;
+  String stp;
+  String brdgMode;
+  int trans1;
+  int trans2;
+
+  public VlanDatabase() {
+    vlanID=1;
+    vlanName="default";
+    status="active";
+    type="";
+    said="100001";
+    mtu="1500";
+    parent="-";
+    ringNo="-";
+    brdgNo="-";
+    stp="-";
+    brdgMode="-";
+    trans1=0;
+    trans2=0;
+  }
+  public VlanDatabase(int id, String n) {
+    vlanID=id;
+    vlanName=n;
+    status="active";
+    type="";
+    said="100001";
+    mtu="1500";
+    parent="-";
+    ringNo="-";
+    brdgNo="-";
+    stp="-";
+    brdgMode="-";
+    trans1=0;
+    trans2=0;
+  }
+
+  public VlanDatabase(int id, String n, String t) {
+    vlanID=id;
+    vlanName=n;
+    status="active";
+    type=t;
+    said="100001";
+    mtu="1500";
+    parent="-";
+    ringNo="-";
+    brdgNo="-";
+    stp="-";
+    brdgMode="-";
+    trans1=0;
+    trans2=0;
+  }
+
+  public int getVlanID() {
+    return vlanID;
+  }
+  public void setVlanID(int i) {
+    vlanID = i;
+  }
+
+  public String getVlanName() {
+    return vlanName;
+  }
+  public void setVlanName(String n) {
+    vlanName = n;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+  public void setStatus(String s) {
+    status = s;
+  }
+
+  public String getType() {
+    return type;
+  }
+  public void setType(String t) {
+    type = t;
+  }
+
+  public String getSAID() {
+    return said;
+  }
+  public void setSAID(String s) {
+    said = s;
+  }
+
+  public String getMTU() {
+    return mtu;
+  }
+  public void setMTU(String s) {
+    mtu = s;
+  }
+
+  public String getParent() {
+    return parent;
+  }
+  public void setParent(String s) {
+    parent = s;
+  }
+
+  public String getRingNo() {
+    return ringNo;
+  }
+  public void setRingNo(String s) {
+    ringNo = s;
+  }
+
+  public String getBrdgNo() {
+    return brdgNo;
+  }
+  public void setBrdgNo(String s) {
+    brdgNo = s;
+  }
+
+  public String getSTP() {
+    return stp;
+  }
+  public void setSTP(String s) {
+    stp = s;
+  }
+
+  public String getBrdgMode() {
+    return brdgMode;
+  }
+  public void setBrdgMode(String s) {
+    brdgMode = s;
+  }
+
+  public int getTrans1() {
+    return trans1;
+  }
+  public void setTrans1(int t) {
+    trans1 = t;
+  }
+
+  public int getTrans2() {
+    return trans2;
+  }
+  public void setTrans2(int t) {
+    trans2 = t;
+  }
+
+  public void addVlan(Switch sw, int v, String s) {
+    boolean isOld = false;
+    VlanDatabase newVlan = new VlanDatabase();
+    VlanDatabase oldVlan = null;
+    for (int i=0; i<sw.getVlanDB().size(); i++) {
+      oldVlan = (VlanDatabase)sw.getVlanDB().elementAt(i);
+      if (oldVlan.getVlanID()==v) {
+        newVlan = (VlanDatabase)sw.getVlanDB().elementAt(i);
+        sw.getVlanDB().removeElementAt(i);
+        isOld = true;
+      }
+    }
+    if (!isOld) {
+      newVlan.setVlanID(v);
+      newVlan.setVlanName(s);
+    }
+    sw.getVlanDB().addElement(newVlan);
+
+    Vlan vv = new Vlan();
+    vv.addVlan(sw, v, s);
+
+
+  }
+}
+
+
+/*
+    Vector vt = new Vector();
+    Vlan temp = new Vlan();
+
+    vt = Frame1.stp.getAllVlan();
+    for (int i = 0; i < vt.size(); i++) {
+      temp = (Vlan)vt.elementAt(i);
+      if (temp.getVlanID() == v) {
+        temp.addSwitch(sw);
+      }
+    }
+    //--------- Testing ---------------//
+    Vector vSw = new Vector();
+    Switch t = new Switch();
+    for (int i = 0; i < vt.size(); i++) {
+      temp = (Vlan)vt.elementAt(i);
+      vSw = temp.getSwitchMem();
+
+      System.out.println("VLAN ID: " + temp.getVlanID());
+      System.out.println("member");
+      for (int j = 0; j < vSw.size(); j++) {
+        t = (Switch)vSw.elementAt(j);
+        System.out.println(t.getName());
+      }
+    }
+*/

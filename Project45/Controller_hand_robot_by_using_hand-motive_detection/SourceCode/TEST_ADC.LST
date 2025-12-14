@@ -1,0 +1,29 @@
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   1
+test_adc.asm                                    
+
+     0000              1	        ORG 0000H        
+     A002=             2	        Port3C EQU 0A002H
+                       3	;****** Main Program **********
+     0000 90A002       4	MAIN:   MOV DPTR,#Port3C
+     0003 7400         5	        MOV A,#00000000B
+     0005 F0           6	        MOVX @DPTR,A
+     0006 D2A3         7	        SETB P2.3
+     0008 D2A4         8	        SETB P2.4
+     000A C2A4         9	        CLR  P2.4
+     000C 120011      10	        CALL DELAY 
+     000F 80EF        11	        SJMP MAIN
+                      12	
+                      13	;**********DELAY**********
+     0011 78FF        14	DELAY:  MOV R0,#0FFH                    
+     0013 790A        15	DELAY2: MOV R1,#0AH                    
+     0015 D9FE        16	DELAY1: DJNZ R1,DELAY1
+     0017 D8FA        17	        DJNZ R0,DELAY2
+     0019 22          18		RET
+     0000=            19		END
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   1
+test_adc.asm                                    
+
+           delay = 0011            delay1 = 0015            delay2 = 0013              main = 0000            port3c = A002  
+

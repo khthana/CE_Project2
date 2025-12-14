@@ -1,0 +1,64 @@
+package testhttp;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+import java.net.HttpURLConnection;
+import HTTPClient.*;
+import java.io.*;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.sql.*;
+
+public class HttpMenu extends JFrame {
+  private JPanel contentPane;
+  private BorderLayout borderLayout1 = new BorderLayout();
+  // refer InputStream
+  private InputStream inputstream;
+  // refer Timer
+  private Timer tm;
+  // refer Task
+  private TimerTask tt;
+  // refer class Database
+  AccessDatabase database;
+
+  //Construct the frame
+  public HttpMenu() {
+    enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+    try {
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+    try{
+      AccessDatabase database = Database.getDatabase();
+      database.connect();
+      tm = new Timer();
+      tt = new TodoTask();
+      tm.schedule(tt,0,100000);
+
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  //Component initialization
+  private void jbInit() throws Exception  {
+   /* //setIconImage(Toolkit.getDefaultToolkit().createImage(HttpMenu.class.getResource("[Your Icon]")));
+    contentPane = (JPanel) this.getContentPane();
+    contentPane.setLayout(borderLayout1);
+    this.setSize(new Dimension(400, 300));
+    this.setTitle("Frame Title");
+  }
+  //Overridden so we can exit when window is closed
+  protected void processWindowEvent(WindowEvent e) {
+    super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+      System.exit(0);
+    }*/
+  }
+}

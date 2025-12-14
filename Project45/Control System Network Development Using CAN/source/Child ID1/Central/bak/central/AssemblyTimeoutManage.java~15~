@@ -1,0 +1,50 @@
+package central;
+
+import java.util.Vector;
+
+/**
+ * <p>Title: </p>
+ * <p>Description: </p>
+ * <p>Copyright: Copyright (c) 2003</p>
+ * <p>Company: </p>
+ * @author not attributable
+ * @version 1.0
+ */
+
+class AssemblyTimeoutManage {
+
+  private Vector vector = new Vector();
+
+  public AssemblyTimeoutManage() {
+  }
+
+  public void SetTimeout(int timeout, int nodenumber, int flag) {
+    AssemblyTimeoutThread assemthread = new AssemblyTimeoutThread("Asembly Timeout Thread", timeout, nodenumber, flag);
+    vector.addElement(assemthread);
+    assemthread.start();
+  }
+
+  public void ClearTimeout(int nodenumber, int flag) {
+    for (int i = 0; i < vector.size(); i++) {
+      AssemblyTimeoutThread assemthread = (AssemblyTimeoutThread) vector.elementAt(i);
+      if (assemthread.getNodeNumber() == nodenumber) {
+        assemthread.clearActive();
+        RemoveFromVectorAt(i);
+      }
+    }
+  }
+
+  public void RemoveFromVectorAt(int vectornumber) {
+    vector.removeElementAt(vectornumber);
+    System.out.println("Assem Clear Vector No : " + vectornumber);
+  }
+
+  public void RemoveFromVector(int nodenumberarg, int flagarg) {
+    for (int i = 0; i < vector.size(); i++) {
+      AssemblyTimeoutThread assemthread = (AssemblyTimeoutThread) vector.elementAt(i);
+      if ((assemthread.getNodeNumber() == nodenumberarg) && (assemthread.getFlag() == flagarg)) {
+        vector.removeElementAt(i);
+      }
+    }
+  }
+}

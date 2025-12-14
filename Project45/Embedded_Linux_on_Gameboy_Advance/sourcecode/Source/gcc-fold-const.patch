@@ -1,0 +1,58 @@
+From Philip.Blundell@pobox.com Sat Oct  2 06:34:05 1999
+Date: Thu, 16 Sep 1999 20:11:36 +0100
+From: Philip Blundell <Philip.Blundell@pobox.com>
+To: Francois Desloges <fd@vipswitch.com>
+Cc: linux-arm@vger.rutgers.edu
+Subject: Re: GCC 2.95 
+
+>Now, what about that extra CVS patch? Where is this CVS thing and how do I
+>apply the patch ?
+
+I've appended the patch in question below.  See the GCC web site if you are 
+interested in CVS access.
+
+>>2.9.5 is not 100% compatible with the older versions.  Normal programs
+>>shouldn't care but gcc and glibc need to know the difference.
+>>
+>>I hope it will be fixed in glibc before 2.1.2 is actually released, though 
+>>I can't make any promise.
+
+This was indeed fixed in glibc 2.1.2.
+
+>>As a side note, I am about to change the mainline egcs sources so that
+>>a target name of `arm-*-linux-gnu' implies binutils 2.9.5, and a target
+>>name of `arm-*-linux-gnuoldld' implies an older version.
+
+This is true in the GCC mainline now, though config.guess has not yet been 
+updated.  It is not in the 2.95 branch but when I get around to making a new 
+2.95.x patch (hopefully within a couple of days) it will be in there.
+
+p.
+
+Thu Sep  2 00:06:43 1999  Jeffrey A Law  (law@cygnus.com)
+
+        * fold-const.c (fold_range_test): Do not try to fold the range
+        test if the rhs or lhs has side effects.
+
+Index: fold-const.c
+===================================================================
+RCS file: /egcs/carton/cvsfiles/egcs/gcc/fold-const.c,v
+retrieving revision 1.69
+retrieving revision 1.70
+diff -u -p -r1.69 -r1.70
+--- fold-const.c	1999/08/27 07:37:16	1.69
++++ fold-const.c	1999/09/02 09:37:20	1.70
+@@ -3560,6 +3560,10 @@ fold_range_test (exp)
+   tree rhs = make_range (TREE_OPERAND (exp, 1), &in1_p, &low1, &high1);
+   tree tem;
+ 
++  /* Fail if anything is volatile.  */
++  if (TREE_SIDE_EFFECTS (lhs) || TREE_SIDE_EFFECTS (rhs))
++    return 0;
++
+   /* If this is an OR operation, invert both sides; we will invert
+      again at the end.  */
+   if (or_op)
+
+
+unsubscribe: body of `unsubscribe linux-arm' to majordomo@vger.rutgers.edu

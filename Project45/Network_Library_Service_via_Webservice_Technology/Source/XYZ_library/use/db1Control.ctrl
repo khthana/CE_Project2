@@ -1,0 +1,54 @@
+package use; 
+
+import weblogic.jws.*; 
+import weblogic.jws.control.*; 
+import java.sql.SQLException; 
+
+/** 
+ * Defines a new database control. 
+ * 
+ * The @jws:connection tag indicates which WebLogic data source will be used by 
+ * this database control. Please change this to suit your needs. You can see a 
+ * list of available data sources by going to the WebLogic console in a browser 
+ * (typically http://localhost:7001/console) and clicking Services, JDBC, 
+ * Data Sources. 
+ * 
+ * @jws:connection data-source-jndi-name="MyDataSource" 
+ */ 
+public interface db1Control extends DatabaseControl 
+{ 
+    // Sample database function.  Uncomment to use 
+
+    // static public class Customer 
+    // { 
+    //   public int id; 
+    //   public String name; 
+    // } 
+    // 
+    // /** 
+    //  * @jws:sql statement="SELECT ID, NAME FROM CUSTOMERS WHERE ID = {id}" 
+    //  */ 
+    // Customer findCustomer(int id);
+
+    // Add "throws SQLException" to request that SQLExeptions be thrown on errors.
+
+    /**
+     * @jws:sql statement::
+     *     select to_days(curdate())-to_days(return_date)
+     *     from book
+     *     where book_record={book_record}
+     * ::
+     */
+    public int check_book(String book_record);
+
+    /**
+     * @jws:sql statement::
+     *     update book
+     *     set username_use=null,
+     *         borrow_date=null,
+     *         return_date=null
+     *     where book_record={book_record}
+     * ::
+     */
+    public void record_book(String book_record);
+}

@@ -1,0 +1,38 @@
+package registry; 
+
+import weblogic.jws.control.JwsContext;
+
+public class registry
+{ 
+
+    /**
+     * @jws:control
+     */
+    private MemberDBControlControl DB;
+    //private MemberDBControlControl MemberDBControl;
+    /** @jws:context */ 
+    JwsContext context; 
+
+    /**
+     * @jws:operation
+     */
+    public boolean addtMemberData(String username,String passwd,String name,String lastname,String sex,String status,String work_address, String ID,
+                         String year,String home_num,String lane,String village,String moo, String road,String district,
+                         String amphur,String province, String zip_code, String phone1,String  phone2,String e_mail,String category,String e_mail_way,String application_way)
+    {   
+        if (DB.check_username(username)==null) {
+            DB.InsertMemberToDB(username,passwd,name,lastname,sex,status,work_address,ID,year,home_num,lane,village,moo,road,district,amphur,province,zip_code,phone1,phone2,e_mail,category,e_mail_way,application_way);
+            return true;
+        }
+        else return false;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public boolean change_password(String username, String old_password, String new_password)
+    {
+        if (DB.update_password(username, old_password, new_password)==0) return false;
+        else return true;
+    }
+} 

@@ -1,0 +1,308 @@
+/** @editor-info:link source="reservation.jws" autogen="false" */
+package reservation;
+import center.*;
+
+import weblogic.jws.control.ServiceControl;
+
+/**
+ * @jws:location http-url="reservation.jws" jms-url="reservation.jws"
+ * @jws:wsdl file="#reservationWsdl"
+ */
+public interface reservationControl extends ServiceControl
+{
+    
+    
+
+
+    public reservation_show_data checktReservation (java.lang.String member_num, java.lang.String book_record, java.lang.String comment);
+
+    public boolean addReservation (java.lang.String member_num, java.lang.String receive_date, java.lang.String book_record, java.lang.String comment);
+
+    public reservation_show_data[] userCheck (java.lang.String key);
+
+}
+
+/** @jws:define name="reservationWsdl" value::
+    <?xml version="1.0" encoding="utf-8"?>
+    <definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:conv="http://www.openuri.org/2002/04/soap/conversation/" xmlns:cw="http://www.openuri.org/2002/04/wsdl/conversation/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:jms="http://www.openuri.org/2002/04/wsdl/jms/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://www.openuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xm="http://www.bea.com/2002/04/xmlmap/" targetNamespace="http://www.openuri.org/" >
+      <types>
+        <s:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.openuri.org/">
+          <s:element name="checktReservation">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="member_num" type="s:string" />
+                <s:element minOccurs="0" maxOccurs="1" name="book_record" type="s:string" />
+                <s:element minOccurs="0" maxOccurs="1" name="comment" type="s:string" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="checktReservationResponse">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="checktReservationResult" type="s0:reservation_show_data" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:complexType name="reservation_show_data">
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="1" name="user_name" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="user_lastname" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="reservation_date" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="receive_date" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="title" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="author" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="call_number" type="s:string" />
+                </s:sequence>
+          </s:complexType>
+          <s:element nillable="true" name="reservation_show_data" type="s0:reservation_show_data" />
+          <s:element name="addReservation">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="member_num" type="s:string" />
+                <s:element minOccurs="0" maxOccurs="1" name="receive_date" type="s:string" />
+                <s:element minOccurs="0" maxOccurs="1" name="book_record" type="s:string" />
+                <s:element minOccurs="0" maxOccurs="1" name="comment" type="s:string" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="addReservationResponse">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="1" maxOccurs="1" name="addReservationResult" type="s:boolean" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="boolean" type="s:boolean" />
+          <s:element name="userCheck">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="key" type="s:string" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="userCheckResponse">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="userCheckResult" type="s0:ArrayOfreservation_show_data" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:complexType name="ArrayOfreservation_show_data">
+            <s:sequence>
+                <s:element minOccurs="0" maxOccurs="unbounded" nillable="true" name="reservation_show_data" type="s0:reservation_show_data" />
+            </s:sequence>
+          </s:complexType>
+          <s:element nillable="true" name="ArrayOfreservation_show_data" type="s0:ArrayOfreservation_show_data" />
+        </s:schema>
+      </types>
+      <message name="checktReservationSoapIn">
+        <part name="parameters" element="s0:checktReservation" />
+      </message>
+      <message name="checktReservationSoapOut">
+        <part name="parameters" element="s0:checktReservationResponse" />
+      </message>
+      <message name="addReservationSoapIn">
+        <part name="parameters" element="s0:addReservation" />
+      </message>
+      <message name="addReservationSoapOut">
+        <part name="parameters" element="s0:addReservationResponse" />
+      </message>
+      <message name="userCheckSoapIn">
+        <part name="parameters" element="s0:userCheck" />
+      </message>
+      <message name="userCheckSoapOut">
+        <part name="parameters" element="s0:userCheckResponse" />
+      </message>
+      <message name="checktReservationHttpGetIn">
+        <part name="member_num" type="s:string" />
+        <part name="book_record" type="s:string" />
+        <part name="comment" type="s:string" />
+      </message>
+      <message name="checktReservationHttpGetOut">
+        <part name="Body" element="s0:reservation_show_data" />
+      </message>
+      <message name="addReservationHttpGetIn">
+        <part name="member_num" type="s:string" />
+        <part name="receive_date" type="s:string" />
+        <part name="book_record" type="s:string" />
+        <part name="comment" type="s:string" />
+      </message>
+      <message name="addReservationHttpGetOut">
+        <part name="Body" element="s0:boolean" />
+      </message>
+      <message name="userCheckHttpGetIn">
+        <part name="key" type="s:string" />
+      </message>
+      <message name="userCheckHttpGetOut">
+        <part name="Body" element="s0:ArrayOfreservation_show_data" />
+      </message>
+      <message name="checktReservationHttpPostIn">
+        <part name="member_num" type="s:string" />
+        <part name="book_record" type="s:string" />
+        <part name="comment" type="s:string" />
+      </message>
+      <message name="checktReservationHttpPostOut">
+        <part name="Body" element="s0:reservation_show_data" />
+      </message>
+      <message name="addReservationHttpPostIn">
+        <part name="member_num" type="s:string" />
+        <part name="receive_date" type="s:string" />
+        <part name="book_record" type="s:string" />
+        <part name="comment" type="s:string" />
+      </message>
+      <message name="addReservationHttpPostOut">
+        <part name="Body" element="s0:boolean" />
+      </message>
+      <message name="userCheckHttpPostIn">
+        <part name="key" type="s:string" />
+      </message>
+      <message name="userCheckHttpPostOut">
+        <part name="Body" element="s0:ArrayOfreservation_show_data" />
+      </message>
+      <portType name="reservationSoap">
+        <operation name="checktReservation">
+          <input message="s0:checktReservationSoapIn" />
+          <output message="s0:checktReservationSoapOut" />
+        </operation>
+        <operation name="addReservation">
+          <input message="s0:addReservationSoapIn" />
+          <output message="s0:addReservationSoapOut" />
+        </operation>
+        <operation name="userCheck">
+          <input message="s0:userCheckSoapIn" />
+          <output message="s0:userCheckSoapOut" />
+        </operation>
+      </portType>
+      <portType name="reservationHttpGet">
+        <operation name="checktReservation">
+          <input message="s0:checktReservationHttpGetIn" />
+          <output message="s0:checktReservationHttpGetOut" />
+        </operation>
+        <operation name="addReservation">
+          <input message="s0:addReservationHttpGetIn" />
+          <output message="s0:addReservationHttpGetOut" />
+        </operation>
+        <operation name="userCheck">
+          <input message="s0:userCheckHttpGetIn" />
+          <output message="s0:userCheckHttpGetOut" />
+        </operation>
+      </portType>
+      <portType name="reservationHttpPost">
+        <operation name="checktReservation">
+          <input message="s0:checktReservationHttpPostIn" />
+          <output message="s0:checktReservationHttpPostOut" />
+        </operation>
+        <operation name="addReservation">
+          <input message="s0:addReservationHttpPostIn" />
+          <output message="s0:addReservationHttpPostOut" />
+        </operation>
+        <operation name="userCheck">
+          <input message="s0:userCheckHttpPostIn" />
+          <output message="s0:userCheckHttpPostOut" />
+        </operation>
+      </portType>
+      <binding name="reservationSoap" type="s0:reservationSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+        <operation name="checktReservation">
+          <soap:operation soapAction="http://www.openuri.org/checktReservation" style="document" />
+          <input>
+            <soap:body use="literal" />
+          </input>
+          <output>
+            <soap:body use="literal" />
+          </output>
+        </operation>
+        <operation name="addReservation">
+          <soap:operation soapAction="http://www.openuri.org/addReservation" style="document" />
+          <input>
+            <soap:body use="literal" />
+          </input>
+          <output>
+            <soap:body use="literal" />
+          </output>
+        </operation>
+        <operation name="userCheck">
+          <soap:operation soapAction="http://www.openuri.org/userCheck" style="document" />
+          <input>
+            <soap:body use="literal" />
+          </input>
+          <output>
+            <soap:body use="literal" />
+          </output>
+        </operation>
+      </binding>
+      <binding name="reservationHttpGet" type="s0:reservationHttpGet">
+        <http:binding verb="GET" />
+        <operation name="checktReservation">
+          <http:operation location="/checktReservation" />
+          <input>
+            <http:urlEncoded />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+        <operation name="addReservation">
+          <http:operation location="/addReservation" />
+          <input>
+            <http:urlEncoded />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+        <operation name="userCheck">
+          <http:operation location="/userCheck" />
+          <input>
+            <http:urlEncoded />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+      </binding>
+      <binding name="reservationHttpPost" type="s0:reservationHttpPost">
+        <http:binding verb="POST" />
+        <operation name="checktReservation">
+          <http:operation location="/checktReservation" />
+          <input>
+            <mime:content type="application/x-www-form-urlencoded" />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+        <operation name="addReservation">
+          <http:operation location="/addReservation" />
+          <input>
+            <mime:content type="application/x-www-form-urlencoded" />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+        <operation name="userCheck">
+          <http:operation location="/userCheck" />
+          <input>
+            <mime:content type="application/x-www-form-urlencoded" />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+      </binding>
+      <service name="reservation">
+        <port name="reservationSoap" binding="s0:reservationSoap">
+          <soap:address location="http://localhost:7001/library/reservation/reservation.jws" />
+        </port>
+        <port name="reservationHttpGet" binding="s0:reservationHttpGet">
+          <http:address location="http://localhost:7001/library/reservation/reservation.jws" />
+        </port>
+        <port name="reservationHttpPost" binding="s0:reservationHttpPost">
+          <http:address location="http://localhost:7001/library/reservation/reservation.jws" />
+        </port>
+      </service>
+    </definitions>
+ * ::
+ */
+

@@ -1,0 +1,111 @@
+package MemberData; 
+
+import weblogic.jws.*; 
+import weblogic.jws.control.*; 
+import java.sql.SQLException; 
+import center.*;
+
+/** 
+ * Defines a new database control. 
+ * 
+ * The @jws:connection tag indicates which WebLogic data source will be used by 
+ * this database control. Please change this to suit your needs. You can see a 
+ * list of available data sources by going to the WebLogic console in a browser 
+ * (typically http://localhost:7001/console) and clicking Services, JDBC, 
+ * Data Sources. 
+ * 
+ * @jws:connection data-source-jndi-name="MyDataSource" 
+ */ 
+public interface MemberDataControl extends DatabaseControl 
+{ 
+    
+    /*static public class member
+     {
+        public String member_num;
+        public String passwd;
+        public String name;
+        public String lastname;
+        public String sex;
+        public String status;
+        public String work_address;
+        public int ID;
+        public String year;
+        public String home_num;
+        public String lane;
+        public String village;
+        public int moo;
+        public String road;
+        public String district;
+        public String amphur;
+        public String province;
+        public int zip_code;
+        public int phone1;
+        public int phone2;
+        public String e_mail;
+        public String category;
+        public String e_mail_way;
+        public String application_way;
+        public int level;
+     }*/
+    // Sample database function.  Uncomment to use 
+
+    // static public class Customer 
+    // { 
+    //   public int id; 
+    //   public String name; 
+    // } 
+    // 
+    // /** 
+    //  * @jws:sql statement="SELECT ID, NAME FROM CUSTOMERS WHERE ID = {id}" 
+    //  */ 
+    // Customer findCustomer(int id);
+
+    // Add "throws SQLException" to request that SQLExeptions be thrown on errors.
+
+    /**
+     * @jws:sql statement::
+     *     select username, name, lastname, sex, status, work_address,
+     *         id, years, home_number, lane, village, moo, road, district,
+     *         amphur, province, zip_code, phone1, phone2, email, category,
+     *         email_way, application_way, level
+     *     from inner_member 
+     *     where username = {key}
+     * ::
+     */
+    public user_profile selectMemberDataByUsername(String key);
+
+
+    /**
+     * @jws:sql statement::
+     *     select username, name, lastname, sex, status, work_address,
+     *         id, years, home_number, lane, village, moo, road, district,
+     *         amphur, province, zip_code, phone1, phone2, email, category,
+     *         email_way, application_way, level
+     *     from inner_member
+     *     where ID = {key}
+     * ::
+     */
+    public user_profile selectMemberDataByID(int key);
+
+
+    /**
+     * @jws:sql statement::
+     *     update inner_member
+     *     set username={username}, name={name},
+     *         lastname={lastname}, sex={sex}, status={status},
+     *         work_address={work_address}, id={id}, years={years},
+     *         home_number={home_number}, lane={lane}, village={village},
+     *         moo={moo}, road={road}, district={district}, amphur={amphur},
+     *         province={province}, zip_code={zip_code}, phone1={phone1},
+     *         email={email}, category={category},
+     *         email_way={email_way}, application_way={application_way},
+     *         level={level}
+     *     where username={username} or id={id}
+     *         
+     * ::
+     */
+    public void update_data(String username,String name,String lastname,String sex,String status,
+        String work_address, String id, String years, String home_number, String lane, String village, String moo,
+        String road,String district, String amphur,String province, String zip_code, String phone1,
+        String email,String category, String email_way,String application_way, String level);
+}

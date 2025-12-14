@@ -1,0 +1,113 @@
+package use; 
+
+import weblogic.jws.*; 
+import weblogic.jws.control.*; 
+import java.sql.SQLException; 
+import center.*;
+
+/** 
+ * Defines a new database control. 
+ * 
+ * The @jws:connection tag indicates which WebLogic data source will be used by 
+ * this database control. Please change this to suit your needs. You can see a 
+ * list of available data sources by going to the WebLogic console in a browser 
+ * (typically http://localhost:7001/console) and clicking Services, JDBC, 
+ * Data Sources. 
+ * 
+ * @jws:connection data-source-jndi-name="MyDataSource" 
+ */ 
+public interface db1Control extends DatabaseControl 
+{ 
+    // Sample database function.  Uncomment to use 
+
+    // static public class Customer 
+    // { 
+    //   public int id; 
+    //   public String name; 
+    // } 
+    // 
+    // /** 
+    //  * @jws:sql statement="SELECT ID, NAME FROM CUSTOMERS WHERE ID = {id}" 
+    //  */ 
+    // Customer findCustomer(int id);
+
+    // Add "throws SQLException" to request that SQLExeptions be thrown on errors.
+
+    /**
+     * @jws:sql statement::
+     *     select to_days(curdate())-to_days(return_date)
+     *     from book
+     *     where book_record={book_record}
+     * ::
+     */
+    public int check_book(String book_record);
+
+    /**
+     * @jws:sql statement::
+     *     update book
+     *     set username_use=null,
+     *         borrow_date=null,
+     *         return_date=null,
+     *         book_status='Shelve'
+     *     where book_record={book_record}
+     * ::
+     */
+    public void record_book(String book_record);
+
+    /**
+     * @jws:sql statement::
+     *     select limit_day
+     *     from inner_member t1, user_limit t2
+     *     where t1.username = {key_member_num} and
+     *           t1.status = t2.status
+     * ::
+     */
+    public int selectDay(String key_member_num);
+
+
+    /**
+     * @jws:sql statement::
+     *     select *
+     *     from reservation
+     *     where book_record = {book_record}
+     * ::
+     */
+    public reservation_add_data[] selectReservationData(String book_record);
+
+    /**
+     * @jws:sql statement::
+     *     delete from reservation
+     *     where book_record = {book_record}
+     * ::
+     */
+    public void delete_data(String book_record);
+
+    /**
+     * @jws:sql statement::
+     *     insert into reservation (username, mark_date,receive_date,return_date,book_record,comment)
+     *     values ({member_num},
+     *             {reservation_date},
+     *             {receive_date},
+     *             DATE_ADD({receive_date}, INTERVAL {day} DAY),
+     *             {book_record},
+     *             {comment})
+     * ::
+     */
+    public void add_reservation(String member_num,String reservation_date,String receive_date,int day,String book_record,String comment);
+
+    /**
+     * @jws:sql statement::
+     *     select CURRENT_DATE
+     * ::
+     */
+    public String getCurrentDay();
+
+    /**
+     * @jws:sql statement::
+     *     select max(return_date)
+     *     from reservation
+     *     where book_record = {book_record}
+     * ::
+     */
+    public String select_receive_date(String book_record);
+}

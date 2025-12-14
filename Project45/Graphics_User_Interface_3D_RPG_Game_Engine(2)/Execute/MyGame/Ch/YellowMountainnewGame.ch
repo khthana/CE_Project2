@@ -1,0 +1,9 @@
+1    TheMask    35    -13    235    -1217    0    49    0    200    100    .\inv\InvHero.inv    .\scp\TheMask11.scp    1   .\scp\TheMask11.rt
+2    Koopa    31    -51    -44    -66    0    -108    0    20    100    NO    .\scp\Koopa21.scp    1   .\scp\Koopa21.rt
+3    KoopaGreen    32    43    -44    -18    0    -109    0    20    100    NO    .\scp\KoopaGreen31.scp    1   .\scp\KoopaGreen31.rt
+4    KoopaRed    33    -813    192    -847    0    229    0    20    100    NO    .\scp\KoopaRed41.scp    1   .\scp\KoopaRed41.rt
+5    KoopaYellow    34    -440    -44    29    0    -56    0    20    100    NO    .\scp\KoopaYellow51.scp    1   .\scp\KoopaYellow51.rt
+6    Tummeng    43    -18    -44    -57    0    239    0    20    100    NO    .\scp\Tummeng61.scp    1   .\scp\Tummeng61.rt
+7    People5    40    -133    235    -752    0    78    0    20    100    NO    .\scp\People571.scp    1   .\scp\People571.rt
+8    People6    41    503    235    -370    0    144    0    20    100    NO    .\scp\People681.scp    1   .\scp\People681.rt
+9    People4    39    -684    216    -928    0    70    0    20    100    NO    .\scp\People491.scp    1   .\scp\People491.rt

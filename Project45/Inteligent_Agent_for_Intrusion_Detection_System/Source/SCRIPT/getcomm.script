@@ -1,0 +1,21 @@
+#!/usr/local/bin/bash
+
+for file in `ls ../PACCT/*`
+do
+	acctcom -vg ssci $file > tmp
+	acctcom -vg seng $file >> tmp
+	datefile=../DATE/${file#../PACCT/}
+	tr -d "#" < tmp | sed '/^$/d' | sed '/ACCOUNTING/d' | awk '{print $1"\t"$2}' | sort -k 2,2 | uniq -c > tmp2
+	echo "#${file#../PACCT/}" > $datefile
+	for cmd in `cat ../cmd | awk '{print $2}'`
+	do
+		cmdnum=`cat ../cmd | grep "\<${cmd}$" | cut -f1`
+		cat tmp2 | sed -n "s/\<$cmd\>/$cmdnum/p" >> $datefile
+        done
+	echo ${datefile#../DATE/} OK!
+done
+
+rm -f tmp
+rm -f tmp2
+
+exit 0

@@ -1,0 +1,117 @@
+package ngeecal;
+
+import java.sql.*;
+
+public class Database implements AccessDatabase {
+
+  // refer connection
+  Connection connection;
+  // refer constructor
+   private Database() {
+   }
+   // refer singlrton class Database
+   private static Database database = new Database();
+   // refer static get Instance from class Database
+   public static Database getDatabase(){
+     return database;
+   }
+   // refer method connect database
+   public void connect() throws Exception{
+
+     String driver ="sun.jdbc.odbc.JdbcOdbcDriver";
+     String url    ="jdbc:odbc:Stock";
+     System.out.print("ngee:)");
+     Class.forName( driver );
+
+     connection = DriverManager.getConnection(url);
+     connection.setAutoCommit(false);
+   }
+
+   // refer get ResultSet find data for make ema
+  public ResultSet findEma( String stock_code,String dmax,String dmin )
+      throws DataException{
+    try{
+      PreparedStatement sql;
+      sql = connection.prepareStatement("select distinct(day_trade), z_close, ema_9, "+
+                                             "ema_12, ema_25, ema_75, ema_200,macd,sig "+
+                                             "from "+stock_code+" "+
+                                             "where day_trade <= '"+dmax+"' "+
+                                             "and day_trade >= '"+dmin+"' "+
+                                             "order by day_trade DESC ", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+      ResultSet rs = sql.executeQuery();
+
+      if( rs != null ){
+        return rs;
+      }
+      else return null;
+    }
+    catch( SQLException e ){
+      System.out.println(e);
+      System.out.println("  findEma  ");
+      return null;
+    }
+  }
+
+  // refer update ema of data
+  public boolean updateEma( String day_trade, String stock_code,
+                           float ema9, float ema12, float ema25,
+                           float ema75, float ema200,float macd,float sig )
+      throws DataException{
+    try{
+      PreparedStatement sql;
+      sql = connection.prepareStatement("update "+stock_code+" "+
+                                               "set ema_9 = "+ema9+" "+
+                                               ",ema_12 = "+ema12+" "+
+                                               ",ema_25 = "+ema25+" "+
+                                               ",ema_75 = "+ema75+" "+
+                                               ",ema_200= "+ema200+" "+
+                                               ",macd= "+macd+" "+
+                                               ",sig= "+sig+" "+
+                                               "where day_trade = '"+day_trade+"' ", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+      int rs = sql.executeUpdate();
+      if( rs == 0 ){
+        connection.rollback();
+        return false;
+      }
+      else{
+        connection.commit();
+        return true;
+      }
+
+    }
+    catch( SQLException e ){
+
+      try{
+       System.out.println(e);
+       connection.rollback();
+       return false;
+      }
+      catch( SQLException ex ){
+        throw new DataException( ex );
+      }
+    }
+  }
+
+  // refer get ResultSet find z_close for make RSI
+public ResultSet findOnlyClose( String stock_code,String dmax,String dmin )
+    throws DataException{
+  try{
+    PreparedStatement sqlOnlyClose;
+    sqlOnlyClose = connection.prepareStatement("select distinct(day_trade), z_close "+
+                                             "from "+stock_code+" "+
+                                             "where day_trade <= '"+dmax+"' "+
+                                             "and day_trade >= '"+dmin+"' "+
+                                             "order by day_trade DESC ", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+    ResultSet rs = sqlOnlyClose.executeQuery();
+    if( rs != null ){
+      return rs;
+    }
+    else return null;
+  }
+  catch( SQLException e ){
+    System.out.println(e);
+    System.out.println("  findOnlyClose ");
+    return null;
+  }
+  }
+}

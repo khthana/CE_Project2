@@ -1,0 +1,9 @@
+1	  TheMask   35   275   -49   1212   0   23   0   200   100   .\inv\InvHero.inv   NO   1   NO
+2	  Koopa   31   -108   -44   205   0   0   0   200   100   NO   NO   1   NO
+3	  KoopaGreen   32   44   -44   236   0   0   0   200   100   NO   NO   1   NO
+4	  KoopaRed   33   -456   -44   662   0   0   0   200   100   NO   NO   1   NO
+5	  KoopaYellow   34   -433   -44   279   0   0   0   200   100   NO   NO   1   NO
+6	  Tummeng   43   -158   -44   250   0   0   0   200   100   NO   NO   1   NO
+7	  People5   40   -256   230   -927   0   120   0   200   100   NO   NO   1   NO
+8	  People6   41   -473   184   -839   0   128   0   200   100   NO   NO   1   NO
+9	  People4   39   95   230   -923   0   0   0   200   100   NO   NO   1   NO

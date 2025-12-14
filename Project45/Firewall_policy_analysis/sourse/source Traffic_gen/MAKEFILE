@@ -1,0 +1,78 @@
+all:ICMP_types Land_Attack TCP_types TCP_unspoof UDP_types UDP_unspoof Teardrop Winfreeze check_address client connect_2_server jolt
+ICMP_types: ICMP_types.o
+	gcc -o ICMP_types ICMP_types.o
+ICMP_types.o: ICMP_types.c
+	gcc -c ICMP_types.c
+
+Land_Attack: Land_Attack.o
+	gcc -o Land_Attack Land_Attack.o
+Land_Attack.o: Land_Attack.c
+	gcc -c Land_Attack.c
+
+TCP_types: TCP_types.o
+	gcc -o TCP_types TCP_types.o
+TCP_types.o: TCP_types.c
+	gcc -c TCP_types.c
+
+TCP_unspoof: TCP_unspoof.o
+	gcc -o TCP_unspoof TCP_unspoof.o
+TCP_unspoof.o: TCP_unspoof.c
+	gcc -c TCP_unspoof.c
+
+UDP_types: UDP_types.o
+	gcc -o UDP_types UDP_types.o
+UDP_types.o: UDP_types.c
+	gcc -c UDP_types.c
+
+UDP_unspoof: UDP_unspoof.o
+	gcc -o UDP_unspoof UDP_unspoof.o
+UDP_unspoof.o: UDP_unspoof.c
+	gcc -c UDP_unspoof.c
+
+Teardrop: Teardrop.o
+	gcc -o Teardrop Teardrop.o
+Teardrop.o: Teardrop.c
+	gcc -c Teardrop.c
+
+Winfreeze: Winfreeze.o
+	gcc -o Winfreeze Winfreeze.o
+Winfreeze.o: Winfreeze.c
+	gcc -c Winfreeze.c
+
+check_address: check_address.o
+	gcc -o check_address check_address.o
+check_address.o: check_address.c
+	gcc -c check_address.c
+
+client: client.o
+	gcc -o client client.o
+client.o: client.c
+	gcc -c client.c
+
+connect_2_server: connect_2_server.o
+	gcc -o connect_2_server connect_2_server.o
+connect_2_server.o: connect_2_server.c
+	gcc -c connect_2_server.c
+
+jolt: jolt2.o
+	gcc -o jolt jolt2.o
+jolt2.o: jolt2.c
+	gcc -c jolt2.c
+
+install:
+	mkdir Traffic_gen
+	mv ICMP_types ./Traffic_gen
+	mv Land_Attack ./Traffic_gen
+	mv TCP_types ./Traffic_gen
+	mv TCP_unspoof ./Traffic_gen
+	mv UDP_types ./Traffic_gen
+	mv UDP_unspoof ./Traffic_gen
+	mv Teardrop ./Traffic_gen
+	mv Winfreeze ./Traffic_gen
+	mv check_address ./Traffic_gen
+	mv client ./Traffic_gen
+	mv connect_2_server ./Traffic_gen
+	mv jolt	./Traffic_gen
+	cp *.sh ./Traffic_gen
+	rm -rf *.o
+

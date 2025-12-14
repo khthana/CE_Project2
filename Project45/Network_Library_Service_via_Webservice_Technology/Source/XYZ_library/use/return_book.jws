@@ -1,0 +1,33 @@
+package use; 
+
+import weblogic.jws.control.JwsContext;
+
+public class return_book
+{ 
+
+    /**
+     * @jws:control
+     */
+    private db1Control db;
+    /** @jws:context */ 
+    JwsContext context; 
+
+    /**
+     * @jws:operation
+     */
+    public int insert_book(String []book_record)
+    {
+        int l=book_record.length;
+        int baht=0;
+        int temp;
+        for (int i=0; i<l; i++) {
+            //¤Ô´à§Ô¹
+            temp=db.check_book(book_record[i]);
+            System.out.println(temp);
+            if (0<temp) baht=temp+baht;
+            //update DB
+            db.record_book(book_record[i]);
+        }
+        return baht;
+    }
+} 

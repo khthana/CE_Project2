@@ -1,0 +1,760 @@
+package switchsim;
+
+import java.io.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import com.borland.jbcl.layout.*;
+import java.util.*;
+import javax.swing.border.*;
+import javax.swing.JOptionPane;
+
+public class Frame1 extends JFrame {
+
+  static Vector vVlan = new Vector();
+  static SpanningTree stp = new SpanningTree();
+  static int flag = 0;
+
+  static Vector vWorkstation = new Vector();
+  static Vector vSwitch = new Vector();
+  static Vector vConsole = new Vector();
+  static Vector vMACAddress = new Vector();
+  static Vector vStaticAddr = new Vector();
+  static Vector vDynamicAddr = new Vector();
+  static AddressLearning learn = new AddressLearning();
+//  static Frame2 f2 = new Frame2();
+//  static Frame3 f3 = new Frame3();
+//  static Dialog4 d4 = new Dialog4();
+//  static ViewNT view = new ViewNT();
+  static Panel2 panel = new Panel2();
+  static Panel3 panel3 = new Panel3();
+  static ErrorMsg1 errmsg1 = new ErrorMsg1();
+  static Command c = new Command();
+//  static Vector vStatus = new Vector();
+  static int statusType = 0;
+
+  Switch sw;
+  SwitchImg simg;
+  Panel1 sPanel;
+  MACAddress m = new MACAddress();
+  static final int maxSwitch = 10;
+  static final int maxWorkstation = 10;
+  static boolean drawInt = false;
+
+  ImageIcon image1;
+  ImageIcon image2;
+  ImageIcon image3;
+  ImageIcon image4;
+  ImageIcon image5;
+  ImageIcon image6;
+  ImageIcon image7;
+  ImageIcon image4t;
+  ImageIcon image5t;
+
+  ImageIcon isw01;
+  ImageIcon isw02;
+  ImageIcon isw03;
+  ImageIcon isw04;
+  ImageIcon isw05;
+
+  ImageIcon iworkstation;
+  static ImageIcon iInterface;
+  static ImageIcon iInterfaceT;
+
+  JPanel contentPane;
+  JPanel jPanel1 = new JPanel();
+  XYLayout xYLayout1 = new XYLayout();
+  XYLayout xYLayout2 = new XYLayout();
+  TitledBorder titledBorder1;
+  JToolBar jToolBar1 = new JToolBar();
+  JButton jNewButton = new JButton();
+  JButton jDelButton = new JButton();
+  JButton jViewButton = new JButton();
+
+  JButton jNewButton4 = new JButton();
+  JButton jNewButton5 = new JButton();
+  JButton jNewButton1 = new JButton();
+  JButton jNewButton2 = new JButton();
+  JButton jNewButton3 = new JButton();
+
+//static JTabbedPane jTabbedPane1 = new JTabbedPane();
+  JMenuBar jMenuBar1 = new JMenuBar();
+  JMenu jMenuFile = new JMenu();
+  JMenuItem menuFileExit = new JMenuItem();
+  JMenu jMenuEdit = new JMenu();
+  JMenuItem menuNewSwitch = new JMenuItem();
+  JMenuItem menuDelSwitch = new JMenuItem();
+  JMenuItem menuConSwitch = new JMenuItem();
+  JMenuItem menuConCom = new JMenuItem();
+  JMenu jMenuHelp = new JMenu();
+  JButton jConnectButton = new JButton();
+  JButton jComButton = new JButton();
+  JToolBar jToolBar2 = new JToolBar();
+  JLabel jLabel1 = new JLabel();
+  JLabel jLabel2 = new JLabel();
+  JButton jButton1 = new JButton();
+  JLabel jLabel3 = new JLabel();
+  static JToggleButton jToggleButton1 = new JToggleButton();
+  TitledBorder titledBorder2;
+  JPanel jPanel2 = new JPanel();
+  XYLayout xYLayout3 = new XYLayout();
+  JButton jFeaturButton = new JButton();
+  JButton jLessonButton = new JButton();
+  Border border1;
+  static JScrollPane jScrollPane1 = new JScrollPane();
+  static JToggleButton jVlanButton = new JToggleButton();
+  static JToggleButton jSTPButton = new JToggleButton();
+
+  /**Construct the frame*/
+  public Frame1() {
+    enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+    try {
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+  /**Component initialization*/
+  private void jbInit() throws Exception  {
+    image1 = new ImageIcon(switchsim.Frame1.class.getResource("open.jpg"));
+    image2 = new ImageIcon(switchsim.Frame1.class.getResource("save.jpg"));
+    image3 = new ImageIcon(switchsim.Frame1.class.getResource("connection.jpg"));
+    image4 = new ImageIcon(switchsim.Frame1.class.getResource("vlan.jpg"));
+    image5 = new ImageIcon(switchsim.Frame1.class.getResource("stp.jpg"));
+    image6 = new ImageIcon(switchsim.Frame1.class.getResource("feature.jpg"));
+    image7 = new ImageIcon(switchsim.Frame1.class.getResource("lesson.jpg"));
+    image4t = new ImageIcon(switchsim.Frame1.class.getResource("vlan-t.jpg"));
+    image5t = new ImageIcon(switchsim.Frame1.class.getResource("stp-t.jpg"));
+
+    isw01 = new ImageIcon(switchsim.Frame1.class.getResource("2950-12-n.jpg"));
+    isw02 = new ImageIcon(switchsim.Frame1.class.getResource("2950-24-n.jpg"));
+    isw03 = new ImageIcon(switchsim.Frame1.class.getResource("2950G-12-n.jpg"));
+    isw04 = new ImageIcon(switchsim.Frame1.class.getResource("2950T-24-n.jpg"));
+    isw05 = new ImageIcon(switchsim.Frame1.class.getResource("2955T-12-n.jpg"));
+
+    iworkstation = new ImageIcon(switchsim.Frame1.class.getResource("workstation-n.jpg"));
+    iInterface = new ImageIcon(switchsim.Frame1.class.getResource("interface-n.jpg"));
+    iInterfaceT = new ImageIcon(switchsim.Frame1.class.getResource("interface-t-n.jpg"));
+
+    contentPane = (JPanel) this.getContentPane();
+    titledBorder1 = new TitledBorder(BorderFactory.createEtchedBorder(Color.white,new Color(165, 163, 151)),"");
+    titledBorder2 = new TitledBorder("");
+    border1 = new EtchedBorder(EtchedBorder.RAISED,Color.white,new Color(156, 156, 156));
+    contentPane.setLayout(xYLayout1);
+    this.setResizable(false);
+    this.setSize(new Dimension(1024, 741));
+    this.setTitle("Switch Simulator");
+
+    jToolBar1.setBackground(new Color(223, 223, 223));
+    jToolBar1.setBorder(BorderFactory.createEtchedBorder());
+    jToolBar1.setFloatable(false);
+    jToolBar1.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        jToolBar1_keyPressed(e);
+      }
+    });
+    contentPane.setBackground(new Color(230, 225, 225));
+    jButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton1_actionPerformed(e);
+      }
+    });
+    panel.setBackground(new Color(246, 250, 250));
+    jFeaturButton.setBackground(new Color(223, 223, 223));
+    jFeaturButton.setBorder(BorderFactory.createEtchedBorder());
+    jFeaturButton.setMaximumSize(new Dimension(100, 60));
+    jFeaturButton.setRequestFocusEnabled(false);
+    jFeaturButton.setToolTipText("Feature");
+    jFeaturButton.setIcon(image6);
+
+    jFeaturButton.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        jFeaturButton_keyPressed(e);
+      }
+    });
+    jFeaturButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jFeaturButton_actionPerformed(e);
+      }
+    });
+    jLessonButton.setBackground(new Color(223, 223, 223));
+    jLessonButton.setBorder(BorderFactory.createEtchedBorder());
+    jLessonButton.setMaximumSize(new Dimension(100, 60));
+    jLessonButton.setRequestFocusEnabled(false);
+    jLessonButton.setToolTipText("Lesson");
+    jLessonButton.setIcon(image7);
+    jLessonButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jLessonButton_actionPerformed(e);
+      }
+    });
+
+
+    jNewButton1.setRequestFocusEnabled(false);
+    jNewButton2.setRequestFocusEnabled(false);
+    jNewButton3.setRequestFocusEnabled(false);
+    jNewButton4.setRequestFocusEnabled(false);
+    jNewButton5.setRequestFocusEnabled(false);
+    jButton1.setRequestFocusEnabled(false);
+    jToggleButton1.setRequestFocusEnabled(false);
+    jViewButton.setBorder(BorderFactory.createEtchedBorder());
+    jViewButton.setRequestFocusEnabled(false);
+    jViewButton.setIcon(image1);
+    jComButton.setBorder(BorderFactory.createEtchedBorder());
+    jComButton.setRequestFocusEnabled(false);
+    jComButton.setIcon(image2);
+    jConnectButton.setBorder(BorderFactory.createEtchedBorder());
+    jConnectButton.setRequestFocusEnabled(false);
+    jConnectButton.setIcon(image3);
+    jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+    jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+    jScrollPane1.getViewport().setBackground(new Color(223, 223, 223));
+    jVlanButton.setBackground(new Color(223, 223, 223));
+    jVlanButton.setBorder(BorderFactory.createEtchedBorder());
+    jVlanButton.setMaximumSize(new Dimension(100, 60));
+    jVlanButton.setRequestFocusEnabled(false);
+    jVlanButton.setToolTipText("Show VLAN Status");
+    jVlanButton.setIcon(image4);
+    jVlanButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jVlanButton_actionPerformed(e);
+      }
+    });
+    jSTPButton.setBackground(new Color(223, 223, 223));
+    jSTPButton.setBorder(BorderFactory.createEtchedBorder());
+    jSTPButton.setMaximumSize(new Dimension(100, 60));
+    jSTPButton.setRequestFocusEnabled(false);
+    jSTPButton.setToolTipText("Show Spanning-tree Status");
+    jSTPButton.setIcon(image5);
+    jSTPButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jSTPButton_actionPerformed(e);
+      }
+    });
+    jMenuBar1.setAlignmentX((float) 0.0);
+    jToolBar2.setFloatable(false);
+    contentPane.add(panel,            new XYConstraints(165, 60, 851, 427));
+    jMenuFile.setBackground(new Color(223, 223, 223));
+    jMenuFile.setText("File");
+    menuFileExit.setBackground(new Color(223, 223, 223));
+    menuFileExit.setText("Exit");
+    jMenuEdit.setBackground(new Color(223, 223, 223));
+    jMenuEdit.setText("Edit");
+    //Menu New Switch
+    menuNewSwitch.setBackground(new Color(223, 223, 223));
+    menuNewSwitch.setText("New Switch");
+    menuNewSwitch.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        menuNewSwitch_actionPerformed(e);
+      }
+    });
+    menuDelSwitch.setBackground(new Color(223, 223, 223));
+    menuDelSwitch.setActionCommand("Delete Switch");
+    menuDelSwitch.setText("Delete Switch");
+    menuDelSwitch.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        menuDelSwitch_actionPerformed(e);
+      }
+    });
+    jMenuHelp.setBackground(new Color(223, 223, 223));
+    jMenuHelp.setText("Help");
+    jMenuBar1.setBackground(new Color(223, 223, 223));
+    jConnectButton.setBackground(new Color(223, 223, 223));
+    jConnectButton.setMaximumSize(new Dimension(100, 60));
+    jConnectButton.setMinimumSize(new Dimension(72, 40));
+    jConnectButton.setToolTipText("Connection");
+    jConnectButton.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        jConnectButton_keyPressed(e);
+      }
+    });
+    jConnectButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jConnectButton_actionPerformed(e);
+      }
+    });
+    jComButton.setBackground(new Color(223, 223, 223));
+    jComButton.setMaximumSize(new Dimension(100, 60));
+    jComButton.setMinimumSize(new Dimension(72, 40));
+    jComButton.setToolTipText("Save");
+    jComButton.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        jComButton_keyPressed(e);
+      }
+    });
+    jComButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jComButton_actionPerformed(e);
+      }
+    });
+    jNewButton.setFont(new java.awt.Font("Monospaced", 1, 12));
+    jNewButton.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        jNewButton_keyPressed(e);
+      }
+    });
+    menuConSwitch.setBackground(new Color(223, 223, 223));
+    menuConSwitch.setText("Connect Switch");
+    menuConSwitch.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        menuConSwitch_actionPerformed(e);
+      }
+    });
+    menuConCom.setBackground(new Color(223, 223, 223));
+    menuConCom.setText("Connect Computer");
+    menuConCom.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        menuConCom_actionPerformed(e);
+      }
+    });
+    jViewButton.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        jViewButton_keyPressed(e);
+      }
+    });
+    jViewButton.setHorizontalTextPosition(SwingConstants.CENTER);
+//    jViewButton.setIcon(image5);
+    jToolBar2.setOrientation(JToolBar.VERTICAL);
+    jToolBar2.setBackground(new Color(223, 223, 223));
+    jLabel1.setFont(new java.awt.Font("SansSerif", 1, 18));
+    jLabel1.setForeground(new Color(0, 98, 151));
+    jLabel1.setMaximumSize(new Dimension(165, 40));
+    jLabel1.setMinimumSize(new Dimension(165, 40));
+    jLabel1.setPreferredSize(new Dimension(165, 40));
+    jLabel1.setHorizontalAlignment(SwingConstants.CENTER);
+    jLabel1.setHorizontalTextPosition(SwingConstants.CENTER);
+    jLabel1.setText("Series Switch");
+    jNewButton1.setBorder(null);
+    jNewButton1.setMaximumSize(new Dimension(165, 30));
+    jNewButton1.setMinimumSize(new Dimension(165, 30));
+    jNewButton1.setIcon(isw01);
+    jNewButton1.setMnemonic('0');
+    jNewButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jNewButton1_actionPerformed(e);
+      }
+    });
+    jNewButton2.setBorder(null);
+    jNewButton2.setMaximumSize(new Dimension(165, 30));
+    jNewButton2.setMinimumSize(new Dimension(165, 30));
+    jNewButton2.setIcon(isw02);
+    jNewButton2.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jNewButton2_actionPerformed(e);
+      }
+    });
+    jNewButton3.setBorder(null);
+    jNewButton3.setMaximumSize(new Dimension(165, 30));
+    jNewButton3.setMinimumSize(new Dimension(165, 30));
+    jNewButton3.setIcon(isw03);
+    jNewButton3.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jNewButton3_actionPerformed(e);
+      }
+    });
+    jNewButton4.setBorder(null);
+    jNewButton4.setMaximumSize(new Dimension(165, 30));
+    jNewButton4.setMinimumSize(new Dimension(165, 30));
+    jNewButton4.setIcon(isw04);
+    jNewButton4.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jNewButton4_actionPerformed(e);
+      }
+    });
+    jNewButton5.setBorder(null);
+    jNewButton5.setMaximumSize(new Dimension(165, 30));
+    jNewButton5.setMinimumSize(new Dimension(165, 30));
+    jNewButton5.setIcon(isw05);
+    jNewButton5.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jNewButton5_actionPerformed(e);
+      }
+    });
+    jLabel2.setBorder(BorderFactory.createEtchedBorder());
+    jLabel2.setMaximumSize(new Dimension(165, 30));
+    jLabel2.setVerticalAlignment(SwingConstants.CENTER);
+    jButton1.setBorder(null);
+    jButton1.setMaximumSize(new Dimension(165, 30));
+    jButton1.setMinimumSize(new Dimension(165, 30));
+    jButton1.setPreferredSize(new Dimension(165, 30));
+    jButton1.setIcon(iworkstation);
+    jLabel3.setBorder(BorderFactory.createEtchedBorder());
+    jLabel3.setMaximumSize(new Dimension(165, 10));
+    jToggleButton1.setBorder(null);
+    jToggleButton1.setMaximumSize(new Dimension(165, 30));
+    jToggleButton1.setMinimumSize(new Dimension(165, 30));
+    jToggleButton1.setPreferredSize(new Dimension(165, 30));
+    jToggleButton1.setHorizontalTextPosition(SwingConstants.CENTER);
+    jToggleButton1.setIcon(iInterface);
+    jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jToggleButton1_actionPerformed(e);
+      }
+    });
+    jPanel2.setBackground(new Color(223, 223, 223));
+    jPanel2.setLayout(xYLayout3);
+    jMenuFile.add(menuFileExit);
+    jMenuEdit.add(menuNewSwitch);
+    jMenuEdit.add(menuDelSwitch);
+    jMenuEdit.add(menuConSwitch);
+    jMenuEdit.add(menuConCom);
+//    jMenuHelp.add(menuAbout);
+//    jMenuHelp.addSeparator();
+//    jMenuHelp.add(menuAboutUs);
+    jMenuBar1.add(jMenuFile);
+    jMenuBar1.add(jMenuEdit);
+    jMenuBar1.add(jMenuHelp);
+    this.setJMenuBar(jMenuBar1);
+
+    jNewButton.setMaximumSize(new Dimension(165, 30));
+    jNewButton.setMinimumSize(new Dimension(72, 40));
+    jNewButton.setBackground(new Color(255, 191, 191));
+    jNewButton.setToolTipText("New Switch");
+
+    contentPane.add(jToolBar1,               new XYConstraints(0, 0, 1016, 60));
+    jToolBar1.add(jViewButton, null);
+    jToolBar1.add(jComButton, null);
+    jToolBar1.add(jConnectButton, null);
+    jToolBar1.add(jVlanButton, null);
+    jToolBar1.add(jSTPButton, null);
+    jToolBar1.add(jFeaturButton, null);
+    jToolBar1.add(jLessonButton, null);
+    contentPane.add(jToolBar2,                new XYConstraints(0, 60, 165, 632));
+    jToolBar2.add(jLabel1, null);
+    jToolBar2.add(jNewButton1, null);
+    jToolBar2.add(jNewButton2, null);
+    jToolBar2.add(jNewButton3, null);
+    jToolBar2.add(jNewButton4, null);
+    jToolBar2.add(jNewButton5, null);
+    jToolBar2.add(jLabel2, null);
+    jToolBar2.add(jButton1, null);
+    jToolBar2.add(jLabel3, null);
+    jToolBar2.add(jToggleButton1, null);
+    contentPane.add(jPanel2,                           new XYConstraints(165, 487, 851, 205));
+    jPanel2.add(jScrollPane1,                  new XYConstraints(0, 0, 851, 205));
+
+    jViewButton.setMaximumSize(new Dimension(100, 60));
+    jViewButton.setMinimumSize(new Dimension(100, 60));
+    jViewButton.setBackground(new Color(223, 223, 223));
+    jViewButton.setToolTipText("Open");
+    jViewButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jViewButton_actionPerformed(e);
+      }
+    });
+
+    // set color
+    this.getContentPane().setBackground(new Color(223, 223, 223));
+    learn.start();
+  }
+  /**Overridden so we can exit when window is closed*/
+  protected void processWindowEvent(WindowEvent e) {
+    super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+      System.exit(0);
+    }
+  }
+
+  void newSwitch(int type) {
+    if (drawInt) {
+      jToggleButton1.setSelected(false);
+      jToggleButton1.setIcon(iInterface);
+      drawInt=false;
+    }
+    if (vSwitch.size() < maxSwitch){
+      boolean dup = true;
+      boolean found = false;
+      String str="";
+      int i=1;
+      while(dup){
+        str = "Switch" + i;
+        found = false;
+        for(int a=0; a < Frame1.vSwitch.size(); a++){
+          String alreadyName = ((Switch)Frame1.vSwitch.elementAt(a)).getName();
+          if (alreadyName.equalsIgnoreCase(str)){
+            found = true;
+          }//end if
+        }//end for
+        i++;
+        dup = found;
+      }//end while
+      sw = new Switch(str);
+      sw.setModel(type);
+//      sw.setPriority("0000" + i-1);
+      sw.setMACaddress(m.getMACAddress(Frame1.vSwitch.size()+1));
+      sw.setDefaultVlanDB();
+      switch (type){
+        case 1 : sw.setMaxEth(0);
+                 sw.setMaxFast(12);
+                 sw.setMaxGig(0);
+                 break;
+        case 2 : sw.setMaxEth(0);
+                 sw.setMaxFast(24);
+                 sw.setMaxGig(0);
+                 break;
+        case 3 : sw.setMaxEth(0);
+                 sw.setMaxFast(12);
+                 sw.setMaxGig(2);
+                 break;
+        case 4 : sw.setMaxEth(0);
+                 sw.setMaxFast(24);
+                 sw.setMaxGig(2);
+                 break;
+        case 5 : sw.setMaxEth(0);
+                 sw.setMaxFast(12);
+                 sw.setMaxGig(2);
+                 break;
+        default : break;
+      }
+      for (int a=1; a<sw.getMaxEth()+1; a++) {
+        Interface intf = new Interface();
+        intf.addNewInt(sw,"e0/"+a);
+      }
+      for (int a=1; a<sw.getMaxFast()+1; a++) {
+        Interface intf = new Interface();
+        intf.addNewInt(sw,"Fa0/"+a);
+      }
+      for (int a=1; a<sw.getMaxGig()+1; a++) {
+        Interface intf = new Interface();
+        intf.addNewInt(sw,"Gi0/"+a);
+      }
+      Frame1.vSwitch.addElement(sw);
+      simg = new SwitchImg(sw.getModel());
+      Panel2.vImgSwitch.addElement(simg);
+      SwitchConsole scon = new SwitchConsole(sw);
+      vConsole.addElement(scon);
+      sPanel = new Panel1(sw);
+      sPanel.showDetail();
+      Panel3.vStatus.addElement(sPanel);
+
+      panel.repaintView();
+      showAllStatus();
+    }
+  }
+
+  void jViewButton_actionPerformed(ActionEvent e) {
+    c.copyrunningconfig();
+  }
+
+
+ void jTabbedPane1_keyPressed(KeyEvent e) {
+    int keyCode = e.getKeyCode();
+    if (keyCode == 10){
+//      int num = jTabbedPane1.getSelectedIndex();
+//      sw = (Switch)Frame1.vSwitch.elementAt(num);
+//      SwitchConsole scon = (SwitchConsole)vConsole.elementAt(num);
+//      scon.enterKey(sw);
+    }
+  }
+
+
+  static void setTab(String s){
+//    int index = jTabbedPane1.getSelectedIndex();
+//    jTabbedPane1.setTitleAt(index,s);
+  }
+
+  void jConnectButton_actionPerformed(ActionEvent e) {
+    Dialog4 d4 = new Dialog4();
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Dimension frameSize = d4.getSize();
+    if (frameSize.height > screenSize.height) {
+      frameSize.height = screenSize.height;
+    }
+    if (frameSize.width > screenSize.width) {
+      frameSize.width = screenSize.width;
+    }
+    d4.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
+    d4.setVisible(true);
+//    d4.showDialog4();
+  }
+
+  void jFeaturButton_keyPressed(KeyEvent e) {
+//    jTabbedPane1_keyPressed(e);
+  }
+
+  void jComButton_actionPerformed(ActionEvent e) {
+    Dialog6 d6 = new Dialog6();
+    JFileChooser fc = new JFileChooser();
+    int returnVal = fc.showSaveDialog(d6);
+    if (returnVal==JFileChooser.APPROVE_OPTION) {
+      File file = fc.getSelectedFile();
+      c.saveRunningConfig(file);
+    }
+//    c.saveRunningConfig();
+  }
+
+  void menuNewSwitch_actionPerformed(ActionEvent e) {
+//    jNewButton_actionPerformed(e);
+  }
+
+  void menuDelSwitch_actionPerformed(ActionEvent e) {
+//    jDelButton_actionPerformed(e);
+  }
+
+  void menuConSwitch_actionPerformed(ActionEvent e) {
+    jConnectButton_actionPerformed(e);
+  }
+
+  void menuConCom_actionPerformed(ActionEvent e) {
+    jComButton_actionPerformed(e);
+  }
+
+  void jNewButton_keyPressed(KeyEvent e) {
+//    jTabbedPane1_keyPressed(e);
+  }
+
+  void jConnectButton_keyPressed(KeyEvent e) {
+//    jTabbedPane1_keyPressed(e);
+  }
+
+  void jComButton_keyPressed(KeyEvent e) {
+//    jTabbedPane1_keyPressed(e);
+  }
+
+  void jViewButton_keyPressed(KeyEvent e) {
+//    jTabbedPane1_keyPressed(e);
+  }
+
+  void jToolBar1_keyPressed(KeyEvent e) {
+//    jTabbedPane1_keyPressed(e);
+  }
+
+//  void jPanel1_keyPressed(KeyEvent e) {
+//    jTabbedPane1_keyPressed(e);
+//  }
+
+  void jToggleButton1_actionPerformed(ActionEvent e) {
+    if (jToggleButton1.isSelected()) {
+      jToggleButton1.setIcon(iInterfaceT);
+      this.drawInt=true;
+    }
+    else {
+      jToggleButton1.setIcon(iInterface);
+      this.drawInt = false;
+    }
+  }
+
+  void jFeaturButton_actionPerformed(ActionEvent e) {
+    Dialog5 d5 = new Dialog5();
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Dimension frameSize = d5.getSize();
+    if (frameSize.height > screenSize.height) {
+      frameSize.height = screenSize.height;
+    }
+    if (frameSize.width > screenSize.width) {
+      frameSize.width = screenSize.width;
+    }
+    d5.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
+    d5.setVisible(true);
+  }
+
+  void jNewButton1_actionPerformed(ActionEvent e) {
+    newSwitch(1);
+  }
+
+  void jNewButton2_actionPerformed(ActionEvent e) {
+    newSwitch(2);
+  }
+
+  void jNewButton3_actionPerformed(ActionEvent e) {
+    newSwitch(3);
+  }
+
+  void jNewButton4_actionPerformed(ActionEvent e) {
+    newSwitch(4);
+  }
+
+  void jNewButton5_actionPerformed(ActionEvent e) {
+    newSwitch(5);
+  }
+
+  void jButton1_actionPerformed(ActionEvent e) {
+    if (drawInt) {
+      drawInt = false;
+      jToggleButton1.setSelected(false);
+      jToggleButton1.setIcon(iInterface);
+    }
+    if (this.vWorkstation.size() < this.maxWorkstation) {
+      boolean dup = true;
+      boolean found = false;
+      String str="";
+      int i=1;
+      while(dup){
+        str = "Computer" + i;
+        found = false;
+        for(int a=0; a < this.vWorkstation.size(); a++){
+          String alreadyName = ((Workstation)this.vWorkstation.elementAt(a)).getName();
+          if (alreadyName.equalsIgnoreCase(str)){
+            found = true;
+          }//end if
+        }//end for
+        i++;
+        dup = found;
+      }//end while
+      String mac = m.getMACAddress();
+      Workstation com = new Workstation(str,mac);
+      ComImg cimg = new ComImg();
+      this.vWorkstation.addElement(com);
+      Panel2.vImgCom.addElement(cimg);
+      panel.repaintView();
+    }
+  }
+
+  public void setJToggleButton1(boolean b) {
+    jToggleButton1.setSelected(b);
+    drawInt=b;
+  }
+
+  public static void showAllStatus() {
+//    int posx=0;
+//    for (int i=0; i<vSwitch.size(); i++) {
+//      Switch s = (Switch)vSwitch.elementAt(i);
+      panel3.showStatus();
+//      vStatus.addElement(sPanel);
+      jScrollPane1.getViewport().add(panel3);
+//      jScrollPane1.add(sPanel,    new XYConstraints(posx, 0, 250, 120));
+//      System.out.println(posx);
+//      posx+=sPanel.getWide();
+//    }
+  }
+
+  public static void updateAllStatus() {
+    for (int i=0; i<Panel3.vStatus.size(); i++) {
+      Panel1 p = (Panel1)Panel3.vStatus.elementAt(i);
+      p.showDetail();
+    }
+    panel3.showStatus();
+    jScrollPane1.getViewport().add(panel3);
+  }
+
+  void jVlanButton_actionPerformed(ActionEvent e) {
+    if (jVlanButton.isSelected()) {
+      jVlanButton.setIcon(image4t);
+    }
+    else {
+      jVlanButton.setIcon(image4);
+    }
+    updateAllStatus();
+  }
+
+  void jSTPButton_actionPerformed(ActionEvent e) {
+    if (jSTPButton.isSelected()) {
+      jSTPButton.setIcon(image5t);
+    }
+    else {
+      jSTPButton.setIcon(image5);
+    }
+    updateAllStatus();
+  }
+
+  void jLessonButton_actionPerformed(ActionEvent e) {
+    Runtime ed = Runtime.getRuntime();
+    try{
+      ed.exec("explorer .\\Lesson.pdf");
+    }
+    catch(Exception e1){
+      System.out.println("Error : "+e1);
+    }
+  }
+}

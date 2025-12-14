@@ -1,0 +1,51 @@
+package central;
+
+import java.util.Vector;
+
+/**
+ * <p>Title: </p>
+ * <p>Description: </p>
+ * <p>Copyright: Copyright (c) 2003</p>
+ * <p>Company: </p>
+ * @author not attributable
+ * @version 1.0
+ */
+
+class TimeoutManage {
+
+  private Vector vector = new Vector();
+
+  public TimeoutManage() {
+
+  }
+
+  public void SetTimeout(int sequence, int timeoutarg, int nodenumber, int flag) {
+    TimeoutThread timeoutthread = new TimeoutThread("Timeout Thread", sequence, timeoutarg, nodenumber, flag);
+    vector.addElement(timeoutthread);
+    timeoutthread.start();
+  }
+
+  public void ClearTimeout(int sequence, int nodenumber) {
+    for (int i = 0; i < vector.size(); i++) {
+      TimeoutThread timeoutthread = (TimeoutThread) vector.elementAt(i);
+      if ((timeoutthread.getSequence() == sequence) && (timeoutthread.getNodeNumber() == nodenumber)) {
+        timeoutthread.setSequencr(-1);
+        vector.removeElementAt(i);
+      }
+    }
+  }
+
+  public void RemoveFromVectorAt(int vectornumber) {
+    vector.removeElementAt(vectornumber);
+    System.out.println("Clear Vector No : " + vectornumber);
+  }
+
+  public void RemoveFromVector(int nodenumberarg, int flagarg) {
+    for (int i = 0; i < vector.size(); i++) {
+      TimeoutThread timeoutthread = (TimeoutThread) vector.elementAt(i);
+      if ((timeoutthread.getNodeNumber() == nodenumberarg) && (timeoutthread.getFlag() == flagarg)) {
+        vector.removeElementAt(i);
+      }
+    }
+  }
+}

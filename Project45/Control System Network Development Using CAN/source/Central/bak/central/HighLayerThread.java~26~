@@ -1,0 +1,118 @@
+package central;
+
+import java.util.Date;
+/**
+ * <p>Title: </p>
+ * <p>Description: </p>
+ * <p>Copyright: Copyright (c) 2003</p>
+ * <p>Company: </p>
+ * @author unascribed
+ * @version 1.0
+ */
+
+class HighLayerThread extends Thread{
+
+  private HighLayerBuffer highbuffer;
+  private String str = "";
+  private String nowtime;
+
+  public HighLayerThread(String s) {
+    super(s);
+  }
+
+  public void run() {
+    while (true) {
+      try {
+        highbuffer = MainFrame.RAx[1].getShareData();		                // Get Share data RAx[3] for only Snoop Thread
+      }
+      catch(Exception e) {
+        System.out.println("Snoop Thread throw : " + e);
+      }
+
+      try {
+        TryChangBus(highbuffer);                                                  // Check Request to chang Bus
+        TryStatus(highbuffer);
+//        TryChangKey(highbuffer);                                                  // Check for chang Key1
+      }
+      catch(Exception e) {
+        System.out.println("Exception from HighLayerThread : " + e);
+      }
+    }
+  }
+
+  private void TryChangBus(HighLayerBuffer buffer) throws CANException{
+    if (buffer.getID() == 1 || buffer.getID() == 2 || buffer.getID() == 3) {
+      if ((buffer.getFlag() & 0x40) == 0x40) {
+        if (((int)buffer.getData().charAt(1)) == 4) {
+          if (buffer.getData().charAt(2) > -1 && buffer.getData().charAt(2) < 2) {
+            CANThread.setCANActive(buffer.getData().charAt(2));
+            if (buffer.getData().charAt(2) == 0) {
+              MainFrame.messagestatus.setText(MainFrame.messagestatus.getText() + "Request Change Bus to : A\n");
+              CANThread.setCANActive(0);
+            }
+            else if (buffer.getData().charAt(2) == 1) {
+              MainFrame.messagestatus.setText(MainFrame.messagestatus.getText() + "Request Change Bus to : B\n");
+              CANThread.setCANActive(1);
+            }
+          }
+          else
+            throw new CANException("Number of Bus Error");
+        }
+      }
+    }
+  }
+
+  private void TryStatus(HighLayerBuffer buffer) {
+    try {
+//        buffer = MainFrame.RAx[1].getShareData();				// RAx[1] for only Status Thread
+        if ((buffer.getFlag() & 0x40) == 0x40) {				// Do when receive data is a status frame
+          str = buffer.getData();
+          if ((int)str.charAt(1) == 0) {
+            MainFrame.statustab.setDeviceStatus( buffer.getID(), (int) str.charAt(2));
+          }
+          int MainStatus = 0x01;
+          if (CANThread.getCANActive() == 0) {
+            MainStatus |= 0x02;
+          }
+          else if (CANThread.getCANActive() == 1){
+            MainStatus |= 0x04;
+          }
+          MainFrame.statustab.setDeviceStatus(0x00, MainStatus);
+          Date now = new Date();
+          nowtime = now.toString();
+          nowtime = nowtime.substring(11, 19);
+          StatusTab.moduletime[buffer.getID() - 1] = nowtime;
+          MainFrame.statustab.repaint();	                                // Repaint GUI
+        }
+      }
+      catch(Exception e) {
+        System.out.println("Status Thread throw : " + e);
+      }
+  }
+
+/*  private void TryChangKey(HighLayerBuffer buffer) {
+    if (buffer.getID() == 1 || buffer.getID() == 2 || buffer.getID() == 3) {
+      if ((buffer.getFlag() & 0x40) == 0x40) {
+        if (((int)buffer.getData().charAt(1)) == 6) {
+          if (buffer.getData().length() > 9) {
+            String fkey = buffer.getData().substring(2, buffer.getData().length());
+            char key[] = KeyManageThread.newkey[buffer.getID() - 1].getKey();
+            String mkey = "";
+            for (int i = 0; i < 8 ; i++) {
+              mkey += key[i];
+            }
+            if (fkey.equals(mkey)) {
+              try {
+                MainFrame.Des[buffer.getID() - 1].DESKey(key);
+              }
+              catch(Exception e) {
+                System.out.println("Exception from TryChangKey (HighLayerThread) : " + e);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+*/
+}

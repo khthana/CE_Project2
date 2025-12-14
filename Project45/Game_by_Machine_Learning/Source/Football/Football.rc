@@ -1,0 +1,289 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&Game"
+    BEGIN
+        MENUITEM "&New Game\tCtrl+N",           IDM_NEWGAME
+        MENUITEM "&Load Game\tCtrl+L",          IDM_LOADGAME
+        MENUITEM "&Save Game\tCtrl+S",          IDM_SAVEGAME
+        MENUITEM SEPARATOR
+        MENUITEM "Game &Option\t Ctrl+O",       IDM_GAMEOPTION
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit\tAlt+X",                IDM_EXIT
+    END
+    POPUP "&Neural"
+    BEGIN
+        MENUITEM "&Load Neural",                IDM_LOADNEURAL
+        MENUITEM "&Save Neural",                IDM_SAVENEURAL
+        MENUITEM "&Train Neural",               IDM_TRAINNEURAL
+        MENUITEM SEPARATOR
+        MENUITEM "Train &Option",               IDM_TRAINOPTION
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toggle Fullscreen\tAlt+Tab", IDM_TOGGLEFULLSCREEN
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAIN_ACCEL ACCELERATORS DISCARDABLE 
+BEGIN
+    "L",            IDM_LOADGAME,           VIRTKEY, CONTROL, NOINVERT
+    "N",            IDM_NEWGAME,            VIRTKEY, CONTROL, NOINVERT
+    "S",            IDM_SAVEGAME,           VIRTKEY, CONTROL, NOINVERT
+    VK_ESCAPE,      IDM_EXIT,               VIRTKEY, NOINVERT
+    VK_F2,          IDM_NEWGAME,            VIRTKEY, NOINVERT
+    VK_RETURN,      IDM_TOGGLEFULLSCREEN,   VIRTKEY, ALT, NOINVERT
+    "X",            IDM_EXIT,               VIRTKEY, ALT, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_MAIN_ICON           ICON    DISCARDABLE     "DirectX.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_GAMEOPTION_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 226
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 56
+    END
+
+    IDD_TRAINOPTION_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 138
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 124
+    END
+
+    IDD_TRAINNUERAL_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 242
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 140
+    END
+
+    IDD_PROCESS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 225
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 111
+    END
+
+    IDD_RESULT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 283
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 97
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// WAVE
+//
+
+WHISTLE                 WAVE    DISCARDABLE     "Resource\\whistle.wav"
+GOAL                    WAVE    DISCARDABLE     "Resource\\goal.wav"
+KICK                    WAVE    DISCARDABLE     "Resource\\kick.wav"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_GAMEOPTION_DIALOG DIALOG DISCARDABLE  0, 0, 233, 63
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Game Option Dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,122,42,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,176,42,50,14
+    LISTBOX         IDC_TYPE_A,38,22,74,12,LBS_USETABSTOPS | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_TYPE_B,150,20,74,12,LBS_USETABSTOPS | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Training at Start Match",IDC_TRAINATSTART,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,46,88,10
+    LTEXT           "Type",IDC_STATIC,9,23,17,8
+    LTEXT           "Type",IDC_STATIC,121,22,17,8
+    GROUPBOX        "Player A",IDC_STATIC,7,7,107,32
+    GROUPBOX        "Player B",IDC_STATIC,119,7,107,32
+END
+
+IDD_TRAINOPTION_DIALOG DIALOG DISCARDABLE  0, 0, 145, 131
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Train Option Dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,13,110,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,75,110,50,14
+    EDITTEXT        IDC_LEARNINGRATE,77,17,49,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_MOMENTUMCONST,77,31,49,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_NOISEFACTOR,77,45,49,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_ERRORTOLERANCE,77,59,49,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_MAXCYCLES,77,73,49,12,ES_RIGHT | ES_AUTOHSCROLL
+    CONTROL         "Train  Unlimit Cycles",IDC_TRAINTOFINISH,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,28,93,79,10
+    GROUPBOX        "Train Parameters",IDC_STATIC,7,7,131,103
+    LTEXT           "Learning Rate",IDC_STATIC,13,17,46,8
+    LTEXT           "Error Tolerance",IDC_STATIC,13,59,50,8
+    LTEXT           "Momentum Const",IDC_STATIC,13,31,56,8
+    LTEXT           "Max Cycles",IDC_STATIC,13,73,37,8
+    LTEXT           "Noise Factor",IDC_STATIC,14,45,41,8
+END
+
+IDD_TRAINNUERAL_DIALOG DIALOG DISCARDABLE  0, 0, 249, 147
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Train Dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Train",IDOK,129,119,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,187,119,50,14
+    EDITTEXT        IDC_DATA_FILE,74,20,113,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "Browse...",IDC_DATA_BROWSE,193,20,43,14
+    EDITTEXT        IDC_TRAINPATTERN,74,41,113,13,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_NEURAL_FILE,74,82,113,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "Browse...",IDC_NEURAL_BROWSE,196,82,43,14
+    GROUPBOX        "Input",IDC_STATIC,7,7,235,57
+    GROUPBOX        "Output",IDC_STATIC,7,69,235,45
+    LTEXT           "Data ",IDC_STATIC,15,20,18,8
+    LTEXT           "Max patterns ",IDC_STATIC,15,41,44,8
+    LTEXT           "Neural network",IDC_STATIC,14,82,49,8
+END
+
+IDD_PROCESS_DIALOG DIALOG DISCARDABLE  0, 0, 232, 118
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Cancel",IDCANCEL,89,97,50,14
+    CONTROL         "Progress1",IDC_TRAINING_PROGRESS,"msctls_progress32",
+                    WS_BORDER,7,7,218,14
+    LTEXT           "Process",IDC_STATIC,97,22,26,8
+    CONTROL         "Progress1",IDC_TRAINING_SUMSQUAREERROR,
+                    "msctls_progress32",WS_BORDER,7,36,218,14
+    LTEXT           "Sum Square of Error",IDC_STATIC,80,55,64,8
+    LTEXT           "Static",IDC_STATUS,7,68,218,26
+    PUSHBUTTON      "Finished",IDOK,151,97,50,14,WS_DISABLED
+END
+
+IDD_RESULT_DIALOG DIALOGEX 0, 0, 290, 111
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Match Statistic"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,233,6,50,14
+    LTEXT           "Name",IDC_STATIC,7,6,20,8
+    LTEXT           "Score",IDC_STATIC,7,19,20,8
+    LTEXT           "Possessive%",IDC_STATIC,7,33,42,8
+    LTEXT           "Pass Success%",IDC_STATIC,7,48,51,8
+    LTEXT           "Name",IDC_PLAYER1_NAME,85,6,68,11,0,WS_EX_STATICEDGE
+    LTEXT           "Score",IDC_PLAYER1_SCORE,85,19,68,11,0,WS_EX_STATICEDGE
+    LTEXT           "Pass",IDC_PLAYER1_PASS,85,48,68,11,0,WS_EX_STATICEDGE
+    LTEXT           "Name",IDC_PLAYER2_NAME,157,6,68,11,0,WS_EX_STATICEDGE
+    LTEXT           "Pos",IDC_PLAYER1_POSS,85,33,68,11,0,WS_EX_STATICEDGE
+    LTEXT           "Score",IDC_PLAYER2_SCORE,157,19,68,11,0,
+                    WS_EX_STATICEDGE
+    LTEXT           "Pass",IDC_PLAYER2_PASS,157,48,68,11,0,WS_EX_STATICEDGE
+    LTEXT           "Pos",IDC_PLAYER2_POSS,157,33,68,11,0,WS_EX_STATICEDGE
+    LTEXT           "Pass Pattern",IDC_STATIC,7,63,48,14
+    LTEXT           "Patt",IDC_PLAYER1_PATT,85,63,68,11,0,WS_EX_STATICEDGE
+    LTEXT           "Patt",IDC_PLAYER2_PATT,157,63,68,11,0,WS_EX_STATICEDGE
+    LTEXT           "Patt",IDC_PLAYER2_SUCC,157,79,68,11,0,WS_EX_STATICEDGE
+    LTEXT           "Difference",IDC_STATIC,7,80,34,8
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

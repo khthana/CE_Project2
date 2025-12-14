@@ -1,0 +1,68 @@
+package switchsim;
+
+import java.awt.*;
+import java.awt.image.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.lang.*;
+import java.util.*;
+
+public class SwitchImg {
+  private int xpos,ypos;
+  private int width,height;
+  private String color;
+  private Image img;
+  private Vector slink = new Vector();
+
+  public SwitchImg() {
+    width = 58;
+    height = 36;
+    xpos = 60*(Panel2.vImgSwitch.size()+1);
+    ypos = 30*(Panel2.vImgSwitch.size()+1);
+//    img = Toolkit.getDefaultToolkit().getImage(SwitchImg.class.getResource("switch.gif"));
+    color="none";
+  }
+
+  public SwitchImg(int type) {
+    switch (type) {
+        case 1 : img = Toolkit.getDefaultToolkit().getImage(SwitchImg.class.getResource("blueSwitch.gif"));color="blue";break;
+        case 2 : img = Toolkit.getDefaultToolkit().getImage(SwitchImg.class.getResource("graySwitch.gif"));color="grey";break;
+        case 3 : img = Toolkit.getDefaultToolkit().getImage(SwitchImg.class.getResource("greenSwitch.gif"));color="green";break;
+        case 4 : img = Toolkit.getDefaultToolkit().getImage(SwitchImg.class.getResource("pinkSwitch.gif"));color="pink";break;
+        case 5 : img = Toolkit.getDefaultToolkit().getImage(SwitchImg.class.getResource("purpleSwitch.gif"));color="purple";break;
+        default : color="none";break;
+    }
+    width = 58;
+    height = 36;
+    xpos = 60*(Panel2.vImgSwitch.size()+1);
+    ypos = 30*(Panel2.vImgSwitch.size()+1);
+  }
+
+  public int getXPos(){
+    return xpos;
+  }
+  public int getYPos(){
+    return ypos;
+  }
+  public int getWide(){
+    return width;
+  }
+  public int getHigh(){
+    return height;
+  }
+  public Image getImage(){
+    return img;
+  }
+  public void setXPos(int n){
+    xpos = n;
+  }
+  public void setYPos(int n){
+    ypos = n;
+  }
+  public void setWide(int n){
+    width = n;
+  }
+  public void setHigh(int n){
+    height = n;
+  }
+}

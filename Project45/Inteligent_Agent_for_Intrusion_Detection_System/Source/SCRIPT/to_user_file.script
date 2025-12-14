@@ -1,0 +1,20 @@
+#!/usr/local/bin/bash
+
+for user in `cat ../user | awk '{print $2}'`
+#for user in s2010176
+do
+	echo "#Command User Profile : $user" > ../USER/$user
+	for file in `ls ../DATE/* | sort -r`
+	do
+		havedata=`cat $file | grep $user`
+		if [ "$havedata" ]
+		then
+			echo \#${file#../DATE/} >> ../USER/$user
+		fi
+		cat $file | grep $user | awk '{print $2"\t"$1}' >> ../USER/$user
+		#echo "Date : ${file#../DATE/} OK!"
+	done 
+	echo "$user OK!"
+done
+
+exit 0

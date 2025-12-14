@@ -1,0 +1,93 @@
+package ngeecal;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.Date;
+import java.util.Vector;
+
+public class Menu extends JFrame {
+  private JPanel contentPane;
+  private BorderLayout borderLayout1 = new BorderLayout();
+  CalDate caldate = new CalDate();
+  Quatation quat = new Quatation();
+  Mining mining = new Mining();
+  Punya punya = new Punya();
+  //Construct the frame
+  public Menu() {
+    enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+    try {
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+
+    try{
+      System.gc();
+      AccessDatabase database = Database.getDatabase();
+      database.connect();
+
+      String stock = "TMB";
+      String dd = "2001-01-01";
+      java.sql.Date d7 = java.sql.Date.valueOf("2001-01-01");
+      Vector ngee = new Vector();
+      ngee = database.findNgee();
+      /*for( int j =0;j<ngee.size();j++ ){
+        if( ngee.elementAt(j).toString().equals("B-LAND") ){
+          stock = "B_LAND";
+        }
+        else stock = ngee.elementAt(j).toString();
+        //stock = "TASCO";*/
+        for( int i=0; i<=809; i++ ){
+          dd = caldate.calDateIncrease(i,d7);
+          if( quat.calEMA( dd.toString(),stock ) ){
+            System.out.print( dd.toString()+"  ema ok" );
+          }
+          if( quat.calRSI(dd.toString(),stock) ){
+            System.out.print( " 14RSI ok" );
+          }
+          if( quat.calPerK( dd.toString(),stock ) ){
+            System.out.print(" %P ok");
+          }
+          if( quat.calPer_D( dd.toString(),stock ) ){
+            System.out.println(" %D ok");
+          }
+          if( mining.findAgain( stock,dd ) ){
+            System.out.println(" DECISSION ok");
+          }
+          if( punya.calPara( stock,dd.toString() )==1 ){
+            System.out.println(" Punya ok");
+          }
+        //}
+          if( i%10 == 0 ){
+            System.gc();
+          }
+      }
+      System.gc();
+      database.close();
+      System.gc();
+    }
+    catch( Exception ee ){
+      System.out.println(ee);
+      System.out.println("menu");
+      System.gc();
+    }
+
+  }
+  //Component initialization
+  private void jbInit() throws Exception  {
+    //setIconImage(Toolkit.getDefaultToolkit().createImage(Menu.class.getResource("[Your Icon]")));
+    contentPane = (JPanel) this.getContentPane();
+    contentPane.setLayout(borderLayout1);
+    this.setSize(new Dimension(400, 300));
+    this.setTitle("Frame Title");
+  }
+  //Overridden so we can exit when window is closed
+  protected void processWindowEvent(WindowEvent e) {
+    super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+      System.exit(0);
+    }
+  }
+}

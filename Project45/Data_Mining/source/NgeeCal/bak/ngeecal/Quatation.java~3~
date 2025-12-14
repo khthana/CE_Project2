@@ -1,0 +1,235 @@
+package ngeecal;
+
+import java.math.*;
+import java.util.Vector;
+import java.lang.*;
+import java.sql.Date;
+import java.sql.*;
+
+public class Quatation {
+
+  // refer class AccessDatabase
+  private AccessDatabase database = Database.getDatabase();
+  // refer class CalDate
+  private CalDate caldate = new CalDate();
+  // refer sql.Date
+  private Date dmax,dmin;
+  // refer max date
+  private String dddd="";
+  // refer stock_code
+  private String code="";
+
+  public Quatation() {
+  }
+
+  // refer method calculate EMA
+  public boolean calEMA( String day_trade, String stock ){
+    String dma;
+    String dmi;
+    code = stock;
+    float ema9,e9,ema12,e12,ema25,e25,ema75,e75,ema200,e200;
+    float price,price1,macd,macde,sig,sige;
+    ema9=0; ema12=0; ema25=0;
+    ema75=0; ema200=0;price=0;
+    e9=0;e12=0;e25=0;e75=0;e200=0;
+    macd=0;sig=0;macde=0;sige=0;
+
+      dmax = Date.valueOf(day_trade);
+      dmin = caldate.calDateDifference(10,dmax);
+      dma = dmax.toString();
+      dmi = dmin.toString();
+      try{
+        ResultSet rs = database.findEma(stock,dma,dmi);
+        if( rs != null ){
+          //int i = 0;
+          rs.next();
+          dma   = rs.getString(1);
+          dddd  = dma;
+          price = rs.getFloat(2);
+          rs.next();
+          ema9  = rs.getFloat(3);
+          ema12 = rs.getFloat(4);
+          ema25 = rs.getFloat(5);
+          ema75 = rs.getFloat(6);
+          ema200= rs.getFloat(7);
+          macd  = rs.getFloat(8);
+          sig   = rs.getFloat(9);
+          if( (price != 0) ){
+            e9   = ema9 + (2f/11f)*(price-ema9);
+            e12  = ema12 + (2f/13f)*(price-ema12);
+            e25  = ema25 + (2f/26f)*(price-ema25);
+            e75  = ema75 + (2f/76f)*(price-ema75);
+            e200 = ema200 +(2f/201f)*(price-ema200);
+            //macde= ( (2f/13f)*e12 )-( (2f/26f)*e25 );
+            macde = e9-e25;
+            sige = macd + 0.2f*(macde-sig);
+          }else if( price == 0 ){
+            e9  = ema9;
+            e12 = ema12;
+            e25 = ema25;
+            e75 = ema75;
+            ema200 = ema200;
+            macde = macd;
+            sige = sig;
+          }
+
+          e9   = Math.round(e9*100)/100f;
+          e12  = Math.round(e12*100)/100f;
+          e25  = Math.round(e25*100)/100f;
+          e75  = Math.round(e75*100)/100f;
+          e200 = Math.round(e200*100)/100f;
+          macde = Math.round(macde*100)/100f;
+          sige = Math.round(sige*100)/100f;
+          rs.close();
+          dddd=dma;
+          if( database.updateEma(dddd,stock,e9,e12,e25,e75,e200,macde,sige) ){
+            return true;
+          }else { System.out.println("Error "+dma); return false;}
+        }
+        else return false;
+      }
+      catch( Exception e){
+        System.out.print(e);
+        System.out.println(" cal ema ");
+        return false;
+      }
+  }
+  // refer method calRSI
+  public boolean calRSI(String day_trade,String stock_code ){
+    String dma;
+    String dmi;
+    int cu,cd;
+    cu=0;cd=0;
+    float today = 0f;
+    float yester = 0f;
+    float u=0f;
+    float d=0f;
+    float RSI=0f;
+    float price = 0f;
+    Vector rrr = new Vector();
+      dmax = Date.valueOf(day_trade);
+      dmin = caldate.calDateDifference(30,dmax);
+      dma = dmax.toString();
+      dmi = dmin.toString();
+      System.out.println( dma+" "+code );
+      try{
+        ResultSet rs = database.findOnlyClose(stock_code,dma,dmi);
+        if( rs != null ){
+          while( rs.next() ){
+            price=rs.getFloat(2);
+            rrr.addElement( new Float( price ) );
+          }
+          if( rrr.size()>=14 ){
+            for( int i=13;i>=0;i-- ){
+              today  = Float.parseFloat( rrr.elementAt(i).toString() );
+              yester = Float.parseFloat( rrr.elementAt(i+1).toString() );
+              if( (today-yester)<=0f ){
+                d = d+yester-today;
+                cd++;
+              }else{
+                u = u+today-yester;
+                cu++;
+              }
+            }
+            if( cu==0 )RSI = 0f;
+            else if( cd==0 )RSI = 100f;
+            else {
+              u = u/cu;
+              d = d/cd;
+              RSI = 100*u/(u+d);
+              RSI = Math.round(RSI*100)/100f;
+            }
+          }
+        }
+        rs.close();
+        rrr=null;
+        return database.updateRSI(dddd,stock_code,RSI);
+      }
+    catch( Exception e ){
+      System.out.println(e);
+      System.out.println( "Error cal 14RSI" );
+      return false;
+    }
+  }
+  // refer method per_K
+  public boolean calPerK(String day_trade,String stock_code){
+    String dma;
+    String dmi;
+    float price=0f;
+    float high =0f;
+    float low  =0f;
+    float highe =0f;
+    float lowe  =0f;
+      dmax = Date.valueOf(day_trade);
+      dmin = caldate.calDateDifference(15,dmax);
+      dma = dmax.toString();
+      dmi = dmin.toString();
+    try{
+      if( dddd.equals(dma) ){
+      ResultSet rs = database.findPerK( stock_code,dma,dmi );
+      if(rs.next()){
+        price = rs.getFloat(2);
+        high  = rs.getFloat(3);
+        low   = rs.getFloat(4);
+      }
+      int i =1;
+      while( ( rs.next() )&&(i<5) ){
+        highe = rs.getFloat(3);
+        lowe  = rs.getFloat(4);
+        if( high<highe )high = highe;
+        if( low>lowe )low=lowe;
+        i++;
+      }
+      if(i==5){
+        price = 100*( price-low )/( high-low );
+        price = Math.round(price*100)/100f;
+      }else price =0f;
+      rs.close();
+      return database.updatePerK( dddd,stock_code,price );
+      }
+      else return false;
+    }
+    catch( Exception e ){
+      System.out.println(e);
+      System.out.println( "Error cal % K " );
+      return false;
+    }
+  }
+  // refer method per_D
+  public boolean calPer_D(String day_trade,String stock_code){
+    String dma;
+    String dmi;
+    int i=0;
+    float price=0f;
+    dmax = Date.valueOf(day_trade);
+      dmin = caldate.calDateDifference(15,dmax);
+      dma = dmax.toString();
+      dmi = dmin.toString();
+    try{
+      if( dddd.equals(dma) ){
+      ResultSet rs = database.findPerD( stock_code,dma,dmi );
+      if( rs.next() )
+        price = price+rs.getFloat(2);
+      if(rs.next())
+        price = price+rs.getFloat(2);
+      if(rs.next()){
+        price = price+rs.getFloat(2);
+        i=3;
+      }
+      if(i==3)
+        price = price/3f;
+      else price =0;
+      price = Math.round(price*100)/100f;
+      rs.close();
+      return database.updatePerD(dddd,stock_code,price);
+      }
+      else return false;
+    }
+    catch( Exception e ){
+      System.out.println(e);
+      System.out.println( "Error cal % D " );
+      return false;
+    }
+  }
+  //
+}

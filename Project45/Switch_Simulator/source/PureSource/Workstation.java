@@ -1,0 +1,87 @@
+package switchsim;
+
+import java.util.*;
+
+public class Workstation {
+  private String name;
+  private String MACAddr="";
+  private boolean connection = false;
+
+  Workstation() {
+    name="";
+    MACAddr="";
+  }
+
+  Workstation(String n) {
+    name=n;
+    MACAddr="";
+  }
+
+  Workstation(String n, String mac) {
+    name=n;
+    MACAddr=mac;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getMACAddress() {
+    return MACAddr;
+  }
+//  public void genMACAddress() {
+//    MACAddress m = new MACAddress();
+//    MACAddr = m.getMACAddress();
+//  }
+  public void setMACAddress(String mac) {
+    if ((this.getMACAddress()==null) || (this.getMACAddress().equals(""))) {
+      this.MACAddr = mac;
+      Frame1.vMACAddress.addElement(this.MACAddr);
+    }
+    else {
+      for (int i=0; i<Frame1.vMACAddress.size(); i++) {
+        String mact = (String)Frame1.vMACAddress.elementAt(i);
+        if (this.getMACAddress().equals(mact)) {
+          Frame1.vMACAddress.removeElementAt(i);
+          Frame1.vMACAddress.insertElementAt(mac, i);
+          this.MACAddr = mac;
+          i=Frame1.vMACAddress.size();
+        }
+      }
+    }
+  }
+
+  public boolean getConnection() {
+    return connection;
+  }
+  public void setConnection(boolean b) {
+    connection = b;
+  }
+
+  public Vector sendFrame(String frame) {
+    Vector vSwitch_r = new Vector();
+    MACAddress mac = new MACAddress();
+//    System.out.println(this.getName()+" is sending Frame.");
+    for (int i=0; i<Frame1.vSwitch.size(); i++) {
+      Switch sw = (Switch)Frame1.vSwitch.elementAt(i);
+      Vector vIntCom = sw.getVIntCom();
+      for (int j=0; j<vIntCom.size(); j++) {
+        Interface intf = (Interface)vIntCom.elementAt(j);
+        Workstation com = intf.getCom();
+        if (mac.cBinToHex(frame.substring(0,48)).equals(com.getMACAddress())) {
+          try {
+            sw.receiveFrameCom(frame);
+            vSwitch_r.addElement(sw);
+          }
+          catch (Exception e) {
+          }
+        }
+      }
+    }
+    return vSwitch_r;
+  }
+
+  public void receiveFrame(String frame) {
+//    System.out.println(this.getName()+" has received Frame already.");
+  }
+}

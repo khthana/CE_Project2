@@ -1,0 +1,50 @@
+package stocktrade;
+
+import java.sql.*;
+import java.util.Vector;
+import java.util.Date;
+import java.math.*;
+import java.lang.*;
+
+public class QueryData {
+
+  private AccessDatabase database;
+
+  public QueryData() {
+  }
+
+  public Vector getdataday( String stock ){
+    Date today = new Date();
+    int dd;int mm;int yy;
+    dd  = today.getDate();
+    mm  = today.getMonth();
+    yy  = today.getYear();
+    yy  = 1900+yy;
+    mm  = ++mm;
+
+    String dmax = new String();
+    String dmin = new String();
+
+    dmax = Integer.toString( yy )+"-"+Integer.toString( mm )+"-"+
+           Integer.toString( dd )+" 17:00:00.000";
+
+    dmin = Integer.toString( yy )+"-"+Integer.toString( mm )+"-"+
+           Integer.toString( dd )+" 10:00:00.000";
+
+    try{
+      database.connect();
+      ResultSet rs = database.getDataIntraday( dmin,dmax,stock );
+      if( rs != null ){
+        while( rs.next() ){
+          dd = rs.getInt(1);
+        }
+      }
+      else return null;
+    }
+    catch( Exception sqle ){
+      System.out.println( sqle );
+      return null;
+    }
+    return null;
+  }
+}

@@ -1,0 +1,139 @@
+package reservation; 
+
+import weblogic.jws.control.JwsContext;
+import java.util.*;
+import center.*;
+
+public class reservation
+{ 
+
+    /**
+     * @jws:control
+     */
+    private ReservationDataControl ReservationData;
+    /** @jws:context */ 
+    JwsContext context; 
+
+    /**
+     * @jws:operation
+     */
+    public reservation_show_data checktReservation(String member_num,String book_record,String comment)
+    {
+        String date_from_reservation;
+        String date_from_book;
+        String key_book_record = book_record;
+        String name,last_name;
+     
+        name = ReservationData.selectMember_name(member_num);
+        last_name = ReservationData.selectMember_lastname(member_num);
+        date_from_reservation = ReservationData.selectReturnDate(key_book_record);
+        date_from_book = ReservationData.selectReturndateFromBook(key_book_record);
+        
+        book BK = new book();
+        BK = ReservationData.selectBookData(key_book_record);
+        
+        reservation_show_data Show_data = new reservation_show_data();
+        //Date add_time = new Date(1000000L);
+        //Date out_date = new Date();
+        //re_date = Date.parse(Show_data.resive_date);
+        //BK = ReservationData.selectBookData(key_book_record);
+        System.out.println(date_from_reservation);
+        System.out.println(date_from_book);
+        
+        Show_data.author = BK.author; 
+        Show_data.call_number = BK.call_number;
+        Show_data.title = BK.title;
+        Show_data.user_name = name;
+        Show_data.user_lastname = last_name;
+        Show_data.reservation_date = ReservationData.selectCurrent_date();
+        
+        if(date_from_reservation == null)
+        {   
+            if(date_from_book == null) //ไม่มีคนจอง และ ไม่มีคนยืม
+            {
+                Show_data.receive_date = ReservationData.selectCurrent_date();
+                //Show_data.date_line = Show_data.resive_date;
+                System.out.println("condition 1 succesfull");
+                return Show_data;
+            }
+            else// ไม่มีคนจองแต่มีคนยืม
+            {   
+                Show_data.receive_date = BK.return_date;
+                //Integer.parseInt(); 
+                //Show_data.date_line = Show_data.resive_date;
+                System.out.println("condition 2 succesfull");
+                return Show_data;
+            }
+            //ReservationData.InsertReservation(member_num,mark_date,resive_date,book_record,placs,comment);
+            //return "reservation succesfull";
+        }    
+        else //มีคนจองก่อนหน้า
+        {   
+            Show_data.receive_date = date_from_reservation; 
+            //Show_data.date_line = Show_data.resive_date;
+            System.out.println("condition 3 succesfull"); 
+            return Show_data;
+        }
+    }
+
+
+    /**
+     * @jws:operation
+     */
+    public int addReservation(String member_num,String receive_date,String book_record,String comment)
+    {   
+        int answer = 0;
+        ReservationData.delete_old_data(); // ลบข้อมูลเก่า
+        //boolean mas= false;
+        int y = ReservationData.selectNumberOfUser(book_record);
+        if (y<3)// ตรวจสอบว่าหนังสือมีการจองโดยสมาชิกมากกว่า 3 คนหรือไม่
+        { 
+            int x = ReservationData.select_number_item(member_num);
+            if (x<5)//ตรวจว่าสมาชิกจองหนังสือไว้มากกว่า 5 เล่มหรือไม่
+            {   
+            int day = ReservationData.selectDay(member_num); // หาจำนวนวันที่สมาชิกสามารถจองได้
+            ReservationData.InsertReservation(member_num,receive_date,day,book_record,comment);
+            ReservationData.updateBookStatus(book_record);
+            System.out.println(day);
+            answer = 1;
+            //mas =  true;
+            }else answer = 2;
+        }else answer = 3;
+        
+        return answer;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public reservation_show_data[] userCheck(String key)
+    {   
+        ReservationData.delete_old_data();
+        String key_book_record,name,last_name;
+        reservation_add_data[] data=new reservation_add_data[3];
+        reservation_show_data[] Show_data=new reservation_show_data[3];
+        book BK = new book();
+        
+        name = ReservationData.selectMember_name(key);
+        last_name = ReservationData.selectMember_lastname(key);
+        data = ReservationData.selectReservationByMember_num(key);
+        int x = ReservationData.selectReservationByMember_num(key).length;
+        for(int i=0;i<x;i++)
+        {   
+            key_book_record = data[i].book_record;
+            BK = ReservationData.selectBookData(key_book_record);
+            System.out.println("key_book_record = "+key_book_record);
+            System.out.println("author = "+BK.author);
+            Show_data[i]= new reservation_show_data(); 
+            
+            Show_data[i].author = BK.author;   
+            Show_data[i].call_number = BK.call_number;
+            Show_data[i].title = BK.title;
+            Show_data[i].user_lastname = last_name;
+            Show_data[i].user_name = name;
+            Show_data[i].receive_date = data[i].receive_date;
+            Show_data[i].reservation_date = data[i].mark_date;
+        }
+        return Show_data;
+    }
+} 

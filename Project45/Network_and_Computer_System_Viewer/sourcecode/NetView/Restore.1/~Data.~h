@@ -1,0 +1,53 @@
+#if !defined(AFX_DATA_H__28E033BA_751A_4B13_AE39_FF34F56F63CD__INCLUDED_)
+#define AFX_DATA_H__28E033BA_751A_4B13_AE39_FF34F56F63CD__INCLUDED_
+
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
+// Data.h : header file
+//
+
+/////////////////////////////////////////////////////////////////////////////
+// CData DAO recordset
+
+class CData : public CDaoRecordset
+{
+public:
+	CData(CDaoDatabase* pDatabase = NULL);
+	DECLARE_DYNAMIC(CData)
+
+// Field/Param Data
+	//{{AFX_FIELD(CData, CDaoRecordset)
+	long	m_ID;
+	CString	m_IP;
+	CString	m_Host;
+	long	m_Id_subnet;
+	long	m_OS;
+	CString	m_OSName;
+	CString	m_Mac;
+	CString	m_OpenPort;
+	long	m_Nimda;
+	long	m_Snmp;
+	long	m_Share;
+	//}}AFX_FIELD
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CData)
+	public:
+	virtual CString GetDefaultDBName();		// Default database name
+	virtual CString GetDefaultSQL();		// Default SQL for Recordset
+	virtual void DoFieldExchange(CDaoFieldExchange* pFX);  // RFX support
+	//}}AFX_VIRTUAL
+
+// Implementation
+#ifdef _DEBUG
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
+#endif
+};
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_DATA_H__28E033BA_751A_4B13_AE39_FF34F56F63CD__INCLUDED_)

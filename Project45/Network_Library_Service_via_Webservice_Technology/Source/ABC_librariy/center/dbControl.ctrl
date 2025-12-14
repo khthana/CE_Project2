@@ -1,0 +1,67 @@
+package center; 
+
+import weblogic.jws.*; 
+import weblogic.jws.control.*; 
+import java.sql.SQLException; 
+
+/** 
+ * Defines a new database control. 
+ * 
+ * The @jws:connection tag indicates which WebLogic data source will be used by 
+ * this database control. Please change this to suit your needs. You can see a 
+ * list of available data sources by going to the WebLogic console in a browser 
+ * (typically http://localhost:7001/console) and clicking Services, JDBC, 
+ * Data Sources. 
+ * 
+ * @jws:connection data-source-jndi-name="JNDICenter" 
+ */ 
+public interface dbControl extends DatabaseControl 
+{ 
+    // Sample database function.  Uncomment to use 
+
+    // static public class Customer 
+    // { 
+    //   public int id; 
+    //   public String name; 
+    // } 
+    // 
+    // /** 
+    //  * @jws:sql statement="SELECT ID, NAME FROM CUSTOMERS WHERE ID = {id}" 
+    //  */ 
+    // Customer findCustomer(int id);
+
+    // Add "throws SQLException" to request that SQLExeptions be thrown on errors.
+
+    /**
+     * @jws:sql statement::
+     *     insert into test01
+     *     values ({book_record}, {author}, {title}, {library})
+     * ::
+     */
+    public void insert_book(int book_record, String author, String title, String library);
+
+    /**
+     * @jws:sql statement::
+     *     select *
+     *     from test01
+     *     order by author asc, title asc
+     * ::
+     */
+    public book_list[] select_author();
+
+    /**
+     * @jws:sql statement::
+     *     select *
+     *     from test01
+     *     order by title asc, author asc
+     * ::
+     */
+    public book_list[] select_title();
+
+    /**
+     * @jws:sql statement::
+     *     delete from test01
+     * ::
+     */
+    public void delete_book();
+}

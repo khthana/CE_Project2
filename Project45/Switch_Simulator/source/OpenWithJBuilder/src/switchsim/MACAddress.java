@@ -1,0 +1,187 @@
+package switchsim;
+
+import java.util.*;
+
+public class MACAddress {
+
+  public MACAddress() {
+  }
+
+  public void addMACAddress(String mac) {
+    if (!isExist(mac))
+      Frame1.vMACAddress.addElement(mac);
+  }
+
+  public String getMACAddress() {
+    Random r = new Random();
+    String mac = new String();
+    int tmp;
+    do {
+      mac = "";
+      for (int i=0; i<3; i++) {
+        if (i!=0) {
+	  mac=mac+".";
+	}
+	tmp=r.nextInt(65536);
+	for (int j=Integer.toHexString(tmp).length(); j<4; j++)
+	  mac=mac+"0";
+	mac=mac+Integer.toHexString(tmp);
+      }
+    }
+    while (isExist(mac));
+    Frame1.vMACAddress.addElement(mac);
+    return mac;
+  }
+
+  public String getMACAddress(int num) {
+    Random r = new Random();
+    String mac = new String();
+    int tmp;
+    do {
+      mac = "";
+      for (int i=Integer.toHexString(num).length(); i<4; i++)
+        mac=mac+"0";
+      mac=mac+Integer.toHexString(num)+".";
+      tmp=r.nextInt(65536);
+      for (int j=Integer.toHexString(tmp).length(); j<4; j++)
+        mac=mac+"0";
+      mac=mac+Integer.toHexString(tmp)+".";
+      tmp=r.nextInt(256);
+      for (int j=Integer.toHexString(tmp).length(); j<2; j++)
+        mac=mac+"0";
+      mac=mac+Integer.toHexString(tmp)+"00";
+    }
+    while (isExist(mac));
+//    System.out.println(mac);
+    return mac;
+  }
+
+  public String getMACAddress(Switch sw) {
+    Random r = new Random();
+    String mac = new String();
+    int tmp;
+    do {
+      mac = sw.getMACAddress().substring(0,12);
+      for (int j=Integer.toHexString(sw.getVInt().size()+1).length(); j<2; j++)
+        mac=mac+"0";
+      mac=mac+Integer.toHexString(sw.getVInt().size()+1);
+    }
+    while (isExist(mac));
+    Frame1.vMACAddress.addElement(mac);
+//    System.out.println(mac);
+    return mac;
+  }
+
+  public void removeMACAddress(String mac) {
+    String tmp = new String();
+    for (int i=0; i<Frame1.vMACAddress.size(); i++) {
+      if (mac.equals((String)Frame1.vMACAddress.elementAt(i))) {
+        System.out.println(mac+" is removed.");
+        Frame1.vMACAddress.removeElementAt(i);
+      }
+    }
+  }
+
+  public boolean isMACAddress(String mac) {
+    mac = mac.toLowerCase();
+    if (mac.length()==14) {
+      for (int i=0; i<14; i++) {
+        if ((i==4) || (i==9)) {
+          if (mac.charAt(i)!='.') {
+            System.out.println(mac.charAt(i));
+            return false;
+          }
+        }
+        else {
+          if ((mac.charAt(i)!='a') && (mac.charAt(i)!='b') && (mac.charAt(i)!='c') &&
+              (mac.charAt(i)!='d') && (mac.charAt(i)!='e') && (mac.charAt(i)!='f') &&
+              (!Character.isDigit(mac.charAt(i)))) {
+            System.out.println(mac.charAt(i));
+            return false;
+          }
+        }
+      }
+    }
+    else return false;
+    return true;
+  }
+
+  public boolean isExist(String mac) {
+    for (int i=0; i<Frame1.vMACAddress.size(); i++) {
+      if (mac.equals((String)Frame1.vMACAddress.elementAt(i))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public String cHexToBin(String hex) {
+    String bin="";
+    char[] hexc = new char[12];
+    int p=0;
+    for (int i=0; i<14; i++) {
+      if (hex.charAt(i)!='.') {
+        hexc[p]=hex.charAt(i);
+        p++;
+      }
+    }
+    for (int i=0; i<12; i++) {
+      switch (hexc[i]) {
+        case '1' : bin = bin+"0001"; break;
+        case '2' : bin = bin+"0010"; break;
+        case '3' : bin = bin+"0011"; break;
+        case '4' : bin = bin+"0100"; break;
+        case '5' : bin = bin+"0101"; break;
+        case '6' : bin = bin+"0110"; break;
+        case '7' : bin = bin+"0111"; break;
+        case '8' : bin = bin+"1000"; break;
+        case '9' : bin = bin+"1001"; break;
+        case 'a' : bin = bin+"1010"; break;
+        case 'b' : bin = bin+"1011"; break;
+        case 'c' : bin = bin+"1100"; break;
+        case 'd' : bin = bin+"1101"; break;
+        case 'e' : bin = bin+"1110"; break;
+        case 'f' : bin = bin+"1111"; break;
+        case 'A' : bin = bin+"1010"; break;
+        case 'B' : bin = bin+"1011"; break;
+        case 'C' : bin = bin+"1100"; break;
+        case 'D' : bin = bin+"1101"; break;
+        case 'E' : bin = bin+"1110"; break;
+        case 'F' : bin = bin+"1111"; break;
+        default  : bin = bin+"0000";
+      }
+    }
+    return bin;
+  }
+
+  public String cBinToHex(String bin) {
+    String hex="";
+    String tmp="";
+    for (int i=0; i<48; i++) {
+      tmp=tmp+bin.charAt(i);
+      if (i%4==3) {
+        if (tmp.equals("0001")) { hex=hex+1; tmp="";}
+        else if (tmp.equals("0010")) { hex=hex+"2"; tmp=""; }
+        else if (tmp.equals("0011")) { hex=hex+"3"; tmp=""; }
+        else if (tmp.equals("0100")) { hex=hex+"4"; tmp=""; }
+        else if (tmp.equals("0101")) { hex=hex+"5"; tmp=""; }
+        else if (tmp.equals("0110")) { hex=hex+"6"; tmp=""; }
+        else if (tmp.equals("0111")) { hex=hex+"7"; tmp=""; }
+        else if (tmp.equals("1000")) { hex=hex+"8"; tmp=""; }
+        else if (tmp.equals("1001")) { hex=hex+"9"; tmp=""; }
+        else if (tmp.equals("1010")) { hex=hex+"a"; tmp=""; }
+        else if (tmp.equals("1011")) { hex=hex+"b"; tmp=""; }
+        else if (tmp.equals("1100")) { hex=hex+"c"; tmp=""; }
+        else if (tmp.equals("1101")) { hex=hex+"d"; tmp=""; }
+        else if (tmp.equals("1110")) { hex=hex+"e"; tmp=""; }
+        else if (tmp.equals("1111")) { hex=hex+"f"; tmp=""; }
+        else { hex=hex+"0"; tmp=""; }
+      }
+      if ((i%16==0) && (i!=0)) {
+        hex=hex+".";
+      }
+    }
+    return hex;
+  }
+
+}

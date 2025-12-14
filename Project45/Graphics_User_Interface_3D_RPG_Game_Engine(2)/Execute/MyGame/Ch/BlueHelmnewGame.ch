@@ -1,0 +1,10 @@
+1    LadyDeath4    62    1380    352    140    0    70    0    20    100    NO    .\scp\LadyDeath412.scp    1   .\scp\LadyDeath412.rt
+2    Insect    46    236    352    207    0    125    0    0    20    NO    .\scp\Insect22.scp    0   .\scp\Insect22.rt
+3    Goblin    15    -133    352    85    0    -109    0    0    100    NO    .\scp\Goblin32.scp    0   .\scp\Goblin32.rt
+4    DeadBurned    17    135    352    -529    0    -15    0    20    100    NO    .\scp\DeadBurned42.scp    1   .\scp\DeadBurned42.rt
+5    MadpearDeath    27    824    352    -399    0    40    0    20    100    NO    .\scp\MadpearDeath52.scp    1   .\scp\MadpearDeath52.rt
+6    MadpearRed    25    -1211    352    34    0    181    0    0    100    NO    .\scp\MadpearRed62.scp    0   .\scp\MadpearRed62.rt
+7    MadpearDark    26    -98    352    107    0    184    0    0    100    NO    .\scp\MadpearDark72.scp    0   .\scp\MadpearDark72.rt
+8    Madpear    23    -641    352    284    0    138    0    -2    100    NO    .\scp\Madpear82.scp    0   .\scp\Madpear82.rt
+9    Insect    46    -764    352    -218    0    -20    0    174    20    NO    .\scp\Insect92.scp    1   .\scp\Insect92.rt
+10    TheMask    35    1300    352    -327    -431602080    72    -431602080    200    100    .\inv\InvHero.inv    .\scp\TheMask11.scp    1   .\scp\TheMask11.rt

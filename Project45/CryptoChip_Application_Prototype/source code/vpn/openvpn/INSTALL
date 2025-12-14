@@ -1,0 +1,206 @@
+Installation instructions for OpenVPN, a Secure Tunneling Daemon
+
+Copyright (C) 2002 by James Yonan. This program is free software;
+you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+*************************************************************************
+
+For the latest stable version of OpenVPN as source or
+RPM binaries, go to:
+
+	http://sourceforge.net/projects/openvpn/
+
+For the latest development version of OpenVPN, go to:
+
+	http://openvpn.sourceforge.net/beta/
+
+For step-by-step installation instructions with real-world
+examples see:
+
+	http://openvpn.sourceforge.net/howto.html
+
+For basic examples see:
+
+	http://openvpn.sourceforge.net/man.html#lbAN
+
+*************************************************************************
+
+SUPPORTED PLATFORMS:
+  (1) Linux 2.2+
+  (2) Solaris
+  (3) OpenBSD 3.0+ (Comes with OpenSSL and tun devices by default)
+  (4) Mac OS X Darwin (Experimental)
+  (5) FreeBSD (Experimental)
+  (6) NetBSD (Experimental)
+
+REQUIRES:
+  (1) tun and/or tap driver to allow user-space programs to control
+      a virtual point-to-point IP or Ethernet device.  See
+      TUN/TAP Driver Configuration section below for more info.
+
+OPTIONAL (but recommended):
+  (1) OpenSSL library, necessary for encryption, version 0.9.5 or higher
+      required, available from http://www.openssl.org/
+  (2) LZO real-time compression library, required for link compression,
+      available from http://www.oberhumer.com/opensource/lzo/
+      OpenBSD users can use ports or packages to install lzo, but remember
+      to add "--with-lzo-headers" and "--with-lzo-lib" directives to
+      "configure", pointing to /usr/local/include and /usr/local/lib
+      respectively since gcc will not find them otherwise.
+  (3) Pthread library.
+
+OPTIONAL (for developers only):
+  (1) Autoconf 2.50 or higher + Automake 1.6 or higher
+      -- available from http://www.gnu.org/software/software.html
+  (2) Dmalloc library
+      -- available from http://dmalloc.com/
+
+*************************************************************************
+
+BUILD COMMANDS FROM TARBALL OR CVS:
+
+	./configure
+	make
+	make install
+
+*************************************************************************
+
+BUILD NOTES:
+
+* If you are building from a CVS checkout, you should
+  run ./pre-touch prior to ./configure to make sure
+  that timestamps are up-to-date.
+
+*************************************************************************
+
+OPTIONS for ./configure:
+
+  --enable-pthread          Compile pthread support for
+                            improved latency during SSL/TLS key
+                            negotiations (Linux or Solaris only)
+
+  --disable-lzo             Do not compile LZO compression support
+  --disable-crypto          Do not compile OpenSSL crypto support
+  --disable-ssl             Do not compile OpenSSL SSL support for
+                            TLS-based key exchange
+
+  --with-ssl-headers=DIR    Crypto/SSL Include files location
+  --with-ssl-lib=DIR        Crypto/SSL Library location
+  --with-lzo-headers=DIR    LZO Include files location
+  --with-lzo-lib=DIR        LZO Library location
+
+  --with-ifconfig-path=PATH   Path to ifconfig tool (only need to
+                              specify if in a non-standard location)
+
+  --with-leak-check=TYPE    Build with memory leak checking
+                            TYPE = dmalloc or ssl
+
+*************************************************************************
+
+BUILDING ON LINUX 2.4+ FROM RPM
+
+OpenVPN binary RPMs are available for selected platforms:
+
+	http://sourceforge.net/projects/openvpn/
+
+Install a binary RPM with the command:
+
+	rpm -ivh [binary-rpm]
+
+It is also possible to build a binary RPM directly from the tarball:
+
+	rpm -tb [tarball]
+
+This command will build a binary RPM file and place it in the system
+RPM directory.  You can then install the RPM with the standard RPM
+install command:
+
+	rpm -ivh [binary-rpm]
+
+When you install the binary RPM, it will install
+sample-scripts/openvpn.init, which can be used to
+automatically start or stop one or more OpenVPN tunnels on system
+startup or shutdown, based on OpenVPN .conf files in /etc/openvpn.
+See the comments in openvpn.init for more information.
+
+Installing the RPM will also configure the TUN/TAP device node
+for linux 2.4.
+
+Note that the current openvpn.spec file, which instructs the rpm tool
+how to build a package, will build OpenVPN with all options enabled,
+including OpenSSL, LZO, and pthread linkage.  Therefore all of
+these packages will need to be present prior to the RPM build, unless
+you edit the openvpn.spec file.
+
+*************************************************************************
+
+TUN/TAP Driver Configuration:
+
+* Linux 2.4 or higher (with integrated TUN/TAP driver):
+
+  (1)  make device node:         mknod /dev/net/tun c 10 200
+  (2a) add to /etc/modules.conf: alias char-major-10-200 tun
+  (2b) load driver:              modprobe tun
+  (3)  enable routing:           echo 1 > /proc/sys/net/ipv4/ip_forward
+
+  Note that either of steps (2a) or (2b) is sufficient.  While (2a)
+  only needs to be done once per install, (2b) needs to be done once
+  per reboot.  If you install from RPM (see above) and use the
+  openvpn.init script, these steps are taken care of for you.
+
+* Linux 2.2 or Solaris:
+ 
+  You should obtain
+  version 1.1 of the TUN/TAP driver from
+  http://vtun.sourceforge.net/tun/
+  and follow the installation instructions.
+
+* OpenBSD:
+
+  OpenBSD ships with tun0 and tun1 installed by default.
+
+* Mac OS X:
+
+  Obtain Christoph Pfisterer's
+  tun driver at
+  http://chrisp.de/en/projects/tunnel.html
+
+ See the man page for more information, usage examples, and
+ information on firewall configuration.
+
+*************************************************************************
+
+CAVEATS & BUGS:
+
+* OpenVPN works fine with the 1.1 TUN/TAP driver in the Linux 2.2 kernels,
+  and with the integrated 1.4 TUN/TAP driver in the Linux 2.4 kernels, but
+  there's a "gray area" in the 2.4 kernels before 2.4.7 where various
+  things may break due to the TUN/TAP driver and other kernel components
+  being in a state of flux, so I wouldn't recommend using OpenVPN on these
+  kernels unless you are prepared to do some debugging and testing.
+
+* Pthread support is not yet stable on OpenBSD or any platform that implements
+  threads in user-space without supporting true preemptive scheduling
+  between threads.  Pthread implementations which are compatible with Linux
+  or Solaris implementations should work fine with OpenVPN.
+
+* If run through a firewall using OpenBSDs packet filter PF and the
+  filter rules include a "scrub" directive, you may get problems talking
+  to Linux hosts over the tunnel, since the scrubbing will kill packets
+  sent from Linux hosts if they are fragmented. This is usually seen as
+  tunnels where small packets and pings get through but large packets
+  and "regular traffic" don't.
+
+* Mixing OFB or CFB cipher modes with static key mode is not recommended,
+  and is flagged as an error on OpenVPN versions 1.2.1 and greater.
+  If you use the --cipher option to explicitly select an OFB or CFB
+  cipher AND you are using static key mode, it is possible that there
+  could be an IV collision if the OpenVPN daemons on both sides
+  of the connection are started at exactly the same time, since
+  OpenVPN uses a timestamp combined with a sequence number as the cipher
+  IV for OFB and CFB modes.  This is not an issue if you are
+  using CBC cipher mode (the default), or if you are using OFB or CFB
+  cipher mode with SSL/TLS authentication.

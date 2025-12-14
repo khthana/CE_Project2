@@ -1,0 +1,131 @@
+#include <windows.h>
+#include <winsock.h>
+#include <stdio.h>
+#include <conio.h>
+#include <time.h>
+
+#include "Include\packet32.h"
+
+#ifdef ARP_EXPORTS
+#define ARP_API __declspec(dllexport)
+#else
+#define ARP_API __declspec(dllimport)
+#endif
+
+#define Max_Num_Adapter 10
+
+typedef unsigned int __u32;
+
+#define ETH_ALEN	6		/* Octets in one ethernet addr	 */
+#define ETH_P_ARP	0x0806		/* Address Resolution packet	*/
+#define ETH_P_802_3	0x0001		/* Dummy type for 802.3 frames  */
+#define ETH_P_IP	0x0800		/* Internet Protocol packet	*/
+#define	ARPOP_REQUEST	1		/* ARP request			*/
+#define	ARPOP_REPLY	2			/* ARP reply			*/
+
+#define	ARP_WAIT_TIME	500		/* Arp Response waiting time (ms) */
+
+/*
+ *	This is an Ethernet frame header.
+ */
+ 
+
+const char *_hostnameToDotIP(const char *IPAddr);
+
+struct ethhdr 
+{
+	unsigned char	h_dest[ETH_ALEN];	/* destination eth addr	*/
+	unsigned char	h_source[ETH_ALEN];	/* source ether addr	*/
+	unsigned short	h_proto;		/* packet type ID field	*/
+};
+
+
+struct arphdr
+{
+	unsigned short	ar_hrd;		/* format of hardware address	*/
+	unsigned short	ar_pro;		/* format of protocol address	*/
+	unsigned char	ar_hln;		/* length of hardware address	*/
+	unsigned char	ar_pln;		/* length of protocol address	*/
+	unsigned short	ar_op;		/* ARP opcode (command)		*/
+
+	unsigned char	ar_sha[ETH_ALEN];	/* sender hardware address	*/
+	unsigned char	ar_sip[4];			/* sender IP address		*/
+	unsigned char	ar_tha[ETH_ALEN];	/* target hardware address	*/
+	unsigned char	ar_tip[4];			/* target IP address		*/
+};
+
+struct arpPacket
+{
+	struct ethhdr	ethhdr;
+	struct arphdr	arphdr;
+};
+
+
+// This class is exported from the Arp.dll
+class ARP_API CArp {
+public:
+	CArp::CArp(
+		const char* srcIPAddr,
+		const char* subnetIPAddr,
+		const char* defaultGWAddr,
+		unsigned long waitTime = ARP_WAIT_TIME // 500
+		);
+
+	~CArp();
+
+	bool isArpVaild();
+
+	char* getLastMessage();
+
+	bool arpSendRecv(const char* ipAddr, char* macAddr);
+	bool arpSendRecv(__u32 hostTypeIPAddr32, char* mac_ethAlen);
+
+private:
+
+	bool			m_CArpFlag;
+
+	bool getAdapterInfo(
+		const char* nicIPAddress,	// input
+		char* AdapterName,			// output
+		unsigned char*	macAddr		// output
+		);
+	
+	bool packetDelimiter(
+		struct arpPacket *p_arp, unsigned char* ar_tip);
+
+	bool analizeRawPacket(
+		char *pChar, u_int dataLen, struct arpPacket *p_arp, unsigned char* ar_tip);
+
+	LPADAPTER		m_lpAdapter; 
+	LPPACKET		m_lpPacket;
+
+	LPADAPTER		m_lpAdapter2; 
+	LPPACKET		m_lpPacket2;
+
+	char			m_buffer2[25600];  // buffer to hold the data coming from the driver
+
+	char			m_message[1024];
+
+	// string that contains a list of the network adapters
+	char			m_adapterName[512];
+	
+	// local MAC Address
+	unsigned char	m_macAddr[ETH_ALEN];
+	char			m_ipAddr[16];
+	char			m_subAddr[16];
+	char			m_defgAddr[16];
+//	char			m_netAddr[16];
+
+	char			m_defgMacAddr[18];
+	char			m_localMacAddr[18];
+
+	__u32			m_subAddr_u32;
+	__u32			m_defgAddr_u32;
+	__u32			m_netAddr_u32;
+
+	unsigned long	m_waitTime;
+
+
+
+};
+

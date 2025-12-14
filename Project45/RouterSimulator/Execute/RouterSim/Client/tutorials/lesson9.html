@@ -1,0 +1,231 @@
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=">
+</head>
+<LINK REL="stylesheet"
+			HREF="base2.css"
+			TYPE="text/css">
+<body bgcolor="#FFFFFF" text="#000000">
+<table width="94%" border="0">
+  <tr> 
+    <td colspan="2"><img src="picture/l9.gif" width="281" height="33"></td>
+    <td width="63%"><font face="Verdana, Arial, Helvetica, sans-serif" size="4" color="#006699"><b>Dynamic 
+      Routing with OSPF </b></font> </td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" color="#000000" size="5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      การทดลองนี้เป็นการ </font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" color="#000000" size="5">1. Login ไปยังเราเตอร์ที่ต้องการ 
+      เข้าสู่ Privilege Mode โดยพิมพ์ en หรือ enable </font></td>
+  </tr>
+  <tr> 
+    <td width="5%" rowspan="2">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" color="#000000" size="5">2. ก่อนที่จะทำ 
+      Dynamic Routing แบบ ospf เราต้องแน่ใจก่อนว่าไม่มี rip routing โดยใช้คำสั่ง 
+      no <br>
+      rip ตัวอย่าง :<br>
+      RouterA#config t<br>
+      RouterA(config)#no router rip<br>
+      เราเตอร์อื่นๆก้อทำเช่นเดียวกัน </font></td>
+  </tr>
+  <tr> 
+    <td colspan="2"> 
+      <div align="center"><font face="CordiaUPC" color="#000000" size="5"><img src="picture/p1_l9.gif" width="621" height="494"></font></div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" color="#000000" size="5">3. โดยในการทดลองนี้จะให้ทำการสร้างเน็ตเวิร์คใหม่ดังรูป 
+      </font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2">
+      <div align="center"><font face="CordiaUPC" color="#000000" size="5"><img src="picture/ospf.gif" width="700" height="365"></font></div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" color="#000000" size="5">หมายเหตุ เลขไอพีแอดเดรสนี้เป็นลขโดยย่อคือตัดมาเฉพาะ 
+      2 เลขหลัง โดยเลขนำหน้าคือ 161.246 เช่น 1.1 มีความหมายเท่ากับ <br>
+      161.246.1.1 และเลขสีน้ำเงินหมายถึงค่า weight ของเราเตอร์แต่ละคู่ ที่ทำการกำหนดขึ้นมา<br>
+      </font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" color="#000000" size="5">4. ทำการกำหนด 
+      ip address ดังนี้<br>
+      Router1#config t<br>
+      Router1(config)#hostname R1<br>
+      R1(config)#int e0<br>
+      R1(config-if)#ip address 161.246.1.1 255.255.255.0<br>
+      R1(config-if)#no shut<br>
+      R1(config-if)#int s0<br>
+      R1(config-if)#ip address 161.246.2.1 255.255.255.0<br>
+      R1(config-if)#no shut<br>
+      R1(config-if)#int s1<br>
+      R1(config-if)#ip address 161.246.3.1 255.255.255.0<br>
+      R1(config-if)#no shut </font> 
+      <p><font face="CordiaUPC" color="#000000" size="5">Router2#config t<br>
+        Router2(config)#hostname R2<br>
+        R2(config-if)#int s1<br>
+        R2(config-if)#ip address 161.246.3.2 255.255.255.0<br>
+        R2(config-if)#no shut<br>
+        R2(config-if)#int s0<br>
+        R2(config-if)#ip address 161.246.4.1 255.255.255.0<br>
+        R2(config-if)#no shut </font></p>
+      <p><font face="CordiaUPC" color="#000000" size="5">Router3#config t<br>
+        Router2(config)#hostname R3<br>
+        R3(config-if)#int s0<br>
+        R3(config-if)#ip address 161.246.1.2 255.255.255.0<br>
+        R3(config-if)#no shut<br>
+        R3(config-if)#int s1<br>
+        R3(config-if)#ip address 161.246.9.1 255.255.255.0<br>
+        R3(config-if)#no shut<br>
+        R3(config-if)#int e0<br>
+        R3(config-if)#ip address 161.246.7.1 255.255.255.0<br>
+        R3(config-if)#no shut<br>
+        R3(config-if)#int e1<br>
+        R3(config-if)#ip address 161.246.5.1 255.255.255.0<br>
+        R3(config-if)#no shut </font></p>
+      <p><font face="CordiaUPC" color="#000000" size="5">Router4#config t<br>
+        Router4(config)#hostname R4<br>
+        R4(config-if)#int s0<br>
+        R4(config-if)#ip address 161.246.4.2 255.255.255.0<br>
+        R4(config-if)#no shut<br>
+        R4(config-if)#int s1<br>
+        R4(config-if)#ip address 161.246.2.2 255.255.255.0<br>
+        R4(config-if)#no shut<br>
+        R4(config-if)#int e0<br>
+        R4(config-if)#ip address 161.246.5.2 255.255.255.0<br>
+        R4(config-if)#no shut<br>
+        R4(config-if)#int e1<br>
+        R4(config-if)#ip address 161.246.6.1 255.255.255.0<br>
+        R4(config-if)#no shut </font></p>
+      <p><font face="CordiaUPC" color="#000000" size="5">Router5#config t<br>
+        Router5(config)#hostname R5<br>
+        R5(config-if)#int s0<br>
+        R5(config-if)#ip address 161.246.8.2 255.255.255.0<br>
+        R5(config-if)#no shut<br>
+        R5(config-if)#int s1<br>
+        R5(config-if)#ip address 161.246.9.1 255.255.255.0<br>
+        R5(config-if)#no shut </font></p>
+      <p><font face="CordiaUPC" color="#000000" size="5">Router6#config t<br>
+        Router6(config)#hostname R6<br>
+        R6(config-if)#int s0<br>
+        R6(config-if)#ip address 161.246.8.1 255.255.255.0<br>
+        R6(config-if)#no shut<br>
+        R6(config-if)#int e0<br>
+        R6(config-if)#ip address 161.246.7.2 255.255.255.0<br>
+        R6(config-if)#no shut<br>
+        R6(config-if)#int e1<br>
+        R6(config-if)#ip address 161.246.6.2 255.255.255.0<br>
+        R6(config-if)#no shut</font></p>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" color="#000000" size="5">5. ทำการ save 
+      โดยการกด copy run start</font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"> 
+      <div align="center"><font face="CordiaUPC" color="#000000" size="5"><img src="picture/p2_l9.gif" width="620" height="492"><br>
+        <br>
+        <img src="picture/p3_l9.gif" width="621" height="492"><br>
+        <br>
+        <img src="picture/p4_l9.gif" width="622" height="492"><br>
+        <br>
+        <img src="picture/p5_l9.gif" width="622" height="493"><br>
+        <br>
+        <img src="picture/p6_l9.gif" width="621" height="494"><br>
+        <br>
+        <img src="picture/p7_l9.gif" width="621" height="494"> </font></div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" color="#000000" size="5">6. ใช้คำสั่งเพื่อทำการเลือกโปรโตคอลแบบ 
+      OSPF ดังนี้<br>
+      Router#config t<br>
+      Router(config)#router ospf process-id<br>
+      โดยทำที่ทุกๆ เราเตอร์เพราะเราต้องการให้ทุกๆเราเตอร์อยู่ในโปรโตคอล OSPF<br>
+      ในที่นี่ process-id เป็นอะไรก็ได้ไม่มีผลต่อโปรแกรมนี้<br>
+      เช่น <br>
+      Router(config)#router ospf 11 <br>
+      </font></td>
+  </tr>
+  <tr> 
+    <td width="5%" rowspan="5">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" color="#000000" size="5">7. คำสั่งในการกำหนด 
+      weight ให้กับเราเตอร์ทำได้โดยใช้คำสั่ง ip ospf cost &lt;router_name&gt;&lt;router_name&gt; 
+      ดังนี้<br>
+      R1(config)#ip ospf cost R2 30<br>
+      R1(config)#ip ospf cost R3 85<br>
+      R1(config)#ip ospf cost R4 130 </font> 
+      <p><font face="CordiaUPC" color="#000000" size="5">R2(config)#ip ospf cost 
+        R4 115</font></p>
+      <p><font face="CordiaUPC" color="#000000" size="5">R3(config)#ip ospf cost 
+        R4 30<br>
+        R3(config)#ip ospf cost R5 95 <br>
+        R3(config)#ip ospf cost R6 70</font></p>
+      <p><font face="CordiaUPC" color="#000000" size="5">R4(config)#ip ospf cost 
+        R6 95</font></p>
+      <p><font face="CordiaUPC" color="#000000" size="5">R5(config)#ip ospf cost 
+        R6 95<br>
+        </font></p>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="2" height="2596"> 
+      <div align="center"><font face="CordiaUPC" color="#000000" size="5"><img src="picture/p8_l9.gif" width="620" height="495"><br>
+        <br>
+        <img src="picture/p9_l9.gif" width="620" height="492"> <br>
+        <br>
+        <img src="picture/p10_l9.gif" width="620" height="492"> <br>
+        <br>
+        <img src="picture/p11_l9.gif" width="621" height="493"> <br>
+        <br>
+        <img src="picture/p12_l9.gif" width="619" height="493"> <br>
+        </font></div>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="2" height="32"><font face="CordiaUPC" color="#000000" size="5">8. 
+      ใช้คำสั่งทดสอบการเชื่อมต่อโดยใช้คำสั่ง traceroute </font></td>
+  </tr>
+  <tr> 
+    <td colspan="2"> 
+      <div align="center"><font face="CordiaUPC" color="#000000" size="5"><img src="picture/p13_l9.gif" width="620" height="493"></font></div>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="2"> 
+      <div align="center"><font color="#336699" size="5" face="CordiaUPC"><b>สำหรับโหมดการทำงานทั้งหมดของเราเตอร์สามารถดูได้ที่ 
+        Command</b></font></div>
+    </td>
+  </tr>
+</table>
+<table width="32%" border="0" align="center" bgcolor="#006699" height="21">
+  <tr> 
+    <td width="35%" bgcolor="#336699"> 
+      <div align="left"><font color="#FF9900" face="Verdana, Arial, Helvetica, sans-serif" size="2"><a href="lesson8.html"><font color="#FFFFFF">Lesson 
+        8 &lt;--</font></a></font></div>
+    </td>
+    <td width="28%"> 
+      <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><a href="command.html"><font color="#FFCC00">command</font></a></font></div>
+    </td>
+    <td width="37%"> 
+      <div align="right"><font color="#FF9900" face="Verdana, Arial, Helvetica, sans-serif" size="2"><a href="lesson10.html"><font color="#FFFFFF"> 
+        --&gt; Lesson 10</font></a></font></div>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

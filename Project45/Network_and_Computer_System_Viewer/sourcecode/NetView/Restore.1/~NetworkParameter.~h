@@ -1,0 +1,68 @@
+#if !defined(AFX_NETWORKPARAMETER_H__F16C09E4_10FF_456B_A570_CF4D7D17A22A__INCLUDED_)
+#define AFX_NETWORKPARAMETER_H__F16C09E4_10FF_456B_A570_CF4D7D17A22A__INCLUDED_
+
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
+// NetworkParameter.h : header file
+//
+
+/////////////////////////////////////////////////////////////////////////////
+// CNetworkParameter dialog
+
+class CNetworkParameter : public CDialog
+{
+// Construction
+public:
+	void OnRefresh();
+	CNetworkParameter(CWnd* pParent = NULL);   // standard constructor
+//	BOOL Create();
+	void FindOS();
+	void Listhost();
+	void ListPort();
+// Dialog Data
+	//{{AFX_DATA(CNetworkParameter)
+	enum { IDD = IDD_ScanParam };
+	CEdit	m_Edit5;
+	CEdit	m_Edit4;
+	CEdit	m_Edit3;
+	CEdit	m_Edit2;
+	CEdit	m_Edit1;
+	CIPAddressCtrl	m_IP2;
+	CIPAddressCtrl	m_IP1;
+	//}}AFX_DATA
+
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CNetworkParameter)
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void PostNcDestroy();
+	//}}AFX_VIRTUAL
+
+// Implementation
+protected:
+	CWnd* m_pParent;
+	int m_nID;
+
+	// Generated message map functions
+	//{{AFX_MSG(CNetworkParameter)
+	virtual void OnOK();
+	virtual void OnCancel();
+	afx_msg void OnSingle();
+	afx_msg void OnRange();
+	afx_msg void OnSubnet();
+	virtual BOOL OnInitDialog();
+	afx_msg void OnView();
+	afx_msg void OnFieldchangedIpaddress1(NMHDR* pNMHDR, LRESULT* pResult);
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+
+
+};
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_NETWORKPARAMETER_H__F16C09E4_10FF_456B_A570_CF4D7D17A22A__INCLUDED_)

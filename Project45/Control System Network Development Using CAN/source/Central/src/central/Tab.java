@@ -1,0 +1,508 @@
+package central;
+
+import java.util.Date;
+import javax.swing.*;
+import java.awt.*;
+
+/**
+Provide GUI on screen
+*/
+
+class SendTab extends Container {						// send tab GUI
+
+  public static JRadioButton data;
+  public static JRadioButton status;
+  public static JTextField pidtxt;
+  public static JTextField ptypetxt;
+  public static JTextField pcodetxt;
+  public static JTextArea pdatatxt;
+  public static JTextArea cdatatxt;
+  public static JScrollPane ppane;
+  public static JTextField ptotallengthtxt;
+  public static JTextField pchecksumtxt;
+
+  SendTab() {
+    int x = 0, y = 30;
+
+    data = new JRadioButton("Data", true);
+    status = new JRadioButton("Status");
+    ButtonGroup bg = new ButtonGroup();
+
+    JLabel pidlabel = new JLabel("ID");
+    JLabel ptypelabel = new JLabel("Type");
+    JLabel pcodelabel = new JLabel("Description");
+    JLabel pdatalabel = new JLabel("Plain text");
+    JLabel cdatalabel = new JLabel("Cipher text");
+    JLabel ptotallength = new JLabel("Total Length");
+    JLabel pchecksum = new JLabel("Checksum");
+    JButton sendbutton = new JButton("Send");
+    JLabel ridlabel = new JLabel("ID");
+    pidtxt = new JTextField();
+    ptypetxt = new JTextField();
+    pcodetxt = new JTextField();
+    ptypetxt.setEditable(false);
+    pcodetxt.setEditable(false);
+    pdatatxt = new JTextArea();
+    cdatatxt = new JTextArea();
+    cdatatxt.setEditable(false);
+    JScrollPane ppane = new JScrollPane(pdatatxt);
+    JScrollPane cpane = new JScrollPane(cdatatxt);
+    ptotallengthtxt = new JTextField();
+    pchecksumtxt = new JTextField();
+
+    data.setBounds(x + 120, y + 10, 80, 20);
+    status.setBounds(x + 200, y + 10, 80, 20);
+
+    pidlabel.setBounds(x + 100, y + 50, 20, 20);
+    pidtxt.setBounds(x + 120, y + 50, 100, 20);
+    ptypelabel.setBounds(x + 80, y + 90, 40, 20);
+    ptypetxt.setBounds(x + 120, y + 90, 100, 20);
+    pcodelabel.setBounds(x + 240, y + 90, 65, 20);
+    pcodetxt.setBounds(x + 320, y + 90, 100, 20);
+    pdatalabel.setBounds(x + 50, y + 130, 80, 20);
+    pdatatxt.setBounds(x + 120, y + 130, 300, 100);
+    ppane.setBounds(x + 120, y + 130, 300, 100);
+    cdatalabel.setBounds(x + 40, y + 250, 80, 20);
+    cdatatxt.setBounds(x + 120, y + 250, 300, 100);
+    cpane.setBounds(x + 120, y + 250, 300, 100);
+    ptotallength.setBounds(x + 30, y + 370, 70, 20);
+    ptotallengthtxt.setBounds(x + 120, y + 370,100, 20);
+    pchecksum.setBounds(x + 40, y + 410, 70, 20);
+    pchecksumtxt.setBounds(x + 120, y + 410, 100, 20);
+
+    sendbutton.setBounds(120, y + 450, 100, 20);
+
+    setLayout(null);
+
+    add(data);
+    add(status);
+    add(pidlabel);
+    add(ptypetxt);
+    add(ptypelabel);
+    add(pcodelabel);
+    add(pcodetxt);
+    add(pidtxt);
+    add(pdatalabel);
+    add(ppane);
+    add(cdatalabel);
+    add(cpane);
+    add(ptotallength);
+    add(ptotallengthtxt);
+    add(pchecksum);
+    add(pchecksumtxt);
+    add(sendbutton);
+
+    SendRadioHandling radiolistener = new SendRadioHandling();			// register
+
+    bg.add(data);
+    bg.add(status);
+    data.addItemListener(radiolistener);
+    status.addItemListener(radiolistener);
+
+    pidtxt.addKeyListener(new TxtFieldHandling(pidtxt));
+    ptypetxt.addKeyListener(new TxtFieldHandling(ptypetxt));
+    pcodetxt.addKeyListener(new TxtFieldHandling(pcodetxt));
+
+    pdatatxt.addKeyListener(new DataLengthHandling());
+    pdatatxt.addKeyListener(new DataChecksumHandling());
+    ptypetxt.addKeyListener(new TypeChecksumHandling());
+    pcodetxt.addKeyListener(new TypeCodeHandling());
+
+    sendbutton.addActionListener(new SendButtonHandling());
+  }
+}
+
+class SnoopTab extends Container {										// Snoop Tab GUI
+
+  public static JTextField fidtxt;
+  public static JTextField ridtxt;
+  public static JTextField rtypetxt;
+  public static JTextField rcodetxt;
+  public static JTextArea rdatatxt;
+  public static JTextArea cdatatxt;
+  public static JTextField rlengthtxt;
+  public static JTextField rchecksumtxt;
+
+  SnoopTab() {
+    int x = 0, y = -30;
+
+    JCheckBox checkbox = new JCheckBox("Enable");
+
+    JLabel rfilteridlabel = new JLabel("Filter ID");
+    JLabel ridlabel = new JLabel("ID");
+    JLabel rtypelabel = new JLabel("Type");
+    JLabel rcodelabel = new JLabel("Description");
+    JLabel rdatalabel = new JLabel("Plain text");
+    JLabel cdatalabel = new JLabel("Cipher text");
+    JLabel rlengthlabel = new JLabel("Total Length");
+    JLabel rchecksumlabel = new JLabel("Checksum");
+
+    fidtxt = new JTextField();
+    fidtxt.setEditable(false);
+    ridtxt = new JTextField();
+    rtypetxt = new JTextField();
+    rcodetxt = new JTextField();
+    rdatatxt = new JTextArea();
+    cdatatxt = new JTextArea();
+    cdatatxt.setEditable(false);
+    JScrollPane rdatapane = new JScrollPane(rdatatxt);
+    JScrollPane cpane = new JScrollPane(cdatatxt);
+    rlengthtxt = new JTextField();
+    rchecksumtxt = new JTextField();
+
+    ridtxt.setEditable(false);
+    rtypetxt.setEditable(false);
+    rcodetxt.setEditable(false);
+    rdatatxt.setEditable(false);
+    rlengthtxt.setEditable(false);
+    rchecksumtxt.setEditable(false);
+
+    rfilteridlabel.setBounds(x + 70, y + 70, 50, 20);
+    fidtxt.setBounds(x + 200, y + 70, 100, 20);
+    checkbox.setBounds(x + 115, y + 70, 70, 20);
+
+    ridlabel.setBounds(x + 100, y + 110, 20, 20);
+    ridtxt.setBounds(x + 120, y + 110, 100, 20);
+    rtypelabel.setBounds(x + 80, y + 150, 40, 20);
+    rtypetxt.setBounds(x + 120, y + 150, 100, 20);
+    rcodelabel.setBounds(x + 240, y + 150, 65, 20);
+    rcodetxt.setBounds(x + 320, y + 150, 100, 20);
+    rdatalabel.setBounds(x + 50, y + 190, 80, 20);
+    rdatatxt.setBounds(x + 120, y + 190, 300, 100);
+    rdatapane.setBounds(x + 120, y + 190, 300, 100);
+    cdatalabel.setBounds(x + 40, y + 310, 80, 20);
+    cdatatxt.setBounds(x + 120, y + 310, 300, 100);
+    cpane.setBounds(x + 120, y + 310, 300, 100);
+    rlengthlabel.setBounds(x + 30, y + 430, 70, 20);
+    rlengthtxt.setBounds(x + 120, y + 430,100, 20);
+    rchecksumlabel.setBounds(x + 40, y + 470, 70, 20);
+    rchecksumtxt.setBounds(x + 120, y + 470, 100, 20);
+
+    add(rfilteridlabel);
+    add(checkbox);
+    add(fidtxt);
+    add(ridlabel);
+    add(rtypetxt);
+    add(rtypelabel);
+    add(rcodelabel);
+    add(rcodetxt);
+    add(ridtxt);
+    add(rdatalabel);
+    add(rdatapane);
+    add(cdatalabel);
+    add(cpane);
+    add(rlengthlabel);
+    add(rlengthtxt);
+    add(rchecksumlabel);
+    add(rchecksumtxt);
+
+    checkbox.addActionListener(new SnoopCheckBoxHandling(checkbox, fidtxt));
+  }
+}
+
+class StatusTab extends Container{						// Status Tab GUI
+
+  public static Color ACTIVE = Color.GREEN;
+  public static Color INACTIVE = Color.RED;
+
+  private Color devicestatus[] = new Color[12];
+
+  public static String currenttime = "0:0:0";
+  public static String moduletime[] = {"0:0:0", "0:0:0", "0:0:0"};
+
+  StatusTab() {
+    for (int i = 0; i < 12; i++)
+      devicestatus[i] = Color.RED;
+  }
+
+  public void setDeviceStatus(int id, int status) {
+    if (id == 0) {
+      if ((status & 0x01) == 0x01)
+        devicestatus[0] = ACTIVE;
+      else
+        devicestatus[0] = INACTIVE;
+      if ((status & 0x02) == 0x02)
+        devicestatus[1] = ACTIVE;
+      else
+        devicestatus[1] = INACTIVE;
+      if ((status & 0x04) == 0x04)
+        devicestatus[2] = ACTIVE;
+      else
+        devicestatus[2] = INACTIVE;
+    }
+    else if (id == 1) {
+      if ((status & 0x01) == 0x01)
+        devicestatus[3] = ACTIVE;
+      else
+        devicestatus[3] = INACTIVE;
+      if ((status & 0x02) == 0x02)
+        devicestatus[4] = ACTIVE;
+      else
+        devicestatus[4] = INACTIVE;
+      if ((status & 0x04) == 0x04)
+        devicestatus[5] = ACTIVE;
+      else
+        devicestatus[5] = INACTIVE;
+    }
+    else if (id == 2) {
+      if ((status & 0x01) == 0x01)
+        devicestatus[6] = ACTIVE;
+      else
+        devicestatus[6] = INACTIVE;
+      if ((status & 0x02) == 0x02)
+        devicestatus[7] = ACTIVE;
+      else
+        devicestatus[7] = INACTIVE;
+      if ((status & 0x04) == 0x04)
+        devicestatus[8] = ACTIVE;
+      else
+        devicestatus[8] = INACTIVE;
+    }
+    else if (id == 3) {
+      if ((status & 0x01) == 0x01)
+        devicestatus[9] = ACTIVE;
+      else
+        devicestatus[9] = INACTIVE;
+      if ((status & 0x02) == 0x02)
+        devicestatus[10] = ACTIVE;
+      else
+        devicestatus[10] = INACTIVE;
+      if ((status & 0x04) == 0x04)
+        devicestatus[11] = ACTIVE;
+      else
+        devicestatus[11] = INACTIVE;
+    }
+  }
+
+  public void paint(Graphics g) {
+
+    // Time & Responds
+    g.drawRect(270, 20, 300, 150);
+    g.drawString("Current Time :   " + currenttime, 290, 50);
+    g.drawString("Node 1 Last Respond Time :   " + moduletime[0], 290, 80);
+    g.drawString("Node 2 Last Respond Time :   " + moduletime[1], 290, 110);
+    g.drawString("Node 3 Last Respond Time :   " + moduletime[2], 290, 140);
+
+    g.setColor(Color.BLACK);
+    g.drawLine(115, 90, 115, 110);                //Main
+    g.drawLine(155, 90, 155, 110);
+    g.drawLine(115, 130, 115, 500);
+    g.drawLine(155, 130, 155, 500);
+    g.drawLine(115, 215, 260, 215);               // Module 1
+    g.drawLine(155, 255, 260, 255);
+    g.drawLine(280, 215, 300, 215);
+    g.drawLine(280, 255, 300, 255);
+    g.drawLine(115, 325, 260, 325);               // Module 2
+    g.drawLine(155, 365, 260, 365);
+    g.drawLine(280, 325, 300, 325);
+    g.drawLine(280, 365, 300, 365);
+    g.drawLine(115, 435, 260, 435);               // Module 3
+    g.drawLine(155, 475, 260, 475);
+    g.drawLine(280, 435, 300, 435);
+    g.drawLine(280, 475, 300, 475);
+
+    g.drawString("Active", 630, 65);
+    g.drawString("Inactive", 630, 115);
+    g.drawString("Main System Monitor", 80, 30);
+    g.drawString("Primary", 40, 130);
+    g.drawString("Secondary", 190, 130);
+    g.drawString("Bus A   Bus B", 95, 520);
+    g.drawString("Node 1", 400, 240);
+    g.drawString("Node 2", 400, 350);
+    g.drawString("Node 3", 400, 460);
+
+    g.setColor(devicestatus[0]);
+    g.fillRect(100, 50, 70, 40);                                                //Main
+    g.setColor(devicestatus[1]);
+    g.fillRect(100, 110, 30, 20);                                               //Main CAN1
+    g.setColor(devicestatus[2]);
+    g.fillRect(140, 110, 30, 20);                                               //Main CAN2
+
+    g.setColor(devicestatus[3]);
+    g.fillRect(300, 200, 40, 70);                                               //Module1
+    g.setColor(devicestatus[4]);
+    g.fillRect(260, 200, 20, 30);                                               //Module1 CAN1
+    g.setColor(devicestatus[5]);
+    g.fillRect(260, 240, 20, 30);                                               //Module1 CAN2
+
+    g.setColor(devicestatus[6]);
+    g.fillRect(300, 310, 40, 70);                                               //Module2
+    g.setColor(devicestatus[7]);
+    g.fillRect(260, 310, 20, 30);                                               //Module2 CAN1
+    g.setColor(devicestatus[8]);
+    g.fillRect(260, 350, 20, 30);                                               //Module2 CAN2
+
+    g.setColor(devicestatus[9]);
+    g.fillRect(300, 420, 40, 70);                                               //Module3
+    g.setColor(devicestatus[10]);
+    g.fillRect(260, 420, 20, 30);                                               //Module3 CAN1
+    g.setColor(devicestatus[11]);
+    g.fillRect(260, 460, 20, 30);                                               //Module3 CAN2
+
+    g.setColor(Color.GREEN);
+    g.fillRect(600, 50, 20, 20);                                                //Active Status
+    g.setColor(Color.RED);
+    g.fillRect(600, 100, 20, 20);                                               //Inactive Status
+  }
+}
+
+class ConfigTab extends Container{
+
+  public static JTextField Timerequest;
+  public static JTextField Timeout;
+  public static JTextField AssemTimeout;
+  public static JTextField ChangKeyTimeRequest;
+  public static IntObject timeout = new IntObject();
+  public static IntObject assemtimeout = new IntObject();
+
+  ConfigTab() {
+    timeout.setValue(1000);
+    assemtimeout.setValue(2000);
+    Timerequest = new JTextField("10");
+    Timeout = new JTextField("1000");
+    AssemTimeout = new JTextField("2000");
+    JLabel Timereqtxt = new JLabel("Request Time");
+    JLabel Timeouttxt = new JLabel("Timeout");
+    JLabel ATimeouttxt = new JLabel("Assembly Timeout");
+    JLabel Msectxt = new JLabel("mSec");
+    JLabel Msectxt1 = new JLabel("mSec");
+    JLabel Sectxt = new JLabel("Sec");
+    JButton updatetimeout = new JButton("Update");
+    JButton updatetimereq = new JButton("Update");
+    JButton updateAtimeout = new JButton("Update");
+
+    Timereqtxt.setBounds(150, 100, 100, 20);
+    Timerequest.setBounds(250, 100, 50, 20);
+    Sectxt.setBounds(310, 100, 40, 20);
+    updatetimereq.setBounds(360, 100, 100, 20);
+    Timeouttxt.setBounds(180, 150, 100, 20);
+    Timeout.setBounds(250, 150, 50, 20);
+    Msectxt.setBounds(310, 150, 40, 20);
+    updatetimeout.setBounds(360, 150, 100, 20);
+    ATimeouttxt.setBounds(120, 200, 130, 20);
+    AssemTimeout.setBounds(250, 200, 50, 20);
+    Msectxt1.setBounds(310, 200, 100, 20);
+    updateAtimeout.setBounds(360, 200, 100, 20);
+
+    add(Timerequest);
+    add(Timereqtxt);
+    add(Sectxt);
+    add(updatetimereq);
+    add(Timeout);
+    add(Timeouttxt);
+    add(Msectxt);
+    add(updatetimeout);
+    add(AssemTimeout);
+    add(ATimeouttxt);
+    add(Msectxt1);
+    add(updateAtimeout);
+
+    updatetimereq.addActionListener(new UpdateTimeRequestHandling());
+    updatetimeout.addActionListener(new UpdateTimeoutHandling());
+    updateAtimeout.addActionListener(new UpdateAssemTimeoutHandling());
+  }
+}
+
+class HistoryTab extends Container {
+
+  public static IntObject sdayvar = new IntObject();
+  public static IntObject shourvar = new IntObject();
+  public static IntObject sminutevar = new IntObject();
+  public static IntObject edayvar = new IntObject();
+  public static IntObject ehourvar = new IntObject();
+  public static IntObject eminutevar = new IntObject();
+  public static JTextArea outputarea = new JTextArea();
+  public static JScrollPane outputpane = new JScrollPane(outputarea);
+  public static JComboBox sday;
+  public static JComboBox shour;
+  public static JComboBox sminute;
+  public static JComboBox eday;
+  public static JComboBox ehour;
+  public static JComboBox eminute;
+
+
+  HistoryTab() {
+    sdayvar.setValue(1);
+    JButton query = new JButton("Query");
+    sday = new JComboBox();
+    shour = new JComboBox();
+    sminute = new JComboBox();
+    eday = new JComboBox();
+    ehour = new JComboBox();
+    eminute = new JComboBox();
+    JLabel sdaytxt = new JLabel("Day");
+    JLabel shourtxt = new JLabel("Hour");
+    JLabel sminutetxt = new JLabel("Minute");
+    JLabel edaytxt = new JLabel("Day");
+    JLabel ehourtxt = new JLabel("Hour");
+    JLabel eminutetxt = new JLabel("Minute");
+    JLabel from = new JLabel("From");
+    JLabel to = new JLabel("To");
+
+
+    for (int i = 1; i < 32; i++) {
+      sday.addItem("" + i);
+      eday.addItem("" + i);
+    }
+    for (int i = 0; i < 24; i++) {
+      shour.addItem("" + i);
+      ehour.addItem("" + i);
+    }
+    for (int i = 0; i < 60; i++) {
+      sminute.addItem("" + i);
+      eminute.addItem("" + i);
+    }
+
+    ehour.setSelectedIndex(23);
+    eminute.setSelectedIndex(59);
+    eday.setSelectedIndex(30);
+    ehourvar.setValue(23);
+    eminutevar.setValue(59);
+    edayvar.setValue(31);
+
+    outputarea.setEditable(false);
+
+    outputarea.setBounds(100, 50, 400, 200);
+    outputpane.setBounds(100, 50, 400, 200);
+    query.setBounds(100, 300, 100, 20);
+    sday.setBounds(160, 350, 50, 20);
+    sdaytxt.setBounds(230, 350, 50, 20);
+    shour.setBounds(280, 350, 50, 20);
+    shourtxt.setBounds(350, 350, 50, 20);
+    sminute.setBounds(400, 350, 50, 20);
+    sminutetxt.setBounds(470, 350, 50, 20);
+    eday.setBounds(160, 400, 50, 20);
+    edaytxt.setBounds(230, 400, 50, 20);
+    ehour.setBounds(280, 400, 50, 20);
+    ehourtxt.setBounds(350, 400, 50, 20);
+    eminute.setBounds(400, 400, 50, 20);
+    eminutetxt.setBounds(470, 400, 50, 20);
+    from.setBounds(100, 350, 50, 20);
+    to.setBounds(115, 400, 50, 20);
+
+    add(outputpane);
+    add(query);
+    add(shour);
+    add(sminute);
+    add(sday);
+    add(shourtxt);
+    add(sminutetxt);
+    add(sdaytxt);
+    add(ehour);
+    add(eminute);
+    add(eday);
+    add(ehourtxt);
+    add(eminutetxt);
+    add(edaytxt);
+    add(from);
+    add(to);
+
+    query.addActionListener(new QueryHandling());
+    shour.addItemListener(new shourHandling());
+    ehour.addItemListener(new ehourHandling());
+    sminute.addItemListener(new sminuteHandling());
+    eminute.addItemListener(new eminuteHandling());
+    sday.addItemListener(new sdayHandling());
+    eday.addItemListener(new edayHandling());
+  }
+}

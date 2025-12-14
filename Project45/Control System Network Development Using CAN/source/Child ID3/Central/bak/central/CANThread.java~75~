@@ -1,0 +1,382 @@
+package central;
+
+import javax.swing.*;
+
+/*
+Provide Connect to CAN Bus Through Parallelport
+Provid Send and Receive Data Through CAN
+1 Rx Share Buffer and 1 Tx Share Buffer
+*/
+
+class CANThread extends Thread {
+
+  private MCP2510 can = new MCP2510(0x378);                                     // Provid connect to CAN
+  private CANBuffer canbuffer = new CANBuffer();
+  private int datalength;
+  private static boolean clear = false;
+  private String str = "";
+  private static int count = 0;
+  private int ID, flag;
+  private static int CANActive;                                                  // Keep CAN active
+
+  CANThread(String s) {
+    super(s);
+    CANActive = 0;                                                              // CAN 0 is Default CAN Bus (Bus A)
+    MainFrame.canthreadtxt.setText("running");
+  }
+
+  public void run() {
+    while (true)
+    {
+//      MainFrame.canthreadtxt.setText("running");
+      str = "CAN0 Status : " + can.readStatus(0) + "     Flag : " + can.readByte(can.CANINTF, 0) + "     EFLG : " + can.readByte(can.EFLG, 0) + "     TEC : " + can.readByte(can.TEC, 0) + "     REC : " + can.readByte(can.REC, 0);
+      if (!MainFrame.flagStatus0.getText().equals(str))
+        MainFrame.flagStatus0.setText("CAN0 Status : " + can.readStatus(0) + "     Flag : " + can.readByte(can.CANINTF, 0) + "     EFLG : " + can.readByte(can.EFLG, 0) + "     TEC : " + can.readByte(can.TEC, 0) + "     REC : " + can.readByte(can.REC, 0));
+
+      str = "CAN1 Status : " + can.readStatus(1) + "     Flag : " + can.readByte(can.CANINTF, 1) + "     EFLG : " + can.readByte(can.EFLG, 1) + "     TEC : " + can.readByte(can.TEC, 1) + "     REC : " + can.readByte(can.REC, 1);
+      if (!MainFrame.flagStatus1.getText().equals(str))
+        MainFrame.flagStatus1.setText("CAN1 Status : " + can.readStatus(1) + "     Flag : " + can.readByte(can.CANINTF, 1) + "     EFLG : " + can.readByte(can.EFLG, 1) + "     TEC : " + can.readByte(can.TEC, 1) + "     REC : " + can.readByte(can.REC, 1));
+
+//      if (can.readStatus(0) != 255 || can.readStatus(1) != 255) {
+
+        CAN0RX();                                                                 // Check CAN A Receive some data
+        CAN1RX();                                                                 // Check CAN B Receive some data
+
+        if (getCANActive() == 0) {
+          CAN0TX();                                                               // Provide Send data Through CAN Bus A
+        }
+        else {
+          CAN1TX();                                                               // Provide Send data Through CAN Bus A
+        }
+
+        CAN0CLEARTX();                                                                // Check for time out to chang Bus
+        CAN1CLEARTX();
+//      }
+//      else {
+//        try {
+//          JOptionPane.showMessageDialog(null, "No Device Connect", "Error", JOptionPane.WARNING_MESSAGE);
+//          MainFrame.canthreadtxt.setText("sleep");
+//          sleep(100000);
+//        }
+//        catch(Exception e) {}
+//      }
+
+      try
+      {
+//        MainFrame.canthreadtxt.setText("sleep");
+        sleep(1);
+      }
+      catch (InterruptedException e) {}
+    }
+  }
+
+  private void CAN0RX() {
+    if (can.isRX0IF(0))
+      {
+        try
+        {
+          str = "";
+          canbuffer.setID(can.readByte(can.RXB0SIDH, 0) & 0x7f);
+          flag = can.readByte(can.RXB0SIDL, 0);
+          canbuffer.setFlag(flag);
+          datalength = can.readByte(can.RXB0DLC, 0);
+          datalength &= 0x0f;
+          for (int j = 0; j < datalength; j++)
+          {
+            str += (char) (can.readByte(can.RXB0DB0 + j, 0));
+          }
+          canbuffer.setData(str);
+          MainFrame.Rx.setShareData(canbuffer);                                 // Rx is Only one buffer for Receive
+          can.clearRX0IF(0);
+          if (clear == true)
+            MainFrame.status.setText("");
+          if ((canbuffer.getFlag() & 0x80) == 0x00) {
+            clear = true;
+          }
+          else
+            clear = false;
+          str = MainFrame.status.getText();
+          MainFrame.status.setText(str + "CAN0 RX0 ID : " + canbuffer.getID() + " Flag : " + canbuffer.getFlag() + " Data : " + canbuffer.getData() + "\n");
+        }
+        catch (Exception e)
+        {
+          System.out.println("CAN Thread throw : " + e);
+        }
+      }
+      if (can.isRX1IF(0))
+      {
+        try
+        {
+          str = "";
+          canbuffer.setID(can.readByte(can.RXB1SIDH, 0) & 0x7f);
+          flag = can.readByte(can.RXB1SIDL, 0);
+          canbuffer.setFlag(flag);
+          datalength = can.readByte(can.RXB1DLC, 0);
+          datalength &= 0x0f;
+          for (int j = 0; j < datalength; j++)
+          {
+            str += (char) (can.readByte(can.RXB1DB0 + j, 0));
+          }
+          canbuffer.setData(str);
+          MainFrame.Rx.setShareData(canbuffer);                                 // Rx is Only one buffer for Receive
+          can.clearRX1IF(0);
+          if (clear == true)
+            MainFrame.status.setText("");
+          if ((canbuffer.getFlag() & 0x80) == 0x00) {
+            clear = true;
+          }
+          else
+            clear = false;
+          str = MainFrame.status.getText();
+          MainFrame.status.setText(str + "CAN0 RX1 ID : " + canbuffer.getID() + " Flag : " + canbuffer.getFlag() + " Data : " + canbuffer.getData() + "\n");
+        }
+        catch (Exception e)
+        {
+          System.out.println("CAN Thread throw : " + e);
+        }
+      }
+    }
+
+  private void CAN1RX() {
+    if (can.isRX0IF(1))
+      {
+        try
+        {
+          str = "";
+          canbuffer.setID(can.readByte(can.RXB0SIDH, 1) & 0x7f);
+          flag = can.readByte(can.RXB0SIDL, 1);
+          canbuffer.setFlag(flag);
+          datalength = can.readByte(can.RXB0DLC, 1);
+          datalength &= 0x0f;
+          for (int j = 0; j < datalength; j++)
+          {
+            str += (char) (can.readByte(can.RXB0DB0 + j, 1));
+          }
+          canbuffer.setData(str);
+          MainFrame.Rx.setShareData(canbuffer);
+          can.clearRX0IF(1);
+          if (clear == true)
+            MainFrame.status.setText("");
+          if ((canbuffer.getFlag() & 0x80) == 0x00) {
+            clear = true;
+          }
+          else
+            clear = false;
+          str = MainFrame.status.getText();
+          MainFrame.status.setText(str + "CAN1 RX0 ID : " + canbuffer.getID() + " Flag : " + canbuffer.getFlag() + " Data : " + canbuffer.getData() + "\n");
+        }
+        catch (Exception e)
+        {
+          System.out.println("CAN Thread throw : " + e);
+        }
+      }
+      if (can.isRX1IF(1))
+      {
+        try
+        {
+          str = "";
+          canbuffer.setID(can.readByte(can.RXB1SIDH, 1) & 0x7f );
+          flag = can.readByte(can.RXB1SIDL, 1);
+          canbuffer.setFlag(flag);
+          datalength = can.readByte(can.RXB1DLC, 1);
+          datalength &= 0x0f;
+          for (int j = 0; j < datalength; j++)
+          {
+            str += (char) (can.readByte(can.RXB1DB0 + j, 1));
+          }
+          canbuffer.setData(str);
+          MainFrame.Rx.setShareData(canbuffer);
+          can.clearRX1IF(1);
+          if (clear == true)
+            MainFrame.status.setText("");
+          if ((canbuffer.getFlag() & 0x80) == 0x00) {
+            clear = true;
+          }
+          else
+            clear = false;
+          str = MainFrame.status.getText();
+          MainFrame.status.setText(str + "CAN1 RX1 ID : " + canbuffer.getID() + " Flag : " + canbuffer.getFlag() + " Data : " + canbuffer.getData() + "\n");
+        }
+        catch (Exception e)
+        {
+          System.out.println("CAN Thread throw : " + e);
+        }
+      }
+    }
+
+  private void CAN0TX() {
+    if (MainFrame.Tx.readable())                                                // Tx is only one buffer for transmit data
+    {
+      try
+      {
+//        System.out.println("stop time : " + System.currentTimeMillis());
+        str = "";
+        canbuffer = MainFrame.Tx.getShareData();
+        can.writeByte(can.TXB0SIDH, canbuffer.getID(), 0);
+        can.writeByte(can.TXB0SIDL, canbuffer.getFlag(), 0);
+        can.writeByte(can.TXB0DLC, canbuffer.getData().length(), 0);
+        str = canbuffer.getData();
+        for (int a = 0; a < str.length(); a++)
+        {
+          can.writeByte(can.TXB0DB0 + a, (int) str.charAt(a), 0);
+        }
+        can.requestToSend(0x81, 0);
+        Thread.sleep(1);
+        if (clear == true)
+          MainFrame.status.setText("");
+        if ((canbuffer.getFlag() & 0x80) == 0x00) {
+          clear = true;
+        }
+        else
+          clear = false;
+        str = MainFrame.status.getText();
+        MainFrame.status.setText(str + "CAN0 TX0 ID : " + canbuffer.getID() + " Flag : " + canbuffer.getFlag() + " Data : " + canbuffer.getData() + "\n");
+      }
+      catch (Exception e)
+      {
+        System.out.println("CAN Thread throw : " + e);
+      }
+    }
+  }
+
+  private void CAN1TX() {
+    if (MainFrame.Tx.readable())
+    {
+      try
+      {
+        str = "";
+        canbuffer = MainFrame.Tx.getShareData();
+        can.writeByte(can.TXB0SIDH, canbuffer.getID(), 1);
+        can.writeByte(can.TXB0SIDL, canbuffer.getFlag(), 1);
+        can.writeByte(can.TXB0DLC, canbuffer.getData().length(), 1);
+        str = canbuffer.getData();
+
+        for (int a = 0; a < str.length(); a++)
+        {
+          can.writeByte(can.TXB0DB0 + a, (int) str.charAt(a), 1);
+        }
+        can.requestToSend(0x81, 1);
+        Thread.sleep(1);
+        if (clear == true)
+          MainFrame.status.setText("");
+        if ((canbuffer.getFlag() & 0x80) == 0x00) {
+          clear = true;
+        }
+        else
+          clear = false;
+        str = MainFrame.status.getText();
+        MainFrame.status.setText(str + "CAN1 TX0 ID : " + canbuffer.getID() + " Flag : " + canbuffer.getFlag() + " Data : " + canbuffer.getData() + "\n");
+      }
+      catch (Exception e)
+      {
+        System.out.println("CAN Thread throw : " + e);
+      }
+    }
+  }
+
+  private void CAN0CLEARTX() {
+    long starttime = System.currentTimeMillis();
+    long limittime = starttime + 10;                                            // if can't send data within 10 mSec try to another Bus
+
+    if (can.isTX0IF(0)) {
+      can.clearTX0IF(0);                                                        // clear Tx buffer empty flag
+    }
+
+    while ((can.readStatus(0) & 0x04) == 0x04) {
+      starttime = System.currentTimeMillis();
+      if (limittime < starttime) {
+        if (getCANActive() == 0) {
+          setCANActive(1);                                                      // Chang to Bus B
+//          MainFrame.sendstatus.sendStatus(1, 4, 1);                             // Send command
+//          CAN1TX();
+//          MainFrame.sendstatus.sendStatus(2, 4, 1);
+//          CAN1TX();
+          try {
+            MainFrame.Tx.setShareData(canbuffer);
+          }
+          catch(Exception e) {}
+          MainFrame.messagestatus.setText(MainFrame.messagestatus.getText() + "Change Bus to : B\n");
+          can.resetCAN0();
+          can.initCAN0();
+          break;
+        }
+        else {
+          setCANActive(0);                                                      // Chang to Bus A
+//          MainFrame.sendstatus.sendStatus(1, 4, 0);
+//          CAN0TX();
+//          MainFrame.sendstatus.sendStatus(2, 4, 0);
+//          CAN0TX();
+          try {
+            MainFrame.Tx.setShareData(canbuffer);
+          }
+          catch(Exception e) {}
+          MainFrame.messagestatus.setText(MainFrame.messagestatus.getText() + "Change Bus to : A\n");
+          can.resetCAN1();
+          can.initCAN1();
+          break;
+        }
+      }
+    }
+
+    if (can.isTX0IF(0)) {
+      can.clearTX0IF(0);                                                        // clear Tx buffer empty flag
+    }
+  }
+
+  private void CAN1CLEARTX() {
+    long starttime = System.currentTimeMillis();
+    long limittime = starttime + 10;                                            // if can't send data within 10 mSec try to another Bus
+
+    if (can.isTX0IF(1)) {
+      can.clearTX0IF(1);
+    }
+
+    while ((can.readStatus(1) & 0x04) == 0x04) {
+      starttime = System.currentTimeMillis();
+      if (limittime < starttime) {
+        if (getCANActive() == 0) {
+          setCANActive(1);
+//          MainFrame.sendstatus.sendStatus(1, 4, 1);
+//          CAN1TX();
+//          MainFrame.sendstatus.sendStatus(2, 4, 1);
+//          CAN1TX();
+          try {
+            MainFrame.Tx.setShareData(canbuffer);
+          }
+          catch(Exception e) {}
+          MainFrame.messagestatus.setText(MainFrame.messagestatus.getText() + "Change Bus to : B\n");
+          can.resetCAN0();
+          can.initCAN0();
+          break;
+        }
+        else {
+          setCANActive(0);
+//          MainFrame.sendstatus.sendStatus(1, 4, 0);
+//          CAN0TX();
+//          MainFrame.sendstatus.sendStatus(2, 4, 0);
+//          CAN0TX();
+          try {
+            MainFrame.Tx.setShareData(canbuffer);
+          }
+          catch(Exception e) {}
+          MainFrame.messagestatus.setText(MainFrame.messagestatus.getText() + "Change Bus to : A\n");
+          can.resetCAN1();
+          can.initCAN1();
+          break;
+        }
+      }
+    }
+
+    if (can.isTX0IF(1)) {
+      can.clearTX0IF(1);
+    }
+  }
+
+  public static void setCANActive(int busnumber) {
+    CANActive = busnumber;
+  }
+
+  public static int getCANActive() {
+    return CANActive;
+  }
+}

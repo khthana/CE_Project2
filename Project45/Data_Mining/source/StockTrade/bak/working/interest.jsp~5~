@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+<style type="text/css">
+<!--
+A:link { text-decoration: none; color:#0088FF}
+A:active { text-decoration: none}
+A:visited { text-decoration: none; color:#0088FF }
+A:hover {text-decoration: none}
+-->
+</style>
+<style>
+.menulines{
+border:1px solid #ffffff;
+}
+
+.menulines a{
+text-decoration:none;
+color:#0088FF;
+}
+</style>
+
+<script language="JavaScript1.2">
+function borderize(what,color){
+what.style.borderColor=color
+}
+
+function borderize_on(e){
+if (document.all)
+source3=event.srcElement
+else if (document.getElementById)
+source3=e.target
+if (source3.className=="menulines"){
+borderize(source3,"ffff3333" )
+}
+else{
+while(source3.tagName!="TABLE"){
+source3=document.getElementById? source3.parentNode : source3.parentElement
+if (source3.className=="menulines")
+borderize(source3,"#ff3333")
+}
+}
+}
+
+function borderize_off(e){
+if (document.all)
+source4=event.srcElement
+else if (document.getElementById)
+source4=e.target
+if (source4.className=="menulines")
+borderize(source4,"white")
+else{
+while(source4.tagName!="TABLE"){
+source4=document.getElementById? source4.parentNode : source4.parentElement
+if (source4.className=="menulines")
+borderize(source4,"white")
+}
+}
+}
+var rate = 20; // Increase amount(The degree of the transmutation)
+var obj; // The object which event occured in
+var act = 0; // Flag during the action
+var elmH = 0; // Hue
+var elmS = 128; // Saturation
+var elmV = 255; // Value
+var clrOrg; // A color before the change
+var TimerID; // Timer ID
+if (navigator.appName.indexOf("Microsoft",0) != -1 && parseInt(navigator.appVersion) >= 4) {
+Browser = true;
+} else {
+Browser = false;
+}
+if (Browser) {
+document.onmouseover = doRainbowAnchor;
+document.onmouseout = stopRainbowAnchor;
+}
+function doRainbow()
+{
+if (Browser && act != 1) {
+act = 1;
+obj = event.srcElement;
+clrOrg = obj.style.color;
+TimerID = setInterval("ChangeColor()",100);
+}
+}
+function stopRainbow()
+{
+if (Browser && act != 0) {
+obj.style.color = clrOrg;
+clearInterval(TimerID);
+act = 0;
+}
+}
+function doRainbowAnchor()
+{
+if (Browser && act != 1) {
+obj = event.srcElement;
+while (obj.tagName != 'A' && obj.tagName != 'BODY') {
+obj = obj.parentElement;
+if (obj.tagName == 'A' || obj.tagName == 'BODY')
+break;
+}
+if (obj.tagName == 'A' && obj.href != '') {
+act = 1;
+clrOrg = obj.style.color;
+TimerID = setInterval("ChangeColor()",100);
+}
+}
+}
+function stopRainbowAnchor()
+{
+if (Browser && act != 0) {
+if (obj.tagName == 'A') {
+obj.style.color = clrOrg;
+clearInterval(TimerID);
+act = 0;
+}
+}
+}
+function ChangeColor()
+{
+obj.style.color = makeColor();
+}
+function makeColor()
+{
+if (elmS == 0) {
+elmR = elmV; elmG = elmV; elmB = elmV;
+}
+else {
+t1 = elmV;
+t2 = (255 - elmS) * elmV / 255;
+t3 = elmH % 60;
+t3 = (t1 - t2) * t3 / 60;
+if (elmH < 60) {
+elmR = t1; elmB = t2; elmG = t2 + t3;
+}
+else if (elmH < 120) {
+elmG = t1; elmB = t2; elmR = t1 - t3;
+}
+else if (elmH < 180) {
+elmG = t1; elmR = t2; elmB = t2 + t3;
+}
+else if (elmH < 240) {
+elmB = t1; elmR = t2; elmG = t1 - t3;
+}
+else if (elmH < 300) {
+elmB = t1; elmG = t2; elmR = t2 + t3;
+}
+else if (elmH < 360) {
+elmR = t1; elmG = t2; elmB = t1 - t3;
+}
+else {
+elmR = 0; elmG = 0; elmB = 0;
+}
+}
+elmR = Math.floor(elmR);
+elmG = Math.floor(elmG);
+elmB = Math.floor(elmB);
+clrRGB = '#' + elmR.toString(16) + elmG.toString(16) + elmB.toString(16);
+elmH = elmH + rate;
+if (elmH >= 360)
+elmH = 0;
+return clrRGB;
+}
+</script>
+
+</head>
+
+<body>
+<table width="70%" height="90" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="70" colspan="5"><img src="PIC/BarFinal.jpg" width="700" height="70"></td>
+  </tr>
+  <tr bordercolor="#000000" bgcolor="#CCCC99" >
+    <td width="19%" height="20"><div align="center"><a href="Index.jsp" target="_parent"><font face="System">HOME</font></a>
+      </div></td>
+    <td width="18%"><div align="center"><a href="Graphs.jsp" target="_blank">กราฟราคาหุ้น</a></div></td>
+    <td width="22%"><div align="center"><a href="Prediction.jsp" target="_blank">ดูผลการทำนาย</a></div></td>
+    <td width="21%"><div align="center"><a href="Technical.htm" target="_blank">องค์ความรู้</a></div></td>
+    <td width="20%"><div align="center"><a href="about.htm" target="mainFrame"><font face="System">ABOUT
+        US</font></a></div></td>
+  </tr>
+    <%@ page import = "java.sql.*" %>
+<%@ page import = "java.util.Vector" %>
+<%@ page import = "java.math.*" %>
+<%@ page import = "stocktrade.*" %>
+<%
+  Vector buy = new Vector();
+  Vector sell = new Vector();
+  int n =0;
+  try{
+    Vector ngee = new Vector();
+    stocktrade.QueryData qq = new stocktrade.QueryData();
+    qq.qconnect();
+    ngee = qq.getNgee();
+    for( int j=0;j<ngee.size();j++ ){
+      n = qq.getPred( ngee.elementAt(j).toString() );
+      if( n>0 ){
+        buy.addElement( new String( ngee.elementAt(j).toString() ) );
+      }
+      else if( n < 0 ){
+        sell.addElement( new String( ngee.elementAt(j).toString() ) );
+      }
+    }
+    qq.qclose();
+  }
+  catch( Exception e ){
+    System.out.println(e);
+  }
+%>
+<%if( buy !=null ){
+  for( int m=0;m<buy.size();m++ ){
+    out.println("<td>"+buy.elementAt(m).toString()+"</td>");
+  }
+  }
+%>
+</table>
+<p><font color="#000066"><strong>แนะนำหุ้นที่น่าเล่น:</strong></font></p>
+<table width="73%" height="172" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="20">
+<p><font color="#3366FF"><strong>ควรซื้อ:</strong></font></p>
+      </td>
+  </tr>
+  <tr>
+  <%if( buy !=null ){
+  for( int m=0;m<buy.size();m++ ){
+    out.println("<td>"+buy.elementAt(m).toString()+"</td>");
+  }
+  }
+%>
+</tr>
+<tr><td>&nbsp;</td></tr>
+</table>
+<br>
+<table width="73%" height="172" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="20"> <p><font color="#3366FF"><strong>ควรขาย:</strong></font></p></td>
+  </tr>
+  <tr>
+  <%if( sell !=null ){
+  for( int l=0;l<sell.size();l++ ){
+    out.println("<td>"+sell.elementAt(l).toString()+"</td>");
+  }
+  }
+%>
+</tr>
+<tr><td>&nbsp;</td></tr>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>

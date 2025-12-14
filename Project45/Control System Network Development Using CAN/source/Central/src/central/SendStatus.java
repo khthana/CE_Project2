@@ -1,0 +1,38 @@
+package central;
+
+/**
+Provide Method for status frame
+ */
+
+class SendStatus {
+
+  private String str;
+  private int sum;
+  private HighLayerBuffer highbuffer = new HighLayerBuffer();
+
+  public SendStatus() {
+  }
+
+  public void sendStatus(int Module, int Byte1, int Byte2) {
+    try {
+      str = "";
+      sum = 0;
+      sum += Byte1;
+      sum += Byte2;
+      sum ^= 0x0ffff;
+      sum += 1;
+      sum &= 0x0ffff;
+      str += (char) ((int) (sum / 256));
+      str += (char) ((int) (sum % 256));
+      str += (char) Byte1;
+      str += (char) Byte2;
+      highbuffer.setID(Module);
+      highbuffer.setFlag(0x40);
+      highbuffer.setData(str);
+      MainFrame.TBx.setShareData(highbuffer);
+    }
+    catch (Exception e) {
+      System.out.println("Send Status throw : " + e);
+    }
+  }
+}

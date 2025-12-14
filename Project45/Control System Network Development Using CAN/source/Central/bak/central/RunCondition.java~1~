@@ -1,0 +1,45 @@
+package central;
+
+/**
+ * <p>Title: </p>
+ * <p>Description: </p>
+ * <p>Copyright: Copyright (c) 2003</p>
+ * <p>Company: </p>
+ * @author unascribed
+ * @version 1.0
+ */
+
+class RunCondition {
+
+  private boolean run;
+
+  public RunCondition() {
+    run = true;
+  }
+
+  public synchronized void setShareData(boolean condition) {
+    while (!run) {
+      try {
+        wait();                                                                 // wait if buffer is not get yet
+      }
+      catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+    run = false;
+    notify();
+  }
+
+  public synchronized void getShareData() {
+    while (run) {
+      try {
+        wait();                                                                 // wait if buffer is not get yet
+      }
+      catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+    run = true;
+    notify();
+  }
+}

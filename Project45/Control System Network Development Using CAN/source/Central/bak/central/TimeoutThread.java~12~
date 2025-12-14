@@ -1,0 +1,52 @@
+package central;
+
+/**
+ Thread that provide time for assume packet lost
+ */
+
+class TimeoutThread extends Thread {
+
+  private int seqnumber;
+  private int timeout;
+  private int nodenumber;
+  private int flag;
+
+  public TimeoutThread(String s, int sequence, int timeoutarg, int nodenumberarg, int flagarg) {
+    super(s);
+    seqnumber = sequence;
+    timeout = timeoutarg;
+    nodenumber = nodenumberarg;
+    flag = flagarg;
+  }
+
+  public int getSequence() {
+    return seqnumber;
+  }
+
+  public void setSequencr(int sequence) {
+    seqnumber = sequence;
+  }
+
+  public int getNodeNumber() {
+    return nodenumber;
+  }
+
+  public int getFlag() {
+    return flag;
+  }
+
+  public void run() {
+    try {
+      sleep(timeout);
+    }
+    catch (InterruptedException e) {
+      System.out.println(e);
+      e.printStackTrace();
+    }
+    if ( (seqnumber != -1)) {
+      MainFrame.messagestatus.setText(MainFrame.messagestatus.getText() + "Lost Acknowledge from Module " + nodenumber + " number : " + seqnumber + "\n");
+      seqnumber = -1;
+      MainFrame.database.GenCodeWithStatus(nodenumber, "Lost");
+    }
+  }
+}

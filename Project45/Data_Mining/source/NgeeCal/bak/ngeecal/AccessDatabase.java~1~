@@ -1,0 +1,19 @@
+package ngeecal;
+
+
+import java.sql.*;
+import java.util.Date;
+import java.util.Vector;
+
+public interface AccessDatabase {
+
+  // refer get ResultSet find data for make ema
+  public ResultSet findEma( String stock_code,String dmax,String dmin )
+      throws DataException;
+  // refer update ema of data
+  public boolean updateEma( String day_trade, String stock_code,
+                           float ema9, float ema12, float ema25,
+                           float ema75, float ema200,float macd,float sig )
+      throws DataException;
+}
+

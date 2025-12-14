@@ -1,0 +1,871 @@
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   1
+robot_2.asm                                     
+
+     0000              1	        ORG 0000H        
+     6800=             2	        Port1A EQU 06800H
+     6801=             3	        Port1B EQU 06801H
+     6802=             4	        Port1C EQU 06802H
+     A800=             5	        Port2A EQU 0A800H
+     A801=             6	        Port2B EQU 0A801H
+     A802=             7	        Port2C EQU 0A802H
+     C800=             8	        Port3A EQU 0C800H
+     C801=             9	        Port3B EQU 0C801H
+     C802=            10	        Port3C EQU 0C802H
+     00A4=            11	        ST_ADC EQU P2.4
+     00A3=            12	        OUT_EN EQU P2.3
+     0060=            13	        D_Buff EQU 60H
+                      14	
+                      15	;****** Main Program *********************
+     0000 7400        16	START:  MOV A,#00H
+     0002 1203EF      17	        CALL RD_SEN
+     0005 F560        18	        MOV 60H,A
+                      19	
+     0007 7401        20	        MOV A,#01H
+     0009 1203EF      21	        CALL RD_SEN
+     000C F561        22	        MOV 61H,A
+                      23	
+     000E 7402        24	        MOV A,#02H
+     0010 1203EF      25	        CALL RD_SEN
+     0013 F562        26	        MOV 62H,A
+                      27	
+     0015 7403        28	        MOV A,#03H
+     0017 1203EF      29	        CALL RD_SEN
+     001A F563        30	        MOV 63H,A
+                      31	
+     001C 7404        32	        MOV A,#04H
+     001E 1203EF      33	        CALL RD_SEN
+     0021 F564        34	        MOV 64H,A
+                      35	
+     0023 7405        36	        MOV A,#05H
+     0025 1203EF      37	        CALL RD_SEN
+     0028 F565        38	        MOV 65H,A
+                      39	
+     002A 7406        40	        MOV A,#06H
+     002C 1203EF      41	        CALL RD_SEN
+     002F F566        42	        MOV 66H,A
+                      43	
+     0031 7407        44	        MOV A,#07H
+     0033 1203EF      45	        CALL RD_SEN
+     0036 F567        46	        MOV 67H,A
+                      47	
+     0038 7408        48	        MOV A,#08H
+     003A 1203EF      49	        CALL RD_SEN
+     003D F568        50	        MOV 68H,A
+                      51	
+     003F 7409        52	        MOV A,#09H
+     0041 1203EF      53	        CALL RD_SEN
+     0044 F569        54	        MOV 69H,A
+                      55	
+     0046 740A        56	        MOV A,#0AH
+     0048 1203EF      57	        CALL RD_SEN
+     004B F56A        58	        MOV 6AH,A
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   2
+robot_2.asm                                     
+
+                      59	
+     004D 740B        60	        MOV A,#0BH
+     004F 1203EF      61	        CALL RD_SEN
+     0052 F56B        62	        MOV 6BH,A
+                      63	
+     0054 740C        64	        MOV A,#0CH
+     0056 1203EF      65	        CALL RD_SEN
+     0059 F56C        66	        MOV 6CH,A
+                      67	
+     005B 740D        68	        MOV A,#0DH
+     005D 1203EF      69	        CALL RD_SEN
+     0060 F56D        70	        MOV 6DH,A
+                      71	
+     0062 740E        72	        MOV A,#0EH
+     0064 1203EF      73	        CALL RD_SEN
+     0067 F56E        74	        MOV 6EH,A
+                      75	
+     0069 740F        76	        MOV A,#0FH
+     006B 1203EF      77	        CALL RD_SEN
+     006E F56F        78	        MOV 6FH,A
+                      79	
+     0070 7400        80	MAIN_0: MOV A,#00H
+     0072 1203EF      81	        CALL RD_SEN
+     0075 EB          82	        MOV A,R3
+     0076 B56003      83	        CJNE A,60H,COMP_0
+     0079 020084      84	        JMP MAIN_1 
+     007C 4003        85	COMP_0: JC J_MR0
+     007E 02019D      86	        JMP ML0
+     0081 020187      87	J_MR0:  JMP MR0
+                      88	
+     0084 7401        89	MAIN_1: MOV A,#01H
+     0086 1203EF      90	        CALL RD_SEN
+     0089 EB          91	        MOV A,R3
+     008A B56103      92	        CJNE A,61H,COMP_1
+     008D 020098      93	        JMP MAIN_2 
+     0090 4003        94	COMP_1: JC J_MR1
+     0092 0201C9      95	        JMP ML1
+     0095 0201B3      96	J_MR1:  JMP MR1
+                      97	
+                      98	
+     0098 7402        99	MAIN_2: MOV A,#02H
+     009A 1203EF     100	        CALL RD_SEN
+     009D EB         101	        MOV A,R3
+     009E B56203     102	        CJNE A,62H,COMP_2
+     00A1 0200AC     103	        JMP MAIN_3 
+     00A4 4003       104	COMP_2: JC J_MR2
+     00A6 0201F5     105	        JMP ML2
+     00A9 0201DF     106	J_MR2:  JMP MR2
+                     107	
+     00AC 7403       108	MAIN_3: MOV A,#03H
+     00AE 1203EF     109	        CALL RD_SEN
+     00B1 EB         110	        MOV A,R3
+     00B2 B56303     111	        CJNE A,63H,COMP_3
+     00B5 0200C0     112	        JMP MAIN_4 
+     00B8 4003       113	COMP_3: JC J_MR3
+     00BA 020221     114	        JMP ML3
+     00BD 02020B     115	J_MR3:  JMP MR3
+                     116	
+     00C0 7404       117	MAIN_4: MOV A,#04H
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   3
+robot_2.asm                                     
+
+     00C2 1203EF     118	        CALL RD_SEN
+     00C5 EB         119	        MOV A,R3
+     00C6 B56403     120	        CJNE A,64H,COMP_4
+     00C9 0200D4     121	        JMP MAIN_5 
+     00CC 4003       122	COMP_4: JC J_MR4
+     00CE 02024D     123	        JMP ML4
+     00D1 020237     124	J_MR4:  JMP MR4
+                     125	
+     00D4 7405       126	MAIN_5: MOV A,#05H
+     00D6 1203EF     127	        CALL RD_SEN
+     00D9 EB         128	        MOV A,R3
+     00DA B56503     129	        CJNE A,65H,COMP_5
+     00DD 0200E8     130	        JMP MAIN_6 
+     00E0 4003       131	COMP_5: JC J_MR5
+     00E2 020279     132	        JMP ML5
+     00E5 020263     133	J_MR5:  JMP MR5
+                     134	
+     00E8 7406       135	MAIN_6: MOV A,#06H
+     00EA 1203EF     136	        CALL RD_SEN
+     00ED EB         137	        MOV A,R3
+     00EE B56603     138	        CJNE A,66H,COMP_6
+     00F1 0200FC     139	        JMP MAIN_7 
+     00F4 4003       140	COMP_6: JC J_MR6
+     00F6 0202A5     141	        JMP ML6
+     00F9 02028F     142	J_MR6:  JMP MR6
+                     143	
+     00FC 7407       144	MAIN_7: MOV A,#07H
+     00FE 1203EF     145	        CALL RD_SEN
+     0101 EB         146	        MOV A,R3
+     0102 B56703     147	        CJNE A,67H,COMP_7
+     0105 020110     148	        JMP MAIN_8 
+     0108 4003       149	COMP_7: JC J_MR7
+     010A 0202D1     150	        JMP ML7
+     010D 0202BB     151	J_MR7:  JMP MR7
+                     152	
+     0110 7408       153	MAIN_8: MOV A,#08H
+     0112 1203EF     154	        CALL RD_SEN
+     0115 EB         155	        MOV A,R3
+     0116 B56803     156	        CJNE A,68H,COMP_8
+     0119 020124     157	        JMP MAIN_9 
+     011C 4003       158	COMP_8: JC J_MR8
+     011E 0202FD     159	        JMP ML8
+     0121 0202E7     160	J_MR8:  JMP MR8
+                     161	
+     0124 7409       162	MAIN_9: MOV A,#09H
+     0126 1203EF     163	        CALL RD_SEN
+     0129 EB         164	        MOV A,R3
+     012A B56903     165	        CJNE A,69H,COMP_9
+     012D 020138     166	        JMP MAIN_A 
+     0130 4003       167	COMP_9: JC J_MR9
+     0132 020329     168	        JMP ML9
+     0135 020313     169	J_MR9:  JMP MR9
+                     170	
+     0138 740A       171	MAIN_A: MOV A,#0AH
+     013A 1203EF     172	        CALL RD_SEN
+     013D EB         173	        MOV A,R3
+     013E B56A03     174	        CJNE A,6AH,COMP_A
+     0141 02014C     175	        JMP MAIN_B 
+     0144 4003       176	COMP_A: JC J_MRA
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   4
+robot_2.asm                                     
+
+     0146 020355     177	        JMP MLA
+     0149 02033F     178	J_MRA:  JMP MRA
+                     179	
+     014C 740B       180	MAIN_B: MOV A,#0BH
+     014E 1203EF     181	        CALL RD_SEN
+     0151 EB         182	        MOV A,R3
+     0152 B56B03     183	        CJNE A,6BH,COMP_B
+     0155 020160     184	        JMP MAIN_D
+     0158 4003       185	COMP_B: JC J_MRB
+     015A 020381     186	        JMP MLB
+     015D 02036B     187	J_MRB:  JMP MRB
+                     188	
+                     189	;MAIN_C: MOV A,#0CH
+                     190	;        CALL RD_SEN
+                     191	;        MOV A,R3
+                     192	;        CJNE A,6CH,COMP_C
+                     193	;        JMP MAIN_D 
+                     194	;COMP_C: JC J_MRC
+                     195	;        JMP MLC
+                     196	;J_MRC:  JMP MRC
+                     197	
+     0160 740D       198	MAIN_D: MOV A,#0DH
+     0162 1203EF     199	        CALL RD_SEN
+     0165 EB         200	        MOV A,R3
+     0166 B56D03     201	        CJNE A,6DH,COMP_D
+     0169 020174     202	        JMP MAIN_E 
+     016C 4003       203	COMP_D: JC J_MRD
+     016E 0203AD     204	        JMP MLD
+     0171 020397     205	J_MRD:  JMP MRD
+                     206	
+     0174 740E       207	MAIN_E: MOV A,#0EH
+     0176 1203EF     208	        CALL RD_SEN
+     0179 EB         209	        MOV A,R3
+     017A B56E02     210	        CJNE A,6EH,COMP_E
+     017D 0170       211	        JMP MAIN_0 
+     017F 4003       212	COMP_E: JC J_MRE
+     0181 0203D9     213	        JMP MLE
+     0184 0203C3     214	J_MRE:  JMP MRE
+                     215	
+                     216	;------ Drive 1st motor --------
+     0187 906800     217	MR0:    MOV DPTR,#Port1A
+     018A C3         218	        CLR C          
+     018B E560       219	        MOV A,60H
+     018D 9B         220	        SUBB A,R3
+     018E FF         221	        MOV R7,A
+     018F 7E0A       222	MR0_1:  MOV R6,#0AH
+     0191 120409     223	MR0_2:  CALL DRV_R1
+     0194 DEFB       224	        DJNZ R6,MR0_2
+     0196 DFF7       225	        DJNZ R7,MR0_1
+     0198 EB         226	        MOV A,R3
+     0199 F560       227	        MOV 60H,A
+     019B 0184       228	        JMP MAIN_1
+                     229	
+     019D 906800     230	ML0:    MOV DPTR,#Port1A
+     01A0 C3         231	        CLR C
+     01A1 EB         232	        MOV A,R3
+     01A2 9560       233	        SUBB A,60H
+     01A4 FF         234	        MOV R7,A
+     01A5 7E0A       235	ML0_1:  MOV R6,#0AH
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   5
+robot_2.asm                                     
+
+     01A7 12043A     236	ML0_2:  CALL DRV_L1
+     01AA DEFB       237	        DJNZ R6,ML0_2
+     01AC DFF7       238	        DJNZ R7,ML0_1
+     01AE EB         239	        MOV A,R3
+     01AF F560       240	        MOV 60H,A
+     01B1 0184       241	        JMP MAIN_1
+                     242	
+                     243	;------ Drive 2nd motor --------
+     01B3 906801     244	MR1:    MOV DPTR,#Port1B
+     01B6 C3         245	        CLR C
+     01B7 E561       246	        MOV A,61H
+     01B9 9B         247	        SUBB A,R3
+     01BA FF         248	        MOV R7,A
+     01BB 7E0A       249	MR1_1:  MOV R6,#0AH
+     01BD 120409     250	MR1_2:  CALL DRV_R1
+     01C0 DEFB       251	        DJNZ R6,MR1_2
+     01C2 DFF7       252	        DJNZ R7,MR1_1
+     01C4 EB         253	        MOV A,R3
+     01C5 F561       254	        MOV 61H,A
+     01C7 0198       255	        JMP MAIN_2
+                     256	
+     01C9 906801     257	ML1:    MOV DPTR,#Port1B
+     01CC C3         258	        CLR C
+     01CD EB         259	        MOV A,R3
+     01CE 9561       260	        SUBB A,61H
+     01D0 FF         261	        MOV R7,A
+     01D1 7E0A       262	ML1_1:  MOV R6,#0AH
+     01D3 12043A     263	ML1_2:  CALL DRV_L1
+     01D6 DEFB       264	        DJNZ R6,ML1_2
+     01D8 DFF7       265	        DJNZ R7,ML1_1
+     01DA EB         266	        MOV A,R3
+     01DB F561       267	        MOV 61H,A
+     01DD 0198       268	        JMP MAIN_2
+                     269	
+                     270	;------ Drive 3rd motor --------
+     01DF 906801     271	MR2:    MOV DPTR,#Port1B
+     01E2 C3         272	        CLR C
+     01E3 E562       273	        MOV A,62H
+     01E5 9B         274	        SUBB A,R3
+     01E6 FF         275	        MOV R7,A
+     01E7 7E0F       276	MR2_1:  MOV R6,#0FH
+     01E9 12046B     277	MR2_2:  CALL DRV_R2
+     01EC DEFB       278	        DJNZ R6,MR2_2
+     01EE DFF7       279	        DJNZ R7,MR2_1
+     01F0 EB         280	        MOV A,R3
+     01F1 F562       281	        MOV 62H,A
+     01F3 01AC       282	        JMP MAIN_3
+                     283	
+     01F5 906801     284	ML2:    MOV DPTR,#Port1B
+     01F8 C3         285	        CLR C
+     01F9 EB         286	        MOV A,R3
+     01FA 9562       287	        SUBB A,62H
+     01FC FF         288	        MOV R7,A
+     01FD 7E0F       289	ML2_1:  MOV R6,#0FH
+     01FF 12049C     290	ML2_2:  CALL DRV_L2
+     0202 DEFB       291	        DJNZ R6,ML2_2
+     0204 DFF7       292	        DJNZ R7,ML2_1
+     0206 EB         293	        MOV A,R3
+     0207 F562       294	        MOV 62H,A
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   6
+robot_2.asm                                     
+
+     0209 01AC       295	        JMP MAIN_3
+                     296	
+                     297	;------ Drive 4th motor --------
+     020B 906802     298	MR3:    MOV DPTR,#Port1C
+     020E C3         299	        CLR C
+     020F E563       300	        MOV A,63H
+     0211 9B         301	        SUBB A,R3
+     0212 FF         302	        MOV R7,A
+     0213 7E08       303	MR3_1:  MOV R6,#08H
+     0215 120409     304	MR3_2:  CALL DRV_R1
+     0218 DEFB       305	        DJNZ R6,MR3_2
+     021A DFF7       306	        DJNZ R7,MR3_1
+     021C EB         307	        MOV A,R3
+     021D F563       308	        MOV 63H,A
+     021F 01C0       309	        JMP MAIN_4
+                     310	
+     0221 906802     311	ML3:    MOV DPTR,#Port1C
+     0224 C3         312	        CLR C
+     0225 EB         313	        MOV A,R3
+     0226 9563       314	        SUBB A,63H
+     0228 FF         315	        MOV R7,A
+     0229 7E08       316	ML3_1:  MOV R6,#08H
+     022B 12043A     317	ML3_2:  CALL DRV_L1
+     022E DEFB       318	        DJNZ R6,ML3_2
+     0230 DFF7       319	        DJNZ R7,ML3_1
+     0232 EB         320	        MOV A,R3
+     0233 F563       321	        MOV 63H,A
+     0235 01C0       322	        JMP MAIN_4
+                     323	
+                     324	;------ Drive 5th motor --------
+     0237 90A800     325	MR4:    MOV DPTR,#Port2A
+     023A C3         326	        CLR C
+     023B E564       327	        MOV A,64H
+     023D 9B         328	        SUBB A,R3
+     023E FF         329	        MOV R7,A
+     023F 7E08       330	MR4_1:  MOV R6,#08H
+     0241 120409     331	MR4_2:  CALL DRV_R1
+     0244 DEFB       332	        DJNZ R6,MR4_2
+     0246 DFF7       333	        DJNZ R7,MR4_1
+     0248 EB         334	        MOV A,R3
+     0249 F564       335	        MOV 64H,A
+     024B 01D4       336	        JMP MAIN_5
+                     337	
+     024D 90A800     338	ML4:    MOV DPTR,#Port2A
+     0250 C3         339	        CLR C
+     0251 EB         340	        MOV A,R3
+     0252 9564       341	        SUBB A,64H
+     0254 FF         342	        MOV R7,A
+     0255 7E08       343	ML4_1:  MOV R6,#08H
+     0257 12043A     344	ML4_2:  CALL DRV_L1
+     025A DEFB       345	        DJNZ R6,ML4_2
+     025C DFF7       346	        DJNZ R7,ML4_1
+     025E EB         347	        MOV A,R3
+     025F F564       348	        MOV 64H,A
+     0261 01D4       349	        JMP MAIN_5
+                     350	
+                     351	;------ Drive 6th motor --------
+     0263 90A800     352	MR5:    MOV DPTR,#Port2A
+     0266 C3         353	        CLR C
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   7
+robot_2.asm                                     
+
+     0267 E565       354	        MOV A,65H
+     0269 9B         355	        SUBB A,R3
+     026A FF         356	        MOV R7,A
+     026B 7E0A       357	MR5_1:  MOV R6,#0AH
+     026D 12046B     358	MR5_2:  CALL DRV_R2
+     0270 DEFB       359	        DJNZ R6,MR5_2
+     0272 DFF7       360	        DJNZ R7,MR5_1
+     0274 EB         361	        MOV A,R3
+     0275 F565       362	        MOV 65H,A
+     0277 01E8       363	        JMP MAIN_6
+                     364	
+     0279 90A800     365	ML5:    MOV DPTR,#Port2A
+     027C C3         366	        CLR C
+     027D EB         367	        MOV A,R3
+     027E 9565       368	        SUBB A,65H
+     0280 FF         369	        MOV R7,A
+     0281 7E0A       370	ML5_1:  MOV R6,#0AH
+     0283 12049C     371	ML5_2:  CALL DRV_L2
+     0286 DEFB       372	        DJNZ R6,ML5_2
+     0288 DFF7       373	        DJNZ R7,ML5_1
+     028A EB         374	        MOV A,R3
+     028B F565       375	        MOV 65H,A
+     028D 01E8       376	        JMP MAIN_6
+                     377	
+                     378	;------ Drive 7th motor --------
+     028F 90A801     379	MR6:    MOV DPTR,#Port2B
+     0292 C3         380	        CLR C
+     0293 E566       381	        MOV A,66H
+     0295 9B         382	        SUBB A,R3
+     0296 FF         383	        MOV R7,A
+     0297 7E08       384	MR6_1:  MOV R6,#08H
+     0299 120409     385	MR6_2:  CALL DRV_R1
+     029C DEFB       386	        DJNZ R6,MR6_2
+     029E DFF7       387	        DJNZ R7,MR6_1
+     02A0 EB         388	        MOV A,R3
+     02A1 F566       389	        MOV 66H,A
+     02A3 01FC       390	        JMP MAIN_7
+                     391	
+     02A5 90A801     392	ML6:    MOV DPTR,#Port2B
+     02A8 C3         393	        CLR C
+     02A9 EB         394	        MOV A,R3
+     02AA 9566       395	        SUBB A,66H
+     02AC FF         396	        MOV R7,A
+     02AD 7E08       397	ML6_1:  MOV R6,#08H
+     02AF 12043A     398	ML6_2:  CALL DRV_L1
+     02B2 DEFB       399	        DJNZ R6,ML6_2
+     02B4 DFF7       400	        DJNZ R7,ML6_1
+     02B6 EB         401	        MOV A,R3
+     02B7 F566       402	        MOV 66H,A
+     02B9 01FC       403	        JMP MAIN_7
+                     404	
+                     405	;------ Drive 8th motor --------
+     02BB 90A801     406	MR7:    MOV DPTR,#Port2B
+     02BE C3         407	        CLR C
+     02BF E567       408	        MOV A,67H
+     02C1 9B         409	        SUBB A,R3
+     02C2 FF         410	        MOV R7,A
+     02C3 7E08       411	MR7_1:  MOV R6,#08H
+     02C5 12046B     412	MR7_2:  CALL DRV_R2
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   8
+robot_2.asm                                     
+
+     02C8 DEFB       413	        DJNZ R6,MR7_2
+     02CA DFF7       414	        DJNZ R7,MR7_1
+     02CC EB         415	        MOV A,R3
+     02CD F567       416	        MOV 67H,A
+     02CF 2110       417	        JMP MAIN_8
+                     418	
+     02D1 90A801     419	ML7:    MOV DPTR,#Port2B
+     02D4 C3         420	        CLR C
+     02D5 EB         421	        MOV A,R3
+     02D6 9567       422	        SUBB A,67H
+     02D8 FF         423	        MOV R7,A
+     02D9 7E08       424	ML7_1:  MOV R6,#08H
+     02DB 12049C     425	ML7_2:  CALL DRV_L2
+     02DE DEFB       426	        DJNZ R6,ML7_2
+     02E0 DFF7       427	        DJNZ R7,ML7_1
+     02E2 EB         428	        MOV A,R3
+     02E3 F567       429	        MOV 67H,A
+     02E5 2110       430	        JMP MAIN_8
+                     431	
+                     432	;------ Drive 9th motor --------
+     02E7 90A802     433	MR8:    MOV DPTR,#Port2C
+     02EA C3         434	        CLR C
+     02EB E568       435	        MOV A,68H
+     02ED 9B         436	        SUBB A,R3
+     02EE FF         437	        MOV R7,A
+     02EF 7E0A       438	MR8_1:  MOV R6,#0AH
+     02F1 120409     439	MR8_2:  CALL DRV_R1
+     02F4 DEFB       440	        DJNZ R6,MR8_2
+     02F6 DFF7       441	        DJNZ R7,MR8_1
+     02F8 EB         442	        MOV A,R3
+     02F9 F568       443	        MOV 68H,A
+     02FB 2124       444	        JMP MAIN_9
+                     445	
+     02FD 90A802     446	ML8:    MOV DPTR,#Port2C
+     0300 C3         447	        CLR C
+     0301 EB         448	        MOV A,R3
+     0302 9568       449	        SUBB A,68H
+     0304 FF         450	        MOV R7,A
+     0305 7E0A       451	ML8_1:  MOV R6,#0AH
+     0307 12049C     452	ML8_2:  CALL DRV_L2
+     030A DEFB       453	        DJNZ R6,ML8_2
+     030C DFF7       454	        DJNZ R7,ML8_1
+     030E EB         455	        MOV A,R3
+     030F F568       456	        MOV 68H,A
+     0311 2124       457	        JMP MAIN_9
+                     458	
+                     459	;------ Drive 10th motor --------
+     0313 90C800     460	MR9:    MOV DPTR,#Port3A
+     0316 C3         461	        CLR C
+     0317 E569       462	        MOV A,69H
+     0319 9B         463	        SUBB A,R3
+     031A FF         464	        MOV R7,A
+     031B 7E08       465	MR9_1:  MOV R6,#08H
+     031D 120409     466	MR9_2:  CALL DRV_R1
+     0320 DEFB       467	        DJNZ R6,MR9_2
+     0322 DFF7       468	        DJNZ R7,MR9_1
+     0324 EB         469	        MOV A,R3
+     0325 F569       470	        MOV 69H,A
+     0327 2138       471	        JMP MAIN_A
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   9
+robot_2.asm                                     
+
+                     472	
+     0329 90C800     473	ML9:    MOV DPTR,#Port3A
+     032C C3         474	        CLR C
+     032D EB         475	        MOV A,R3
+     032E 9569       476	        SUBB A,69H
+     0330 FF         477	        MOV R7,A
+     0331 7E08       478	ML9_1:  MOV R6,#08H
+     0333 12043A     479	ML9_2:  CALL DRV_L1
+     0336 DEFB       480	        DJNZ R6,ML9_2
+     0338 DFF7       481	        DJNZ R7,ML9_1
+     033A EB         482	        MOV A,R3
+     033B F569       483	        MOV 69H,A
+     033D 2138       484	        JMP MAIN_A
+                     485	
+                     486	;------ Drive 11th motor --------
+     033F 90C800     487	MRA:    MOV DPTR,#Port3A
+     0342 C3         488	        CLR C
+     0343 E56A       489	        MOV A,6AH
+     0345 9B         490	        SUBB A,R3
+     0346 FF         491	        MOV R7,A
+     0347 7E08       492	MRA_1:  MOV R6,#08H
+     0349 12046B     493	MRA_2:  CALL DRV_R2
+     034C DEFB       494	        DJNZ R6,MRA_2
+     034E DFF7       495	        DJNZ R7,MRA_1
+     0350 EB         496	        MOV A,R3
+     0351 F56A       497	        MOV 6AH,A
+     0353 214C       498	        JMP MAIN_B
+                     499	
+     0355 90C800     500	MLA:    MOV DPTR,#Port3A
+     0358 C3         501	        CLR C
+     0359 EB         502	        MOV A,R3
+     035A 956A       503	        SUBB A,6AH
+     035C FF         504	        MOV R7,A
+     035D 7E08       505	MLA_1:  MOV R6,#08H
+     035F 12049C     506	MLA_2:  CALL DRV_L2
+     0362 DEFB       507	        DJNZ R6,MLA_2
+     0364 DFF7       508	        DJNZ R7,MLA_1
+     0366 EB         509	        MOV A,R3
+     0367 F56A       510	        MOV 6AH,A
+     0369 214C       511	        JMP MAIN_B
+                     512	
+                     513	;------ Drive 12th motor --------
+     036B 90C801     514	MRB:    MOV DPTR,#Port3B
+     036E C3         515	        CLR C
+     036F E56B       516	        MOV A,6BH
+     0371 9B         517	        SUBB A,R3
+     0372 FF         518	        MOV R7,A
+     0373 7E0A       519	MRB_1:  MOV R6,#0AH
+     0375 120409     520	MRB_2:  CALL DRV_R1
+     0378 DEFB       521	        DJNZ R6,MRB_2
+     037A DFF7       522	        DJNZ R7,MRB_1
+     037C EB         523	        MOV A,R3
+     037D F56B       524	        MOV 6BH,A
+     037F 2160       525	        JMP MAIN_D
+                     526	
+     0381 90C801     527	MLB:    MOV DPTR,#Port3B
+     0384 C3         528	        CLR C
+     0385 EB         529	        MOV A,R3
+     0386 956B       530	        SUBB A,6BH
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page  10
+robot_2.asm                                     
+
+     0388 FF         531	        MOV R7,A
+     0389 7E0A       532	MLB_1:  MOV R6,#0AH
+     038B 12043A     533	MLB_2:  CALL DRV_L1
+     038E DEFB       534	        DJNZ R6,MLB_2
+     0390 DFF7       535	        DJNZ R7,MLB_1
+     0392 EB         536	        MOV A,R3
+     0393 F56B       537	        MOV 6BH,A
+     0395 2160       538	        JMP MAIN_D
+                     539	
+                     540	;------ Drive 13th motor --------
+                     541	;MRC:    MOV DPTR,#Port3B
+                     542	;        CLR C
+                     543	;        MOV A,6CH
+                     544	;        SUBB A,R3
+                     545	;        MOV R7,A
+                     546	;MRC_1:  MOV R6,#08H
+                     547	;MRC_2:  CALL DRV_R1
+                     548	;        DJNZ R6,MRC_2
+                     549	;        DJNZ R7,MRC_1
+                     550	;        MOV A,R3
+                     551	;        MOV 6CH,A
+                     552	;        JMP MAIN_D
+                     553	;
+                     554	;MLC:    MOV DPTR,#Port3B
+                     555	;        CLR C
+                     556	;        MOV A,R3
+                     557	;        SUBB A,6CH
+                     558	;        MOV R7,A
+                     559	;MLC_1:  MOV R6,#08H
+                     560	;MLC_2:  CALL DRV_L1
+                     561	;        DJNZ R6,MLC_2
+                     562	;        DJNZ R7,MLC_1
+                     563	;        MOV A,R3
+                     564	;        MOV 6CH,A
+                     565	;        JMP MAIN_D
+                     566	;
+                     567	;------ Drive 14th motor --------
+     0397 90C801     568	MRD:    MOV DPTR,#Port3B
+     039A C3         569	        CLR C
+     039B E56D       570	        MOV A,6DH
+     039D 9B         571	        SUBB A,R3
+     039E FF         572	        MOV R7,A
+     039F 7E08       573	MRD_1:  MOV R6,#08H
+     03A1 12046B     574	MRD_2:  CALL DRV_R2
+     03A4 DEFB       575	        DJNZ R6,MRD_2
+     03A6 DFF7       576	        DJNZ R7,MRD_1
+     03A8 EB         577	        MOV A,R3
+     03A9 F56D       578	        MOV 6DH,A
+     03AB 2174       579	        JMP MAIN_E
+                     580	
+     03AD 90C801     581	MLD:    MOV DPTR,#Port3B
+     03B0 C3         582	        CLR C
+     03B1 EB         583	        MOV A,R3
+     03B2 956D       584	        SUBB A,6DH
+     03B4 FF         585	        MOV R7,A
+     03B5 7E08       586	MLD_1:  MOV R6,#08H
+     03B7 12049C     587	MLD_2:  CALL DRV_L2
+     03BA DEFB       588	        DJNZ R6,MLD_2
+     03BC DFF7       589	        DJNZ R7,MLD_1
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page  11
+robot_2.asm                                     
+
+     03BE EB         590	        MOV A,R3
+     03BF F56D       591	        MOV 6DH,A
+     03C1 2174       592	        JMP MAIN_E
+                     593	
+                     594	;------ Drive 15th motor --------
+                     595	;MRE:    MOV DPTR,#Port3B
+                     596	;        CLR C
+                     597	;        MOV A,6EH
+                     598	;        SUBB A,R3
+                     599	;        MOV R7,A
+                     600	;MRE_1:  MOV R6,#0AH
+                     601	;MRE_2:  CALL DRV_R1
+                     602	;        DJNZ R6,MRE_2
+                     603	;        DJNZ R7,MRE_1
+                     604	;        MOV A,R3
+                     605	;        MOV 6EH,A
+                     606	;        JMP MAIN_F
+                     607	;
+                     608	;MLE:    MOV DPTR,#Port3B
+                     609	;        CLR C
+                     610	;        MOV A,R3
+                     611	;        SUBB A,6EH
+                     612	;        MOV R7,A
+                     613	;MLE_1:  MOV R6,#0AH
+                     614	;MLE_2:  CALL DRV_L1
+                     615	;        DJNZ R6,MLE_2
+                     616	;        DJNZ R7,MLE_1
+                     617	;        MOV A,R3
+                     618	;        MOV 6EH,A
+                     619	;        JMP MAIN_F
+                     620	;
+                     621	;------ Drive 16th motor --------
+     03C3 906800     622	MRE:    MOV DPTR,#Port1A
+     03C6 C3         623	        CLR C
+     03C7 E56E       624	        MOV A,6EH
+     03C9 9B         625	        SUBB A,R3
+     03CA 75F00F     626	        MOV B,#0FH
+     03CD 84         627	        DIV AB
+     03CE FF         628	        MOV R7,A
+     03CF 120409     629	MRE_1:  CALL DRV_R1
+     03D2 DFFB       630	        DJNZ R7,MRE_1
+     03D4 EB         631	        MOV A,R3
+     03D5 F56E       632	        MOV 6EH,A
+     03D7 0170       633	        JMP MAIN_0
+                     634	
+     03D9 906800     635	MLE:    MOV DPTR,#Port1A
+     03DC C3         636	        CLR C
+     03DD EB         637	        MOV A,R3
+     03DE 956E       638	        SUBB A,6EH
+     03E0 75F00F     639	        MOV B,#0FH
+     03E3 84         640	        DIV AB
+     03E4 FF         641	        MOV R7,A
+     03E5 12043A     642	MLF_1:  CALL DRV_L1
+     03E8 DFFB       643	        DJNZ R7,MLF_1
+     03EA EB         644	        MOV A,R3
+     03EB F56F       645	        MOV 6FH,A
+     03ED 0170       646	        JMP MAIN_0
+                     647	
+                     648	;****** Read Sensor ****************
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page  12
+robot_2.asm                                     
+
+     03EF 90C802     649	RD_SEN: MOV DPTR,#Port3C
+                     650	        ;MOV A,#00H
+     03F2 F0         651	        MOVX @DPTR,A
+     03F3 D2A4       652	        SETB ST_ADC
+     03F5 C2A4       653	        CLR ST_ADC
+     03F7 D2A3       654	        SETB OUT_EN
+     03F9 120400     655	        CALL DLAY
+     03FC AB90       656	        MOV R3,P1
+     03FE EB         657	        MOV A,R3
+     03FF 22         658	        RET
+                     659	
+                     660	;**********DELAY SENSOR**********
+     0400 78F0       661	DLAY:   MOV R0,#0F0H                    
+     0402 7902       662	DLAY2:  MOV R1,#02H                    
+     0404 D9FE       663	DLAY1:  DJNZ R1,DLAY1
+     0406 D8FA       664	        DJNZ R0,DLAY2
+     0408 22         665		RET 
+                     666	
+                     667	;****** Drive Motor Right Hand ***********
+     0409 7401       668	DRV_R1: MOV A,#00000001B
+     040B F0         669	        MOVX @DPTR,A
+     040C 1204CD     670	        CALL DELAY
+     040F 7403       671	        MOV A,#00000011B
+     0411 F0         672	        MOVX @DPTR,A
+     0412 1204CD     673	        CALL DELAY
+     0415 7402       674	        MOV A,#00000010B
+     0417 F0         675	        MOVX @DPTR,A
+     0418 1204CD     676	        CALL DELAY
+     041B 7406       677	        MOV A,#00000110B
+     041D F0         678	        MOVX @DPTR,A
+     041E 1204CD     679	        CALL DELAY
+     0421 7404       680	        MOV A,#00000100B
+     0423 F0         681	        MOVX @DPTR,A
+     0424 1204CD     682	        CALL DELAY
+     0427 740C       683	        MOV A,#00001100B
+     0429 F0         684	        MOVX @DPTR,A
+     042A 1204CD     685	        CALL DELAY
+     042D 7408       686	        MOV A,#00001000B
+     042F F0         687	        MOVX @DPTR,A
+     0430 1204CD     688	        CALL DELAY
+     0433 7409       689	        MOV A,#00001001B
+     0435 F0         690	        MOVX @DPTR,A
+     0436 1204CD     691	        CALL DELAY
+     0439 22         692	        RET
+                     693	
+                     694	;****** Drive Motor Left Hand ********
+     043A 7409       695	DRV_L1:  MOV A,#00001001B
+     043C F0         696	        MOVX @DPTR,A
+     043D 1204CD     697	        CALL DELAY
+     0440 7408       698	        MOV A,#00001000B
+     0442 F0         699	        MOVX @DPTR,A
+     0443 1204CD     700	        CALL DELAY
+     0446 740C       701	        MOV A,#00001100B
+     0448 F0         702	        MOVX @DPTR,A
+     0449 1204CD     703	        CALL DELAY
+     044C 7404       704	        MOV A,#00000100B
+     044E F0         705	        MOVX @DPTR,A
+     044F 1204CD     706	        CALL DELAY
+     0452 7406       707	        MOV A,#00000110B
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page  13
+robot_2.asm                                     
+
+     0454 F0         708	        MOVX @DPTR,A
+     0455 1204CD     709	        CALL DELAY
+     0458 7402       710	        MOV A,#00000010B
+     045A F0         711	        MOVX @DPTR,A
+     045B 1204CD     712	        CALL DELAY
+     045E 7403       713	        MOV A,#00000011B
+     0460 F0         714	        MOVX @DPTR,A
+     0461 1204CD     715	        CALL DELAY
+     0464 7401       716	        MOV A,#00000001B
+     0466 F0         717	        MOVX @DPTR,A
+     0467 1204CD     718	        CALL DELAY
+     046A 22         719	        RET
+                     720	
+                     721	;****** Drive Motor Right Hand 2 ***********
+     046B 7410       722	DRV_R2: MOV A,#00010000B
+     046D F0         723	        MOVX @DPTR,A
+     046E 1204CD     724	        CALL DELAY
+     0471 7430       725	        MOV A,#00110000B
+     0473 F0         726	        MOVX @DPTR,A
+     0474 1204CD     727	        CALL DELAY
+     0477 7420       728	        MOV A,#00100000B
+     0479 F0         729	        MOVX @DPTR,A
+     047A 1204CD     730	        CALL DELAY
+     047D 7460       731	        MOV A,#01100000B
+     047F F0         732	        MOVX @DPTR,A
+     0480 1204CD     733	        CALL DELAY
+     0483 7440       734	        MOV A,#01000000B
+     0485 F0         735	        MOVX @DPTR,A
+     0486 1204CD     736	        CALL DELAY
+     0489 74C0       737	        MOV A,#11000000B
+     048B F0         738	        MOVX @DPTR,A
+     048C 1204CD     739	        CALL DELAY
+     048F 7480       740	        MOV A,#10000000B
+     0491 F0         741	        MOVX @DPTR,A
+     0492 1204CD     742	        CALL DELAY
+     0495 7490       743	        MOV A,#10010000B
+     0497 F0         744	        MOVX @DPTR,A
+     0498 1204CD     745	        CALL DELAY
+     049B 22         746	        RET
+                     747	
+                     748	;****** Drive Motor Left Hand 2********
+     049C 7490       749	DRV_L2: MOV A,#10010000B
+     049E F0         750	        MOVX @DPTR,A
+     049F 1204CD     751	        CALL DELAY
+     04A2 7480       752	        MOV A,#10000000B
+     04A4 F0         753	        MOVX @DPTR,A
+     04A5 1204CD     754	        CALL DELAY
+     04A8 74C0       755	        MOV A,#11000000B
+     04AA F0         756	        MOVX @DPTR,A
+     04AB 1204CD     757	        CALL DELAY
+     04AE 7440       758	        MOV A,#01000000B
+     04B0 F0         759	        MOVX @DPTR,A
+     04B1 1204CD     760	        CALL DELAY
+     04B4 7460       761	        MOV A,#01100000B
+     04B6 F0         762	        MOVX @DPTR,A
+     04B7 1204CD     763	        CALL DELAY
+     04BA 7420       764	        MOV A,#00100000B
+     04BC F0         765	        MOVX @DPTR,A
+     04BD 1204CD     766	        CALL DELAY
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page  14
+robot_2.asm                                     
+
+     04C0 7430       767	        MOV A,#00110000B
+     04C2 F0         768	        MOVX @DPTR,A
+     04C3 1204CD     769	        CALL DELAY
+     04C6 7410       770	        MOV A,#00010000B
+     04C8 F0         771	        MOVX @DPTR,A
+     04C9 1204CD     772	        CALL DELAY
+     04CC 22         773	        RET
+                     774	
+                     775	;**********DELAY**********
+     04CD 78F0       776	DELAY:  MOV R0,#0F0H                    
+     04CF 7901       777	DELAY2: MOV R1,#01H                    
+     04D1 D9FE       778	DELAY1: DJNZ R1,DELAY1
+     04D3 D8FA       779	        DJNZ R0,DELAY2
+     04D5 22         780		RET
+     0000=           781	        END 
+
+8051 Cross-Assembler (1.3)   (C) 1987, 1989 Binary Technology                                                              Page   1
+robot_2.asm                                     
+
+          comp_0 = 007C            comp_1 = 0090            comp_2 = 00A4            comp_3 = 00B8            comp_4 = 00CC  
+          comp_5 = 00E0            comp_6 = 00F4            comp_7 = 0108            comp_8 = 011C            comp_9 = 0130  
+          comp_a = 0144            comp_b = 0158            comp_d = 016C            comp_e = 017F            d_buff = 0060  
+           delay = 04CD            delay1 = 04D1            delay2 = 04CF              dlay = 0400             dlay1 = 0404  
+           dlay2 = 0402            drv_l1 = 043A            drv_l2 = 049C            drv_r1 = 0409            drv_r2 = 046B  
+           j_mr0 = 0081             j_mr1 = 0095             j_mr2 = 00A9             j_mr3 = 00BD             j_mr4 = 00D1  
+           j_mr5 = 00E5             j_mr6 = 00F9             j_mr7 = 010D             j_mr8 = 0121             j_mr9 = 0135  
+           j_mra = 0149             j_mrb = 015D             j_mrd = 0171             j_mre = 0184            main_0 = 0070  
+          main_1 = 0084            main_2 = 0098            main_3 = 00AC            main_4 = 00C0            main_5 = 00D4  
+          main_6 = 00E8            main_7 = 00FC            main_8 = 0110            main_9 = 0124            main_a = 0138  
+          main_b = 014C            main_d = 0160            main_e = 0174               ml0 = 019D             ml0_1 = 01A5  
+           ml0_2 = 01A7               ml1 = 01C9             ml1_1 = 01D1             ml1_2 = 01D3               ml2 = 01F5  
+           ml2_1 = 01FD             ml2_2 = 01FF               ml3 = 0221             ml3_1 = 0229             ml3_2 = 022B  
+             ml4 = 024D             ml4_1 = 0255             ml4_2 = 0257               ml5 = 0279             ml5_1 = 0281  
+           ml5_2 = 0283               ml6 = 02A5             ml6_1 = 02AD             ml6_2 = 02AF               ml7 = 02D1  
+           ml7_1 = 02D9             ml7_2 = 02DB               ml8 = 02FD             ml8_1 = 0305             ml8_2 = 0307  
+             ml9 = 0329             ml9_1 = 0331             ml9_2 = 0333               mla = 0355             mla_1 = 035D  
+           mla_2 = 035F               mlb = 0381             mlb_1 = 0389             mlb_2 = 038B               mld = 03AD  
+           mld_1 = 03B5             mld_2 = 03B7               mle = 03D9             mlf_1 = 03E5               mr0 = 0187  
+           mr0_1 = 018F             mr0_2 = 0191               mr1 = 01B3             mr1_1 = 01BB             mr1_2 = 01BD  
+             mr2 = 01DF             mr2_1 = 01E7             mr2_2 = 01E9               mr3 = 020B             mr3_1 = 0213  
+           mr3_2 = 0215               mr4 = 0237             mr4_1 = 023F             mr4_2 = 0241               mr5 = 0263  
+           mr5_1 = 026B             mr5_2 = 026D               mr6 = 028F             mr6_1 = 0297             mr6_2 = 0299  
+             mr7 = 02BB             mr7_1 = 02C3             mr7_2 = 02C5               mr8 = 02E7             mr8_1 = 02EF  
+           mr8_2 = 02F1               mr9 = 0313             mr9_1 = 031B             mr9_2 = 031D               mra = 033F  
+           mra_1 = 0347             mra_2 = 0349               mrb = 036B             mrb_1 = 0373             mrb_2 = 0375  
+             mrd = 0397             mrd_1 = 039F             mrd_2 = 03A1               mre = 03C3             mre_1 = 03CF  
+          out_en = 00A3            port1a = 6800            port1b = 6801            port1c = 6802            port2a = A800  
+          port2b = A801            port2c = A802            port3a = C800            port3b = C801            port3c = C802  
+          rd_sen = 03EF            st_adc = 00A4             start = 0000  

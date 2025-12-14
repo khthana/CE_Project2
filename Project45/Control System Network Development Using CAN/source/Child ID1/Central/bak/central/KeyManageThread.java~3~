@@ -1,0 +1,35 @@
+package central;
+
+/**
+ * <p>Title: </p>
+ * <p>Description: </p>
+ * <p>Copyright: Copyright (c) 2003</p>
+ * <p>Company: </p>
+ * @author unascribed
+ * @version 1.0
+ */
+
+class KeyManageThread extends Thread{
+
+  private static int time;
+  private static KeySpec newkey[] = { new KeySpec(MainFrame.Des[0].getKey()), new KeySpec(MainFrame.Des[1].getKey()), new KeySpec(MainFrame.Des[2].getKey()) };
+  private static HighLayerBuffer buffer;
+
+  public KeyManageThread(String s, int timearg) {
+    super(s);
+    time = timearg;
+    buffer = new HighLayerBuffer();
+  }
+
+  public void setTime(int timearg){
+    time = timearg;
+  }
+
+  public void run() {
+    try{
+      sleep(time);
+    }
+    catch(Exception e) {}
+
+  }
+}

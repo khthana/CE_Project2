@@ -1,0 +1,124 @@
+package switchsim;
+
+import java.awt.*;
+import javax.swing.*;
+import com.borland.jbcl.layout.*;
+import java.awt.event.*;
+
+public class Dialog1 extends JDialog {
+  JPanel panel1 = new JPanel();
+  String newmac = "";
+  XYLayout xYLayout1 = new XYLayout();
+  JLabel jLabel1 = new JLabel();
+  JTextField jTextField1 = new JTextField();
+  JLabel jLabel2 = new JLabel();
+  JButton jButton1 = new JButton();
+  JButton jButton2 = new JButton();
+  JLabel jLabel3 = new JLabel();
+  boolean close = false;
+
+  public Dialog1(Frame frame, String title, boolean modal) {
+    super(frame, title, modal);
+    try {
+      jbInit();
+      pack();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  public Dialog1() {
+    this(null, "MAC-Address", true);
+  }
+  void jbInit() throws Exception {
+    panel1.setLayout(xYLayout1);
+    jLabel1.setFont(new java.awt.Font("Dialog", 1, 12));
+    jLabel1.setBorder(BorderFactory.createEtchedBorder());
+    jLabel1.setText("  New MAC-Address : ");
+    jLabel2.setBorder(BorderFactory.createEtchedBorder());
+    jLabel2.setHorizontalAlignment(SwingConstants.CENTER);
+    jLabel2.setText("Example : 1234.5678.9abc");
+    this.getContentPane().setBackground(new Color(223, 223, 223));
+    this.setResizable(false);
+    this.setTitle("MAC-Address");
+    jButton1.setText("OK");
+    jButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton1_actionPerformed(e);
+      }
+    });
+    jButton2.setText("Cancel");
+    jButton2.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton2_actionPerformed(e);
+      }
+    });
+    getContentPane().add(panel1,  BorderLayout.CENTER);
+    panel1.add(jLabel1,                new XYConstraints(35, 35, 290, 55));
+    panel1.add(jTextField1,        new XYConstraints(160, 50, 160, 25));
+    panel1.add(jLabel2,                 new XYConstraints(35, 90, 290, 55));
+    panel1.add(jButton1,          new XYConstraints(60, 165, 100, 25));
+    panel1.add(jButton2,     new XYConstraints(190, 165, 100, 25));
+    panel1.add(jLabel3,   new XYConstraints(6, 8, 355, 210));
+  }
+
+  public String getNewMACAddress() {
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Dimension frameSize = this.getSize();
+    if (frameSize.height > screenSize.height) {
+      frameSize.height = screenSize.height;
+    }
+    if (frameSize.width > screenSize.width) {
+      frameSize.width = screenSize.width;
+    }
+    this.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
+    this.setVisible(true);
+    return newmac;
+  }
+
+  public void showDialog1() {
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Dimension frameSize = this.getSize();
+    if (frameSize.height > screenSize.height) {
+      frameSize.height = screenSize.height;
+    }
+    if (frameSize.width > screenSize.width) {
+      frameSize.width = screenSize.width;
+    }
+    this.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
+    this.setVisible(true);
+  }
+// ----------------------------------------- modified -------------------------------------
+  void jButton1_actionPerformed(ActionEvent e) {
+    ErrorMsg1 err = new ErrorMsg1();
+    MACAddress m = new MACAddress();
+    newmac = jTextField1.getText();
+    if (newmac.equals("")) {
+        err.showErrorMsg1("Please put New MAC-Address.");
+        newmac = "";
+    }
+    else if ((m.isMACAddress(newmac)) && (!m.isExist(newmac))) {
+      System.out.println("OK..");
+      this.dispose();
+    }
+    else {
+      err.showErrorMsg1("Please put New MAC-Address again.");
+      newmac = "";
+    }
+  }
+
+  void jButton2_actionPerformed(ActionEvent e) {
+    newmac = "";
+    this.dispose();
+  }
+
+  /**Overridden so we can exit when window is closed*/
+  protected void processWindowEvent(WindowEvent e) {
+    super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+      this.dispose();
+    }
+  }
+//------------------------------------------ end modified --------------------------------------
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+<title> Search Road</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+<meta name="keyword" content="map, bangkok,thailand">
+<link rel="stylesheet" href="/map/css/map.css" type="text/css">
+<script language="JavaScript">
+function check()
+{
+if (document.forms[0].roadname.value == "")
+{
+	alert("please enter keyword less then a charecter.");
+	document.forms[0].roadname.focus();
+}
+else
+{
+	document.forms[0].action="http://161.246.5.54/proweb/proweb.exe?";
+	document.forms[0].target="map"
+	document.forms[0].submit();
+}
+}
+</script>
+
+</head>
+
+<body onload="javascript:document.forms[0].roadname.focus();" background="/images/bg.gif" leftmargin="3" topmargin="3" marginwidth="3" marginheight="3">
+<script language="JavaScript1.2"> 
+	if (document.all)
+		document.body.style.cssText="border:4 inset orange"
+</script>
+<form OnSubmit="javascript:check();" method="get" target="map">
+
+<table border=0 cellspacing="2" cellpadding="2" border="2" width="180">
+<tr>
+	<td>
+		<div class="headtxt">ค้นหาถนนสายหลัก</div><br>
+	</td>
+</tr>
+<tr>
+	<td>
+		<div class="headtxt"><U>วิธีใช้งาน</U></div><br>
+	</td>
+</tr>
+<tr>
+	<td>
+		<div class="bodytxt">
+		1.	ให้ใส่ชื่อของถนนที่ต้องการจะค้นหา เช่นต้องการ
+			ค้นหาถนนลาดพร้าว ให้ใส่คำว่า"ลาด"หรือ "พร้าว"
+		</div>
+	</td>
+</tr>
+<tr>
+	<td>
+		<div class="bodytxt">
+		2.	กดปุ่ม "ค้นหา" จากนั้นรอสักครู่ โปรแกรมจะแสดงชื่อของ
+			 ถนนที่มีคำว่า"ลาด"หรือ"พร้าว"ขึ้นมา
+		</div>
+	</td>
+</tr>
+<tr>
+	<td>
+		<div class="bodytxt">
+		<br>
+		<input type="Hidden" name="fn" value="search_road">
+		<input type="Text" name="roadname" size="20" maxlength="30" onfocus="this.value='';"  value="enter road name"><br>
+		<input type="Button" value="  ค้นหา  " onClick="javascript:check();">
+		&nbsp;&nbsp;&nbsp;<input type="Reset" value="  ล้าง  "><br><br>
+		</div>
+	</td>
+</tr>
+<tr>
+	<td>
+		<div class="bodytxt">
+		3. ให้เลือกถนนที่ต้องการจะค้นหาจากรายการที่แสดงขึ้นมา
+		</div>
+	</td>
+</tr>
+<tr>
+	<td>
+		<div class="bodytxt">
+		4. กดปุ่ม "Show" โปรแกรม ก็จะแสดงถนนที่ค้นหาบนแผนที่
+		</div>
+	</td>
+</tr>
+</table>
+</form>
+</body>
+</html>

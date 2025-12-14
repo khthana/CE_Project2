@@ -1,0 +1,74 @@
+package login; 
+
+import weblogic.jws.*; 
+import weblogic.jws.control.*; 
+import java.sql.SQLException; 
+import center.*;
+
+/** 
+ * Defines a new database control. 
+ * 
+ * The @jws:connection tag indicates which WebLogic data source will be used by 
+ * this database control. Please change this to suit your needs. You can see a 
+ * list of available data sources by going to the WebLogic console in a browser 
+ * (typically http://localhost:7001/console) and clicking Services, JDBC, 
+ * Data Sources. 
+ * 
+ * @jws:connection data-source-jndi-name="MyDataSource" 
+ */ 
+public interface MemberControl extends DatabaseControl 
+{ 
+    // Sample database function.  Uncomment to use 
+    /*static public class member
+     {
+        public String member_num;
+        public String passwd;
+        public String name;
+        public String lastname;
+        public String sex;
+        public String status;
+        public String work_address;
+        public int ID;
+        public String year;
+        public String home_num;
+        public String lane;
+        public String village;
+        public int moo;
+        public String road;
+        public String district;
+        public String amphur;
+        public String province;
+        public int zip_code;
+        public int phone1;
+        public int phone2;
+        public String e_mail;
+        public String category;
+        public String e_mail_way;
+        public String application_way;
+        public int level;
+     }*/
+    // static public class Customer 
+    // { 
+    //   public int id; 
+    //   public String name; 
+    // } 
+    // 
+    // /** 
+    //  * @jws:sql statement="SELECT ID, NAME FROM CUSTOMERS WHERE ID = {id}" 
+    //  */ 
+    // Customer findCustomer(int id);
+
+    // Add "throws SQLException" to request that SQLExeptions be thrown on errors.
+
+    /**
+     * @jws:sql statement::
+     *     select username, name, lastname, sex, status, work_address,
+     *          id, year, home_number, lane, village, moo, road,
+     *          district, amphur, province, zip_code, phone1, phone2,
+     *          email, category, email_way, application_way,  level
+     *     from inner_member
+     *     where username={username} and passwd=password({passwd})
+     * ::
+     */
+    public user_profile selectMemberPassword(String username,String passwd);
+}

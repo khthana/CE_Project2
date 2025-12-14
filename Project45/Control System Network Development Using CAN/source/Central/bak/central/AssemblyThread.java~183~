@@ -1,0 +1,212 @@
+package central;
+
+import java.util.Vector;
+
+/**
+Provide Assembly Data from CAN Protocol to High layer Protocol
+Releast only complete packet
+*/
+
+class AssemblyThread extends Thread {
+
+  private HighLayerBuffer highbuffer = new HighLayerBuffer();
+  private Vector Assvector = new Vector();
+  private int index;
+  private boolean nextNode = false;
+  private CANBuffer canbuffer;
+  private char planttext[] =  new char[8];
+  public static AssemblyTimeoutManage assemblytimeoutmanage = new AssemblyTimeoutManage();
+
+  AssemblyThread(String s) {
+    super(s);
+    index = 0;
+    MainFrame.assemblythreadtxt.setText("running");
+  }
+
+  public void run() {
+    while (true)
+    {
+      try {
+        MainFrame.assemblythreadtxt.setText("wait");
+        canbuffer = MainFrame.Rx.getShareData();                                // Get data from Rx Buffer
+        MainFrame.assemblythreadtxt.setText("running");
+        canbuffer.setData(DecrypData(canbuffer.getID(), canbuffer.getData()));  // Decryption Data
+      }
+      catch(Exception e) {
+        System.out.println("Assembly Thread throw (at init): " + e);
+      }
+      boolean found = false;
+      for (int i = 0; i < Assvector.size(); i++) {
+        AssemblyBuffer Abuffer = (AssemblyBuffer) Assvector.elementAt(i);
+        if (Abuffer.getID() == canbuffer.getID() && ((Abuffer.getFlag() & 0x7f ) == (canbuffer.getFlag() & 0x7f ))) { // check previus frame is in buffer
+          found = true;
+          index = i;
+          break;
+        }
+      }
+
+      System.out.println(nextNode);
+      if (nextNode) {
+        MainFrame.snooptab.cdatatxt.setText("");
+        nextNode = false;
+      }
+
+      if (found == true) {                                                    // previus frame is in buffer
+        AssemblyBuffer Abuffer = (AssemblyBuffer) Assvector.elementAt(index);
+        if (Abuffer.getID() == canbuffer.getID()) {
+          try {
+            Abuffer.setID(canbuffer.getID());                                   // is same protocol
+            Abuffer.setFlag(canbuffer.getFlag());
+            Abuffer.addData(canbuffer.getData());
+            if ((canbuffer.getFlag() & 0x80) == 0x00) {                         // is lastest frame ?
+              if (Abuffer.getID() == 1 || Abuffer.getID() == 2 || Abuffer.getID() == 3) {
+                assemblytimeoutmanage.ClearTimeout(canbuffer.getID(), canbuffer.getFlag());          // Stop Assembly timeout timer
+                MainFrame.acknowledgethread.setAndCheckAck(Abuffer.getID(), (int) canbuffer.getData().charAt(0));
+                Abuffer.setData(TrimSequence(Abuffer.getData()));               // Trim Sequence from data
+                TrySequence(canbuffer);                                         // is Acknowedge Frame ?
+              }
+              highbuffer.setID(Abuffer.getID());
+              highbuffer.setFlag(Abuffer.getFlag());
+              highbuffer.setData(Abuffer.getData());
+              MainFrame.RBx.setShareData(highbuffer);                           // RBx is only one Share buffer that keep complete packget is ready for use
+              Assvector.removeElementAt(index);
+              if (!nextNode) {
+                nextNode = true;
+              }
+            }
+            else {
+              MainFrame.acknowledgethread.setAndCheckAck(Abuffer.getID(), (int) canbuffer.getData().charAt(0));
+            }
+          }
+          catch(Exception e) {
+            System.out.println("Assembly Thread throw (at found & same ID): " + e);
+          }
+        }
+        else {                                                                // new packet protocol
+          try {
+            AssemblyBuffer tmp = new AssemblyBuffer();
+            Assvector.addElement(tmp);
+            AssemblyBuffer NewAbuffer = (AssemblyBuffer) Assvector.lastElement();
+            NewAbuffer.setID(canbuffer.getID());
+            NewAbuffer.setFlag(canbuffer.getFlag());
+            NewAbuffer.addData(canbuffer.getData());
+            if ((canbuffer.getFlag() & 0x80) == 0x00) {
+              if (NewAbuffer.getID() == 1 || NewAbuffer.getID() == 2 || NewAbuffer.getID() == 3) {
+                assemblytimeoutmanage.ClearTimeout(canbuffer.getID(), canbuffer.getFlag());                           // Stop Assembly timeout timer
+                MainFrame.acknowledgethread.setAndCheckAck(Abuffer.getID(), (int) canbuffer.getData().charAt(0));
+                NewAbuffer.setData(TrimSequence(NewAbuffer.getData()));         // Trim Sequence from data
+                TrySequence(canbuffer);
+              }
+              highbuffer.setID(NewAbuffer.getID());
+              highbuffer.setFlag(NewAbuffer.getFlag());
+              highbuffer.setData(NewAbuffer.getData());
+              MainFrame.RBx.setShareData(highbuffer);
+              Assvector.removeElementAt(Assvector.size() - 1);
+              if (!nextNode) {
+                nextNode = true;
+              }
+            }
+            else {
+              MainFrame.acknowledgethread.setAndCheckAck(Abuffer.getID(), (int) canbuffer.getData().charAt(0));
+            }
+          }
+          catch(Exception e) {
+            System.out.println("Assembly Thread throw (at found New ID): " + e);
+          }
+        }
+      }
+      else {                                                                  // keep new packet
+        try {
+          assemblytimeoutmanage.SetTimeout(ConfigTab.assemtimeout.getValue(), canbuffer.getID(), canbuffer.getFlag());            // Start Assembly timeout
+          AssemblyBuffer tmp = new AssemblyBuffer();
+          Assvector.addElement(tmp);
+          AssemblyBuffer NewAbuffer = (AssemblyBuffer) Assvector.lastElement();
+          NewAbuffer.setID(canbuffer.getID());
+          NewAbuffer.setFlag(canbuffer.getFlag());
+          NewAbuffer.addData(canbuffer.getData());
+          if ((canbuffer.getFlag() & 0x80) == 0x00) {
+            if (NewAbuffer.getID() == 1 || NewAbuffer.getID() == 2 || NewAbuffer.getID() == 3) {
+              assemblytimeoutmanage.ClearTimeout(canbuffer.getID(), canbuffer.getFlag());                             // Stop Assembly timeout timer
+              MainFrame.acknowledgethread.setAndCheckAck(NewAbuffer.getID(), (int) canbuffer.getData().charAt(0));
+              NewAbuffer.setData(TrimSequence(NewAbuffer.getData()));                                                 // Trim Sequence from data
+              TrySequence(canbuffer);
+            }
+            highbuffer.setID(NewAbuffer.getID());
+            highbuffer.setFlag(NewAbuffer.getFlag());
+            highbuffer.setData(NewAbuffer.getData());
+            MainFrame.RBx.setShareData(highbuffer);
+            Assvector.removeElementAt(Assvector.size() - 1);
+            if (!nextNode) {
+              nextNode = true;
+            }
+          }
+          else {
+            MainFrame.acknowledgethread.setAndCheckAck(NewAbuffer.getID(), (int) canbuffer.getData().charAt(0));
+          }
+        }
+        catch(Exception e) {
+          System.out.println("Assembly Thread throw : (at not found)" + e);
+        }
+      }
+    }
+  }
+
+  private void TrySequence(CANBuffer buffer) {
+    int ID = buffer.getID();
+    if (ID == 1 || ID == 2 || ID == 3) {
+/*      System.out.println("Response");
+      System.out.print((int)buffer.getData().charAt(0));
+      System.out.print(" " + (int)buffer.getData().charAt(1));
+      System.out.print(" " + (int)buffer.getData().charAt(2));
+      System.out.print(" " + (int)buffer.getData().charAt(3));
+      System.out.print(" " + (int)buffer.getData().charAt(4));
+      System.out.print(" " + (int)buffer.getData().charAt(5));
+      System.out.print(" " + (int)buffer.getData().charAt(6));
+      System.out.println(" " + (int)buffer.getData().charAt(7));
+*/      if ((buffer.getFlag() & 0x40) == 0x40) {
+        if (buffer.getData().charAt(2) == 2) {
+//          System.out.println((int)buffer.getData().charAt(3));
+          TXThread.timeoutmanage.ClearTimeout((int) buffer.getData().charAt(3), buffer.getID());      // Receive Acknowedge frame Then Clear Timeout
+        }
+      }
+    }
+  }
+
+  private String TrimSequence(String buffer) {
+    String str = "";
+    for(int i = 0; i < buffer.length(); i += 8) {
+      if ((i + 8) < buffer.length()) {
+        str += buffer.substring(i + 1, i + 8);
+      }
+      else  {
+        str += buffer.substring(i + 1, buffer.length());
+      }
+    }
+    return str;
+  }
+
+  public void RemoveFromVector(int nodenumberarg, int flagarg) {              // For Assembly Thread
+    for (int i = 0; i < Assvector.size(); i++) {
+      AssemblyTimeoutThread assemthread = (AssemblyTimeoutThread) Assvector.elementAt(i);
+      if ((assemthread.getNodeNumber() == nodenumberarg) && (assemthread.getFlag() == flagarg)) {
+        Assvector.removeElementAt(i);
+      }
+    }
+  }
+
+  private String DecrypData(int ID, String data) {
+    String decdata = "";
+    MainFrame.snooptab.cdatatxt.setText(MainFrame.snooptab.cdatatxt.getText() + data + "\n");
+    if (ID == 1 || ID == 2 || ID == 3) {
+      for (int i = 0; i < 8; i++)
+        planttext[i] = data.charAt(i);
+      char cp[] = MainFrame.Des[(ID - 1)].Decryption(planttext);  // Decryption Data
+      for (int i = 0; i < 8; i++)
+        decdata += cp[i];
+      return decdata;
+    }
+    else {
+      return data;
+    }
+  }
+}

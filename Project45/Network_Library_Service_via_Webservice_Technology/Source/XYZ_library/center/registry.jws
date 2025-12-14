@@ -1,0 +1,58 @@
+package center; 
+
+import weblogic.jws.control.JwsContext;
+import registry.registryControl;
+
+/**
+ * @jws:target-namespace namespace="registry.library.com"
+ */
+public class registry
+{ 
+
+    /**
+     * @jws:control
+     */
+    private center.registryControl xyz;
+
+    /**
+     * @jws:control
+     */
+    private registryControl abc;
+
+
+
+    /** @jws:context */ 
+    JwsContext context; 
+
+    /**
+     * @jws:operation
+     */
+    public boolean add_member(String library, String username, String passwd, String name,
+        String lastname, String sex, String status, String work_address, String ID, String year,
+        String home_number, String lane, String village, String moo, String road, String district,
+        String amphur, String province, String zip_code, String phone1, String phone2,
+        String email, String category, String email_way, String application_way)
+    {
+        if (library.equalsIgnoreCase("abc")){
+            return abc.addtMemberData(username, passwd, name, lastname, sex, status, work_address, ID,
+                    year, home_number, lane, village, moo, road, district, amphur, province, zip_code,
+                    phone1, phone2, email, category, email_way, application_way);    
+        }
+        if (library.equalsIgnoreCase("xyz")){
+            return xyz.addtMemberData(username, passwd, name, lastname, sex, status, work_address, ID,
+                    year, home_number, lane, village, moo, road, district, amphur, province, zip_code,
+                    phone1, phone2, email, category, email_way, application_way);    
+        }
+        return false;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public boolean change_password(String library, String username, String old_password, String new_password)
+    {
+        if (library.equalsIgnoreCase("abc")) return abc.change_password(username, old_password, new_password);
+        if (library.equalsIgnoreCase("xyz")) return xyz.change_password(username, old_password, new_password);
+        return false;
+    }
+} 

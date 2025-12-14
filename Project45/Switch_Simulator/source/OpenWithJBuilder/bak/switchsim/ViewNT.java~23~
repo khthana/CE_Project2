@@ -1,0 +1,215 @@
+package switchsim;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.ImageIcon;
+import com.borland.jbcl.layout.*;
+
+/**
+ * Title:        Switch Simulator
+ * Description:
+ * Copyright:    Copyright (c) 2003
+ * Company:      ISAG
+ * @author ammii
+ * @version 1.0
+ */
+
+public class ViewNT extends JFrame {
+//  JPanel contentPane;
+  JPanel contentPane;
+  Panel2 panel = new Panel2();
+  static boolean drawSwitch = false;
+  static boolean drawCom = false;
+  static boolean drawInt = false;
+  private XYLayout xYLayout1 = new XYLayout();
+  JPanel jPanel1 = new JPanel();
+  XYLayout xYLayout2 = new XYLayout();
+  JToolBar jToolBar1 = new JToolBar();
+  JButton jSwitchButton = new JButton();
+  JButton jComButton = new JButton();
+  static JToggleButton jInterfaceButton = new JToggleButton();
+  MACAddress m = new MACAddress();
+
+  ImageIcon image1;
+  ImageIcon image2;
+  ImageIcon image3;
+  ImageIcon image4;
+
+  /**Construct the frame*/
+  public ViewNT() {
+    enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+    try {
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+  /**Component initialization*/
+  private void jbInit() throws Exception  {
+    image1 = new ImageIcon(switchsim.ViewNT.class.getResource("newSwitch.gif"));
+    image2 = new ImageIcon(switchsim.ViewNT.class.getResource("delSwitch.gif"));
+    image3 = new ImageIcon(switchsim.ViewNT.class.getResource("newWorkstation.gif"));
+    image4 = new ImageIcon(switchsim.ViewNT.class.getResource("interface.gif"));
+
+    //setIconImage(Toolkit.getDefaultToolkit().createImage(View.class.getResource("[Your Icon]")));
+    contentPane = (JPanel) this.getContentPane();
+    contentPane.setLayout(xYLayout1);
+    this.setResizable(false);
+    this.setSize(new Dimension(800, 500));
+    this.setTitle("Network View");
+    jPanel1.setLayout(xYLayout2);
+    jPanel1.setBackground(new Color(180, 180, 180));
+    jPanel1.setBorder(BorderFactory.createEtchedBorder());
+    jToolBar1.setOrientation(JToolBar.VERTICAL);
+    jInterfaceButton.setBackground(new Color(255, 191, 191));
+    jInterfaceButton.setMaximumSize(new Dimension(82, 60));
+    jInterfaceButton.setMinimumSize(new Dimension(82, 60));
+    jInterfaceButton.setPreferredSize(new Dimension(82, 60));
+    jInterfaceButton.setToolTipText("Add Interface");
+    jInterfaceButton.setHorizontalTextPosition(SwingConstants.CENTER);
+    jInterfaceButton.setIcon(image4);
+    jInterfaceButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jInterfaceButton_actionPerformed(e);
+      }
+    });
+    jComButton.setBackground(new Color(255, 191, 191));
+    jComButton.setMaximumSize(new Dimension(82, 60));
+    jComButton.setMinimumSize(new Dimension(82, 60));
+    jComButton.setPreferredSize(new Dimension(82, 60));
+    jComButton.setToolTipText("New Workstation");
+    jComButton.setHorizontalTextPosition(SwingConstants.CENTER);
+    jComButton.setIcon(image3);
+    jComButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jComButton_actionPerformed(e);
+      }
+    });
+    jSwitchButton.setBackground(new Color(255, 191, 191));
+    jSwitchButton.setMaximumSize(new Dimension(82, 60));
+    jSwitchButton.setMinimumSize(new Dimension(82, 60));
+    jSwitchButton.setPreferredSize(new Dimension(82, 60));
+    jSwitchButton.setToolTipText("New Switch");
+    jSwitchButton.setHorizontalTextPosition(SwingConstants.CENTER);
+    jSwitchButton.setIcon(image1);
+    jSwitchButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jSwitchButton_actionPerformed(e);
+      }
+    });
+    panel.setBackground(new Color(230, 225, 225));
+    contentPane.add(panel,   new XYConstraints(83, 0, 710, 500));
+    contentPane.add(jPanel1,         new XYConstraints(0, 0, 83, 500));
+    jPanel1.add(jToolBar1,              new XYConstraints(0, 0, 80, 184));
+    jToolBar1.add(jSwitchButton, null);
+    jToolBar1.add(jComButton, null);
+    jToolBar1.add(jInterfaceButton, null);
+//    this.getContentPane().setLayout(xYLayout1);
+//    this.getContentPane().add(panel,  new XYConstraints(0, 0, 690, 379));
+  }
+  /**Overridden so we can exit when window is closed*/
+  protected void processWindowEvent(WindowEvent e) {
+    super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+//      System.exit(0);
+    }
+  }
+
+  void jInterfaceButton_actionPerformed(ActionEvent e) {
+    if (jInterfaceButton.isSelected()) {
+      this.drawInt=true;
+    }
+    else this.drawInt=false;
+  }
+
+  void jComButton_actionPerformed(ActionEvent e) {
+    if (drawInt) {
+      drawInt = false;
+      jInterfaceButton.setSelected(false);
+    }
+    if (Frame1.vWorkstation.size() < Frame1.maxWorkstation) {
+      boolean dup = true;
+      boolean found = false;
+      String str="";
+      int i=1;
+      while(dup){
+        str = "Computer" + i;
+        found = false;
+        for(int a=0; a < Frame1.vWorkstation.size(); a++){
+          String alreadyName = ((Workstation)Frame1.vWorkstation.elementAt(a)).getName();
+          if (alreadyName.equalsIgnoreCase(str)){
+            found = true;
+          }//end if
+        }//end for
+        i++;
+        dup = found;
+      }//end while
+      String mac = m.getMACAddress();
+      Workstation com = new Workstation(str,mac);
+      ComImg cimg = new ComImg();
+      Frame1.vWorkstation.addElement(com);
+      Panel2.vImgCom.addElement(cimg);
+      panel.repaintView();
+    }
+  }
+
+  public void setjInterfaceButton(boolean selected) {
+    jInterfaceButton.setSelected(selected);
+  }
+
+  void jSwitchButton_actionPerformed(ActionEvent e) {
+    Switch sw;
+    SwitchImg simg;
+    if (drawInt) {
+      drawInt = false;
+      jInterfaceButton.setSelected(false);
+    }
+    if (Frame1.vSwitch.size() < Frame1.maxSwitch){
+        boolean dup = true;
+        boolean found = false;
+        String str="";
+        int i=1;
+        while(dup){
+          str = "Switch" + i;
+          found = false;
+          for(int a=0; a < Frame1.vSwitch.size(); a++){
+            String alreadyName = ((Switch)Frame1.vSwitch.elementAt(a)).getName();
+            if (alreadyName.equalsIgnoreCase(str)){
+              found = true;
+            }//end if
+          }//end for
+          i++;
+          dup = found;
+        }//end while
+        sw = new Switch(str);
+//        sw.setPriority("0000" + i-1);
+        System.out.println(Frame1.vMACAddress.size());
+        sw.setMACaddress(m.getMACAddress(Frame1.vSwitch.size()+1));
+        System.out.println(Frame1.vMACAddress.size());
+        sw.setDefaultVlanDB();
+//        r1.setModel(type);
+        SwitchConsole scon = new SwitchConsole(sw);
+        Frame1.vSwitch.addElement(sw);
+        simg = new SwitchImg();
+        Panel2.vImgSwitch.addElement(simg);
+//        for (int a=1; a<sw.getMaxEth()+1; a++) {
+//          Interface intf = new Interface();
+//          intf.addNewInt(sw,"Ethernet0/"+a);
+//        }
+//        for (int a=1; a<sw.getMaxFast()+1; a++) {
+//          Interface intf = new Interface();
+//          intf.addNewInt(sw,"Fa0/"+a);
+//        }
+//        for (int a=1; a<sw.getMaxGig()+1; a++) {
+//          Interface intf = new Interface();
+//          intf.addNewInt(sw,"Gi0/"+a);
+//        }
+        Frame1.vConsole.addElement(scon);
+        Frame1.jTabbedPane1.addTab(str,scon);
+        Frame1.jTabbedPane1.setSelectedIndex(Frame1.vSwitch.size()-1);
+    }
+    panel.repaintView();
+  }
+}

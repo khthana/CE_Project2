@@ -1,0 +1,41 @@
+package switchsim;
+
+import java.awt.*;
+import java.util.*;
+import javax.swing.JPanel;
+import com.borland.jbcl.layout.*;
+
+public class Panel3 extends JPanel {
+  XYLayout xYLayout1 = new XYLayout();
+  static Vector vStatus = new Vector();
+  Panel panel1 = new Panel();
+
+  public Panel3() {
+    try {
+      jbInit();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+  void jbInit() throws Exception {
+    panel1.setBackground(new Color(223, 223, 223));
+    this.setBackground(new Color(212, 217, 230));
+    this.setLayout(xYLayout1);
+  }
+
+  public void showStatus() {
+    this.setSize((vStatus.size()-1)*250,180);
+    int posx=0;
+    System.out.println(vStatus.size());
+    this.removeAll();
+    for (int i=0; i<vStatus.size(); i++) {
+      Panel1 panel = (Panel1)vStatus.elementAt(i);
+      System.out.println(i+" "+panel.sw.getName());
+//      sPanel.showDetail();
+      this.add(panel,    new XYConstraints(i*250, 0, 250, 180));
+//      jScrollPane1.add(sPanel,    new XYConstraints(posx, 0, 250, 120));
+      posx+=panel.getWide();
+    }
+  }
+}

@@ -1,0 +1,91 @@
+package center; 
+
+import weblogic.jws.control.JwsContext;
+import center.*;
+import weblogic.jws.control.TimerControl;
+import java.util.*;
+import javax.mail.*;
+import javax.mail.internet.*;
+import javax.activation.*;
+import java.io.*;
+/**
+ * @jws:protocol form-get="true" form-post="true"
+ */
+public class alert
+{ 
+
+
+
+    /**
+     * @jws:control
+     */
+    private db_alertControl db_alert;
+    /** @jws:context */ 
+    JwsContext context; 
+
+    /**
+     * @jws:operation
+     * @jws:protocol form-get="false" form-post="false"
+     */
+    public void send_news(String subject, String news, String library, user_news []username)
+    {
+        String host="161.246.6.10";
+        String from=library+"@multimedia10.kmitl.ac.th";
+        int l=username.length;
+        for(int i=0;i<l;i++){
+            if (username[i].email_way.equalsIgnoreCase("1")){
+                Properties props=System.getProperties();
+                props.put("mail.smtp.host", host);
+                Session s=Session.getDefaultInstance(props, null);
+                MimeMessage m=new MimeMessage(s);
+                try{
+                    m.setFrom(new InternetAddress(from));
+                    m.addRecipient(Message.RecipientType.TO, new InternetAddress(username[i].email));
+                    m.setSubject(subject);
+                    m.setSentDate(new Date());
+                    m.setContent(news, "text/html; char-set=windows-874");
+                    m.setText(news);
+                    Transport.send(m);
+                    username[i].email_way="0";
+                    System.out.println("Complete.");
+                }catch(Exception e){System.out.println(e);}
+            }
+            if (username[i].application_way.equalsIgnoreCase("1")) db_alert.insert_db(username[i].username, username[i].name, username[i].email, news, username[i].category,
+                    username[i].email_way, username[i].application_way);
+        }
+    }
+
+
+
+    private void time_alert_onTimeout(long time)
+    {
+        user_news user=db_alert.read_user();
+        
+        String host="161.246.6.10";
+        String from="off_42010137@hotmail.com";
+        String to="nut_kmitl@se-ed.net";
+        String subject="Project";
+        String body="Haha.";
+        
+        Properties props=System.getProperties();
+        props.put("mail.smtp.host", host);
+        
+        Session s=Session.getDefaultInstance(props, null);
+        
+        MimeMessage m=new MimeMessage(s);
+        //InternetAddress[] iAddr=null;
+        try{
+            m.setFrom(new InternetAddress(from));
+            
+            //iAddr=InternetAddress.parse("nut_kmitl@msn.com", false);
+            
+            m.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            m.setSubject(subject);
+            m.setSentDate(new Date());
+            m.setContent(body, "text/html; char-set=windows-874");
+            m.setText(body);
+            Transport.send(m);
+            System.out.println("Complete.");
+        }catch(Exception e){System.out.println(e);}
+    }
+} 

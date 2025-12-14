@@ -1,0 +1,286 @@
+package testhttp;
+
+import java.sql.*;
+import java.util.Vector;
+import java.lang.*;
+
+public class Database
+    implements AccessDatabase{
+
+  // refer database connection
+  private Connection connection;
+
+  // refer preparestatement
+  private PreparedStatement sqlFind;
+  private PreparedStatement sqlInsert;
+  private PreparedStatement sqlIsNot;
+  private PreparedStatement sqlUpdate;
+
+  // refer Vector
+  private Vector data;
+
+  // refer private constructor for singleton
+  private Database() {
+  }
+  // refer singlrton class Database
+  private static Database database = new Database();
+  // refer static get Instance from class Database
+  public static Database getDatabase(){
+    return database;
+  }
+  // refer connection database
+  public void connect() throws Exception{
+
+    String driver ="sun.jdbc.odbc.JdbcOdbcDriver";
+    String url    ="jdbc:odbc:Stock";
+    System.out.print("ngee:)");
+    Class.forName( driver );
+
+    connection = DriverManager.getConnection(url);
+    connection.setAutoCommit(false);
+
+    // refer find Stock Code
+    sqlFind = connection.prepareStatement("select stock_code from NGEE "+
+                                          "order by stock_code ASC", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+
+    // refer sql Is in not
+    sqlIsNot = connection.prepareStatement("select * from Intraday "+
+                                           "where day_trade = ? and "+
+                                           "stock_code = ? ", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+    // refer sql Insert
+    sqlInsert = connection.prepareStatement("insert into Intraday "+
+        "( day_trade,stock_code,flag,mkt_status,"+
+          "price_last,price_change,per_change,bid_price1,"+
+          "bid_price2,bid_price3,bid_vol1,bid_vol2,"+
+          "bid_vol3,offer_price1,offer_price2,offer_price3,"+
+          "offer_vol1,offer_vol2,offer_vol3,buy_vol,"+
+          "sell_vol,volume,amount,price_open1,"+
+          "price_open2,price_high,price_low,price_avg,"+
+          "price_prior) values"+
+        "( ?,?,?,?,"+
+          "?,?,?,?,"+
+          "?,?,?,?,"+
+          "?,?,?,?,"+
+          "?,?,?,?,"+
+          "?,?,?,?,"+
+          "?,?,?,?,"+
+          "?) ");
+
+    // refer sql Update
+    sqlUpdate = connection.prepareStatement("update Intraday set "+
+                                            "flag = ? ,"+
+                                            "mkt_status = ? , "+
+                                            "price_last = ? , "+
+                                            "price_change = ? , "+
+                                            "per_change = ? , "+
+                                            "bid_price1 = ? , "+
+                                            "bid_price2 = ? , "+
+                                            "bid_price3 = ? , "+
+                                            "bid_vol1 = ? , "+
+                                            "bid_vol2 = ? , "+
+                                            "bid_vol3 = ? , "+
+                                            "offer_price1 = ? , "+
+                                            "offer_price2 = ? , "+
+                                            "offer_price3 = ? , "+
+                                            "offer_vol1 = ? , "+
+                                            "offer_vol2 = ? , "+
+                                            "offer_vol3 = ? , "+
+                                            "buy_vol = ? , "+
+                                            "sell_vol = ? , "+
+                                            "volume = ? , "+
+                                            "amount = ? , "+
+                                            "price_open1 = ? , "+
+                                            "price_open2 = ? , "+
+                                            "price_high = ? , "+
+                                            "price_low = ? , "+
+                                            "price_avg = ? , "+
+                                            "price_prior = ?  "+
+                                            "where day_trade = ? and "+
+                                            "stock_code = ? ");
+  }
+  // refer method find Stock name
+  public Vector findStockName()throws DataException{
+    Vector data = new Vector();
+    try{
+      ResultSet rs  = sqlFind.executeQuery();
+      if( rs != null ){
+        while( rs.next() ){
+           data.addElement( new String( rs.getString(1) ) );
+        }
+        //rs.close();
+        return data;
+      }
+      else {// rs.close();
+      return null;}
+    }
+    catch( SQLException e){
+      System.out.println(e);
+      System.out.println("find stock name");
+      return null;
+    }
+  }
+  // refer method data was inserted
+  public boolean stockIsNot( String day_trade,String stock )
+      throws DataException{
+    try{
+      sqlIsNot.setString(1,day_trade);
+      sqlIsNot.setString(2,stock);
+      ResultSet rs = sqlIsNot.executeQuery();
+      if( rs.next() ){
+        rs.close();
+        return true;
+      }
+      else {rs.close();return false;}
+    }
+    catch( SQLException e ){
+      System.out.println(e);
+      System.out.println("stock was inserted");
+      return false;
+    }
+  }
+  // refer method insert data
+  public boolean insertData( StockEntry stock )
+      throws DataException{
+    try{
+      int rs = 0;
+      sqlInsert.setString(1,stock.getDay_trade());
+      sqlInsert.setString(2,stock.getStock());
+      sqlInsert.setString(3,stock.getFlag());
+      sqlInsert.setString(4,stock.getMarket());
+
+      sqlInsert.setFloat(5,stock.getPrice_Last());
+      sqlInsert.setFloat(6,stock.getPrice_Change());
+      sqlInsert.setFloat(7,stock.getPer_Change());
+      sqlInsert.setFloat(8,stock.getBid_Price1());
+
+      sqlInsert.setFloat(9,stock.getBid_Price2());
+      sqlInsert.setFloat(10,stock.getBid_Price3());
+      sqlInsert.setFloat(11,stock.getBid_Vol1());
+      sqlInsert.setFloat(12,stock.getBid_Vol2());
+
+      sqlInsert.setFloat(13,stock.getBid_Vol3());
+      sqlInsert.setFloat(14,stock.getOff_Price1());
+      sqlInsert.setFloat(15,stock.getOff_Price2());
+      sqlInsert.setFloat(16,stock.getOff_Price3());
+
+      sqlInsert.setFloat(17,stock.getOff_Vol1());
+      sqlInsert.setFloat(18,stock.getOff_Vol2());
+      sqlInsert.setFloat(19,stock.getOff_Vol3());
+      sqlInsert.setFloat(20,stock.getBuy_Vol());
+
+      sqlInsert.setFloat(21,stock.getSell_Vol());
+      sqlInsert.setFloat(22,stock.getVolume());
+      sqlInsert.setFloat(23,stock.getAmount());
+      sqlInsert.setFloat(24,stock.getPrice_Open1());
+
+      sqlInsert.setFloat(25,stock.getPrice_Open2());
+      sqlInsert.setFloat(26,stock.getPrice_High());
+      sqlInsert.setFloat(27,stock.getPrice_Low());
+      sqlInsert.setFloat(28,stock.getPrice_Avg());
+
+      sqlInsert.setFloat(29,stock.getPrior());
+
+      rs = sqlInsert.executeUpdate();
+      if( rs == 0 ){
+        connection.rollback();
+        return false;
+      }
+      else{
+        connection.commit();
+        return true;
+      }
+    }
+    catch( SQLException e ){
+
+      try{
+       System.out.println("stock is inserting");
+       connection.rollback();
+       return false;
+      }
+      catch( SQLException ex ){
+        throw new DataException( ex );
+      }
+    }
+  }
+  // refer method update database
+  public boolean updateData( StockEntry stock )
+      throws DataException{
+    try{
+      int rs = 0;
+      sqlUpdate.setString(1,stock.getFlag());
+      sqlUpdate.setString(2,stock.getMarket());
+
+      sqlUpdate.setFloat(3,stock.getPrice_Last());
+      sqlUpdate.setFloat(4,stock.getPrice_Change());
+      sqlUpdate.setFloat(5,stock.getPer_Change());
+      sqlUpdate.setFloat(6,stock.getBid_Price1());
+
+      sqlUpdate.setFloat(7,stock.getBid_Price2());
+      sqlUpdate.setFloat(8,stock.getBid_Price3());
+      sqlUpdate.setFloat(9,stock.getBid_Vol1());
+      sqlUpdate.setFloat(10,stock.getBid_Vol2());
+
+      sqlUpdate.setFloat(11,stock.getBid_Vol3());
+      sqlUpdate.setFloat(12,stock.getOff_Price1());
+      sqlUpdate.setFloat(13,stock.getOff_Price2());
+      sqlUpdate.setFloat(14,stock.getOff_Price3());
+
+      sqlUpdate.setFloat(15,stock.getOff_Vol1());
+      sqlUpdate.setFloat(16,stock.getOff_Vol2());
+      sqlUpdate.setFloat(17,stock.getOff_Vol3());
+      sqlUpdate.setFloat(18,stock.getBuy_Vol());
+
+      sqlUpdate.setFloat(19,stock.getSell_Vol());
+      sqlUpdate.setFloat(20,stock.getVolume());
+      sqlUpdate.setFloat(21,stock.getAmount());
+      sqlUpdate.setFloat(22,stock.getPrice_Open1());
+
+      sqlUpdate.setFloat(23,stock.getPrice_Open2());
+      sqlUpdate.setFloat(24,stock.getPrice_High());
+      sqlUpdate.setFloat(25,stock.getPrice_Low());
+      sqlUpdate.setFloat(26,stock.getPrice_Avg());
+
+      sqlUpdate.setFloat(27,stock.getPrior());
+
+      sqlUpdate.setString(28,stock.getDay_trade());
+      sqlUpdate.setString(29,stock.getStock());
+
+      rs = sqlUpdate.executeUpdate();
+      if( rs == 0 ){
+        connection.rollback();
+        return false;
+      }
+      else{
+        connection.commit();
+        return true;
+      }
+
+    }
+    catch( SQLException e ){
+
+      try{
+       System.out.println(e);
+       connection.rollback();
+       return false;
+      }
+      catch( SQLException ex ){
+        throw new DataException( ex );
+      }
+    }
+  }
+
+  // refer method close connect database
+  public void close(){
+    try{
+      sqlFind.close();
+      sqlIsNot.close();
+      sqlUpdate.close();
+      sqlInsert.close();
+      connection.close();
+    }
+    catch( Exception e ){
+      System.out.println(e);
+    }
+  }
+}

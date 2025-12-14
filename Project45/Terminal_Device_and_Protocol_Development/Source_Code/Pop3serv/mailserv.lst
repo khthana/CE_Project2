@@ -1,0 +1,582 @@
+GAS LISTING C:\WINDOWS\TEMP/ccF82bgb.s 			page 1
+
+
+   1               		.file	"mailserv.c"
+   2               		.arch atmega128
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               	_PC_ = 2
+   9               		.global __do_copy_data
+  10               		.global __do_clear_bss
+  11               		.data
+  12               		.type	my_mac,@object
+  13               		.size	my_mac,6
+  14               	my_mac:
+  15 0000 00        		.byte	0
+  16 0001 06        		.byte	6
+  17 0002 98        		.byte	-104
+  18 0003 20        		.byte	32
+  19 0004 00        		.byte	0
+  20 0005 00        		.byte	0
+  21               	.global	baud
+  22               		.type	baud,@object
+  23               		.size	baud,4
+  24               	baud:
+  25 0006 00C2 0100 		.long	115200
+  26               	.global	lport
+  27               		.type	lport,@object
+  28               		.size	lport,2
+  29               	lport:
+  30 000a 1900      		.word	25
+  31               	.global	rport
+  32               		.type	rport,@object
+  33               		.size	rport,2
+  34               	rport:
+  35 000c 1900      		.word	25
+  36               	.LC0:
+  37 000e 7561 7274 		.string	"uart0"
+  37      3000 
+  38               	.LC1:
+  39 0014 0D0A 4154 		.string	"\r\nATAmail server ver  1.8\r\n"
+  39      416D 6169 
+  39      6C20 7365 
+  39      7276 6572 
+  39      2076 6572 
+  40               	.LC2:
+  41 0030 436F 6E66 		.string	"Configuring Ethernet interface\r\n"
+  41      6967 7572 
+  41      696E 6720 
+  41      4574 6865 
+  41      726E 6574 
+  42               	.LC3:
+  43 0051 3235 352E 		.string	"255.255.255.0"
+  43      3235 352E 
+  43      3235 352E 
+  43      3000 
+  44               	.LC4:
+  45 005f 3136 312E 		.string	"161.246.5.97"
+GAS LISTING C:\WINDOWS\TEMP/ccF82bgb.s 			page 2
+
+
+  45      3234 362E 
+  45      352E 3937 
+  45      00
+  46               	.LC5:
+  47 006c 6574 6830 		.string	"eth0"
+  47      00
+  48               	.LC6:
+  49 0071 3136 312E 		.string	"161.246.5.1"
+  49      3234 362E 
+  49      352E 3100 
+  50               	.LC7:
+  51 007d 3136 312E 		.string	"161.246.4.3"
+  51      3234 362E 
+  51      342E 3300 
+  52               	.LC8:
+  53 0089 6368 616F 		.string	"chaokhun.kmitl.ac.th"
+  53      6B68 756E 
+  53      2E6B 6D69 
+  53      746C 2E61 
+  53      632E 7468 
+  54               	.LC9:
+  55 009e 0D0A 2043 		.string	"\r\n Create Socket Error "
+  55      7265 6174 
+  55      6520 536F 
+  55      636B 6574 
+  55      2045 7272 
+  56               	.LC10:
+  57 00b6 0D0A 2043 		.string	"\r\n Create sostream Error "
+  57      7265 6174 
+  57      6520 736F 
+  57      7374 7265 
+  57      616D 2045 
+  58               	.LC11:
+  59 00d0 0D0A 2043 		.string	"\r\n Create sostream O.K "
+  59      7265 6174 
+  59      6520 736F 
+  59      7374 7265 
+  59      616D 204F 
+  60               	.LC12:
+  61 00e8 3232 3020 		.string	"220 Hello boy (^_^) \r\n"
+  61      4865 6C6C 
+  61      6F20 626F 
+  61      7920 285E 
+  61      5F5E 2920 
+  62               	.LC13:
+  63 00ff 4548 4C4F 		.string	"EHLO"
+  63      00
+  64               	.LC15:
+  65 0104 3235 302D 		.ascii	"250-161.246.5.97("
+  65      3136 312E 
+  65      3234 362E 
+  65      352E 3937 
+  65      28
+  66 0115 4574 6865 		.string	"Ethernut mail server ver 1.5) Hello USER ,pleased tomeet you \r\n "
+  66      726E 7574 
+  66      206D 6169 
+  66      6C20 7365 
+GAS LISTING C:\WINDOWS\TEMP/ccF82bgb.s 			page 3
+
+
+  66      7276 6572 
+  67               	.LC16:
+  68 0156 5645 5246 		.string	"VERFY"
+  68      5900 
+  69               	.LC17:
+  70 015c 5332 3031 		.string	"S2010439"
+  70      3034 3339 
+  70      00
+  71               	.LC18:
+  72 0165 3235 3020 		.string	"250 User Verify \r\n"
+  72      5573 6572 
+  72      2056 6572 
+  72      6966 7920 
+  72      0D0A 00
+  73               	.LC19:
+  74 0178 4D41 494C 		.string	"MAIL"
+  74      00
+  75               	.LC20:
+  76 017d 3235 3020 		.string	"250 Mail From Verify \r\n"
+  76      4D61 696C 
+  76      2046 726F 
+  76      6D20 5665 
+  76      7269 6679 
+  77               	.LC21:
+  78 0195 5243 5054 		.string	"RCPT"
+  78      00
+  79               	.LC22:
+  80 019a 3235 3020 		.string	"250 RCPT to Verify \r\n"
+  80      5243 5054 
+  80      2074 6F20 
+  80      5665 7269 
+  80      6679 200D 
+  81               	.LC23:
+  82 01b0 4441 5441 		.string	"DATA"
+  82      00
+  83               	.LC24:
+  84 01b5 3334 3520 		.string	"345 Input DATA and Stop by . \r\n"
+  84      496E 7075 
+  84      7420 4441 
+  84      5441 2061 
+  84      6E64 2053 
+  85               	.LC25:
+  86 01d5 5155 4954 		.string	"QUIT"
+  86      00
+  87               	.LC26:
+  88 01da 3232 3120 		.string	"221 Quit O.K nice to serve you(-_-)\r\n"
+  88      5175 6974 
+  88      204F 2E4B 
+  88      206E 6963 
+  88      6520 746F 
+  89               	.LC14:
+  90 0200 4845 4C4F 		.string	"HELO"
+  90      00
+  91               	.LC27:
+  92 0205 0D0A 00   		.string	"\r\n"
+  93               	.LC28:
+  94 0208 3235 3020 		.string	"250 Mail recieve O.K \r\n"
+GAS LISTING C:\WINDOWS\TEMP/ccF82bgb.s 			page 4
+
+
+  94      4D61 696C 
+  94      2072 6563 
+  94      6965 7665 
+  94      204F 2E4B 
+  95               		.text
+  96               	.global	NutMain
+  97               		.type	NutMain,@function
+  98               	NutMain:
+  99               	/* prologue: frame size=0 */
+ 100               	/* prologue end (size=0) */
+ 101 0000 AA24      		clr r10
+ 102 0002 BB24      		clr r11
+ 103 0004 4501      		movw r8,r10
+ 104 0006 E501      		movw r28,r10
+ 105 0008 40E0      		ldi r20,lo8(0)
+ 106 000a B501      		movw r22,r10
+ 107 000c 80E0      		ldi r24,lo8(devUart0)
+ 108 000e 90E0      		ldi r25,hi8(devUart0)
+ 109 0010 0E94 0000 		call NutRegisterDevice
+ 110 0014 80E0      		ldi r24,lo8(.LC0)
+ 111 0016 90E0      		ldi r25,hi8(.LC0)
+ 112 0018 0E94 0000 		call NutDeviceOpen
+ 113 001c 9093 0000 		sts (uart0)+1,r25
+ 114 0020 8093 0000 		sts uart0,r24
+ 115 0024 40E0      		ldi r20,lo8(baud)
+ 116 0026 50E0      		ldi r21,hi8(baud)
+ 117 0028 61E0      		ldi r22,lo8(257)
+ 118 002a 71E0      		ldi r23,hi8(257)
+ 119 002c 0E94 0000 		call NutDeviceIOCtl
+ 120 0030 80E0      		ldi r24,lo8(.LC1)
+ 121 0032 90E0      		ldi r25,hi8(.LC1)
+ 122 0034 0E94 0000 		call NutKPrintString
+ 123 0038 80E0      		ldi r24,lo8(.LC2)
+ 124 003a 90E0      		ldi r25,hi8(.LC2)
+ 125 003c 0E94 0000 		call NutKPrintString
+ 126 0040 45E0      		ldi r20,lo8(5)
+ 127 0042 60E0      		ldi r22,lo8(-32000)
+ 128 0044 73E8      		ldi r23,hi8(-32000)
+ 129 0046 80E0      		ldi r24,lo8(devEth0)
+ 130 0048 90E0      		ldi r25,hi8(devEth0)
+ 131 004a 0E94 0000 		call NutRegisterDevice
+ 132 004e 80E0      		ldi r24,lo8(.LC3)
+ 133 0050 90E0      		ldi r25,hi8(.LC3)
+ 134 0052 0E94 0000 		call inet_addr
+ 135 0056 7B01      		movw r14,r22
+ 136 0058 8C01      		movw r16,r24
+ 137 005a 80E0      		ldi r24,lo8(.LC4)
+ 138 005c 90E0      		ldi r25,hi8(.LC4)
+ 139 005e 0E94 0000 		call inet_addr
+ 140 0062 DC01      		movw r26,r24
+ 141 0064 CB01      		movw r24,r22
+ 142 0066 9C01      		movw r18,r24
+ 143 0068 AD01      		movw r20,r26
+ 144 006a 60E0      		ldi r22,lo8(my_mac)
+ 145 006c 70E0      		ldi r23,hi8(my_mac)
+ 146 006e 80E0      		ldi r24,lo8(.LC5)
+ 147 0070 90E0      		ldi r25,hi8(.LC5)
+GAS LISTING C:\WINDOWS\TEMP/ccF82bgb.s 			page 5
+
+
+ 148 0072 0E94 0000 		call NutNetIfConfig
+ 149 0076 80E0      		ldi r24,lo8(.LC6)
+ 150 0078 90E0      		ldi r25,hi8(.LC6)
+ 151 007a 0E94 0000 		call inet_addr
+ 152 007e DC01      		movw r26,r24
+ 153 0080 CB01      		movw r24,r22
+ 154 0082 20E0      		ldi r18,lo8(devEth0)
+ 155 0084 C22E      		mov r12,r18
+ 156 0086 20E0      		ldi r18,hi8(devEth0)
+ 157 0088 D22E      		mov r13,r18
+ 158 008a 7C01      		movw r14,r24
+ 159 008c 8D01      		movw r16,r26
+ 160 008e 20E0      		ldi r18,lo8(0)
+ 161 0090 30E0      		ldi r19,hi8(0)
+ 162 0092 40E0      		ldi r20,hlo8(0)
+ 163 0094 50E0      		ldi r21,hhi8(0)
+ 164 0096 CA01      		movw r24,r20
+ 165 0098 B901      		movw r22,r18
+ 166 009a 0E94 0000 		call NutIpRouteAdd
+ 167 009e 80E0      		ldi r24,lo8(.LC7)
+ 168 00a0 90E0      		ldi r25,hi8(.LC7)
+ 169 00a2 0E94 0000 		call inet_addr
+ 170 00a6 DC01      		movw r26,r24
+ 171 00a8 CB01      		movw r24,r22
+ 172 00aa 9C01      		movw r18,r24
+ 173 00ac AD01      		movw r20,r26
+ 174 00ae B501      		movw r22,r10
+ 175 00b0 C501      		movw r24,r10
+ 176 00b2 0E94 0000 		call NutDnsConfig
+ 177 00b6 80E0      		ldi r24,lo8(.LC8)
+ 178 00b8 90E0      		ldi r25,hi8(.LC8)
+ 179 00ba 0E94 0000 		call NutDnsGetHostByName
+ 180 00be DC01      		movw r26,r24
+ 181 00c0 CB01      		movw r24,r22
+ 182 00c2 8093 0000 		sts rip,r24
+ 183 00c6 9093 0000 		sts (rip)+1,r25
+ 184 00ca A093 0000 		sts (rip)+2,r26
+ 185 00ce B093 0000 		sts (rip)+3,r27
+ 186 00d2 0E94 0000 		call NutTcpCreateSocket
+ 187 00d6 9093 0000 		sts (sock)+1,r25
+ 188 00da 8093 0000 		sts sock,r24
+ 189 00de 892B      		or r24,r25
+ 190 00e0 51F4      		brne .L25
+ 191 00e2 80E0      		ldi r24,lo8(.LC9)
+ 192 00e4 90E0      		ldi r25,hi8(.LC9)
+ 193 00e6 0E94 0000 		call NutKPrintString
+ 194 00ea 68E8      		ldi r22,lo8(5000)
+ 195 00ec 73E1      		ldi r23,hi8(5000)
+ 196 00ee 80E0      		ldi r24,hlo8(5000)
+ 197 00f0 90E0      		ldi r25,hhi8(5000)
+ 198               	.L26:
+ 199 00f2 0E94 0000 		call NutSleep
+ 200               	.L25:
+ 201 00f6 8091 0000 		lds r24,sock
+ 202 00fa 9091 0000 		lds r25,(sock)+1
+ 203 00fe 0E94 0000 		call NutSoStreamCreate
+ 204 0102 9093 0000 		sts (sostream)+1,r25
+GAS LISTING C:\WINDOWS\TEMP/ccF82bgb.s 			page 6
+
+
+ 205 0106 8093 0000 		sts sostream,r24
+ 206 010a 892B      		or r24,r25
+ 207 010c 29F4      		brne .L6
+ 208 010e 80E0      		ldi r24,lo8(.LC10)
+ 209 0110 90E0      		ldi r25,hi8(.LC10)
+ 210 0112 0E94 0000 		call NutKPrintString
+ 211 0116 EFCF      		rjmp .L25
+ 212               	.L6:
+ 213 0118 80E0      		ldi r24,lo8(.LC11)
+ 214 011a 90E0      		ldi r25,hi8(.LC11)
+ 215 011c 0E94 0000 		call NutKPrintString
+ 216 0120 69E1      		ldi r22,lo8(25)
+ 217 0122 70E0      		ldi r23,hi8(25)
+ 218 0124 8091 0000 		lds r24,sock
+ 219 0128 9091 0000 		lds r25,(sock)+1
+ 220 012c 0E94 0000 		call NutTcpAccept
+ 221 0130 8114      		cp r8,__zero_reg__
+ 222 0132 9104      		cpc r9,__zero_reg__
+ 223 0134 89F4      		brne .L8
+ 224 0136 60E0      		ldi r22,lo8(.LC12)
+ 225 0138 70E0      		ldi r23,hi8(.LC12)
+ 226 013a 8091 0000 		lds r24,sostream
+ 227 013e 9091 0000 		lds r25,(sostream)+1
+ 228 0142 0E94 0000 		call NutPrintString
+ 229 0146 8091 0000 		lds r24,sostream
+ 230 014a 9091 0000 		lds r25,(sostream)+1
+ 231 014e 0E94 0000 		call NutPrintFlush
+ 232 0152 91E0      		ldi r25,lo8(1)
+ 233 0154 892E      		mov r8,r25
+ 234 0156 912C      		mov r9,__zero_reg__
+ 235               	.L8:
+ 236 0158 2097      		sbiw r28,0
+ 237 015a 09F0      		breq _PC_+2
+ 238 015c A7C0      		rjmp .L24
+ 239               	.L22:
+ 240 015e 4FEF      		ldi r20,lo8(1023)
+ 241 0160 53E0      		ldi r21,hi8(1023)
+ 242 0162 60E0      		ldi r22,lo8(buff)
+ 243 0164 70E0      		ldi r23,hi8(buff)
+ 244 0166 8091 0000 		lds r24,sostream
+ 245 016a 9091 0000 		lds r25,(sostream)+1
+ 246 016e 0E94 0000 		call NutDeviceGetLine
+ 247 0172 80E0      		ldi r24,lo8(buff)
+ 248 0174 90E0      		ldi r25,hi8(buff)
+ 249 0176 0E94 0000 		call strupr
+ 250 017a A114      		cp r10,__zero_reg__
+ 251 017c B104      		cpc r11,__zero_reg__
+ 252 017e 09F0      		breq _PC_+2
+ 253 0180 B0C0      		rjmp .L12
+ 254 0182 60E0      		ldi r22,lo8(.LC13)
+ 255 0184 70E0      		ldi r23,hi8(.LC13)
+ 256 0186 80E0      		ldi r24,lo8(buff)
+ 257 0188 90E0      		ldi r25,hi8(buff)
+ 258 018a 0E94 0000 		call strstr
+ 259 018e 892B      		or r24,r25
+ 260 0190 09F4      		brne _PC_+2
+ 261 0192 9DC0      		rjmp .L27
+GAS LISTING C:\WINDOWS\TEMP/ccF82bgb.s 			page 7
+
+
+ 262               	.L14:
+ 263 0194 60E0      		ldi r22,lo8(.LC15)
+ 264 0196 70E0      		ldi r23,hi8(.LC15)
+ 265 0198 8091 0000 		lds r24,sostream
+ 266 019c 9091 0000 		lds r25,(sostream)+1
+ 267 01a0 0E94 0000 		call NutPrintString
+ 268 01a4 8091 0000 		lds r24,sostream
+ 269 01a8 9091 0000 		lds r25,(sostream)+1
+ 270 01ac 0E94 0000 		call NutPrintFlush
+ 271               	.L13:
+ 272 01b0 60E0      		ldi r22,lo8(.LC16)
+ 273 01b2 70E0      		ldi r23,hi8(.LC16)
+ 274 01b4 80E0      		ldi r24,lo8(buff)
+ 275 01b6 90E0      		ldi r25,hi8(buff)
+ 276 01b8 0E94 0000 		call strstr
+ 277 01bc 892B      		or r24,r25
+ 278 01be B1F0      		breq .L15
+ 279 01c0 60E0      		ldi r22,lo8(.LC17)
+ 280 01c2 70E0      		ldi r23,hi8(.LC17)
+ 281 01c4 80E0      		ldi r24,lo8(buff)
+ 282 01c6 90E0      		ldi r25,hi8(buff)
+ 283 01c8 0E94 0000 		call strstr
+ 284 01cc 892B      		or r24,r25
+ 285 01ce 71F0      		breq .L15
+ 286 01d0 60E0      		ldi r22,lo8(.LC18)
+ 287 01d2 70E0      		ldi r23,hi8(.LC18)
+ 288 01d4 8091 0000 		lds r24,sostream
+ 289 01d8 9091 0000 		lds r25,(sostream)+1
+ 290 01dc 0E94 0000 		call NutPrintString
+ 291 01e0 8091 0000 		lds r24,sostream
+ 292 01e4 9091 0000 		lds r25,(sostream)+1
+ 293 01e8 0E94 0000 		call NutPrintFlush
+ 294               	.L15:
+ 295 01ec 60E0      		ldi r22,lo8(.LC19)
+ 296 01ee 70E0      		ldi r23,hi8(.LC19)
+ 297 01f0 80E0      		ldi r24,lo8(buff)
+ 298 01f2 90E0      		ldi r25,hi8(buff)
+ 299 01f4 0E94 0000 		call strstr
+ 300 01f8 892B      		or r24,r25
+ 301 01fa 71F0      		breq .L17
+ 302 01fc 60E0      		ldi r22,lo8(.LC20)
+ 303 01fe 70E0      		ldi r23,hi8(.LC20)
+ 304 0200 8091 0000 		lds r24,sostream
+ 305 0204 9091 0000 		lds r25,(sostream)+1
+ 306 0208 0E94 0000 		call NutPrintString
+ 307 020c 8091 0000 		lds r24,sostream
+ 308 0210 9091 0000 		lds r25,(sostream)+1
+ 309 0214 0E94 0000 		call NutPrintFlush
+ 310               	.L17:
+ 311 0218 60E0      		ldi r22,lo8(.LC21)
+ 312 021a 70E0      		ldi r23,hi8(.LC21)
+ 313 021c 80E0      		ldi r24,lo8(buff)
+ 314 021e 90E0      		ldi r25,hi8(buff)
+ 315 0220 0E94 0000 		call strstr
+ 316 0224 892B      		or r24,r25
+ 317 0226 71F0      		breq .L18
+ 318 0228 60E0      		ldi r22,lo8(.LC22)
+GAS LISTING C:\WINDOWS\TEMP/ccF82bgb.s 			page 8
+
+
+ 319 022a 70E0      		ldi r23,hi8(.LC22)
+ 320 022c 8091 0000 		lds r24,sostream
+ 321 0230 9091 0000 		lds r25,(sostream)+1
+ 322 0234 0E94 0000 		call NutPrintString
+ 323 0238 8091 0000 		lds r24,sostream
+ 324 023c 9091 0000 		lds r25,(sostream)+1
+ 325 0240 0E94 0000 		call NutPrintFlush
+ 326               	.L18:
+ 327 0244 60E0      		ldi r22,lo8(.LC23)
+ 328 0246 70E0      		ldi r23,hi8(.LC23)
+ 329 0248 80E0      		ldi r24,lo8(buff)
+ 330 024a 90E0      		ldi r25,hi8(buff)
+ 331 024c 0E94 0000 		call strstr
+ 332 0250 892B      		or r24,r25
+ 333 0252 89F0      		breq .L19
+ 334 0254 81E0      		ldi r24,lo8(1)
+ 335 0256 A82E      		mov r10,r24
+ 336 0258 B12C      		mov r11,__zero_reg__
+ 337 025a 60E0      		ldi r22,lo8(.LC24)
+ 338 025c 70E0      		ldi r23,hi8(.LC24)
+ 339 025e 8091 0000 		lds r24,sostream
+ 340 0262 9091 0000 		lds r25,(sostream)+1
+ 341 0266 0E94 0000 		call NutPrintString
+ 342 026a 8091 0000 		lds r24,sostream
+ 343 026e 9091 0000 		lds r25,(sostream)+1
+ 344 0272 0E94 0000 		call NutPrintFlush
+ 345               	.L19:
+ 346 0276 60E0      		ldi r22,lo8(.LC25)
+ 347 0278 70E0      		ldi r23,hi8(.LC25)
+ 348 027a 80E0      		ldi r24,lo8(buff)
+ 349 027c 90E0      		ldi r25,hi8(buff)
+ 350 027e 0E94 0000 		call strstr
+ 351 0282 892B      		or r24,r25
+ 352 0284 81F0      		breq .L9
+ 353 0286 60E0      		ldi r22,lo8(.LC26)
+ 354 0288 70E0      		ldi r23,hi8(.LC26)
+ 355 028a 8091 0000 		lds r24,sostream
+ 356 028e 9091 0000 		lds r25,(sostream)+1
+ 357 0292 0E94 0000 		call NutPrintString
+ 358 0296 8091 0000 		lds r24,sostream
+ 359 029a 9091 0000 		lds r25,(sostream)+1
+ 360 029e 0E94 0000 		call NutPrintFlush
+ 361 02a2 C1E0      		ldi r28,lo8(1)
+ 362 02a4 D0E0      		ldi r29,hi8(1)
+ 363               	.L9:
+ 364 02a6 2097      		sbiw r28,0
+ 365 02a8 09F4      		brne _PC_+2
+ 366 02aa 59CF      		rjmp .L22
+ 367               	.L24:
+ 368 02ac 8091 0000 		lds r24,sostream
+ 369 02b0 9091 0000 		lds r25,(sostream)+1
+ 370 02b4 0E94 0000 		call NutSoStreamDestroy
+ 371 02b8 8091 0000 		lds r24,sock
+ 372 02bc 9091 0000 		lds r25,(sock)+1
+ 373 02c0 0E94 0000 		call NutTcpCloseSocket
+ 374 02c4 60E6      		ldi r22,lo8(60000)
+ 375 02c6 7AEE      		ldi r23,hi8(60000)
+GAS LISTING C:\WINDOWS\TEMP/ccF82bgb.s 			page 9
+
+
+ 376 02c8 80E0      		ldi r24,hlo8(60000)
+ 377 02ca 90E0      		ldi r25,hhi8(60000)
+ 378 02cc 12CF      		rjmp .L26
+ 379               	.L27:
+ 380 02ce 60E0      		ldi r22,lo8(.LC14)
+ 381 02d0 70E0      		ldi r23,hi8(.LC14)
+ 382 02d2 80E0      		ldi r24,lo8(buff)
+ 383 02d4 90E0      		ldi r25,hi8(buff)
+ 384 02d6 0E94 0000 		call strstr
+ 385 02da 892B      		or r24,r25
+ 386 02dc 09F0      		breq _PC_+2
+ 387 02de 5ACF      		rjmp .L14
+ 388 02e0 67CF      		rjmp .L13
+ 389               	.L12:
+ 390 02e2 4FEF      		ldi r20,lo8(1023)
+ 391 02e4 53E0      		ldi r21,hi8(1023)
+ 392 02e6 60E0      		ldi r22,lo8(buff)
+ 393 02e8 70E0      		ldi r23,hi8(buff)
+ 394 02ea 8091 0000 		lds r24,sock
+ 395 02ee 9091 0000 		lds r25,(sock)+1
+ 396 02f2 0E94 0000 		call NutTcpReceive
+ 397 02f6 80E0      		ldi r24,lo8(buff)
+ 398 02f8 90E0      		ldi r25,hi8(buff)
+ 399 02fa 0E94 0000 		call NutKPrintString
+ 400 02fe 80E0      		ldi r24,lo8(.LC27)
+ 401 0300 90E0      		ldi r25,hi8(.LC27)
+ 402 0302 0E94 0000 		call NutKPrintString
+ 403 0306 60E0      		ldi r22,lo8(.LC28)
+ 404 0308 70E0      		ldi r23,hi8(.LC28)
+ 405 030a 8091 0000 		lds r24,sostream
+ 406 030e 9091 0000 		lds r25,(sostream)+1
+ 407 0312 0E94 0000 		call NutPrintString
+ 408 0316 8091 0000 		lds r24,sostream
+ 409 031a 9091 0000 		lds r25,(sostream)+1
+ 410 031e 0E94 0000 		call NutPrintFlush
+ 411 0322 AA24      		clr r10
+ 412 0324 BB24      		clr r11
+ 413 0326 BFCF      		rjmp .L9
+ 414               	/* epilogue: frame size=0 */
+ 415               	/* epilogue: noreturn */
+ 416               	/* epilogue end (size=0) */
+ 417               	/* function NutMain size 404 (404) */
+ 418               	.Lfe1:
+ 419               		.size	NutMain,.Lfe1-NutMain
+ 420               		.lcomm buff,1024
+ 421               		.comm uart0,2,1
+ 422               		.comm sock,2,1
+ 423               		.comm sostream,2,1
+ 424               		.comm rip,4,1
+ 425               	/* File "mailserv.c": code  404 = 0x0194 ( 404), prologues   0, epilogues   0 */
+GAS LISTING C:\WINDOWS\TEMP/ccF82bgb.s 			page 10
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 mailserv.c
+                            *ABS*:0000003f __SREG__
+                            *ABS*:0000003e __SP_H__
+                            *ABS*:0000003d __SP_L__
+                            *ABS*:00000000 __tmp_reg__
+                            *ABS*:00000001 __zero_reg__
+                            *ABS*:00000002 _PC_
+C:\WINDOWS\TEMP/ccF82bgb.s:14     .data:00000000 my_mac
+C:\WINDOWS\TEMP/ccF82bgb.s:24     .data:00000006 baud
+C:\WINDOWS\TEMP/ccF82bgb.s:29     .data:0000000a lport
+C:\WINDOWS\TEMP/ccF82bgb.s:34     .data:0000000c rport
+C:\WINDOWS\TEMP/ccF82bgb.s:98     .text:00000000 NutMain
+                            *COM*:00000002 uart0
+                            *COM*:00000004 rip
+                            *COM*:00000002 sock
+                            *COM*:00000002 sostream
+                             .bss:00000000 buff
+                            *ABS*:00000000 *ABS*
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss
+devUart0
+NutRegisterDevice
+NutDeviceOpen
+NutDeviceIOCtl
+NutKPrintString
+devEth0
+inet_addr
+NutNetIfConfig
+NutIpRouteAdd
+NutDnsConfig
+NutDnsGetHostByName
+NutTcpCreateSocket
+NutSleep
+NutSoStreamCreate
+NutTcpAccept
+NutPrintString
+NutPrintFlush
+NutDeviceGetLine
+strupr
+strstr
+NutSoStreamDestroy
+NutTcpCloseSocket
+NutTcpReceive

@@ -1,0 +1,143 @@
+package Information; 
+
+import weblogic.jws.control.JwsContext;
+import center.*;
+import center.alertControl;
+import weblogic.jws.control.TimerControl;
+
+
+
+public class information
+{ 
+
+    /**
+     * @jws:control
+     */
+    private alertControl center_alert;
+
+    /**
+     * @jws:control
+     * @jws:timer repeats-every="5 sec" timeout="5 sec"
+     */
+    private TimerControl time_alert;
+
+
+
+
+    /**
+     * @jws:control
+     */
+    private db_informationControl db_information;
+    /** @jws:context */ 
+    JwsContext context; 
+
+    /**
+     * @jws:operation
+     */
+    public void insertData(String subject, String news, String category){
+        db_information.insert_news(news, category);
+        //หนังสือใหม่
+        if (category.equalsIgnoreCase("a")||category.equalsIgnoreCase("b")||category.equalsIgnoreCase("c")||category.equalsIgnoreCase("d")||category.equalsIgnoreCase("e")||category.equalsIgnoreCase("f")||category.equalsIgnoreCase("g")||category.equalsIgnoreCase("h")||category.equalsIgnoreCase("i")||category.equalsIgnoreCase("j")||category.equalsIgnoreCase("k")||category.equalsIgnoreCase("l")||category.equalsIgnoreCase("m")||category.equalsIgnoreCase("n")||category.equalsIgnoreCase("o")||category.equalsIgnoreCase("p")||category.equalsIgnoreCase("q")||category.equalsIgnoreCase("r")||category.equalsIgnoreCase("s")||category.equalsIgnoreCase("t")||category.equalsIgnoreCase("u")||category.equalsIgnoreCase("v")||category.equalsIgnoreCase("w")||category.equalsIgnoreCase("x")||category.equalsIgnoreCase("y")||category.equalsIgnoreCase("z")){
+            String key="%"+category+"%";
+            user_news []user=db_information.search_user_new_book(key);
+            int l=user.length;
+            for (int i=0;i<l;i++){
+                user[i].category=category;
+                user[i].email_way=String.valueOf(user[i].email_way.charAt(0));
+                user[i].application_way=String.valueOf(user[i].application_way.charAt(0));
+            }
+            center_alert.send_news(subject, news, "abc", user);
+        }
+        //หนังสือที่จองไว้ บังคับ
+        if (category.equalsIgnoreCase("2")){
+                
+        }
+        //ประกาศทั่วไป บังคับ
+        if (category.equalsIgnoreCase("3")){
+            user_news user[]=db_information.search_user_all();
+            int l=user.length;
+            for (int i=0;i<l;i++) {
+                user[i].category=category;
+                user[i].email_way="1";
+                user[i].application_way="1";
+            }
+            center_alert.send_news(subject, news, "abc", user);
+        }
+        //ประกาศการฉายภาพยนตร์
+        if (category.equalsIgnoreCase("4")){
+            user_news user[]=db_information.search_user_movie();
+            int l=user.length;
+            for (int i=0;i<l;i++){
+                user[i].category=category;
+                user[i].email_way=String.valueOf(user[i].email_way.charAt(1));
+                user[i].application_way=String.valueOf(user[i].application_way.charAt(1));
+            }
+            center_alert.send_news(subject, news, "abc", user);
+        }
+        //ประกาศการสัมมนา
+        if (category.equalsIgnoreCase("5")){
+            user_news user[]=db_information.search_user_seminar();
+            int l=user.length;
+            for (int i=0;i<l;i++){
+                user[i].category=category;
+                user[i].email_way=String.valueOf(user[i].email_way.charAt(2));
+                user[i].application_way=String.valueOf(user[i].application_way.charAt(2));
+            }
+            center_alert.send_news(subject, news, "abc", user);
+        }
+        //ประกาศทั่วไป
+        if (category.equalsIgnoreCase("6")){
+            user_news user[]=db_information.search_user_general();
+            int l=user.length;
+            for (int i=0;i<l;i++){
+                user[i].category=category;
+                user[i].email_way=String.valueOf(user[i].email_way.charAt(3));
+                user[i].application_way=String.valueOf(user[i].application_way.charAt(3));
+            }
+            center_alert.send_news(subject, news, "abc", user);
+        }
+    }
+
+    /**
+     * @jws:operation
+     * @jws:conversation phase="start"
+     */
+    public void alert_book_on(String timeout, String repeats)
+    {
+        if (timeout.length()!=0) time_alert.setTimeout(timeout);
+        if (repeats.length()!=0) time_alert.setRepeatsEvery(repeats);
+        time_alert.start();
+        System.out.print("Start.");
+    }
+
+    /**
+     * @jws:operation
+     * @jws:conversation phase="finish"
+     */
+    public void alert_book_off()
+    {
+        time_alert.stop();
+        System.out.println("Stop");
+    }
+
+    private void time_alert_onTimeout(long time)
+    {
+        user_news user1[]=db_information.search_user_book_exceed();
+        int l=user1.length;
+        for (int i=0;i<l;i++) {
+            user1[i].category="1";
+            user1[i].email_way="1";
+            user1[i].application_way="1";
+        }
+        center_alert.send_news("Subject.", "Please return book.", "abc", user1);
+        System.out.print(".");
+        user_news user2[]=db_information.search_user_reservation();
+        l=user2.length;
+        for (int i=0;i<l;i++) {
+            user2[i].category="2";
+            user2[i].email_way="1";
+            user2[i].application_way="1";
+        }
+        center_alert.send_news("Subject.", "Please recevice your book reservation.", "abc", user2);
+    }
+} 

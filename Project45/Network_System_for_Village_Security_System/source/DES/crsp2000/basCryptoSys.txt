@@ -1,0 +1,399 @@
+Attribute VB_Name = "basCryptoSys"
+' The basCryptoSys module contains the full list of declaration statements
+' for the CryptoSys (TM) API Version 2 library.
+
+'************************* COPYRIGHT NOTICE*************************
+' Copyright (c) 2001-3 DI Management Services Pty Limited.
+' All rights reserved.
+' Commercial use is prohibited without a valid licence.
+' For a licence contact <sales@di-mgt.com.au>.
+' This code may only be used as part of an application. It may
+' not be reproduced or distributed separately by any means without
+' the express written permission of the author.
+' David Ireland and DI Management Services Pty Limited make no
+' representations concerning either the merchantability of this
+' software or the suitability of this software for any particular
+' purpose. It is provided "as is" without express or implied
+' warranty of any kind.
+' Report errors or make suggestions for improvement to
+' <code@di-mgt.com.au>.
+' The latest version of CryptoSys(TM) for personal use may be
+' downloaded from <www.cryptosys.net>.
+' This copyright notice must always be left intact.
+'****************** END OF COPYRIGHT NOTICE*************************
+
+Option Explicit
+
+' ADVANCED ENCRYPTION STANDARD (AES) RIJNDAEL BLOCK CIPHER
+
+Public Declare Function AES_Hex Lib "diCryptoSys" _
+    (ByVal sOutput As String, ByVal sInput As String, ByVal sHexKey As String, _
+    ByVal lngKeyBits As Long, ByVal lngBlockBits As Long, _
+    ByVal bEncrypt As Boolean) As Long
+    
+Public Declare Function AES_HexMode Lib "diCryptoSys" _
+    (ByVal sOutput As String, ByVal sInput As String, ByVal sHexKey As String, _
+    ByVal lngKeyBits As Long, ByVal lngBlockBits As Long, _
+    ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByVal sHexIV As String) As Long
+    
+Public Declare Function AES_Bytes Lib "diCryptoSys" _
+    (ByRef aResult As Byte, ByRef aData As Byte, ByVal lngDataLen As Long, ByRef aKey As Byte, _
+    ByVal lngKeyBits As Long, ByVal lngBlockBits As Long, _
+    ByVal bEncrypt As Boolean) As Long
+    
+Public Declare Function AES_BytesMode Lib "diCryptoSys" _
+    (ByRef aResult As Byte, ByRef aData As Byte, ByVal lngDataLen As Long, ByRef aKey As Byte, _
+    ByVal lngKeyBits As Long, ByVal lngBlockBits As Long, _
+    ByVal bEncrypt As Boolean, ByVal sMode As String, ByRef aInitV As Byte) As Long
+    
+Public Declare Function AES_File Lib "diCryptoSys" _
+    (ByVal sFileOut As String, ByVal sFileIn As String, _
+    ByRef aKey As Byte, ByVal lngKeyBits As Long, ByVal lngBlockBits As Long, _
+    ByVal bEncrypt As Boolean, ByVal sMode As String, ByRef aInitV As Byte) As Long
+    
+Public Declare Function AES_FileHex Lib "diCryptoSys" _
+    (ByVal sFileOut As String, ByVal sFileIn As String, _
+    ByVal sHexKey As String, ByVal lngKeyBits As Long, ByVal lngBlockBits As Long, _
+    ByVal bEncrypt As Boolean, ByVal sMode As String, ByVal sHexIV As String) As Long
+    
+Public Declare Function AES_Init Lib "diCryptoSys" _
+    (ByRef aKey As Byte, ByVal lngKeyBits As Long, ByVal lngBlockBits As Long, _
+    ByVal bEncrypt As Boolean, ByVal sMode As String, ByRef aInitV As Byte) As Long
+    
+Public Declare Function AES_InitHex Lib "diCryptoSys" _
+    (ByVal sHexKey As String, _
+    ByVal lngKeyBits As Long, ByVal lngBlockBits As Long, _
+    ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByVal sHexIV As String) As Long
+    
+Public Declare Function AES_Update Lib "diCryptoSys" _
+    (ByVal hContext As Long, ByRef aData As Byte, ByVal lngDataLen As Long) As Long
+    
+Public Declare Function AES_UpdateHex Lib "diCryptoSys" _
+    (ByVal hContext As Long, ByVal sHexString As String) As Long
+    
+Public Declare Function AES_Final Lib "diCryptoSys" _
+    (ByVal hContext As Long) As Long
+    
+Public Declare Function AES_Ecb Lib "diCryptoSys" _
+    (ByVal hContext As Long, ByRef aData As Byte, ByVal lngDataLen As Long, _
+    ByVal bEncrypt As Boolean) As Long
+    
+Public Declare Function AES_EcbHex Lib "diCryptoSys" _
+    (ByVal hContext As Long, ByVal sHexBlock As String, _
+     ByVal bEncrypt As Boolean) As Long
+    
+' BLOWFISH BLOCK CIPHER FUNCTIONS
+
+Public Declare Function BLF_Hex Lib "diCryptoSys.dll" _
+    (ByVal sOutput As String, ByVal sInput As String, _
+    ByVal sHexKey As String, ByVal bEncrypt As Boolean) As Long
+    
+Public Declare Function BLF_HexMode Lib "diCryptoSys.dll" _
+    (ByVal sOutput As String, ByVal sInput As String, _
+    ByVal sHexKey As String, ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByVal sHexIV As String) As Long
+    
+Public Declare Function BLF_Bytes Lib "diCryptoSys.dll" _
+    (ByRef aResult As Byte, ByRef aData As Byte, ByVal lngDataLen As Long, _
+    ByRef aKey As Byte, ByVal lngKeyLen As Long, ByVal bEncrypt As Boolean) As Long
+    
+Public Declare Function BLF_BytesMode Lib "diCryptoSys.dll" _
+    (ByRef aResult As Byte, ByRef aData As Byte, ByVal lngDataLen As Long, _
+    ByRef aKey As Byte, ByVal lngKeyLen As Long, ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByRef aInitV As Byte) As Long
+    
+Public Declare Function BLF_File Lib "diCryptoSys.dll" _
+    (ByVal sFileOut As String, ByVal sFileIn As String, _
+    ByRef aKey As Byte, ByVal lngKeyLen As Long, ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByRef aInitV As Byte) As Long
+    
+Public Declare Function BLF_FileHex Lib "diCryptoSys.dll" _
+    (ByVal sFileOut As String, ByVal sFileIn As String, _
+    ByVal sHexKey As String, ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByVal sHexIV As String) As Long
+    
+Public Declare Function BLF_InitHex Lib "diCryptoSys.dll" _
+    (ByVal sHexKey As String, ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByVal sHexIV As String) As Long
+    
+Public Declare Function BLF_Init Lib "diCryptoSys.dll" _
+    (ByRef aKey As Byte, ByVal lngKeyLen As Long, ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByRef aInitV As Byte) As Long
+    
+Public Declare Function BLF_UpdateHex Lib "diCryptoSys.dll" _
+    (ByVal hContext As Long, ByVal sHexBlock As String) As Long
+    
+Public Declare Function BLF_Update Lib "diCryptoSys.dll" _
+    (ByVal hContext As Long, ByRef aData As Byte, ByVal lngDataLen As Long) As Long
+    
+Public Declare Function BLF_Final Lib "diCryptoSys.dll" _
+    (ByVal hContext As Long) As Long
+    
+Public Declare Function BLF_EcbHex Lib "diCryptoSys.dll" _
+    (ByVal hContext As Long, ByVal sHexBlock As String, _
+     ByVal bEncrypt As Boolean) As Long
+     
+Public Declare Function BLF_Ecb Lib "diCryptoSys.dll" _
+    (ByVal hContext As Long, ByRef aData As Byte, ByVal lngDataLen As Long, _
+    ByVal bEncrypt As Boolean) As Long
+     
+' ORIGINAL di_Blowfish.DLL FUNCTIONS
+
+Public Declare Function bf_StringEnc Lib "diCryptoSys" _
+    (ByRef aResult As Byte, ByRef aData As Byte, ByVal lngDataLen As Long, _
+    ByRef aKey As Byte, ByVal lngKeyLen As Long) As Long
+
+Public Declare Function bf_StringDec Lib "diCryptoSys" _
+    (ByRef aResult As Byte, ByRef aData As Byte, ByVal lngDataLen As Long, _
+    ByRef aKey As Byte, ByVal lngKeyLen As Long) As Long
+
+Public Declare Function bf_FileEnc Lib "diCryptoSys" _
+    (ByVal strFileOut As String, ByVal strFileIn As String, _
+    ByRef aKey As Byte, ByVal lngKeyLen As Long) As Long
+
+Public Declare Function bf_FileDec Lib "diCryptoSys" _
+    (ByVal strFileOut As String, ByVal strFileIn As String, _
+    ByRef aKey As Byte, ByVal lngKeyLen As Long) As Long
+
+Public Declare Function bf_Init Lib "diCryptoSys" _
+    (ByRef aKey As Byte, ByVal lngKeyLen As Long) As Long
+
+Public Declare Function bf_BlockEnc Lib "diCryptoSys" _
+    (ByVal hContext As Long, ByRef aBlock As Byte) As Long
+
+Public Declare Function bf_BlockDec Lib "diCryptoSys" _
+    (ByVal hContext As Long, ByRef aBlock As Byte) As Long
+
+Public Declare Function bf_Final Lib "diCryptoSys" _
+    (ByVal hContext As Long) As Long
+    
+' DATA ENCRYPTION STANDARD (DES) BLOCK CIPHER
+    
+Public Declare Function DES_Hex Lib "diCryptoSys" _
+    (ByVal sOutput As String, ByVal sInput As String, ByVal sKey As String, _
+    ByVal bEncrypt As Boolean) As Long
+    
+Public Declare Function DES_HexMode Lib "diCryptoSys" _
+    (ByVal sOutput As String, ByVal sInput As String, _
+    ByVal sHexKey As String, ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByVal sHexIV As String) As Long
+    
+Public Declare Function DES_Bytes Lib "diCryptoSys.dll" _
+    (ByRef aResult As Byte, ByRef aData As Byte, ByVal lngDataLen As Long, _
+    ByRef aKey As Byte, ByVal bEncrypt As Boolean) As Long
+    
+Public Declare Function DES_BytesMode Lib "diCryptoSys.dll" _
+    (ByRef aResult As Byte, ByRef aData As Byte, ByVal lngDataLen As Long, _
+    ByRef aKey As Byte, ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByRef aInitV As Byte) As Long
+    
+Public Declare Function DES_File Lib "diCryptoSys" _
+    (ByVal sFileOut As String, ByVal sFileIn As String, _
+    ByRef aKey As Byte, ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByRef aInitV As Byte) As Long
+    
+Public Declare Function DES_FileHex Lib "diCryptoSys" _
+    (ByVal sFileOut As String, ByVal sFileIn As String, _
+    ByVal sHexKey As String, ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByVal sHexIV As String) As Long
+    
+Public Declare Function DES_Init Lib "diCryptoSys" _
+    (ByRef aKey As Byte, ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByRef aInitV As Byte) As Long
+    
+Public Declare Function DES_InitHex Lib "diCryptoSys" _
+    (ByVal sHexKey As String, ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByVal sHexIV As String) As Long
+    
+Public Declare Function DES_Update Lib "diCryptoSys" _
+    (ByVal hContext As Long, ByRef aData As Byte, ByVal lngDataLen As Long) As Long
+    
+Public Declare Function DES_UpdateHex Lib "diCryptoSys" _
+    (ByVal hContext As Long, ByVal sHexString As String) As Long
+    
+Public Declare Function DES_Final Lib "diCryptoSys" _
+    (ByVal hContext As Long) As Long
+    
+' TRIPLE DATA ENCRYPTION ALGORITHM (TDEA) BLOCK CIPHER
+    
+Public Declare Function TDEA_Hex Lib "diCryptoSys" _
+    (ByVal sOutput As String, ByVal sInput As String, _
+    ByVal sHexKey As String, ByVal bEncrypt As Boolean) As Long
+    
+Public Declare Function TDEA_HexMode Lib "diCryptoSys" _
+    (ByVal sOutput As String, ByVal sInput As String, _
+    ByVal sHexKey As String, ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByVal sHexIV As String) As Long
+    
+Public Declare Function TDEA_Bytes Lib "diCryptoSys.dll" _
+    (ByRef aResult As Byte, ByRef aData As Byte, ByVal lngDataLen As Long, _
+    ByRef aKey As Byte, ByVal bEncrypt As Boolean) As Long
+    
+Public Declare Function TDEA_BytesMode Lib "diCryptoSys.dll" _
+    (ByRef aResult As Byte, ByRef aData As Byte, ByVal lngDataLen As Long, _
+    ByRef aKey As Byte, ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByRef aInitV As Byte) As Long
+    
+Public Declare Function TDEA_File Lib "diCryptoSys" _
+    (ByVal sFileOut As String, ByVal sFileIn As String, _
+    ByRef aKey As Byte, ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByRef aInitV As Byte) As Long
+    
+Public Declare Function TDEA_FileHex Lib "diCryptoSys" _
+    (ByVal sFileOut As String, ByVal sFileIn As String, _
+    ByVal sHexKey As String, ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByVal sHexIV As String) As Long
+    
+Public Declare Function TDEA_Init Lib "diCryptoSys" _
+    (ByRef aKey As Byte, ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByRef aInitV As Byte) As Long
+    
+Public Declare Function TDEA_InitHex Lib "diCryptoSys" _
+    (ByVal sHexKey As String, ByVal bEncrypt As Boolean, _
+    ByVal sMode As String, ByVal sHexIV As String) As Long
+    
+Public Declare Function TDEA_Update Lib "diCryptoSys" _
+    (ByVal hContext As Long, ByRef aData As Byte, ByVal lngDataLen As Long) As Long
+
+Public Declare Function TDEA_UpdateHex Lib "diCryptoSys" _
+    (ByVal hContext As Long, ByVal sHexString As String) As Long
+    
+Public Declare Function TDEA_Final Lib "diCryptoSys" _
+    (ByVal hContext As Long) As Long
+    
+' SECURE HASH ALGORITHM 1 (SHA-1) HASH FUNCTION
+
+Public Declare Function SHA1_StringHexHash Lib "diCryptoSys" _
+    (ByVal sDigest As String, ByVal sMessage As String) As Long
+
+Public Declare Function SHA1_FileHexHash Lib "diCryptoSys" _
+    (ByVal sDigest As String, ByVal sFilename As String, ByVal sMode As String) As Long
+
+Public Declare Function SHA1_BytesHexHash Lib "diCryptoSys" _
+    (ByVal sDigest As String, ByRef aByteArray As Byte, ByVal lngLength As Long) As Long
+
+Public Declare Function SHA1_Init Lib "diCryptoSys" () As Long
+
+Public Declare Function SHA1_AddString Lib "diCryptoSys" _
+    (ByVal hContext As Long, ByVal sMessage As String) As Long
+
+Public Declare Function SHA1_AddBytes Lib "diCryptoSys" _
+    (ByVal hContext As Long, ByRef aByteArray As Byte, ByVal lngLength As Long) As Long
+
+Public Declare Function SHA1_HexDigest Lib "diCryptoSys" _
+    (ByVal sDigest As String, ByVal hContext As Long) As Long
+    
+Public Declare Function SHA1_Reset Lib "diCryptoSys" _
+    (ByVal hContext As Long) As Long
+
+Public Declare Function SHA1_Hmac Lib "diCryptoSys" _
+    (ByVal sDigest As String, ByRef aByteArray As Byte, ByVal lngLength As Long, _
+    ByRef aKeyArray As Byte, ByVal lngKeyLen As Long) As Long
+    
+' SECURE HASH ALGORITHM (SHA-256) HASH FUNCTION
+
+Public Declare Function SHA2_StringHexHash Lib "diCryptoSys" _
+    (ByVal sDigest As String, ByVal sMessage As String) As Long
+
+Public Declare Function SHA2_FileHexHash Lib "diCryptoSys" _
+    (ByVal sDigest As String, ByVal sFilename As String, ByVal sMode As String) As Long
+
+Public Declare Function SHA2_BytesHexHash Lib "diCryptoSys" _
+    (ByVal sDigest As String, ByRef aByteArray As Byte, ByVal lngLength As Long) As Long
+
+Public Declare Function SHA2_Init Lib "diCryptoSys" () As Long
+
+Public Declare Function SHA2_AddString Lib "diCryptoSys" _
+    (ByVal hContext As Long, ByVal sMessage As String) As Long
+
+Public Declare Function SHA2_AddBytes Lib "diCryptoSys" _
+    (ByVal hContext As Long, ByRef aByteArray As Byte, ByVal lngLength As Long) As Long
+
+Public Declare Function SHA2_HexDigest Lib "diCryptoSys" _
+    (ByVal sDigest As String, ByVal hContext As Long) As Long
+    
+Public Declare Function SHA2_Reset Lib "diCryptoSys" _
+    (ByVal hContext As Long) As Long
+
+Public Declare Function SHA2_Hmac Lib "diCryptoSys" _
+    (ByVal sDigest As String, ByRef aByteArray As Byte, ByVal lngLength As Long, _
+    ByRef aKeyArray As Byte, ByVal lngKeyLen As Long) As Long
+
+' VERSION 2 X9.31/X9.17 (RNG) RANDOM NUMBER GENERATOR
+
+Public Declare Function RNG_KeyGenerate Lib "diCryptoSys.dll" _
+    (ByRef aKey As Byte, ByVal lngKeyLen As Long, _
+    ByVal strSeed As String, ByRef lngCheck As Long, _
+    ByVal lngFlags As Long) As Long
+
+Public Declare Function RNG_KeyGenHex Lib "diCryptoSys.dll" _
+    (ByVal sHexKey As String, ByVal lngKeyBytes As Long, _
+    ByVal strSeed As String, ByRef lngCheck As Long, _
+    ByVal lngFlags As Long) As Long
+
+Public Declare Function RNG_Test Lib "diCryptoSys.dll" _
+    (ByVal sFilename As String) As Long
+    
+Public Declare Function RNG_Nonce Lib "diCryptoSys.dll" _
+    (ByRef aNonce As Byte, ByVal lngNonceLen As Long, _
+    ByVal strSeed As String) As Long
+
+Public Declare Function RNG_NonceHex Lib "diCryptoSys.dll" _
+    (ByVal sHexData As String, ByVal lngNonceLen As Long, _
+    ByVal strSeed As String) As Long
+
+Public Declare Function RNG_Long Lib "diCryptoSys.dll" _
+    (ByVal lngLower As Long, ByVal lngUpper As Long, _
+    ByVal strSeed As String) As Long
+
+' VERSION 1 ("Gutmann") RANDOM NUMBER GENERATOR
+
+Public Declare Function RAN_KeyGenerate Lib "diCryptoSys.dll" _
+    (ByRef aKey As Byte, ByVal lngKeyLen As Long, _
+    ByVal bPromptUser As Boolean) As Long
+
+Public Declare Function RAN_KeyGenHex Lib "diCryptoSys.dll" _
+    (ByVal sHexKey As String, ByVal lngKeyBytes As Long, _
+    ByVal bPromptUser As Boolean) As Long
+
+Public Declare Function RAN_DESKeyGenerate Lib "diCryptoSys.dll" _
+    (ByRef aKey As Byte, ByVal bPromptUser As Boolean) As Long
+
+Public Declare Function RAN_DESKeyGenHex Lib "diCryptoSys.dll" _
+    (ByVal sHexKey As String, ByVal bPromptUser As Boolean) As Long
+
+Public Declare Function RAN_TDEAKeyGenerate Lib "diCryptoSys.dll" _
+    (ByRef aKey As Byte, ByVal bPromptUser As Boolean) As Long
+
+Public Declare Function RAN_TDEAKeyGenHex Lib "diCryptoSys.dll" _
+    (ByVal sHexKey As String, ByVal bPromptUser As Boolean) As Long
+
+Public Declare Function RAN_Test Lib "diCryptoSys.dll" _
+    (ByVal sFilename As String) As Long
+    
+Public Declare Function RAN_Seed Lib "diCryptoSys.dll" _
+    (ByRef abytSeed As Byte, ByVal lngSeedLen As Long, _
+    ByVal bPromptUser As Boolean) As Long
+
+Public Declare Function RAN_Nonce Lib "diCryptoSys.dll" _
+    (ByRef abytNonce As Byte, ByVal lngNonceLen As Long) As Long
+
+Public Declare Function RAN_NonceHex Lib "diCryptoSys.dll" _
+    (ByVal sHexData As String, ByVal lngNonceLen As Long) As Long
+
+Public Declare Function RAN_Long Lib "diCryptoSys.dll" _
+    (ByVal lngLower As Long, ByVal lngUpper As Long) As Long
+
+' ZLIB COMPRESSION FUNCTIONS
+
+Public Declare Function ZLIB_Deflate Lib "diCryptoSys.dll" _
+    (ByRef abOutput As Byte, ByVal lngOutputLen As Long, _
+    ByRef abInput As Byte, ByVal lngInputLen As Long) As Long
+    
+Public Declare Function ZLIB_Inflate Lib "diCryptoSys.dll" _
+    (ByRef abOutput As Byte, ByVal lngOutputLen As Long, _
+    ByRef abInput As Byte, ByVal lngInputLen As Long) As Long
+
+

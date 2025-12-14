@@ -1,0 +1,53 @@
+package switchsim;
+
+import java.awt.*;
+import javax.swing.*;
+import com.borland.jbcl.layout.*;
+import java.awt.event.*;
+import java.util.*;
+import java.lang.*;
+
+public class Dialog5 extends JDialog {
+
+  JPanel panel1 = new JPanel();
+  ImageIcon image1;
+
+  public Dialog5(Frame frame, String title, boolean modal) {
+    super(frame, title, modal);
+    try {
+      jbInit();
+      pack();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  public Dialog5() {
+    this(null, "Detail of Serie", true);
+  }
+
+  void jbInit() throws Exception {
+    image1 = new ImageIcon(switchsim.Frame1.class.getResource("series.jpg"));
+    panel1.setLayout(xYLayout1);
+    panel1.setBackground(Color.white);
+    panel1.setBorder(BorderFactory.createEtchedBorder());
+    panel1.setMinimumSize(new Dimension(600, 325));
+    panel1.setPreferredSize(new Dimension(600, 325));
+    panel1.setRequestFocusEnabled(false);
+    this.setEnabled(false);
+    this.setTitle("");
+    jLabel1.setIcon(image1);
+    this.getContentPane().add(panel1, BorderLayout.CENTER);
+    panel1.add(jLabel1,   new XYConstraints(0, 0, 600, 325));
+  }
+  protected void processWindowEvent(WindowEvent e) {
+    super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+      this.dispose();
+    }
+  }
+  JLabel jLabel1 = new JLabel();
+  XYLayout xYLayout1 = new XYLayout();
+
+} // end class

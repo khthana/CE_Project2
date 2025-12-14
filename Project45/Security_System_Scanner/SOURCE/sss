@@ -1,0 +1,1298 @@
+
+#!/usr/bin/perl -l  
+
+#Security System Scanner  By Ms.Wanna Pisitpinyo 42010309 CE.KMITL, Ms.Parnsiri Ngammaneewat 42010220 CE.KMITL
+
+use Text::ParseWords;
+use Text::Abbrev;
+use Search::Dict;
+use Text::Wrap;
+use File::Basename;
+use DBI;
+$Text::Wrap::columns=70;
+
+#-----------------------------------------------------------
+# 1. unowned files         ( can't specific who is ownner of file )
+# 2. symbolic link         ( owner is not Root but file link to root files owner )
+# 3. SUID/SGID             ( /usr /var )
+# 4. world-writeable       ( files that other can write except /dev /tmp /proc /var and owner is root )
+# 5. /etc/securetty
+# 6. check xinetd
+# 7. check lilo password
+# 8. crack passwd/shadow   ( write program crack password/shadow by use Dictionnary <use user profile> )
+# 9. check .rhosts
+#10. check .bash_history
+#11. check service
+#12. check root ftpuser
+#-----------------------------------------------------------
+
+#---------------1. unowned files----------------------------
+sub unowned{
+print ("Checking unowned files .......... ");
+open(TEMP,">unowned.tmp");
+open(PIPEFROM,"find / \\( -nouser -o -nogroup \\) -ls | ");
+
+  	@line = <PIPEFROM>;
+   	print TEMP @line;
+close PIPEFROM;
+close TEMP;
+   	if (-s "unowned.tmp")
+   	{
+	 	$sentence = "<*****>\t You have unowned file ( file that don't know who is owner (userid or groupid)) We recommend you should delete or change owner file (chown (uid/gid) filename) Please look at [unowned.tmp]\n ";
+    		print OUTPUT wrap("> ","> ",$sentence) ;
+
+    		print LOG wrap("> ","> ",$sentence) ;
+		open(TEMPP,"unowned.tmp");
+		while(<TEMPP>)
+		{
+			$line=$_;
+			chomp($line);    #---cut \n
+    		   	print LOG $line ;
+                }
+		close TEMPP;
+
+  	}
+}
+#---------------2. symbolic link----------------------------
+sub symbolic {
+print ("Checking symbolic link .......... ");
+open(TEMP,">tmpsymbolic");
+open(PIPEFROM," find / -type l | ");
+  	@line = <PIPEFROM>;
+   	print TEMP @line;
+close PIPEFROM;
+close TEMP;
+
+open(TEMP3,">symbolic.tmp");   						#-----------files output " symbolic.tmp "
+open(TEMP2,"<tmpsymbolic");      					#------------read tmpsymbolic for check owner file
+     	while(<TEMP2>)
+	{
+    		$line = $_  ;             				#-------------get each line in file
+        	chomp($line);        					#-------------cut new line
+		$flagerror =0;
+		$endlink ="";
+		if ($line ne "")			#-------------cause last line of file is "" can't use it
+             	{
+			$startlink = ($line);
+                        
+			if ($startlink !~ /\/proc/)     #-------------not check from /proc 
+			{
+                       	 			
+                        while ($flagerror ==0)
+			{
+				if ((-e readlink($startlink))&& (! -l readlink($startlink))) 
+				{
+					$endlink = readlink($startlink);
+					last;
+				}
+
+				elsif (-l readlink($startlink))   #-----case  a-->b-->c 
+				{
+					$startlink = readlink($startlink);
+
+					if (substr($startlink,0,1) ne "/")
+					{	$name= dirname($line)."/"."$startlink";}
+					else {$name = $startlink;}				
+	
+					$startlink = $name;
+					if ($name eq "$line")    #-----case  a-->b-->a ( loop)  
+					{
+						$flagerror = 1;
+						print TEMP3 $line."\t\t loop link ";
+						last;
+					}
+				}
+				else 
+					{
+						if ((! -e $startlink)&& (! -f $startlink))
+						{	
+							$flagerror =1;
+							$endlink = readlink($startlink);	#						print "$startlink $endlink  linkerror";  # 
+							print TEMP3 $line."\t\t badlink";
+							last;
+						}
+						else { $endlink = readlink($startlink);last;}
+					}
+			} 
+
+                 	if (( -e "$endlink")&&($flagerror ==0))
+                  	{
+              
+				$uid= (lstat($line))[4];
+		 		if ($uid == 0 )
+				{
+                         		$mode = (lstat($endlink))[2] & 07777;#----get permission files linked to
+					
+					$check_end_uid= (lstat($endlink))[4]  ;  
+
+                         		if ($mode & 2)  		     #----check files linked is world writable
+					{ 	print TEMP3 $line."\t\t root -----> world writeable";}#-----write files to output
+					
+					elsif ($check_end_uid != 0)   	     #---- check root link to non-root
+					{	print TEMP3 $line."\t\t root ----->noneroot";}
+                 		}
+
+                		elsif ($uid != 0 )			     #----check nonroot link to root 
+		    		{
+		                  	if ((lstat($endlink))[4] == 0 )
+			  		{ 	print TEMP3 $line."\t\t noneroot ----->to root";} #-----and write this file to symbolic.tmp
+                     		        else {}
+				}
+				else{}
+
+			}							#--------if (-e )
+			else {};
+
+		} 								#------ if not /proc       	
+	}									#-------if ($line ne "")
+    	} 									#------while
+close TEMP3;
+close TEMP2;
+	if (-s "symbolic.tmp") 							#------if file have size
+    	{
+		$sentence = "<*****>\t You have symbolic file Hole.This symbolic files link to world-writeable or link to root's files Please look at [symbolic.tmp]\n " ;
+    		print OUTPUT wrap("> ","> ",$sentence) ;
+
+    		print LOG wrap("> ","> ",$sentence) ;
+		open(TEMPP,"symbolic.tmp");
+		while(<TEMPP>)
+		{
+			$line=$_;
+			chomp($line);    #---cut \n
+    		   	print LOG $line ;
+                }
+		close TEMPP;
+    	}
+}
+#--------------3. SUID/SGID---------------------------------
+sub suid{
+print ("Checking SUID/SGID .......... ");
+open(TEMP,">tempsuidsgid");
+open(PIPEFROM,"find / \\( -perm -2000 -o -perm -4000 \\) -uid 0 | ");
+ 	@line = <PIPEFROM>;
+   	print TEMP @line;
+      
+close PIPEFROM;
+close TEMP;
+
+open(OUTSUID,">suidsgid.tmp");
+open(TEMP2,"<tempsuidsgid");
+	while (<TEMP2>)
+	{
+		$line =$_;
+		chomp($line);
+
+		CASE :{
+ 			($line eq "/bin/mount")&& do
+			{	$outsuid ="[/bin/mount]\n\t mount is suid-root to allow ordinary users to munt floppy and CD-ROM drives.If your users won't be at console,or won't be using floppies/CD-ROM's, you can deactivate set-uid,like this: chmod u-s /bin/mount\n" ;					
+				print OUTSUID wrap("> ","> ",$outsuid);
+				last CASE;
+               		
+				
+			};
+
+			($line eq "/bin/ping")&& do
+			{
+			        $outsuid= "[/bin/ping]\n\t ping is suid-root to allow users to test network connectivity. You can generally restrict ping to root only, as only the system administrator should need to test or tweak network connectivity. (chmod u-s /bin/ping)\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+
+				last CASE;
+			};
+
+			($line eq "/bin/su")&& do
+			{
+				$outsuid= "[/bin/su]\n\t su is set-uid so that ordinary users can switcj to root. You should generally leave the set-uid bit on, here, though you could make this executable only by the wheel group .This is customary on many old Unix systems and the wheel group already exists in /etc/group.\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+
+
+				last CASE;
+			};
+			($line eq "/bin/umount")&& do
+			{
+				$outsuid= "[/bin/umount]\n\t umount is suid-root to allow users to unmount floppies and CD-ROM's\n ";
+				print OUTSUID wrap("> ","> ",$outsuid);
+
+
+				last CASE;
+			};
+			($line eq "/sbin/dump")&& do
+			{
+				$outsuid="[/sbin/dump]\n\t Dump is a backup tool that should really only be used by the sysadmin. It really should never have had suid status! If it can be used at all by junoir people, it could be used to look at files not normally accessible to every user. This is a common problem on Linux/Unix systems, where a vendor was probably trying to be helpful. If you need your junior admins ( who dont have root ) to be able to run this, consider using sudo instead! for now, chmod u-s /sbin/dump.\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+
+				last CASE; 
+			};
+			($line eq "/sbin/pwdb_chkpwd")&& do  #----------------look it again I don't this decribetion
+			{
+				$outsuid="[/sbin/pwdb_chkpwd]\n\t There's no man page for this. It seems like it is probably part of PAM, but since we can't find information on it, we'll have to leave it alone for now. Unfortunately,as Garfinkel and Spafford describe in Practical Unix and Internet Security, ther are many O/S's where this is a fact of the suid-root audit: sometimes, you just don't know what the program does! You might check the source or run a deja.com UseNet archive search. In my case, I'm just leaving this one alone.\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+
+
+				last CASE;
+			};
+			($line eq "/sbin/restore")&& do
+			{
+				$outsuid="[/sbin/restore]\n\t Restore is dump's counterpart.\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+				last CASE;
+			};
+			($line eq "/sbin/unix_chkpwd")&& do
+			{
+				$output="[/sbin/unix_chkpwd]\n\t Again, there's no man page for this and it looks like part of PAM.\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+				last CASE;
+			};
+			($line eq "/usr/X11R6/bin/Xwrapper")&& do
+			{
+				$output="[/usr/X11R6/bin/Xwapper]\n\t Xwrapper seems to be the script that runs your particular X server. Your X Server needs to run set-uid root, so that it can take over your screen.\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+
+				last CASE;
+			};
+			($line eq "/usr/bin/at")&& do
+			{	
+				$outsuid= "[/usr/bin/at]\n\t at is used to schedule a command to run later - unfortunately, at has had a rich history of problems. Fortunately, you really can achieve the same functionality with cron! Turn off set-uid on this - even better, deactivate the atd service:(chmod u-s /usr/bin/at ; chkconfig atd off)\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+
+			
+				last CASE;
+			};
+			($line eq "/usr/bin/chage")&& do
+			{
+				$outsuid="[/usr/bin/chage]\n\t This program is used to set/read password-aging information. It would never be used by users, except that it can tell a user how much longerthey've got until their password expires. I, being paranoid, would deactivate set-uid on this one, since users get an e-mail when their password gets near expiring. This program is especially useless to users when you're not enforcing password aging.\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+
+				last CASE;
+			};
+			($line eq "/usr/bin/chfn")&& do
+			{
+				$outsuid = "[/usr/bin/chfn]\n\t This program is used to change your \"finger\" information. As it writes to the /etc/passwd file, it needs suid to work for any user other than root. If you don't want your users changing their finger information, have no users or are feeling paranoid/grumpy, chmod u-s /usr/bin/chfn. Don't discount the first reason: some sites use the finger information to keep better track of their users!\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+
+
+				last CASE;
+			};
+			($line eq "/usr/bin/chsh")&& do
+			{
+				$outsuid="[/usr/bin/chsh]\n\t chsh lets a user change their shell, by rewriting the last column of their /etc/passwd entry. If you lock all your users to one shell, or have no users, or are feeling very paranoid, chmod u-s /usr/bin/chsh.\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+
+		
+				last CASE;
+			};
+			($line eq "/usr/bin/crontab")&& do
+			{
+				$outsuid="[/usr/bin/crontab]\n\t crontab allows a user to schedule ( possibly repetitive ) jobs for later execution. If you, as many admins, don't want your users touching cron for security-reasons, rip suid away!\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+				last CASE;
+			};
+			($line eq "/usr/bin/gpasswd")&& do
+			{
+				$outsuid = "[/usr/bin/gpasswd]\n\t Much like passwd, gpasswd lets your users change the group passwords in /etc/group or /etc/gshadow. If you're like most admins and don't use group passwords, strip suid away.\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+				last CASE;
+			};
+
+                        ($line eq "/usr/bin/lpd")&& do 
+			{	
+				$outsuid = "[/usr/bin/lpd]\n\t These are the printing utilities. If you don't print from this machine, turn suid off. Otherwise, you really should leave suid on here!\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+				last CASE;
+			};
+                        ($line eq "/usr/bin/lpr")&& do 
+			{	
+				$outsuid = "[/usr/bin/lpr]\n\t These are the printing utilities. If you don't print from this machine, turn suid off. Otherwise, you really should leave suid on here!\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+
+				last CASE;
+			};
+                        ($line eq "/usr/bin/lprm")&& do 
+			{	
+				$outsuid = "[/usr/bin/lprm]\n\t These are the printing utilities. If you don't print from this machine, turn suid off. Otherwise, you really should leave suid on here!\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+				last CASE;
+			};
+
+                      
+			($line eq "/usr/bin/passwd")&& do
+			{
+				$outsuid="[/usr/bin/passwd]\n\t As we saw before, this allows ordinary users to change their password. It needs root privilege to write to the /etc/password. Unless you have no users, leave suid on!\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+				last CASE;
+			};
+			($line eq "/usr/bin/procmail")&& do
+			{
+				$outsuid="[/usr/bin/procmail]\n\t While procmail is used by user to sort/act on incoming e-mail. On Sendmail-based Linux systems, it is also the local delivery agent and needs to run as root.(Sendmail runs as root , but drops privilege before it calls the delivery agent.) Unless you recieve no mail on this host, please don't turn suid off.\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+				last CASE;
+			};
+			($line eq "/usr/bin/rcp")&& do 
+			{
+				$outsuid="[/usr/bin/rcp]\n\t These require root to bind to a low port (<1024). You really,really,really shouldn't be using these as they are dreadfully insecure and are easily replaced by ssh and scp. Definitely deactivate these ! ( chmod 0000 /usr/bin/rcp)\n";			
+				print OUTSUID wrap("> ","> ",$outsuid);
+				last CASE;
+			};
+			($line eq "/usr/bin/rlogin")&& do 
+			{
+				$outsuid="[/usr/bin/rlogin]\n\t These require root to bind to a low port (<1024). You really shouldn't be using these as they are dreadfully insecure and are easily replaced by ssh and scp. Definitely deactivate these ! ( chmod 0000 /usr/bin/rlogin)\n";			
+				print OUTSUID wrap("> ","> ",$outsuid);
+	
+				last CASE;
+			};
+			($line eq "/usr/bin/rsh")&& do 
+			{
+				$outsuid="[/usr/bin/rsh]\n\t These require root to bind to a low port (<1024). You really shouldn't be using these as they are dreadfully insecure and are easily replaced by ssh and scp. Definitely deactivate these ! ( chmod 0000 /usr/bin/rsh)\n";			
+				print OUTSUID wrap("> ","> ",$outsuid);
+	
+				last CASE;
+			};
+		
+			($line eq "/usr/bin/libexec_ptchown")&& do 
+			{
+				$outsuid="[/usr/bin/libexec_ptchown]\n\t This is another program that could use a man page. Some discussion on the Linux Security Audit showned that this was used by terminal programs and the like to grab pty's. You should probably leave this alone.\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+
+				last CASE;
+			};
+			($line eq "/usr/sbin/sendmail")&& do
+			{
+				$outsuid="[/usr/sbin/sendmail]\n\t sendmail has to be suid root to allow ordinary users to send mail. If you have no users, or don't want them to send mail, turn this off. I highly recommend that you leave this on, though, as e-mail is core Internet technology.\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+
+				last CASE;
+			};
+			($line eq "/usr/sbin/traceroute")&& do
+			{
+				$outsuid="[/usr/sbin/traceroute]\n\t traceroute uses UDP packets of progressively lower Time-To-Live(TTL) values to find the router path between hosts. As admins should probably be the only one testing network connectivity, it should be fairly safe to deactivate suid. (chmod u-s /usr/sbin/traceroute)\n";	
+				print OUTSUID wrap("> ","> ",$outsuid);
+
+				last CASE;
+			};	
+			
+
+			($line eq "/usr/sbin/userhelper")&& do
+			{
+				$outsuid="[/usr/sbin/userhelper]\n\t userhelper allows a user to change their own passwd(like passwd), finger info ( like chfn) and shell (like chsh), but it is run through a GUI tool. I suggest killing this off, as it had a resent root vulnerability and it duplicates existing commands. If you can find it on the web, check out userrooter, which can easily give any ordinary user a root shell by exploiting bad parameter-checking in PAM/userhelper.\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+
+				last CASE;
+			};
+			($line eq "/usr/sbin/usernetctl")&& do 
+			{
+				$outsuid="[/usr/sbin/usernetctl]\n\t usernetctl allows ordinary users, if they're permitted by config files, to bring up/down the network interfaces. I honestly believe that root should be the only one affecting network interfaces. While some might argue that ppp links, often restartedn should be touched by users, I think this fail on a multi-user , nulti-login system. Make your own call! ( chmod u-s /usr/sbin/usernetctl)\n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+
+				last CASE;
+			};
+			
+			($line ne "")&& do {
+				$outsuid= "[$line]\t\t have set-uid \n";
+				print OUTSUID wrap("> ","> ",$outsuid);
+			
+			   }; 
+		}  						#----- end case 		 
+
+        } 							#----- end while
+close TEMP2;
+close OUTSUID;
+  	if (-s "suidsgid.tmp")
+  	{
+		$sentence =  "<*****>\t You have SUID/SGID Hole. All suid/sgid program is dangerous. Please remove S bit (chmod a-s filename) from program that\n 1. You never use.\n 2. You don't want any non-root users to run.\n 3. You use occasionally, and don't mind having to su to root to run.  Please look at [suidsgid.tmp]\n " ;
+    		print OUTPUT wrap("> ","> ",$sentence) ;
+
+    		print LOG wrap("> ","> ",$sentence) ;
+		open(TEMPP,"suidsgid.tmp");
+		while(<TEMPP>)
+		{
+			$line=$_;
+			chomp($line);    #---cut \n
+    		   	print LOG $line ;
+                }
+		close TEMPP;
+
+        }
+}  								#---- end sub
+
+ #--------------4. World-Writable ---------------------------
+sub world{
+print ("Checking World-Writeable .......... ");
+
+open(TEMP,">world.tmp");
+open(PIPEFROM," find / \\( -perm -2 ! -type l -uid 0 \\) -ls | ");
+	while (<PIPEFROM>)
+	{	
+		$line = $_;
+		chomp($line);	
+	
+		if (($line !~ /\/dev/)&&($line !~ /\/proc/))   
+		{ 	print TEMP $line;}
+  	}
+close PIPEFROM;
+close TEMP;
+	if ( -s "world.tmp")
+	{ 	$sentence =  "<*****>\t You have world-writeable file. You shouldn't have more bcz it is a hole someone can write something in this file. Remove it by (chmod o-w filename). Please look at [world.tmp]\n" ;
+    		print OUTPUT wrap("> ","> ",$sentence) ;
+
+    		print LOG wrap("> ","> ",$sentence) ;
+		open(TEMPP,"world.tmp");
+		while(<TEMPP>)
+		{
+			$line=$_;
+			chomp($line);    #---cut \n
+    		   	print LOG $line ;
+                }
+		close TEMPP;
+	}
+}
+#--------------------------------------- 5. check /etc/securetty
+sub securetty{
+print"Checking /etc/securetty...";
+open(GETTTY,">securetty.tmp");
+open(TEMP,"</etc/securetty") or die "Can't read /etc/securetty : $! \n";
+  	while(<TEMP>)
+ 	{
+    		$line = $_;
+    		chomp($line);
+
+    		@tty= &shellwords($line)  	;
+    		$i=0;
+    		foreach(@tty)
+     		{     						#------- =~/ttyp/
+			if (($tty[$i] =~ /ttyp/ ) && ($i==0) && ($tty[$i] !~ /\#ttyp/ ))#case ttyp* and must not have "#"
+         		{
+				print GETTTY $tty[$i] ;		#---- print unsecure tty to securetty.tmp
+	 		}
+        		$i=$i+1;
+    		}
+  	}
+close TEMP;
+close GETTTY;
+    	if (-s "securetty.tmp")      
+    	{ 
+		$sentence = "<*****>\t Please look at /etc/securetty you should not permit root login with ttyp*.Please look at [securetty.tmp]\n";
+    		print OUTPUT wrap("> ","> ",$sentence) ;
+
+    		print LOG wrap("> ","> ",$sentence) ;
+		open(TEMPP,"securetty.tmp");
+		while(<TEMPP>)
+		{
+			$line=$_;
+			chomp($line);    #---cut \n
+    		   	print LOG $line ;
+                }
+		close TEMPP;
+   	}
+}
+#-------------------------------------------6.Check Xinetd
+sub xinetd{
+print "Checking Xinetd...";
+$dirname = "/etc/xinetd.d";                         			#-----set path xinetd.d
+open(XINETD,">xinetd.tmp");
+opendir(DIR,$dirname) or die "Can't open $dirname : $!\n";
+	@files=readdir(DIR);                               		#----read file in dir
+closedir(DIR);
+
+	foreach $file (@files) 
+	{								#  $file is filename of service in xinetd
+		if (($file eq ".")||($file eq ".."))	
+			{	
+				next; 	
+			}
+      		open(TEMP,"</etc/xinetd.d/$file");
+    		$check = 0;
+		while(<TEMP>)
+		{
+			$line =$_;
+			chomp($line);
+			@words=&shellwords($line);			#----function cut word for each line
+			$i=0;
+			foreach(@words)
+			{
+
+				if (($_ eq "disable")&&($words[$i+2] eq "no")&&($words[0] ne "#"))	#-disable is "no" mean service is open 
+                        		{ $check = 1 ;}
+				elsif (($_ eq "disable")&&($words[$i+2] eq "yes")&&($words[0] ne "#"))
+                            		{ $check = 2 ;}
+				$i++;
+			}	  
+		} #---while
+
+       		if(($check ==1)||($check ==0)) #---if not have "disable" or have "disable no "
+		{ 
+			CASE :{
+	  			($file eq "bootp")&& do
+				{
+					$out= "service [bootp] : used for bootp services. We recommend disabling it unless you are running a bootp server. \n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                 		};
+	  			($file eq "bootps")&& do
+				{
+					$out= "service [bootps] : used for bootps services. We recommend disabling it unless you are running a bootp server.\n ";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                 		};
+			  	($file eq "comsat")&& do
+				{
+					$out= "service [comsat] : used for imcoming mail notification via biff. We recommend disabling it unless you rely heavily on biff. \n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+			  	($file eq "echo")&& do
+				{
+					$out= "service [echo]: These services are used largely unnecessary. We recommend disabling them.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+			  	($file eq "echo-udp")&& do
+				{
+					$out= "service [echo-udp] : These services are used largely unnecessary. We recommend disabling them.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+			  	($file eq "daytime")&& do
+				{
+					$out= "service [daytime] : These services are used largely unnecessary. We recommend disabling them.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+			  	($file eq "daytime-udp")&& do
+				{
+					$out= "service [daytime-udp] : These services are used largely unnecessary. We recommend disabling them. \n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+			  	($file eq "discard")&& do
+				{
+					$out= "service [discard]: These services are used largely unnecessary.	We recommend disabling them.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+			  	($file eq "chargen")&& do
+				{
+					$out= "service [chargen]: These services are used largely for testing and are unnecessary. We recommend disabling them. \n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+			  	($file eq "chargen-udp")&& do
+				{
+					$out= "service [chargen-udp]: These services are used largely for testing and are unnecessary. We recommend disabling them.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+			  	($file eq "exec")&& do
+				{
+					$out= "service [exec]: allow remote users to execute command on a host without needing to login.Exposes remote user passwords on the network, thus highly insecure. We recommend disabling the service.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+	  			($file eq "finger")&& do
+				{
+					$out= "service [finger]: allow remote users to use the finger utility to obtain information about arbitrary users on host. Considered highly insecure. We recommend disabling the service or using a more secure version such as cfinger.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                           	};
+			  	($file eq "ftp")&& do
+				{
+					$out= "service [ftp]: allows remote users to transfer files to/from a host using ftp. Since user passwords are easily sniffable ( they are trasmitted over the wire in cleartext ), We recommend disabling the service ans using instead a secure file transfer mechanism which encrypts the entire session ( such as kerberized ftpd or SSH ). If ftp access is a must, the service should be wrapped.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+			  	($file eq "login")&& do
+				{
+					$out= "service [login] : allows remote users to use the Berkelery rlogin utility to log in to a host supplying a password ( vis the .rhosts mechanism ). Considered highly insecure. We recommend disabling the service and using SSH instead. If rlogin access is a must, the service should be wrapped. \n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+				($file eq "netstat")&& do
+				{
+					$out= "service [netstat] : designed to provide network status information about a host to remote hosts. Considered a potential security hazard. We recommend disabling the service. \n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+			  	($file eq "shell")&& do
+				{
+					$out= "service [shell] : allows remote users to run arbitrary commands on a host via the Berkelery rsh utility ( via the trusted hosts mechanism using the .rhosts file ). Considered highly insecure. We recommend disabling the service and using SSH instead. If rsh access is a must, the service should be wrapped. \n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+	  			($file eq "systat")&& do
+				{
+					$out= "service [systat] : design to provide status information about a host. Considered a potential security hazard. We recommend disabling the service. \n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+			  	($file eq "telnet")&& do
+				{
+					$out= "service [telnet] : allows remote users to connect to a host via telnet. Since user passwords are trasmitted over the wire in plain text and can therefore be easily sniffed, We recommend disabling the service and using instead a secure terminal access mechanism which encrypts the entire session ( such as kerberized telnetd or sshd ). If telnet access is a must, the service should be wrapped.\n ";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+			  	($file eq "tftp")&& do
+				{
+					$out= "service [tftp]: allow remote users to transfer files from a host without requiring login. Used primarily by X-terminals and routers. Considered insecure. We recommend disabling the service. If tftp access is desired, we recommend that the \"-s\" option be used and that the service be wrapped.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+				($file eq "talk")&& do
+				{
+					$out= "service [talk] : allows remote users to use talk to have a real time conversation with a user on a host. Considered a security hazard. We recommend disabling the service.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+				($file eq "ntalk")&& do
+				{
+					$out= "service [ntalk] : allows remote users to use talk to have a real time conversation with a user on a host. Considered a security hazard. We recommend disabling the service.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+			  	($file eq "time")&& do
+				{
+					$out= "service [time] : Used for clock synchronization. We recommend disabling the service and using xntp to synchronize your system clock to WWV.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+			  	($file eq "time-udp")&& do
+				{
+					$out= "service [time-udp] : Used for clock synchronization. We recommend disabling the service and using xntp to synchronize your system clock to WWV.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+			  	($file eq "uucp")&& do
+				{
+					$out= "service [uucp] : allows remote users to transfer files to/from a host using the UUCP protocol. Unless you use UUCP, we recommend disabling the service.\n ";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+                             	};
+				($file eq "rsync")&&do
+				{
+				 	$out="service [rsync] : We recommend disabling the service.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+				};
+				($file eq "rstatd")&&do
+				{
+					$out="service [rstatd] : We recommend disabling the service.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+				};
+				($file eq "rsh")&&do
+				{
+				 	$out="service [rsh] : We recommend disabling the service.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+				};
+				($file eq "rlogin")&&do
+				{
+				 	$out="service [rlogin] : We recommend disabling the service.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+				};
+				($file eq "rwalld")&&do
+				{
+				 	$out="service [rwalld] : We recommend disabling the service.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+				};
+				($file eq "rwhod")&&do
+				{
+				 	$out="service [rwhod] : We recommend disabling the service.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+				};
+				($file eq "ruserd")&&do
+				{
+				 	$out="service [ruserd] : We recommend disabling the service.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+				};
+				($file eq "rquatad")&&do
+				{
+				 	$out="service [rquatad] : We recommend disabling the service.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+				};
+				($file eq "rexd")&&do
+				{
+				 	$out="service [rexd] : We recommend disabling the service.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+				};
+				($file eq "walld")&&do
+				{
+				 	$out="service [walld] : We recommend disabling the service.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+				};
+				($file eq "rprayd")&&do
+				{
+				 	$out="service [rprayd] : We recommend disabling the service.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+				};
+				($file eq "rexec")&&do
+				{
+				 	$out="service [rexec] : We recommend disabling the service.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+				};
+				($file eq "ntalk")&&do
+				{
+					$out="service [ntalk] : We recommend disabling the service.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+				};
+				($file eq "linuxconf")&&do
+				{
+				 	$out="service [linuxconf] : We recommend disabling the service.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+				};
+				($file eq "identd")&&do
+				{
+				 	$out="service [identd] : We recommend disabling the service.\n";
+    					print XINETD wrap("> ","> ",$out) ;
+					last CASE;
+				};
+
+	                        do {
+					$out = "service [$file] is open \n";
+    					print XINETD wrap("> ","> ",$out) ;
+
+				   };
+			 }			#-----CASE
+		}				#-----if eq disable
+	}  #----- foreach
+
+close TEMP;
+close XINETD;
+  	if (-s "xinetd.tmp")
+  	{
+		$sentence =  "<*****>\t You open service that run pass /etc/xined.d may be it insecure. Please look instruction at [xinetd.tmp]\n " ;
+    		print OUTPUT wrap("> ","> ",$sentence) ;
+
+    		print LOG wrap("> ","> ",$sentence) ;
+		open(TEMPP,"xinetd.tmp");
+		while(<TEMPP>)
+		{
+			$line=$_;
+			chomp($line);    #---cut \n
+    		   	print LOG $line ;
+                }
+		close TEMPP;
+  	}
+}
+#------------------------------------7.check lilo.conf
+sub lilo{
+print"Checking lilo.conf ....";
+open(TEMP,"</etc/lilo.conf") or die "Can't open /etc/lilo.conf:$!\n ";
+  	$lilosecure = 0;
+   	while(<TEMP>)
+  	{
+    		$line = $_;
+    		chomp($line);
+		@words=&shellwords($line);
+		$i=0;
+		foreach(@words)
+		{
+			if ($words[$i] =~/password=/ ) {$lilosecure = 1;}
+   		        $i=$i+1;
+  		}
+  	}
+   	if ($lilosecure==0)  		#------mean not have set password in lilo.conf
+  	{
+      		$sentence="<*****>\t Your lilo not set password please set password by type \"password=yourpassword\" in [/etc/lilo.conf]\n ";
+    		print OUTPUT wrap("> ","> ",$sentence) ;
+
+    	}
+close TEMP;
+}
+#-----------------------------------8. crackpassword
+sub crack{
+print"Cracking password ..";
+open(CANCRACK,">password.tmp");
+open(pass_file,"</etc/passwd");
+
+$out=0;
+while(<pass_file>)
+{
+  	$line=$_;
+  	chomp($line);              #-----------------entries_password
+
+  	$count=0;
+  	$start=0;
+  	@dict="";
+
+	for($j=0;$j<(length($line)+1);$j++)   #<<<<<<spilt word from : : : and get only username and information
+  	{
+    		if (substr($line,$j,1) eq ":")
+    		{
+			$count=$count+1;
+        		if ($count==1)
+			{
+				$dict[0]=substr($line,0,$j);    #-------------username
+
+				if (((getpwnam($dict[0]))[1] eq "*")||  ((getpwnam($dict[0]))[1] eq "!!"))
+					{ $out=1;}
+				else 	{ $out=0;}
+	     		}
+
+
+			elsif ($count ==2) { $start_uid = $j ;}
+			elsif ($count ==3) { $user_uid = substr($line,$start_uid+1,$j-$start_uid-1);
+					     $start_uid = $j; 
+					   }
+
+			elsif ($count==4 ) { $start=$j;
+
+					     if (($user_uid ==0 )&&($dict[0] ne "root")) #ne
+					     {  print CANCRACK "ALERT!!! username $dict[0] have uid = 0 \n";} 
+
+					   }
+
+        		elsif (($count==5)&&($out==0))
+	     		{
+				$tempstring=substr($line,$start+1,$j-1-$start); #-tempstring content "Ms.Wanna Pisitpinyo"
+				$count2=0;
+				$start2=0;
+  	        		for($x=0;$x<(length($tempstring)+1);$x++) #--"Ms.Wanna Pisitpinyo" -> "Ms.Wanna" "Pisitpinyo"
+		     		{
+					if ((substr($tempstring,$x,1) eq ",")||(substr($tempstring,$x,1) eq " "))
+		 			{
+			       			$count2=$count2+1;
+			       			$dict[$count2]=substr($tempstring,$start2,$x-$start2);
+			       			$start2=$x+1;
+					}
+					elsif ($x==length($tempstring))
+					{
+						$count2=$count2+1;
+						$dict[$count2]=substr($tempstring,$start2,$x);
+                        		}
+		     		}
+	     		}
+     		}
+   	} 				# variable @dict all of word from /etc/passwd to cut word and random
+
+	if($out==0)
+	{
+   		$i=0;
+   		open(WORD2,">/usr/dict/words2");  #---------dictionary random profile user
+   		for($x=0000;$x<3113;$x++)  #---------between 0000-3112(day31 month12)
+   		{	print WORD2 $dict[0]."$x\n";	}
+
+ 		abbrev(*hash, @dict);
+   	 	$checkline = 0 ;
+    		@cutword="";
+    		while (($key)=each %hash)
+   		{
+       			$cutword[$checkline] = $key;
+       			$checkline= $checkline+1;
+   		}
+
+   		for ($a=0;$a<($checkline);$a++)
+   		{
+     			for ($b=0;$b<($checkline);$b++)
+     			{
+      				for ($c=0;$c<($checkline);$c++)
+        			{
+        				$concatword = "$cutword[$a]"."$cutword[$b]"."$cutword[$c]";#-use only word length 5-15 label
+        				if (($a ne $b)&&($a ne $c )&&($b ne $c)&&(length($concatword)<16)&&(length($concatword)>4))
+		   			{
+         					print WORD2 "$cutword[$a]"."$cutword[$b]"."$cutword[$c]" ;
+         					print WORD2 "\n";
+		   			}
+        			}
+      			}
+    		}
+   		close WORD2;
+
+ 		$user = $dict[0];
+ 		print"    Checking for  user : $user..";
+		$encrypted_password = (getpwnam($user))[1]; 	#----get username
+ 		$salt = substr($encrypted_password,0,2); 	#----DES
+
+ 		if ($salt eq "\$1"){	$salt=substr($encrypted_password,0,12);	} #----if = MD5
+ 		$flag=0;
+
+	   	open(WORDS,'/usr/dict/words2') or die "Can't read /usr/dict/words2 :$! \n " ;
+ 	        seek(WORDS,0,0);
+
+ 		while(<WORDS>)
+	    	{
+	 		chomp;
+			if (crypt($_,$salt) eq $ encrypted_password)
+			{
+			    	$flag = 1;  #-- if find password in words2 will set flag to 1
+			    	print CANCRACK "$user\'s password is \"$_\" \n";
+			    	last ;
+	    		}
+ 	     	}
+ 		close WORDS;
+
+  		if ($flag == 0 ) #-----------mean not find password in words2 ( random profile user)
+		{
+      	   		open(WORDS,'/usr/dict/words') or die "Can't read /usr/dict/words :$! \n " ;
+ 	   		seek(WORDS,0,0);
+
+ 	  		while(<WORDS>)
+ 	   		{
+		     		chomp;
+		     		if (crypt($_,$salt) eq $ encrypted_password)
+		       		{
+			    		print CANCRACK "$user\'s password is \"$_\" \n";
+			    		last ;
+        	       		}
+ 			}
+ 	    		close WORDS;
+ 		}  				#---------if ($flag==0)
+	} 				   	#--------if out==0
+}
+
+close pass_file;
+close CANCRACK;
+	if(-s "password.tmp")
+	{ 	$out = "<*****>\t Some of account have weak password .Please change to new password by (passwd). You can look at [password.tmp]\n";
+     		print OUTPUT wrap("> ","> ",$out) ;
+
+    		print LOG wrap("> ","> ",$out) ;
+		open(TEMPP,"password.tmp");
+		while(<TEMPP>)
+		{
+			$line=$_;
+			chomp($line);    #---cut \n
+    		   	print LOG $line ;
+                }
+		close TEMPP;
+	}
+}
+#--------------9. .rhosts---------------------------------
+sub rhosts{
+print ("Checking .rhosts files .......... ");
+open(TEMP,"> rhosts.tmp");
+open(PIPEFROM,"find / \\( -name .rhosts \\) | ");
+  	while(<PIPEFROM>)
+	{
+   		$line =$_;
+  		chomp($line);
+    		print TEMP $line;
+  	}
+close PIPEFROM;
+close TEMP;
+
+  	if (-s "rhosts.tmp")
+  	{
+		$sentence =  "<*****>\t You have .rhosts file We recommand you should not use it or should delete it. Please look at [rhosts.tmp]\n " ;
+    		print OUTPUT wrap("> ","> ",$sentence) ;
+
+    		print LOG wrap("> ","> ",$sentence) ;
+		open(TEMPP,"rhosts.tmp");
+		while(<TEMPP>)
+		{
+			$line=$_;
+			chomp($line);    #---cut \n
+    		   	print LOG $line ;
+                }
+		close TEMPP;
+ 	}
+}
+#-----------------10.  .bash_history --------------------
+sub bash_history
+{
+print ("Checking .bash_history files .......");
+open(TEMP ,">bashhistory.tmp");
+open(PIPEFROM,"find / \\( -name .bash_history -type d \\) |"); #---.bash_history that  be directory
+	while( <PIPEFROM>)
+	{
+          	$line = $_ ;
+          	chomp($line);
+          	print TEMP $line;
+    	}
+close PIPEFROM;
+open(PIPEFROM,"find / \\( -name .bash_history -type l \\) |"); #---.bash_history that link to /dev/null
+	while( <PIPEFROM>)
+	{
+          	$line = $_ ;
+          	chomp($line);
+          	if (readlink($line) eq "/dev/null" ){print TEMP $line;}
+     	}
+close PIPEFROM;
+close TEMP;
+  	if (-s "bashhistory.tmp")
+  	{
+		$sentence =  "<*****>\t You have some .bash_history file is directory or link to /dev/null. We recommand you should delete it and create new .bash_history file. Please look at [bashhistory.tmp]\n " ;
+    		print OUTPUT wrap("> ","> ",$sentence) ;
+
+    		print LOG wrap("> ","> ",$sentence) ;
+		open(TEMPP,"bashhistory.tmp");
+		while(<TEMPP>)
+		{
+			$line=$_;
+			chomp($line);    #---cut \n
+    		   	print LOG $line ;
+                }
+		close TEMPP;
+  	}
+}
+#------------------------------------------check version-------------
+sub version
+{
+print"Checking Version of service ......\n";
+open(RPM,">temprpm");
+open(PIPEFROM,"rpm -qai | ");
+	@line = <PIPEFROM>;
+	print RPM @line;
+close PIPEFROM;
+close RPM;
+
+open(RPM,">getservice");
+open(TEMP,"<temprpm") or die "Can't open temprpm";
+
+while(<TEMP>)
+{
+	$line=$_;
+	chomp($line);
+        if ($line =~/\'/) {  $line =~s/\'/\\\'/g ;}# print "$line";}
+	if ($line ne "")
+ 	{
+	      	@words = &shellwords($line);
+        	if (($words[0] eq "Name")&&($words[1] eq ":"))
+		{    	$name=$words[2];}
+
+		if (($words[0] eq "Version")&&($words[1] eq ":"))
+		{ 	print RPM ("$name "."$words[2]");}
+
+	 }
+}
+close TEMP;
+close RPM;
+
+$dbh=DBI->connect("dbi:mysql:database=cve;host=localhost;port=3306");  #-----connect database
+open(BUG,">bugversion.tmp");
+open(RPM,"<getservice") or die "Can't open getservice";
+while (<RPM>)
+{
+        $line=$_;
+	@words = &shellwords($line);
+
+  	$service = " $words[0] ";
+  	$version = " $words[1] ";
+	$count = 0;
+
+	$query="select  id,name,description                             #-----sql query
+		from 	cve 						#-----from cve table
+		where  description like '%$service%'
+                        and description like '%$version%'
+                	and ( description like '%debian%'
+			or description like '%red hat%'
+			or description like '%suse%'
+			or description like '%mandrake%'
+			or description like '%yellow dog%'
+			or description like '%unix%'
+			or description like '%linux%'
+			or description like '%slackware%')";
+	$sth=$dbh->prepare($query);
+	$sth->execute();						#-------excute sql query
+
+	while(($id,$name,$description)=$sth->fetchrow)
+	{
+      	        print  BUG  "$id    :    $name    :     $description ";	#-------print record
+		$count = $count+1;							#-------count record
+	};
+
+	$query="select  id,name,description                             #-----sql query
+		from 	candidate 					#------from candidate table
+		where   description like '%$service%'
+                        and description like '%$version%'
+                	and ( description like '%debian%'
+			or description like '%red hat%'
+			or description like '%suse%'
+			or description like '%mandrake%'
+			or description like '%yellow dog%'
+			or description like '%linux%'
+			or description like '%unix%'
+			or description like '%slackware%')";
+	$sth=$dbh->prepare($query);
+	$sth->execute();						#-------excute sql query
+
+	while(($id,$name,$description)=$sth->fetchrow)
+	{
+      	        print  BUG  wrap("> ","> ","$id    :    $name    :     $description ");	#-------print record
+		$count = $count+1;					#-------count record
+	};
+
+        if ($count !=0) {print BUG "====================$service $version=====================================";}
+}
+
+$dbh->disconnect();
+
+close RPM;
+close BUG;
+
+	if ( -s "bugversion.tmp")
+	{
+		$sentence= "<*****>\t You have some services's version have problem .Please look at [bugversion.tmp]\n";
+    		print OUTPUT wrap("> ","> ",$sentence) ;
+
+    		print LOG wrap("> ","> ",$sentence) ;
+		open(TEMPP,"bugversion.tmp");
+		while(<TEMPP>)
+		{
+			$line=$_;
+			chomp($line);    #---cut \n
+    		   	print LOG $line ;
+                }
+		close TEMPP;
+        }
+} ;		#endsub
+
+#--------------------------------------- 12. check /etc/ftpusers
+sub ftpuser
+{
+print"Checking /etc/ftpusers...";
+open(GETFTP,">ftpusers.tmp");
+open(TEMP,"</etc/ftpusers") or die "Can't read /etc/ftpusers : $! \n";
+  	while(<TEMP>)
+ 	{
+    		$line = $_;
+    		chomp($line);
+
+    		@ftpuser= &shellwords($line)  	;
+    		$i=0;
+    		foreach(@ftpuser)
+     		{     						#------- =~/ttyp/
+			if (($ftpuser[$i] =~ "root" ) && ($i==0) && ($ftpuser[$i] !~ /\#root/ ))
+         		{	print GETFTP $ftpuser[$i] ;	}
+        		$i=$i+1;
+    		}
+  	}
+close TEMP;
+close GETFTP;
+    	if (-s "ftpusers.tmp")      
+    	{ 
+		$sentence = "<*****>\t Please look at /etc/ftpuser you should not allow root use ftp program. Please remove account root from [/etc/ftpusers]\n";
+    		print OUTPUT wrap("> ","> ",$sentence) ;
+
+    		print LOG wrap("> ","> ",$sentence) ;
+		open(TEMPP,"ftpusers.tmp");
+		while(<TEMPP>)
+		{
+			$line=$_;
+			chomp($line);    #---cut \n
+    		   	print LOG $line ;
+                }
+		close TEMPP;
+   	}
+}
+#==========================================================================
+sub printmenu
+{
+		print "Usage: sss [option1] [option2] [option3] .... \n";
+		print "Option : \n";
+		print "  -u       :  Checking unowned files\n";
+		print "  -n       :  Checking symbolic link files\n";
+		print "  -s       :  Checking SUID/SGID\n";
+		print "  -w       :  Checking world writable\n";
+		print "  -t       :  Checking /etc/securetty\n";
+		print "  -x       :  Checking xinetd service\n";
+		print "  -l       :  Checking /etc/lilo.conf\n";
+		print "  -c       :  Checking crack password/shadow\n";
+		print "  -r       :  Checking .rhosts files\n";
+		print "  -b       :  Checking .bash_history files\n";
+		print "  -v       :  Checking bug version of service\n";
+		print "  -f       :  Checking root ftpuser \n";
+		print "  -a       :  Checking all function\n";
+                print "   EXAMPLE :  sss -u -n -v\n";
+}; #endsub
+
+#=================================MAIN==========================
+$time =localtime;
+$report = "sss_".$time.".log";
+open(LOG,">$report"); #----------------------------
+open(OUTPUT,">reportsss");
+$index = 0;
+$flag=0;
+@menu = ('-u','-n','-s','-w','-t','-x','-l','-c','-r','-b','-v','-f','-a');   #-help,-version
+$menuindex =0;
+$check_a=0;
+while (<@ARGV>)
+{
+        if ($ARGV[0] eq "")    #------not have argument will show help
+	{
+                printmenu();
+	}
+	else
+ 	{
+			$menuindex=0;
+			$flag=0;
+			while (<@menu>)
+			{
+				if ($ARGV[$index] eq $menu[$menuindex])
+        			{  	$flag =1;
+					if($ARGV[$index] eq "-a")
+					{	$check_a =1;	}
+				}
+				$menuindex++;
+        		}
+			if ($flag != 1 )
+			{
+				print "systex error ";
+	   			printmenu();
+				last;
+			}
+			$index++;
+        }
+}
+       		if ($flag == 1)
+       		{
+       			$index=0;
+ 			if ($check_a == 1) {
+						unowned();
+						symbolic();
+						suid();
+						world();
+						securetty();
+						xinetd();
+						lilo();
+						crack();
+						rhosts();
+						bash_history();
+						version();
+						ftpuser();
+					  }
+			else
+			{
+			while(<@ARGV>)
+       			{
+
+	   			if ($ARGV[$index] eq "-u") { unowned();}
+            			elsif ($ARGV[$index] eq "-n") { symbolic();}
+            			elsif ($ARGV[$index] eq "-s") { suid();}
+            			elsif ($ARGV[$index] eq "-w") { world();}
+            			elsif ($ARGV[$index] eq "-t") { securetty();}
+            			elsif ($ARGV[$index] eq "-x") { xinetd();}
+            			elsif ($ARGV[$index] eq "-l") { lilo();}
+            			elsif ($ARGV[$index] eq "-c") { crack();}
+            			elsif ($ARGV[$index] eq "-r") { rhosts();}
+            			elsif ($ARGV[$index] eq "-b") { bash_history();}
+            			elsif ($ARGV[$index] eq "-v") { version();}
+            			elsif ($ARGV[$index] eq "-f") { ftpuser();}
+			
+				$index++;
+			}
+			}
+		}
+
+close OUTPUT;
+close LOG;
+print "==================================================================";
+
+open (TEMP,"<reportsss") or die "Can't open $report :$!\n ";
+while(<TEMP>)
+{
+      $line = $_;
+      chomp($line);
+      print "$line";
+}
+
+
+#Security System Scanner  By Ms.Wanna Pisitpinyo 42010309 CE.KMITL, Ms.Parnsiri Ngammaneewat 42010220 CE.KMITL

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:conv="http://www.openuri.org/2002/04/soap/conversation/" xmlns:cw="http://www.openuri.org/2002/04/wsdl/conversation/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:jms="http://www.openuri.org/2002/04/wsdl/jms/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://www.openuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xm="http://www.bea.com/2002/04/xmlmap/" targetNamespace="http://www.openuri.org/" >
+  <types>
+    <s:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.openuri.org/">
+      <s:element name="checkUsername">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="passwd" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="checkUsernameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="checkUsernameResult" type="s0:user_profile" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="user_profile">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="lastname" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="sex" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="status" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="work_address" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="years" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="home_number" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="lane" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="village" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="moo" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="road" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="district" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="amphur" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="province" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="zip_code" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="phone1" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="phone2" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="category" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="email_way" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="application_way" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="library" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="level" type="s:string" />
+            </s:sequence>
+      </s:complexType>
+      <s:element nillable="true" name="user_profile" type="s0:user_profile" />
+    </s:schema>
+  </types>
+  <message name="checkUsernameSoapIn">
+    <part name="parameters" element="s0:checkUsername" />
+  </message>
+  <message name="checkUsernameSoapOut">
+    <part name="parameters" element="s0:checkUsernameResponse" />
+  </message>
+  <message name="checkUsernameHttpGetIn">
+    <part name="username" type="s:string" />
+    <part name="passwd" type="s:string" />
+  </message>
+  <message name="checkUsernameHttpGetOut">
+    <part name="Body" element="s0:user_profile" />
+  </message>
+  <message name="checkUsernameHttpPostIn">
+    <part name="username" type="s:string" />
+    <part name="passwd" type="s:string" />
+  </message>
+  <message name="checkUsernameHttpPostOut">
+    <part name="Body" element="s0:user_profile" />
+  </message>
+  <portType name="loginSoap">
+    <operation name="checkUsername">
+      <input message="s0:checkUsernameSoapIn" />
+      <output message="s0:checkUsernameSoapOut" />
+    </operation>
+  </portType>
+  <portType name="loginHttpGet">
+    <operation name="checkUsername">
+      <input message="s0:checkUsernameHttpGetIn" />
+      <output message="s0:checkUsernameHttpGetOut" />
+    </operation>
+  </portType>
+  <portType name="loginHttpPost">
+    <operation name="checkUsername">
+      <input message="s0:checkUsernameHttpPostIn" />
+      <output message="s0:checkUsernameHttpPostOut" />
+    </operation>
+  </portType>
+  <binding name="loginSoap" type="s0:loginSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <operation name="checkUsername">
+      <soap:operation soapAction="http://www.openuri.org/checkUsername" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="loginHttpGet" type="s0:loginHttpGet">
+    <http:binding verb="GET" />
+    <operation name="checkUsername">
+      <http:operation location="/checkUsername" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="loginHttpPost" type="s0:loginHttpPost">
+    <http:binding verb="POST" />
+    <operation name="checkUsername">
+      <http:operation location="/checkUsername" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+  </binding>
+  <service name="login">
+    <port name="loginSoap" binding="s0:loginSoap">
+      <soap:address location="http://aston:7001/Library/login/login.jws" />
+    </port>
+    <port name="loginHttpGet" binding="s0:loginHttpGet">
+      <http:address location="http://aston:7001/Library/login/login.jws" />
+    </port>
+    <port name="loginHttpPost" binding="s0:loginHttpPost">
+      <http:address location="http://aston:7001/Library/login/login.jws" />
+    </port>
+  </service>
+</definitions>

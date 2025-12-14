@@ -1,0 +1,106 @@
+package DataBook; 
+
+import weblogic.jws.*; 
+import weblogic.jws.control.*; 
+import java.sql.SQLException; 
+import java.util.*;
+import center.book_list;
+import center.book;
+
+/** 
+ * Defines a new database control. 
+ * 
+ * The @jws:connection tag indicates which WebLogic data source will be used by 
+ * this database control. Please change this to suit your needs. You can see a 
+ * list of available data sources by going to the WebLogic console in a browser 
+ * (typically http://localhost:7001/console) and clicking Services, JDBC, 
+ * Data Sources. 
+ * 
+ * @jws:connection data-source-jndi-name="MyDataSource" 
+ */ 
+public interface DBControl extends DatabaseControl 
+{ 
+    // Sample database function.  Uncomment to use 
+
+    // static public class Customer 
+    // { 
+    //   public int id; 
+    //   public String name; 
+    // } 
+    // 
+   
+    // /** 
+    //  * @jws:sql statement="SELECT ID, NAME FROM CUSTOMERS WHERE ID = {id}" 
+    //  */ 
+    // Customer findCustomer(int id);
+
+    // Add "throws SQLException" to request that SQLExeptions be thrown on errors.
+
+    /**
+     * @jws:sql statement::
+     *     select title, author,book_record
+     *     from book
+     *     where call_number={key}
+     * ::
+     */
+    public book_list[] selectBookTitleByCall_num(String key);
+
+    /**
+     * @jws:sql statement::
+     *     select title,author,book_record
+     *     from book
+     *     where isbn={key}
+     * ::
+     */
+    public book_list[] selectBookTitleByISBN(String key);
+
+    /**
+     * @jws:sql statement::
+     *     select title,author,book_record
+     *     from book
+     *     where author like {key} or alt_author1 like {key} or alt_author2 like {key}
+     *     order by author asc, alt_author1 asc, alt_author2 asc
+     * ::
+     */
+    public book_list[] selectBookTitleByAuthor(String key);
+
+    /**
+     * @jws:sql statement::
+     *     select title,author,book_record
+     *     from book
+     *     where title like {key} or alt_title like {key}
+     *     order by title asc, alt_title asc
+     * ::
+     */
+    public book_list[] selectBookTitleByTitle(String key);
+
+    /**
+     * @jws:sql statement::
+     *     select title,author,book_record
+     *     from book
+     *     where subject1 like {key} or subject2 like {key} or subject3 like {key}
+     * ::
+     */
+    public book_list[] selectBookTitleBySubject(String key);
+
+    /**
+     * @jws:sql statement::
+     *     select title,author,book_record
+     *     from book
+     *     where title like {key} or alt_title like {key} or 
+     *         discription like {key} or subject1 like {key} or
+     *         subject2 like {key} or subject3 like {key}
+     * ::
+     */
+    public book_list[] selectBookTitleByWord(String key);
+
+
+    /**
+     * @jws:sql statement::
+     *     select *
+     *     from book
+     *     where book_record={key}
+     * ::
+     */
+    public book selectBookByBookRecord(String key);
+}

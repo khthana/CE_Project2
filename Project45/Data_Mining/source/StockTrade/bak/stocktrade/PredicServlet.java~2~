@@ -1,0 +1,221 @@
+package stocktrade;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+import java.util.*;
+import java.sql.*;
+import java.math.*;
+
+
+public class PredicServlet extends HttpServlet {
+  static final private String CONTENT_TYPE = "text/html; charset=MS874";
+  //Initialize global variables
+  private AccessDatabase database;
+  public void init() throws ServletException {
+  }
+  //Process the HTTP Get request
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    response.setContentType(CONTENT_TYPE);
+    PrintWriter out = response.getWriter();
+    String stock = "";
+    float price = 0f;
+    int deciss =0;
+    int pred = 0;
+    float ema9=0f;
+    float ema25=0f;
+    float ema75=0f;
+    float rsi=0f;
+    float k=0f;
+    float d=0f;
+    float macd=0f;
+    float sig=0f;
+    try{
+      stock = request.getParameter("StockName");
+      stock = stock.toUpperCase();
+    }
+    catch(Exception e){
+      stock = "ACL";
+    }
+    out.println("<html>");
+    out.println("<head><title>Prediction</title></head>");
+    out.println("<body>");
+    try{
+      database.connect();
+      ResultSet rs = database.getPredict( stock );
+      rs.next();
+      price = rs.getFloat(1);
+      deciss = rs.getInt(2);
+      pred = rs.getInt(3);
+      ema9 = rs.getFloat(4);
+      ema25 = rs.getFloat(5);
+      ema75 = rs.getFloat(6);
+      rsi = rs.getFloat(7);
+      k = rs.getFloat(8);
+      d = rs.getFloat(9);
+      macd = rs.getFloat(10);
+      sig = rs.getFloat(11);
+      rs.close();
+      database.close();
+    }
+    catch(Exception e){
+      System.out.println(e);
+    }
+
+    out.println("<table width=\"71%\" border=\"2\" cellpadding=\"0\" cellspacing=\"0\" bordercolor=\"#FF9900\">");
+    out.println("<tr bgcolor=\"#6666FF\">");
+    out.println("<td colspan=\"6\"><font color=\"#66FF99\" size=\"3\"><strong>\u00E2\u00C1\u00E0\u00B4\u00C5\u00A2\u00CD\u00A7\u00B7\u00D2\u00A7\u00BC\u00D9\u00E9\u00A8\u00D1\u00B4\u00B7\u00D3</strong></font></td>");
+    out.println("</tr><tr>");
+    out.print("<td height=\"40\" colspan=\"6\">");
+    if(deciss==1){
+      out.print("แนวโน้มขึ้น อาจซื้อเพื่อเก็งกำไรได");
+    }
+    else if(deciss==0){
+      out.print("แนวโน้มไม่แน่นอน");
+    }
+    else if(deciss==-1){
+      out.print("แนวโน้มลง อาจทยอยขายหุ้น");
+    }
+    else if(deciss==-2){
+      out.print("ควรขาย");
+    }
+    else if(deciss==2){
+      out.print("ควรซื้อ เพื่อเก็งกำไร");
+    }
+    else if(deciss==3){
+      out.print("อาจมีการกระตุ้นเพื่อปั่นราคา");
+    }
+    out.println("</td>");
+    out.println("</tr><tr bgcolor=\"#6699FF\">");
+    out.println("<td colspan=\"6\"><font color=\"#66FF99\" size=\"3\"><strong>โมเดลของดร.ปัญญา เปรมปรีด์</strong></font></td>");
+    out.println("</td></tr><tr>");
+    out.print("<td height=\"40\" colspan=\"6\">");
+    if(pred == 1){
+      out.print("ควรซื้อ");
+    }
+    else if(pred == 0){
+      out.print("อยู่เฉยๆ");
+    }
+    else if(pred == -1){
+      out.print("ควรขาย");
+    }
+    out.println("</td></tr><tr>");
+    out.println("<td colspan=\"3\" bgcolor=\"#6699FF\"><div align=\"center\"><font size=\"2\"><strong></strong></font><font size=\"2\"><strong></strong></font><font ");
+    out.println("color=\"#66FF99\" size=\"2\"><strong>Exponential ");
+    out.println("Moving Average</strong></font><font size=\"2\"><strong></strong></font></div></td>");
+    out.println("<td colspan=\"3\" bgcolor=\"#6699FF\"> <div align=\"center\"><font color=\"#66FF99\" size=\"2\"><strong>Exponential");
+    out.println(" Moving Average Result</strong></font></div></td>");
+    out.println("</tr><tr>");
+    out.println("<td width=\"15%\" bgcolor=\"#FFFFCC\"><div align=\"center\"><font size=\"2\"><strong><font color=\"#6666FF\">ema ");
+    out.println("10 </font></strong></font></div></td>");
+    out.println("<td width=\"17%\" bgcolor=\"#FFFFCC\"><div align=\"center\"><font size=\"2\"><strong><font color=\"#6666FF\">ema ");
+    out.println("25 </font></strong></font></div></td>");
+    out.println("<td width=\"15%\" bgcolor=\"#FFFFCC\"><div align=\"center\"><font color=\"#6666FF\" size=\"2\"><strong>ema ");
+    out.println("75 </strong></font></div></td>");
+    out.println("<td width=\"17%\" bgcolor=\"#FFFFCC\"> <div align=\"center\"><font size=\"2\"><strong><font color=\"#6666FF\">ST</font></strong></font></div></td>");
+    out.println("<td width=\"18%\" bgcolor=\"#FFFFCC\"> <div align=\"center\"><font size=\"2\"><strong><font color=\"#6666FF\">ST-MT</font></strong></font></div></td>");
+    out.println("<td width=\"18%\" bgcolor=\"#FFFFCC\"> <div align=\"center\"><font size=\"2\"><strong><font color=\"#6666FF\">MT</font></strong></font></div></td>");
+    out.println("</tr><tr>");
+    out.print("<td>");
+    out.print(Math.round(ema9*100f)/100f);
+    out.println("</td>");
+    out.print("<td>");
+    out.print(Math.round(ema25*100f)/100f);
+    out.println("</td>");
+    out.print("<td>");
+    out.print(Math.round(ema75*100f)/100f);
+    out.println("</td>");
+////////////////////////////////////////////////////////////////////////////////
+    out.print("<td>");
+    if( price>ema9 ){
+      out.print("Bullish");
+    }
+    else if( price <= ema9 ){
+      out.print("Bearish");
+    }
+    out.println("</td>");
+////////////////////////////////////////////////////////////////////////////////
+    out.print("<td>");
+    if( price>ema25 ){
+          out.print("Bullish");
+    }
+    else if( price <= ema25 ){
+          out.print("Bearish");
+    }
+    out.println("</td>");
+////////////////////////////////////////////////////////////////////////////////
+    out.print("<td>");
+    if( price>ema75 ){
+          out.print("Bullish");
+    }
+     else if( price <= ema75 ){
+          out.print("Bearish");
+    }
+    out.println("</td>");
+////////////////////////////////////////////////////////////////////////////////
+
+    out.println("</tr>");
+    out.println("<tr bgcolor=\"#FFFFCC\">");
+    out.println("<td colspan=\"6\"><font size=\"2\"><strong><font color=\"#6666FF\">ST</font></strong>");
+    out.println("<font color=\"#6666FF\" size=\"3\" face=\"AngsanaUPC, BrowalliaUPC, CordiaUPC, MS Serif\"><strong>ระยะสั้น</strong></font></font></td>");
+    out.println("</tr><tr>");
+    out.println("<td colspan=\"6\"><font color=\"#6699FF\" size=\"2\"><strong>Bearish</strong></font>");
+    out.println("<font size=\"2\"><strong><font color=\"#6699FF\"> = closed price &lt; eam 10");
+    out.println("</font><font size=\"2\"><strong><font size=\"2\"><strong><font color=\"#6699FF\">=</font></strong></font> ");
+    out.println("<font color=\"#6699FF\">ระยะสั้นไม่ดี</font> </strong></font></strong></font></td>");
+    out.println("</tr><tr bgcolor=\"#FFFFCC\">");
+    out.println("<td colspan=\"6\"><font size=\"2\"><strong><font color=\"#6666FF\">ST-MT</font></strong> ");
+    out.println("<font color=\"#6666FF\" size=\"3\" face=\"AngsanaUPC, BrowalliaUPC, CordiaUPC, MS Serif\"><strong>ระยะสั้น-ระยะกลาง</strong></font></font></td>");
+    out.println("</tr><tr>");
+    out.println("<td colspan=\"6\"><font color=\"#6699FF\" size=\"2\"><strong>Bullish</strong></font> ");
+    out.println("<font size=\"2\"><strong><font color=\"#6699FF\"> = closed price &gt; eam 25</font><font size=\"2\"><strong><font size=\"2\"><strong><font ");
+    out.println("color=\"#6699FF\">=</font></strong></font> ");
+    out.println("<font color=\"#6699FF\">ระยะสั้น-ระยะกลางดี</font> </strong></font></strong></font></td>");
+    out.println("</tr><tr>");
+    out.println(" <td colspan=\"6\"><font color=\"#6699FF\" size=\"2\"><strong>Bearish</strong></font> ");
+    out.println("<font size=\"2\"><strong><font color=\"#6699FF\"> = closed price &lt; eam 25</font><font size=\"2\"><strong><font size=\"2\"><strong><font ");
+    out.println("color=\"#6699FF\">=</font></strong></font> ");
+    out.println("<font color=\"#6699FF\">ระยะสั้น<font size=\"2\"><strong><font size=\"2\"><strong>-ระยะกลาง</strong></font></strong></font>ไม่ดี</font> ");
+    out.println("</strong></font></strong></font></td>");
+    out.println("</tr><tr bgcolor=\"#FFFFCC\"> ");
+    out.println("<td colspan=\"6\"><font size=\"2\"><strong><font color=\"#6666FF\">MT </font><font size=\"2\"><font color=\"#6666FF\" size=\"3\" face=\"AngsanaUPC, ");
+    out.println("BrowalliaUPC, CordiaUPC, MS Serif\"><strong>ระยะกลาง</strong></font></font></strong></font></td>");
+    out.println("</tr><tr>");
+    out.println("<td colspan=\"6\"><font color=\"#6699FF\" size=\"2\"><strong>Bullish</strong></font> ");
+    out.println("<font size=\"2\"><strong><font color=\"#6699FF\"> = closed price &gt; eam 75</font><font size=\"2\"><strong><font size=\"2\"><strong><font ");
+    out.println("color=\"#6699FF\">=</font></strong></font> ");
+    out.println("<font color=\"#6699FF\">ระยะกลางดี</font> </strong></font></strong></font></td>");
+    out.println("</tr><tr>");
+    out.println("<td colspan=\"6\"><font color=\"#6699FF\" size=\"2\"><strong>Bearish</strong></font> ");
+    out.println("<font size=\"2\"><strong><font color=\"#6699FF\"> = closed price &lt; eam 75</font><font size=\"2\"><strong><font size=\"2\"><strong><font ");
+    out.println("color=\"#6699FF\">=</font></strong></font> ");
+    out.println("<font color=\"#6699FF\"><font size=\"2\"><strong><font size=\"2\"><strong>ระยะกลาง</strong></font></strong></font>ไม่ดี</font> ");
+    out.println("</strong></font></strong></font></td>");
+    out.println("</tr></table><p>&nbsp;</p>");
+    out.println("<table width=\"548\" border=\"2\" cellpadding=\"0\" cellspacing=\"0\" bordercolor=\"#FF9900\">");
+    out.println("<tr bgcolor=\"#6699FF\"> ");
+    out.println("<td width=\"53\" rowspan=\"2\"> <div align=\"center\"><font color=\"#66FF99\" size=\"2\"><strong>14RSI</strong></font></div></td>");
+    out.println("<td colspan=\"2\"> <div align=\"center\"><font color=\"#66FF99\" size=\"2\"><strong>Stochastic</strong></font></div></td>");
+    out.println("<td colspan=\"2\"> <div align=\"center\"><font color=\"#66FF99\" size=\"2\"><strong>MACD</strong></font></div></td>");
+    out.println("<td colspan=\"3\"> <div align=\"center\"><font color=\"#66FF99\" size=\"2\"><strong>Oscillators ");
+    out.println("Result</strong></font></div></td>");
+    out.println("</tr><tr>");
+    out.println("<td width=\"52\" bgcolor=\"#6699FF\"> <div align=\"center\"><font color=\"#66FF99\" size=\"2\"><strong>%K</strong></font></div></td>");
+    out.println("<td width=\"52\" bgcolor=\"#6699FF\"> <div align=\"center\"><font color=\"#66FF99\" size=\"2\"><strong>%D</strong></font></div></td>");
+    out.println("<td width=\"61\" bgcolor=\"#6699FF\"> <div align=\"center\"><font color=\"#66FF99\" size=\"2\"><strong>MACD</strong></font></div></td>");
+    out.println("<td width=\"59\" bgcolor=\"#6699FF\"> <div align=\"center\"><font color=\"#66FF99\" size=\"2\"><strong>Signal</strong></font></div></td>");
+    out.println("<td width=\"83\" bgcolor=\"#6699FF\"> <div align=\"center\"><font color=\"#66FF99\" size=\"2\"><strong>RSI</strong></font></div></td>");
+    out.println("<td width=\"84\" bgcolor=\"#6699FF\"> <div align=\"center\"><font color=\"#66FF99\" size=\"2\"><strong>Stochastic</strong></font></div></td>");
+    out.println("<td width=\"84\" bgcolor=\"#6699FF\"> <div align=\"center\"><font color=\"#66FF99\" size=\"2\"><strong>MACD</strong></font></div></td>");
+    out.println("</tr><tr>");
+    ////////////////////////////////////////////////////////////////////////////
+    out.println("</body></html>");
+  }
+  //Process the HTTP Post request
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    doGet( request, response);
+  }
+  //Clean up resources
+  public void destroy() {
+  }
+}

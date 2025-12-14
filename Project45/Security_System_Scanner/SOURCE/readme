@@ -1,0 +1,51 @@
+#############################--Security System Scanner--###################################
+#															#
+#	1.	Ms.Parnsiri 	Ngammaneewat 	42010220    KMITL					#
+#															#
+#	2.	Ms.Wanna    	Pisitpinyo 	      42010309    KMITL					#
+#															#
+###########################################################################################
+
+system requirment
+	1.	OS Linux ( REDHAT 8.0 )
+	2.	Perl 
+	3.	mysql-server
+	4.	root account 	
+
+pre-install
+	
+	1.	copy "words" into /usr/dict/words  
+	2.	install DBI,Showtable and MySQL DBD module you can read instruction from http://home.ubalt.edu/abento/452/dbi 
+	3.	import cve database into mysql-server database 
+		by 	copy "cve" into "/tmp/cve.txt"	
+		and	copy "candidate.txt" into "/tmp/candidate.txt"
+		
+	 	open program mysql and type this follow 
+		1.	create database cve;
+		2.	use cve;
+		3.	create table cve (id int,name text,description text,reference text);
+		4.	load data in file "/tmp/cve.txt" into table cve 
+			fields terminated by '"'
+			enclosed by '}'
+			line terminated by '\n';
+		5.	create table candidate (id int,name text,description text,phase text,reference text,vote text,comment text);
+		6.	load data infile "/tmp/candidate.txt" into table candidate
+			fields terminated by '}'
+			lines terminated by '\n';  	
+		
+	4.	copy file "sss" to sub directory "sss/" example  "../sss/sss" and 
+			chmod 755 sss  
+
+run program 
+	
+	1.	type ./sss [-option1] [-option2] [-option3] ....
+		example   ./sss -u -n   
+		it mean you want to check unowned files (-u) and symbolick link (-n)
+	2.	result of scan will appear in file name sss_[date/time that you run program].log in same directory	
+	3.	you can use sss program with cron for set to automatic to run 
+		by type  
+				crontab -e 
+		and set to it 
+		example     00 00 * * * /root/sss/./sss
+		mean  set automatic run on 0:00 o'clock at everyday at every month and every weekday  
+		

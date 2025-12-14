@@ -1,0 +1,12 @@
+#!/bin/sh
+
+cat Jan[012][1..9] Jan30 Jan31 | awk '{print $1}' > tmp
+tr -d "#" < tmp | sort | uniq -c > tmp2
+sort -r tmp2 > cmd
+
+rm -f tmp2
+rm -f tmp
+
+exit 0
+
+

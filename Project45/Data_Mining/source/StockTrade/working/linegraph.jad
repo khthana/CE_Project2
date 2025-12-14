@@ -1,0 +1,207 @@
+// Decompiled by DJ v3.2.2.67 Copyright 2002 Atanas Neshkov  Date: 27/1/2003 3:54:48
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   linegraph.java
+
+import java.applet.Applet;
+import java.applet.AppletContext;
+import java.awt.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class linegraph extends Applet
+{
+
+    public void initialize()
+    {
+        setBackground(Color.white);
+        x = border + 20;
+        x2 = border + 20;
+        grid = Boolean.valueOf(getParameter("Grid")).booleanValue();
+        title = getParameter("title");
+        try
+        {
+            mode = Integer.parseInt(getParameter("Mode"));
+        }
+        catch(NumberFormatException _ex)
+        {
+            mode = 0;
+        }
+        try
+        {
+            ymin = Integer.parseInt(getParameter("ymin"));
+        }
+        catch(NumberFormatException _ex)
+        {
+            ymin = 0;
+        }
+        try
+        {
+            border = Integer.parseInt(getParameter("border"));
+        }
+        catch(NumberFormatException _ex)
+        {
+            border = 40;
+        }
+        height = getSize().height - border * 2;
+        width = (float)(getSize().width - (border + 5)) - x;
+        ymax = Integer.parseInt(getParameter("yMax"));
+        yfq = getFrequency(ymax - ymin);
+        ycounter = ymin;
+        yfactor = height / (float)(ymax - ymin);
+        vals = Integer.parseInt(getParameter("NumberOfVals"));
+        if(mode == 0)
+        {
+            labs = Float.valueOf(getParameter("NumberOfLabs")).floatValue();
+            laboffset = Integer.parseInt(getParameter("LabOffSet"));
+            xincrement = width / (vals - 1.0F);
+            xincrement2 = width / (labs - 1.0F);
+            return;
+        }
+        xmax = Integer.parseInt(getParameter("xMax"));
+        xfactor = width / (float)(xmax - xmin);
+        try
+        {
+            xmin = Integer.parseInt(getParameter("xmin"));
+        }
+        catch(NumberFormatException _ex)
+        {
+            xmin = 0;
+        }
+        xfq = getFrequency(xmax - xmin);
+        xcounter = xmin;
+    }
+
+    public void paint(Graphics g)
+    {
+        initialize();
+        g.setFont(new Font("Arial", 0, 10));
+        g.setColor(new Color(200, 200, 200));
+        g.fillRect(getSize().width - 170, 0, 170, 12);
+        g.setColor(Color.black);
+        g.drawRect(getSize().width - 170, 0, 170, 12);
+        g.drawString("Graph applet by GraphsCharts.com", getSize().width - 167, 10);
+        g.setFont(new Font("Arial", 0, 11));
+        if(title != null)
+            g.drawString(title, getSize().width / 2 - (title.length() * 3) / 2, 30);
+        g.drawRect(0, 0, getSize().width - 1, getSize().height - 1);
+        g.setColor(Color.black);
+        g.drawLine((int)x, border, (int)x, (int)height + border);
+        g.drawLine((int)(x - 3F), (int)height + border, (int)(width + x), (int)height + border);
+        for(; ycounter <= ymax; ycounter = ycounter + yfq)
+        {
+            String s = new String(String.valueOf(ycounter));
+            g.drawString(s, (border + 10) - String.valueOf(ymax).length() * 5, Math.round(height * (1.0F - (float)(ycounter - ymin) / (float)(ymax - ymin))) + (border + 5));
+            if(grid)
+                g.drawLine((int)(x - 3F), Math.round(height * (1.0F - (float)(ycounter - ymin) / (float)(ymax - ymin))) + border, (int)(width + x), Math.round(height * (1.0F - (float)(ycounter - ymin) / (float)(ymax - ymin))) + border);
+            else
+                g.drawLine((int)(x - 3F), Math.round(height * (1.0F - (float)(ycounter - ymin) / (float)(ymax - ymin))) + border, (int)x, Math.round(height * (1.0F - (float)(ycounter - ymin) / (float)(ymax - ymin))) + border);
+        }
+
+        if(mode == 0)
+            for(i = 1; i < (int)(labs + 1.0F); i = i + 1)
+            {
+                g.drawLine((int)x2, (int)height + (border + 1), (int)x2, (int)height + (border + 3));
+                g.drawString(getParameter("LAB" + String.valueOf(i)), (int)x2 - laboffset, (int)height + (border + 18));
+                x2 = x2 + xincrement2;
+            }
+
+        else
+            for(; xcounter <= xmax; xcounter = xcounter + xfq)
+            {
+                String s1 = new String(String.valueOf(xcounter));
+                i = s1.length() * 3;
+                g.drawString(s1, (int)((width - (float)Math.round(width * (1.0F - (float)(xcounter - xmin) / (float)(xmax - xmin)))) + (float)(int)x) - i, (int)height + (border + 18));
+                g.drawLine((int)(width - (float)Math.round(width * (1.0F - (float)(xcounter - xmin) / (float)(xmax - xmin)))) + (int)x, (int)height + (border + 1), (int)(width - (float)Math.round(width * (1.0F - (float)(xcounter - xmin) / (float)(xmax - xmin)))) + (int)x, (int)height + (border + 3));
+            }
+
+        g.setColor(new Color(Integer.parseInt(getParameter("LINECOLOR_R")), Integer.parseInt(getParameter("LINECOLOR_G")), Integer.parseInt(getParameter("LINECOLOR_B"))));
+        for(i = 1; i < (int)vals; i = i + 1)
+            if(mode == 0)
+            {
+                v1y = Float.valueOf(getParameter("VAL" + String.valueOf(i))).floatValue();
+                v2y = Float.valueOf(getParameter("VAL" + String.valueOf(i + 1))).floatValue();
+                g.drawLine((int)x, (int)(height + (float)border) - Math.round((v1y - (float)ymin) * yfactor), (int)(x + xincrement), (int)(height + (float)border) - Math.round((v2y - (float)ymin) * yfactor));
+                x = x + xincrement;
+            } else
+            {
+                v1 = getParameter("VAL" + String.valueOf(i));
+                v2 = getParameter("VAL" + String.valueOf(i + 1));
+                v1x = Float.valueOf(v1.substring(0, v1.indexOf(":"))).floatValue();
+                v1y = Float.valueOf(v1.substring(v1.indexOf(":") + 1, v1.length())).floatValue();
+                v2x = Float.valueOf(v2.substring(0, v2.indexOf(":"))).floatValue();
+                v2y = Float.valueOf(v2.substring(v2.indexOf(":") + 1, v2.length())).floatValue();
+                g.drawLine((int)((float)Math.round((v1x - (float)xmin) * xfactor) + x), (int)(height + (float)border) - Math.round((v1y - (float)ymin) * yfactor), (int)((float)Math.round((v2x - (float)xmin) * xfactor) + x), (int)(height + (float)border) - Math.round((v2y - (float)ymin) * yfactor));
+            }
+
+    }
+
+    public boolean mouseDown(Event event, int j, int k)
+    {
+        if(j > getSize().width - 170 && k < 12)
+            try
+            {
+                URL url = new URL("http://www.graphscharts.com/?u=" + getDocumentBase());
+                getAppletContext().showDocument(url);
+            }
+            catch(MalformedURLException _ex) { }
+        return true;
+    }
+
+    public int getFrequency(int j)
+    {
+        char c = '\001';
+        if(j > 10 && j < 21)
+            c = '\005';
+        if(j > 20 && j < 101)
+            c = '\n';
+        if(j > 100 && j < 201)
+            c = '2';
+        if(j > 200 && j < 1001)
+            c = 'd';
+        if(j > 1000 && j < 2001)
+            c = '\u01F4';
+        if(j > 2000 && j < 10001)
+            c = '\u03E8';
+        if(j > 10000 && j < 20001)
+            c = '\u1388';
+        if(j > 20000 && j < 0x186a1)
+            c = '\u2710';
+        return c;
+    }
+
+    public linegraph()
+    {
+    }
+
+    float x;
+    float x2;
+    float height;
+    float width;
+    float vals;
+    float labs;
+    int laboffset;
+    int border;
+    int xmax;
+    int ymax;
+    int xmin;
+    int ymin;
+    int i;
+    int xcounter;
+    int ycounter;
+    float xfactor;
+    float yfactor;
+    float xincrement;
+    float xincrement2;
+    float v1y;
+    float v1x;
+    float v2y;
+    float v2x;
+    String v1;
+    String v2;
+    String title;
+    boolean grid;
+    int xfq;
+    int yfq;
+    int mode;
+}

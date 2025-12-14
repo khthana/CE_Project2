@@ -1,0 +1,154 @@
+<HTML>
+
+<HEAD>
+<TITLE>Map service on the web</TITLE>
+<SCRIPT LANGUAGE="javascript">
+<!--
+	var search_road = true;
+	var search_place = true;
+	var nearest_place = true;
+	var routing = true;
+	var about = true;
+
+   if (document.images)
+   {
+      var search_road0=new Image(); search_road0.src="/images/search_road0.jpg";
+      var search_road1=new Image(); search_road1.src="/images/search_road1.jpg";
+      var search_road2=new Image(); search_road2.src="/images/search_road2.jpg";
+      
+	  var search_place0=new Image(); search_place0.src="/images/search_place0.jpg";
+      var search_place1=new Image(); search_place1.src="/images/search_place1.jpg";
+      var search_place2=new Image(); search_place2.src="/images/search_place2.jpg";
+      
+	  var nearest_place0=new Image(); nearest_place0.src="/images/nearest_place0.jpg";
+      var nearest_place1=new Image(); nearest_place1.src="/images/nearest_place1.jpg";
+      var nearest_place2=new Image(); nearest_place2.src="/images/nearest_place2.jpg";
+      
+	  var routing0=new Image(); routing0.src="/images/routing0.jpg";
+      var routing1=new Image(); routing1.src="/images/routing1.jpg";
+	  var routing2=new Image(); routing2.src="/images/routing2.jpg";
+      
+	  var about0=new Image(); about0.src="/images/about0.jpg";
+      var about1=new Image(); about1.src="/images/about1.jpg";
+	  var about2=new Image(); about2.src="/images/about2.jpg";
+      
+   }
+ function change_search_road( newsrc )
+{
+	if( search_road )
+		document.search_road.src=newsrc;
+}
+ 
+ function change_search_place( newsrc )
+{
+	if( search_place )
+		document.search_place.src=newsrc;
+}
+ 
+ function change_nearest_place( newsrc )
+{
+	if( nearest_place )
+		document.nearest_place.src=newsrc;
+}
+
+function change_routing( newsrc )
+{
+	if( routing )
+		document.routing.src=newsrc;
+}
+
+function change_about( newsrc )
+{
+	if( about )
+		document.about.src=newsrc;
+}
+
+ function status( s )
+{
+	if( s==1 )
+		search_road = false;
+	else
+	{
+		search_road = true;
+		document.search_road.src=search_road0.src ;
+	}
+	if( s==2 )
+		search_place = false;
+	else
+	{
+		search_place = true;
+		document.search_place.src=search_place0.src ;
+		}
+	if( s==3 )
+		nearest_place = false;
+	else
+	{
+		nearest_place = true;
+		document.nearest_place.src=nearest_place0.src ;
+	}
+	if( s==4 )
+		routing = false;
+	else
+	{
+	    routing = true;
+	    document.routing.src=routing0.src ;
+	}
+	if( s==5 )
+		about = false;
+	else
+	{
+		about = true;
+		document.about.src=about0.src ;
+	}
+}
+
+}/-->
+</SCRIPT>
+<META HTTP-EQUIV="content-type" CONTENT="text/html;charset=iso-8859-1">
+</HEAD>
+
+<BODY BACKGROUND="/images/tab_back.gif" onload="change_about( about2.src );status(5)">
+
+<TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+<TR>
+	<TD COLSPAN="6" WIDTH="100%">
+		<IMG SRC="/images/web_name.jpg" WIDTH="395" HEIGHT="32" BORDER="0" ALT="">
+	</TD>
+</TR>
+<TR>
+	<TD>
+		<A HREF="search_road.html" TARGET="explain" onmouseover="change_search_road( search_road1.src );" onmouseout="change_search_road( search_road0.src );" onclick="change_search_road( search_road2.src );status(1)">
+		<IMG SRC="/images/search_road0.jpg" NAME="search_road" WIDTH="150" HEIGHT="32" BORDER="0" ALT="Search Road">
+		</A>
+	</TD>
+	<TD>
+		<A HREF="search_place.html" TARGET="explain" onmouseover="change_search_place( search_place1.src );" onmouseout="change_search_place( search_place0.src );" onclick="change_search_place( search_place2.src );status(2)">
+		<IMG SRC="/images/search_place0.jpg" NAME="search_place" WIDTH="150" HEIGHT="32" BORDER="0" ALT="Search Place">
+		</A>
+	</TD>
+	<TD>
+		<A HREF="near_place.html" TARGET="explain" onmouseover="change_nearest_place( nearest_place1.src );" onmouseout="change_nearest_place( nearest_place0.src );"	onclick="change_nearest_place( nearest_place2.src );status(3)">
+		<IMG SRC="/images/nearest_place.jpg" NAME="nearest_place" WIDTH="150" HEIGHT="32" BORDER="0" ALT="Near Place">
+		</A>
+	</TD>
+	<TD>
+		<A HREF="routing.html" TARGET="explain" onmouseover="change_routing( routing1.src );" onmouseout="change_routing( routing0.src );" 
+		    onclick="change_routing( routing2.src );status(4)">
+			<IMG SRC="/images/routing0.jpg" NAME="routing" WIDTH="150" HEIGHT="32" BORDER="0" ALT="Routing">
+		</A>
+	</TD>
+	<TD>
+		<A HREF="about.html" TARGET="explain" onmouseover="change_about( about1.src );" onmouseout="change_about( about0.src );"
+			 onclick="change_about( about2.src );status(5)">
+			<IMG SRC="/images/about0.jpg" NAME="about" WIDTH="150" HEIGHT="32" BORDER="0" ALT="About">
+		</A>
+	</TD>
+
+<TD WIDTH="100%"></TD>
+
+</TR>
+
+</TABLE>
+
+</BODY>
+</HTML>

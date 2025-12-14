@@ -1,0 +1,132 @@
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=">
+</head>
+<LINK REL="stylesheet"
+			HREF="base2.css"
+			TYPE="text/css">
+<body bgcolor="#FFFFFF" text="#000000">
+<table width="93%" border="0" height="793">
+  <tr> 
+    <td colspan="2"><img src="picture/l11.gif" width="281" height="33"></td>
+    <td width="63%"><font face="Verdana, Arial, Helvetica, sans-serif" size="4" color="#006699"><b>Cisco 
+      Discovery Protocol</b></font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cisco 
+      Discovery Protocol เป็นโพรโตคอลที่ซิสโก้สร้างขึ้นเพื่อ gather information 
+      about neighbor cisco device</font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">1. ล็อกอินเข้าเราเตอร์ที่ต้องการ 
+      หลังจากนั้นเข้าสู่ Privilege โหมดโดยพิมพ์คำสั่ง En หรือ Enable แล้วกด Enter</font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">2. ที่ R2 พิมพ์คำสั่ง Show 
+      cdp แล้ว Enter</font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"> 
+      <div align="center"><font face="CordiaUPC" size="5"><img src="picture/p1_l11.gif" width="621" height="491"></font></div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">ข้อมูลที่แสดงผลออกมาหมายถึง 
+      CDP แพ็กเก็ตจะถูกส่งออกไปทุกอินเทอร์เฟสที่ active ทุกๆ 90 วินาที และมีค่า 
+      Holdtime 180 วินาที คือเมื่อได้รับข้อมูลจาก CDP ก็จะเก็บไว้เป็นเวลา 180 
+      วินาที ถ้า R1 ไม่ได้รับข้อมูลอะไรจาก neighbor เป็นเวลา 180 วินาที ข้อมูลนั้นจะถูกลบทิ้งไป 
+      <br>
+      </font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">3. ถ้าต้องการให้แพ็กเก็ต CDP 
+      ถูกส่งออกไปทุกๆ 60 วินาที จะใช้คำสั่ง<br>
+      R2(config)#cdp timer 60<br>
+      สำหรับค่าของช่วงเวลาจะอยู่ระหว่าง 5-900</font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"> 
+      <div align="center"><font face="CordiaUPC" size="5"><img src="picture/p2_l11.gif" width="622" height="493"></font></div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">4. สำหรับคำสั่งที่เกี่ยวกับการดูค่า 
+      CDP ของโปรแกรมนี้จะมี 3 คำสั่งหลัก คือ </font> 
+      <p><font face="CordiaUPC" size="5">Show CDP entry <br>
+        Show CDP interface <br>
+        Show CDP neighbors </font></p>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%" rowspan="2">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">5. คำสั่ง Show CDP entry จะต้องมีการส่ง 
+      argument ไปให้ด้วย ซึ่ง argument นี้ อาจส่งเป็น </font> 
+      <p><font face="CordiaUPC" size="5">Show CDP entry * <br>
+        Show CDP entry &lt;Router Name&gt;<br>
+        </font></p>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="2"> 
+      <div align="center"><img src="picture/p3_l11.gif" width="621" height="493"></div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">6. คำสั่ง Show CDP interface 
+      เป็นคำสั่งสำหรับแสดงข้อมูลที่ถูก encapsulate ไว้ที่อินเทอร์เฟส ซึ่งข้อมูลนี้จะมีการปรับเปลี่ยนทุกๆ 
+      60 วินาที (สามารถเปลี่ยนแปลงได้ตามข้อ 3) และข้อมูลจะถูกเก็บได้ 180 วินาทีตามที่ได้กล่าวในข้อ 
+      2</font></td>
+  </tr>
+  <tr> 
+    <td width="5%" rowspan="3">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">7. ใช้คำสั่ง Show CDP neighbors 
+      เพื่อดูข้อมูลการเชื่อมต่อกับอุปกรณ์อื่นข้างเคียง </font> 
+      <p><font face="CordiaUPC" size="5"> ข้อมูลของอุปกรณ์ข้างเคียงที่แสดงออกมาจะมีดังนี้</font></p>
+      <p><font face="CordiaUPC" size="5">Neighbor Device ID : คือชื่อของเราเตอร์ข้างเคียง 
+        ได้จากการที่เราเตอร์มีการแลกเปลี่ยน CDP information กัน <br>
+        Local interface : คืออินเทอร์เฟสที่เราเตอร์ได้รับข้อมูล CDP มา <br>
+        Holdtime : <br>
+        Capability : R สำหรับเราเตอร์ และ S สำหรับสวิตซ์ <br>
+        Platform : ประเภทของอุปกรณ์ <br>
+        Port ID : คืออินเทอร์เฟสของเราเตอร์ที่รับข้อมูล CDP </font></p>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="2">
+      <div align="center"><img src="picture/p4_l11.gif" width="623" height="495"></div>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="2" height="41"> 
+      <div align="center"><font color="#336699" size="5" face="CordiaUPC"><b>สำหรับโหมดการทำงานทั้งหมดของเราเตอร์สามารถดูได้ที่ 
+        Command</b></font></div>
+    </td>
+  </tr>
+</table>
+<table width="33%" border="0" align="center" bgcolor="#006699">
+  <tr> 
+    <td width="35%" bgcolor="#336699"> 
+      <div align="left"><font color="#FF9900" face="Verdana, Arial, Helvetica, sans-serif" size="2"><a href="lesson10.html"><font color="#FFFFFF">Lesson 
+        10 &lt;--</font></a></font></div>
+    </td>
+    <td width="28%"> 
+      <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><a href="command.html"><font color="#FFCC00">command</font></a></font></div>
+    </td>
+    <td width="37%"> 
+      <div align="right"><font color="#FF9900" face="Verdana, Arial, Helvetica, sans-serif" size="2"><a href="lesson12.html"><font color="#FFFFFF"> 
+        --&gt; Lesson 12</font></a></font></div>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

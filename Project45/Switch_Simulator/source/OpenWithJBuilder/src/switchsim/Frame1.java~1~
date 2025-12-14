@@ -1,0 +1,310 @@
+package switchsim;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import com.borland.jbcl.layout.*;
+import java.util.*;
+import javax.swing.border.*;
+import javax.swing.JOptionPane;
+
+public class Frame1 extends JFrame {
+  static Vector vWorkstation = new Vector();
+  static Vector vSwitch = new Vector();
+  static Vector vConsole = new Vector();
+  static Vector vMACAddress = new Vector();
+  static Vector vStaticAddr = new Vector();
+  static Vector vDynamicAddr = new Vector();
+  static Frame2 f2 = new Frame2();
+  static Frame3 f3 = new Frame3();
+
+  Switch sw;
+  private final int maxSwitch = 10;
+  private final int maxWorkstation = 3;
+
+  JPanel contentPane;
+  JPanel jPanel1 = new JPanel();
+  XYLayout xYLayout1 = new XYLayout();
+  XYLayout xYLayout2 = new XYLayout();
+  TitledBorder titledBorder1;
+  static JTabbedPane jTabbedPane1 = new JTabbedPane();
+  JToolBar jToolBar1 = new JToolBar();
+  JButton jNewButton = new JButton();
+  JButton jDelButton = new JButton();
+  JButton jViewButton = new JButton();
+  JMenuBar jMenuBar1 = new JMenuBar();
+  JMenu jMenuFile = new JMenu();
+  JMenuItem menuFileExit = new JMenuItem();
+  JMenu jMenuEdit = new JMenu();
+  JMenuItem menuNewRouter = new JMenuItem();
+  ImageIcon image1;
+  ImageIcon image2;
+  ImageIcon image3;
+  JMenuItem menuDelRouter = new JMenuItem();
+  JMenuItem menuNetworkView = new JMenuItem();
+  JMenuItem menuTutorials = new JMenuItem();
+  JMenu jMenuHelp = new JMenu();
+  JMenuItem menuAbout = new JMenuItem();
+  JMenuItem menuAboutUs = new JMenuItem();
+  JButton jConnectButton = new JButton();
+  JButton jComButton = new JButton();
+
+  /**Construct the frame*/
+  public Frame1() {
+    enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+    try {
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+  /**Component initialization*/
+  private void jbInit() throws Exception  {
+    //setIconImage(Toolkit.getDefaultToolkit().createImage(Frame1.class.getResource("[Your Icon]")));
+    contentPane = (JPanel) this.getContentPane();
+    titledBorder1 = new TitledBorder("");
+    contentPane.setLayout(xYLayout1);
+    this.setSize(new Dimension(700, 500));
+    this.setTitle("Switch Simulator");
+    jPanel1.setLayout(xYLayout2);
+    jPanel1.setBorder(BorderFactory.createEtchedBorder());
+    jToolBar1.setBackground(new Color(180, 180, 180));
+    contentPane.setBackground(new Color(230, 225, 225));
+    jTabbedPane1.setTabPlacement(JTabbedPane.BOTTOM);
+    jTabbedPane1.setBackground(new Color(230, 225, 225));
+
+    jMenuFile.setBackground(new Color(230, 225, 225));
+    jMenuFile.setText("File");
+    menuFileExit.setBackground(new Color(230, 225, 225));
+    menuFileExit.setText("Exit");
+    jMenuEdit.setBackground(new Color(230, 225, 225));
+    jMenuEdit.setText("Edit");
+    //Menu New Router
+    menuNewRouter.setText("New Switch");
+    menuDelRouter.setActionCommand("Delete Switch");
+    menuDelRouter.setText("Delete Switch");
+    jMenuHelp.setBackground(new Color(230, 225, 225));
+    jMenuHelp.setText("Help");
+//    jToolBar.add(jNextButton);
+    jMenuBar1.setBackground(new Color(230, 225, 225));
+    jConnectButton.setBackground(new Color(225, 170, 170));
+    jConnectButton.setFont(new java.awt.Font("Dialog", 0, 9));
+    jConnectButton.setForeground(new Color(100, 100, 100));
+    jConnectButton.setMaximumSize(new Dimension(72, 40));
+    jConnectButton.setMinimumSize(new Dimension(72, 40));
+    jConnectButton.setText("Connect");
+    jConnectButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jConnectButton_actionPerformed(e);
+      }
+    });
+    jComButton.setBackground(new Color(225, 170, 170));
+    jComButton.setForeground(new Color(100, 100, 100));
+    jComButton.setMaximumSize(new Dimension(72, 40));
+    jComButton.setMinimumSize(new Dimension(72, 40));
+    jComButton.setText("com");
+    jComButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jComButton_actionPerformed(e);
+      }
+    });
+    jMenuFile.add(menuFileExit);
+    jMenuEdit.add(menuNewRouter);
+    jMenuEdit.add(menuDelRouter);
+    jMenuEdit.add(menuNetworkView);
+    jMenuEdit.add(menuTutorials);
+    jMenuHelp.add(menuAbout);
+    jMenuHelp.addSeparator();
+    jMenuHelp.add(menuAboutUs);
+    jMenuBar1.add(jMenuFile);
+    jMenuBar1.add(jMenuEdit);
+    jMenuBar1.add(jMenuHelp);
+    this.setJMenuBar(jMenuBar1);
+
+//    image1 = new ImageIcon(switchsim.Frame1.class.getResource("newButton.gif"));
+//    image2 = new ImageIcon(switchsim.Frame1.class.getResource("delSwitch.gif"));
+//    image3 = new ImageIcon(switchsim.Frame1.class.getResource("viewSTP.gif"));
+
+    jNewButton.setMaximumSize(new Dimension(72, 40));
+    jNewButton.setMinimumSize(new Dimension(72, 40));
+    jNewButton.setBackground(new Color(225, 170, 170));
+    jNewButton.setForeground(new Color(100, 100, 100));
+    jNewButton.setText("New");
+    jNewButton.setToolTipText("New Switch");
+    jNewButton.setIcon(image1);
+    jNewButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jNewButton_actionPerformed(e);
+      }
+    });
+
+    jDelButton.setMaximumSize(new Dimension(72, 40));
+    jDelButton.setMinimumSize(new Dimension(72, 40));
+    jDelButton.setBackground(new Color(225, 170, 170));
+    jDelButton.setForeground(new Color(100, 100, 100));
+    jDelButton.setText("Delete");
+    jDelButton.setToolTipText("Delete Switch");
+
+    jViewButton.setMaximumSize(new Dimension(72, 40));
+    jViewButton.setMinimumSize(new Dimension(72, 40));
+    jViewButton.setBackground(new Color(225, 170, 170));
+    jViewButton.setForeground(new Color(100, 100, 100));
+    jViewButton.setText("View");
+    jViewButton.setToolTipText("Network View");
+    jViewButton.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jViewButton_actionPerformed(e);
+      }
+    });
+
+    contentPane.add(jPanel1,    new XYConstraints(0, 40, 700, 460));
+    jPanel1.add(jTabbedPane1,   new XYConstraints(20, 0, 650, 400));
+    contentPane.add(jToolBar1,     new XYConstraints(0, 0, 700, 40));
+    jToolBar1.add(jNewButton, null);
+    jToolBar1.add(jDelButton, null);
+    jToolBar1.add(jConnectButton, null);
+    jToolBar1.add(jComButton, null);
+    jToolBar1.add(jViewButton, null);
+
+
+
+
+
+
+    // set color
+    this.getContentPane().setBackground(new Color(230, 225, 225));
+    jPanel1.setBackground(new Color(180, 180, 180));
+  }
+  /**Overridden so we can exit when window is closed*/
+  protected void processWindowEvent(WindowEvent e) {
+    super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+      System.exit(0);
+    }
+  }
+
+  void jNewButton_actionPerformed(ActionEvent e) {
+//    int type = d.getSelectChoice();
+//    if (type != 0){
+      if (vSwitch.size() < maxSwitch){
+        boolean dup = true;
+        boolean found = false;
+        String str="";
+        int i=1;
+        while(dup){
+          str = "Switch" + i;
+          found = false;
+          for(int a=0; a < Frame1.vSwitch.size(); a++){
+            String alreadyName = ((Switch)Frame1.vSwitch.elementAt(a)).getName();
+            if (alreadyName.equalsIgnoreCase(str)){
+              found = true;
+            }//end if
+          }//end for
+          i++;
+          dup = found;
+        }//end while
+        sw = new Switch(str);
+//        r1.setModel(type);
+        SwitchConsole scon = new SwitchConsole(sw);
+        Frame1.vSwitch.addElement(sw);
+        for (int n=0; n<maxWorkstation; n++) {
+
+        }
+        vConsole.addElement(scon);
+        jTabbedPane1.addTab(str,scon);
+        jTabbedPane1.setSelectedIndex(vSwitch.size()-1);
+//        System.out.println("debug->"+str+" Model="+r1.getModel());
+//        rimg = new RouterImg(r1.getModel());
+//        Panel2.vImg.addElement(rimg);
+/*        switch (type){
+          case 1 : r1.setMaxEth(1);
+                   r1.setMaxSerial(2);
+                   r1.setMaxToken(0);
+                   break;
+          case 2 : r1.setMaxEth(0);
+                   r1.setMaxSerial(2);
+                   r1.setMaxToken(1);
+                   break;
+          case 3 : r1.setMaxEth(1);
+                   r1.setMaxSerial(1);
+                   r1.setMaxToken(2);
+                   break;
+          case 4 : r1.setMaxEth(2);
+                   r1.setMaxSerial(2);
+                   r1.setMaxToken(0);
+                   break;
+          case 5 : r1.setMaxEth(0);
+                   r1.setMaxSerial(2);
+                   r1.setMaxToken(2);
+                   break;
+          case 6 : r1.setMaxEth(10);
+                   r1.setMaxSerial(10);
+                   r1.setMaxToken(10);
+                   break;
+          default : break;
+        }
+      }*/
+//      System.out.println("Frame1->"+r1.getMaxEth()+":"+r1.getMaxSerial()+":"+r1.getMaxToken());
+    }
+  }
+
+  void jViewButton_actionPerformed(ActionEvent e) {
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Dimension frameSize = f2.getSize();
+    if (frameSize.height > screenSize.height) {
+      frameSize.height = screenSize.height;
+    }
+    if (frameSize.width > screenSize.width) {
+      frameSize.width = screenSize.width;
+    }
+    f2.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
+    f2.setVisible(true);
+  }
+
+ void jTabbedPane1_keyPressed(KeyEvent e) {
+    int keyCode = e.getKeyCode();
+    if (keyCode == 10){
+      int num = jTabbedPane1.getSelectedIndex();
+      sw = (Switch)Frame1.vSwitch.elementAt(num);
+      SwitchConsole scon = (SwitchConsole)vConsole.elementAt(num);
+      scon.enterKey(sw);
+    }
+  }
+
+  void jNewButton_keyPressed(KeyEvent e) {
+    jTabbedPane1_keyPressed(e);
+  }
+
+  static void setTab(String s){
+    int index = jTabbedPane1.getSelectedIndex();
+    jTabbedPane1.setTitleAt(index,s);
+  }
+
+  void jConnectButton_actionPerformed(ActionEvent e) {
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Dimension frameSize = f2.getSize();
+    if (frameSize.height > screenSize.height) {
+      frameSize.height = screenSize.height;
+    }
+    if (frameSize.width > screenSize.width) {
+      frameSize.width = screenSize.width;
+    }
+    f2.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
+    f2.setVisible(true);
+    f2.initValue();
+  }
+
+  void jComButton_actionPerformed(ActionEvent e) {
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Dimension frameSize = f3.getSize();
+    if (frameSize.height > screenSize.height) {
+      frameSize.height = screenSize.height;
+    }
+    if (frameSize.width > screenSize.width) {
+      frameSize.width = screenSize.width;
+    }
+    f3.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
+    f3.setVisible(true);
+  }
+}

@@ -1,0 +1,362 @@
+package central;
+
+import javax.crypto.*;
+import javax.crypto.spec.*;
+
+/**
+ * <p>Title: </p>
+ * <p>Description: </p>
+ * <p>Copyright: Copyright (c) 2003</p>
+ * <p>Company: </p>
+ * @author not attributable
+ * @version 1.0
+ */
+
+class des_ctx {
+  long ek[] = new long[32];
+  long dk[] = new long[32];
+}
+
+class DESService {
+
+  public DESService() {
+  }
+
+  private static des_ctx dc = new des_ctx();
+  private static char cp[];
+  private static long work[] = new long[2];
+  private static long work1ocal;
+  private static char key[] = new char[8];// = {0x01,0x23,0x45,0x67,0x89,0xab,0xcd,0xef};
+  private static char x[] = new char[8];// = {0x01,0x23,0x45,0x67,0x89,0xab,0xcd,0xe7};
+
+  static long SP1[] = {
+    0x01010400L, 0x00000000L, 0x00010000L, 0x01010404L,
+    0x01010004L, 0x00010404L, 0x00000004L, 0x00010000L,
+    0x00000400L, 0x01010400L, 0x01010404L, 0x00000400L,
+    0x01000404L, 0x01010004L, 0x01000000L, 0x00000004L,
+    0x00000404L, 0x01000400L, 0x01000400L, 0x00010400L,
+    0x00010400L, 0x01010000L, 0x01010000L, 0x01000404L,
+    0x00010004L, 0x01000004L, 0x01000004L, 0x00010004L,
+    0x00000000L, 0x00000404L, 0x00010404L, 0x01000000L,
+    0x00010000L, 0x01010404L, 0x00000004L, 0x01010000L,
+    0x01010400L, 0x01000000L, 0x01000000L, 0x00000400L,
+    0x01010004L, 0x00010000L, 0x00010400L, 0x01000004L,
+    0x00000400L, 0x00000004L, 0x01000404L, 0x00010404L,
+    0x01010404L, 0x00010004L, 0x01010000L, 0x01000404L,
+    0x01000004L, 0x00000404L, 0x00010404L, 0x01010400L,
+    0x00000404L, 0x01000400L, 0x01000400L, 0x00000000L,
+    0x00010004L, 0x00010400L, 0x00000000L, 0x01010004L };
+
+  static long SP2[] = {
+    0x80108020L, 0x80008000L, 0x00008000L, 0x00108020L,
+    0x00100000L, 0x00000020L, 0x80100020L, 0x80008020L,
+    0x80000020L, 0x80108020L, 0x80108000L, 0x80000000L,
+    0x80008000L, 0x00100000L, 0x00000020L, 0x80100020L,
+    0x00108000L, 0x00100020L, 0x80008020L, 0x00000000L,
+    0x80000000L, 0x00008000L, 0x00108020L, 0x80100000L,
+    0x00100020L, 0x80000020L, 0x00000000L, 0x00108000L,
+    0x00008020L, 0x80108000L, 0x80100000L, 0x00008020L,
+    0x00000000L, 0x00108020L, 0x80100020L, 0x00100000L,
+    0x80008020L, 0x80100000L, 0x80108000L, 0x00008000L,
+    0x80100000L, 0x80008000L, 0x00000020L, 0x80108020L,
+    0x00108020L, 0x00000020L, 0x00008000L, 0x80000000L,
+    0x00008020L, 0x80108000L, 0x00100000L, 0x80000020L,
+    0x00100020L, 0x80008020L, 0x80000020L, 0x00100020L,
+    0x00108000L, 0x00000000L, 0x80008000L, 0x00008020L,
+    0x80000000L, 0x80100020L, 0x80108020L, 0x00108000L };
+
+  static long SP3[] = {
+    0x00000208L, 0x08020200L, 0x00000000L, 0x08020008L,
+    0x08000200L, 0x00000000L, 0x00020208L, 0x08000200L,
+    0x00020008L, 0x08000008L, 0x08000008L, 0x00020000L,
+    0x08020208L, 0x00020008L, 0x08020000L, 0x00000208L,
+    0x08000000L, 0x00000008L, 0x08020200L, 0x00000200L,
+    0x00020200L, 0x08020000L, 0x08020008L, 0x00020208L,
+    0x08000208L, 0x00020200L, 0x00020000L, 0x08000208L,
+    0x00000008L, 0x08020208L, 0x00000200L, 0x08000000L,
+    0x08020200L, 0x08000000L, 0x00020008L, 0x00000208L,
+    0x00020000L, 0x08020200L, 0x08000200L, 0x00000000L,
+    0x00000200L, 0x00020008L, 0x08020208L, 0x08000200L,
+    0x08000008L, 0x00000200L, 0x00000000L, 0x08020008L,
+    0x08000208L, 0x00020000L, 0x08000000L, 0x08020208L,
+    0x00000008L, 0x00020208L, 0x00020200L, 0x08000008L,
+    0x08020000L, 0x08000208L, 0x00000208L, 0x08020000L,
+    0x00020208L, 0x00000008L, 0x08020008L, 0x00020200L };
+
+  static long SP4[] = {
+    0x00802001L, 0x00002081L, 0x00002081L, 0x00000080L,
+    0x00802080L, 0x00800081L, 0x00800001L, 0x00002001L,
+    0x00000000L, 0x00802000L, 0x00802000L, 0x00802081L,
+    0x00000081L, 0x00000000L, 0x00800080L, 0x00800001L,
+    0x00000001L, 0x00002000L, 0x00800000L, 0x00802001L,
+    0x00000080L, 0x00800000L, 0x00002001L, 0x00002080L,
+    0x00800081L, 0x00000001L, 0x00002080L, 0x00800080L,
+    0x00002000L, 0x00802080L, 0x00802081L, 0x00000081L,
+    0x00800080L, 0x00800001L, 0x00802000L, 0x00802081L,
+    0x00000081L, 0x00000000L, 0x00000000L, 0x00802000L,
+    0x00002080L, 0x00800080L, 0x00800081L, 0x00000001L,
+    0x00802001L, 0x00002081L, 0x00002081L, 0x00000080L,
+    0x00802081L, 0x00000081L, 0x00000001L, 0x00002000L,
+    0x00800001L, 0x00002001L, 0x00802080L, 0x00800081L,
+    0x00002001L, 0x00002080L, 0x00800000L, 0x00802001L,
+    0x00000080L, 0x00800000L, 0x00002000L, 0x00802080L };
+
+  static long SP5[] = {
+    0x00000100L, 0x02080100L, 0x02080000L, 0x42000100L,
+    0x00080000L, 0x00000100L, 0x40000000L, 0x02080000L,
+    0x40080100L, 0x00080000L, 0x02000100L, 0x40080100L,
+    0x42000100L, 0x42080000L, 0x00080100L, 0x40000000L,
+    0x02000000L, 0x40080000L, 0x40080000L, 0x00000000L,
+    0x40000100L, 0x42080100L, 0x42080100L, 0x02000100L,
+    0x42080000L, 0x40000100L, 0x00000000L, 0x42000000L,
+    0x02080100L, 0x02000000L, 0x42000000L, 0x00080100L,
+    0x00080000L, 0x42000100L, 0x00000100L, 0x02000000L,
+    0x40000000L, 0x02080000L, 0x42000100L, 0x40080100L,
+    0x02000100L, 0x40000000L, 0x42080000L, 0x02080100L,
+    0x40080100L, 0x00000100L, 0x02000000L, 0x42080000L,
+    0x42080100L, 0x00080100L, 0x42000000L, 0x42080100L,
+    0x02080000L, 0x00000000L, 0x40080000L, 0x42000000L,
+    0x00080100L, 0x02000100L, 0x40000100L, 0x00080000L,
+    0x00000000L, 0x40080000L, 0x02080100L, 0x40000100L };
+
+  static long SP6[] = {
+    0x20000010L, 0x20400000L, 0x00004000L, 0x20404010L,
+    0x20400000L, 0x00000010L, 0x20404010L, 0x00400000L,
+    0x20004000L, 0x00404010L, 0x00400000L, 0x20000010L,
+    0x00400010L, 0x20004000L, 0x20000000L, 0x00004010L,
+    0x00000000L, 0x00400010L, 0x20004010L, 0x00004000L,
+    0x00404000L, 0x20004010L, 0x00000010L, 0x20400010L,
+    0x20400010L, 0x00000000L, 0x00404010L, 0x20404000L,
+    0x00004010L, 0x00404000L, 0x20404000L, 0x20000000L,
+    0x20004000L, 0x00000010L, 0x20400010L, 0x00404000L,
+    0x20404010L, 0x00400000L, 0x00004010L, 0x20000010L,
+    0x00400000L, 0x20004000L, 0x20000000L, 0x00004010L,
+    0x20000010L, 0x20404010L, 0x00404000L, 0x20400000L,
+    0x00404010L, 0x20404000L, 0x00000000L, 0x20400010L,
+    0x00000010L, 0x00004000L, 0x20400000L, 0x00404010L,
+    0x00004000L, 0x00400010L, 0x20004010L, 0x00000000L,
+    0x20404000L, 0x20000000L, 0x00400010L, 0x20004010L };
+
+  static long SP7[] = {
+    0x00200000L, 0x04200002L, 0x04000802L, 0x00000000L,
+    0x00000800L, 0x04000802L, 0x00200802L, 0x04200800L,
+    0x04200802L, 0x00200000L, 0x00000000L, 0x04000002L,
+    0x00000002L, 0x04000000L, 0x04200002L, 0x00000802L,
+    0x04000800L, 0x00200802L, 0x00200002L, 0x04000800L,
+    0x04000002L, 0x04200000L, 0x04200800L, 0x00200002L,
+    0x04200000L, 0x00000800L, 0x00000802L, 0x04200802L,
+    0x00200800L, 0x00000002L, 0x04000000L, 0x00200800L,
+    0x04000000L, 0x00200800L, 0x00200000L, 0x04000802L,
+    0x04000802L, 0x04200002L, 0x04200002L, 0x00000002L,
+    0x00200002L, 0x04000000L, 0x04000800L, 0x00200000L,
+    0x04200800L, 0x00000802L, 0x00200802L, 0x04200800L,
+    0x00000802L, 0x04000002L, 0x04200802L, 0x04200000L,
+    0x00200800L, 0x00000000L, 0x00000002L, 0x04200802L,
+    0x00000000L, 0x00200802L, 0x04200000L, 0x00000800L,
+    0x04000002L, 0x04000800L, 0x00000800L, 0x00200002L };
+
+  static long SP8[] = {
+    0x10001040L, 0x00001000L, 0x00040000L, 0x10041040L,
+    0x10000000L, 0x10001040L, 0x00000040L, 0x10000000L,
+    0x00040040L, 0x10040000L, 0x10041040L, 0x00041000L,
+    0x10041000L, 0x00041040L, 0x00001000L, 0x00000040L,
+    0x10040000L, 0x10000040L, 0x10001000L, 0x00001040L,
+    0x00041000L, 0x00040040L, 0x10040040L, 0x10041000L,
+    0x00001040L, 0x00000000L, 0x00000000L, 0x10040040L,
+    0x10000040L, 0x10001000L, 0x00041040L, 0x00040000L,
+    0x00041040L, 0x00040000L, 0x10041000L, 0x00001000L,
+    0x00000040L, 0x10040040L, 0x00001000L, 0x00041040L,
+    0x10001000L, 0x00000040L, 0x10000040L, 0x10040000L,
+    0x10040040L, 0x10000000L, 0x00040000L, 0x10001040L,
+    0x00000000L, 0x10041040L, 0x00040040L, 0x10000040L,
+    0x10040000L, 0x10001000L, 0x10001040L, 0x00000000L,
+    0x10041040L, 0x00041000L, 0x00041000L, 0x00001040L,
+    0x00001040L, 0x00040040L, 0x10000000L, 0x10041000L };
+
+  static void scrunch()  {
+    work[0] = (cp[0] & 0xffL) << 24;
+    work[0] |= (cp[1] & 0xffL) << 16;
+    work[0] |= (cp[2] & 0xffL) << 8;
+    work[0] |= (cp[3] & 0xffL);
+    work[1] = (cp[4] & 0xffL) << 24;
+    work[1] |= (cp[5] & 0xffL) << 16;
+    work[1] |= (cp[6] & 0xffL) << 8;
+    work[1] |= (cp[7] & 0xffL);
+  }
+
+  static void unscrun()  {
+    cp[0] = (char)((work[0] >> 24) & 0xffL);
+    cp[1] = (char)((work[0] >> 16) & 0xffL);
+    cp[2] = (char)((work[0] >>  8) & 0xffL);
+    cp[3] = (char)((work[0]) & 0xffL);
+    cp[4] = (char)((work[1] >> 24) & 0xffL);
+    cp[5] = (char)((work[1] >> 16) & 0xffL);
+    cp[6] = (char)((work[1] >>  8) & 0xffL);
+    cp[7] = (char)(work[1]     & 0xffL);
+  }
+
+  static void desfunc(boolean function)  {
+    long fval, right, leftt;
+    int round;
+
+    leftt = work[0];
+    right = work[1];
+    work1ocal = ((leftt >> 4) ^ right) & 0x0f0f0f0fL;
+    right ^= work1ocal;
+    leftt ^= (work1ocal << 4);
+    work1ocal = ((leftt >> 16) ^ right) & 0x0000ffffL;
+    right ^= work1ocal;
+    leftt ^= (work1ocal << 16);
+    work1ocal = ((right >> 2) ^ leftt) & 0x33333333L;
+    leftt ^= work1ocal;
+    right ^= (work1ocal << 2);
+    work1ocal = ((right >> 8) ^ leftt) & 0x00ff00ffL;
+    leftt ^= work1ocal;
+    right ^= (work1ocal << 8);
+    right = ((right << 1) | ((right >> 31) & 1L)) & 0xffffffffL;
+    work1ocal = (leftt ^ right) & 0xaaaaaaaaL;
+    leftt ^= work1ocal;
+    right ^= work1ocal;
+    leftt = ((leftt << 1) | ((leftt >> 31) & 1L)) & 0xffffffffL;
+
+    int i = 0;
+
+    for( round = 0; round < 8; round++ ) {
+      work1ocal  = (right << 28) | (right >> 4);
+      if (function)
+        work1ocal ^= dc.ek[i++];
+      else
+        work1ocal ^= dc.dk[i++];
+      fval  = SP7[(int)(work1ocal & 0x3fL)];
+      fval |= SP5[(int)((work1ocal >>  8) & 0x3fL)];
+      fval |= SP3[(int)((work1ocal >> 16) & 0x3fL)];
+      fval |= SP1[(int)((work1ocal >> 24) & 0x3fL)];
+      if (function)
+        work1ocal  = right ^ dc.ek[i++];
+      else
+        work1ocal  = right ^ dc.dk[i++];
+      fval |= SP8[(int)(work1ocal & 0x3fL)];
+      fval |= SP6[(int)((work1ocal >>  8) & 0x3fL)];
+      fval |= SP4[(int)((work1ocal >> 16) & 0x3fL)];
+      fval |= SP2[(int)((work1ocal >> 24) & 0x3fL)];
+      leftt ^= fval;
+      work1ocal  = (leftt << 28) | (leftt >> 4);
+      if (function)
+        work1ocal ^= dc.ek[i++];
+      else
+        work1ocal ^= dc.dk[i++];
+      fval  = SP7[(int)(work1ocal & 0x3fL)];
+      fval |= SP5[(int)((work1ocal >>  8) & 0x3fL)];
+      fval |= SP3[(int)((work1ocal >> 16) & 0x3fL)];
+      fval |= SP1[(int)((work1ocal >> 24) & 0x3fL)];
+      if (function)
+        work1ocal  = leftt ^ dc.ek[i++];
+      else
+        work1ocal  = leftt ^ dc.dk[i++];
+      fval |= SP8[(int)(work1ocal & 0x3fL)];
+      fval |= SP6[(int)((work1ocal >>  8) & 0x3fL)];
+      fval |= SP4[(int)((work1ocal >> 16) & 0x3fL)];
+      fval |= SP2[(int)((work1ocal >> 24) & 0x3fL)];
+      right ^= fval;
+    }
+
+    right = (right << 31) | (right >> 1);
+    work1ocal = (leftt ^ right) & 0xaaaaaaaaL;
+    leftt ^= work1ocal;
+    right ^= work1ocal;
+    leftt = (leftt << 31) | (leftt >> 1);
+    work1ocal = ((leftt >> 8) ^ right) & 0x00ff00ffL;
+    right ^= work1ocal;
+    leftt ^= (work1ocal << 8);
+    work1ocal = ((leftt >> 2) ^ right) & 0x33333333L;
+    right ^= work1ocal;
+    leftt ^= (work1ocal << 2);
+    work1ocal = ((right >> 16) ^ leftt) & 0x0000ffffL;
+    leftt ^= work1ocal;
+    right ^= (work1ocal << 16);
+    work1ocal = ((right >> 4) ^ leftt) & 0x0f0f0f0fL;
+    leftt ^= work1ocal;
+    right ^= (work1ocal << 4);
+    work[0] = right;
+    work[1] = leftt;
+  }
+
+  private static void des_enc(){
+    cp = x;
+    scrunch();
+    desfunc(true);
+    unscrun();
+  }
+
+  private static void des_dec(){
+    cp = x;
+    scrunch();
+    desfunc(false);
+    unscrun();
+  }
+
+  public char[] Encryption(char[] keyarg, char[] cleartext) throws CANException{
+    char[] ciphertext = null;
+    if (key.length == 8) {
+      try {
+        cleartext = trySize(cleartext);
+        key = keyarg;
+        x = cleartext;
+        des_enc();
+        ciphertext = cp;
+      }
+      catch (Exception e) {
+        System.out.println("Exception from DESService (Encryption) : " + e);
+      }
+      return ciphertext;
+    }
+    else {
+      throw new CANException("DESSerice Exception in Encryption Method : Key length is invalid");
+    }
+  }
+
+  public char[] Decryption(char[] keyarg, char[] ciphertext) throws CANException{
+    char[] cleartext = null;
+    if (key.length == 8) {
+      try {
+        ciphertext = trySize(ciphertext);
+        key = keyarg;
+        x = ciphertext;
+        des_dec();
+        cleartext = cp;
+      }
+      catch (Exception e) {
+        System.out.println("Exception from DESService (Decryption) : " + e);
+      }
+      return cleartext;
+    }
+    else {
+      throw new CANException("DESSerice Exception in Decryption Method : Key length is invalid");
+    }
+  }
+
+  private char[] trySize(char[] arg) throws CANException{
+    char[] returnarg = new char[8];
+    if (arg.length == 8)
+      for (int i = 0; i < 8; i++)
+        returnarg[i] = arg[i];
+    else if (arg.length < 8) {
+      for (int i = 0; i < arg.length; i++)
+        returnarg[i] = arg[i];
+      for (int j = arg.length; j < 8; j++)
+        returnarg[j] = 0;
+    }
+    else
+      throw new CANException("DESService Exception in trySize : data length not invalid");
+    return returnarg;
+  }
+}
+
+/*
+* Single-length key, single-length plaintext -
+* Key    : 0123 4567 89ab cdef
+* Plain  : 0123 4567 89ab cde7
+* Cipher : c957 4425 6a5e d31d
+* Plain  : ?	W	D	?	j	^	?	?
+* 10base : 201	87	68	37	106	94	211	29
+*/

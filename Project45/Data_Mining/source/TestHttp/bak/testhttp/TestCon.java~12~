@@ -1,0 +1,57 @@
+package testhttp;
+
+import java.net.HttpURLConnection;
+import HTTPClient.*;
+import java.io.*;
+import java.util.Vector;
+public class TestCon {
+
+private InputStream inputstream;
+private byte[] data,other_data;
+private String sq1;
+
+  public TestCon() {
+  }
+
+  public InputStream connHttp( String seq ){
+
+    try{
+        String sq1 = new String();
+        sq1 = "/stock/stock.cgi?symbol="+TISCO;
+        HTTPConnection con = new HTTPConnection("www.thaiset.com");
+        HTTPResponse   rsp = con.Get( sq1 );
+
+         if (rsp.getStatusCode() >= 300){
+           System.err.println("Received Error: "+rsp.getReasonLine());
+           System.err.println(rsp.getText());
+         }
+         else
+           data = rsp.getData();
+
+         rsp = con.Get( sq1 );
+
+         if (rsp.getStatusCode() >= 300){
+           System.err.println("Received Error: "+rsp.getReasonLine());
+           System.err.println(rsp.getText());
+         }
+         else
+           other_data = rsp.getData();
+
+
+        return rsp.getInputStream();
+
+    }
+    catch (IOException ioe){
+         System.err.println(ioe.toString());
+         return null;
+    }
+    catch (ParseException pe){
+         System.err.println("Error parsing Content-Type: " + pe.toString());
+         return null;
+    }
+    catch (ModuleException me){
+         System.err.println("Error handling request: " + me.getMessage());
+         return null;
+    }
+  }
+}

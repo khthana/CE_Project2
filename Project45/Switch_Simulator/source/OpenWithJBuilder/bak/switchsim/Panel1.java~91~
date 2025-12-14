@@ -1,0 +1,121 @@
+package switchsim;
+
+import java.awt.*;
+import com.borland.jbcl.layout.*;
+import javax.swing.*;
+
+public class Panel1 extends JPanel {
+  Switch sw;
+  String output = "";
+  int wide = 250;
+  XYLayout xYLayout1 = new XYLayout();
+  JScrollPane jScrollPane1 = new JScrollPane();
+  JTextArea jTextArea1 = new JTextArea();
+  JLabel jLabel1 = new JLabel();
+  int stpFlag = 0;
+
+  public Panel1() {
+    try {
+      jbInit();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  public Panel1(Switch s) {
+    try {
+      sw = s;
+      jbInit();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+  void jbInit() throws Exception {
+    this.setBackground(new Color(131, 170, 205));
+    this.setLayout(xYLayout1);
+    this.setSize(250,205);
+    this.setBackground(new Color(131, 181, 215));
+    jScrollPane1.getViewport().setBackground(new Color(233, 233, 233));
+    jTextArea1.setEditable(false);
+    this.add(jScrollPane1,         new XYConstraints(5, 19, 240, 150));
+    this.add(jLabel1,          new XYConstraints(5, 4, 240, 15));
+    jScrollPane1.getViewport().add(jTextArea1, null);
+  }
+
+  void showDetail() {
+    Vlan vlan = new Vlan();
+    if (Frame1.stp.getStatus().equals("enabled")) {
+      stpFlag = 1;
+    }
+    else {
+      for (int i = 0; i < Frame1.vVlan.size(); i++) {
+        vlan = (Vlan)Frame1.vVlan.elementAt(i);
+        if (vlan.getPvstpStatus().equals("enabled")) {
+          stpFlag = 2;
+          i = Frame1.vVlan.size();
+        }
+        else
+          stpFlag = 0;
+      }
+    }
+
+    jLabel1.setText(sw.getName());
+    output = "";
+    if (Frame1.jSTPButton.isSelected()) {
+      if (stpFlag != 0) {
+//      if (!sw.getSTPstatus().equals("")) {
+        if (sw.getSTPstatus().equals("Root Bridge"))
+          output += "Root Bridge\n";
+        output += "MAC-Address: "+sw.getMACAddress()+"\n";
+        output += "BridgeID: "+sw.getBridgeID()+"\n";
+      }
+      else output += "MAC-Address: "+sw.getMACAddress()+"\n";
+    }
+    else output += "MAC-Address: "+sw.getMACAddress()+"\n";
+    int i=0;
+    while (i<sw.getVIntSort().size()) {
+      Interface inf = (Interface)sw.getVIntSort().elementAt(i);
+      if ((inf.getCom()!=null) || (inf.getSwitch()!=null)) {
+        String pad = "";
+        boolean yes = false;
+        output += inf.getNameInt()+" : "+inf.getStatus()+"\n";
+        if (inf.getNum()<10)
+          pad = "        ";
+        else pad = "         ";
+        if (Frame1.jVlanButton.isSelected()) {
+          if (inf.getVLANLink()==0)
+            output += pad+"VLAN"+inf.getVLAN()+"\n";
+          else output += pad+"Trunk"+"\n";
+        }
+        if ((Frame1.jSTPButton.isSelected()) && (!inf.getSTPport().equals(""))) {
+          output += pad+inf.getSTPport()+"\n";
+        }
+      }
+      i++;
+    }
+    i=0;
+    int length=0;
+    while (i<output.length()) {
+      if (output.charAt(i)!='\n') {
+        length++;
+      }
+      else {
+        if (length>wide) {
+          wide = length;
+        }
+        length=0;
+      }
+      i++;
+    }
+    if (output.charAt(output.length()-1)=='\n') {
+      output = output.substring(0,output.length()-1);
+    }
+    jTextArea1.setText(output);
+  }
+
+  public int getWide() {
+    return wide;
+  }
+}

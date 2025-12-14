@@ -1,0 +1,46 @@
+package switchsim;
+
+import java.awt.*;
+import javax.swing.*;
+import com.borland.jbcl.layout.*;
+
+/**
+ * Title:        Switch Simulator
+ * Description:
+ * Copyright:    Copyright (c) 2003
+ * Company:      ISAG
+ * @author ammii
+ * @version 1.0
+ */
+
+public class Dialog6 extends JDialog {
+  JPanel panel1 = new JPanel();
+  JFileChooser jFileChooser1 = new JFileChooser();
+  XYLayout xYLayout1 = new XYLayout();
+  JPanel jPanel1 = new JPanel();
+  XYLayout xYLayout2 = new XYLayout();
+
+  public Dialog6(Frame frame, String title, boolean modal) {
+    super(frame, title, modal);
+    try {
+      jbInit();
+      pack();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  public Dialog6() {
+    this(null, "", true);
+  }
+  void jbInit() throws Exception {
+    panel1.setLayout(xYLayout1);
+    this.setTitle("Save File");
+//    jFileChooser1.setBackground(new Color(223, 223, 223));
+    jPanel1.setLayout(xYLayout2);
+    getContentPane().add(panel1);
+//    panel1.add(jFileChooser1,  new XYConstraints(0, 0, -1, 300));
+    panel1.add(jPanel1,     new XYConstraints(0, 0, 500, 300));
+  }
+}

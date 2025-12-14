@@ -1,0 +1,27 @@
+// Drawable.cpp: implementation of the CDrawable class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "football.h"
+#include "Drawable.h"
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+CDrawable::CDrawable()
+{
+
+}
+
+CDrawable::~CDrawable()
+{
+
+}

@@ -1,0 +1,64 @@
+package center; 
+
+import weblogic.jws.*; 
+import weblogic.jws.control.*; 
+import java.sql.SQLException; 
+
+/** 
+ * Defines a new database control. 
+ * 
+ * The @jws:connection tag indicates which WebLogic data source will be used by 
+ * this database control. Please change this to suit your needs. You can see a 
+ * list of available data sources by going to the WebLogic console in a browser 
+ * (typically http://localhost:7001/console) and clicking Services, JDBC, 
+ * Data Sources. 
+ * 
+ * @jws:connection data-source-jndi-name="JNDICenter" 
+ */ 
+public interface db_alertControl extends DatabaseControl 
+{ 
+    // Sample database function.  Uncomment to use 
+
+    // static public class Customer 
+    // { 
+    //   public int id; 
+    //   public String name; 
+    // } 
+    // 
+    // /** 
+    //  * @jws:sql statement="SELECT ID, NAME FROM CUSTOMERS WHERE ID = {id}" 
+    //  */ 
+    // Customer findCustomer(int id);
+
+    // Add "throws SQLException" to request that SQLExeptions be thrown on errors.
+
+    /**
+     * @jws:sql statement::
+     *     insert into news_temp
+     *     values ({username}, {name}, {email}, {news}, {category},
+     *         {email_way}, {application_way})
+     * ::
+     */
+    public void insert_db(String username, String name,
+        String email, String news, String category,String email_way,
+        String application_way);
+
+
+    /**
+     * @jws:sql statement::
+     *     select username, name, email, news, category
+     *     from news_temp
+     *     where email_way='1'
+     * ::
+     */
+    public user_news read_user();
+
+    /**
+     * @jws:sql statement::
+     *     update news_temp
+     *     set email_way='0'
+     *     where email_way='1'
+     * ::
+     */
+    public void update_user();
+}

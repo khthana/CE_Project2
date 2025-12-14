@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://tempuri.org/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://tempuri.org/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="BankingCheck">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IDCredit" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PasswordCredit" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Price" type="s:decimal" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BankingCheckResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="BankingCheckResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BankingPayment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IDCredit" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PasswordCredit" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="NameBookReceive" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="IDBookReceive" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Price" type="s:decimal" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BankingPaymentResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="boolean" type="s:boolean" />
+    </s:schema>
+  </types>
+  <message name="BankingCheckSoapIn">
+    <part name="parameters" element="s0:BankingCheck" />
+  </message>
+  <message name="BankingCheckSoapOut">
+    <part name="parameters" element="s0:BankingCheckResponse" />
+  </message>
+  <message name="BankingPaymentSoapIn">
+    <part name="parameters" element="s0:BankingPayment" />
+  </message>
+  <message name="BankingPaymentSoapOut">
+    <part name="parameters" element="s0:BankingPaymentResponse" />
+  </message>
+  <message name="BankingCheckHttpGetIn">
+    <part name="IDCredit" type="s:string" />
+    <part name="PasswordCredit" type="s:string" />
+    <part name="Price" type="s:string" />
+  </message>
+  <message name="BankingCheckHttpGetOut">
+    <part name="Body" element="s0:boolean" />
+  </message>
+  <message name="BankingPaymentHttpGetIn">
+    <part name="IDCredit" type="s:string" />
+    <part name="PasswordCredit" type="s:string" />
+    <part name="NameBookReceive" type="s:string" />
+    <part name="IDBookReceive" type="s:string" />
+    <part name="Price" type="s:string" />
+  </message>
+  <message name="BankingPaymentHttpGetOut" />
+  <message name="BankingCheckHttpPostIn">
+    <part name="IDCredit" type="s:string" />
+    <part name="PasswordCredit" type="s:string" />
+    <part name="Price" type="s:string" />
+  </message>
+  <message name="BankingCheckHttpPostOut">
+    <part name="Body" element="s0:boolean" />
+  </message>
+  <message name="BankingPaymentHttpPostIn">
+    <part name="IDCredit" type="s:string" />
+    <part name="PasswordCredit" type="s:string" />
+    <part name="NameBookReceive" type="s:string" />
+    <part name="IDBookReceive" type="s:string" />
+    <part name="Price" type="s:string" />
+  </message>
+  <message name="BankingPaymentHttpPostOut" />
+  <portType name="ServiceBankSoap">
+    <operation name="BankingCheck">
+      <documentation>จะตรวดสอบว่ามี สมาชิกคนนี้อยู่หรือไม่และมีเงินในบัญชีพอหรือไม่</documentation>
+      <input message="s0:BankingCheckSoapIn" />
+      <output message="s0:BankingCheckSoapOut" />
+    </operation>
+    <operation name="BankingPayment">
+      <documentation>จะตัดเงินในบัญชีธนาคาร</documentation>
+      <input message="s0:BankingPaymentSoapIn" />
+      <output message="s0:BankingPaymentSoapOut" />
+    </operation>
+  </portType>
+  <portType name="ServiceBankHttpGet">
+    <operation name="BankingCheck">
+      <documentation>จะตรวดสอบว่ามี สมาชิกคนนี้อยู่หรือไม่และมีเงินในบัญชีพอหรือไม่</documentation>
+      <input message="s0:BankingCheckHttpGetIn" />
+      <output message="s0:BankingCheckHttpGetOut" />
+    </operation>
+    <operation name="BankingPayment">
+      <documentation>จะตัดเงินในบัญชีธนาคาร</documentation>
+      <input message="s0:BankingPaymentHttpGetIn" />
+      <output message="s0:BankingPaymentHttpGetOut" />
+    </operation>
+  </portType>
+  <portType name="ServiceBankHttpPost">
+    <operation name="BankingCheck">
+      <documentation>จะตรวดสอบว่ามี สมาชิกคนนี้อยู่หรือไม่และมีเงินในบัญชีพอหรือไม่</documentation>
+      <input message="s0:BankingCheckHttpPostIn" />
+      <output message="s0:BankingCheckHttpPostOut" />
+    </operation>
+    <operation name="BankingPayment">
+      <documentation>จะตัดเงินในบัญชีธนาคาร</documentation>
+      <input message="s0:BankingPaymentHttpPostIn" />
+      <output message="s0:BankingPaymentHttpPostOut" />
+    </operation>
+  </portType>
+  <binding name="ServiceBankSoap" type="s0:ServiceBankSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <operation name="BankingCheck">
+      <soap:operation soapAction="http://tempuri.org/BankingCheck" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="BankingPayment">
+      <soap:operation soapAction="http://tempuri.org/BankingPayment" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="ServiceBankHttpGet" type="s0:ServiceBankHttpGet">
+    <http:binding verb="GET" />
+    <operation name="BankingCheck">
+      <http:operation location="/BankingCheck" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="BankingPayment">
+      <http:operation location="/BankingPayment" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output />
+    </operation>
+  </binding>
+  <binding name="ServiceBankHttpPost" type="s0:ServiceBankHttpPost">
+    <http:binding verb="POST" />
+    <operation name="BankingCheck">
+      <http:operation location="/BankingCheck" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="BankingPayment">
+      <http:operation location="/BankingPayment" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output />
+    </operation>
+  </binding>
+  <service name="ServiceBank">
+    <port name="ServiceBankSoap" binding="s0:ServiceBankSoap">
+      <soap:address location="http://161.246.6.4/ProjectTumbolthai/Bank/WebService/servicebank.asmx" />
+    </port>
+    <port name="ServiceBankHttpGet" binding="s0:ServiceBankHttpGet">
+      <http:address location="http://161.246.6.4/ProjectTumbolthai/Bank/WebService/servicebank.asmx" />
+    </port>
+    <port name="ServiceBankHttpPost" binding="s0:ServiceBankHttpPost">
+      <http:address location="http://161.246.6.4/ProjectTumbolthai/Bank/WebService/servicebank.asmx" />
+    </port>
+  </service>
+</definitions>

@@ -1,0 +1,323 @@
+Attribute VB_Name = "basByteUtils"
+Option Explicit
+Option Base 0
+
+' basByteUtils: Misc byte utilities in VB
+
+' Version 3.2. Posted on <www.di-mgt.com.au>  August 2001
+' Revision history at end of file
+
+'************************* COPYRIGHT NOTICE*************************
+' This code was originally written in Visual Basic by David Ireland
+' and is copyright (c) 2001 D.I. Management Services Pty Limited.
+' All rights reserved.
+
+' You may use this code in your applications provided this
+' copyright notice is left intact.
+
+' This code may only be used as part of an application. It may
+' not be reproduced or distributed separately by any means without
+' the express written permission of the author.
+
+' David Ireland and DI Management Services Pty Limited make no
+' representations concerning either the merchantability of this
+' software or the suitability of this software for any particular
+' purpose. It is provided "as is" without express or implied
+' warranty of any kind.
+
+' Please forward comments or bug reports to <code@di-mgt.com.au>.
+' The latest version of this source code can be downloaded from
+' www.di-mgt.com.au/crypto.html.
+'****************** END OF COPYRIGHT NOTICE*************************
+
+' Contents:
+' . bu_HexStr2Bytes: Converts string with hex values into array of bytes
+' . bu_HexStr2Words: Converts string with hex values into array of Longs
+' . bu_Words2HexStr: Converts array of Longs to a hex string (Added 11/5/01)
+' . bu_String2Bytes: Converts string directly into array of bytes
+' . bu_Bytes2String: Converts array of bytes into a string of acsii chars
+' . bu_String2Words: Converts string of ascii chars into an array of Longs*
+' . bu_Str2Hex: Converts string of ascii chars to string in hex format
+' . bu_Hex2Str: Converts string in hex format to string of ascii chars*
+' . bu_IsValidHex: Checks if string contains only valid hex digits*
+' . bu_XorBytes: XOR's two arrays of bytes
+' . bu_CopyBytes: Copies bytes from one array to another
+' . bu_LoadByteArray: Copies a list of values into array of bytes
+' * = added XX August 2001
+
+Public Function bu_Bytes2HexStr(aBytes() As Byte, nBytes As Long) As String
+    bu_Bytes2HexStr = bu_Str2Hex(bu_Bytes2String(aBytes, nBytes))
+End Function
+
+
+Public Function bu_HexStr2Bytes(sHex As String, aBytes() As Byte) As Integer
+' Converts string <sHex> with hex values into array of bytes
+' Returns # of bytes converted
+' Assumes array is large enough
+' E.g. "fedcba98" will be converted into {&HFE, &HDC, &HBA, &H98}
+    Dim i As Integer
+    Dim nBytes As Integer
+
+    If Not bu_IsValidHex(sHex) Then    ' Validation added Aug 2001
+        Exit Function
+    End If
+
+    nBytes = Len(sHex) \ 2
+    For i = 0 To nBytes - 1
+        aBytes(i) = CByte("&H" & Mid(sHex, i * 2 + 1, 2))
+    Next
+
+    bu_HexStr2Bytes = nBytes
+
+End Function
+
+Public Function bu_HexStr2Words(sHex As String, aWords() As Long) As Integer
+' Converts string <sHex> with hex values into array of words (long ints)
+' Returns # of words converted
+' Assumes array is large enough
+' E.g. "fedcba9876543210" will be converted into {&HFEDCBA98, &H76543210}
+    Const ncLEN As Integer = 8
+    Dim i As Integer
+    Dim nWords As Integer
+
+    If Not bu_IsValidHex(sHex) Then    ' Validation added Aug 2001
+        Exit Function
+    End If
+
+    nWords = Len(sHex) \ ncLEN
+    For i = 0 To nWords - 1
+        aWords(i) = CLng("&H" & Mid(sHex, i * ncLEN + 1, ncLEN))
+    Next
+
+    bu_HexStr2Words = nWords
+
+End Function
+
+' New function added in Version 3, 11 May 2001.
+Public Function bu_Words2HexStr(aWords() As Long, nWords As Long) As String
+' Converts array of words (long ints), nWords long, into a string
+' E.g. {&HFEDCBA98, &H76543210} will be converted to "FEDCBA9876543210"
+    Const ncLEN As Integer = 8
+    Dim i As Integer
+    Dim sHex As String
+
+    bu_Words2HexStr = ""
+    For i = 0 To nWords - 1
+        sHex = Hex(aWords(i))
+        sHex = String(ncLEN - Len(sHex), "0") & sHex
+        bu_Words2HexStr = bu_Words2HexStr & sHex
+    Next
+
+End Function
+
+Public Function bu_String2Bytes(str As String, aBytes() As Byte) As Integer
+' Converts string <str> directly into array of bytes
+' String may contain any characters between &H00 and &HFF
+' Returns # of bytes converted
+' Assumes array is large enough
+' E.g. "abc" will be converted to (&H61, &H62, &H63) i.e. (97, 98, 99)
+    Dim i As Integer
+    Dim nBytes As Integer
+
+    nBytes = Len(str)
+    For i = 0 To nBytes - 1
+        aBytes(i) = Asc(Mid(str, i + 1, 1))
+    Next
+
+    bu_String2Bytes = nBytes
+
+End Function
+
+Public Function bu_Bytes2String(aBytes() As Byte, nBytes As Long) As String
+' Converts array of bytes, nBytes long, into a string
+' E.g. (&H61, &H62, &H63) will be converted to "abc"
+    Dim i As Integer
+    Dim str As String
+
+    For i = 0 To nBytes - 1
+        str = str & Chr(aBytes(i))
+    Next
+
+    bu_Bytes2String = str
+
+End Function
+
+Public Function bu_String2Words(str As String, aWords() As Long) As Long
+' Converts string of ascii chars into an array of 32-bit words
+' E.g. "abcdefgh" will be converted to {&H61626364, &H65666768}
+    Dim sTemp As String
+    sTemp = bu_Str2Hex(str)
+    bu_String2Words = bu_HexStr2Words(sTemp, aWords)
+End Function
+
+Public Function bu_Str2Hex(str As String) As String
+' Converts string <str> of ascii chars to string in hex byte format
+' E.g. "abc" will be converted to "616263"
+    Dim byt As Byte
+    Dim i As Integer
+    Dim n As Integer
+    Dim sHex As String
+    sHex = ""
+
+    n = Len(str)
+    For i = 1 To n
+        byt = CByte(Asc(Mid(str, i, 1)))
+        If Len(Hex(byt)) = 1 Then
+            sHex = sHex & "0" & Hex(byt)
+        Else
+            sHex = sHex & Hex(byt)
+        End If
+    Next
+    bu_Str2Hex = sHex
+
+End Function
+
+Public Function bu_Hex2Str(sHex As String) As String
+' Version 3.1: New function added August 2001
+' Converts string <sHex> in hex format to string of ascii chars
+' E.g. "6162632E" will be converted to "abc."
+    Dim i As Integer
+    Dim nBytes As Integer
+
+    bu_Hex2Str = ""
+    If Not bu_IsValidHex(sHex) Then
+        Exit Function
+    End If
+    nBytes = Len(sHex) \ 2
+    For i = 0 To nBytes - 1
+        bu_Hex2Str = bu_Hex2Str & Chr(CByte("&H" & Mid(sHex, i * 2 + 1, 2)))
+    Next
+
+End Function
+
+Public Function bu_IsValidHex(strToCheck As String)
+' Vesrion 3.1: New function added August 2001
+' Returns True if strToCheck only contains valid hexadecimal digits
+    Const scHEXDIGITS As String = "0123456789ABCDEFabcdef"
+    ' NB Include both uc and lc just in case Binary Compare mode
+    Dim i As Integer
+    Dim nLen As Long
+
+    bu_IsValidHex = True
+    nLen = Len(strToCheck)
+    For i = 1 To nLen
+        If InStr(scHEXDIGITS, Mid(strToCheck, i, 1)) = 0 Then
+            bu_IsValidHex = False
+            Exit For
+        End If
+    Next
+End Function
+
+Public Function bu_XorBytes(aByt1() As Byte, aByt2() As Byte, nBytes As Long)
+' XOR's bytes in array aByt1 with array aByt2
+' Returns results in aByt1
+' i.e. aByt1 = aByt1 XOR aByt2
+    Dim i As Long
+    For i = 0 To nBytes - 1
+        aByt1(i) = aByt1(i) Xor aByt2(i)
+    Next
+End Function
+
+Public Function bu_CopyBytes(aDest() As Byte, aSrc() As Byte, nBytes As Long)
+' Copies nBytes from array aSrc() into aDest()
+' Assumes aDest is large enough.
+    Dim i As Long
+    For i = 0 To nBytes - 1
+        aDest(i) = aSrc(i)
+    Next
+End Function
+
+Public Function bu_LoadByteArray(aBytes() As Byte, ParamArray List() As Variant) As Integer
+' Copies a list of values <List> into array of bytes <aBytes>.
+' Returns number of bytes read.
+' Checks length of array first.
+' E.g. bu_LoadByteArray(aBytes, &HFE, &HDC, &HBA, &H98) will return 4 and set
+' aBytes(0) = &HFE, aBytes(1) = &HDC, aBytes(2) = &HBA, aBytes(3) = &H98
+    Dim nLen As Integer, i As Integer
+
+    nLen = UBound(List())      ' NB Zero-base, so one less than real length
+    If UBound(aBytes()) < nLen Then
+        nLen = UBound(aBytes())
+    End If
+
+    For i = 0 To nLen
+        aBytes(i) = CByte(List(i))
+    Next
+
+    bu_LoadByteArray = nLen + 1
+
+End Function
+
+' Version 3: ShiftLeft and ShiftRight functions improved.
+' Thanks to Doug J Ward for these.
+' Identical functions are also used as private functions in basRadix64
+Public Function bu_ShiftLeft(ByVal bytValue As Byte, intShift As Integer) As Byte
+    If intShift > 0 And intShift < 8 Then
+        bu_ShiftLeft = bytValue * (2 ^ intShift) Mod 256
+    ElseIf intShift = 0 Then
+        bu_ShiftLeft = bytValue
+    Else
+        bu_ShiftLeft = 0
+    End If
+End Function
+
+Public Function bu_ShiftRight(ByVal bytValue As Byte, intShift As Integer) As Byte
+    If intShift > 0 And intShift < 8 Then
+        bu_ShiftRight = bytValue \ (2 ^ intShift)
+    ElseIf intShift = 0 Then
+        bu_ShiftRight = bytValue
+    Else
+        bu_ShiftRight = 0
+    End If
+End Function
+
+Public Function bu_PadHexString(strData As String, nblocklen As Long) As String
+' Pad hex data string to next multiple of nBlockLen bytes as per RFC 2630
+    Dim nLen As Long
+    Dim sPad As String
+    Dim nPad As Integer
+    Dim sHex As String
+    Dim i As Integer
+    nLen = Len(strData) \ 2
+    nPad = ((nLen \ nblocklen) + 1) * nblocklen - nLen
+    nPad = nPad And &HFF
+    sHex = IIf(nPad < 16, "0" & Hex(nPad), Hex(nPad))
+    sPad = ""
+    ' Pad with # of pads (1-n)
+    For i = 1 To nPad
+        sPad = sPad & sHex
+    Next
+    bu_PadHexString = strData & sPad
+
+End Function
+
+Public Function bu_UnpadHexString(strData As String, nblocklen As Long) As String
+' Strip RFC 2630-style padding from hex string
+    Dim nLen As Long
+    Dim nPad As Long
+    nLen = Len(strData)
+    ' Get # of padding bytes from last char hex pair
+    nPad = Int("&H" & (Right(strData, 2)))
+    If nPad > nblocklen Then nPad = 0    ' In case invalid
+    bu_UnpadHexString = Left(strData, nLen - nPad * 2)
+End Function
+
+'***************************************************
+' REVISION HISTORY
+' Version 3.2. Published September 2001
+' - Added Pad and UnpadHexString functions
+' Version 3.1. Published August 2001
+' - Added bu_Hex2Str function. Editorial revisions.
+' Version 3.0. Published 11 May 2001.
+' Added ShiftLeft and ShiftRight functions - thanks to Doug J Ward.
+' Also added bu_Words2HexStr function.
+' Version 2.1. Editorial revisions, 28 November 2000
+' Version 2. Published 16 November 2000
+' Changed name of function bu_Str2Bytes() to bu_HexStr2Bytes()
+' and bu_Str2Words() to bu_HexStr2Words()
+' Added new functions:
+' bu_XorBytes, bu_CopyBytes, bu_Bytes2String, bu_String2Bytes
+' Version 1. First posted by DI Management Services in October 2000
+'***************************************************
+
+

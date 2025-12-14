@@ -1,0 +1,654 @@
+package switchsim;
+
+import java.util.*;
+
+public class SpanningTree {
+
+  private String status;
+
+  private final String sRB = "Root Bridge";
+  private final String sNRB = "Nonroot Bridge";
+  private final String sRP = "Root Port";
+  private final String sDP = "Designated Port";
+  private final String sNDP = "Nondesignated Port";
+  private final String bS = "blocking";
+  private final String liS = "listening";
+  private final String leS = "learning";
+  private final String fS = "forwarding";
+
+//  private Vector allVlan = new Vector();
+
+  private String helloTime;
+  private String maxAge;
+  private String forwardDelay;
+  private String portPriority;
+  private String cost;
+  private String portID;
+  private String bridgePrioirity;
+
+  public SpanningTree() {
+    helloTime = "2";
+    maxAge = "20";
+    forwardDelay = "15";
+    portPriority = "128";
+    cost = "100";
+    status = "disabled";
+    bridgePrioirity = "32768";
+  }
+
+  public String getBridgePrioirity() {
+    return bridgePrioirity;
+  }
+  public void setBridgePriority(String pri) {
+    bridgePrioirity = pri;
+  }
+
+  public String getPortPriority() {
+    return portPriority;
+  }
+  public void setPortPriority(String p) {
+    portPriority = p;
+  }
+
+  public String getCost() {
+    return cost;
+  }
+  public void setCost(String c) {
+    cost = c;
+  }
+
+  public String getHelloTime() {
+    return helloTime;
+  }
+  public void setHelloTime(String t) {
+    helloTime = t;
+  }
+
+  public String getMaxAge() {
+    return maxAge;
+  }
+  public void setMaxAge(String a) {
+    maxAge = a;
+  }
+
+  public String getForwardDelay() {
+    return forwardDelay;
+  }
+  public void setForwardDelay(String f) {
+    forwardDelay = f;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+  public void setStatus(String s) {
+    status = s;
+  }
+
+  public Switch getRootBridge() {
+    Switch temp = new Switch();
+    Switch ret = new Switch();
+    String bid, rb = "";
+    for (int i = 0; i < Frame1.vSwitch.size(); i++) {
+      temp = (Switch)Frame1.vSwitch.elementAt(i);
+      bid = temp.getBridgeID();
+      rb = temp.getRootBridge();
+      if (bid.equals(rb)) {
+        ret = temp;
+        i = Frame1.vSwitch.size();
+      }
+    }
+    return ret;
+  }
+
+  public String compareBridgeID(String str1, String str2) {
+    String result = "";
+    for (int k = 0; k < 25; k++) {
+      if ((k != 5) && (k != 10) && (k != 15)) {
+        if (str1.charAt(k) < str2.charAt(k)) {
+          result = "less";
+          k = 25;
+        }
+        else if (str1.charAt(k) > str2.charAt(k))  {
+          result = "more";
+          k = 25;
+        }
+      }     // end if k
+    }       // end for k
+    return result;
+  }
+
+  public boolean checkSuccedOfSTP(Vector vName) {
+    int x;
+    String rb1, rb2 = "";
+    boolean notDone = true;
+    for (int y = 1; y < vName.size(); y++) {
+        x = y - 1;
+        rb1 = (String)vName.elementAt(x);
+        rb2 = (String)vName.elementAt(y);
+        if (rb1.equals(rb2)) {
+          notDone = false;
+        }
+    }
+    return notDone;
+  }
+
+  public void setPortForAllSwitch(Vector allSwitch) {
+    Switch sender = new Switch();
+    Switch temp = new Switch();
+    Vector vInt = new Vector();
+    Interface interf = new Interface();
+    String str, tmpBID, rootPort, port = "";
+    String STPstatus = "";
+    int dist;
+
+    for (int i = 0; i < allSwitch.size(); i++) {
+      sender = (Switch)allSwitch.elementAt(i);
+      STPstatus = sender.getSTPstatus();
+//      System.out.println("STPstatus: " + i + " " + STPstatus);
+      if (STPstatus.equals(sRB)) {
+        System.out.println("Root Bridge = " + sender.getBridgeID());
+        sender.setForRootBridge();
+      }     // end if
+      else if(STPstatus.equals(sNRB)) {
+        str = sender.getDistance();
+        dist = Integer.parseInt(str);
+        for (int j = 0; j < allSwitch.size(); j++) {
+          temp = (Switch)allSwitch.elementAt(j);
+          vInt = temp.getVIntSwitch();
+          tmpBID = temp.getBridgeID();
+          rootPort = sender.findRootPort();
+          if (dist > 1) {
+            if (tmpBID.equals(rootPort)) {
+              temp.receiveMessage(sender.sendMessage());
+            }     // end if ==
+          }       // end if > 1
+        }         // end for j
+      }           // end else if
+    }             // end for i
+
+    for (int a = 0; a < allSwitch.size(); a++) {
+      temp = (Switch)allSwitch.elementAt(a);
+      vInt = temp.getVIntSwitch();
+//      System.out.println("***" + temp.getName());
+      for (int b = 0; b < vInt.size(); b++) {
+        interf = (Interface)vInt.elementAt(b);
+//        System.out.println(interf.getSwitchName() + ":" + interf.getSTPport());
+        port = interf.getSTPport();
+        if (!(port.equals(sRP) || port.equals(sDP))) {
+          interf.setSTPport(sNDP);
+        }     // end if ||
+      }       // end for b
+    }         // end for a
+  }
+
+  public void setPortForVlanSwitch(Vlan v) {
+    Switch temp = new Switch();
+    Vector vInt = new Vector();
+    Interface interf = new Interface();
+    String str, tmpBID, rootPort, port = "";
+    String STPstatus = "";
+    int dist, pos;
+
+    Vector swVlan = new Vector();
+    Vector infVlan = new Vector();
+    Switch sw1 = new Switch();
+    Switch sw2 = new Switch();
+
+    swVlan = v.getSwitchMember();
+    for (int i = 0; i < swVlan.size(); i++) {
+      sw1 = (Switch)swVlan.elementAt(i);
+      pos = sw1.getVlanPostionInVlist(v);
+//      System.out.println("STPstatus: " + i + " " + STPstatus);
+      if (sw1.getvSTPstatus(pos).equals(sRB)) {
+        sw1.setForVRootBridge(v);
+      }     // end if
+      else if (sw1.getvSTPstatus(pos).equals(sNRB)) {
+        str = sw1.getvDistance(pos);
+        dist = Integer.parseInt(str);
+        for (int j = 0; j < swVlan.size(); j++) {
+          sw2 = (Switch)swVlan.elementAt(j);
+          rootPort = sw1.getvRootBridge(pos);
+          if ((dist > 1) && (sw2.getBridgeID().equals(rootPort))) {
+            sw2.receiveMessage(sw1.sendMessage());
+          }
+        }
+      }
+    }
+
+    for (int i = 0; i < swVlan.size(); i++) {
+      sw1 = (Switch)swVlan.elementAt(i);
+      infVlan = sw1.getVlanIntSwitch(v.getVlanID());
+      for (int j = 0; j < infVlan.size(); j++) {
+        interf = (Interface)infVlan.elementAt(j);
+        port = interf.getSTPport();
+        if (!(port.equals(sRP) || port.equals(sDP))) {
+          interf.setSTPport(sNDP);
+        }     // end if ||
+      }
+    }
+  }
+
+  public void setLoopPort(Vector allSwitch) {
+    Switch temp = new Switch();
+    Vector vInt = new Vector();
+    Interface interf = new Interface();
+    String swBID, intBID, result, port = "";
+
+    for (int a = 0; a < allSwitch.size(); a++) {
+      temp = (Switch)allSwitch.elementAt(a);
+      swBID = temp.getBridgeID();
+      vInt = temp.getVIntSwitch();
+      for (int b = 0; b < vInt.size(); b++) {
+        interf = (Interface)vInt.elementAt(b);
+        intBID = interf.getSwitchBridgeID();
+        port = interf.getSTPport();
+        if (port.equals(sNDP)) {
+          result = compareBridgeID(swBID, intBID);
+          if (result.equals("less")) {
+            interf.setSTPport(sDP);
+            interf.setSTPstate(liS);
+          }
+        }         // end if port.equals
+      }           // end for b
+    }             // end for a
+  }
+
+  public void setVlanLoopPort(Vlan v) {
+    Vector swVlan = new Vector();
+    Vector vIntVlan = new Vector();
+    Switch sw = new Switch();
+    Interface interf = new Interface();
+    String result = "";
+//    String swBID, intBID, result, port = "";
+
+    swVlan = v.getSwitchMember();
+    for (int i = 0; i < swVlan.size(); i++) {
+      sw = (Switch)swVlan.elementAt(i);
+      vIntVlan = sw.getVlanIntSwitch(v.getVlanID());
+      for (int j = 0; j < vIntVlan.size(); j++) {
+        interf = (Interface)vIntVlan.elementAt(j);
+        if (interf.getSTPport().equals(sNDP)) {
+          result = compareBridgeID(sw.getBridgeID(), interf.getSwitchBridgeID());
+          if (result.equals("less")) {
+            interf.setSTPport(sDP);
+            interf.setSTPstate(liS);
+          }
+        }
+      }
+    }
+  }
+
+  public void setPortForwarding(Vector allSwitch) {
+    Switch sw = new Switch();
+    Vector vInterf = new Vector();
+    Interface interf = new Interface();
+
+    for (int i = 0; i < allSwitch.size(); i++) {
+      sw = (Switch)allSwitch.elementAt(i);
+      vInterf = sw.getVIntSwitch();
+      for (int j = 0; j < vInterf.size(); j++) {
+        interf = (Interface)vInterf.elementAt(j);
+        interf.setSTPstate(fS);
+      }           // end for j
+    }             // end for i
+  }
+
+  public void setVlanPortForwarding(Vlan v) {
+    Vector swVlan = new Vector();
+    Vector vIntVlan = new Vector();
+    Switch sw = new Switch();
+    Interface interf = new Interface();
+
+//    Vector vInterf = new Vector();
+
+    for (int i = 0; i < swVlan.size(); i++) {
+      sw = (Switch)swVlan.elementAt(i);
+      vIntVlan = sw.getVlanIntSwitch(v.getVlanID());
+      for (int j = 0; j < vIntVlan.size(); j++) {
+        interf = (Interface)vIntVlan.elementAt(j);
+        interf.setSTPstate(fS);
+      }           // end for j
+    }             // end for i
+  }
+
+  public void enableCommonSpanningTree() {
+    Switch sw = new Switch();
+
+    Frame1.learn.suspendLearning();
+    System.out.println("Suspend Address Learning...");
+
+    disableCommonSTP();
+    setStatus("enabled");
+    Frame1.flag = 1;
+
+    for (int i = 0; i < Frame1.vSwitch.size(); i++) {
+      sw = (Switch)Frame1.vSwitch.elementAt(i);
+      sw.setStart();
+    }
+
+    Vlan v = new Vlan();
+    for (int i = 0; i < Frame1.vVlan.size(); i++) {
+      v = (Vlan)Frame1.vVlan.elementAt(i);
+      v.getPVSTP().disablePerVLANSTP(v);
+    }
+
+    Switch sender = new Switch();
+    Switch temp = new Switch();
+    Vector vName = new Vector();
+    boolean notDone = true;
+    String rb1, rb2;
+    int x;
+
+    do {
+      vName.removeAllElements();
+      for (int i = 0 ; i < Frame1.vSwitch.size(); i++) {
+        sender = (Switch)Frame1.vSwitch.elementAt(i);
+        sender.doCommonSpanningTree();
+        vName.addElement(sender.getRootBridge());
+      }   // end for i
+      notDone = checkSuccedOfSTP(vName);
+    } while (notDone);
+
+    setPortForAllSwitch(Frame1.vSwitch);
+    setLoopPort(Frame1.vSwitch);
+    setPortForwarding(Frame1.vSwitch);
+    setForOneRootBridge(Frame1.vSwitch);
+
+/*
+    for (int i = 0; i < Frame1.vSwitch.size(); i++) {
+      sender = (Switch)Frame1.vSwitch.elementAt(i);
+      System.out.println(sender.getName() + " ---> " + sender.getRootBridge());
+    }
+*/
+    for (int i = 0; i < Frame1.vSwitch.size(); i++) {
+      sender = (Switch)Frame1.vSwitch.elementAt(i);
+      System.out.println(sender.getName() + " ---> " + sender.getSTPstatus());
+    }
+
+    Frame1.updateAllStatus();
+    if (Frame1.learn.isAlive()){
+      Frame1.learn.resume();
+      System.out.println("Resume Address Learning...");
+    }
+    else{
+      Frame1.learn.start();
+      System.out.println("Start Address Learning...");
+    }
+
+  }               // end method
+
+  public void enablePerVLANSpanningTree(Vlan v) {
+    Vector member = new Vector();
+    Vlan vlan = new Vlan();
+    Switch sw1 = new Switch();
+    Switch sw2 = new Switch();
+
+    Frame1.learn.suspendLearning();
+    System.out.println("Suspend Address Learning...");
+
+    disableCommonSTP();
+    setStatus("enabled");
+    Frame1.flag = 2;
+
+    vlan = v.findVlan(v.getVlanID());
+    member = vlan.getSwitchMember();
+    for (int i = 0; i < member.size(); i++) {
+      sw1 = (Switch)member.elementAt(i);
+      for (int j = 0; j < Frame1.vSwitch.size(); j++) {
+        sw2 = (Switch)Frame1.vSwitch.elementAt(j);
+        if(sw1.getName().equals(sw2.getName())) {
+          sw1.setStartVlan(vlan);
+          sw2.setStartVlan(vlan);
+        }
+      }
+    }
+
+    Vector swVlan = new Vector();
+    Vector vName = new Vector();
+    Switch sender = new Switch();
+    boolean notDone = true;
+    int pos;
+
+    swVlan = v.getSwitchMember();
+    do {
+      vName.removeAllElements();
+      for (int i = 0; i < swVlan.size(); i++) {
+        sender = (Switch)swVlan.elementAt(i);
+        sender.doPerVLANSpanningTree(v);
+        pos = sender.getVlanPostionInVlist(v);
+        vName.addElement(sender.getvRootBridge(pos));
+      }   // end for i
+      notDone = checkSuccedOfSTP(vName);
+    } while (notDone);
+    setPortForVlanSwitch(v);
+    setVlanLoopPort(v);
+    setVlanPortForwarding(v);
+
+    Frame1.updateAllStatus();
+
+//------------------- check vlan --------------------
+    System.out.println("-------------- check VLAN --------------------");
+    Vector vInterf = new Vector();
+    Vector vsw = new Vector();
+    Interface interf = new Interface();
+    Switch sw = new Switch();
+    int p;
+
+    vsw = v.getSwitchMember();
+    vInterf = v.getInterfMem();
+
+//    System.out.println("---- vlan " + v.getVlanID() + " ---");
+//    System.out.println(sw.getName() + ": " + interf.getNameInt());
+
+    for (int i = 0; i < vsw.size(); i++) {
+      interf = (Interface)vInterf.elementAt(i);
+      sw = (Switch)vsw.elementAt(i);
+
+      p = sw.getVlanPosition(v.getVlanID());
+      System.out.println("---- Switch " + sw.getName() + " ----");
+      System.out.println("Root Bridge vlan " + v.getVlanID() + ": " + sw.getvRootBridge(p));
+      System.out.println("Status: " + sw.getvSTPstatus(p));
+    }
+//----------------------------------------------------
+
+    if (Frame1.learn.isAlive()){
+      Frame1.learn.resume();
+      System.out.println("Resume Address Learning...");
+    }
+    else{
+      Frame1.learn.start();
+      System.out.println("Start Address Learning...");
+    }
+  }               // end class
+
+  public void disableCommonSTP() {
+    Frame1.flag = 0;
+    setStatus("disabled");
+
+    Switch sw = new Switch();
+    Vector vInterf = new Vector();
+    Interface interf = new Interface();
+
+//    System.out.println("----- spanning tree -------");
+    for (int i = 0; i < Frame1.vSwitch.size(); i++) {
+      System.out.println("number i = " + i);
+      sw = (Switch)Frame1.vSwitch.elementAt(i);
+        System.out.println(sw.getName());
+//        sw.setRootBridge("");
+        sw.setSTPstaus("");
+        sw.setDistance("0");
+      vInterf = sw.getVIntSwitch();
+      for (int j = 0; j < vInterf.size(); j++) {
+        interf = (Interface)vInterf.elementAt(j);
+        interf.setSTPport("");
+        interf.setSTPstate("");
+      }     // end for j
+    }       // end for i
+  }         // end method
+
+  public void disablePerVLANSTP(Vlan v) {
+    Frame1.flag = 0;
+    setStatus("disabled");
+
+    Vector swLan = new Vector();
+    Vector intLan = new Vector();
+    int pos;
+    Switch sw = new Switch();
+    Interface interf = new Interface();
+
+    swLan = v.getSwitchMember();
+    intLan = v.getInterfMem();
+    for (int i = 0; i < swLan.size(); i++) {
+      sw = (Switch)swLan.elementAt(i);
+      interf = (Interface)intLan.elementAt(i);
+
+      pos = sw.getVlanPostionInVlist(v);
+      sw.setvSTPstatus(pos, "");
+      sw.setvDistance(pos, "0");
+      interf.setSTPport("");
+      interf.setSTPstate("");
+    }       // end for i
+  }         // end method
+
+  public void tc_del_device(Switch sw) {
+    Vector vList = new Vector();
+    Vlan vlan1 = new Vlan();
+    Vlan vlan2 = new Vlan();
+    SpanningTree pvstp = new SpanningTree();
+
+    System.out.println("Flag = " + Frame1.flag);
+
+    if (Frame1.flag == 1) {                             // --- CST ---
+      Frame1.stp.enableCommonSpanningTree();
+      System.out.println("do common spanning-tree again");
+    }
+    else if (Frame1.flag == 2) {                        // --- PVSTP ---
+      vList = sw.getVlanList();
+      for (int i = 0; i < vList.size(); i++) {
+        vlan1 = (Vlan)vList.elementAt(i);
+        vlan2 = vlan1.findVlan(vlan1.getVlanID());
+        pvstp = vlan2.getPVSTP();
+        pvstp.enablePerVLANSpanningTree(vlan2);
+        System.out.println("VLAN " + vlan2.getVlanID()+ " do per vlan spanning-tree again");
+      }
+    }
+/*
+      vList = sw.getVlanList();
+      for (int i = 0; i < vList.size(); i++) {
+        vlan = (Vlan)vList.elementAt(i);
+        pvstp = vlan.getPVSTP();
+        pvstp.enablePerVLANSpanningTree(vlan);
+        System.out.println("VLAN " + vlan.getVlanID()+ " do per vlan spanning-tree again");
+      }
+*/
+  }
+
+  public void tc_change_vlan(int vid) {
+    String str = "";
+    Vlan vlan = new Vlan();
+    SpanningTree pvstp = new SpanningTree();
+
+    for (int i =0; i < Frame1.vVlan.size(); i++) {
+      vlan = (Vlan)Frame1.vVlan.elementAt(i);
+      if (vlan.getVlanID() == vid) {
+        pvstp = vlan.getPVSTP();
+        str = pvstp.getStatus();
+        if (str.equals("enabled")) {
+          pvstp.enablePerVLANSpanningTree(vlan);
+        }
+      }
+    }
+  }
+
+  public void tc_add_interface(Swtich sw, Interface inf) {
+    if (Frame1.flag == 1) {
+      if (Frame1.stp.getStatus().equals("enabled")) {
+        Frame1.stp.enableCommonSpanningTree();
+      }
+    }
+  }
+
+  public void setForOneRootBridge(Vector v) {
+    Switch sw = new Switch();
+    String rb;
+
+    sw = (Switch)v.elementAt(0);
+    rb = sw.getRootBridge();
+    for (int i = 0; i < v.size(); i++) {
+      sw = (Switch)v.elementAt(i);
+      if (sw.getBridgeID().equals(rb)) {
+        System.out.println("Root Bridge = " + sw.getBridgeID());
+        sw.setSTPstaus(sRB);
+        System.out.println(sw.getBridgeID() + sw.getSTPstatus());
+      }
+    }
+
+  }             // end method
+}               // end class
+
+/*------------------------------------------------------------------------------
+  public void topologyChange() {
+    if (status.equals("enabled")) {
+      Switch sender = new Switch();
+      Switch temp = new Switch();
+      Vector vName = new Vector();
+      boolean notDone = true;
+      String rb1, rb2;
+      int x;
+
+      do {
+        vName.removeAllElements();
+        for (int i = 0 ; i < Frame1.vSwitch.size(); i++) {
+          sender = (Switch)Frame1.vSwitch.elementAt(i);
+          sender.doCommonSpanningTree();
+          vName.addElement(sender.getRootBridge());
+        }   // end for i
+        notDone = checkSuccedOfSTP(vName);
+      } while (notDone);
+
+      setPortForAllSwitch(Frame1.vSwitch);
+      setLoopPort(Frame1.vSwitch);
+      setPortForwarding(Frame1.vSwitch);
+    }
+    else if (status.equals("disabled")) {
+    }
+  }
+--------------------------------------------------------------------------------
+  public void groupVlan() {
+    Switch sw = new Switch();
+    Vector v = new Vector();
+    Vector swMem = new Vector();
+    VlanDatabase vlandb = new VlanDatabase();
+    Vlan e = new Vlan();
+    int id1, id2;
+    String name1, name2;
+
+    for (int i = 0; i < Frame1.vSwitch.size(); i++) {
+      sw = (Switch)Frame1.vSwitch.elementAt(i);
+      v = sw.getVlanDB();
+      for (int j = 0; j < v.size(); j++) {
+        vlandb = (VlanDatabase)v.elementAt(j);
+        id1 = vlandb.getVlanID();
+        name1 = vlandb.getVlanName();
+        if (allVlan.size() == 0) {
+          Vlan temp = new Vlan(id1, name1);
+          temp.addSwitch(sw);
+          allVlan.addElement(temp);
+        }       // end id size = 0
+        else {
+          for (int k = 0; k < allVlan.size(); k++) {
+            e = (Vlan)allVlan.elementAt(k);
+            if (e.getVlanID() == id1) {
+              swMem = e.getSwitchMem();
+              for (int z = 0; z < swMem.size(); z++) {
+              } // end for
+            }   // end if
+          }     // end for k
+        }       // end id size != 0
+      }         // end for j
+    }           // end for i
+  }             // end method
+*/
+
+

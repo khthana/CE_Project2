@@ -1,0 +1,131 @@
+package switchsim;
+
+import java.util.*;
+
+public class AddressLearning extends Thread {
+  Workstation com = new Workstation();
+  Switch sw = new Switch();
+  Random r = new Random();
+  Vector vSwitch_s = new Vector();
+  boolean running = false;
+  int comNo = -1;
+  int num;
+
+  public AddressLearning() {
+  }
+  public void run() {
+    num++;
+    running = true;
+//    System.out.println("running!!!");
+    if ((Frame1.vSwitch.size()>0) && (Frame1.vWorkstation.size()>1)) {
+      boolean yes = false;
+      int vlan_s = 1, vlan_d = 1;
+      int r_s, r_d;
+//      while (!yes) {
+      do {
+        if (comNo<(Frame1.vWorkstation.size()-1))
+          comNo++;
+        else comNo=0;
+//        r_s = r.nextInt(Frame1.vWorkstation.size());
+        r_s = comNo;
+        r_d = r.nextInt(Frame1.vWorkstation.size());
+        for (int i=0; i<Frame1.vSwitch.size(); i++) {
+          Switch sw_ck = (Switch)Frame1.vSwitch.elementAt(i);
+          for (int j=0; j<sw_ck.getVIntCom().size(); j++) {
+            Interface int_ck = (Interface)sw_ck.getVIntCom().elementAt(j);
+            if (int_ck.getCom().equals((Workstation)Frame1.vWorkstation.elementAt(r_s)))
+              vlan_s = int_ck.getVLAN();
+            if (int_ck.getCom().equals((Workstation)Frame1.vWorkstation.elementAt(r_d)))
+              vlan_d = int_ck.getVLAN();
+          }
+        }
+      }
+      while ((r_s == r_d) || (vlan_s != vlan_d));
+//        if ((r_s != r_d) && (vlan_s == vlan_d)) {
+//          yes = true;
+//        }
+//      }
+      Workstation com_s = (Workstation)Frame1.vWorkstation.elementAt(r_s);
+      Workstation com_d = (Workstation)Frame1.vWorkstation.elementAt(r_d);
+//      System.out.println("\n== "+com_s.getName()+" is sending Frame to "+com_d.getName()+" ==");
+      String MAC_s = com_s.getMACAddress();
+      String MAC_d = com_d.getMACAddress();
+      MACAddress mac = new MACAddress();
+      String frame = mac.cHexToBin(MAC_s)+mac.cHexToBin(MAC_d);
+
+      vSwitch_s=com_s.sendFrame(frame);
+//      vSwitch_s=com_s.sendFrame(com_s, com_d);
+      int round = 0;
+      while (vSwitch_s.size()!=0) {
+        for (int i=0; i<vSwitch_s.size(); i++) {
+          Switch sw_s = (Switch)vSwitch_s.elementAt(i);
+          Vector vframe = (Vector)sw_s.getVFrame();
+          for (int j=0; j<vframe.size(); j++) {
+            String[] frame_s = (String[])vframe.elementAt(j);
+            sw_s.sendFrame(frame_s[0], frame_s[1]);
+            sw_s.getVFrame().removeElementAt(j);
+          }
+        }
+        vSwitch_s.removeAllElements();
+        for (int i=0; i<Frame1.vSwitch.size(); i++) {
+          Switch swf = (Switch)Frame1.vSwitch.elementAt(i);
+          if (swf.getVFrame().size()!=0) {
+            vSwitch_s.addElement(swf);
+          }
+        }
+        round++;
+        if (round>=100) {
+          vSwitch_s.removeAllElements();
+        }
+      }
+      // Check MAC age
+      for (int i=0; i<Frame1.vSwitch.size(); i++) {
+        Switch sw = (Switch)Frame1.vSwitch.elementAt(i);
+        if (sw.getMACAge()!=0) {
+          int macAge = sw.getMACAge();
+          int time = this.sw.getTime();
+          for (int j=0; j<sw.getMACTable().size(); j++) {
+            String[] tmp = (String[])sw.getMACTable().elementAt(j);
+            if (tmp[3].equals("true")) {
+              tmp[2]="0";
+            }
+            else tmp[2]=Integer.toString((Integer.parseInt(tmp[2]))+1);
+            tmp[3]="false";
+            if (Integer.parseInt(tmp[2])>(macAge)) {
+//              System.out.println(tmp[0]+" is removed......from "+sw.getName());
+              sw.getMACTable().removeElementAt(j);
+              j--;
+            }
+          }
+        }
+      }
+    }
+    running = false;
+    try {
+      sleep(this.sw.getTime());
+    }
+    catch (Exception e){
+    }
+    if (num<1800)
+      this.run();
+  }
+
+  public void suspendLearning() {
+    boolean stoped = false;
+    while ((!running) && (!stoped)) {
+      try {
+        this.suspend();
+        stoped = true;
+      }
+      catch (Exception exp) {}
+    }
+    for (int i=0; i<Frame1.vSwitch.size(); i++) {
+      Switch sw_tmp = (Switch)Frame1.vSwitch.elementAt(i);
+      if (sw_tmp.getVFrame().size()!=0) {
+        sw_tmp.getVFrame().removeAllElements();
+      }
+    }
+    comNo=0;
+    num=0;
+  }
+}

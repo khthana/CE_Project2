@@ -1,0 +1,36 @@
+package central;
+
+/**
+
+*/
+
+class SequenceList {
+
+  private int list[] = {-1, -1, -1, -1, -1};
+
+  public SequenceList() {
+  }
+
+  public void addToList(int value) throws CANException{
+    for (int i = 0; i < 5; i++) {
+      if (list[i] == -1) {
+        list[i] = value;
+        break;
+      }
+      if (i == 4) {
+        throw new CANException("Integer List Exception : List is full");
+      }
+    }
+  }
+
+  public int searchList(int value) {
+    int result = -1;
+    for (int i = 0; i < 5; i++) {
+      if (list[i] == value) {
+        result = value;
+        list[i] = -1;
+      }
+    }
+    return result;
+  }
+}

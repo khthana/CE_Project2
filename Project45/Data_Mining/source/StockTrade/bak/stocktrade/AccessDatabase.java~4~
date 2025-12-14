@@ -1,0 +1,20 @@
+package stocktrade;
+
+import java.sql.*;
+import java.util.*;
+import java.util.Vector;
+
+
+
+public interface AccessDatabase {
+  // refer connect database
+  public void connect() throws Exception;
+  // refer method get data intrady
+  public ResultSet getDataIntraday( String min, String max, String stock_code )
+      throws Exception;
+  // refer find price start
+  public float getAvgPrice( String stock_code )
+      throws Exception;
+  //close database connection
+  public void close();
+}

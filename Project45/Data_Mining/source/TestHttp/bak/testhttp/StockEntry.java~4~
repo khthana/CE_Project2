@@ -1,0 +1,291 @@
+package testhttp;
+
+import java.lang.*;
+
+public class StockEntry {
+
+  private String day_trade    = "";
+  private String stock        = "";
+  private String flag         = "";
+  private String mkt_status   = "";
+
+  private String price_last   = "0";
+  private String price_change = "0";
+  private String per_change   = "0";
+
+  private String bid_price1   = "0";
+  private String bid_price2   = "0";
+  private String bid_price3   = "0";
+  private String bid_vol1     = "0";
+  private String bid_vol2     = "0";
+  private String bid_vol3     = "0";
+
+  private String off_price1   = "0";
+  private String off_price2   = "0";
+  private String off_price3   = "0";
+  private String off_vol1     = "0";
+  private String off_vol2     = "0";
+  private String off_vol3     = "0";
+
+  private String buy_vol      = "0";
+  private String sell_vol     = "0";
+
+  private String volume       = "0";
+  private String amount       = "0";
+
+  private String price_open1  = "0";
+  private String price_open2  = "0";
+  private String price_high   = "0";
+  private String price_low    = "0";
+  private String price_avg    = "0";
+  private String prior        = "0";
+
+  // refer constructor
+  public StockEntry() {
+  }
+  ////////////////////////////////////////////////////
+  public StockEntry( String day_trade,String stock ){
+    this.day_trade = day_trade;
+    this.stock = stock;
+  }
+  public void setDay_trade( String day_trade ){
+    this.day_trade = day_trade;
+  }
+  public void setStock( String stock ){
+    this.stock = stock;
+  }
+  public String getDay_trade(){
+    return day_trade;
+  }
+  public String getStock(){
+    return stock;
+  }
+  /////////////////////////////////////////////////////
+  public void setFlag( String flag ){
+    this.flag = flag;
+  }
+  public String getFlag(){
+    return flag;
+  }
+  ////////////////////////////////////////////////////
+  public void setMarket( String mkt_status ){
+    this.mkt_status = mkt_status;
+  }
+  public String getMarket(){
+    return mkt_status;
+  }
+  ////////////////////////////////////////////////////
+  public void setPrice_Last( String price_lastt ){
+    price_lastt = setVol( price_lastt );
+    this.price_last = price_lastt;
+  }
+  public float getPrice_Last(){
+    return Float.valueOf( price_last ).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setPrice_Change( String price_changee ){
+    price_changee = setVol( price_changee );
+    this.price_change = price_changee;
+  }
+  public float getPrice_Change(){
+    return Float.valueOf(price_change).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setPer_Change( String per_changee ){
+    per_changee = setVol( per_changee );
+    this.per_change = per_changee;
+  }
+  public float getPer_Change(){
+    return Float.valueOf(per_change).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setBid_Price1( String bid_price1e ){
+    bid_price1e = setVol( bid_price1e );
+    this.bid_price1 = bid_price1e;
+  }
+  public float getBid_Price1(){
+    return Float.valueOf(bid_price1).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setBid_Price2( String bid_price2e ){
+    bid_price2e = setVol( bid_price2e );
+    this.bid_price2 = bid_price2e;
+  }
+  public float getBid_Price2(){
+    return Float.valueOf(bid_price2).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setBid_Price3( String bid_price3e ){
+    bid_price3e = setVol( bid_price3e );
+    this.bid_price3 = bid_price3e;
+  }
+  public float getBid_Price3(){
+    return Float.valueOf(bid_price3).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setBid_Vol1( String bid_vol1e ){
+    bid_vol1e = setVol( bid_vol1e );
+    this.bid_vol1 = bid_vol1e;
+  }
+  public float getBid_Vol1(){
+    return Float.valueOf(bid_vol1).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setBid_Vol2( String bid_vol2e ){
+    bid_vol2e = setVol( bid_vol2e );
+    this.bid_vol2 = bid_vol2e;
+  }
+  public float getBid_Vol2(){
+    return Float.valueOf(bid_vol2).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setBid_Vol3( String bid_vol3e ){
+    bid_vol3e = setVol( bid_vol3e );
+    this.bid_vol3 = bid_vol3e;
+  }
+  public float getBid_Vol3(){
+    return Float.valueOf(bid_vol3).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setOff_Price1( String off_price1e ){
+    off_price1e = setVol( off_price1e );
+    this.off_price1 = off_price1e;
+  }
+  public float getOff_Price1(){
+    return Float.valueOf(off_price1).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setOff_Price2( String off_price2e ){
+    off_price2e = setVol( off_price2e );
+    this.off_price2 = off_price2e;
+  }
+  public float getOff_Price2(){
+    return Float.valueOf(off_price2).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setOff_Price3( String off_price3e ){
+    off_price3e = setVol( off_price3e );
+    this.off_price3 = off_price3e;
+  }
+  public float getOff_Price3(){
+    return Float.valueOf(off_price3).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setOff_Vol1( String off_vol1e ){
+    off_vol1e = setVol( off_vol1e );
+    this.off_vol1 = off_vol1e;
+  }
+  public float getOff_Vol1(){
+    return Float.valueOf(off_vol1).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setOff_Vol2( String off_vol2e ){
+    off_vol2e = setVol( off_vol2e );
+    this.off_vol2 = off_vol2e;
+  }
+  public float getOff_Vol2(){
+    return Float.valueOf(off_vol2).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setOff_Vol3( String off_vol3e ){
+    off_vol3e = setVol( off_vol3e );
+    this.off_vol3 = off_vol3e;
+  }
+  public float getOff_Vol3(){
+    return Float.valueOf(off_vol3).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setBuy_Vol( String buy_vole ){
+    buy_vole = setVol( buy_vole );
+    this.buy_vol = buy_vole;
+  }
+  public float getBuy_Vol(){
+    return Float.valueOf(buy_vol).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setSell_Vol( String sell_vole ){
+    sell_vole = setVol( sell_vole );
+    this.sell_vol = sell_vole;
+  }
+  public float getSell_Vol(){
+    return Float.valueOf(sell_vol).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setVolume( String volumee ){
+    volumee = setVol( volumee );
+    this.volume = volumee;
+  }
+  public float getVolume(){
+    return Float.valueOf(volume).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setAmount( String amounte ){
+    amounte = setVol( amounte );
+    this.amount = amounte;
+  }
+  public float getAmount(){
+    return Float.valueOf(amount).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setPrice_Open1( String price_open1e ){
+    price_open1e = setVol( price_open1e );
+    this.price_open1 = price_open1e;
+  }
+  public float getPrice_Open1(){
+    return Float.valueOf(price_open1).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setPrice_Open2( String price_open2e ){
+    price_open2e = setVol( price_open2e );
+    this.price_open2 = price_open2e;
+  }
+  public float getPrice_Open2(){
+    return Float.valueOf(price_open2).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setPrice_High( String price_highe ){
+    price_highe = setVol( price_highe );
+    this.price_high = price_highe;
+  }
+  public float getPrice_High(){
+    return Float.valueOf(price_high).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setPrice_Low( String price_lowe ){
+    price_lowe = setVol( price_lowe );
+    this.price_low = price_lowe;
+  }
+  public float getPrice_Low(){
+    return Float.valueOf(price_low).floatValue();
+  }
+  ////////////////////////////////////////////////////
+  public void setPrice_Avg( String price_avge ){
+    price_avge = setVol( price_avge );
+    this.price_avg = price_avge;
+  }
+  public float getPrice_Avg(){
+    return Float.valueOf(price_avg).floatValue();
+  }
+  /////////////////////////////////////////////////////
+  public void setPrior( String priore ){
+    priore = setVol( priore );
+    this.prior = priore;
+  }
+  public float getPrior(){
+    return Float.valueOf(prior).floatValue();
+  }
+  public String setVol( String vol ){
+     String dd = new String(vol);
+     vol=vol.replace(',',' ');
+     int k=dd.indexOf(" ");
+     while( k != -1 ){
+       dd = vol;
+       dd = dd.substring(0,k);
+       System.out.println(dd);
+       vol = vol.substring(k+1,vol.length());
+       vol = dd + vol;
+       k=vol.indexOf(" ");
+     }
+     return vol;
+  }
+}

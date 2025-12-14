@@ -1,0 +1,22 @@
+package testhttp;
+
+import java.sql.*;
+import java.util.*;
+
+
+public interface AccessDatabase {
+  // refer find Stocks' name in market return stock name
+  public Vector findStockName()
+      throws DataException;
+  // refer check data was inserted or not
+  public boolean stockIsNot( String day_trade,String stock )
+      throws DataException;
+  // refer Insert new information in database return boolean
+  public boolean insertData( StockEntry stock )
+      throws DataException;
+  // refer Update Information in database return boolean
+  public boolean updateData( StockEntry stock )
+      throws DataException;
+  //close database connection
+  public void close();
+}

@@ -1,0 +1,1892 @@
+package switchsim;
+
+import java.io.*;
+import java.lang.*;
+import java.util.*;
+
+public class SwitchCMD {
+
+  private final String error = "% Invalid input detected at '^' marker.\n";
+  private final String ambigous = "% Ambiguous Command :";
+  private final ListCommand cmdUserExe = new ListCommand(new String[]{"?","enable","exit","show interfaces","show interfaces arg_intname","show mac-address-table","show vlan","show vlan brief",""});//{"?","enable","encapsulation arg_ppp","show cdp","show cdp entry *","show cdp entry arg_name","show cdp interface","show cdp neighbors","ping arg_ip_name","traceroute arg_ip_name","exit",""});
+  private final ListCommand cmdPrivilegedExe = new ListCommand(new String[]{"?","disable","configure","configure terminal","vlan database","show interfaces","show interfaces arg_intname","show interfaces arg_intname switchport","show interfaces arg_intname switchport allowed-vlan","show mac-address-table","show vlan","show vlan brief", "show spanning-tree", "show spanning-tree vlan arg_vlan", "show spanning-tree interface arg_intname", "show spanning-tree brief", "show spanning-tree summary", ""});// --- "spanning-tree port-priority arg_num", "show my vlan", ---  , "show spanning-tree arg_vlan"  {"?","configure","configure terminal","disable","clock set arg_time_date","show history","show cdp","show cdp entry arg_name","show cdp entry *","show cdp interface","show cdp neighbors","terminal editing","terminal no editing","show ip route","show ip route arg_routetype","show running-config","show startup-config","copy running-config startup-config","copy startup-config running-config","erase startup-config","reload","show version","show interface","show interface arg_typeint","show ip protocol","ping arg_ip_name","traceroute arg_ip_name","telnet arg_ip_name","show ip ospf neighbors","show ip ospf interface arg_intname","exit",""});
+  private final ListCommand globalConfig = new ListCommand(new String[]{"?","exit","mac-address-table aging-time arg_num","hostname arg_string","interface arg_intname","vlan arg_vlan","no vlan arg_vlan", "spanning-tree", "no spanning-tree", "spanning-tree vlan arg_vlan", "no spanning-tree vlan arg_vlan", "spanning-tree priority arg_num", "no spanning-tree priority", "spanning-tree forward-time arg_num", "no spanning-tree forward-time", "spanning-tree hello-time arg_num", "no spanning-tree hello-time", "spanning-tree max-age arg_num", "no spanning-tree max-age",""});//{"?","interface arg_intname","hostname arg_string","enable secret arg_string","no enable secret","line vty 0 4","line auxiliary 0","line console 0","banner motd#","no banner login","ip route arg_ip arg_ip arg_ip","ip classless","no ip route arg_ip arg_ip arg_ip","no ip classless","router arg_protocol arg_num","router arg_protocol","no router arg_protocol","ip host arg_name arg_ip","cdp timer arg_num","ip ospf cost arg_name arg_num","exit",""});
+  private final ListCommand intCmd = new ListCommand(new String[]{"?","exit","end","shutdown","no shutdown","switchport mode access","switchport mode trunk","switchport access vlan arg_vlan","switchport trunk allowed vlan add arg_string","switchport trunk allowed vlan all","switchport trunk allowed vlan remove arg_string",""});//{"?","interface arg_intname","ip address arg_ip arg_ip","encapsulation","shutdown","no shutdown","ring-speed arg_num","description arg_string","bandwidth arg_num","clock rate arg_num","exit",""});
+  private final ListCommand vlanConfig = new ListCommand(new String[] {"?","exit","vlan arg_vlan","vlan arg_vlan name arg_string","no vlan arg_vlan",""});
+  private final ListCommand configVlan = new ListCommand(new String[] {"?","end","name arg_string",""});
+//  private final ListCommand routingCmd = new ListCommand(new String[]{"?","network arg_ip","version arg_num","exit",""});
+  private final ListCommand lineCmd = new ListCommand(new String[]{"?","password arg_string","login","no login","exit",""});
+  private boolean accept = false;
+
+  public SwitchCMD() {
+  }
+
+  public void runCommand(Switch swtch, String cmdline, SwitchConsole sConsole) {
+    accept = false;
+    StringTokenizer st1 = new StringTokenizer(cmdline);
+    ListCommand allCmd = null;
+    int nummatch = 0;
+    switch (swtch.getMode()){
+      case 1 :
+                //User Exec Commands
+                allCmd = cmdUserExe;
+                break;
+      case 2 :
+                //Privileged Exec Commands
+                allCmd = cmdPrivilegedExe;
+                break;
+      case 3 :
+                //Global Config
+                allCmd = globalConfig;
+                break;
+      case 4:
+                //Interface Commands
+                allCmd = intCmd;
+                break;
+      case 5 :
+                //VLAN Config
+                allCmd = vlanConfig;
+                break;
+      case 6 :
+                //config-vlan
+                allCmd = configVlan;
+                break;
+      case 7 :
+                //Line Commands
+                allCmd = lineCmd;
+                break;
+      default : SwitchConsole.output  += "Error in Mode\n";
+    }//end switch
+    allCmd.resetList();
+    String usercmd="";
+    if (st1.hasMoreTokens()){
+      usercmd = st1.nextToken();
+    }
+    String listcmd = "";
+    String commandlist ="";
+    String list = (String)allCmd.nextElement();
+    String matchCmd = "";
+    while (allCmd.hasMoreElements()){
+      boolean match = true;
+      StringTokenizer tmp1 = new StringTokenizer(cmdline);
+      StringTokenizer tmp2 = new StringTokenizer(list);
+//      System.out.println("full->"+cmdline+":"+list);
+      while ((tmp1.hasMoreTokens())&&(match)){
+        String checkusercmd = tmp1.nextToken();
+        String checklistcmd="";
+        if(tmp2.hasMoreTokens()){
+          //both have more token
+          checklistcmd = tmp2.nextToken();
+        }
+        else {
+          //case usercmd have more token but list not more token
+          match = false;
+        }
+//        System.out.println("debug->"+checkusercmd+":"+checklistcmd);
+        if ((checkusercmd.length() <= checklistcmd.length())&&(!checklistcmd.startsWith("arg"))){
+          if (checkusercmd.equalsIgnoreCase(checklistcmd.substring(0,checkusercmd.length()))){
+            //if cmd must equal
+          }//end if
+          else{
+            match = false;
+          }//end else
+        }//end if screen only keyword
+        else if (checklistcmd.startsWith("arg")){
+          //when list is argument
+          if (checklistcmd.startsWith("arg_string")){
+            while (tmp1.hasMoreTokens()){
+              String t = tmp1.nextToken();
+            }
+          }
+          else if (checklistcmd.startsWith("arg_name")){
+            if (checkusercmd.equals("*")){
+              match=false;
+            }
+          }
+        }
+        else {
+          //when not match keyword and not match argument
+          match = false;
+        }//end if
+//        System.out.println("Match->"+match);
+      }
+      if (match){
+        if ((!tmp1.hasMoreTokens())&&(!tmp2.hasMoreTokens())){
+          nummatch++;
+          commandlist = list;
+        }
+      }//end if
+      list = (String)allCmd.nextElement();
+    }//end while
+    if (nummatch == 1){
+      StringTokenizer st2 = new StringTokenizer(commandlist);
+      listcmd = st2.nextToken();
+//      System.out.println("match");
+      boolean con = true;
+      while ((((st1.hasMoreTokens())||(st2.hasMoreTokens())))&&con){
+        if (st1.hasMoreTokens())
+          usercmd = st1.nextToken();
+        else usercmd = "";
+        listcmd = st2.nextToken();
+        if (listcmd.startsWith("arg")){
+          if (listcmd.equalsIgnoreCase("arg_ip")){
+//            if (!Interface.isIp(usercmd)){
+//              con = false;
+//            }
+//            else{
+//            }
+          }
+          else if (listcmd.equalsIgnoreCase("arg_num")){
+            try {
+              Integer.parseInt(usercmd);
+            }
+            catch (Exception exp){
+              // Error in number
+              con = false;
+            }
+          }
+          else if (listcmd.equalsIgnoreCase("arg_vlan")) {
+            try {
+              if ((Integer.parseInt(usercmd)<1) || (Integer.parseInt(usercmd)>1005)) {
+                con = false;
+              }
+            }
+            catch (Exception exp){
+              // Error in number
+              con = false;
+            }
+          }
+          else if (listcmd.equalsIgnoreCase("arg_string")){
+            if (usercmd.equals("")){
+              con = false;
+//              System.out.println("false="+usercmd);
+            }
+            else {
+              while (st1.hasMoreTokens()){
+                String x = st1.nextToken();
+              }
+            }
+          }
+/*
+          else if (listcmd.equalsIgnoreCase("arg_routetype")){
+            String sta = "static";
+            String rip = "rip";
+            String osp = "ospf";
+            con = false;
+            usercmd = usercmd.toLowerCase();
+            switch (usercmd.charAt(0)){
+              case 's': if (usercmd.equalsIgnoreCase(sta.substring(0,usercmd.length()))){
+                          con = true;
+                        }
+                        break;
+              case 'r': if (usercmd.equalsIgnoreCase(rip.substring(0,usercmd.length()))){
+                          con = true;
+                        }
+                        break;
+              case 'o': if (usercmd.equalsIgnoreCase(osp.substring(0,usercmd.length()))){
+                          con = true;
+                        }
+                        break;
+            }
+          }
+*/
+          else if (listcmd.equalsIgnoreCase("arg_typeint")){
+            String eth = "Ethernet";
+            String fas = "FastEthernet";
+            String gig = "GigabitEthernet";
+            con = false;
+            usercmd = usercmd.toLowerCase();
+            switch (usercmd.charAt(0)){
+              case 'e': if (usercmd.equalsIgnoreCase(eth.substring(0,usercmd.length()))){
+                            con = true;
+                          }
+                          break;
+              case 'f': if (usercmd.equalsIgnoreCase(fas.substring(0,usercmd.length()))){
+                            con = true;
+                          }
+                          break;
+              case 'g': if (usercmd.equalsIgnoreCase(gig.substring(0,usercmd.length()))){
+                            con = true;
+                          }
+                          break;
+              default :  //Error in type of interface
+            }
+          }
+          else if (listcmd.equalsIgnoreCase("arg_intname")){
+            String eth = "Ethernet";
+            String fas = "FastEthernet";
+            String gig = "GigabitEthernet";
+            con = false;
+            usercmd = usercmd.toLowerCase();
+            System.out.println("int : "+usercmd.charAt(0));
+            switch (usercmd.charAt(0)){
+              case 'e' :  if (usercmd.length() < 12){ //EthernetX/XX
+                            int ii = 0;
+                            while (usercmd.charAt(ii) == eth.charAt(ii)){
+                              ii++;
+                            }//end while
+                            if (Interface.getNum(usercmd.substring(ii)) > -1){
+                              con = true;
+                            }//end if
+                          }//end if
+                          break;
+              case 'f' :  if (usercmd.length() < 16){ //FastEthernetX/XX
+                            int ii = 0;
+                            while (usercmd.charAt(ii) == fas.charAt(ii)){
+                              ii++;
+                            }//end while
+                            if (Interface.getNum(usercmd.substring(ii)) > -1){
+                              con = true;
+                            }//end if
+                          }//end if
+                          break;
+              case 'g' :  if (usercmd.length() < 19){ //GigabitEthernetX/XX
+                            int ii = 0;
+                            while (usercmd.charAt(ii) == eth.charAt(ii)){
+                              ii++;
+                            }//end while
+                            if (Interface.getNum(usercmd.substring(ii)) > -1){
+                              con = true;
+                            }//end if
+                          }//end if
+                          break;
+              default : //Error in interface name
+            }//end switch
+          }
+//          else if (listcmd.equalsIgnoreCase("arg_ip_name")){
+//            con = false;
+//            if (!Interface.isIp(usercmd)){
+//              for(int i=0; i<Frame1.vRouter.size(); i++){
+//                Router rou = (Router)Frame1.vRouter.elementAt(i);
+//                if (usercmd.equalsIgnoreCase(rou.getName())){
+//                  con = true;
+//                }//end if
+//              }//end for
+//            }//end if
+//            else {
+//              con = true;
+//            }//end else
+//          }
+          else if (listcmd.equalsIgnoreCase("arg_protocol")){
+            con = false;
+            if ((usercmd.equalsIgnoreCase("rip"))||(usercmd.equalsIgnoreCase("ospf"))){
+              con = true;
+            }//end if
+          }
+          else if(listcmd.equalsIgnoreCase("arg_sec")){
+            con = false;
+            try {
+              Integer.parseInt(usercmd);
+            }
+            catch (Exception exp){
+              con = false;
+            }
+          }
+//          else if (listcmd.equalsIgnoreCase("arg_name")){
+//            con = false;
+//            for(int i=0; i<Frame1.vRouter.size(); i++){
+//              Router rou = (Router)Frame1.vRouter.elementAt(i);
+//              if (usercmd.equalsIgnoreCase(rou.getName())){
+//                con = true;
+//              }//end if
+//            }//end for
+//          }
+          else {
+            //error
+            con = false;
+            System.out.println("con = false");
+          }
+        }//end if
+/*        else if (listcmd.startsWith("option")){
+          con = false;
+          if (listcmd.equalsIgnoreCase("option_terminal")){
+            if (usercmd.equals("")){
+              con = true;
+            }//end if
+/ *            else {
+              String subterminal = "terminal".substring(0,usercmd.length());
+              if (subterminal.equalsIgnoreCase(usercmd)){
+                con = true;
+                cmdNum = 4;
+              }//end if
+            }
+* /
+          }
+          else {
+            //error
+            con = false;
+          }
+        }
+*/
+        else {
+          if (st1.hasMoreTokens()){
+/*            usercmd = st1.nextToken();
+            listcmd = st2.nextToken();
+            if (!usercmd.equalsIgnoreCase(listcmd.substring(0,usercmd.length()))){
+              con = false;
+            }//end if*/
+          }//end if
+          else {
+            if (!st2.hasMoreTokens()){
+              con = true;
+            }
+            else{
+              con = false;
+            }
+          }
+        }//end else
+      }//end while
+      System.out.println("con : "+con);
+      if (con){
+        accept = true;
+//        System.out.println("Accept");
+      }//end if
+      else{
+        SwitchConsole.output += error;
+//        System.out.println(error);
+      }//end else
+    }//end if
+    else if (nummatch > 1){
+      SwitchConsole.output += ambigous + "\"" + cmdline + "\"\n";
+//      System.out.println(ambigous+ "\"" + usercmd + "\"");
+
+    }//end if
+    else{
+      //not in list command
+      SwitchConsole.output += error;
+//      System.out.println("% Invalid input detected at '^' marker.");
+    }//end else
+    System.out.println("SwitchCMD == "+commandlist);
+    System.out.println(accept);
+    if (accept){
+      if (commandlist.equals("exit")){
+        exitcmd(swtch,sConsole);
+      }
+      if (commandlist.equals("end")){
+        endcmd(swtch,sConsole);
+      }
+      // User EXEC
+      else if (commandlist.equals("enable")){
+        enablecmd(swtch);
+      }
+      // Privileged EXEC
+      else if (commandlist.equals("disable")){
+        disablecmd(swtch);
+      }
+      else if (commandlist.equals("configure")){
+        configcmd(swtch);
+      }
+      else if (commandlist.equals("configure terminal")){
+        configtcmd(swtch);
+      }
+      else if (commandlist.equals("vlan database")){
+        vlandbcmd(swtch);
+      }
+      else if (commandlist.equals("show mac-address-table")){
+        showmactable(swtch);
+      }
+      else if (commandlist.equals("show interfaces")) {
+        showint(swtch);
+      }
+      else if (commandlist.equals("show interfaces arg_intname")) {
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        showint(swtch,arg);
+      }
+      else if (commandlist.equals("show interfaces arg_intname switchport")) {
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        showintswitchport(swtch,arg);
+      }
+      else if (commandlist.equals("show interfaces arg_intname switchport allowed-vlan")) {
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        showintallowvlan(swtch,arg);
+      }
+      else if (commandlist.equals("show vlan")) {
+        showvlan(swtch);
+      }
+      else if (commandlist.equals("show vlan brief")) {
+        showvlanb(swtch);
+      }
+
+      else if (commandlist.equals("spanning-tree")) {
+        Frame1.stp.enableCommonSpanningTree();
+      }
+      else if (commandlist.equals("no spanning-tree")) {
+        Frame1.stp.disableCommonSTP();
+      }
+      else if (commandlist.equals("spanning-tree vlan arg_vlan")) {
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        enablePVST(swtch, Integer.parseInt(arg));
+      }
+      else if (commandlist.equals("no spanning-tree vlan arg_vlan")) {
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        disablePVST(swtch, Integer.parseInt(arg));
+      }
+      else if (commandlist.equals("spanning-tree priority arg_num")) {
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        setNewPriority(swtch, arg);
+      }
+      else if (commandlist.equals("no spanning-tree priority")) {
+        setNewPriority(swtch, "32768");
+      }
+      else if (commandlist.equals("spanning-tree forward-time arg_num")) {
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        System.out.println("arg : "+arg);
+        swtch.setForwardDelay(arg);
+      }
+      else if (commandlist.equals("no spanning-tree forward-time")) {
+        swtch.setForwardDelay("15");
+      }
+      else if (commandlist.equals("spanning-tree hello-time arg_num")) {
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        System.out.println("arg : "+arg);
+        swtch.setHelloTime(arg);
+      }
+      else if (commandlist.equals("no spanning-tree hello-time")) {
+        swtch.setHelloTime("2");
+      }
+      else if (commandlist.equals("spanning-tree max-age arg_num")) {
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        System.out.println("arg : "+arg);
+        swtch.setMaxAge(arg);
+      }
+      else if (commandlist.equals("no spanning-tree max-age")) {
+        swtch.setMaxAge("20");
+      }
+/*
+      else if (commandlist.equals("spanning-tree port-priority arg_num")) {
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        System.out.println("arg : "+arg);
+        swtch.setPriority(arg);
+      }
+*/
+      else if (commandlist.equals("show spanning-tree")) {
+        showSTP(swtch);
+      }
+      else if (commandlist.equals("show spanning-tree vlan arg_vlan")) {
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        System.out.println("arg : " + arg);
+        showPVSTP(swtch, Integer.parseInt(arg));
+      }
+      else if (commandlist.equals("show spanning-tree interface arg_intname")) {
+
+      }
+      else if (commandlist.equals("show spanning-tree brief")) {
+        showSTPbrief(swtch);
+      }
+//---------------------------- Not Done ----------------------------------------
+      else if (commandlist.equals("show spanning-tree summary")) {
+        showSTPsummary(swtch);
+      }
+//------------------------------------------------------------------------------
+
+//----------------------------- Testing ----------------------------------------
+//      else if (commandlist.equals("show my vlan")) {
+//        showAllVlan();
+//      }
+//------------------------------------------------------------------------------
+
+      // Global configuration
+      else if (commandlist.equals("interface arg_intname")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        intcmd(swtch,arg);
+      }
+      else if (commandlist.equals("hostname arg_string")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        hostnamecmd(swtch,arg);
+      }
+      else if (commandlist.equals("mac-address-table aging-time arg_num")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        macagingcmd(swtch,Integer.parseInt(arg));
+      }
+      else if (commandlist.equals("vlan arg_vlan")) {
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        if (swtch.getMode()==3)
+          vlancmd(swtch,Integer.parseInt(arg));
+        else addvlandbcmd(swtch,Integer.parseInt(arg));
+      }
+      else if (commandlist.equals("no vlan arg_vlan")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        novlancmd(swtch,Integer.parseInt(arg));
+      }
+      // Interface configuration
+      else if (commandlist.equals("shutdown")){
+        shutcmd(swtch);
+      }
+      else if (commandlist.equals("no shutdown")){
+        noshutcmd(swtch);
+      }
+      else if (commandlist.equals("switchport mode access")){
+        switchportaccess(swtch);
+      }
+      else if (commandlist.equals("switchport mode trunk")){
+        switchporttrunk(swtch);
+
+      }
+      else if (commandlist.equals("switchport access vlan arg_vlan")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        switchportvlan(swtch, Integer.parseInt(arg));
+      }
+      else if (commandlist.equals("switchport trunk allowed vlan add arg_string")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        switchportallowadd(swtch, arg);
+      }
+      else if (commandlist.equals("switchport trunk allowed vlan all")){
+        switchportallowall(swtch);
+      }
+      else if (commandlist.equals("switchport trunk allowed vlan remove arg_string")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        switchportallowrm(swtch, arg);
+      }
+      // VLAN configuration
+      else if (commandlist.equals("vlan arg_vlan")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        addvlandbcmd(swtch,Integer.parseInt(arg));
+      }
+      else if (commandlist.equals("vlan arg_vlan name arg_string")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg1 = stoken.nextToken();
+        arg1 = stoken.nextToken();
+        String arg2 = stoken.nextToken();
+        arg2 = stoken.nextToken();
+        addvlandbcmd(swtch,Integer.parseInt(arg1),arg2);
+      }
+/*
+      else if (commandlist.equals("no vlan arg_vlan")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        delvlandbcmd(swtch,Integer.parseInt(arg));
+      }
+*/
+      // config-vlan
+      else if (commandlist.equals("name arg_string")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        namevlan(swtch,arg);
+      }
+      // Line Configuration
+      else if (commandlist.equals("password arg_string")){
+        StringTokenizer stoken = new StringTokenizer(cmdline);
+        String arg = stoken.nextToken();
+        arg = stoken.nextToken();
+        linepasswdcmd(swtch,arg);
+      }
+      else if (commandlist.equals("login")){
+        logincmd(swtch);
+      }
+      else if (commandlist.equals("no login")){
+        nologincmd(swtch);
+      }
+    }
+  }
+
+  public void exitcmd(Switch sw,SwitchConsole sconsole){
+//    System.out.println(sconsole.getRouters().size());
+//    if (rconsole.getRouters().size() == 1){
+      System.out.println("Old mode is "+sw.getMode());
+      switch (sw.getMode()){
+        case 1 : sw.setMode(0);SwitchConsole.output+="reset";break;
+        case 2 : SwitchConsole.output += error;
+        case 3 : sw.setMode(2);SwitchConsole.output+="%SYS-5-CONFIG_I: Configured from console by console\n";break;
+        case 4 : sw.setMode(3);SwitchConsole.output+="";break;
+        case 5 : sw.setMode(2);SwitchConsole.output+="APPLY completed.\nExiting....\n";break;
+        case 6 : sw.setMode(3);SwitchConsole.output+="";break;//"%SYS-5-CONFIG_I: Configured from console by console\n";break;
+        case 7 : sw.setMode(2);sw.setLineMode(-1);SwitchConsole.output+="%SYS-5-CONFIG_I: Configured from console by console\n";break;
+//        default :SwitchConsole.output="";
+      }//end switch
+      System.out.println("New mode is "+sw.getMode());
+//    }
+//    else{
+      //Exit From Telnet
+//      Router telnetRouter = (Router)rconsole.getRouters().elementAt(rconsole.getRouters().size()-1);
+//      telnetRouter.setMode(telnetRouter.getOldMode());
+//      rconsole.getRouters().removeElementAt(rconsole.getRouters().size()-1);
+//      rconsole.setRouter((Router)rconsole.getRouters().lastElement());
+//      Router oldRouter = (Router)rconsole.getRouters().lastElement();
+//      oldRouter.setMode(oldRouter.getOldMode());
+//    }
+//    System.out.println(router.getMode());
+  }
+  public void endcmd(Switch sw,SwitchConsole sconsole){
+//    System.out.println(sconsole.getRouters().size());
+//    if (rconsole.getRouters().size() == 1){
+      System.out.println("Old mode is "+sw.getMode());
+      switch (sw.getMode()){
+//        case 1 : sw.setMode(0);SwitchConsole.output+="reset";break;
+//        case 2 : SwitchConsole.output += error;
+//        case 3 : sw.setMode(2);SwitchConsole.output+="%SYS-5-CONFIG_I: Configured from console by console\n";break;
+        case 4 : sw.setMode(3);SwitchConsole.output+="";break;
+//        case 5 : sw.setMode(2);SwitchConsole.output+="APPLY completed.\nExiting....\n";break;
+        case 6 : sw.setMode(3);SwitchConsole.output+="";break;//"%SYS-5-CONFIG_I: Configured from console by console\n";break;
+//        case 7 : sw.setMode(2);sw.setLineMode(-1);SwitchConsole.output+="%SYS-5-CONFIG_I: Configured from console by console\n";break;
+//        default :SwitchConsole.output="";
+      }//end switch
+      System.out.println("New mode is "+sw.getMode());
+  }
+
+  // ==================================== User EXEC ====================================
+  public void enablecmd(Switch sw){
+    SwitchConsole.output = "";
+    if (!sw.getEnablePasswd()){
+      sw.setMode(2);
+    }
+    else {
+      sw.setMode(10);
+    }
+  }
+
+  // ================================== Privileged EXEC ================================
+  public void disablecmd(Switch sw){
+    sw.setMode(1);
+  }
+  public void configcmd(Switch sw){
+    sw.setMode(20);
+//    RouterConsole.output += "Configuring from terminal, memory, or network[terminal]?";
+  }
+  public void configtcmd(Switch sw){
+    sw.setMode(3);
+    SwitchConsole.output+="Enter configuration commands, one per line. End with CNTL/Z.\n";
+  }
+  public void vlandbcmd(Switch sw) {
+    sw.setMode(5);
+    System.out.println("VLAN DATABASE");
+  }
+
+  public void showint(Switch sw) {
+    SwitchConsole.output += "Vlan1 is up, line protocol is up\n";
+    SwitchConsole.output += "Hardware is CPU Interface, address is " + sw.getMACAddress() + "(bia " + sw.getMACAddress() + ")\n";
+    SwitchConsole.output += "Internet address is 161.246.5.251/24\n";
+    SwitchConsole.output += "MTU 1500 bytes, BW 1000000 Kbit, DLY 10 usec,\n";
+    SwitchConsole.output += "   reliability 255/255, txload 1/255, rxload 1/255\n";
+    SwitchConsole.output += "Encapsulation ARPA, loopback not set\n";
+    SwitchConsole.output += "ARP type:ARPA, ARP Timeout 04:00:00\n";
+    SwitchConsole.output += "Last input 00:00:00, output never, output hang never\n";
+    SwitchConsole.output += "Last clearing of \"show interface\" counters never\n";
+    SwitchConsole.output += "Input queue:0/75/0/0 (size/max/drops/flushes); Total output drops:0\n";
+    SwitchConsole.output += "Queueing strategy:fifo\n";
+    SwitchConsole.output += "Output queue :0/40 (size/max)\n";
+    SwitchConsole.output += "5 minute input rate 0 bits/sec, 0 packets/sec\n";
+    SwitchConsole.output += "5 minute output rate 0 bits/sec, 0 packets/sec\n";
+    SwitchConsole.output += "   168738 packets input, 12529173 bytes, 0 no buffer\n";
+    SwitchConsole.output += "   Received 56994 broadcasts, 0 runts, 0 giants, 0 throttles\n";
+    SwitchConsole.output += "   0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored\n";
+    SwitchConsole.output += "   246794 packets output, 23981814 bytes, 0 underruns\n";
+    SwitchConsole.output += "   0 output errors, 2 interface resets\n";
+    SwitchConsole.output += "   0 output buffer failures, 0 output buffers swapped out\n";
+    for (int i=0; i < sw.getVInt().size(); i++){
+      Interface intf = (Interface)sw.getVInt().elementAt(i);
+      SwitchConsole.output += intf.getNameFull() + " " + "is up " + ",line protocol is " + intf.getStatus() + "\n";
+      SwitchConsole.output += "Hardware is " + intf.getType() + ", address is " + intf.getMACAddress() + " (bia " + intf.getMACAddress() + ")\n";
+      SwitchConsole.output += "MTU 1500 bytes, BW 100000 Kbit, DLY 1000 usec,\n";
+      SwitchConsole.output += "   reliability 255/255, txload 1/255, rxload 1/255\n";
+      SwitchConsole.output += "Encapsulation ARPA, loopback not set\n";
+      SwitchConsole.output += "Keepalive set (10 sec)\n";
+      SwitchConsole.output += "Auto-duplex, Auto-speed\n";
+      SwitchConsole.output += "input flow-control is off, output flow-control is off\n";
+      SwitchConsole.output += "Last input never, output 4d21h, output hang never\n";
+      SwitchConsole.output += "Last clearing of \"show interface\" counters never\n";
+      SwitchConsole.output += "Input queue:0/75/0/0 (size/max/drops/flushes); Total output drops:0\n";
+      SwitchConsole.output += "Queueing strategy:fifo\n";
+      SwitchConsole.output += "Output queue :0/40 (size/max)\n";
+      SwitchConsole.output += "5 minute input rate 0 bits/sec, 0 packets/sec\n";
+      SwitchConsole.output += "5 minute output rate 0 bits/sec, 0 packets/sec\n";
+      SwitchConsole.output += "   1 packets input, 64 bytes, 0 no buffer\n";
+      SwitchConsole.output += "   Received 0 broadcasts, 0 runts, 0 giants, 0 throttles\n";
+      SwitchConsole.output += "   0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored\n";
+      SwitchConsole.output += "   0 watchdog, 0 multicast, 0 pause input\n";
+      SwitchConsole.output += "   0 input packets with dribble condition detected\n";
+      SwitchConsole.output += "   1 packets output, 64 bytes, 0 underruns\n";
+      SwitchConsole.output += "   0 output errors, 0 collisions, 2 interface resets\n";
+      SwitchConsole.output += "   0 babbles, 0 late collision, 0 deferred\n";
+      SwitchConsole.output += "   0 lost carrier, 0 no carrier, 0 PAUSE output\n";
+      SwitchConsole.output += "   0 output buffer failures, 0 output buffers swapped out\n";
+    }
+  }
+
+  public void showint(Switch sw, String intname) {
+    for (int i=0; i < sw.getVInt().size(); i++){
+      Interface intf = (Interface)sw.getVInt().elementAt(i);
+      if (intf.intNameEquals(intname)){
+        SwitchConsole.output += intf.getNameFull() + " " + "is up " + ",line protocol is " + intf.getStatus() + "\n";
+        SwitchConsole.output += "Hardware is " + intf.getType() + ", address is " + intf.getMACAddress() + " (bia " + intf.getMACAddress() + ")\n";
+        SwitchConsole.output += "MTU 1500 bytes, BW 10000 Kbit, DLY 1000 usec,\n";
+        SwitchConsole.output += "reliability 255/255, txload 1/255, rxload 1/255\n";
+        SwitchConsole.output += "Encapsulation ARPA, loopback not set\n";
+        SwitchConsole.output += "Keepalive set (10 sec)\n";
+        SwitchConsole.output += "Auto-duplex, Auto-speed\n";
+        SwitchConsole.output += "input flow-control is off, output flow-control is off\n";
+        SwitchConsole.output += "Last input never, output 4d21h, output hang never\n";
+        SwitchConsole.output += "Last clearing of \"show interface\" counters never\n";
+        SwitchConsole.output += "Input queue:0/75/0/0 (size/max/drops/flushes); Total output drops:0\n";
+        SwitchConsole.output += "Queueing strategy:fifo\n";
+        SwitchConsole.output += "Output queue :0/40 (size/max)\n";
+        SwitchConsole.output += "5 minute input rate 0 bits/sec, 0 packets/sec\n";
+        SwitchConsole.output += "5 minute output rate 0 bits/sec, 0 packets/sec\n";
+        SwitchConsole.output += "   1 packets input, 64 bytes, 0 no buffer\n";
+        SwitchConsole.output += "   Received 0 broadcasts, 0 runts, 0 giants, 0 throttles\n";
+        SwitchConsole.output += "   0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored\n";
+        SwitchConsole.output += "   0 watchdog, 0 multicast, 0 pause input\n";
+        SwitchConsole.output += "   0 input packets with dribble condition detected\n";
+        SwitchConsole.output += "   1 packets output, 64 bytes, 0 underruns\n";
+        SwitchConsole.output += "   0 output errors, 0 collisions, 2 interface resets\n";
+        SwitchConsole.output += "   0 babbles, 0 late collision, 0 deferred\n";
+        SwitchConsole.output += "   0 lost carrier, 0 no carrier, 0 PAUSE output\n";
+        SwitchConsole.output += "   0 output buffer failures, 0 output buffers swapped out\n";
+      }
+    }
+  }
+  public void showintswitchport(Switch sw, String intname) {
+    for (int i=0; i < sw.getVInt().size(); i++){
+      Interface intf = (Interface)sw.getVInt().elementAt(i);
+      String accvlan = "(Inactive)";
+      if (intf.intNameEquals(intname)){
+        for (int j=0; j<sw.getVlanDB().size(); j++) {
+          VlanDatabase vdb = (VlanDatabase)sw.getVlanDB().elementAt(j);
+          if (vdb.getVlanID()==intf.getVLAN())
+            accvlan = vdb.getVlanName();
+        }
+        SwitchConsole.output += "Name: "+intf.getNameInt()+"\n";
+        SwitchConsole.output += "Switchport: Enabled\n";
+        SwitchConsole.output += "Administrative Mode: ";
+        if (intf.getVLANLink()==0) {
+          SwitchConsole.output += "static access\n";
+        }
+        else SwitchConsole.output += "trunk\n";
+        SwitchConsole.output += "Operational Mode: ";
+        if (intf.getVLANLink()==0)
+          SwitchConsole.output += "static access\n";
+        else SwitchConsole.output += "trunk\n";
+        SwitchConsole.output += "Administrative Trunking Encapsulation: dot1q\n";
+        SwitchConsole.output += "Operational Trunking Encapsulation: native\n";
+        SwitchConsole.output += "Negotiation of Trunking: Disables\n";
+        SwitchConsole.output += "Access Mode VLAN: "+intf.getVLAN()+" ("+accvlan+")\n";
+        SwitchConsole.output += "Trunking Native Mode VLAN: 1 (default)\n";
+        SwitchConsole.output += "Trunking VLANs Enabled: ";
+        if (intf.getVLANLink()==0)
+          SwitchConsole.output += "NONE\n";
+        else {
+          if (intf.getVLANAllowed().size()!=1005) {
+            int j=1,start=Integer.parseInt((String)intf.getVLANAllowed().elementAt(0));
+            while (j<intf.getVLANAllowed().size()) {
+              int a=Integer.parseInt((String)intf.getVLANAllowed().elementAt(j-1));
+              int b=Integer.parseInt((String)intf.getVLANAllowed().elementAt(j));
+              if (a!=b-1) {
+                if (a==start) {
+                  SwitchConsole.output += start;
+                }
+                else SwitchConsole.output += start+"-"+a;
+                start = b;
+                if (j<intf.getVLANAllowed().size()-1) {
+                  SwitchConsole.output += ",";
+                }
+              }
+              if (j==intf.getVLANAllowed().size()-1) {
+                SwitchConsole.output += start+"-"+b;
+              }
+              j++;
+            }
+            SwitchConsole.output += "\n";
+          }
+          else SwitchConsole.output += "ALL\n";
+		  SwitchConsole.output += "Trunking VLANs Active: 1\n";
+        }
+        SwitchConsole.output += "Pruning VLANs Enabled: ";
+        if (intf.getVLANLink()==0)
+          SwitchConsole.output += "NONE\n\n";
+        else SwitchConsole.output += "2-1001\n\n";
+        SwitchConsole.output += "Priority for untagged frames: 0\n";
+        SwitchConsole.output += "Override vlan tag priority: FALSE\n";
+        SwitchConsole.output += "Voice vlan: none\n";
+        SwitchConsole.output += "Appliance trust: none\n";
+      }
+    }
+  }
+  public void showintallowvlan(Switch sw, String intname) {
+    Interface inf = new Interface();
+    int i=0;
+    while (i<sw.getVInt().size()) {
+      inf = (Interface)sw.getVInt().elementAt(i);
+      if (inf.intNameEquals(intname)) {
+        if (inf.getVLANLink()==1) {
+          if (inf.getVLANAllowed().size()!=1005) {
+            System.out.println(inf.getVLANAllowed().size());
+            int j=1,start=Integer.parseInt((String)inf.getVLANAllowed().elementAt(0));
+            SwitchConsole.output += "\"";
+            System.out.println(0+" "+(String)inf.getVLANAllowed().elementAt(0));
+            while (j<inf.getVLANAllowed().size()) {
+              System.out.println(j+" "+(String)inf.getVLANAllowed().elementAt(j));
+              int a=Integer.parseInt((String)inf.getVLANAllowed().elementAt(j-1));
+              int b=Integer.parseInt((String)inf.getVLANAllowed().elementAt(j));
+              if (a!=b-1) {
+                if (a==start) {
+                  SwitchConsole.output += start;
+                }
+                else SwitchConsole.output += start+"-"+a;
+                start = b;
+                if (j<inf.getVLANAllowed().size()-1) {
+                  SwitchConsole.output += ",";
+                }
+              }
+              if (j==inf.getVLANAllowed().size()-1) {
+                SwitchConsole.output += start+"-"+b;
+              }
+              j++;
+            }
+            SwitchConsole.output += "\"\n";
+          }
+          else SwitchConsole.output += "\"ALL\"\n";
+        }
+        else {
+          for (int j=0; j<inf.getVLANAllowed().size(); j++) {
+            System.out.print((String)inf.getVLANAllowed().elementAt(j)+" ");
+          }
+          SwitchConsole.output += "\"NONE\"\n";
+        }
+        i=sw.getVInt().size();
+      }
+      else i++;
+    }
+  }
+  public void showmactable(Switch sw) {
+    int vlan = 1;
+    String b;
+    if ((sw.getMACTable()!=null) && (sw.getMACTable().size()!=0)) {
+      SwitchConsole.output += "Dynamic Address Count:                 "+sw.getMACTable().size()+"\n";
+      SwitchConsole.output += "Secure Address Count:                  0\n";
+      SwitchConsole.output += "Static Address (User-defined) Count:   0\n";
+      SwitchConsole.output += "System Self Address Count:             51\n";
+      SwitchConsole.output += "Total MAC Addresses:                   "+(51+sw.getMACTable().size())+"\n";
+      SwitchConsole.output += "Maximum MAC Addresses:                 8192\n";
+      SwitchConsole.output += "Non-static Address Table:\n";
+      SwitchConsole.output += "Destination Address  Address Type  VLAN  Destination Port\n";
+      SwitchConsole.output += "-------------------  ------------  ----  ------------------\n";
+      for (int i=0; i<sw.getMACTable().size(); i++) {
+        String[] tp = (String[])sw.getMACTable().elementAt(i);
+        String name = tp[1];
+        for (int j=0; j<sw.getVInt().size(); j++) {
+          Interface intf = (Interface)sw.getVInt().elementAt(j);
+          if (intf.intNameEquals(tp[1])) {
+            vlan = intf.getVLAN();
+            name = intf.getNameInt();
+          }
+        }
+        if (vlan<10)  b="   ";
+        else if (vlan<100) b="  ";
+        else if (vlan<1000) b=" ";
+        else b="";
+        SwitchConsole.output += tp[0]+"       Dynamic       "+b+vlan+"  "+name+"\n";
+      }
+    }
+  }
+  public void showvlan(Switch sw) {
+    Vector tmp = new Vector();
+    for (int i=0; i<sw.getVlanDB().size(); i++) {
+      tmp.addElement(sw.getVlanDB().elementAt(i));
+    }
+    for (int i=0; i<tmp.size()-1; i++) {
+      for (int j=0; j<tmp.size()-1; j++) {
+        VlanDatabase x = (VlanDatabase)tmp.elementAt(j);
+        VlanDatabase y = (VlanDatabase)tmp.elementAt(j+1);
+        if (x.getVlanID()>y.getVlanID()) {
+          tmp.removeElementAt(j);
+          tmp.insertElementAt(x,j+1);
+        }
+      }
+    }
+    SwitchConsole.output += "VLAN Name                             Status    Ports\n";
+    SwitchConsole.output += "---- -------------------------------- --------- -------------------------------\n";
+    for (int i=0; i<tmp.size(); i++) {
+      VlanDatabase vdb = (VlanDatabase)tmp.elementAt(i);
+      SwitchConsole.output += vdb.getVlanID();
+      for (int j=Integer.toString(vdb.getVlanID()).length(); j<4; j++)
+        SwitchConsole.output += " ";
+      SwitchConsole.output += " "+vdb.getVlanName();
+      for (int j=vdb.getVlanName().length(); j<32; j++)
+        SwitchConsole.output += " ";
+      SwitchConsole.output += " "+vdb.getStatus();
+      for (int j=vdb.getStatus().length(); j<9; j++)
+        SwitchConsole.output += " ";
+      SwitchConsole.output += " ";
+      int c=0;
+      for (int j=0; j<sw.getVInt().size(); j++) {
+        Interface inf = (Interface)sw.getVInt().elementAt(j);
+        if (inf.getVLAN()==vdb.getVlanID()) {
+          if (c!=0) {
+            SwitchConsole.output += ", ";
+            if (c%4==0)
+              SwitchConsole.output += "\n                                                ";
+          }
+          SwitchConsole.output += inf.getNameInt();
+          c++;
+        }
+      }
+      SwitchConsole.output += "\n";
+    }
+    SwitchConsole.output += "\n";
+    SwitchConsole.output += "VLAN Type  SAID       MTU   Parent RingNo BridgeNo Stp  BrdgMode Trans1 Trans2\n";
+    SwitchConsole.output += "---- ----- ---------- ----- ------ ------ -------- ---- -------- ------ ------\n";
+    for (int i=0; i<tmp.size(); i++) {
+      VlanDatabase vdb = (VlanDatabase)tmp.elementAt(i);
+      SwitchConsole.output += vdb.getVlanID();
+      for (int j=Integer.toString(vdb.getVlanID()).length(); j<4; j++)
+        SwitchConsole.output += " ";
+      SwitchConsole.output += " "+vdb.getType();
+      for (int j=vdb.getType().length(); j<5; j++)
+        SwitchConsole.output += " ";
+      SwitchConsole.output += " "+vdb.getSAID();
+      for (int j=vdb.getSAID().length(); j<10; j++)
+        SwitchConsole.output += " ";
+      SwitchConsole.output += " "+vdb.getMTU();
+      for (int j=vdb.getMTU().length(); j<5; j++)
+        SwitchConsole.output += " ";
+      SwitchConsole.output += " "+vdb.getParent();
+      System.out.println("Parent : "+vdb.getParent());
+      for (int j=vdb.getParent().length(); j<6; j++)
+        SwitchConsole.output += " ";
+      SwitchConsole.output += " "+vdb.getRingNo();
+      for (int j=vdb.getRingNo().length(); j<6; j++)
+        SwitchConsole.output += " ";
+      SwitchConsole.output += " "+vdb.getBrdgNo();
+      for (int j=vdb.getBrdgNo().length(); j<8; j++)
+        SwitchConsole.output += " ";
+      SwitchConsole.output += " "+vdb.getSTP();
+      for (int j=vdb.getSTP().length(); j<4; j++)
+        SwitchConsole.output += " ";
+      SwitchConsole.output += " "+vdb.getBrdgMode();
+      for (int j=vdb.getBrdgMode().length(); j<8; j++)
+        SwitchConsole.output += " ";
+      SwitchConsole.output += " "+vdb.getTrans1();
+      for (int j=Integer.toString(vdb.getTrans1()).length(); j<6; j++)
+        SwitchConsole.output += " ";
+      SwitchConsole.output += " "+vdb.getTrans2()+"\n";
+    }
+  }
+  public void showvlanb(Switch sw) {
+    Vector tmp = new Vector();
+    for (int i=0; i<sw.getVlanDB().size(); i++) {
+      tmp.addElement(sw.getVlanDB().elementAt(i));
+    }
+    for (int i=0; i<tmp.size()-1; i++) {
+      for (int j=0; j<tmp.size()-1; j++) {
+        VlanDatabase x = (VlanDatabase)tmp.elementAt(j);
+        VlanDatabase y = (VlanDatabase)tmp.elementAt(j+1);
+        if (x.getVlanID()>y.getVlanID()) {
+          tmp.removeElementAt(j);
+	  tmp.insertElementAt(x,j+1);
+        }
+      }
+    }
+    SwitchConsole.output += "VLAN Name                             Status    Ports\n";
+    SwitchConsole.output += "---- -------------------------------- --------- -------------------------------\n";
+    for (int i=0; i<tmp.size(); i++) {
+      VlanDatabase vdb = (VlanDatabase)tmp.elementAt(i);
+      SwitchConsole.output += vdb.getVlanID();
+      for (int j=Integer.toString(vdb.getVlanID()).length(); j<4; j++)
+        SwitchConsole.output += " ";
+      SwitchConsole.output += " "+vdb.getVlanName();
+      for (int j=vdb.getVlanName().length(); j<32; j++)
+        SwitchConsole.output += " ";
+      SwitchConsole.output += " "+vdb.getStatus();
+      for (int j=vdb.getStatus().length(); j<9; j++)
+        SwitchConsole.output += " ";
+      SwitchConsole.output += " ";
+      int c=0;
+      for (int j=0; j<sw.getVInt().size(); j++) {
+        Interface inf = (Interface)sw.getVInt().elementAt(j);
+        if (inf.getVLAN()==vdb.getVlanID()) {
+          if (c!=0) {
+            SwitchConsole.output += ", ";
+            if (c%4==0)
+              SwitchConsole.output += "\n                                                ";
+          }
+          SwitchConsole.output += inf.getNameInt();
+          c++;
+        }
+      }
+      SwitchConsole.output += "\n";
+    }
+  }
+  public void showSTP(Switch sw) {
+    String str = Frame1.stp.getStatus();
+    Vector vInterf = sw.getVInt();
+    Interface interf = new Interface();
+    String intType, space2, space3, space4, space5, space1 = "";
+
+    if (str.equals("enabled")) {
+      SwitchConsole.output += "Spanning tree enabled " + "\n";
+      SwitchConsole.output += "Spanning tree is executing the IEEE compatible Spanning Tree Protocol" + "\n";
+      SwitchConsole.output += "   Bridge Identifier has priority   " + sw.getPriority()   + "\n";
+      SwitchConsole.output += "                         address    " + sw.getMACAddress() + "\n";
+      SwitchConsole.output += "   Configured hello time " + sw.getHelloTime() + ", max age " + sw.getMaxAge() + ", forward delay " + sw.getForwardDelay() + "\n";
+      SwitchConsole.output += "   Current root has priority        " + sw.getRBpriority() + "\n";
+      SwitchConsole.output += "                    address         " + sw.getRBmacAddr() + "\n";
+      SwitchConsole.output += "   Root port is " + sw.getRootPortNum() + ", cost of root path is 100" + "\n";
+      SwitchConsole.output += "" + "\n";
+      for (int i = 0; i < vInterf.size(); i++) {
+        interf = (Interface)vInterf.elementAt(i);
+
+        //        SwitchConsole.output += "Interface " + interf.getNameInt() + " (port " + i + ") in Spanning tree 1 is forwarding " + "\n";
+        SwitchConsole.output += "Interface " + interf.getNameInt() + " (port " + i + ") in Spanning tree 1 is " + interf.getSTPstate() + "\n";
+        SwitchConsole.output += "   Port path cost 19, Port Priority " + interf.getPriority() + "\n";
+        SwitchConsole.output += "   Designated root has priority "+ sw.getRBpriority() + ", address " + sw.getRBmacAddr() + "\n";
+        SwitchConsole.output += "   Designated bridge has priority " + sw.getPriority() + ", address " + sw.getMACAddress() + "\n";
+        SwitchConsole.output += "   Designated port is " + i + ", path cost " + interf.getCost() + "\n";
+        SwitchConsole.output += "" + "\n";
+      }
+    }         // end if
+    else if (str.equals("disabled")) {
+      SwitchConsole.output += "Spanning-tree disabled\n";
+    }         // end else if
+  }
+
+  public void showPVSTP(Switch sw, int vid) {
+    Vector swVlan = new Vector();
+    Vector vInterf = new Vector();
+    Vlan tmp = new Vlan();
+    Vlan v = new Vlan();
+    Interface interf = new Interface();
+    int pos;
+
+    for (int i = 0; i < Frame1.vVlan.size(); i++) {
+      tmp = (Vlan)Frame1.vVlan.elementAt(i);
+      if (tmp.getVlanID() == vid) {
+        v = (Vlan)Frame1.vVlan.elementAt(i);
+        i = Frame1.vVlan.size();
+      }
+    }
+
+    vInterf = sw.getVIntSwitch();
+    //SwitchConsole.output += "" + "\n";
+    if (v.getPVSTP().getStatus().equals("enabled")) {
+      SwitchConsole.output += "Spanning tree enabled " + "\n";
+      SwitchConsole.output += "Spanning tree is executing the IEEE compatible Spanning Tree Protocol" + "\n";
+      SwitchConsole.output += "   Bridge Identifier has priority   " + sw.getPriority()   + "\n";
+      SwitchConsole.output += "                         address    " + sw.getMACAddress() + "\n";
+      SwitchConsole.output += "   Configured hello time " + sw.getHelloTime() + ", max age " + sw.getMaxAge() + ", forward delay " + sw.getForwardDelay() + "\n";
+      SwitchConsole.output += "   Current root has priority        " + sw.getvRBpriority(vid) + "\n";
+      SwitchConsole.output += "                    address         " + sw.getvRBmacAddr(vid) + "\n";
+      SwitchConsole.output += "   Root port is " + sw.getvRootPortNum(vid) + ", cost of root path is 100" + "\n";
+      SwitchConsole.output += "" + "\n";
+
+      for (int i = 0; i < vInterf.size(); i++) {
+        interf = (Interface)vInterf.elementAt(i);
+        if (interf.getVLAN() == vid) {
+//        SwitchConsole.output += "Interface " + interf.getNameInt() + " (port " + i + ") in Spanning tree 1 is forwarding " + "\n";
+          SwitchConsole.output += "Interface " + interf.getNameInt() + " (port " + i + ") in Spanning tree 1 is " + interf.getSTPstate() + "\n";
+          SwitchConsole.output += "   Port path cost 19, Port Priority " + interf.getPriority() + "\n";
+          SwitchConsole.output += "   Designated root has priority "+ sw.getvRBpriority(vid) + ", address " + sw.getvRBmacAddr(vid) + "\n";
+          SwitchConsole.output += "   Designated bridge has priority " + sw.getPriority() + ", address " + sw.getMACAddress() + "\n";
+          SwitchConsole.output += "   Designated port is " + i + ", path cost " + interf.getCost() + "\n";
+          SwitchConsole.output += "" + "\n";
+        }
+      }
+    }
+
+    else if (v.getPVSTP().getStatus().equals("disabled")) {
+      SwitchConsole.output += "Spanning tree vlan " + vid + " is not currently active" + "\n";
+      SwitchConsole.output += "No parameters have been configured : " + "\n";
+
+//      SwitchConsole.output += "The following parameters have been configured : " + "\n";
+//      SwitchConsole.output += "\n";
+//      SwitchConsole.output += "Stp Status             : " + v.getPVSTP().getStatus() + "\n";
+//      SwitchConsole.output += "Protocol               : IEEE " + "\n";
+//      SwitchConsole.output += "Max Age (sec)          : " + v.getPVSTP().getMaxAge() + "\n";
+//      SwitchConsole.output += "Hello time (sec)       : " + v.getPVSTP().getHelloTime() + "\n";
+//      SwitchConsole.output += "Forward Delay (sec)    : " + v.getPVSTP().getForwardDelay() + "\n";
+//      SwitchConsole.output += "Bridge Priority        : " + v.getPVSTP().getBridgePrioirity() + "\n";
+    }
+  }
+
+  public void showSTPbrief(Switch sw) {
+    Vector vInterf = sw.getVInt();
+    Interface interf = new Interface();
+    Switch rb = new Switch();
+    String intType, space1 = "";
+    String space2 = "";
+    String space5 = "";
+    String space3, space4, space6;
+
+    SwitchConsole.output += "VLAN1" + "\n";
+    SwitchConsole.output += "   Spanning tree enabled protocol IEEE" + "\n";
+    SwitchConsole.output += "   ROOT ID     Priority " + sw.getRBpriority() + "\n";
+    SwitchConsole.output += "               Address " + sw.getRBmacAddr() + "\n";
+    SwitchConsole.output += "               Hello time  " + sw.getHelloTime() + " sec    Max Age  " + sw.getMaxAge() + " sec    Forward Delay  " + sw.getForwardDelay() + " sec\n";
+    SwitchConsole.output += "   Bridge ID   Priority " + sw.getPriority() + "\n";
+    SwitchConsole.output += "               Address " + sw.getMACAddress() + "\n";
+    SwitchConsole.output += "               Hello time  " + sw.getHelloTime() + " sec    Max Age  " + sw.getMaxAge() + " sec    Forward Delay  " + sw.getForwardDelay() + " sec\n";
+
+    SwitchConsole.output += "Port \n";
+    SwitchConsole.output += "Name      Port ID   Prior   Cost  Port State    Bridge ID         Port ID \n";
+    SwitchConsole.output += "--------  --------  ------  ----  -----------   ---------------   ------- \n";
+
+    for (int i = 0; i < vInterf.size(); i++) {
+      interf = (Interface)vInterf.elementAt(i);
+      intType = interf.getType();
+      if (intType.equals("Ethernet"))
+        space1 = "      ";
+      else if (intType.equals("Fast Ethernet") && (i < 9))
+        space1 = "     ";
+      else if (intType.equals("Fast Ethernet") && (i >= 9))
+        space1 = "    ";
+      else if (intType.equals("Gigabit Ethernet"))
+        space1 = "     ";
+
+      if (i >= 10)
+        space2 = "   ";
+      else
+        space2 = "    ";
+
+      space3 = "     ";
+      space4 = "   ";
+
+      if (interf.getSTPstate().equals("forwarding")) {
+        space5 = "    ";
+      }
+      else if (interf.getSTPstate().equals("blocking")) {
+        space5 = "      ";
+      }
+
+//      space5 = "    ";
+      space6 = "    ";
+      SwitchConsole.output += interf.getNameInt() + space1 + interf.getPortID() + space2 + interf.getPriority() + space3 + interf.getCost() + space4 + interf.getSTPstate() + space5 + sw.getMACAddress() + space6 + interf.getPortID() + "\n";
+//      SwitchConsole.output += interf.getNameInt() + space1 + interf.getPortID() + space2 + interf.getPriority() + space3 + interf.getCost() + space4 + "forwarding" + space5 + sw.getMACAddress() + space6 + interf.getPortID() + "\n";
+    }
+  }
+
+  //SwitchConsole.output += "\n";
+  public void showSTPsummary(Switch sw) {
+    SwitchConsole.output += "UplinkFast is Disabled \n";
+    SwitchConsole.output += "Name      Blocking Listening Learning Forwarding STP Active \n";
+    SwitchConsole.output += "--------- -------- --------- -------- ---------- ---------- \n";
+
+    SwitchConsole.output += "\n";
+  }
+
+  public void setNewPriority(Switch sw, String newp) {
+    int pri = Integer.parseInt(newp);
+    if (pri > 65535) {
+      SwitchConsole.output += error;
+    }
+    else {
+      sw.setPriority(newp);
+      Frame1.stp.enableCommonSpanningTree();
+    }
+  }
+
+  public void showAllVlan() {
+    Vlan v = new Vlan();
+    Vector vSwitch = new Vector();
+    Vector vInt = new Vector();
+    Switch sw = new Switch();
+    Interface interf = new Interface();
+
+    for (int i = 0; i < Frame1.vVlan.size(); i++) {
+      v = (Vlan)Frame1.vVlan.elementAt(i);
+      vSwitch = v.getSwitchMember();
+      vInt = v.getInterfMem();
+
+      SwitchConsole.output += "vlan " + v.getVlanID() + "\n";
+      for (int j = 0; j < vSwitch.size(); j++) {
+        sw = (Switch)vSwitch.elementAt(j);
+        interf = (Interface)vInt.elementAt(j);
+
+        SwitchConsole.output += "   " + sw.getName() + "\n";
+        SwitchConsole.output += "   " + interf.getNameInt() + "\n";
+      }
+    }
+  }
+
+  // ======================================= Global configuration ======================================
+  public void hostnamecmd(Switch sw,String name){
+    System.out.println("Hostname");
+    int num=0;
+    boolean dup = false;
+    for(int i=0; i < Frame1.vSwitch.size(); i++){
+      Switch tmp = (Switch)Frame1.vSwitch.elementAt(i);
+      if(tmp.getName().equalsIgnoreCase(name)){
+        dup = true;
+      }//end if
+      if (tmp.equals(sw))
+        num=i;
+    }//end for
+    if (dup){
+      SwitchConsole.output = SwitchConsole.output + "Already " + name + "\n";
+    }//end if
+    else {
+      sw.setName(name);
+      SwitchConsole scon = (SwitchConsole)Frame1.vConsole.elementAt(num);
+      System.out.println("num "+num);
+      scon.setTitle(sw.getName()+" - Console");
+      Panel1 p = (Panel1)Panel3.vStatus.elementAt(num);
+      p.showDetail();
+      Frame1.panel.repaintView();
+    }//end else
+  }
+  public void macagingcmd(Switch sw, int time) {
+    if ((time==0) || ((time >= 10) && (time <= 1000000))) {
+      sw.setMACAge(time);
+    }
+  }
+  public void intcmd(Switch sw, String intname) {
+    sw.setMode(4);
+    Interface i1 = new Interface();
+    i1.addNewInt(sw,intname);
+  }
+  public void vlancmd(Switch sw, int v){
+    sw.setMode(6);
+    String n = "";
+    VlanDatabase vdb = new VlanDatabase();
+    if (v<10) n="000";
+    else if (v<100) n="00";
+    else if (v<1000) n="0";
+    vdb.addVlan(sw, v, "VLAN"+n+v);
+  }
+  public void novlancmd(Switch sw, int v) {
+    Vlan vl = new Vlan();
+    Vector swVlan = new Vector();
+    Vector vList = new Vector();
+    Switch member = new Switch();
+
+    if (sw.getMode()==3) {
+      if (v!=1 && v!=1002 && v!=1003 && v!=1004 && v!=1005) {
+        for (int i=0; i<sw.getVlanDB().size(); i++) {
+          VlanDatabase tmp = (VlanDatabase)sw.getVlanDB().elementAt(i);
+          if (tmp.getVlanID()==v) {
+            sw.getVlanDB().removeElementAt(i);
+            i--;
+          }
+        }
+      }
+    }
+    else { // Mode = 5
+      boolean found = false;
+      if (v!=1 && v!=1002 && v!=1003 && v!=1004 && v!=1005) {
+        for (int i=0; i<sw.getVlanDB().size(); i++) {
+          VlanDatabase tmp = (VlanDatabase)sw.getVlanDB().elementAt(i);
+          if (tmp.getVlanID()==v) {
+            found = true;
+            sw.getVlanDB().removeElementAt(i);
+            i--;
+          }
+        }
+        if (found)
+          SwitchConsole.output += "Deleting VLAN "+v+"...\n";
+        else SwitchConsole.output += "VLAN "+v+" does not exist\n";
+      }
+      else SwitchConsole.output+="A default VLAN may not be deleted.\n";
+    }
+//---------------- remove Vlan from Frame1.vVlan -------------------------------
+    for (int x = 0; x < Frame1.vVlan.size(); x++) {
+      vl = (Vlan)Frame1.vVlan.elementAt(x);
+      if (vl.getVlanID() == v) {
+        swVlan = vl.getSwitchMember();
+        if (swVlan.size() == 0) {
+          Frame1.vVlan.removeElementAt(x);
+        }
+        else {
+          for (int y = 0; y < swVlan.size(); y++) {
+            member = (Switch)swVlan.elementAt(y);
+            if (member.getName().equals(sw.getName())) {
+              swVlan.removeElementAt(y);
+              vl.getPVSTP().enablePerVLANSpanningTree(vl);
+            }
+          }
+        }
+      }
+    }
+//---------------- remove Vlan from vlanList (attr of Switch)-------------------
+    vList = sw.getVlanList();
+    for (int x = 0; x < vList.size(); x++) {
+      vl = (Vlan)vList.elementAt(x);
+      if (vl.getVlanID() == v) {
+        vList.removeElementAt(x);
+        x--;
+      }
+    }
+  }
+
+  public void enablePVST(Switch sw, int v) {
+    boolean isExist = false;
+    Vlan funcLan = new Vlan();
+    Vlan targetLan = new Vlan();
+
+    isExist = funcLan.isVlanExist(v);
+    if (isExist) {
+      targetLan = funcLan.findVlan(v);
+      targetLan.getPVSTP().enablePerVLANSpanningTree(targetLan);
+    }
+  }
+
+  public void disablePVST(Switch sw, int vid) {
+    Vlan funcLan = new Vlan();
+    Vlan targetLan = new Vlan();
+
+    targetLan = funcLan.findVlan(vid);
+    targetLan.getPVSTP().disablePerVLANSTP(targetLan);
+  }
+  // ======================================= Interface configuration =====================================
+  public void shutcmd(Switch sw){
+    Interface inf = (Interface)sw.getVInt().lastElement();
+    inf.shutInt(sw);
+    for (int i=0; i<Frame1.vSwitch.size(); i++) {
+      Switch s = (Switch)Frame1.vSwitch.elementAt(i);
+      if (s.equals(sw)) {
+        Panel1 p = (Panel1)Panel3.vStatus.elementAt(i);
+        p.showDetail();
+      }
+    }
+    SwitchConsole.output+="%LINEPROTO-5-UPDOWN: Line protocol on Interface "+inf.getType() + inf.getModule() + "/" + inf.getNum() + ", changed state to down\n%LINK-3-UPDOWN: Interface"+ inf.getType() + inf.getModule() + "/" + inf.getNum()+", changed state to administratively down\n";
+  }
+  public void noshutcmd(Switch sw){
+    Interface inf = (Interface)sw.getVInt().lastElement();
+    inf.noshutInt(sw);
+    for (int i=0; i<Frame1.vSwitch.size(); i++) {
+      Switch s = (Switch)Frame1.vSwitch.elementAt(i);
+      if (s.equals(sw)) {
+        Panel1 p = (Panel1)Panel3.vStatus.elementAt(i);
+        p.showDetail();
+      }
+    }
+    SwitchConsole.output+="%LINEPROTO-5-UPDOWN: Line protocol on Interface "+inf.getType() + inf.getModule() + "/" + inf.getNum()+", changed state to up\n%LINK-3-UPDOWN: Interface "+inf.getType() + inf.getModule() + "/" + inf.getNum()+", changed state to up\n";
+  }
+  public void switchportaccess(Switch sw){
+    Interface inf = (Interface)sw.getVInt().lastElement();
+    inf.setVLANLink(0);
+    inf.setVLAN(1);
+    for (int i=0; i<Frame1.vSwitch.size(); i++) {
+      Switch s = (Switch)Frame1.vSwitch.elementAt(i);
+      if (s.equals(sw)) {
+        Panel1 p = (Panel1)Panel3.vStatus.elementAt(i);
+        p.showDetail();
+      }
+    }
+    inf.getVLANAllowed().removeAllElements();
+  }
+  public void switchporttrunk(Switch sw){
+    Interface inf = (Interface)sw.getVInt().lastElement();
+    inf.setVLANLink(1);
+    inf.setVLAN(0);
+    for (int i=0; i<Frame1.vSwitch.size(); i++) {
+      Switch s = (Switch)Frame1.vSwitch.elementAt(i);
+      if (s.equals(sw)) {
+        Panel1 p = (Panel1)Panel3.vStatus.elementAt(i);
+        p.showDetail();
+      }
+    }
+  }
+  public void switchportvlan(Switch sw, int v){
+    boolean isExist = false;
+    Vlan vlan = new Vlan();
+    Vlan thisVlan = new Vlan();
+    Interface inf = (Interface)sw.getVInt().lastElement();
+
+    isExist = vlan.isVlanExist(v);
+//    System.out.println("isExist = " + isExist);
+    if (!isExist) {
+      String n = "";
+      VlanDatabase vdb = new VlanDatabase();
+      if (v<10) n="000";
+      else if (v<100) n="00";
+      else if (v<1000) n="0";
+      vdb.addVlan(sw, v, "VLAN"+n+v);
+//      System.out.println("Vlan " + v);
+    }
+
+    thisVlan = vlan.findVlan(v);
+//    System.out.println("Vlan " + thisVlan.getVlanID());
+//    System.out.println("Switch = " + sw.getName());
+//    System.out.println("Interface = " + inf.getNameInt());
+    thisVlan.addMember(sw, inf);
+    inf.setVLAN(v);
+    for (int i=0; i<Frame1.vSwitch.size(); i++) {
+      Switch s = (Switch)Frame1.vSwitch.elementAt(i);
+      if (s.equals(sw)) {
+        Panel1 p = (Panel1)Panel3.vStatus.elementAt(i);
+        p.showDetail();
+      }
+    }
+    sw.addToVlanList(thisVlan);
+  }
+  public void switchportallowadd(Switch sw, String str) {
+    Interface inf = (Interface)sw.getVInt().lastElement();
+    boolean err = false, oor = false;
+    Vector vlist = new Vector();
+    StringTokenizer tmp1 = new StringTokenizer(str,",");
+    if (!Character.isDigit(str.charAt(str.length()-1))) {
+      err = true;
+    }
+    else {
+      int i=0;
+      while ((tmp1.hasMoreTokens()) && (!err)) {
+        String vallow = tmp1.nextToken();
+        int j=0,num=0;
+        while (j<vallow.length()) {
+          if (vallow.charAt(j)=='-')
+            num++;
+          j++;
+        }
+        if ((!oor) && (num==0)) {
+          try {
+            if ((Integer.parseInt(vallow)>=1) && (Integer.parseInt(vallow)<=1005)) {
+              vlist.addElement(vallow);
+            }
+            else {
+              oor = true;
+              SwitchConsole.output += "number ("+vallow+") out of range 1 to 1005\n";
+            }
+          }
+          catch (Exception exp) {
+            err = true;
+          }
+        }
+        else if ((!oor) && (num==1)) {
+          StringTokenizer tmp2 = new StringTokenizer(vallow,"-");
+          String str1 = tmp2.nextToken();
+          String str2 = tmp2.nextToken();
+          try {
+            if ((!oor) && (Integer.parseInt(str1)<1) && (Integer.parseInt(str1)>1005)) {
+              oor = true;
+              SwitchConsole.output += "number ("+str1+") out of range 1 to 1005\n";
+            }
+            else if ((!oor) && (Integer.parseInt(str2)<1) && (Integer.parseInt(str2)>1005)) {
+              oor = true;
+              SwitchConsole.output += "number ("+str2+") out of range 1 to 1005\n";
+            }
+            else if ((!oor) && Integer.parseInt(str1)<Integer.parseInt(str2))
+              for (int k=Integer.parseInt(str1); k<=Integer.parseInt(str2); k++) {
+                vlist.addElement(Integer.toString(k));
+              }
+            else err = true;
+          }
+          catch (Exception exp) {
+            err = true;
+          }
+        }
+        else if (!oor)
+          err = true;
+//      System.out.println(i+" : "+vallow);
+        i++;
+      }
+    }
+    if (err) {
+      SwitchConsole.output += error;
+    }
+    else if (!oor) {
+      for (int i=0; i<vlist.size(); i++) {
+        if (!inf.VLANIsAllowed(Integer.parseInt((String)vlist.elementAt(i)))) {
+          boolean insert = false;
+          int j=0;
+          while ((!insert) && (j<inf.getVLANAllowed().size())) {
+            if ((Integer.parseInt((String)vlist.elementAt(i))) < (Integer.parseInt((String)inf.getVLANAllowed().elementAt(j)))) {
+              inf.getVLANAllowed().insertElementAt(vlist.elementAt(i),j);
+              insert = true;
+            }
+            j++;
+          }
+          if (!insert) {
+            inf.getVLANAllowed().addElement(vlist.elementAt(i));
+          }
+        }
+      }
+    }
+//    for (int i=0; i<inf.getVLANAllowed().size(); i++) {
+//      System.out.print((String)inf.getVLANAllowed().elementAt(i)+"  ");
+//    }
+  }
+  public void switchportallowall(Switch sw) {
+    Interface inf = (Interface)sw.getVInt().lastElement();
+    inf.getVLANAllowed().removeAllElements();
+    for (int i=1; i<=1005; i++) {
+      inf.getVLANAllowed().addElement(Integer.toString(i));
+    }
+  }
+  public void switchportallowrm(Switch sw, String str) {
+    Interface inf = (Interface)sw.getVInt().lastElement();
+    boolean err = false, oor = false, bad = false;
+    Vector vlist = new Vector();
+    StringTokenizer tmp1 = new StringTokenizer(str,",");
+    if (!Character.isDigit(str.charAt(str.length()-1))) {
+      err = true;
+    }
+    else {
+      int i=0;
+      while ((tmp1.hasMoreTokens()) && (!err)) {
+        String vallow = tmp1.nextToken();
+        int j=0,num=0;
+        while (j<vallow.length()) {
+          if (vallow.charAt(j)=='-')
+            num++;
+          j++;
+        }
+        if ((!oor) && (num==0)) {
+          try {
+            if ((Integer.parseInt(vallow)>=1) && (Integer.parseInt(vallow)<=1005)) {
+              vlist.addElement(vallow);
+            }
+            else {
+              oor = true;
+              SwitchConsole.output += "number ("+vallow+") out of range 1 to 1005\n";
+            }
+          }
+          catch (Exception exp) {
+            err = true;
+          }
+        }
+        else if ((!oor) && (num==1)) {
+          StringTokenizer tmp2 = new StringTokenizer(vallow,"-");
+          String str1 = tmp2.nextToken();
+          String str2 = tmp2.nextToken();
+          try {
+            if ((!oor) && (Integer.parseInt(str1)<1) && (Integer.parseInt(str1)>1005)) {
+              oor = true;
+              SwitchConsole.output += "number ("+str1+") out of range 1 to 1005\n";
+            }
+            else if ((!oor) && (Integer.parseInt(str2)<1) && (Integer.parseInt(str2)>1005)) {
+              oor = true;
+              SwitchConsole.output += "number ("+str2+") out of range 1 to 1005\n";
+            }
+            else if ((!oor) && (str1.equals("1")) && (str2.equals("1005"))) {
+              bad = true;
+            }
+            else if ((!oor) && Integer.parseInt(str1)<Integer.parseInt(str2))
+              for (int k=Integer.parseInt(str1); k<=Integer.parseInt(str2); k++) {
+                vlist.addElement(Integer.toString(k));
+              }
+            else err = true;
+          }
+          catch (Exception exp) {
+            err = true;
+          }
+        }
+        else if (!oor)
+          err = true;
+//      System.out.println(i+" : "+vallow);
+        i++;
+      }
+    }
+    if (err) {
+      SwitchConsole.output += error;
+    }
+    else if (!oor) {
+      if (!bad) {
+        for (int i=0; i<vlist.size(); i++) {
+          int v = Integer.parseInt((String)vlist.elementAt(i));
+          if ((v!=1) && (v!=1002) && (v!=1003) && (v!=1004) && (v!=1005)) {
+            int j=0;
+            while (j<inf.getVLANAllowed().size()) {
+              if (v==(Integer.parseInt((String)inf.getVLANAllowed().elementAt(j)))) {
+                inf.getVLANAllowed().removeElementAt(j);
+                j=inf.getVLANAllowed().size();
+              }
+              else j++;
+            }
+          }
+        }
+      }
+      else SwitchConsole.output += "Command rejected: Bad VLAN allowed list.\n";
+    }
+//    for (int i=0; i<inf.getVLANAllowed().size(); i++) {
+//      System.out.print((String)inf.getVLANAllowed().elementAt(i)+"  ");
+//    }
+  }
+
+  // ========================================== VLAN configuration =======================================
+  public void addvlandbcmd(Switch sw, int v){
+  System.out.println("Add Vlan");
+    String n = "";
+    VlanDatabase vdb = new VlanDatabase();
+    if (v<10) n="000";
+    else if (v<100) n="00";
+    else if (v<1000) n="0";
+    vdb.addVlan(sw, v, "VLAN"+n+v);
+    for (int i=0; i<sw.getVlanDB().size(); i++) {
+      VlanDatabase tmp = (VlanDatabase)sw.getVlanDB().elementAt(i);
+      if (tmp.getVlanID()==v) {
+        vdb = tmp;
+      }
+    }
+    SwitchConsole.output += "VLAN "+vdb.getVlanID()+" added:\n    Name: "+vdb.getVlanName()+"\n";
+  }
+  public void addvlandbcmd(Switch sw, int v, String n){
+    VlanDatabase vdb = new VlanDatabase();
+    boolean found = false;
+    for (int i=0; i<sw.getVlanDB().size(); i++) {
+      VlanDatabase tmp = (VlanDatabase)sw.getVlanDB().elementAt(i);
+      if (tmp.getVlanID()==v) {
+        found = true;
+        vdb = tmp;
+      }
+    }
+    if (found) {
+      if ((vdb.getVlanID()!=1) && (vdb.getVlanID()!=1002) && (vdb.getVlanID()!=1003) && (vdb.getVlanID()!=1004) && (vdb.getVlanID()!=1005)) {
+        vdb.setVlanName(n);
+        SwitchConsole.output += "VLAN "+vdb.getVlanID()+" modified:\n    Name: "+vdb.getVlanName()+"\n";
+      }
+      else SwitchConsole.output += "A default VLAN may not have its name changed.\n";
+    }
+    else {
+      vdb.addVlan(sw, v, n);
+      SwitchConsole.output += "VLAN "+v+" added:\n    Name: "+n+"\n";
+    }
+  }
+  public void delvlandbcmd(Switch sw, int v){
+    for (int i=0; i<sw.getVlanDB().size(); i++) {
+      VlanDatabase tmp = (VlanDatabase)sw.getVlanDB().elementAt(i);
+      if (tmp.getVlanID()==v) {
+        sw.getVlanDB().removeElementAt(i);
+        i--;
+      }
+    }
+    SwitchConsole.output += "Deleting VLAN "+v+"...\n";
+  }
+
+  // ====================================== config-vlan ========================================
+  public void namevlan(Switch sw, String s) {
+    VlanDatabase vdb = (VlanDatabase)sw.getVlanDB().lastElement();
+    if ((vdb.getVlanID()!=1) && (vdb.getVlanID()!=1002) && (vdb.getVlanID()!=1003) && (vdb.getVlanID()!=1004) && (vdb.getVlanID()!=1005)) {
+      vdb.setVlanName(s);
+    }
+  }
+
+  // ====================================== Line Configuration ======================================
+
+  public void linepasswdcmd(Switch sw, String s) {
+
+  }
+  public void logincmd(Switch sw) {
+
+  }
+  public void nologincmd(Switch sw) {
+
+  }
+
+
+  // == Tab ==
+  public void tabCmd(String findword,int mode){
+  StringTokenizer st1 = new StringTokenizer(findword);
+    ListCommand allCmd = null;
+    String returnword="";
+    switch (mode){
+      case 1 :
+                //User Exec Commands
+                allCmd = cmdUserExe;
+                break;
+      case 2 :
+                //Privileged EXec Commands
+                allCmd = cmdPrivilegedExe;
+                break;
+      case 3 :
+                //Global Config
+                allCmd = globalConfig;
+                break;
+      case 4:
+                //Interface Commands
+                allCmd = intCmd;
+                break;
+      case 5 :
+                //VLAN Config
+                allCmd = vlanConfig;
+                break;
+      case 6 :
+                //config-vlan
+                allCmd = configVlan;
+                break;
+      case 7 :
+                //Line Commands
+                allCmd = lineCmd;
+                break;
+      default : SwitchConsole.output  += "Error in Mode\n";
+    }
+    allCmd.resetList();
+    String usercmd="";
+    if (st1.hasMoreTokens()){
+      usercmd = st1.nextToken();
+    }
+    String listcmd = "";
+    String commandlist ="";
+    String list = (String)allCmd.nextElement();
+    String matchCmd = "";
+    while (allCmd.hasMoreElements()){
+      boolean match = true;
+      StringTokenizer tmp1 = new StringTokenizer(findword);
+      StringTokenizer tmp2 = new StringTokenizer(list);
+      while ((tmp1.hasMoreTokens())&&(match)){
+        String checkusercmd = tmp1.nextToken();
+        String checklistcmd="";
+        if(tmp2.hasMoreTokens()){
+          //both have more token
+          checklistcmd = tmp2.nextToken();
+        }
+        else {
+          //case usercmd have more token but list not more token
+          match = false;
+        }
+        if ((checkusercmd.length() <= checklistcmd.length())&&(!checklistcmd.startsWith("arg"))){
+          if (checkusercmd.equalsIgnoreCase(checklistcmd.substring(0,checkusercmd.length()))){
+            //if cmd must equal
+          }//end if
+          else{
+            match = false;
+          }//end else
+        }//end if screen only keyword
+        else if (checklistcmd.startsWith("arg")){
+          //when list is argument
+        }
+        else {
+          //when not match keyword and not match argument
+          match = false;
+        }//end if
+      }
+//      System.out.println("match="+match+"\nlistcmd="+listcmd);
+      if (match){
+//        if ((!tmp1.hasMoreTokens())&&(!tmp2.hasMoreTokens())){
+          returnword+= list;
+          SwitchConsole.output += list+"  ";
+//        }
+      }//end if
+      list = (String)allCmd.nextElement();
+    }
+    System.out.println("returnword="+returnword);
+  }
+
+
+}         // end class
+
+/*
+  public void showPVSTP(Switch sw, int vid) {
+    Vector swVlan = new Vector();
+    Vector intVlan = new Vector();
+    Vlan v = new Vlan();
+    Switch op1 = new Switch();
+    Interface op2 = new Interface();
+    int pos;
+
+    for (int i = 0; i < Frame1.vVlan.size(); i++) {
+      v = (Vlan)Frame1.vVlan.elementAt(i);
+      swVlan = v.getSwitchMember();
+      intVlan = v.getInterfMem();
+      pos = sw.getVlanPostionInVlist(v);
+      if (v.getPVSTP().getStatus().equals("enabled")) {
+        if (v.getVlanID() == vid) {
+          SwitchConsole.output += "Vlan " + vid + "\n";
+          SwitchConsole.output += "Spanning Tree is " + v.getPVSTP().getStatus() + "\n";
+          SwitchConsole.output += "Root Bridge is " + sw.getvRootBridge(pos) + "\n";
+          for (int j = 0; j < swVlan.size(); j++) {
+            op1 = (Switch)swVlan.elementAt(j);
+            op2 = (Interface)intVlan.elementAt(j);
+            SwitchConsole.output += "The member is " + op1.getName() + "\n";
+            SwitchConsole.output += "    " + op2.getNameInt() + " : " + op2.getSTPport() + "\n";
+          }
+        }
+      }
+      else if (v.getPVSTP().getStatus().equals("disabled")) {
+        SwitchConsole.output += "Spanning Tree for vlan " + vid + " is " + v.getPVSTP().getStatus() + "\n";
+      }
+    }
+  }
+*/
+
+
+
+
+
+/*
+      SwitchConsole.output += "Spanning-tree type           " + "ieee\n";
+      SwitchConsole.output += "Designated Root              " + sw.getMACAddress() + "\n";
+      SwitchConsole.output += "Designated Root Priority     " + sw.getPriority() + "\n";
+      SwitchConsole.output += "Designated Root Cost         " + "0\n";
+      SwitchConsole.output += "Designated Root Port         " + sw.getRootPort() + "\n";
+      SwitchConsole.output += "Root Max Age  " + Frame1.stp.getMaxAge() + " sec     Hello Time  " + Frame1.stp.getHelloTime() + " sec     Forward Delay  " + Frame1.stp.getForwardDelay() + " sec \n";
+      SwitchConsole.output += "Bridge ID MAC ADDR           " + sw.getMACAddress() + "\n";
+      SwitchConsole.output += "Bridge ID Priority           " + sw.getPriority() + "\n";
+      SwitchConsole.output += "Bridge MAX Age  " + Frame1.stp.getMaxAge() + " sec     Hello Time  " + Frame1.stp.getHelloTime() + " sec     Forward Delay  " + Frame1.stp.getForwardDelay() + " sec \n";
+      SwitchConsole.output += "Port-Name     Port-ID     VLAN     Priority     Cost     Port-State \n";
+      SwitchConsole.output += "---------     -------     ----     --------     ----     -----------\n";
+
+
+      for (int i = 0; i < vInterf.size(); i++) {
+        interf = (Interface)vInterf.elementAt(i);
+        intType = interf.getType();
+        if (intType.equals("Ethernet")) {
+          space1 = "          ";
+        }
+        else if (intType.equals("Fast Ethernet") || intType.equals("Gigabit Ethernet")) {
+          space1 = "         ";
+        }
+        space2 = "      ";
+        space3 = "        ";
+        space4 = "          ";
+        space5 = "      ";
+        SwitchConsole.output += interf.getNameInt() + space1 + interf.getPortID() + space2 + interf.getVLAN() + space3 + interf.getPriority() + space4 + interf.getCost() + space5 + interf.getSTPstate() + "\n";
+      }
+
+      SwitchConsole.output += "\n";
+      SwitchConsole.output += "\n";
+*/

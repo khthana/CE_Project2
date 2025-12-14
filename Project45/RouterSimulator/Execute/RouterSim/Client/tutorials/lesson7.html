@@ -1,0 +1,206 @@
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=">
+</head>
+<LINK REL="stylesheet"
+			HREF="base2.css"
+			TYPE="text/css">
+<body bgcolor="#FFFFFF" text="#000000">
+<table width="93%" border="0">
+  <tr> 
+    <td colspan="2"><img src="picture/l7.gif" width="281" height="33"></td>
+    <td width="63%"><font face="Verdana, Arial, Helvetica, sans-serif" size="4"><b><font color="#006699">Static 
+      Routes</font></b></font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"> <font face="CordiaUPC" size="5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lab 
+      นี้จะให้ลองติดตั้งเราเตอร์ทั้งหมด 3 ตัว โดย click ที่ปุ่ม new ให้มีเราเตอร์ทั้งหมดสามตัวคือ 
+      Router1,Router2 และ Router3 ตามลำดับ โดยจะทำการเชื่อมต่อให้เป็นดังรูป </font> 
+      <p></p>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2">
+      <div align="center"><font face="CordiaUPC" size="5"><img src="picture/network.gif" width="512" height="155"></font></div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%" rowspan="6">&nbsp;</td>
+    <td colspan="2" height="515"> 
+      <div align="left"><font face="CordiaUPC" size="5">1. เริ่มตั้งชื่อโฮสต์ 
+        และกำหนด ip address ให้กับเราเตอร์โดยพิมพ์ตามนี้<br>
+        สำหรับ RouterA :<br>
+        Router1#config t<br>
+        Router1(config)#hostname RouterA<br>
+        RouterA(config)#int e0<br>
+        RouterA(config-if)#ip address 161.246.1.1 255.255.255.0<br>
+        RouterA(config-if)#no shut<br>
+        RouterA(config-if)#int s0<br>
+        RouterA(config-if)#ip address 161.246.3.1 255.255.255.0<br>
+        RouterA(config-if)#no shut<br>
+        RouterA(config-if)#int to0<br>
+        RouterA(config-if)#ip address 161.246.2.1 255.255.255.0<br>
+        RouterA(config-if)#ring-speed 16<br>
+        RouterA(config-if)#no shut </font></div>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="2"> 
+      <div align="center"><img src="picture/p1_l7.gif" width="622" height="494"></div>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="2"><font face="CordiaUPC" size="5">สำหรับ RouterB :<br>
+      Router2#config t<br>
+      Router2(config)#hostname RouterB<br>
+      RouterB(config)#int s0<br>
+      RouterB(config-if)#ip address 161.246.3.2 255.255.255.0<br>
+      RouterB(config-if)#no shut<br>
+      RouterB(config-if)#int s1<br>
+      RouterB(config-if)#ip address 161.246.5.1 255.255.255.0<br>
+      RouterB(config-if)#no shut</font></td>
+  </tr>
+  <tr> 
+    <td colspan="2"> 
+      <div align="center"><img src="picture/p2_l7.gif" width="622" height="489"></div>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="2"><font face="CordiaUPC" size="5">สำหรับ RouterC:<br>
+      Router3#config t<br>
+      Router3(config)#hostname RouterC<br>
+      RouterC(config)#int e0<br>
+      RouterC(config-if)#ip address 161.246.7.1 255.255.255.0<br>
+      RouterC(config-if)#no shut<br>
+      RouterC(config-if)#int s0<br>
+      RouterC(config-if)#ip address 161.246.5.2 255.255.255.0<br>
+      RouterC(config-if)#no shut<br>
+      RouterC(config-if)#int to0<br>
+      RouterC(config-if)#ip address 161.246.6.1 255.255.255.0<br>
+      RouterC(config-if)#ring-speed 16 <br>
+      RouterC(config-if)#no shut</font></td>
+  </tr>
+  <tr> 
+    <td colspan="2"> 
+      <div align="center"><img src="picture/p3_l7.gif" width="621" height="493"></div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">2. พิมพ์ show ip route ในแต่ละเราเตอร์ 
+      จะได้ผลดังนี้<br>
+      RouterA </font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"> 
+      <div align="center"><font face="CordiaUPC" size="5"><img src="picture/p4_l7.gif" width="621" height="491"><br>
+        <br>
+        <img src="picture/p5_l7.gif" width="621" height="492"> <br>
+        <br>
+        <img src="picture/p6_l7.gif" width="620" height="492"> </font></div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">3. ขณะที่ยังไม่มีการเชื่อมต่อกับเราเตอร์ภายนอกเลยให้ทดสอบโดยใช้คำสั่ง 
+      ping เช่น<br>
+      RouterA#ping 161.246.7.1 </font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"> 
+      <div align="center"><img src="picture/p7_l7.gif" width="621" height="493"></div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%" rowspan="6">&nbsp;</td>
+    <td colspan="2" height="227"><font face="CordiaUPC" size="5">4. สร้าง static 
+      route โดยดูที่วง network 161.246.3.0,161.246.5.0<br>
+      RouterA#config t<br>
+      RouterA(config)#ip route 161.246.5.0 255.255.255.0 161.246.3.2<br>
+      RouterA(config)#ip route 161.246.6.0 255.255.255.0 161.246.3.2<br>
+      RouterA(config)#ip route 161.246.7.0 255.255.255.0 161.246.3.2<br>
+      ทำการ save configure โดยการพิมพ์ copy run start แล้วกด Enter
+     
+      </font></td>
+  </tr>
+  <tr> 
+    <td colspan="2">
+      <div align="center"><img src="picture/p8_l7.gif" width="621" height="492"></div>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="2"><font face="CordiaUPC" size="5">RouterB#config t<br>
+      RouterB(config)#ip route 161.246.1.0 255.255.255.0 161.246.3.1<br>
+      RouterB(config)#ip route 161.246.2.0 255.255.255.0 161.246.3.1<br>
+      RouterB(config)#ip route 161.246.7.0 255.255.255.0 161.246.5.2<br>
+      RouterB(config)#ip route 161.246.6.0 255.255.255.0 161.246.5.2<br>
+      ทำการ save configure โดยการพิมพ์ copy run start แล้วกด Enter</font></td>
+  </tr>
+  <tr> 
+    <td colspan="2">
+      <div align="center"><img src="picture/p9_l7.gif" width="620" height="491"></div>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="2"><font face="CordiaUPC" size="5">RouterC#config t<br>
+      RouterC(config)#ip route 161.246.1.0 255.255.255.0 161.246.5.1<br>
+      RouterC(config)#ip route 161.246.2.0 255.255.255.0 161.246.5.1<br>
+      RouterC(config)#ip route 161.246.3.0 255.255.255.0 161.246.5.1 <br>
+      ทำการ save configure โดยการพิมพ์ copy run start แล้วกด Enter</font></td>
+  </tr>
+  <tr> 
+    <td colspan="2">
+      <div align="center"><img src="picture/p10_l7.gif" width="620" height="492"></div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">5. ลองพิมพ์ show ip route 
+      ที่เราเตอร์ทั้งสามจะได้ผลดังนี้<br>
+      RouterA#show ip route</font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2">
+      <div align="center"><font face="CordiaUPC" size="5"><img src="picture/p11_l7.gif" width="621" height="491"></font></div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%" rowspan="3">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">6. ลองใช้คำสั่ง ping <br>
+      RouterA#ping 161.246.7.1</font></td>
+  </tr>
+  <tr> 
+    <td colspan="2">
+      <div align="center"><img src="picture/p12_l7.gif" width="620" height="488"></div>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="2"> 
+      <div align="center"><font color="#336699" size="5" face="CordiaUPC"><b>สำหรับโหมดการทำงานทั้งหมดของเราเตอร์สามารถดูได้ที่ 
+        Command</b></font></div>
+    </td>
+  </tr>
+</table>
+<table width="31%" border="0" align="center" bgcolor="#006699">
+  <tr> 
+    <td width="35%" bgcolor="#336699"> 
+      <div align="left"><font color="#FF9900" face="Verdana, Arial, Helvetica, sans-serif" size="2"><a href="lesson6.html"><font color="#FFFFFF">Lesson 
+        6 &lt;--</font></a></font></div>
+    </td>
+    <td width="28%"> 
+      <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><a href="command.html"><font color="#FFCC00">command</font></a></font></div>
+    </td>
+    <td width="37%"> 
+      <div align="right"><font color="#FF9900" face="Verdana, Arial, Helvetica, sans-serif" size="2"><a href="lesson8.html"><font color="#FFFFFF"> 
+        --&gt; Lesson 8</font></a></font></div>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,94 @@
+package center; 
+
+import weblogic.jws.control.JwsContext;
+import login.loginControl;
+import center.*;
+import center.classes.*;
+
+
+
+/**
+ * @jws:target-namespace namespace="login.library.com"
+ */
+public class login
+{ 
+
+    /**
+     * @jws:control
+     */
+    private center.loginControl xyz;
+
+
+    /**
+     * @jws:control
+     */
+    private loginControl abc;
+
+    /**
+     * @jws:control
+     */
+    private centerControl center;
+
+
+
+
+
+
+
+
+
+    /** @jws:context */ 
+    JwsContext context; 
+
+    /**
+     * @jws:operation
+     */
+    public user_profile check_id(String id, String passwd, String library, String ip)
+    {
+        user_profile user=new user_profile();
+        if (library.equalsIgnoreCase("ABC"))
+        {
+            user=abc.checkUsername(id,passwd);
+            if (user!=null) {
+                //กัน username, library, ip ซ้ำ
+                    center.delete_record(id, library, ip);
+                    center.logon_status(id, passwd, library, ip);
+            }
+        }
+        if (library.equalsIgnoreCase("XYZ"))
+        {
+            user=xyz.checkUsername(id,passwd);
+            if (user!=null) center.logon_status(id, passwd, library, ip);
+        }      
+        return user;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public user_profile check_ip(String ip)
+    {
+        user_profile user=new user_profile();
+        //ลบข้อมูลที่หมดอายุ
+        center.delete_status();
+        //check IP
+        user_logon l=center.ip_status(ip);
+        if (l!=null) {
+            if (l.library.equalsIgnoreCase("abc")){
+                user=abc.checkUsername(l.username, l.passwd);
+            }
+            if (l.library.equalsIgnoreCase("xyz")){
+                user=xyz.checkUsername(l.username, l.passwd);
+            }
+        }
+        return user;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public void logout(String username, String library)
+    {
+        center.delete_record(username, library, null);
+    }
+} 

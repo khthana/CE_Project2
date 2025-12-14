@@ -1,0 +1,51 @@
+all:xcls_all xcls_f xcheck xdos_count xserver xad xat xau xai xdcap xcap
+xcls_all: cls_all.o
+	cc -o xcls_all cls_all.o
+cls_all.o: cls_all.c
+	cc -c cls_all.c
+xcls_f: cls_file.o
+	cc -o xcls_f cls_file.o
+cls_file.o: cls_file.c
+	cc -c cls_file.c
+xcheck: check_ex.o
+	cc -o xcheck check_ex.o
+check_ex.o: check_ex.c
+	cc -c check_ex.c
+xdos_count: dos_count.o
+	cc -o xdos_count dos_count.o
+dos_count.o: dos_count.c
+	cc -c dos_count.c
+xserver: server.o
+	cc -o xserver server.o
+server.o: server.c
+	cc -c server.c
+xad: ana_dos.o
+	cc -o xad ana_dos.o
+ana_dos.o: ana_dos.c
+	cc -c ana_dos.c
+xat: ana_tcp.o
+	cc -o xat ana_tcp.o
+ana_tcp.o: ana_tcp.c
+	cc -c ana_tcp.c
+xau: ana_udp.o
+	cc -o xau ana_udp.o
+ana_udp.o: ana_udp.c
+	cc -c ana_udp.c
+xai: ana_icmp.o
+	cc -o xai ana_icmp.o
+ana_icmp.o: ana_icmp.c
+	cc -c ana_icmp.c
+xdcap: cap_dos.o
+	cc -o xdcap cap_dos.o -lpcap
+cap_dos.o: cap_dos.c
+	cc -c cap_dos.c
+xcap: cap_nor.o
+	cc -o xcap cap_nor.o -lpcap
+cap_nor.o: cap_nor.c
+	cc -c cap_nor.c
+install:
+	mkdir receiver
+	cp x* ./receiver
+	cp main.sh ./receiver
+	rm -rf *.o
+	rm -rf x*

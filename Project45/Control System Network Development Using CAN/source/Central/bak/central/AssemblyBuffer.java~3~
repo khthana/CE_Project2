@@ -1,0 +1,69 @@
+package central;
+
+/*
+Buffer that keep data for Assembly
+Largeest data is 256 Byte
+*/
+
+class AssemblyBuffer {
+
+  private int ID, Flag;
+  private String str;
+  private int size;
+
+  AssemblyBuffer() {
+    ID = -1;
+    str = "";
+    ID = 0;
+  }
+
+  public void setID(int id) {
+    ID = id;
+  }
+
+  public int getID() {
+    return ID;
+  }
+
+  public void setFlag(int idflag) {
+    idflag &= 0xe0;
+    Flag = idflag;
+  }
+
+  public int getFlag() {
+    return Flag;
+  }
+
+  public void addData(String s) throws CANException{
+    if ((str.length() + s.length()) > 256)
+      throw new CANException("Assembly Buffer over flow");
+    else {
+      if (str.length() == 0) {
+        str += s;
+      }
+      else {
+        size = str.length() / 8;
+        size -= 1;
+        if (((int) str.charAt(size * 8)) < ((int) s.charAt(0))) {
+          str += s;
+        }
+        else {
+          String tmp1, tmp2;
+          tmp1 = str.substring(0, str.length() - 8);
+          tmp2 = str.substring(str.length() - 8, str.length());
+          str = tmp1;
+          str += s;
+          str += tmp2;
+        }
+      }
+    }
+  }
+
+  public void clearData() {
+    str = "";
+  }
+
+  public String getData(){
+    return str;
+  }
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title> Nearest Places </title>
+<meta http-equiv="Content-Language" content="th">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+<meta name="keyword" content="map, thailand">
+<link rel="stylesheet" href="/map/css/map.css" type="text/css">
+
+<script language=JavaScript >
+<!--
+function check()
+{
+
+if (document.forms[0].place_type.selectedIndex == 0)
+{
+	alert("กรุณาเลือกประเภทสถานที่");
+	document.forms[0].place_type.focus();
+}
+else if (document.forms[0].range.selectedIndex == 0)
+{
+	alert("กรุณาเลือกรัศมี");
+	document.forms[0].place_type.focus();
+}
+else
+{
+	document.forms[0].action="http://161.246.5.54/proweb/proweb.exe?";
+	document.forms[0].target="map";
+	document.forms[0].submit();
+}
+
+}
+//-->
+</script>
+<body background="/images/bg.gif" leftmargin="3" topmargin="3" marginwidth="3" marginheight="3">
+
+<script language="JavaScript1.2"> 
+if (document.all)
+document.body.style.cssText="border:4 inset orange"
+</script>
+
+<form action="http://161.246.5.54/proweb/proweb.exe.?" method="get" target="map">
+<input type="Hidden" name="fn" value="near_place">
+<table border=0 cellspacing="2" cellpadding="2" border="2" width="180">
+
+<tr>
+	<td>
+		<div class="headtxt">
+			ค้นหาสถานที่ใกล้เคียง
+		</div><br>
+	</td>
+</tr>
+<tr>
+	<td>
+		<div class="headtxt">
+			<U>วิธีใช้งาน</U>
+		</div><br>
+	</td>
+</tr>
+<tr>
+	<td>
+		<div class="bodytxt">
+			1. ให้เลือกประเภทของสถานที่ที่ต้องการหา เช่น ธนาคารโรงแรม เป็นต้น
+		</div>
+	</td>
+</tr>
+<tr>
+	<td>
+		<div class="bodytxt">
+			2. ให้เลือกรัศมีที่ต้องการค้นหา
+		</div>
+	</td>
+</tr>
+<tr>
+	<td>
+		<div class="bodytxt">
+			3. กดปุ่ม "ค้นหา"  โปรแกรมก็จะแสดงแผนที่ขึ้นมา
+		</div>
+	</td>
+</tr>
+<tr>
+	<td>
+		<div class="smalltxt"><br>
+		<b>เลือกประเภทสถานที่ที่ต้องการค้นหา</b><br>
+		<select name="place_type" class="text">
+		<option value="x">เลือกประเภทสถานที่</option>
+		<option value="1">ธนาคาร</option>
+		<option value="2">บริษัท จำกัด</option>
+		<option value="3">โรงแรม</option>
+		<option value="4">โรงพยาบาล</option>
+		<option value="5">หน่วยงานรัฐ</option>
+		<option value="6">สถานีตำรวจ</option>
+		<option value="7">ไปรษณีย์</option>
+		<option value="8">มหาวิทยาลัย</option>
+		<option value="9">โรงเรียน</option> 
+		</select><br>
+		<b>ในรัศมี</b><br>
+		<select name="range"  class="text" >
+	  		<option value="0" selected>--ครอบคลุม--</option>
+		  	<option value="0.5">on 0.5 KM</option>
+		   	<option value="1">on 1.0 KM</option>
+	   		<option value="2">on 2.0 KM</option>
+			<option value="3">on 3.0 KM</option>
+			<option value="5">on 5.0 KM</option>
+			<option value="9">on 9.0 KM</option>
+		</select><br>
+		<input type="button" value="  ค้นหา  " onClick="javascript:check();" class="text">
+		&nbsp;&nbsp;&nbsp;<input type="reset" value="  reset  " class="text">
+		<br>
+		</div>
+	</td>
+</tr>
+<tr>
+	<td>
+		<div class="bodytxt">
+		4. ให้ click เมาส์บนแผนที่ตรงตำแหน่งที่ต้องการค้นหา
+		</div>
+	</td>
+</tr>
+<tr>
+	<td>
+		<div class="bodytxt">
+		5. กดปุ่ม"Search"โปรแกรมก็จะแสดงสถานที่ที่อยู่ในรัศมีที่เลือกขึ้นมา
+	</div>
+	</td>
+</tr>
+</table>
+</form>
+</body>
+</html>
+

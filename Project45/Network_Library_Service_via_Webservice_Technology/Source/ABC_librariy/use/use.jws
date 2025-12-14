@@ -1,0 +1,61 @@
+package use; 
+
+import weblogic.jws.control.JwsContext;
+import center.*;
+
+/**
+ * @jws:target-namespace namespace="borrow.abc.library.com"
+ */
+public class use
+{ 
+
+    /**
+     * @jws:control
+     */
+    private dbControl db;
+    /** @jws:context */ 
+    JwsContext context; 
+
+    /**
+     * @jws:operation
+     */
+    public user_profile check_id(String id)
+    {
+        return db.find_name(id);
+    }
+
+    /**
+     * @jws:operation
+     */
+    public int check_number_book(String username, String status)
+    {
+        int n=db.count_book(username);
+        n=db.check_limit(status)-n;
+        return n;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public book[] check_book(String username)
+    {
+        book book1[]=new book[1];
+        book1[0]=new book();
+        book books[]=db.find_book(username);
+        System.out.println(books.length);
+        if (books.length==0) return book1;
+        return books;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public String record_book(String username,  String status, String book_record)
+    {
+        int d=db.check_day(status);
+        String s=db.check_book_status(book_record);
+        if (s==null) db.insert_record_book(book_record, username, d);
+        else return s;
+        return "Complete";
+    }
+} 

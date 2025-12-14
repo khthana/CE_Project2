@@ -1,0 +1,65 @@
+// NetViewDoc.h : interface of the CNetViewDoc class
+//
+/////////////////////////////////////////////////////////////////////////////
+
+#if !defined(AFX_NETVIEWDOC_H__5B807D30_566D_461A_B036_763494C8345E__INCLUDED_)
+#define AFX_NETVIEWDOC_H__5B807D30_566D_461A_B036_763494C8345E__INCLUDED_
+
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
+
+
+class CNetViewDoc : public CDocument
+{
+protected: // create from serialization only
+	CNetViewDoc();
+	DECLARE_DYNCREATE(CNetViewDoc)
+
+// Attributes
+public:
+	CObList all_host;
+// Operations
+public:
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CNetViewDoc)
+	public:
+	virtual BOOL OnNewDocument();
+	virtual void Serialize(CArchive& ar);
+	//}}AFX_VIRTUAL
+
+// Implementation
+public:
+
+	CSize GetViewDocSize()
+	{ 
+		return m_sizeViewDoc; 
+	}
+
+	virtual ~CNetViewDoc();
+	CSize m_sizeViewDoc;
+
+#ifdef _DEBUG
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
+#endif
+
+protected:
+
+// Generated message map functions
+protected:
+	//{{AFX_MSG(CNetViewDoc)
+		// NOTE - the ClassWizard will add and remove member functions here.
+		//    DO NOT EDIT what you see in these blocks of generated code !
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
+
+/////////////////////////////////////////////////////////////////////////////
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_NETVIEWDOC_H__5B807D30_566D_461A_B036_763494C8345E__INCLUDED_)

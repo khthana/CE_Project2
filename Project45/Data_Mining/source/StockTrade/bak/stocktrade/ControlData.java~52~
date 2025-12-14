@@ -1,0 +1,140 @@
+package stocktrade;
+
+import java.sql.*;
+import java.util.Vector;
+import java.util.Date;
+import java.math.*;
+import java.lang.*;
+
+public class ControlData {
+  // refer Date today
+  private Date today;
+  // refer class AccessDatabase
+  private Database database;
+  // refer string equal mintime in today
+  private String minday;
+  // refer string equal maxtime in today
+  private String maxday;
+  String h;
+  String m;
+
+  // refer Constructor
+  public ControlData() {
+
+  }
+  // refer method for draw line graph
+  public Vector dataLine( String stock ){
+    int dd;int mm;int yy;int hh;int min;int t;
+    double price;String data = new String();double max=0;
+    double lo=0;double temp;
+    Vector vec = new Vector();
+    Vector tmp = new Vector();
+    try{
+      try{
+        database = new Database();
+        database.connect();
+        System.out.println("haha");
+      }
+      catch( Exception e ){
+        System.out.println(e);
+        System.out.println("ngee1");
+      }
+      today = new Date();
+      dd  = today.getDate();
+      mm  = today.getMonth();
+      yy  = today.getYear();
+      hh  = today.getHours();
+      min = today.getMinutes();
+      mm  = ++mm;
+
+      if( hh <10 )h = "0"+Integer.toString( hh );
+      else h = Integer.toString( hh );
+
+      if( min < 10 )m = "0"+Integer.toString( min );
+      else m = Integer.toString( min );
+      yy  = yy + 1900;
+      if( ( (hh==10)&&(min<=00) )||( (hh==16)&&(min>30) )||( hh<10 )||( hh>17 ) ){
+        minday = Integer.toString(yy)+"-"+Integer.toString(mm)+"-"+Integer.toString(dd)+
+                 " 10:00:00.000";
+        maxday = Integer.toString(yy)+"-"+Integer.toString(mm)+"-"+Integer.toString(dd)+
+                 " 17:00:00.000";
+        minday = "2002-12-27 00:00:00.000";
+        maxday = "2002-12-27 18:00:00.000";
+
+      }
+      else{
+        minday = Integer.toString(yy)+"-"+Integer.toString(mm)+"-"+Integer.toString(dd)+
+                 " 10:00:00.000";
+        maxday = Integer.toString(yy)+"-"+Integer.toString(mm)+"-"+Integer.toString(dd)+
+                 " "+h+":"+m+":00.000";
+        minday = "2002-12-27 00:00:00.000";
+        maxday = "2002-12-27 18:00:00.000";
+      }
+      System.out.println("ngee2");
+      System.out.println( minday );
+      System.out.println( maxday );
+      System.out.println( stock );
+      ResultSet rs = database.getDataIntraday(minday,maxday,stock);
+      System.out.println( "ngee3" );
+      if( rs != null )
+        while( rs.next() ){
+           price = rs.getDouble(1);
+           hh = rs.getInt(2);
+           min = rs.getInt(3);
+           if( min>10 ){
+             data = Integer.toString(hh)+
+                    Integer.toString(min)+":"+
+                    Double.toString( price );
+           }
+           else if( min<10 ){
+             data = Integer.toString(hh)+"0"+
+                    Integer.toString(min)+":"+
+                    Double.toString( price );
+           }
+           if( (data != null) || (data != " ") ){
+             vec.add( new String(data) );
+             tmp.add( new Double(price) );
+           }
+        }
+        max = Double.parseDouble( tmp.elementAt(0).toString() );
+        lo = max;
+        for( int w=1;w<tmp.size();w++ ){
+          if( max < Double.parseDouble( tmp.elementAt(w).toString() ) )
+            max = Double.parseDouble( tmp.elementAt(w).toString() );
+          if( lo > Double.parseDouble( tmp.elementAt(w).toString() ) )
+            lo = Double.parseDouble( tmp.elementAt(w).toString() );
+        }
+        System.out.println(max);
+        System.out.println(lo);
+        temp = getFrequency( max-lo );
+        max = max+temp;
+        lo = lo-temp;
+        System.out.println(max);
+        System.out.println(lo);
+        vec.add( new String( Double.toString( max ) ) );
+        vec.add( new String( Double.toString( lo ) ) );
+        try{
+          database.close();
+        }
+        catch( Exception a ){
+        }
+        return vec;
+    }
+    catch( Exception e ){
+      System.out.println(e);
+      System.out.println("dataline");
+      return null;
+    }
+  }
+
+  // refer method get frequency
+ public double getFrequency(double j){
+   double a;
+
+   if( j>=0 && j<=0.50 )
+     a=0.10;
+   else a=j/5;
+   return a;
+  }
+
+}

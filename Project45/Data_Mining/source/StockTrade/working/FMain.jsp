@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Untitled Document</title>
+<style>
+<!--
+a:link { text-decoration: none; color:#999999}
+a:visited {text-decoration: none; color:#999999}
+a:hover{color:#6633FF}
+
+//-->
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+</head>
+<body>
+<table width="64%" height="587" border="0" cellpadding="0" cellspacing="0" bordercolor="#00CCFF">
+  <tr> 
+    <td height="132" colspan="2"><p> 
+        <applet
+    codebase = "/stocktrade/."
+    code     = "stocktrade.IntradayApplet.class"
+    name     = "TestApplet"
+    width=435
+    height=240
+    align = "middle"
+>
+        </applet>
+      </p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td height="33" colspan="2"><a href="interest.jsp" target="_blank">หุ้นที่ควรทำการซื้อ-ขายประจำวัน</a></td>
+  </tr>
+  <tr> 
+    <td width="39%" height="162"><table width="78%" height="252" border="0">
+        <tr> 
+          <td height="22" colspan="2"><div align="left"><font color="#33CCFF"><img src="PIC/bar_news.gif" width="230" height="20"></font></div></td>
+        </tr>
+        <tr> 
+          <td width="8%" height="34"><img src="PIC/bullet_gray.gif" width="14" height="10"></td>
+          <td width="92%"> <font size="2"><a href="news1.htm">BIGC รับสงครามกดยอดขายปีนี้โตแค่10% 
+            - 14/03/2003 </a></font></td>
+        </tr>
+        <tr> 
+          <td height="22"><img src="PIC/bullet_gray.gif" width="14" height="10"></td>
+          <td> <font size="2"><a href="news2.htm">'ธนชาติ'ปรับโครงสร้างแหล่งทุน 
+            ออกหุ้นกู้5พันล้าน-แบ่งขาย 2 ชุด - 14/03/2003 </a></font></td>
+        </tr>
+        <tr> 
+          <td height="31"><img src="PIC/bullet_gray.gif" width="14" height="10"></td>
+          <td height="31"><font size="2"><a href="news3.htm">สหภาพทีพีไอตอกกลับอีพีแอล 
+            ชี้บริหารงานต่ำกว่าแผนฟื้นฟูอื้อ - 14/03/2003 </a></font></td>
+        </tr>
+        <tr> 
+          <td height="26"><img src="PIC/bullet_gray.gif" width="14" height="10"></td>
+          <td height="26"><font size="2">POSTประกวดกองทุนดีเด่น 2002 - 14/03/2003 
+            </font></td>
+        </tr>
+      </table></td>
+    <td width="61%"><table width="78%" height="260" border="0">
+        <tr> 
+          <td height="22" colspan="2"><div align="left"><img src="PIC/bar_analysis.gif" width="226" height="20"></div></td>
+        </tr>
+        <tr> 
+          <td width="8%" height="34"><img src="PIC/bullet_green.gif" width="14" height="10"></td>
+          <td width="92%"> <font size="2">บทวิเคราะห์ภาวะตลาด โดย DBSV - 14/03/2003 
+            </font></td>
+        </tr>
+        <tr> 
+          <td height="22"><img src="PIC/bullet_green.gif" width="14" height="10"></td>
+          <td> <font size="2">Market Analysis : DBSV - 14/03/2003 </font></td>
+        </tr>
+        <tr> 
+          <td height="31"><img src="PIC/bullet_green.gif" width="14" height="10"></td>
+          <td height="31">&nbsp;</td>
+        </tr>
+        <tr> 
+          <td height="37"><img src="PIC/bullet_green.gif" width="14" height="10"></td>
+          <td height="37">&nbsp;</td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+</body>
+</html>

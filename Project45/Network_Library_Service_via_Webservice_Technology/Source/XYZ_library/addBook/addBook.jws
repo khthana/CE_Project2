@@ -1,0 +1,32 @@
+package addBook; 
+
+import weblogic.jws.control.JwsContext;
+import java.util.*;
+
+public class addBook
+{ 
+    /**
+     * @jws:control
+     */
+    private DBControl DB;
+    /** @jws:context */ 
+    JwsContext context; 
+
+    /**
+     * @jws:operation
+     */
+    public void addBook(String call_number, String isbn, String barcode, String author,
+        String alt_author1, String alt_author2, String title, String alt_title, String printing,
+        String printing_year, String page, String subject1, String subject2, String subject3,
+        String series, String place, String book_status, String discription)
+    {
+        /*try{
+        title=new String(title.getBytes(), "utf-8");
+        System.out.println(title);
+        }catch(Exception e){System.out.println(e);}*/
+        DB.insertBook(call_number, isbn, barcode, author, alt_author1, alt_author2, title, alt_title,
+            printing, printing_year, page, subject1, subject2, subject3, series, place,
+            book_status, discription);
+        
+    }
+} 

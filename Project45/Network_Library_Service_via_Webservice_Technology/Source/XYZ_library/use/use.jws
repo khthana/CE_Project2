@@ -1,0 +1,53 @@
+package use; 
+
+import weblogic.jws.control.JwsContext;
+import center.*;
+
+public class use
+{ 
+
+    /**
+     * @jws:control
+     */
+    private dbControl db;
+    /** @jws:context */ 
+    JwsContext context; 
+
+    /**
+     * @jws:operation
+     */
+    public user_profile check_id(String id)
+    {
+        return db.find_name(id);
+    }
+
+    /**
+     * @jws:operation
+     */
+    public int check_number_book(String username, String status)
+    {
+        int n=db.count_book(username);
+        n=db.check_limit(status)-n;
+        return n;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public book[] check_book(String username)
+    {
+        return db.find_book(username);
+    }
+
+    /**
+     * @jws:operation
+     */
+    public void record_book(String username,  String status, String []book_record)
+    {
+        int l=book_record.length;
+        int d=db.check_day(status);
+        //db.insert_record_book(book_record, username, d);
+        //String a="interval "+d+" day";
+        for (int i=0; i<l; i++) db.insert_record_book(book_record[i], username, d);
+    }
+} 

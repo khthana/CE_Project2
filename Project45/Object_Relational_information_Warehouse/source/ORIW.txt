@@ -1,0 +1,768 @@
+create type name_t as
+(First varchar(20),
+Middle varchar(15),
+Last varchar(20))
+mode db2sql
+
+Create Type Address_t as
+(No Integer,
+Street Varchar(100),
+City Varchar(25),
+State Varchar(25),
+Zipcode Varchar(25)
+)
+Mode DB2SQL
+
+create type phone_t as
+(location varchar(15),
+phone_num varchar(12))
+mode db2sql 
+
+create type phone_array_t as
+(phone1 phone_t,
+phone2 phone_t,
+phone3 phone_t,
+phone4 phone_t)
+mode db2sql
+ref using integer
+
+create type person_t as
+(name name_t,
+birthday date,
+sex char(1),
+address address_t,
+phone phone_array_t)
+mode db2sql 
+ref using integer
+not final
+
+create type status_desc_t as
+(Reg_id char(5),
+reg_date ref(time_dimension_t),
+marital_status varchar(10),
+year_income integer,
+city varchar(25),
+state varchar(25))
+mode db2sql
+
+create type status_desc_arr as (
+desc1 status_desc_t,
+desc2 status_desc_t,
+desc3 status_desc_t)
+mode db2sql
+ref using integer
+
+create type cust_dimension_t under person_t as
+(status_desc status_desc_arr)
+mode db2sql
+
+create type time_dimension_t as (
+time_key  char(10),
+fiscal_year num(4),
+fiscal_qtr  char(10),
+fiscal_month  char(10))
+mode db2sql 
+ref using integer
+
+create type prod_dimension_t as (
+model_name  varchar(30),
+manufacturer  varchar(25),
+type varchar(50),
+engine_size char(6))
+mode db2sql
+ref using integer
+
+create type sale_fact_t as (
+cust_dim  ref(cust_dimension_t),
+product_dim ref(prod_dimension_t),
+time_dim ref(time_dimension_t),
+quantity  num,
+price num)
+mode db2sql
+ref using integer
+
+create table cust_dim_tab of cust_dimension_t (
+ref is oid user generated,
+name with options not null,
+birthday with options not null,
+sex with options not null,
+address with options not null,
+phone with options not null,
+status_desc with options not null)
+
+create table prod_dim_tab of prod_dimension_t (
+ref is oid user generated,
+manufacturer with options not null,
+model_name with options not null,
+type with options not null,
+engine_size with options not null)
+
+create table time_dim_tab of time_dimension_t (
+ref is oid user generated,
+time_key with options not null,
+fiscal_qtr with options not null,
+fiscal_month with options not null,
+fiscal_year with options not null)
+
+create table sale_fact_tab of sale_fact_t (
+ref is oid user generated,
+cust_dim with options not null,
+product_dim with options not null,
+time_dim with options not null,
+quantity with options not null,
+price with options not null);
+
+CREATE SEQUENCE cust_oid2 AS REF(cust_dimension_t) START WITH 1 INCREMENT BY 1 NO CYCLE; 
+CREATE SEQUENCE time_oid2 AS REF(time_dimension_t) START WITH 1 INCREMENT BY 1 NO CYCLE;
+CREATE SEQUENCE sale_fact_oid2 AS REF(sale_fact_t) START WITH 1 INCREMENT BY 1 NO CYCLE; 
+CREATE SEQUENCE product_oid2 AS REF(prod_dimension_t) START WITH 1 INCREMENT BY 1 NO CYCLE; 
+
+CREATE TRIGGER cust_oid_trg NO CASCADE BEFORE INSERT ON cust_dim_tab
+REFERENCING NEW AS new FOR EACH ROW MODE DB2SQL 
+SET new.oid = NEXTVAL FOR cust_oid2; 
+
+CREATE TRIGGER time_oid_trg NO CASCADE BEFORE INSERT ON time_dim_tab
+REFERENCING NEW AS new FOR EACH ROW MODE DB2SQL 
+SET new.oid = NEXTVAL FOR time_oid2; 
+
+CREATE TRIGGER sale_oid_trg NO CASCADE BEFORE INSERT ON sale_fact_tab
+REFERENCING NEW AS new FOR EACH ROW MODE DB2SQL 
+SET new.oid = NEXTVAL FOR sale_fact_oid2;
+
+CREATE TRIGGER prod_oid_trg NO CASCADE BEFORE INSERT ON prod_dim_tab
+REFERENCING NEW AS new FOR EACH ROW MODE DB2SQL 
+SET new.oid = NEXTVAL FOR product_oid2;
+
+
+-------------insert data
+insert into time_dim_tab
+values(time_dimension_t(0),'1999Q1M01',1999,'Quarter1','January');
+
+insert into time_dim_tab
+values(time_dimension_t(0),'1999Q1M02',1999,'Quarter1','February')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'1999Q1M03',1999,'Quarter1','March')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'1999Q2M04',1999,'Quarter2','April')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'1999Q2M05',1999,'Quarter2','May')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'1999Q2M06',1999,'Quarter2','June')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'1999Q3M07',1999,'Quarter3','July')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'1999Q3M08',1999,'Quarter3','August')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'1999Q3M09',1999,'Quarter3','September')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'1999Q4M10',1999,'Quarter4','October')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'1999Q4M11',1999,'Quarter4','November')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'1999Q4M12',1999,'Quarter4','December')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2000Q1M01',2000,'Quarter1','January')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2000Q1M02',2000,'Quarter1','February')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2000Q1M03',2000,'Quarter1','March')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2000Q2M04',2000,'Quarter2','April')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2000Q2M05',2000,'Quarter2','May')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2000Q3M07',2000,'Quarter3','July')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2000Q3M08',2000,'Quarter3','August')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2000Q4M10',2000,'Quarter4','October')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2000Q4M11',2000,'Quarter4','November')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2000Q4M12',2000,'Quarter4','December')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2001Q1M01',2001,'Quarter1','January')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2001Q1M02',2001,'Quarter1','February')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2001Q1M03',2001,'Quarter1','March')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2001Q2M04',2001,'Quarter2','April')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2001Q2M05',2001,'Quarter2','May')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2001Q2M06',2001,'Quarter2','June')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2001Q3M07',2001,'Quarter3','July')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2001Q3M08',2001,'Quarter3','August')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2001Q3M09',2001,'Quarter3','September')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2001Q4M10',2001,'Quarter4','October')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2001Q4M11',2001,'Quarter4','November')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2001Q4M12',2001,'Quarter4','December')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2002Q1M01',2002,'Quarter1','January')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2002Q1M02',2002,'Quarter1','February')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2002Q1M03',2002,'Quarter1','March')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2002Q2M04',2002,'Quarter2','April')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2002Q2M05',2002,'Quarter2','May')
+
+insert into time_dim_tab
+values(time_dimension_t(0),'2002Q2M06',2002,'Quarter2','June')
+
+----Product Dimension Insert -----
+
+insert into prod_dim_tab
+values(prod_dimension_t(0),'Corolla','Toyota','CE 4dr Seden(4cyl,4A)','1800CC')
+
+insert into prod_dim_tab
+values(prod_dimension_t(0),'RAV4','Toyota','4WD 4dr SUV(4cyl,4A)','2000CC')
+
+insert into prod_dim_tab
+values(prod_dimension_t(0),'Accord','Honda','Ex 4dr Sedan(4cyl,4A)','2300CC')
+
+insert into prod_dim_tab
+values(prod_dimension_t(0),'CR-V','Honda','Ex AWD 4dr SUV(4cyl,4A)','2400CC')
+
+insert into prod_dim_tab
+values(prod_dimension_t(0),'Golf','Volkswagen','GLS TDI 4dr Hatchback(4cyl,4A)','1900CC')
+
+insert into prod_dim_tab
+values(prod_dimension_t(0),'BMW 5 Series','BMW','540i 4dr Sedan(8cyl,5A)','4400CC')
+
+insert into prod_dim_tab
+values(prod_dimension_t(0),'A4 Series','Audi','Quattro AWD 4dr Sedan(6cyl,6A)','3000CC')
+
+insert into prod_dim_tab
+values(prod_dimension_t(0),'Crown Victoria','Ford','LX 4dr Sedan(8cyl,4A)','4600CC')
+
+insert into prod_dim_tab
+values(prod_dimension_t(0),'Grand Cherokee','Jeep','Laredo 4WD 4dr SUV(8cyl,5A)','4700CC')
+
+insert into prod_dim_tab
+values(prod_dimension_t(0),'GS300','Lexus','4dr Sedan(6cyl,5A)','3000CC')
+
+
+-----Customer Dimension Insert ------
+
+insert into cust_dim_tab
+values (cust_dimension_t(0),name_t()..First('Jonathan')..Middle('-')..Last('Abbott'),'12/11/1999','M',
+Address_t()..No(1421)..Street('S Sheridan Road')..City('Tulsa')..State('Oklahoma')..Zipcode('74112')
+,phone_array_t()
+..phone1(phone_t()..Location('Home')..phone_num('918-835-3161'))
+..phone2(phone_t()..Location('Mobile')..Phone_num('338-331-4463'))
+..phone3(phone_t()..Location('')..phone_num(''))..phone4(phone_t()..Location('')..phone_num(''))
+,status_desc_arr()
+..desc1(status_desc_t()..Reg_id('R01')..reg_date((select oid from time_dim_tab where time_key = '1999Q3M09'))..marital_status('Unmarried')..year_income(60000)..city('Tulsa')..state('Oklahoma'))
+)
+
+insert into cust_dim_tab
+values (cust_dimension_t(0),name_t()..First('Stephen')..Middle('P')..Last('Alexandar'),'03/04/1973','M',
+Address_t()..No(1700)..Street('West Loop South')..City('Hoston')..State('Texas')..Zipcode('77027')
+,phone_array_t()
+..phone1(phone_t()..Location('Home')..phone_num('713-621-9720'))
+..phone2(phone_t()..Location('Office')..Phone_num('713-565-7865'))
+..phone3(phone_t()..Location('Mobile')..Phone_num('834-736-6935'))
+..phone4(phone_t()..Location('')..phone_num(''))
+,status_desc_arr()
+..desc1(status_desc_t()..Reg_id('R01')..reg_date((select oid from time_dim_tab where time_key = '1999Q4M11'))..marital_status('Unmarried')..year_income(100000)..city('Nashua')..state('New Hampshire'))
+..desc2(status_desc_t()..Reg_id('R02')..reg_date((select oid from time_dim_tab where time_key = '2000Q2M06'))..marital_status('Unmarried')..year_income(100000)..city('Houston')..state('Texas'))
+)
+
+
+insert into cust_dim_tab
+values (cust_dimension_t(0),name_t()..First('Norene')..Middle('-')..Last('Allen'),'14/06/1956','F',
+Address_t()..No(15)..Street('Southwest Park')..City('Westwood')..State('Messachusetts')..Zipcode('02090')
+,phone_array_t()
+..phone1(phone_t()..Location('Home')..phone_num('781-329-3350'))
+..phone2(phone_t()..Location('Office')..Phone_num('781-329-9875'))
+..phone3(phone_t()..Location('Mobile')..Phone_num('456-453-9899'))
+..phone4(phone_t()..Location('')..phone_num(''))
+,status_desc_arr()
+..desc1(status_desc_t()..Reg_id('R01')..reg_date((select oid from time_dim_tab where time_key = '1999Q4M12'))..marital_status('Married')..year_income(90000)..city('Westwood')..state('Massachusetts'))
+..desc2(status_desc_t()..Reg_id('R02')..reg_date((select oid from time_dim_tab where time_key = '2000Q3M09'))..marital_status('Divorced')..year_income(120000)..city('Westwood')..state('Massachusetts'))
+..desc3(status_desc_t()..Reg_id('R03')..reg_date((select oid from time_dim_tab where time_key = '2001Q4M12'))..marital_status('Married')..year_income(150000)..city('Westwood')..state('Massachusetts'))
+)
+
+
+insert into cust_dim_tab
+values (cust_dimension_t(0),name_t()..First('Robert')..Middle('-')..Last('Loffredo'),'21/05/1967','M',
+Address_t()..No(9922)..Street('Roosevelt Boulveard')..City('Edwardsville')..State('Pennsylvania')..Zipcode('18704')
+,phone_array_t()
+..phone1(phone_t()..Location('Home')..phone_num('570-283-1860'))
+..phone2(phone_t()..Location('Office')..Phone_num('215-676-0989'))
+..phone3(phone_t()..Location('Mobile')..Phone_num('610-921-0719'))
+..phone4(phone_t()..Location('')..phone_num(''))
+,status_desc_arr()
+..desc1(status_desc_t()..Reg_id('R01')..reg_date((select oid from time_dim_tab where time_key = '1999Q4M12'))..marital_status('Married')..year_income(50000)..city('Reading')..state('Pennsylvania'))
+..desc2(status_desc_t()..Reg_id('R02')..reg_date((select oid from time_dim_tab where time_key = '2001Q4M12'))..marital_status('Married')..year_income(60000)..city('Hawthorne')..state('New Jersey'))
+..desc3(status_desc_t()..Reg_id('R03')..reg_date((select oid from time_dim_tab where time_key = '2002Q2M06'))..marital_status('Married')..year_income(70000)..city('Edwardsville')..state('Pennsylvania'))
+)
+
+insert into cust_dim_tab
+values (cust_dimension_t(0),name_t()..First('Mehta')..Middle('-')..Last('Shefali'),'06/02/1956','F',
+Address_t()..No(3424)..Street('Peachtree Road')..City('Boston')..State('Messachusetts')..Zipcode('02116')
+,phone_array_t()
+..phone1(phone_t()..Location('Home')..phone_num('617-572-2022'))
+..phone2(phone_t()..Location('Office')..Phone_num('782-453-8963'))
+..phone3(phone_t()..Location('')..Phone_num(''))
+..phone4(phone_t()..Location('')..phone_num(''))
+,status_desc_arr()
+..desc1(status_desc_t()..Reg_id('R01')..reg_date((select oid from time_dim_tab where time_key = '2000Q1M03'))..marital_status('Married')..year_income(100000)..city('Chicaco')..state('Illinois'))
+..desc2(status_desc_t()..Reg_id('R02')..reg_date((select oid from time_dim_tab where time_key = '2002Q1M03'))..marital_status('Married')..year_income(100000)..city('Boston')..state('Massachusetts'))
+)
+
+
+insert into cust_dim_tab
+values (cust_dimension_t(0),name_t()..First('Esther')..Middle('-')..Last('Chimenya'),'14/04/1972','F',
+Address_t()..No(588)..Street('North Gulph Road')..City('New York')..State('New York')..Zipcode('11373')
+,phone_array_t()
+..phone1(phone_t()..Location('Home')..phone_num('712-525-3636'))
+..phone2(phone_t()..Location('Office')..Phone_num('712-527-4242'))
+..phone3(phone_t()..Location('Mobile')..Phone_num('263-783-9898'))
+..phone4(phone_t()..Location('')..phone_num(''))
+,status_desc_arr()
+..desc1(status_desc_t()..Reg_id('R01')..reg_date((select oid from time_dim_tab where time_key = '2000Q1M03'))..marital_status('Unmarried')..year_income(45000)..city('King of Pensrussia')..state('Philadelphiais'))
+..desc2(status_desc_t()..Reg_id('R02')..reg_date((select oid from time_dim_tab where time_key = '2001Q2M06'))..marital_status('Married')..year_income(20000)..city('Ottawa')..state('Illinois'))
+..desc3(status_desc_t()..Reg_id('R03')..reg_date((select oid from time_dim_tab where time_key = '2002Q2M05'))..marital_status('Divorced')..year_income(60000)..city('New York')..state('New York'))
+)
+
+insert into cust_dim_tab
+values (cust_dimension_t(0),name_t()..First('John')..Middle('-')..Last('Cheesbrough'),'08/09/1964','M',
+Address_t()..No(128)..Street('Intervale Road')..City('Burlington')..State('Texas')..Zipcode('75001')
+,phone_array_t()
+..phone1(phone_t()..Location('Home')..phone_num('972-661-8960'))
+..phone2(phone_t()..Location('Office')..Phone_num('972-381-0817'))
+..phone3(phone_t()..Location('Mobile')..Phone_num('445-677-6555'))
+..phone4(phone_t()..Location('')..phone_num(''))
+,status_desc_arr()
+..desc1(status_desc_t()..Reg_id('R01')..reg_date((select oid from time_dim_tab where time_key = '2000Q2M06'))..marital_status('Married')..year_income(90000)..city('Burlington')..state('Texas'))
+)
+
+insert into cust_dim_tab
+values (cust_dimension_t(0),name_t()..First('Jim')..Middle('Alberto')..Last('Holmquist'),'12/10/1953','M',
+Address_t()..No(11711)..Street('Berryessa Road')..City('San Jose')..State('California')..Zipcode('23434')
+,phone_array_t()
+..phone1(phone_t()..Location('Home')..phone_num('408-487-3138'))
+..phone2(phone_t()..Location('Office')..Phone_num('408-288-4081'))
+..phone3(phone_t()..Location('Mobile')..Phone_num('737-784-7474'))
+..phone4(phone_t()..Location('')..phone_num(''))
+,status_desc_arr()
+..desc1(status_desc_t()..Reg_id('R01')..reg_date((select oid from time_dim_tab where time_key = '2000Q3M08'))..marital_status('Married')..year_income(100000)..city('Redwood City')..state('California'))
+..desc2(status_desc_t()..Reg_id('R02')..reg_date((select oid from time_dim_tab where time_key = '2002Q1M01'))..marital_status('Married')..year_income(120000)..city('San Jose')..state('California'))
+)
+
+insert into cust_dim_tab
+values (cust_dimension_t(0),name_t()..First('Graham')..Middle('-')..Last('Claydon'),'15/09/1971','F',
+Address_t()..No(11220)..Street('Allisonville Road')..City('Fishers')..State('Indiana')..Zipcode('64038')
+,phone_array_t()
+..phone1(phone_t()..Location('Home')..phone_num('317-842-1040'))
+..phone2(phone_t()..Location('Office')..Phone_num('381-784-8432'))
+..phone3(phone_t()..Location('Mobile')..Phone_num('633-734-7843'))
+..phone4(phone_t()..Location('')..phone_num(''))
+,status_desc_arr()
+..desc1(status_desc_t()..Reg_id('R01')..reg_date((select oid from time_dim_tab where time_key = '2000Q1M03'))..marital_status('Unmarried')..year_income(65000)..city('Elizabethtown')..state('Kentucky'))
+..desc2(status_desc_t()..Reg_id('R02')..reg_date((select oid from time_dim_tab where time_key = '2002Q2M05'))..marital_status('Married')..year_income(70000)..city('Fisher')..state('Indiana'))
+)
+
+*****
+insert into cust_dim_tab
+values (cust_dimension_t(0),name_t()..First('Werwick')..Middle('-')..Last('Conway'),'24/08/1969','M',
+Address_t()..No(5801)..Street('E. 76th Avenue')..City('Commerce')..State('Colorado')..Zipcode('80022')
+,phone_array_t()
+..phone1(phone_t()..Location('Home')..phone_num('303-286-0406'))
+..phone2(phone_t()..Location('Office')..Phone_num('303-637-9192'))
+..phone3(phone_t()..Location('Mobile')..Phone_num('722-373-9643'))
+..phone4(phone_t()..Location('')..phone_num(''))
+,status_desc_arr()
+..desc1(status_desc_t()..Reg_id('R01')..reg_date((select oid from time_dim_tab where time_key = '2000Q3M08'))..marital_status('Unmarried')..year_income(75000)..city('Las Vegas')..state('Neveda'))
+..desc2(status_desc_t()..Reg_id('R02')..reg_date((select oid from time_dim_tab where time_key = '2000Q4M11'))..marital_status('Married')..year_income(95000)..city('Salt Lake City')..state('Utah'))
+..desc2(status_desc_t()..Reg_id('R02')..reg_date((select oid from time_dim_tab where time_key = '2001Q4M12'))..marital_status('Divorced')..year_income(110000)..city('Commerce City')..state('Corollado'))
+)
+
+----- Add Scope to Fact Table --------
+alter table sale_fact_tab alter column time_dim add scope time_dim_tab
+alter table sale_fact_tab alter column product_dim add scope prod_dim_tab
+alter table sale_fact_tab alter column cust_dim add scope cust_dim_tab
+
+
+/**************************Test Statement*****************************/
+select fiscal_qtr
+from time_dim_tab
+where oid = (select status_desc..desc1..reg_date from cust_dim_tab)
+
+//******* แก้ปัญหาด้วยการ Join Table ขณะตอบคำถาม ************///////
+select t1.name..first,t2.fiscal_qtr
+from cust_dim_tab t1 ,time_dim_tab t2
+where t1.status_desc..desc1..reg_date = t2.oid
+/*****************************************************/
+
+
+************************แก้ปัญหาการ Link Table ด้วยการ Join Table เข้าด้วยกัน *****************
+
+select t1.name..first,t2.fiscal_qtr
+from cust_dim_tab t1 ,time_dim_tab t2
+where t1.status_desc..desc1..reg_date = t2.oid
+
+
+****************update table customer ****************************
+
+update cust_dim_tab
+set 
+(status_desc = (status_desc_arr()
+..desc1(status_desc_t()..Reg_id('R01')..reg_date((select oid from time_dim_tab where time_key = '1999Q3M09'))..marital_status('Unmarried')..year_income(60000)..city('Tulsa')..state('Oklahoma'))
+..desc2(status_desc_t()..Reg_id('R02')..Reg_date((select oid from time_dim_tab where time_key = '2001Q1M01'))..marital_status('Married')..Year_income(66000)..city('Skokie')..state('Illinolis'))
+..desc3(status_desc_t()..Reg_id('R03')..Reg_date((select oid from time_dim_tab where time_key = '2002Q1M03'))..marital_status('Married')..Year_income(70000)..city('Tulsa')..state('Oklahoma'))
+)
+
+-------------sale_fact_tab insert
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Jonathan'),
+(select oid from prod_dim_tab where model_name = 'CR-V'),
+(select oid from time_dim_tab where time_key = '1999Q3M09'),1,21550)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Jonathan' or name..last = 'Abbott'),
+(select oid from prod_dim_tab where model_name = 'BMW 5 Series' or engine_size = '4400CC'),
+(select oid from time_dim_tab where time_key = '2001Q1M01'),1,48650)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Jonathan' or name..last = 'Abbott'),
+(select oid from prod_dim_tab where model_name = 'Corolla' or engine_size = '1800CC'),
+(select oid from time_dim_tab where time_key = '2002Q1M03'),1,15550)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Stephen' or name..last = 'Alexandar'),
+(select oid from prod_dim_tab where model_name = 'RAV4' or engine_size = '2000CC'),
+(select oid from time_dim_tab where time_key = '1999Q4M11'),1,18750)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Stephen' or name..last = 'Alexandar'),
+(select oid from prod_dim_tab where model_name = 'Crown Victoria' or engine_size = '4600CC'),
+(select oid from time_dim_tab where time_key = '2000Q2M06'),1,16500)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Norene' or name..last = 'Allen'),
+(select oid from prod_dim_tab where model_name = 'Corolla' or engine_size = '1800CC'),
+(select oid from time_dim_tab where time_key = '1999Q4M12'),1,14330)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Norene' or name..last = 'Allen'),
+(select oid from prod_dim_tab where model_name = 'Golf' or engine_size = '1900CC'),
+(select oid from time_dim_tab where time_key = '2000Q3M09'),1,17725)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Norene' or name..last = 'Allen'),
+(select oid from prod_dim_tab where manufacturer = 'Lexus' ),
+(select oid from time_dim_tab where time_key = '2001Q4M12'),1,37650)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Robert' or name..last = 'Loffredo'),
+(select oid from prod_dim_tab where model_name = 'Accord' and engine_size = '2300CC'),
+(select oid from time_dim_tab where time_key = '1999Q4M12'),1,22440)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Robert' and name..last = 'Loffredo'),
+(select oid from prod_dim_tab where model_name = 'A4 Series' and engine_size = '3000CC'),
+(select oid from time_dim_tab where time_key = '2001Q4M12'),1,31340)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Robert' and name..last = 'Loffredo'),
+(select oid from prod_dim_tab where model_name = 'CR-V' and engine_size = '2400CC'),
+(select oid from time_dim_tab where time_key = '2002Q2M06'),1,22705)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Mehta' and name..last = 'Shefali'),
+(select oid from prod_dim_tab where model_name = 'Grand Cherokee' and engine_size = '4700CC'),
+(select oid from time_dim_tab where time_key = '2000Q1M03'),1,28670)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Mehta' and name..last = 'Shefali'),
+(select oid from prod_dim_tab where model_name = 'Crown Victoria' and engine_size = '4600CC'),
+(select oid from time_dim_tab where time_key = '2002Q1M03'),1,27780)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Esther' and name..last = 'Chimenya'),
+(select oid from prod_dim_tab where model_name = 'BMW 5 Series' and engine_size = '4400CC'),
+(select oid from time_dim_tab where time_key = '2000Q1M03'),1,50885)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Esther' and name..last = 'Chimenya'),
+(select oid from prod_dim_tab where model_name = 'Golf' and engine_size = '1900CC'),
+(select oid from time_dim_tab where time_key = '2001Q2M06'),1,18560)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Esther' and name..last = 'Chimenya'),
+(select oid from prod_dim_tab where model_name = 'A4 Series' and engine_size = '3000CC'),
+(select oid from time_dim_tab where time_key = '2002Q2M05'),1,31800)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'John' and name..last = 'Cheesbrough'),
+(select oid from prod_dim_tab where model_name = 'CR-V' and engine_size = '2400CC'),
+(select oid from time_dim_tab where time_key = '2000Q2M06'),1,23655)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Jim' and name..last = 'Holmquist'),
+(select oid from prod_dim_tab where model_name = 'Accord' and engine_size = '2300CC'),
+(select oid from time_dim_tab where time_key = '2000Q3M08'),1,22760)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Jim' and name..last = 'Holmquist'),
+(select oid from prod_dim_tab where model_name = 'Corolla' and engine_size = '1800CC'),
+(select oid from time_dim_tab where time_key = '2002Q1M01'),1,14655)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Graham' and name..last = 'Claydon'),
+(select oid from prod_dim_tab where model_name = 'BMW 5 Series' and engine_size = '4400CC'),
+(select oid from time_dim_tab where time_key = '2000Q1M03'),1,51845)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Graham' and name..last = 'Claydon'),
+(select oid from prod_dim_tab where model_name = 'Crown Victoria' and engine_size = '4600CC'),
+(select oid from time_dim_tab where time_key = '2002Q2M05'),1,27785)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Werwick' and name..last = 'Conway'),
+(select oid from prod_dim_tab where model_name = 'Golf' and engine_size = '1900CC'),
+(select oid from time_dim_tab where time_key = '2000Q3M08'),1,18650)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Werwick' and name..last = 'Conway'),
+(select oid from prod_dim_tab where model_name = 'Grand Cherokee' and engine_size = '4700CC'),
+(select oid from time_dim_tab where time_key = '2000Q4M11'),1,29605)
+
+insert into sale_fact_tab
+values(sale_fact_t(0),
+(select oid from cust_dim_tab where name..first = 'Werwick' and name..last = 'Conway'),
+(select oid from prod_dim_tab where model_name = 'GS300' and engine_size = '3000CC'),
+(select oid from time_dim_tab where time_key = '2001Q4M12'),1,39180)
+
+------------------sample query----------- 
+1. How many cars were sold during the fiscal year 2000?
+
+select count(*)
+from sale_fact_tab
+where time_dim->fiscal_year = 2000
+
+2. How many cars manufactured by Jeep were sold during the fiscal year 2000?
+
+select count(*)
+from sale_fact_tab
+where time_dim->fiscal_year = 2000 and product_dim->manufacturer = 'Jeep'
+
+3. Which manufacturer had the maximum sales amount (i.e. total price) during the 
+fiscal year 2000?
+
+select sf1.product_dim->manufacturer
+from sale_fact_tab sf1
+where sf1.time_dim->fiscal_year = 2000 
+group by sf1.product_dim->manufacturer
+having sum (sf1.price) >= all (select sum(sf2.price)
+  from sale_fact_tab sf2
+  where sf2.time_dim->fiscal_year = 2000
+  group by sf2.product_dim->manufacturer)
+
+4. How many cars manufactured by Jeep were sold to male customers during the fiscal
+year 2000?
+
+select count(*)
+from sale_fact_tab
+where time_dim->fiscal_year = 2000 and product_dim->manufacturer = 'Jeep' and cust_dim->sex = 'M'
+
+5. How many married male customers purchased a car during the fiscal year 2000?
+
+select count(cust_dim->name..First)
+from sale_fact_tab
+where time_dim->fiscal_year = 2000 
+and (cust_dim->status_desc..desc1..marital_status = 'Married'  or cust_dim->status_desc..desc2..marital_status = 'Married' or cust_dim->status_desc..desc3..marital_status = 'Married')
+and cust_dim->sex = 'M'
+
+6. How many different (distinct) divorced female customers from Massachusetts purchased car
+manufactured by Jeep during the fiscal year 2000?
+
+select count(cust_dim->name..first)
+from sale_fact_tab
+where time_dim->fiscal_year = 2000
+and cust_dim->sex = 'F' 
+and (cust_dim->status_desc..desc1..marital_status = 'Divorced'  or cust_dim->status_desc..desc2..marital_status = 'Divorced' or cust_dim->status_desc..desc3..marital_status = 'Divorced')
+and cust_dim->address..state = 'Messachusetts'
+
+7. What was the total price amount and quantity of cars having engine size 4000CC or 
+more sold to unmarried customer having yearly income $75000 or less during the 
+first quarter of fiscal year 2000?
+
+select sum(price),sum(quantity) 
+from sale_fact_tab
+where time_dim->fiscal_year = 2000
+and time_dim->fiscal_qtr = 'Quarter1'
+and product_dim->engine_size >= '4000CC' 
+and (cust_dim->status_desc..desc1..marital_status = 'Unmarried'  or cust_dim->status_desc..desc2..marital_status = 'Unmarried' or cust_dim->status_desc..desc3..marital_status = 'Unmarried')
+and (cust_dim->status_desc..desc1..year_income <= 75000  or cust_dim->status_desc..desc2..year_income <= 75000 or cust_dim->status_desc..desc3..year_income <= 75000)
+
+8. What is the customer_key and number of cars purchased for customer(s) who purchased maximum
+cars from fiscal quarter 3 of fiscal year 1999 to fiscal quarter 2 of fiscal year 2000?
+
+select cust_dim->name..first,sum(quantity) 
+from sale_fact_tab sf1
+where (sf1.time_dim->fiscal_year = 1999 and sf1.time_dim->fiscal_qtr = 'Quarter3') 
+or (sf1.time_dim->fiscal_year = 2000 and sf1.time_dim->fiscal_qtr = 'Quarter1')
+or (sf1.time_dim->fiscal_year = 1999 and sf1.time_dim->fiscal_qtr = 'Quarter4')
+or (sf1.time_dim->fiscal_year = 2000 and sf1.time_dim->fiscal_qtr = 'Quarter2')
+group by sf1.cust_dim->name..first
+having sum(sf1.quantity) >= all (select sum(sf2.quantity)
+  from sale_fact_tab sf2
+  where (sf2.time_dim->fiscal_year = 1999 and sf2.time_dim->fiscal_qtr = 'Quarter3') 
+or (sf2.time_dim->fiscal_year = 2000 and sf2.time_dim->fiscal_qtr = 'Quarter1')
+or (sf2.time_dim->fiscal_year = 1999 and sf2.time_dim->fiscal_qtr = 'Quarter4')
+or (sf2.time_dim->fiscal_year = 2000 and sf2.time_dim->fiscal_qtr = 'Quarter2')
+group by sf2.cust_dim->name..first)
+
+9. Which customers purchased car manufactured by BMW during the fiscal year 2000?
+
+select cust_dim->name..first, cust_dim->name..last, cust_dim->name..middle,cust_dim->address..no,cust_dim->address..street,
+cust_dim->address..city,cust_dim->address..state,cust_dim->address..zipcode,cust_dim->phone..phone1..location,cust_dim->phone..phone1..phone_num,
+cust_dim->phone..phone2..location,cust_dim->phone..phone2..phone_num,cust_dim->phone..phone3..location,cust_dim->phone..phone3..phone_num,
+cust_dim->phone..phone4..location,cust_dim->phone..phone4..phone_num
+from sale_fact_tab
+where time_dim->fiscal_year = 2000 and product_dim->manufacturer = 'BMW'
+
+10. Based on past trend, which quarter of the year generally experiences more car sales?
+
+select sf1.time_dim->fiscal_qtr
+from sale_fact_tab sf1
+group by sf1.time_dim->fiscal_qtr
+having sum(sf1.quantity) >= all (select sum(sf2.quantity)
+ from sale_fact_tab sf2
+ group by sf2.time_dim->fiscal_qtr)
+
+11. รถยี่ห้อใดที่ขายได้ในปี 2000 และมีขนาดเครื่องยนต์ตั้งแต่ 3000CC เป็นต้นไป
+select product_dim->manufacturer
+from sale_fact_tab
+where product_dim->engine_size >= '3000CC' and time_dim->fiscal_year = 2000
+group by product_dim->manufacturer
+
+BMW
+Ford
+Jeep
+
+12. จำนวนลูกค้าที่แต่งงาน และซื้อรถในควอเตอร์ที่ 4 ของแต่ละปี 
+select time_dim->fiscal_year,count(*)
+from sale_fact_tab
+where time_dim->fiscal_qtr = 'Quarter4' and 
+(cust_dim->status_desc..desc1..marital_status = 'Married' 
+or cust_dim->status_desc..desc2..marital_status = 'Married'
+or cust_dim->status_desc..desc3..marital_status = 'Married')
+group by time_dim->fiscal_year
+
+1999	2
+2001	2
+
+13.รถยี่ห้อใดที่ขายได้ในปี 2000 และแต่ละยี่ห้อมีจำนวนเท่าไร
+
+select product_dim->manufacturer,count(*)
+from sale_fact_tab
+where time_dim->fiscal_year=2000
+group by product_dim->manufacturer
+
+BMW 2
+Ford   1
+Honda 2
+Jeep 2
+Volkswagen 2
+
+14. ลูกค้าในรัฐใด มีการซื้อรถมากที่สุด
+
+select cust_dim->address..state,count(*)
+from sale_fact_tab sf1
+group by cust_dim->address..state
+having count(*) >= all(select count(*)
+from sale_fact_tab sf2
+group by cust_dim->address..state)
+
+Messachusetts 
+
+15. ยอดขายโดยรวมของรถแต่ละยี่ห้อในช่วง 4 ปี
+select product_dim->manufacturer,sum(price)
+from sale_fact_tab
+where time_dim->fiscal_year=1999 or time_dim->fiscal_year=2000 
+or time_dim->fiscal_year=2001 or time_dim->fiscal_year=2002
+group by  product_dim->manufacturer
+
+
+Audi 63140
+BMW 200030
+Ford 72065
+Honda 134660
+Jeep 58275
+Lexus 76830
+Toyota 78835
+Volkswagen 54935

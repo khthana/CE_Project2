@@ -1,0 +1,177 @@
+package central;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.*;
+
+/**
+Main frame
+*/
+
+class MyJFrame extends JFrame implements WindowListener {
+  MyJFrame() { this(""); }
+  MyJFrame(String s) {
+    super(s);
+    addWindowListener(this);
+  }
+
+  public void windowClosing(WindowEvent e) {
+    try {
+      DatabaseHandle.connection.close();
+    }
+    catch (Exception ee) {
+      System.err.println("Has some problem closing the Database !");
+    }
+    dispose();
+    System.exit(0);
+  }
+  public void windowClosed(WindowEvent e) {}
+  public void windowOpened(WindowEvent e) {}
+  public void windowIconified(WindowEvent e) {}
+  public void windowDeiconified(WindowEvent e) {}
+  public void windowActivated(WindowEvent e) {}
+  public void windowDeactivated(WindowEvent e) {}
+}
+
+class MainFrame {
+
+  public static MyJFrame frame;
+  public static HighLayerShareBuffer RBx;					// High layer Share buffer for receive
+  public static HighLayerShareBuffer TBx;					// High layer Share buffer for send
+  public static HighLayerShareBuffer RAx[] = {new HighLayerShareBuffer(), new HighLayerShareBuffer(), new HighLayerShareBuffer()};//, new HighLayerShareBuffer()};     // 0 for snoop, 1 for HighLayer, 2 for Acknowledge,
+  public static CANShareBuffer Rx;						// CAN Share buffer for receive
+  public static CANShareBuffer Tx;						// CAN Share buffer for send
+  public static JTextArea messagestatus = new JTextArea();
+  public static JTextArea status = new JTextArea();
+  public static JTextField canthreadtxt = new JTextField();
+  public static JTextField assemblythreadtxt = new JTextField();
+  public static JTextField getthreadtxt = new JTextField();
+  public static JTextField txthreadtxt = new JTextField();
+  public static JTextField flagStatus0 = new JTextField();
+  public static JTextField flagStatus1 = new JTextField();
+  public static SendTab sendtab = new SendTab();
+  public static SnoopTab snooptab = new SnoopTab();
+  public static StatusTab statustab = new StatusTab();
+  public static ConfigTab configtab = new ConfigTab();
+  public static SendStatus sendstatus = new SendStatus();
+  public static DatabaseHandle database;
+  public static AcknowledgeThread acknowledgethread;
+  public static AssemblyThread assemblythread;
+  public static KeyManageThread keythread;
+
+  private static char initKeyNode1[] = {0xf4, 0x8a, 0x13, 0xb7, 0x8c, 0x75, 0xe4, 0x06};
+  private static char initKeyNode2[] = {0x3f, 0x48, 0xcb, 0xe9, 0x0a, 0x5d, 0x6d, 0xa1};
+  private static char initKeyNode3[] = {0x90, 0xd3, 0x5a, 0x3b, 0x7a, 0x10, 0xe6, 0x43};
+  public static DESService Des[] = {new DESService(initKeyNode1), new DESService(initKeyNode2), new DESService(initKeyNode3)};
+
+  public static void main(String[] args)
+  {
+
+    frame = new MyJFrame("CAN High Layer Protocol");
+    RBx = new HighLayerShareBuffer();
+    TBx = new HighLayerShareBuffer();
+    Rx = new CANShareBuffer();
+    Tx = new CANShareBuffer();
+    GetThread getthread = new GetThread("Get Thread");
+    assemblythread = new AssemblyThread("Assembly Thread");
+    CANThread canthread = new CANThread("CAN Thread");
+    database = new DatabaseHandle();
+    TXThread txthread = new TXThread("TX Thread");
+    SnoopThread snoopthread = new SnoopThread("Snoop Thread");
+//    StatusThread statusthread = new StatusThread("Status Thread");
+    HighLayerThread highthread = new HighLayerThread("High Layer Thread");
+    TimeThread timethread = new TimeThread("Time Thread");
+    acknowledgethread = new AcknowledgeThread("Acknowledge Thread");
+    RequestStatusThread requestthread = new RequestStatusThread("Request Thread");
+//    keythread = new KeyManageThread("Key Manage Thread", 5);
+    JTabbedPane tabpane = new JTabbedPane();
+    JLabel statuslabel = new JLabel("CAN Message");
+    JLabel canlabel = new JLabel("CAN Thread");
+    JLabel assemblylabel = new JLabel("Assembly Thread");
+    JLabel getlabel = new JLabel("Get Thread");
+    JLabel txlabel = new JLabel("Tx Thread");
+    JLabel messagelabel = new JLabel("Message");
+    JButton clear = new JButton("Clear");
+    JScrollPane statuspane = new JScrollPane(status);
+    JScrollPane messagestatuspane = new JScrollPane(messagestatus);
+    int width = 1024;
+    int height = 720;
+
+    status.setEditable(false);
+    messagestatus.setEditable(false);
+    canthreadtxt.setEditable(false);
+    assemblythreadtxt.setEditable(false);
+    getthreadtxt.setEditable(false);
+    txthreadtxt.setEditable(false);
+
+    Container mainCN = frame.getContentPane();					// Main Container
+    mainCN.setLayout(null);
+
+    statuslabel.setBounds(width - 200, 40, 100, 20);
+    statuspane.setBounds(width - 300, 70, 280, 150);
+    messagelabel.setBounds(width - 180, 240, 100, 20);
+    messagestatuspane.setBounds(width - 300, 270, 280, 160);
+    canlabel.setBounds(width - 300, 460, 100, 20);
+    txlabel.setBounds(width - 300, 500, 100, 20);
+    assemblylabel.setBounds(width - 300, 540, 100, 20);
+    getlabel.setBounds(width - 300, 580, 100, 20);
+    canthreadtxt.setBounds(width - 180, 460, 100, 20);
+    txthreadtxt.setBounds(width - 180, 500, 100, 20);
+    assemblythreadtxt.setBounds(width - 180, 540, 100, 20);
+    getthreadtxt.setBounds(width - 180, 580, 100, 20);
+    tabpane.setBounds(10, 40, width - 320, height - 150);
+    clear.setBounds(width - 300, 640, 100, 20);
+
+    clear.addActionListener(new ClearButtonHandling());
+
+    flagStatus0.setEditable(false);
+    flagStatus1.setEditable(false);
+    flagStatus0.setBounds(10, height - 100, 400, 20);
+    flagStatus1.setBounds(10, height - 70, 400, 20);
+
+    tabpane.addTab("Send Data", sendtab);
+    tabpane.addTab("Snooping", snooptab);
+    tabpane.addTab("Status Monitor", statustab);
+    tabpane.addTab("Configuration", configtab);
+    tabpane.addTab("History", new HistoryTab());
+
+    mainCN.add(tabpane);
+    mainCN.add(statuslabel);
+    mainCN.add(statuspane);
+    mainCN.add(canlabel);
+    mainCN.add(txlabel);
+    mainCN.add(assemblylabel);
+    mainCN.add(getlabel);
+    mainCN.add(canthreadtxt);
+    mainCN.add(txthreadtxt);
+    mainCN.add(assemblythreadtxt);
+    mainCN.add(getthreadtxt);
+    mainCN.add(messagelabel);
+    mainCN.add(messagestatuspane);
+    mainCN.add(clear);
+
+    mainCN.add(flagStatus0);
+    mainCN.add(flagStatus1);
+
+    frame.setSize(width, height);
+    frame.setVisible(true);
+
+    canthread.setPriority(Thread.MAX_PRIORITY);
+    canthread.start();
+    txthread.start();
+    assemblythread.start();
+    getthread.start();
+    highthread.start();
+    snoopthread.start();
+    timethread.start();
+    acknowledgethread.start();
+    requestthread.start();
+
+//    keythread.start();
+//    statusthread.start();
+//    retransmitthread.start();
+//    databasethread.start();
+//    database.GenCodeWithStatus(0, "Start");
+  }
+}

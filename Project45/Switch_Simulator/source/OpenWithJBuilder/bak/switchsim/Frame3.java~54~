@@ -1,0 +1,499 @@
+package switchsim;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.ImageIcon;
+import com.borland.jbcl.layout.*;
+
+public class Frame3 extends JFrame {
+  JPanel contentPane;
+  XYLayout xYLayout1 = new XYLayout();
+  JPanel jPanel1 = new JPanel();
+  XYLayout xYLayout2 = new XYLayout();
+  JComboBox jComboBox1 = new JComboBox();
+  JLabel jLabel1 = new JLabel();
+  JCheckBox jCheckBox1 = new JCheckBox();
+  JCheckBox jCheckBox2 = new JCheckBox();
+  JCheckBox jCheckBox3 = new JCheckBox();
+  JLabel jLabel2 = new JLabel();
+  JLabel jLabel3 = new JLabel();
+  JLabel jLabel4 = new JLabel();
+  JComboBox jComboBox2 = new JComboBox();
+  JComboBox jComboBox3 = new JComboBox();
+  JComboBox jComboBox4 = new JComboBox();
+  JLabel jLabel5 = new JLabel();
+  JLabel jLabel6 = new JLabel();
+  JButton jButton1 = new JButton();
+  JButton jButton2 = new JButton();
+  JButton jButton3 = new JButton();
+  Switch sw_init = new Switch();
+  Switch sw;
+  String int1="";
+  String int2="";
+  String int3="";
+  String com1="";
+  String com2="";
+  String com3="";
+  boolean cbListen = true;
+  boolean cbListen1 = true;
+  boolean cbListen2 = true;
+  boolean cbListen3 = true;
+  /**Construct the frame*/
+  public Frame3() {
+    enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+    try {
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+  /**Component initialization*/
+  private void jbInit() throws Exception  {
+//    setIconImage(Toolkit.getDefaultToolkit().createImage(Frame1.class.getResource("openfile.gif")));
+    contentPane = (JPanel) this.getContentPane();
+    contentPane.setLayout(xYLayout1);
+    this.setSize(new Dimension(420, 320));
+    this.setTitle("Connect Computer");
+    this.setResizable(false);
+    jPanel1.setLayout(xYLayout2);
+    jLabel1.setToolTipText("");
+    jLabel1.setText("Select Switch");
+    jCheckBox1.setText(" Computer");
+    jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jCheckBox1_actionPerformed(e);
+      }
+    });
+    jCheckBox2.setText(" Computer");
+    jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jCheckBox2_actionPerformed(e);
+      }
+    });
+    jCheckBox3.setText(" Computer");
+    jCheckBox3.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jCheckBox3_actionPerformed(e);
+      }
+    });
+    jLabel2.setText("Select Switch Port");
+    jLabel3.setText("Select Switch Port");
+    jLabel4.setText("Select Switch Port");
+    jLabel5.setBorder(BorderFactory.createEtchedBorder());
+    jLabel6.setBorder(BorderFactory.createEtchedBorder());
+    jButton1.setText("Next >>");
+    jButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton1_actionPerformed(e);
+      }
+    });
+    jButton2.setText("Done");
+    jButton2.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton2_actionPerformed(e);
+      }
+    });
+    jButton3.setText("Cancel");
+    jButton3.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton3_actionPerformed(e);
+      }
+    });
+    jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jComboBox1_actionPerformed(e);
+      }
+    });
+    jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jComboBox2_actionPerformed(e);
+      }
+    });
+    jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jComboBox3_actionPerformed(e);
+      }
+    });
+    jComboBox4.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jComboBox4_actionPerformed(e);
+      }
+    });
+    contentPane.add(jPanel1,     new XYConstraints(0, 0, 420, 320));
+    jPanel1.add(jComboBox1,        new XYConstraints(185, 40, 125, 20));
+    jPanel1.add(jLabel1,         new XYConstraints(95, 37, 80, 25));
+    jPanel1.add(jCheckBox1,          new XYConstraints(55, 103, 100, 25));
+    jPanel1.add(jCheckBox2,      new XYConstraints(55, 148, 100, 25));
+    jPanel1.add(jCheckBox3,    new XYConstraints(55, 193, 100, 25));
+    jPanel1.add(jLabel2,         new XYConstraints(155, 103, 100, 25));
+    jPanel1.add(jLabel3,          new XYConstraints(155, 148, 100, 25));
+    jPanel1.add(jLabel4,         new XYConstraints(155, 193, 100, 25));
+    jPanel1.add(jComboBox2,        new XYConstraints(265, 105, 100, 20));
+    jPanel1.add(jComboBox3,      new XYConstraints(265, 150, 100, 20));
+    jPanel1.add(jComboBox4,      new XYConstraints(265, 195, 100, 20));
+    jPanel1.add(jLabel5,     new XYConstraints(20, 20, 380, 60));
+    jPanel1.add(jLabel6,     new XYConstraints(20, 80, 380, 155));
+    jPanel1.add(jButton1,     new XYConstraints(60, 255, 85, 25));
+    jPanel1.add(jButton2,     new XYConstraints(160, 255, 90, 25));
+    jPanel1.add(jButton3,     new XYConstraints(265, 255, 90, 25));
+  }
+  /**Overridden so we can exit when window is closed*/
+  protected void processWindowEvent(WindowEvent e) {
+    super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+//      System.exit(0);
+    }
+  }
+
+  public void initValue() {
+    int c;
+    sw = sw_init;
+    com1 = "Computer1";
+    com2 = "Computer2";
+    com3 = "Computer3";
+    cbListen = false;
+    cbListen1 = false;
+    cbListen2 = false;
+    cbListen3 = false;
+    jComboBox1.removeAllItems();
+    jComboBox2.removeAllItems();
+    jComboBox3.removeAllItems();
+    jComboBox4.removeAllItems();
+    jComboBox1.addItem("Select Switch");
+    for (int i=0; i<Frame1.vSwitch.size(); i++) {
+      Switch sw = (Switch)Frame1.vSwitch.elementAt(i);
+      jComboBox1.addItem(sw.getName());
+    }
+    for (int i=0; i<Frame1.vWorkstation.size(); i++) {
+      Workstation com = (Workstation)Frame1.vWorkstation.elementAt(i);
+      System.out.println(com.getName());
+    }
+    c=1;
+    for (int i=0; i<Frame1.vWorkstation.size(); i++) {
+      Workstation com = (Workstation)Frame1.vWorkstation.elementAt(i);
+//      System.out.println(com1);
+      while (com.getName().equals(com1)) {
+        c++;
+        com1 = "Computer"+c;
+//        System.out.println(c);
+      }
+//      System.out.println(com.getName()+" - "+com1+" >> "+(com.getName().equals(com1)));
+    }
+    for (int i=0; i<Frame1.vWorkstation.size(); i++) {
+      Workstation com = (Workstation)Frame1.vWorkstation.elementAt(i);
+      while ((com.getName().equals(com2)) || (com2.equals(com1))) {
+        c++;
+        com2 = "Computer"+c;
+      }
+    }
+    for (int i=0; i<Frame1.vWorkstation.size(); i++) {
+      Workstation com = (Workstation)Frame1.vWorkstation.elementAt(i);
+      while ((com.getName().equals(com3)) || (com3.equals(com1)) || (com3.equals(com2))) {
+        c++;
+        com3 = "Computer"+c;
+      }
+    }
+    jCheckBox1.setText(com1);
+    jCheckBox2.setText(com2);
+    jCheckBox3.setText(com3);
+    jCheckBox1.setSelected(false);
+    jCheckBox2.setSelected(false);
+    jCheckBox3.setSelected(false);
+    cbListen = true;
+    cbListen1 = true;
+    cbListen2 = true;
+    cbListen3 = true;
+  }
+
+  void jComboBox1_actionPerformed(ActionEvent e) {
+    if (cbListen) {
+      cbListen1 = false;
+      cbListen2 = false;
+      cbListen3 = false;
+      jComboBox2.removeAllItems();
+      jComboBox3.removeAllItems();
+      jComboBox4.removeAllItems();
+      System.out.println("ComboBox1 : "+jComboBox1.getSelectedItem());
+      if (!jComboBox1.getSelectedItem().equals("Select Switch")) {
+        for (int i=0; i<Frame1.vSwitch.size(); i++) {
+          Switch sw_tmp = (Switch)Frame1.vSwitch.elementAt(i);
+          if (sw_tmp.getName().equals(jComboBox1.getSelectedItem())) {
+            sw = sw_tmp;
+            for (int j=0; j<sw.getVInt().size(); j++) {
+              Interface intf = (Interface)sw.getVInt().elementAt(j);
+              if ((intf.getCom()==null) && (intf.getSwitch()==null)) {
+                jComboBox2.addItem(intf.getNameInt());
+                jComboBox3.addItem(intf.getNameInt());
+                jComboBox4.addItem(intf.getNameInt());
+              }
+            }
+          }
+        }
+      }
+      else sw = sw_init;
+      cbListen1 = true;
+      cbListen2 = true;
+      cbListen3 = true;
+    }
+  }
+
+  void jCheckBox1_actionPerformed(ActionEvent e) {
+    if (jCheckBox1.isSelected()) {
+      int1=(String)jComboBox2.getSelectedItem();
+      jComboBox3.removeItem(jComboBox2.getSelectedItem());
+      jComboBox4.removeItem(jComboBox2.getSelectedItem());
+    }
+    else {
+      int1="";
+      cbListen1 = false;
+      cbListen2 = false;
+      cbListen3 = false;
+      jComboBox2.removeAllItems();
+      jComboBox3.removeAllItems();
+      jComboBox4.removeAllItems();
+      for (int i=0; i<sw.getVInt().size(); i++) {
+        Interface intf = (Interface)sw.getVInt().elementAt(i);
+        if ((intf.getCom()==null) && (intf.getSwitch()==null)) {
+          if ((!intf.getNameInt().equals(int2)) && (!intf.getNameInt().equals(int3))) {
+            jComboBox2.addItem(intf.getNameInt());
+          }
+          if (!intf.getNameInt().equals(int3)) {
+            jComboBox3.addItem(intf.getNameInt());
+          }
+          if (!intf.getNameInt().equals(int2)) {
+            jComboBox4.addItem(intf.getNameInt());
+          }
+        }
+      }
+      jComboBox3.setSelectedItem(int2);
+      jComboBox4.setSelectedItem(int3);
+      cbListen1 = true;
+      cbListen2 = true;
+      cbListen3 = true;
+    }
+  }
+
+  void jCheckBox2_actionPerformed(ActionEvent e) {
+    if (jCheckBox2.isSelected()) {
+      int2=(String)jComboBox3.getSelectedItem();
+      jComboBox2.removeItem(jComboBox3.getSelectedItem());
+      jComboBox4.removeItem(jComboBox3.getSelectedItem());
+    }
+    else {
+      int2="";
+      cbListen1 = false;
+      cbListen2 = false;
+      cbListen3 = false;
+      jComboBox2.removeAllItems();
+      jComboBox3.removeAllItems();
+      jComboBox4.removeAllItems();
+      for (int i=0; i<sw.getVInt().size(); i++) {
+        Interface intf = (Interface)sw.getVInt().elementAt(i);
+        if ((intf.getCom()==null) && (intf.getSwitch()==null)) {
+          if (!intf.getNameInt().equals(int3)) {
+            jComboBox2.addItem(intf.getNameInt());
+          }
+          if ((!intf.getNameInt().equals(int1)) && (!intf.getNameInt().equals(int3))) {
+            jComboBox3.addItem(intf.getNameInt());
+          }
+          if (!intf.getNameInt().equals(int1)) {
+            jComboBox4.addItem(intf.getNameInt());
+          }
+        }
+      }
+      jComboBox2.setSelectedItem(int1);
+      jComboBox4.setSelectedItem(int3);
+      cbListen1 = true;
+      cbListen2 = true;
+      cbListen3 = true;
+    }
+  }
+
+  void jCheckBox3_actionPerformed(ActionEvent e) {
+    if (jCheckBox3.isSelected()) {
+      int3=(String)jComboBox4.getSelectedItem();
+      jComboBox2.removeItem(jComboBox4.getSelectedItem());
+      jComboBox3.removeItem(jComboBox4.getSelectedItem());
+    }
+    else {
+      int3="";
+      cbListen1 = false;
+      cbListen2 = false;
+      cbListen3 = false;
+      jComboBox2.removeAllItems();
+      jComboBox3.removeAllItems();
+      jComboBox4.removeAllItems();
+      for (int i=0; i<sw.getVInt().size(); i++) {
+        Interface intf = (Interface)sw.getVInt().elementAt(i);
+        if ((intf.getCom()==null) && (intf.getSwitch()==null)) {
+          if (!intf.getNameInt().equals(int2)) {
+            jComboBox2.addItem(intf.getNameInt());
+          }
+          if (!intf.getNameInt().equals(int1)) {
+            jComboBox3.addItem(intf.getNameInt());
+          }
+          if ((!intf.getNameInt().equals(int1)) && (!intf.getNameInt().equals(int2))) {
+            jComboBox4.addItem(intf.getNameInt());
+          }
+        }
+      }
+      jComboBox2.setSelectedItem(int1);
+      jComboBox3.setSelectedItem(int2);
+      cbListen1 = true;
+      cbListen2 = true;
+      cbListen3 = true;
+    }
+  }
+
+  void jComboBox2_actionPerformed(ActionEvent e) {
+    if (cbListen1) {
+      if (jCheckBox1.isSelected()) {
+        int1=(String)jComboBox2.getSelectedItem();
+        cbListen2 = false;
+        cbListen3 = false;
+        jComboBox3.removeAllItems();
+        jComboBox4.removeAllItems();
+        for (int i=0; i<sw.getVInt().size(); i++) {
+          Interface intf = (Interface)sw.getVInt().elementAt(i);
+          if ((intf.getCom()==null) && (intf.getSwitch()==null)) {
+            if ((!intf.getNameInt().equals(int3)) && (!intf.getNameInt().equals(int1))) {
+              jComboBox3.addItem(intf.getNameInt());
+            }
+            if ((!intf.getNameInt().equals(int2)) && (!intf.getNameInt().equals(int1))) {
+              jComboBox4.addItem(intf.getNameInt());
+            }
+          }
+        }
+        cbListen2 = true;
+        cbListen3 = true;
+      }
+    }
+  }
+
+  void jComboBox3_actionPerformed(ActionEvent e) {
+    if (cbListen2) {
+      if (jCheckBox2.isSelected()) {
+        int2=(String)jComboBox3.getSelectedItem();
+        cbListen1 = false;
+        cbListen3 = false;
+        jComboBox2.removeAllItems();
+        jComboBox4.removeAllItems();
+        for (int i=0; i<sw.getVInt().size(); i++) {
+          Interface intf = (Interface)sw.getVInt().elementAt(i);
+          if ((intf.getCom()==null) && (intf.getSwitch()==null)) {
+            if ((!intf.getNameInt().equals(int3)) && (!intf.getNameInt().equals(int2))) {
+              jComboBox2.addItem(intf.getNameInt());
+            }
+            if ((!intf.getNameInt().equals(int1)) && (!intf.getNameInt().equals(int2))) {
+              jComboBox4.addItem(intf.getNameInt());
+            }
+          }
+        }
+        cbListen1 = true;
+        cbListen3 = true;
+      }
+    }
+  }
+
+  void jComboBox4_actionPerformed(ActionEvent e) {
+    if (cbListen3) {
+      if (jCheckBox3.isSelected()) {
+        int3=(String)jComboBox4.getSelectedItem();
+        cbListen1 = false;
+        cbListen2 = false;
+        jComboBox2.removeAllItems();
+        jComboBox3.removeAllItems();
+        for (int i=0; i<sw.getVInt().size(); i++) {
+          Interface intf = (Interface)sw.getVInt().elementAt(i);
+          if ((intf.getCom()==null) && (intf.getSwitch()==null)) {
+            if ((!intf.getNameInt().equals(int2)) && (!intf.getNameInt().equals(int3))) {
+              jComboBox2.addItem(intf.getNameInt());
+            }
+            if ((!intf.getNameInt().equals(int1)) && (!intf.getNameInt().equals(int3))) {
+              jComboBox3.addItem(intf.getNameInt());
+            }
+          }
+        }
+        cbListen1 = true;
+        cbListen2 = true;
+      }
+    }
+  }
+
+  void jButton1_actionPerformed(ActionEvent e) {
+    if (!jComboBox1.getSelectedItem().equals("Select Switch")) {
+      connectDone();
+    }
+    else System.out.println("Please select Switch");
+  }
+
+  void jButton2_actionPerformed(ActionEvent e) {
+    if (!jComboBox1.getSelectedItem().equals("Select Switch")) {
+      connectDone();
+      this.setVisible(false);
+    }
+    else System.out.println("Please select Switch");
+  }
+
+  void jButton3_actionPerformed(ActionEvent e) {
+    this.setVisible(false);
+    this.initValue();
+  }
+
+  void connectDone() {
+    for (int i=0; i<sw.getVInt().size(); i++) {
+      Interface intf = (Interface)sw.getVInt().elementAt(i);
+      if ((jCheckBox1.isSelected()) && (intf.getNameInt().equals(jComboBox2.getSelectedItem()))) {
+        Workstation com = new Workstation(jCheckBox1.getText());
+        com.genMACAddress();
+        boolean insert = false;
+//        System.out.println("com 1 : "+com.getMACAddress());
+        for (int j=0; j<Frame1.vWorkstation.size(); j++) {
+          Workstation com_tmp = (Workstation)Frame1.vWorkstation.elementAt(j);
+          if (Integer.parseInt(com.getName().substring(8))<Integer.parseInt(com_tmp.getName().substring(8))) {
+            Frame1.vWorkstation.insertElementAt(com,j);
+            insert = true;
+          }
+        }
+        if (!insert)
+          Frame1.vWorkstation.addElementAt(com);
+        intf.addNewIntCom(sw,(String)jComboBox2.getSelectedItem(),com);
+      }
+      if ((jCheckBox2.isSelected()) && (intf.getNameInt().equals(jComboBox3.getSelectedItem()))) {
+        Workstation com = new Workstation(jCheckBox2.getText());
+        com.genMACAddress();
+        boolean insert = false;
+//        System.out.println("com 2 : "+com.getMACAddress());
+        for (int j=0; j<Frame1.vWorkstation.size(); j++) {
+          Workstation com_tmp = (Workstation)Frame1.vWorkstation.elementAt(j);
+          if (Integer.parseInt(com.getName().substring(8))<Integer.parseInt(com_tmp.getName().substring(8))) {
+            Frame1.vWorkstation.insertElementAt(com,j);
+            insert = true;
+          }
+        }
+        if (!insert)
+          Frame1.vWorkstation.addElementAt(com);
+        intf.addNewIntCom(sw,(String)jComboBox3.getSelectedItem(),com);
+      }
+      if ((jCheckBox3.isSelected()) && (intf.getNameInt().equals(jComboBox4.getSelectedItem()))) {
+        Workstation com = new Workstation(jCheckBox3.getText());
+        com.genMACAddress();
+        boolean insert = false;
+//        System.out.println("com 3 : "+com.getMACAddress());
+        for (int j=0; j<Frame1.vWorkstation.size(); j++) {
+          Workstation com_tmp = (Workstation)Frame1.vWorkstation.elementAt(j);
+          if (Integer.parseInt(com.getName().substring(8))<Integer.parseInt(com_tmp.getName().substring(8))) {
+            Frame1.vWorkstation.insertElementAt(com,j);
+            insert = true;
+          }
+        }
+        if (!insert)
+          Frame1.vWorkstation.addElementAt(com);
+        intf.addNewIntCom(sw,(String)jComboBox4.getSelectedItem(),com);
+      }
+    }
+    this.initValue();
+  }
+}

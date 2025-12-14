@@ -1,0 +1,141 @@
+package testhttp;
+
+import java.util.Vector;
+
+public class CheckData {
+  //private Vector http;
+  StockEntry stockentry;
+
+  public CheckData() {
+  }
+  public StockEntry setData( Vector http ){
+    String day1;
+    String dd;
+    String mm;
+    String yy;
+    String tim;
+    String min;
+    try{
+    if( http != null ){
+      tim = http.elementAt(11).toString();
+      // refer noflag
+      if( ( http.size()== 92 )|| ( http.size()== 97 ) ){
+        day1 = http.elementAt(29).toString();
+        dd = day1;
+        mm = day1;
+        yy = day1;
+        dd = dd.substring(0,2);
+        mm = mm.substring(3,5);
+        yy = yy.substring(6,10);
+        day1 = yy+"-"+mm+"-"+dd;
+
+        stockentry.setStock(tim); // set stock code
+
+        tim = http.elementAt(31).toString();
+        min = tim;
+        tim = tim.substring(0,2);
+        min = min.substring(3,5);
+
+        day1 = day1+" "+tim+":"+min+":00.000";
+
+        stockentry.setDay_trade(day1); // set day trade
+        stockentry.setMarket( http.elementAt(33).toString() );// set market
+        stockentry.setPrice_Last( http.elementAt(36).toString() );// set last price
+        stockentry.setPrice_Change( http.elementAt(38).toString() );// set price chg
+        stockentry.setPer_Change( http.elementAt(40).toString() );// set per chg
+
+        stockentry.setBid_Vol1( http.elementAt(43).toString().trim() );// set bid vol1
+        stockentry.setBid_Price1( http.elementAt(45).toString() );// set bid price1
+        stockentry.setOff_Price1( http.elementAt(47).toString() );// set offer 1
+        stockentry.setOff_Vol1( http.elementAt(49).toString().trim() );// set offer vol 1
+
+        stockentry.setBid_Vol2( http.elementAt(51).toString().trim() );// set bid vol2
+        stockentry.setBid_Price2( http.elementAt(53).toString() );// set bid price2
+        stockentry.setOff_Price2( http.elementAt(55).toString() );// set offer 2
+        stockentry.setOff_Vol2( http.elementAt(57).toString().trim() );// set offer vol2
+
+        stockentry.setBid_Vol3( http.elementAt(59).toString().trim() );// set bid vol3
+        stockentry.setBid_Price3( http.elementAt(61).toString() );// set bid price3
+        stockentry.setOff_Price3( http.elementAt(63).toString() );// set offer 3
+        stockentry.setOff_Vol3( http.elementAt(65).toString().trim() );// set offer vol3
+
+        stockentry.setBuy_Vol( http.elementAt(67).toString() );// set buy volume
+        stockentry.setSell_Vol( http.elementAt(69).toString() );// set sell volume
+        stockentry.setVolume( http.elementAt(71).toString().trim() );// set volume
+        stockentry.setAmount( http.elementAt(73).toString().trim() );// set amount
+
+        stockentry.setPrice_Open1( http.elementAt(75).toString() );// set open1
+        stockentry.setPrice_High( http.elementAt(77).toString() );// set high
+        stockentry.setPrice_Avg( http.elementAt(79).toString() );// set avg price
+        stockentry.setPrice_Open2( http.elementAt(81).toString() );// set open2
+        stockentry.setPrice_Low( http.elementAt(83).toString() );// set low price
+        stockentry.setPrior( http.elementAt(85).toString() );// set prior price
+
+        stockentry.setFlag("");// set no flag
+      }
+      // refer have flag
+      else if( ( http.size()== 93 )|| ( http.size()== 98 ) ){
+
+        stockentry.setFlag( http.elementAt(28).toString() );
+
+        day1 = http.elementAt(30).toString();
+        dd = day1;
+        mm = day1;
+        yy = day1;
+        dd = dd.substring(0,2);
+        mm = mm.substring(3,5);
+        yy = yy.substring(6,10);
+        day1 = yy+"-"+mm+"-"+dd;
+
+        stockentry.setStock(tim); // set stock code
+
+        tim = http.elementAt(32).toString();
+        min = tim;
+        tim = tim.substring(0,2);
+        min = min.substring(3,5);
+
+        day1 = day1+" "+tim+":"+min+":00.000";
+
+        stockentry.setDay_trade(day1); // set day trade
+        stockentry.setMarket( http.elementAt(34).toString() );// set market
+        stockentry.setPrice_Last( http.elementAt(37).toString() );// set last price
+        stockentry.setPrice_Change( http.elementAt(39).toString() );// set price chg
+        stockentry.setPer_Change( http.elementAt(41).toString() );// set per chg
+
+        stockentry.setBid_Vol1( http.elementAt(44).toString().trim() );// set bid vol1
+        stockentry.setBid_Price1( http.elementAt(46).toString() );// set bid price1
+        stockentry.setOff_Price1( http.elementAt(48).toString() );// set offer 1
+        stockentry.setOff_Vol1( http.elementAt(50).toString().trim() );// set offer vol 1
+
+        stockentry.setBid_Vol2( http.elementAt(52).toString().trim() );// set bid vol2
+        stockentry.setBid_Price2( http.elementAt(54).toString() );// set bid price2
+        stockentry.setOff_Price2( http.elementAt(56).toString() );// set offer 2
+        stockentry.setOff_Vol2( http.elementAt(58).toString().trim() );// set offer vol2
+
+        stockentry.setBid_Vol3( http.elementAt(60).toString().trim() );// set bid vol3
+        stockentry.setBid_Price3( http.elementAt(62).toString() );// set bid price3
+        stockentry.setOff_Price3( http.elementAt(64).toString() );// set offer 3
+        stockentry.setOff_Vol3( http.elementAt(66).toString().trim() );// set offer vol3
+
+        stockentry.setBuy_Vol( http.elementAt(68).toString() );// set buy volume
+        stockentry.setSell_Vol( http.elementAt(70).toString() );// set sell volume
+        stockentry.setVolume( http.elementAt(72).toString().trim() );// set volume
+        stockentry.setAmount( http.elementAt(74).toString().trim() );// set amount
+
+        stockentry.setPrice_Open1( http.elementAt(76).toString() );// set open1
+        stockentry.setPrice_High( http.elementAt(78).toString() );// set high
+        stockentry.setPrice_Avg( http.elementAt(80).toString() );// set avg price
+        stockentry.setPrice_Open2( http.elementAt(82).toString() );// set open2
+        stockentry.setPrice_Low( http.elementAt(84).toString() );// set low price
+        stockentry.setPrior( http.elementAt(86).toString() );// set prior price
+      }
+    }
+    return stockentry;
+    }
+    catch( Exception e ){
+      System.out.println(e);
+      System.out.println("ngee");
+      return null;
+    }
+  }
+}

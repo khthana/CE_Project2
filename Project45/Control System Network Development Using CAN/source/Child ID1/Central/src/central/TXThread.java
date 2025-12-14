@@ -1,0 +1,94 @@
+package central;
+
+/**
+Thread that do send message to network
+*/
+
+class TXThread extends Thread{
+
+  private HighLayerBuffer highbuffer;
+  private SequenceCounter sequenceNumber =  new SequenceCounter();
+  private char cleartext[] =  new char[8];
+  private CANBuffer canbuffer = new CANBuffer();
+  private String str;
+  private boolean nextNode = true;
+  public static TimeoutManage timeoutmanage = new TimeoutManage();
+
+  TXThread(String s) {
+    super(s);
+    MainFrame.txthreadtxt.setText("running");
+  }
+
+  public void run() {
+    while (true)
+    {
+      try
+      {
+        int index = 0;
+        MainFrame.txthreadtxt.setText("wait");
+        highbuffer = MainFrame.TBx.getShareData();				// Get data from share buffer
+        MainFrame.txthreadtxt.setText("running");
+        highbuffer.setID(0x01);                                                 // From Node 1
+        str = highbuffer.getData();
+        while (index != str.length()) {
+
+          if (nextNode) {
+            MainFrame.sendtab.cdatatxt.setText("");
+            nextNode = false;
+          }
+
+          if ((str.length() - index) > 7) {                                     // is data more than 7 byte ?
+            String data = "";
+            canbuffer.setID(highbuffer.getID());
+            canbuffer.setFlag(highbuffer.getFlag() | 0x80);			// enable More frame bit
+            data += (char) sequenceNumber.getSequence();
+            data += str.substring(index, index + 7);
+
+            canbuffer.setData(EncrypData(highbuffer.getID(), data));            // Encryption Data
+            index += 7;
+            MainFrame.Tx.setShareData(canbuffer);				// set to share variable
+          }
+          else {															// data less than 8 byte of last frame
+            String data = "";
+            canbuffer.setID(highbuffer.getID());
+            canbuffer.setFlag(highbuffer.getFlag() & 0x40);			// dissable More frame bit
+            data += (char) sequenceNumber.getSequence();
+            if ((highbuffer.getFlag() & 0x40) == 0x00) {
+                timeoutmanage.SetTimeout(sequenceNumber.getSequenceComp(), ConfigTab.timeout.getValue(), highbuffer.getID(), highbuffer.getFlag());  // Set Timeout and run
+              }
+            data += str.substring(index, str.length());
+            int length = data.length();
+            if (length < 8) {                                                   // Fill data to 8 Byte
+              for (int i = 0; i < 8 - length; i++) {
+                data += (char) 0x00;
+              }
+            }
+
+            if (!nextNode) {
+              nextNode = true;
+            }
+
+            canbuffer.setData(EncrypData(highbuffer.getID(), data));            // Encryption Data
+            index = str.length();
+            MainFrame.Tx.setShareData(canbuffer);				// set to share variable
+          }
+        }
+      }
+      catch (Exception e)
+      {
+        System.out.println("TX Thread throw : " + e);
+      }
+    }
+  }
+
+  private String EncrypData(int ID, String data) {
+    String encdata = "";
+    for (int i = 0; i < 8; i++)
+      cleartext[i] = data.charAt(i);
+    char cp[] = MainFrame.Des.Encryption(cleartext);                    // Encryption Data
+    for (int i = 0; i < 8; i++)
+      encdata += cp[i];
+    MainFrame.sendtab.cdatatxt.setText(MainFrame.sendtab.cdatatxt.getText() + encdata + "\n");
+    return encdata;
+  }
+}

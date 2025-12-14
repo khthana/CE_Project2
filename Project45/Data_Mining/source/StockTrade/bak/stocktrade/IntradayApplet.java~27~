@@ -1,0 +1,233 @@
+package stocktrade;
+
+import java.applet.Applet;
+import java.awt.*;
+import java.io.*;
+import java.net.*;
+import java.util.StringTokenizer;
+
+// Referenced classes of package com.settrade.chart:
+//            IntradayChart, IntradayChartModel, HeaderChart, AbstractChartModel
+
+public class IntradayApplet extends Applet
+    implements Runnable {
+
+    String symbolType;
+    String stockName;
+    String indexName;
+    String strHeaderImage;
+    String strBackgroundImage;
+    BorderLayout borderLayout1;
+    IntradayChart chart1;
+    IntradayChartModel model1;
+    Thread threadRefresh;
+    String dataFile;
+    String query;
+    String symbol;
+
+    Color appletBackground = null;
+    Color chartBackground = null;
+    Color borderColor = null;
+    Color baseLineColor = null;
+    Color gridColor = null;
+    Color valueColor = null;
+    Color volumeColor = null;
+
+    public String getParameter(String key, String defaultParam) {
+        String result = defaultParam;
+        if (getParameter(key) != null) {
+            result = getParameter(key);
+        }
+        return result;
+    }
+
+    public Color getColorParameter(String key, Color defaultColor) {
+        Color result = defaultColor;
+        if (getParameter(key) != null) {
+            try {
+                result = new Color(Integer.valueOf(
+                        getParameter(key).trim().substring(1), 16).intValue());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public IntradayApplet() {
+        borderLayout1 = new BorderLayout();
+        chart1 = new IntradayChart();
+        model1 = new IntradayChartModel();
+        threadRefresh = null;
+        dataFile = "/stocktrade/servlet/stocktrade.NewIntradayChartServlet";
+        query = "";
+        symbol = "";
+    }
+
+    public void init() {
+        appletBackground = getColorParameter("appletBackground", Color.white);
+        chartBackground = getColorParameter("chartBackground", Color.white);
+        borderColor = getColorParameter("borderColor", Color.black);
+        baseLineColor = getColorParameter("baseLineColor", Color.lightGray);    //?
+        gridColor = getColorParameter("gridColor", new Color(235, 233, 220));
+        valueColor = getColorParameter("valueColor", new Color(140, 69, 16));
+        volumeColor = getColorParameter("volumeColor", Color.green);      	    //?
+        symbolType = getParameter("type","s");
+        stockName = getParameter("stock","ASL").toUpperCase();
+        indexName = getParameter("indexName","ASL");
+
+        if(symbolType.equals("s")) {
+            symbol = stockName;
+            query = "?type=" + symbolType + "&stock=" + stockName;
+        } else {
+            symbol = indexName;
+            query = "?type=" + symbolType + "&index=" + indexName;
+        }
+        try {
+            jbInit();
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+        threadRefresh = new Thread(this);
+        threadRefresh.start();
+    }
+
+    private void jbInit() throws Exception {
+        MediaTracker mediatracker = new MediaTracker(this);
+        setBackground(Color.white);
+        setLayout(borderLayout1);
+        try {
+            strHeaderImage = getParameter("headerImage", null);
+            java.awt.Image image = getImage(getClass().getResource(strHeaderImage));
+            mediatracker.addImage(image, 0);
+            try {
+                mediatracker.waitForID(0);
+            } catch(InterruptedException interruptedexception) { }
+            HeaderChart headerchart = new HeaderChart(getBounds().width, 22, image, symbol);
+            headerchart.setFont(new Font("Arial", 1, 16));
+            add(headerchart, "North");
+            //
+            appletBackground = new Color(144, 151, 144);
+        } catch(NullPointerException ex) { }
+        try {
+            strBackgroundImage = getParameter("backgroundImage", null);
+            java.awt.Image image1 = getImage(getClass().getResource(strBackgroundImage));
+            mediatracker.addImage(image1, 0);
+            try {
+                mediatracker.waitForID(0);
+            } catch(InterruptedException interruptedexception1) { }
+            chart1.setBackgroundImage(image1);
+        } catch(NullPointerException ex) { }
+
+        chart1.setTopMargin(11);
+        chart1.setLeftMargin(30);
+        if(symbolType.equals("i"))
+            chart1.setRightMargin(8);
+        else
+            chart1.setRightMargin(24);
+        chart1.setBottomMargin(18);
+        chart1.setForeground(Color.black);
+        chart1.setBackground(appletBackground);
+        chart1.setBorderDrawAreaColor(borderColor);
+        chart1.setBackgroundDrawAreaColor(chartBackground);
+        chart1.setGridColor(gridColor);
+        chart1.setPriceColor(valueColor);
+        chart1.setLabelColor(Color.black);
+        chart1.setFont(new Font("Arial", 0, 10));
+        if(symbolType.equals("s"))
+            chart1.setChartType(1);
+        chart1.setModel(model1);
+        add(chart1, "Center");
+    }
+
+    public void destroy() {
+        try {
+            threadRefresh.interrupt();
+        }
+        catch(Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public void run() {
+        do {
+            String s = "";
+            try {
+                URL url =  new URL(getCodeBase().getProtocol(), getCodeBase().getHost(), getCodeBase().getPort(),dataFile + query);
+                BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(url.openStream()));
+                boolean flag = false;
+                boolean flag1 = false;
+                boolean flag2 = false;
+                boolean flag3 = false;
+                int i = 0;
+                int j = 0;
+                double d = 0.0D;
+                boolean flag4 = false;
+                int l = 0;
+                int i1 = 0;
+                boolean flag5 = false;
+                String s1;
+                if((s1 = bufferedreader.readLine()) != null) {
+                    String as[] = parsePoint(s1);
+                    i = Integer.parseInt(as[1]);
+                    j = Integer.parseInt(as[2]);
+                    if(i >= 17) {
+                        i = 16;
+                        j = 59;
+                    }
+                }
+                while((s1 = bufferedreader.readLine()) != null)  {
+                    String as1[] = parsePoint(s1);
+                    try {
+                        l = Integer.parseInt(as1[1]);
+                        i1 = Integer.parseInt(as1[2]);
+                        int j1 = Integer.parseInt(as1[3]);
+                        Double double1 = new Double(as1[0]);
+                        d = double1.doubleValue();
+                        int k = Integer.parseInt(as1[4]);
+                        if(l < 10 && i1 < 45)
+                            model1.setPreviousClose(d);
+                        else
+                            model1.setPoint(l, i1, d, k);
+                    }
+                    catch(Exception exception) {
+                        exception.printStackTrace();
+                    }
+                }
+                if(l != i || i1 != j)
+                    model1.setPoint(i, j, d, 0);
+                model1.fireChartDataChanged();
+            }
+            catch(UnknownHostException unknownhostexception) {
+              unknownhostexception.printStackTrace();
+                System.out.println("UHE");
+            }
+            catch(MalformedURLException malformedurlexception) {
+              malformedurlexception.printStackTrace();
+                System.out.println("MURLE");
+            }
+            catch(IOException ioexception) {
+              ioexception.printStackTrace();
+
+                System.out.println("IOE");
+            }
+            try {
+                Thread.sleep(60000L);
+            }
+            catch(InterruptedException interruptedexception) {
+                return;
+            }
+        } while(true);
+    }
+
+    private String[] parsePoint(String s) {
+        String as[] = new String[5];
+        StringTokenizer stringtokenizer = new StringTokenizer(s, "|");
+        int i = stringtokenizer.countTokens();
+        String as1[] = new String[i];
+        for(int j = 0; j < i; j++)
+            as1[j] = stringtokenizer.nextToken();
+
+        return as1;
+    }
+}

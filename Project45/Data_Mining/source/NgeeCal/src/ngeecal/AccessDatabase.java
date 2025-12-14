@@ -1,0 +1,71 @@
+package ngeecal;
+
+
+import java.sql.*;
+import java.util.Date;
+import java.util.Vector;
+
+public interface AccessDatabase {
+
+  // refer connect database
+  public void connect() throws Exception;
+  // refer close database connection
+  public void close();
+///////////////////////////////////////////////////////////////////////////////
+  // refer get ResultSet find data for make ema
+  public ResultSet findEma( String stock_code,String dmax,String dmin )
+      throws DataException;
+  // refer update ema of data
+  public boolean updateEma( String day_trade, String stock_code,
+                           float ema9, float ema12, float ema25,
+                           float ema75, float ema200,float macd,float sig )
+      throws DataException;
+///////////////////////////////////////////////////////////////////////////////
+
+  // refer get ResultSet find z_close for make RSI
+  public ResultSet findOnlyClose( String stock_code,String dmax,String dmin )
+      throws DataException;
+
+  public boolean updateRSI( String day_trade, String stock_code,
+                           float rsi)
+      throws DataException;
+///////////////////////////////////////////////////////////////////////////////
+  // refer find Per K
+ public ResultSet findPerK( String stock_code,String dmax,String dmin )
+     throws DataException;
+ // refer update %K
+  public boolean updatePerK( String day_trade, String stock_code,
+                           float perk)
+      throws DataException;
+///////////////////////////////////////////////////////////////////////////////
+  // refer find Per D
+ public ResultSet findPerD( String stock_code,String dmax,String dmin )
+     throws DataException;
+ // refer update %D
+  public boolean updatePerD( String day_trade, String stock_code,
+                           float perd)
+      throws DataException;
+///////////////////////////////////////////////////////////////////////////////
+  public ResultSet RangeTest( String stock_code, String dmax, String dmin )
+      throws DataException;
+///////////////////////////////////////////////////////////////////////////////
+  // refer update deciss
+  public boolean updateDeciss1( String day_trade, String stock_code,
+                        int deciss)
+     throws DataException;
+///////////////////////////////////////////////////////////////////////////////
+  public ResultSet findSETValue( String dmax,String dmin )
+     throws DataException;
+///////////////////////////////////////////////////////////////////////////////
+  public boolean updatePara( String day_trade, String stock_code,
+                         float slope, float del,int pred)
+    throws DataException;
+///////////////////////////////////////////////////////////////////////////////
+  // refer get ResultSet I SECTOR
+  public int findI_Sector( String stock_code )
+     throws DataException;
+///////////////////////////////////////////////////////////////////////////////
+  public Vector findNgee()
+     throws DataException;
+}
+

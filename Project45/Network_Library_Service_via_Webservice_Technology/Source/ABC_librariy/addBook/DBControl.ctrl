@@ -1,0 +1,124 @@
+package addBook; 
+
+import weblogic.jws.*; 
+import weblogic.jws.control.*; 
+import java.sql.SQLException; 
+import java.util.*;
+import center.book;
+
+/** 
+ * Defines a new database control. 
+ * 
+ * The @jws:connection tag indicates which WebLogic data source will be used by 
+ * this database control. Please change this to suit your needs. You can see a 
+ * list of available data sources by going to the WebLogic console in a browser 
+ * (typically http://localhost:7001/console) and clicking Services, JDBC, 
+ * Data Sources. 
+ * 
+ * @jws:connection data-source-jndi-name="MyDataSource" 
+ */ 
+public interface DBControl extends DatabaseControl 
+{ 
+    // Sample database function.  Uncomment to use 
+
+    // static public class Customer 
+    // { 
+    //   public int id; 
+    //   public String name; 
+    // } 
+    /*static public class book
+     { 
+        public int book_record; 
+        public String call_num; 
+        public int isbn;
+        public String author1;
+        public String author2=null;
+        public String author3=null;
+        public String book_name1;
+        public String book_name2;
+        public String printing;
+        public String year;
+        public int page;
+        public String title1;
+        public String title2;
+        public String words1;
+        public String words2;
+        public String words3;
+        public String words4;
+        public String place;
+        public int book_status;
+     }
+     * / 
+    // 
+    // /** 
+    //  * @jws:sql statement="SELECT ID, NAME FROM CUSTOMERS WHERE ID = {id}" 
+    //  */ 
+    // Customer findCustomer(int id);
+
+    // Add "throws SQLException" to request that SQLExeptions be thrown on errors.
+
+    /**
+     * @jws:sql statement::
+     *     insert into book (call_number, isbn, barcode, author, alt_author1, alt_author2,
+     *         title, alt_title, income_date, printing, printing_year, page, subject1, subject2,
+     *         subject3, series, place, book_status, discription)
+     *     values({call_num},{isbn},{barcode},{author},{alt_author1},{alt_author2},{title},{alt_title},
+     *      current_date(),{printing},{printing_year},{page},{subject1},{subject2},{subject3},{series},
+     *      {place},{book_status}, {discription})
+     * ::
+     */
+    public void insertBook(String call_num, String isbn, String barcode, String author, String alt_author1,
+        String alt_author2, String title, String alt_title, String printing,
+        String printing_year, String page, String subject1, String subject2, String subject3, String series,
+        String place, String book_status, String discription);
+
+    /**
+     * @jws:sql statement::
+     *     select max(book_record)
+     *     from book
+     * ::
+     */
+    public String get_max_bookrecord();
+
+    /**
+     * @jws:sql statement::
+     *     update book
+     *     set             call_number = {call_num},
+     *     		isbn = {isbn},
+     *     		barcode = {barcode},
+     *     		author = {author},
+     *     		alt_author1 = {alt_author1},
+     *     		alt_author2 = {alt_author2},
+     *     		title = {title},
+     *     		alt_title = {alt_title},
+     *     		income_date = {printing},
+     *     		printing = {printing},
+     *     		printing_year = {printing_year},
+     *     		page = {page},
+     *     		subject1 = {subject1},
+     *     		subject2 = {subject2},
+     *     		subject3 = {subject3},
+     *     		series = {series},
+     *     		place = {place},
+     *     		book_status = {book_status},
+     *     		username_use = "asd",
+     *     		borrow_date = "2001-01-04",
+     *     		return_date ="2001-01-14",
+     *                     discription = {discription}
+     *     where book_record = {book_record}
+     * ::
+     */
+    public void edit_databook(String book_record,String call_num, String isbn, String barcode, String author, String alt_author1,
+        String alt_author2, String title, String alt_title, String printing,
+        String printing_year, String page, String subject1, String subject2, String subject3, String series,
+        String place, String book_status, String discription, String username_use, String borrow_date, String return_date);
+
+    /**
+     * @jws:sql statement::
+     *     select *
+     *     from book
+     *     where book_record= {book_record}
+     * ::
+     */
+    public book get_book(String book_record);
+}

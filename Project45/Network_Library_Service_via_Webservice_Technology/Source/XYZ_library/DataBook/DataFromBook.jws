@@ -1,0 +1,135 @@
+package DataBook; 
+
+import weblogic.jws.control.JwsContext;
+import center.book_list;
+import center.book;
+
+public class DataFromBook
+{ 
+
+    /**
+     * @jws:control
+     */
+     
+    private DBControl DB;
+    /** @jws:context */ 
+    JwsContext context; 
+
+    /**
+     * @jws:operation
+     */
+    public book_list[] getBookTitleByCall_num(String keyCall_num)
+    {   
+        keyCall_num=keyCall_num+"%";
+        book_list temp[] = DB.selectBookTitleByCall_num(keyCall_num);
+        int x = temp.length;
+        book_list temp1[] = new book_list[x];
+        for (int i=0; i < x ; i++)
+        {   
+            temp1[i] = temp[i];
+            temp1[i].setLibrary("XYZ");
+        }
+        return temp;
+        //return DB.selectBookTitleByCall_num(keyCall_num);
+    }
+
+    /**
+     * @jws:operation
+     */
+    public book_list[] getBookTitleByISBN(String keyISBN)
+    {
+        book_list temp[] = DB.selectBookTitleByISBN(keyISBN);
+        int x = temp.length;
+        book_list temp1[] = new book_list[x];
+        for (int i=0; i < x ; i++)
+        {   
+            temp1[i] = temp[i];
+            temp1[i].setLibrary("XYZ");
+        }
+        return temp;
+        
+        //book_list temp[] = DB.selectBookTitleByISBN(keyISBN);
+        //temp.setLibrary("XYZ library");
+        //return temp;
+    }
+
+
+    /**
+     * @jws:operation
+     */
+    public book_list[] getBookTitleByAuthor(String keyAuthor)
+    {
+        keyAuthor="%"+keyAuthor+"%";
+        book_list temp[] = DB.selectBookTitleByAuthor(keyAuthor);
+        int x = temp.length;
+        book_list temp1[] = new book_list[x];
+        for (int i=0; i < x ; i++)
+        {   
+            temp1[i] = temp[i];
+            temp1[i].setLibrary("XYZ");
+        }
+        return temp;
+        //return DB.selectBookTitleByAuthor(keyAuthor);
+    }
+
+    /**
+     * @jws:operation
+     */
+    public book_list[] getBookTitleByTitle(String keyTitle)
+    {   
+        keyTitle="%"+keyTitle+"%";
+        book_list temp[]=DB.selectBookTitleByTitle(keyTitle);
+        int x = temp.length;
+        book_list temp1[] = new book_list[x];
+        for (int i=0; i < x ; i++)
+        {   
+            temp1[i] = temp[i];
+            temp1[i].setLibrary("XYZ");
+        }
+        return temp1;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public book_list[] getBookTitleBySubject(String keySubject)
+    {   
+        keySubject="%"+keySubject+"%";
+        book_list temp[] = DB.selectBookTitleBySubject(keySubject);
+        int x = temp.length;
+        book_list temp1[] = new book_list[x];
+        for (int i=0; i < x ; i++)
+        {   
+            temp1[i] = temp[i];
+            temp1[i].setLibrary("XYZ");
+        }
+        return temp;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public book_list[] getBookTitleByWord(String keyWord)
+    {
+        keyWord="%"+keyWord+"%";
+        book_list temp[] = DB.selectBookTitleByWord(keyWord);
+        int x = temp.length;
+        book_list temp1[] = new book_list[x];
+        for (int i=0; i < x ; i++)
+        {   
+            temp1[i] = temp[i];
+            temp1[i].setLibrary("XYZ");
+        }
+        return temp;
+        //return DB.selectBookTitleByWord(keyWord);
+    }
+
+
+    /**
+     * @jws:operation
+     */
+    public book getBookByBookRecord(String keyBookRecord)
+    {
+        return DB.selectBookByBookRecord(keyBookRecord);
+    }
+} 

@@ -1,0 +1,1179 @@
+package switchsim;
+
+import java.awt.*;
+import java.awt.image.*;
+import java.awt.event.*;
+import java.awt.Graphics;
+import javax.swing.*;
+import java.util.*;
+import javax.swing.JPanel;
+import com.borland.jbcl.layout.*;
+
+/**
+ * Title:        Switch Simulator
+ * Description:
+ * Copyright:    Copyright (c) 2003
+ * Company:      ISAG
+ * @author ammii
+ * @version 1.0
+ */
+
+public class Panel2 extends JPanel {
+  public static Vector vImgSwitch = new Vector();
+  public static Vector vImgCom = new Vector();
+  public static Vector vImgInt = new Vector();
+  XYLayout xYLayout1 = new XYLayout();
+//  JpopupMenu pm = new JpopupMenu();
+//  JMenuItem i1 = new JMenuItem();
+  SwitchImg simg;
+  ComImg cimg;
+  InterfaceImg intimg;
+  Image img;
+  int popup=0;
+  int dx,dy,ddx,ddy;
+  boolean pressin = false;
+  String adj = null;
+  JPopupMenu jPopupMenu1 = new JPopupMenu();
+  JPopupMenu jPopupMenu2 = new JPopupMenu();
+  JPopupMenu jPopupMenu3 = new JPopupMenu();
+  JMenuItem console;
+  JMenuItem macSwitch;
+  JMenuItem nameSwitch;
+  JMenuItem delSwitch;
+  JMenuItem macComp;
+  JMenuItem nameComp;
+  JMenuItem delComp;
+  JMenuItem connect;
+  JMenuItem delInt;
+
+  Vlan vlan1 = new Vlan();
+
+  public Panel2() {
+    try {
+      jbInit();
+    }
+    catch(Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+  void jbInit() throws Exception {
+    console = new JMenuItem("Console");
+    macSwitch = new JMenuItem("MAC-Address");
+    macComp = new JMenuItem("MAC-Address");
+    nameSwitch = new JMenuItem("Rename");
+    nameComp = new JMenuItem("Rename");
+    connect = new JMenuItem("Connection");
+    delSwitch  = new JMenuItem("Delete");
+    delComp  = new JMenuItem("Delete");
+    delInt = new JMenuItem("Delete");
+    delComp.setBackground(new Color(223, 223, 223));
+    nameSwitch.setBackground(new Color(223, 223, 223));
+    jPopupMenu3.setBackground(new Color(223, 223, 223));
+    macComp.setBackground(new Color(223, 223, 223));
+    jPopupMenu2.setBackground(new Color(223, 223, 223));
+    delInt.setBackground(new Color(223, 223, 223));
+    nameComp.setBackground(new Color(223, 223, 223));
+    delSwitch.setBackground(new Color(223, 223, 223));
+    connect.setBackground(new Color(223, 223, 223));
+    macSwitch.setBackground(new Color(223, 223, 223));
+    console.setBackground(new Color(223, 223, 223));
+    jPopupMenu1.setBackground(new Color(223, 223, 223));
+    console.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        console_actionPerformed(e);
+      }
+    });
+    connect.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        connect_actionPerformed(e);
+      }
+    });
+    macComp.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        macComp_actionPerformed(e);
+      }
+    });
+    delInt.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        delInt_actionPerformed(e);
+      }
+    });
+    macSwitch.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        macSwitch_actionPerformed(e);
+      }
+    });
+    delComp.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        delComp_actionPerformed(e);
+      }
+    });
+    delSwitch.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        delSwitch_actionPerformed(e);
+      }
+    });
+
+    this.setBackground(new Color(246, 250, 250));
+    this.setAlignmentX((float) 0.0);
+    this.setAlignmentY((float) 0.0);
+    this.setBorder(BorderFactory.createEtchedBorder());
+    this.setSize(700, 379);
+    this.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mousePressed(MouseEvent e) {
+        this_mousePressed(e);
+      }
+      public void mouseReleased(MouseEvent e) {
+        this_mouseReleased(e);
+      }
+    });
+    this.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+      public void mouseDragged(MouseEvent e) {
+        this_mouseDragged(e);
+      }
+    });
+    this.setLayout(xYLayout1);
+//    this.img = Toolkit.getDefaultToolkit().getImage(Panel2.class.getResource("switch.gif"));
+  }
+
+  public void paintComponent(Graphics g){
+//    System.out.println("Paint........");
+    super.paintComponent(g);
+    g.setColor(Color.black);
+//    g.drawImage(img,200,200,this);
+    for (int i=0; i<Frame1.vSwitch.size(); i++) {
+      Switch sw1 = (Switch)Frame1.vSwitch.elementAt(i);
+      SwitchImg simg1 = (SwitchImg)this.vImgSwitch.elementAt(i);
+
+      int x1 = (int)simg1.getXPos()+(simg1.getWide()/2);
+      int y1 = (int)simg1.getYPos()+(simg1.getHigh()/2);
+      for (int int1=0; int1<sw1.getVIntSwitch().size(); int1++) {
+        Interface i1 = (Interface)sw1.getVIntSwitch().elementAt(int1);
+        for (int j=i; j<Frame1.vSwitch.size(); j++) {
+          if (i1.getSwitch().equals((Switch)Frame1.vSwitch.elementAt(j))) {
+            Switch sw2 = (Switch)Frame1.vSwitch.elementAt(j);
+            SwitchImg simg2 = (SwitchImg)this.vImgSwitch.elementAt(j);
+            adj = "switch";
+
+            int x2 = (int)simg2.getXPos()+(simg2.getWide()/2);
+            int y2 = (int)simg2.getYPos()+(simg2.getHigh()/2);
+            for (int int2=0; int2<sw2.getVIntSwitch().size(); int2++) {
+              Interface i2 = (Interface)sw2.getVIntSwitch().elementAt(int2);
+              if (i2.getSwitch().equals(sw1)) {
+                // draw Interface
+                int xx1=0,xx2=0,yy1=0,yy2=0;
+                g.setColor(Color.black);
+                if ((i1.getStatus().equals("down"))||(i2.getStatus().equals("down"))){
+                  g.setColor(Color.red);
+                }
+                g.drawLine(x1-1,y1,x2-1,y2);
+                g.drawLine(x1,y1-1,x2,y2-1);
+                g.drawLine(x1,y1,x2,y2);
+                g.drawLine(x1+1,y1,x2+1,y2);
+                g.drawLine(x1,y1+1,x2,y2+1);
+                // draw Interface Name & Status
+                if ((x1 <= x2)&&(y1 <= y2)){
+                  if (x1 == x2){
+                    x2 = x1+1;
+                  }
+                  double m = (y2-y1)*1.0/(x2-x1);
+                  double b = ((x2*y1)-(x1*y2))*1.0/(x2-x1);
+  //                System.out.println("m="+m+"\nb="+b);
+                  double zeta = Math.atan(m);
+  //                System.out.println("zeta="+zeta);
+                  double tmpx1 = (20*Math.cos(zeta))+x1;
+                  double tmpy1 = (m*tmpx1)+b;
+                  int distance = (int)(Math.sqrt(((x2-x1)*(x2-x1))+((y2-y1)*(y2-y1))));
+                  double tmpx2 = ((distance-20)*Math.cos(zeta))+x1;
+                  double tmpy2 = (m*tmpx2)+b;
+                  xx1 = (int)tmpx1;
+                  yy1 = (int)tmpy1+30;
+                  xx2 = (int)tmpx2-70;
+                  yy2 = (int)tmpy2-50;
+  //                System.out.println("x1<x2&&y1<y2");
+                }
+                else if ((x1<=x2) && (y1>y2)) {
+                  if (x2 == x1){
+                    x2 = x1 + 1;
+                  }
+                  double m = (y2-y1)*1.0/(x2-x1);
+                  double b = ((x2*y1)-(x1*y2))*1.0/(x2-x1);
+                  double zeta = Math.atan(m);
+                  double tmpx1 = (20*Math.cos(zeta))+x1;
+                  double tmpy1 = (m*tmpx1)+b;
+                  int distance = (int)(Math.sqrt(((x2-x1)*(x2-x1))+((y2-y1)*(y2-y1))));
+                  double tmpx2 = ((distance-20)*Math.cos(zeta))+x1;
+                  double tmpy2 = (m*tmpx2)+b;
+  //                System.out.println("zeta="+zeta);
+//                  System.out.println(tmpy2);
+                  xx1 = (int)tmpx1;
+                  yy1 = (int)tmpy1;
+                  xx2 = (int)tmpx2-60;
+                  yy2 = (int)tmpy2-10;
+                }
+                else if ((x1 > x2)&&(y1 <= y2)){
+                  //swap
+                  int tempx1 = x2;
+                  int tempy1 = y2;
+                  int tempx2 = x1;
+                  int tempy2 = y1;
+                  //cal
+                  double m = (tempy2-tempy1)*1.0/(tempx2-tempx1);
+                  double b = ((tempx2*tempy1)-(tempx1*tempy2))*1.0/(tempx2-tempx1);
+  //                System.out.println("m="+m+"\nb="+b);
+                  double zeta = Math.atan(m);
+  //                System.out.println("zeta="+zeta);
+                  double tmpx1 = (20*Math.cos(zeta))+tempx1;
+                  double tmpy1 = (m*tmpx1)+b;
+                  int distance = (int)(Math.sqrt(((tempx2-tempx1)*(tempx2-tempx1))+((tempy2-tempy1)*(tempy2-tempy1))));
+                  double tmpx2 = ((distance-20)*Math.cos(zeta))+tempx1;
+                  double tmpy2 = (m*tmpx2)+b;
+                  xx1 = (int)tmpx2-70;
+                  yy1 = (int)tmpy2+30;
+                  xx2 = (int)tmpx1;
+                  yy2 = (int)tmpy1-50;
+  //                System.out.println("x1>x2&&y1<y2");
+                }
+                else {
+                  // x1 > x2 && y1 > y2
+                  //swap between point
+                  int tempx1 = x2;
+                  int tempy1 = y2;
+                  int tempx2 = x1;
+                  int tempy2 = y1;
+                  //cal
+                  double m = (tempy2-tempy1)*1.0/(tempx2-tempx1);
+                  double b = ((tempx2*tempy1)-(tempx1*tempy2))*1.0/(tempx2-tempx1);
+  //                System.out.println("m="+m+"\nb="+b);
+                  double zeta = Math.atan(m);
+  //                System.out.println("zeta="+zeta);
+                  double tmpx1 = (20*Math.cos(zeta))+tempx1;
+                  double tmpy1 = (m*tmpx1)+b;
+                  int distance = (int)(Math.sqrt(((tempx2-tempx1)*(tempx2-tempx1))+((tempy2-tempy1)*(tempy2-tempy1))));
+                  double tmpx2 = ((distance-20)*Math.cos(zeta))+tempx1;
+                  double tmpy2 = (m*tmpx2)+b;
+                  xx1 = (int)tmpx2-60;
+                  yy1 = (int)tmpy2;
+                  xx2 = (int)tmpx1-10;
+                  yy2 = (int)tmpy1-15;
+  //                System.out.println("x1>x2&&y1>y2");
+                }
+
+                g.setColor(Color.blue);
+                g.drawString(i1.getNameInt(),xx1+20,yy1-15);
+                if (i1.getStatus().equalsIgnoreCase("down")){
+                  g.setColor(Color.red);
+                  g.drawString(i1.getStatus(),xx1+20,yy1);
+                  g.setColor(Color.black);
+                }
+                g.setColor(Color.blue);
+                g.drawString(i2.getNameInt(),xx2+20,yy2+35);
+                //network down then print string
+                if (i2.getStatus().equalsIgnoreCase("down")){
+                  g.setColor(Color.red);
+                  g.drawString(i2.getStatus(),xx2+20,yy2+50);
+                  g.setColor(Color.black);
+                }
+              }
+            }
+          }
+        }
+      }
+      for (int int1=0; int1<sw1.getVIntCom().size(); int1++) {
+        Interface i1 = (Interface)sw1.getVIntCom().elementAt(int1);
+        for (int j=0; j<Frame1.vWorkstation.size(); j++) {
+          if (i1.getCom().equals((Workstation)Frame1.vWorkstation.elementAt(j))) {
+            Workstation com = (Workstation)Frame1.vWorkstation.elementAt(j);
+            ComImg cimg = (ComImg)this.vImgCom.elementAt(j);
+            adj = "com";
+
+            int x2 = (int)cimg.getXPos()+(cimg.getWide()/2);
+            int y2 = (int)cimg.getYPos()+(cimg.getHigh()/2);
+            // draw Interface
+                int xx1=0,xx2=0,yy1=0,yy2=0;
+                g.setColor(Color.black);
+                if (i1.getStatus().equals("down")){
+                  g.setColor(Color.red);
+                }
+                g.drawLine(x1-1,y1,x2-1,y2);
+                g.drawLine(x1,y1-1,x2,y2-1);
+                g.drawLine(x1,y1,x2,y2);
+                g.drawLine(x1+1,y1,x2+1,y2);
+                g.drawLine(x1,y1+1,x2,y2+1);
+                // draw Interface Name & Status
+                if ((x1 <= x2)&&(y1 <= y2)){
+                  if (x1 == x2){
+                    x2 = x1+1;
+                  }
+                  double m = (y2-y1)*1.0/(x2-x1);
+                  double b = ((x2*y1)-(x1*y2))*1.0/(x2-x1);
+  //                System.out.println("m="+m+"\nb="+b);
+                  double zeta = Math.atan(m);
+  //                System.out.println("zeta="+zeta);
+                  double tmpx1 = (20*Math.cos(zeta))+x1;
+                  double tmpy1 = (m*tmpx1)+b;
+                  xx1 = (int)tmpx1;
+                  yy1 = (int)tmpy1+30;
+  //                System.out.println("x1<x2&&y1<y2");
+                }
+                else if ((x1<=x2) && (y1>y2)) {
+                  if (x2 == x1){
+                    x2 = x1 + 1;
+                  }
+                  double m = (y2-y1)*1.0/(x2-x1);
+                  double b = ((x2*y1)-(x1*y2))*1.0/(x2-x1);
+                  double zeta = Math.atan(m);
+                  double tmpx1 = (20*Math.cos(zeta))+x1;
+                  double tmpy1 = (m*tmpx1)+b;
+                  xx1 = (int)tmpx1;
+                  yy1 = (int)tmpy1;
+                }
+                else if ((x1 > x2)&&(y1 <= y2)){
+                  //swap
+                  int tempx1 = x2;
+                  int tempy1 = y2;
+                  int tempx2 = x1;
+                  int tempy2 = y1;
+                  //cal
+                  double m = (tempy2-tempy1)*1.0/(tempx2-tempx1);
+                  double b = ((tempx2*tempy1)-(tempx1*tempy2))*1.0/(tempx2-tempx1);
+  //                System.out.println("m="+m+"\nb="+b);
+                  double zeta = Math.atan(m);
+  //                System.out.println("zeta="+zeta);
+                  double tmpx1 = (20*Math.cos(zeta))+tempx1;
+                  double tmpy1 = (m*tmpx1)+b;
+                  int distance = (int)(Math.sqrt(((tempx2-tempx1)*(tempx2-tempx1))+((tempy2-tempy1)*(tempy2-tempy1))));
+                  double tmpx2 = ((distance-20)*Math.cos(zeta))+tempx1;
+                  double tmpy2 = (m*tmpx2)+b;
+                  xx1 = (int)tmpx2-70;
+                  yy1 = (int)tmpy2+30;
+                  xx2 = (int)tmpx1;
+                  yy2 = (int)tmpy1-50;
+  //                System.out.println("x1>x2&&y1<y2");
+                }
+                else {
+                  // x1 > x2 && y1 > y2
+                  //swap between point
+                  int tempx1 = x2;
+                  int tempy1 = y2;
+                  int tempx2 = x1;
+                  int tempy2 = y1;
+                  //cal
+                  double m = (tempy2-tempy1)*1.0/(tempx2-tempx1);
+                  double b = ((tempx2*tempy1)-(tempx1*tempy2))*1.0/(tempx2-tempx1);
+  //                System.out.println("m="+m+"\nb="+b);
+                  double zeta = Math.atan(m);
+  //                System.out.println("zeta="+zeta);
+                  double tmpx1 = (20*Math.cos(zeta))+tempx1;
+                  double tmpy1 = (m*tmpx1)+b;
+                  int distance = (int)(Math.sqrt(((tempx2-tempx1)*(tempx2-tempx1))+((tempy2-tempy1)*(tempy2-tempy1))));
+                  double tmpx2 = ((distance-20)*Math.cos(zeta))+tempx1;
+                  double tmpy2 = (m*tmpx2)+b;
+                  xx1 = (int)tmpx2-60;
+                  yy1 = (int)tmpy2;
+                  xx2 = (int)tmpx1-10;
+                  yy2 = (int)tmpy1-15;
+  //                System.out.println("x1>x2&&y1>y2");
+                }
+
+                g.setColor(Color.blue);
+                g.drawString(i1.getNameInt(),xx1+20,yy1-15);
+                if (i1.getStatus().equalsIgnoreCase("down")){
+                  g.setColor(Color.red);
+                  g.drawString(i1.getStatus(),xx1+20,yy1);
+                  g.setColor(Color.black);
+                }
+          }
+        }
+      }
+      g.setColor(Color.black);
+      g.drawImage(simg1.getImage(),simg1.getXPos(),simg1.getYPos(),this);
+      g.drawString(sw1.getName(),((simg1.getXPos()+(simg1.getWide())/2)-(sw1.getName().length()*7/2)),(simg1.getYPos()+simg1.getHigh()));
+//      g.drawString(sw1.getName(),(int)((simg1.getWide()/2)-(sw1.getName().length()*6/2)+(simg1.getXPos())),(int)(simg1.getYPos()+simg1.getHigh()));
+    }
+    for (int i=0; i<Frame1.vWorkstation.size(); i++) {
+      Workstation com = (Workstation)Frame1.vWorkstation.elementAt(i);
+      ComImg cimg = (ComImg)this.vImgCom.elementAt(i);
+      g.setColor(Color.black);
+      g.drawImage(cimg.getImage(),cimg.getXPos(),cimg.getYPos(),this);
+      g.drawString(com.getName(),cimg.getXPos()-12,(cimg.getYPos()+cimg.getHigh()));
+    }
+    if (Frame1.drawInt) {
+      if ((simg!=null) && (intimg!=null)) {
+        for (int i=0; i<Frame1.vSwitch.size(); i++) {
+          Switch sw_tmp = (Switch)Frame1.vSwitch.elementAt(i);
+          if (this.vImgSwitch.elementAt(i).equals(simg)) {
+            g.setColor(Color.gray);
+            g.drawLine(intimg.getXPos1()-1,intimg.getYPos1(),intimg.getXPos2()-1,intimg.getYPos2());
+            g.drawLine(intimg.getXPos1(),intimg.getYPos1()-1,intimg.getXPos2(),intimg.getYPos2()-1);
+            g.drawLine(intimg.getXPos1(),intimg.getYPos1(),intimg.getXPos2(),intimg.getYPos2());
+            g.drawLine(intimg.getXPos1()+1,intimg.getYPos1(),intimg.getXPos2()+1,intimg.getYPos2());
+            g.drawLine(intimg.getXPos1(),intimg.getYPos1()+1,intimg.getXPos2(),intimg.getYPos2()+1);
+            g.setColor(Color.black);
+            g.drawImage(simg.getImage(),simg.getXPos(),simg.getYPos(),this);
+            g.drawString(sw_tmp.getName(),((simg.getXPos()+(simg.getWide())/2)-(sw_tmp.getName().length()*7/2)),(simg.getYPos()+simg.getHigh()));
+//            g.drawString(sw_tmp.getName(),simg.getXPos(),(simg.getYPos()+simg.getHigh()));
+            g.setColor(Color.black);
+          }
+        }
+      }
+    }
+  }
+
+  void this_mouseDragged(MouseEvent e) {
+    if (pressin) {
+      if (!Frame1.drawInt){
+        // in  Frame
+        dx = e.getX();
+        dy = e.getY();
+//        int ddx = simg.getXPos()-e.getX();
+//        int ddy = simg.getYPos()-e.getY();
+        if ((cimg!=null) && (dx+ddx < this.getWidth()-52) && (dx+ddx >= 14)&& (dy+ddy < this.getHeight()-44) && (dy+ddy >= 2)){
+          //setposition
+          cimg.setXPos(e.getX()+ddx);
+          cimg.setYPos(e.getY()+ddy);
+          for (int i=0; i<this.vImgInt.size(); i++) {
+            InterfaceImg iimg = (InterfaceImg)this.vImgInt.elementAt(i);
+            if (iimg.getType()==2) {
+              iimg.setXPos2(cimg.getXPos()+(int)(cimg.getWide()/2));
+              iimg.setYPos2(cimg.getYPos()+(int)(cimg.getHigh()/2));
+            }
+          }
+          repaint();
+        }
+        else if ((simg!=null) && (dx+ddx < this.getWidth()-60) && (dx+ddx >= 2) && (dy+ddy < this.getHeight()-40) && (dy+ddy >= 2)){
+          //setposition
+          simg.setXPos(e.getX()+ddx);
+          simg.setYPos(e.getY()+ddy);
+          for (int i=0; i<this.vImgInt.size(); i++) {
+            InterfaceImg iimg = (InterfaceImg)this.vImgInt.elementAt(i);
+            if (iimg.getType()==1) {
+              for (int j=0; j<Frame1.vSwitch.size(); j++) {
+                SwitchImg si = (SwitchImg)this.vImgSwitch.elementAt(j);
+                if (si.equals(simg)) {
+                  Switch sw = (Switch)Frame1.vSwitch.elementAt(j);
+                  for (int k=0; k<sw.getVIntSwitch().size(); k++) {
+                    Interface inf = (Interface)sw.getVIntSwitch().elementAt(k);
+                    if (inf.equals(iimg.getInt1())) {
+                      iimg.setXPos1(simg.getXPos()+(int)(simg.getWide()/2));
+                      iimg.setYPos1(simg.getYPos()+(int)(simg.getHigh()/2));
+                    }
+                    else if (inf.equals(iimg.getInt2())) {
+                      iimg.setXPos2(simg.getXPos()+(int)(simg.getWide()/2));
+                      iimg.setYPos2(simg.getYPos()+(int)(simg.getHigh()/2));
+                    }
+                  }
+                }
+              }
+            }
+            else {
+              for (int j=0; j<Frame1.vSwitch.size(); j++) {
+                SwitchImg si = (SwitchImg)this.vImgSwitch.elementAt(j);
+                if (si.equals(simg)) {
+                  Switch sw = (Switch)Frame1.vSwitch.elementAt(j);
+                  for (int k=0; k<sw.getVIntCom().size(); k++) {
+                    Interface inf = (Interface)sw.getVIntCom().elementAt(k);
+                    if (inf.equals(iimg.getInt1())) {
+                      iimg.setXPos1(simg.getXPos()+(int)(simg.getWide()/2));
+                      iimg.setYPos1(simg.getYPos()+(int)(simg.getHigh()/2));
+                    }
+                  }
+                }
+              }
+            }
+          }
+          repaint();
+        }
+      }
+      else if ((Frame1.drawInt) && (pressin) && (simg!=null)) {
+        intimg.setXPos2(e.getX());
+        intimg.setYPos2(e.getY());
+        repaint();
+      }
+    }
+  }
+
+  void this_mousePressed(MouseEvent e) {
+    //Left Click
+    if(e.getModifiers()==16){
+      int i=0,j=0;
+      pressin = false;
+      cimg = null;
+      simg = null;
+        while((i < vImgCom.size()) && (!pressin)){
+          cimg = (ComImg)vImgCom.elementAt(i);
+          //position at mouse press
+          dx = e.getX();
+          dy = e.getY();
+          if ((dx < cimg.getXPos()+cimg.getWide()) && (dx > cimg.getXPos()) && (dy > cimg.getYPos()) && (dy < cimg.getYPos() + cimg.getHigh())){
+            pressin = true;
+            ddx = cimg.getXPos()-e.getX();
+            ddy = cimg.getYPos()-e.getY();
+          }
+          else cimg = null;
+          i++;
+        }
+        while((j < vImgSwitch.size()) && (!pressin)){
+          simg = (SwitchImg)vImgSwitch.elementAt(j);
+          //position at mouse press
+          dx = e.getX();
+          dy = e.getY();
+          if ((dx < simg.getXPos()+simg.getWide()) && (dx > simg.getXPos()) && (dy > simg.getYPos()) && (dy < simg.getYPos() + simg.getHigh())){
+            pressin = true;
+            ddx = simg.getXPos()-e.getX();
+            ddy = simg.getYPos()-e.getY();
+          }
+          else simg = null;
+          j++;
+        }
+      if (Frame1.drawInt) {
+        pressin = true;
+        if (simg!=null) {
+          intimg = new InterfaceImg();
+          intimg.setXPos1((int)simg.getXPos()+(simg.getWide()/2));
+          intimg.setYPos1((int)simg.getYPos()+(simg.getHigh()/2));
+        }
+      }
+    }
+    // Right Click
+    else {
+//      System.out.println("show menu");
+      System.out.println(e.getX()+" - "+e.getY());
+      int i=0;
+      int j=0;
+      int k=0;
+      cimg = null;
+      simg = null;
+      popup=0;
+        // Check Click on Workstation
+        while((i < vImgCom.size()) && (popup==0)){
+          cimg = (ComImg)vImgCom.elementAt(i);
+          //position at mouse press
+          dx = e.getX();
+          dy = e.getY();
+          if ((dx < cimg.getXPos()+cimg.getWide()) && (dx > cimg.getXPos()) && (dy > cimg.getYPos()) && (dy < cimg.getYPos() + cimg.getHigh())){
+            popup = 2;
+            ddx = cimg.getXPos()-e.getX();
+            ddy = cimg.getYPos()-e.getY();
+          }
+          else cimg = null;
+          i++;
+        }
+        // Check Click on Switch
+        while((j < vImgSwitch.size()) && (popup==0)){
+          simg = (SwitchImg)vImgSwitch.elementAt(j);
+          //position at mouse press
+          dx = e.getX();
+          dy = e.getY();
+          if ((dx < simg.getXPos()+simg.getWide()) && (dx > simg.getXPos()) && (dy > simg.getYPos()) && (dy < simg.getYPos() + simg.getHigh())){
+            popup = 1;
+            ddx = simg.getXPos()-e.getX();
+            ddy = simg.getYPos()-e.getY();
+          }
+          else simg = null;
+          j++;
+        }
+        // Check Click on Interface
+        while((k < vImgInt.size()) && (popup==0)){
+          intimg = (InterfaceImg)vImgInt.elementAt(k);
+          //position at mouse press
+          dx = e.getX();
+          dy = e.getY();
+          if (intimg.isSelected(dx,dy)){
+            popup = 3;
+            System.out.println("Selected");
+//            ddx = cimg.getXPos()-e.getX();
+//            ddy = cimg.getYPos()-e.getY();
+          }
+          else intimg = null;
+          k++;
+        }
+    }
+    if (e.getClickCount()==2) {
+      if (simg!=null) {
+        int i=0;
+        while (i<Frame1.vSwitch.size()) {
+          SwitchImg s_img = (SwitchImg)this.vImgSwitch.elementAt(i);
+          if (s_img.equals(simg)) {
+            SwitchConsole scon = (SwitchConsole)Frame1.vConsole.elementAt(i);
+            scon.setVisible(true);
+          }
+          i++;
+        }
+      }
+      else {
+        int num=0;
+        for (int i=0; i<this.vImgInt.size(); i++) {
+          InterfaceImg iimg = (InterfaceImg)this.vImgInt.elementAt(i);
+          if (iimg.getType()==2) {
+            num++;
+          }
+        }
+        System.out.println("num = "+num);
+      }
+/*      System.out.println("\n== "+e.getX()+" : "+e.getY()+" ==");
+      for (int k=0; k<this.vImgInt.size(); k++) {
+      InterfaceImg intimg = (InterfaceImg)this.vImgInt.elementAt(k);
+      if (intimg.getType()==1) {
+        for (int i=0; i<Frame1.vSwitch.size(); i++) {
+          Switch sw1 = (Switch)Frame1.vSwitch.elementAt(i);
+          SwitchImg simg1 = (SwitchImg)this.vImgSwitch.elementAt(i);
+          for (int j=0; j<sw1.getVIntSwitch().size(); j++) {
+            Interface inf1 = (Interface)sw1.getVIntSwitch().elementAt(j);
+            for (int m=0; m<Frame1.vSwitch.size(); m++) {
+              Switch sw2 = (Switch)Frame1.vSwitch.elementAt(m);
+              SwitchImg simg2 = (SwitchImg)this.vImgSwitch.elementAt(m);
+              for (int n=0; n<sw2.getVIntSwitch().size(); n++) {
+                Interface inf2 = (Interface)sw2.getVIntSwitch().elementAt(n);
+                if ((intimg.getInt1().equals(inf1)) && (intimg.getInt2().equals(inf2))) {
+                  System.out.println("["+k+"] "+sw1.getName()+" connect to "+sw2.getName());
+                  System.out.print((simg1.getXPos()+simg1.getWide()/2)+" , "+(simg1.getYPos()+simg1.getHigh()/2)+" - ");
+                  System.out.println((simg2.getXPos()+simg2.getWide()/2)+" , "+(simg2.getYPos()+simg2.getHigh()/2));
+                  System.out.println(intimg.getXPos1()+" , "+intimg.getYPos1()+" - "+intimg.getXPos2()+" , "+intimg.getYPos2());
+                }
+                else if ((intimg.getInt1().equals(inf2)) && (intimg.getInt2().equals(inf1))) {
+                  System.out.println("["+k+"] "+sw2.getName()+" connect to "+sw1.getName());
+                  System.out.print((simg2.getXPos()+simg2.getWide()/2)+" , "+(simg2.getYPos()+simg2.getHigh()/2)+" - ");
+                  System.out.println((simg1.getXPos()+simg1.getWide()/2)+" , "+(simg1.getYPos()+simg1.getHigh()/2));
+                  System.out.println(intimg.getXPos1()+" , "+intimg.getYPos1()+" - "+intimg.getXPos2()+" , "+intimg.getYPos2());
+//                  found = true;
+                }
+              }
+            }
+          }
+        }
+      }
+      else if (intimg.getType()==2) {
+        for (int i=0; i<Frame1.vSwitch.size(); i++) {
+          Switch sw = (Switch)Frame1.vSwitch.elementAt(i);
+          for (int j=0; j<sw.getVIntCom().size(); j++) {
+            Interface inf = (Interface)sw.getVIntCom().elementAt(j);
+            if ((inf.equals(intimg.getInt1())) || (inf.equals(intimg.getInt2()))) {
+              Workstation com = inf.getCom();
+              com.setConnection(false);
+              sw.getVIntCom().removeElementAt(j);
+              inf.setComInt(null);
+//              found = true;
+            }
+          }
+        }
+      }
+    }*/
+    }
+  }
+
+  void this_mouseReleased(MouseEvent e) {
+    boolean drawn = false;
+    int intx2,inty2;
+    Switch sw1=null,sw2=null;
+    Workstation com;
+    SwitchImg si = null;
+    ComImg ci = null;
+//    System.out.println("Releasing");
+    // Check Right Click
+    if (e.isPopupTrigger()) {
+      if (popup==1) {
+        jPopupMenu1.add(console);
+        jPopupMenu1.add(macSwitch);
+//        jPopupMenu1.add(nameSwitch);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              jPopupMenu1.add(delSwitch);
+        jPopupMenu1.show(e.getComponent(), e.getX(), e.getY());
+      }
+      else if (popup==2) {
+        jPopupMenu2.add(macComp);
+//        jPopupMenu2.add(nameComp);
+        jPopupMenu2.add(delComp);
+        jPopupMenu2.show(e.getComponent(), e.getX(), e.getY());
+      }
+      else if (popup==3) {
+        jPopupMenu3.add(connect);
+        jPopupMenu3.add(delInt);
+        jPopupMenu3.show(e.getComponent(), e.getX(), e.getY());
+        System.out.println("Interface popup!!!");
+      }
+      popup=0;
+    }
+    // Check "Draw Interface"
+    if ((Frame1.drawInt) && (simg!=null)) {
+      int x=0;
+      for (int i=0; i<Frame1.vSwitch.size(); i++) {
+        sw1 = (Switch)Frame1.vSwitch.elementAt(i);
+        if (this.vImgSwitch.elementAt(i).equals(simg)) {
+          x=i;
+          i=Frame1.vSwitch.size();
+        }
+      }
+      int i=0,j=0;
+      while ((i < vImgSwitch.size()) && (!drawn)) {
+//        System.out.println("Switch press");
+        sw2 = (Switch)Frame1.vSwitch.elementAt(i);
+        if ((!sw1.equals(sw2)) && (canConnect(sw1,sw2))) {
+          si = (SwitchImg)vImgSwitch.elementAt(i);
+          //position at mouse press
+          intx2 = e.getX();
+          inty2 = e.getY();
+//          System.out.println(e.getX()+"  "+e.getY());
+//          System.out.println(si.getXPos()+","+(si.getXPos()+si.getWide()));
+//          System.out.println(si.getYPos()+","+(si.getYPos()+si.getHigh()));
+          if ((intx2 < si.getXPos()+si.getWide()) && (intx2 > si.getXPos()) && (inty2 > si.getYPos()) && (inty2 < si.getYPos() + si.getHigh())){
+            for (int a=0; a<sw1.getVIntSort().size(); a++) {
+              Interface i1 = (Interface)sw1.getVIntSort().elementAt(a);
+              if ((i1.getCom()==null) && (i1.getSwitch()==null)) {
+                for (int b=0; b<sw2.getVIntSort().size(); b++) {
+                  Interface i2 = (Interface)sw2.getVIntSort().elementAt(b);
+                  if ((i2.getCom()==null) && (i2.getSwitch()==null)) {
+//                    System.out.println("Switch pass");
+                    i1.addNewIntSwitch(sw1,i1.getNameInt(),sw2);
+                    i2.addNewIntSwitch(sw2,i2.getNameInt(),sw1);
+
+                    Frame1.stp.tc_add_interface(sw1, i1);
+
+                    Panel1 p1 = (Panel1)Panel3.vStatus.elementAt(x);
+                    Panel1 p2 = (Panel1)Panel3.vStatus.elementAt(i);
+                    p1.showDetail();
+                    p2.showDetail();
+                    intimg.setIntSwToSw();
+                    if (x<i) {
+                      intimg.setInt1(i1);
+                      intimg.setInt2(i2);
+                      intimg.setXPos1(simg.getXPos()+(int)(simg.getWide()/2));
+                      intimg.setYPos1(simg.getYPos()+(int)(simg.getHigh()/2));
+                      intimg.setXPos2(si.getXPos()+(int)(si.getWide()/2));
+                      intimg.setYPos2(si.getYPos()+(int)(si.getHigh()/2));
+                    }
+                    else {
+                      intimg.setInt1(i2);
+                      intimg.setInt2(i1);
+                      intimg.setXPos1(si.getXPos()+(int)(si.getWide()/2));
+                      intimg.setYPos1(si.getYPos()+(int)(si.getHigh()/2));
+                      intimg.setXPos2(simg.getXPos()+(int)(simg.getWide()/2));
+                      intimg.setYPos2(simg.getYPos()+(int)(simg.getHigh()/2));
+                    }
+                    this.vImgInt.addElement(intimg);
+
+                    a=sw1.getVIntSort().size();
+                    b=sw2.getVIntSort().size();
+                    Frame1.jToggleButton1.setSelected(false);
+                    Frame1.jToggleButton1.setIcon(Frame1.iInterface);
+                    Frame1.drawInt=false;
+                    drawn=true;
+//                    repaint();
+                  }
+                }
+              }
+            }
+          }
+          else {
+            si = null;
+          }
+        }
+        i++;
+      }
+      while ((j < vImgCom.size()) && (!drawn)) {
+//        System.out.println("press");
+        com = (Workstation)Frame1.vWorkstation.elementAt(j);
+        cimg = (ComImg)vImgCom.elementAt(j);
+        //position at mouse press
+        intx2 = e.getX();
+        inty2 = e.getY();
+//        System.out.println(e.getX()+"  "+e.getY());
+//        System.out.println(cimg.getXPos()+","+(cimg.getXPos()+cimg.getWide()));
+//        System.out.println(cimg.getYPos()+","+(cimg.getYPos()+cimg.getHigh()));
+        if ((!com.getConnection()) && (intx2 < cimg.getXPos()+cimg.getWide()) && (intx2 > cimg.getXPos()) && (inty2 > cimg.getYPos()) && (inty2 < cimg.getYPos() + cimg.getHigh())){
+          for (int a=0; a<sw1.getVIntSort().size(); a++) {
+            Interface intf = (Interface)sw1.getVIntSort().elementAt(a);
+            if ((intf.getCom()==null) && (intf.getSwitch()==null)) {
+              intf.addNewIntCom(sw1,intf.getNameInt(),com);
+
+              Panel1 p1 = (Panel1)Panel3.vStatus.elementAt(x);
+              p1.showDetail();
+
+              com.setConnection(true);
+              a=sw1.getVIntSort().size();
+
+              intimg.setIntSwToCom();
+              intimg.setInt1(intf);
+              intimg.setWorkstation(com);
+              intimg.setXPos1(simg.getXPos()+(int)(simg.getWide()/2));
+              intimg.setYPos1(simg.getYPos()+(int)(simg.getHigh()/2));
+              intimg.setXPos2(cimg.getXPos()+(int)(cimg.getWide()/2));
+              intimg.setYPos2(cimg.getYPos()+(int)(cimg.getHigh()/2));
+              this.vImgInt.addElement(intimg);
+
+              Frame1.jToggleButton1.setSelected(false);
+              Frame1.jToggleButton1.setIcon(Frame1.iInterface);
+              Frame1.drawInt=false;
+              drawn=true;
+//              repaint();
+            }
+          }
+        }
+        else {
+          cimg = null;
+        }
+        j++;
+      }
+    }
+    pressin = false;
+    Frame1.jToggleButton1.setSelected(false);
+    Frame1.jToggleButton1.setIcon(Frame1.iInterface);
+    Frame1.drawInt=false;
+    repaint();
+  }
+  public void repaintView() {
+    repaint();
+  }
+
+  void delSwitch_actionPerformed(ActionEvent e) {
+//----------------------- Stop (Suspend) Learning ------------------------------
+    Frame1.learn.suspendLearning();
+    System.out.println("Suspend Address Learning...");
+//------------------------------------------------------------------------------
+    int numdel = 0;
+    for (int i=0; i<Frame1.vSwitch.size(); i++) {
+      Switch sw = (Switch)Frame1.vSwitch.elementAt(i);
+      try {
+        SwitchImg swimg = (SwitchImg)this.vImgSwitch.elementAt(i);
+        if (swimg.equals(simg)) {
+          numdel = i;
+          System.out.println("Delete Switch: "+sw.getName());
+          for (int j=0; j<Frame1.vSwitch.size(); j++) {
+            Switch sw_tmp = (Switch)Frame1.vSwitch.elementAt(j);
+            for (int k=0; k<sw_tmp.getVIntSwitch().size(); k++) {
+              Interface inf = (Interface)sw_tmp.getVIntSwitch().elementAt(k);
+              if (inf.getSwitch().equals(sw)) {
+                System.out.println(sw_tmp.getName()+" delete int "+sw.getName());
+                sw_tmp.getVIntSwitch().removeElementAt(k);
+                inf.removeSwitchInt();
+                k--;
+              }
+            }
+          }
+          for (int j=0; j<sw.getVIntCom().size(); j++) {
+            Interface inf = (Interface)sw.getVIntCom().elementAt(j);
+            for (int k=0; k<Frame1.vWorkstation.size(); k++) {
+              Workstation com = (Workstation)Frame1.vWorkstation.elementAt(k);
+              if (com.equals(inf.getCom())) {
+                com.setConnection(false);
+              }
+            }
+          }
+          for (int j=0; j<this.vImgInt.size(); j++) {
+            InterfaceImg iimg = (InterfaceImg)this.vImgInt.elementAt(j);
+            int k=0,m=0;
+            while (k<sw.getVIntSort().size()) {
+              Interface inf = (Interface)sw.getVIntSort().elementAt(k);
+              if ((iimg.getInt1().equals(inf)) || (iimg.getInt2().equals(inf))) {
+                this.vImgInt.removeElementAt(j);
+                j--;
+                k=sw.getVIntSort().size();
+              }
+              k++;
+            }
+/*            while (k<sw.getVIntSwitch().size()) {
+              Interface inf = (Interface)sw.getVIntSwitch().elementAt(k);
+              if (iimg.getType()==1) {
+                if ((iimg.getInt1().equals(inf)) || (iimg.getInt2().equals(inf))) {
+                  this.vImgInt.removeElementAt(j);
+                  j--;
+                  k=sw.getVIntSwitch().size();
+                  m=sw.getVIntCom().size();
+                }
+              }
+              k++;
+            }
+            while (m<sw.getVIntCom().size()) {
+              Interface inf = (Interface)sw.getVIntCom().elementAt(m);
+              if (iimg.getType()==2) {
+                if (iimg.getInt1().equals(inf)) {
+                  this.vImgInt.removeElementAt(j);
+                  j--;
+                  m=sw.getVIntCom().size();
+                }
+              }
+              m++;
+            } */
+          } // end for
+          i=Frame1.vSwitch.size();
+        }
+      }
+      catch (Exception exp) {}
+    }
+//    Frame1.jTabbedPane1.removeTabAt(numdel);
+
+    // do STP
+    vlan1.del_switch((Switch)Frame1.vSwitch.elementAt(numdel));
+    Frame1.stp.tc_del_device((Switch)Frame1.vSwitch.elementAt(numdel));
+
+    Frame1.vSwitch.removeElementAt(numdel);
+    Frame1.vConsole.removeElementAt(numdel);
+    Panel3.vStatus.removeElementAt(numdel);
+    Frame1.updateAllStatus();
+    this.vImgSwitch.removeElementAt(numdel);
+    //------------------- Start Learning -------------------------------------------
+    if (Frame1.learn.isAlive()){
+      Frame1.learn.resume();
+      System.out.println("Resume Address Learning...");
+    }
+    else{
+      Frame1.learn.start();
+      System.out.println("Start Address Learning...");
+    }
+//------------------------------------------------------------------------------
+    repaint();
+
+  }
+
+  void delComp_actionPerformed(ActionEvent e) {
+    Frame1.learn.suspendLearning();
+    System.out.println("Suspend Address Learning...");
+    int numdel = 0;
+    for (int i=0; i<Frame1.vWorkstation.size(); i++) {
+      Workstation com = (Workstation)Frame1.vWorkstation.elementAt(i);
+      try {
+        ComImg c_img = (ComImg)this.vImgCom.elementAt(i);
+        if (c_img.equals(cimg)) {
+          numdel = i;
+          System.out.println("Delete Workstation: "+com.getName());
+          if (com.getConnection()) {
+            for (int j=0; j<Frame1.vSwitch.size(); j++) {
+              Switch sw_tmp = (Switch)Frame1.vSwitch.elementAt(j);
+              for (int k=0; k<sw_tmp.getVIntCom().size(); k++) {
+                Interface inf = (Interface)sw_tmp.getVIntCom().elementAt(k);
+                if (inf.getCom().equals(com)) {
+                  System.out.println(sw_tmp.getName()+" delete int "+com.getName());
+                  sw_tmp.getVIntCom().removeElementAt(k);
+                  inf.removeComInt();
+
+                  Panel1 p1 = (Panel1)Panel3.vStatus.elementAt(j);
+                  p1.showDetail();
+                  k--;
+                }
+              }
+            }
+          }
+          i=Frame1.vWorkstation.size();
+        }
+      }
+      catch (Exception exp) {}
+    }
+    Frame1.vWorkstation.removeElementAt(numdel);
+    this.vImgCom.removeElementAt(numdel);
+    if (Frame1.learn.isAlive()){
+      Frame1.learn.resume();
+      System.out.println("Resume Address Learning...");
+    }
+    else{
+      Frame1.learn.start();
+      System.out.println("Start Address Learning...");
+    }
+    repaint();
+  }
+
+  void delInt_actionPerformed(ActionEvent e) {
+    Frame1.learn.suspendLearning();
+    System.out.println("Suspend Address Learning...");
+    boolean found = false;
+    try {
+      if (intimg.getType()==1) {
+        for (int i=0; i<Frame1.vSwitch.size(); i++) {
+          Switch sw1 = (Switch)Frame1.vSwitch.elementAt(i);
+          for (int j=0; j<sw1.getVIntSwitch().size(); j++) {
+            Interface inf1 = (Interface)sw1.getVIntSwitch().elementAt(j);
+            for (int m=0; m<Frame1.vSwitch.size(); m++) {
+              Switch sw2 = (Switch)Frame1.vSwitch.elementAt(m);
+              for (int n=0; n<sw2.getVIntSwitch().size(); n++) {
+                Interface inf2 = (Interface)sw2.getVIntSwitch().elementAt(n);
+                if (((intimg.getInt1().equals(inf1)) && (intimg.getInt2().equals(inf2))) ||
+                    ((intimg.getInt1().equals(inf2)) && (intimg.getInt2().equals(inf1)))) {
+                  sw1.getVIntSwitch().removeElementAt(j);
+                  sw2.getVIntSwitch().removeElementAt(n);
+                  inf1.setSwitchInt(null);
+                  inf2.setSwitchInt(null);
+
+                  // do STP
+                  vlan1.del_interface(sw1, inf1);
+                  vlan1.del_interface(sw2, inf2);
+                  Frame1.stp.tc_del_device(sw1);
+
+                  Panel1 p1 = (Panel1)Panel3.vStatus.elementAt(i);
+                  Panel1 p2 = (Panel1)Panel3.vStatus.elementAt(m);
+                  p1.showDetail();
+                  p2.showDetail();
+
+                  i=Frame1.vSwitch.size();
+                  m=Frame1.vSwitch.size();
+                  j=sw1.getVIntSwitch().size();
+                  n=sw2.getVIntSwitch().size();
+                  found = true;
+                }
+              }
+            }
+//            if ((inf.equals(intimg.getInt1())) || (inf.equals(intimg.getInt2()))) {
+//              System.out.println(sw.getName());
+//              sw.getVIntSwitch().removeElementAt(j);
+//              inf.setSwitchInt(null);
+//              j=sw.getVIntSwitch().size();
+//              found = true;
+//            }
+          }
+        }
+      }
+      else if (intimg.getType()==2) {
+        for (int i=0; i<Frame1.vSwitch.size(); i++) {
+          Switch sw = (Switch)Frame1.vSwitch.elementAt(i);
+          for (int j=0; j<sw.getVIntCom().size(); j++) {
+            Interface inf = (Interface)sw.getVIntCom().elementAt(j);
+            if ((inf.equals(intimg.getInt1())) || (inf.equals(intimg.getInt2()))) {
+              Workstation com = inf.getCom();
+              com.setConnection(false);
+              sw.getVIntCom().removeElementAt(j);
+              inf.setComInt(null);
+
+              Panel1 p = (Panel1)Panel3.vStatus.elementAt(i);
+              p.showDetail();
+
+              // do STP
+              Frame1.stp.tc_del_device(sw);
+
+              found = true;
+            }
+          }
+        }
+      }
+      if (found)
+        for (int k=0; k<this.vImgInt.size(); k++) {
+          InterfaceImg iimg = (InterfaceImg)this.vImgInt.elementAt(k);
+          if (iimg.equals(intimg)) {
+            this.vImgInt.removeElementAt(k);
+            k=this.vImgInt.size();
+          }
+        }
+    }
+    catch (Exception exp) {}
+    if (Frame1.learn.isAlive()){
+      Frame1.learn.resume();
+      System.out.println("Resume Address Learning...");
+    }
+    else{
+      Frame1.learn.start();
+      System.out.println("Start Address Learning...");
+    }
+    repaint();
+  }
+
+  void console_actionPerformed(ActionEvent e) {
+    if (simg!=null) {
+      int i=0;
+      while (i<Frame1.vSwitch.size()) {
+        SwitchImg s_img = (SwitchImg)this.vImgSwitch.elementAt(i);
+        if (s_img.equals(simg)) {
+          SwitchConsole scon = (SwitchConsole)Frame1.vConsole.elementAt(i);
+          scon.setVisible(true);
+        }
+        i++;
+      }
+    }
+  }
+
+// ------------------------------------- modified -------------------------------------
+  void macSwitch_actionPerformed(ActionEvent e) {
+    Dialog1 dialog = new Dialog1();
+    String nmac = dialog.getNewMACAddress();
+    try {
+      if (!nmac.equals("")) {
+        for (int i=0; i<Frame1.vSwitch.size(); i++) {
+          Switch sw = (Switch)Frame1.vSwitch.elementAt(i);
+          try {
+            SwitchImg s_img = (SwitchImg)this.vImgSwitch.elementAt(i);
+            if (s_img.equals(simg)) {
+              sw.setMACaddress(nmac);
+              if (Frame1.stp.getStatus().equals("enabled")) {
+                Frame1.stp.enableCommonSpanningTree();
+              }
+              Panel1 p = (Panel1)Panel3.vStatus.elementAt(i);
+              p.showDetail();
+              i=Frame1.vSwitch.size();
+            }
+          }
+          catch (Exception exp) {}
+        }
+      }
+    }
+    catch (Exception exp) {}
+  }
+
+  void macComp_actionPerformed(ActionEvent e) {
+    Dialog1 dialog = new Dialog1();
+    String nmac = dialog.getNewMACAddress();
+    try {
+      if (!nmac.equals("")) {
+        for (int i=0; i<Frame1.vWorkstation.size(); i++) {
+          Workstation com = (Workstation)Frame1.vWorkstation.elementAt(i);
+          try {
+            ComImg c_img = (ComImg)this.vImgCom.elementAt(i);
+            if (c_img.equals(cimg)) {
+              com.setMACAddress(nmac);
+              i=Frame1.vWorkstation.size();
+            }
+          }
+          catch (Exception exp) {}
+        }
+      }
+    }
+    catch (Exception exp) {}
+  }
+
+  void connect_actionPerformed(ActionEvent e) {
+    if (intimg.getType()==1) {
+      Dialog2 d2 = new Dialog2();
+      d2.showDialog2(intimg);
+    }
+    else {
+      Dialog3 d3 = new Dialog3();
+      d3.showDialog3(intimg);
+    }
+    repaint();
+  }
+
+  public void changeConnect1(Interface new1, Interface new2, Interface old1, Interface old2) {
+    Switch sw1 = new Switch();
+    Switch sw2 = new Switch();
+    for (int i=0; i<Frame1.vSwitch.size(); i++) {
+      Switch sw_tmp = (Switch)Frame1.vSwitch.elementAt(i);
+      for (int j=0; j<sw_tmp.getVIntSwitch().size(); j++) {
+        Interface inf = (Interface)sw_tmp.getVIntSwitch().elementAt(j);
+        if ((inf.equals(old1)) || (inf.equals(old2))) {
+          sw_tmp.getVIntSwitch().removeElementAt(j);
+          inf.setSwitchInt(null);
+          j=sw_tmp.getVIntSwitch().size();
+        }
+        else if (inf.equals(new1)) {
+          sw1 = sw_tmp;
+          j=sw_tmp.getVIntSwitch().size();
+        }
+        else if (inf.equals(new2)) {
+          sw2 = sw_tmp;
+          j=sw_tmp.getVIntSwitch().size();
+        }
+      }
+    }
+
+    new1.addNewIntSwitch(sw1,new1.getNameInt(),sw2);
+    new2.addNewIntSwitch(sw2,new2.getNameInt(),sw1);
+    intimg.setInt1(new1);
+    intimg.setInt2(new2);
+  }
+
+  boolean canConnect(Switch sw1, Switch sw2) {
+    for (int j=0; j<sw1.getVIntSwitch().size(); j++) {
+      Interface inf = (Interface)sw1.getVIntSwitch().elementAt(j);
+      if (inf.getSwitch().equals(sw2)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+// ----------------------------------------- end modified -----------------------------------------
+}

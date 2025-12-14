@@ -1,0 +1,49 @@
+nmapNT - A Win32 port of nmap
+12/07/2000 - eEye Digital Secutity Team
+ryan@eEye.com - http://www.eEye.com
+
+
+Description:
+nmap has been a staple of unix distributions and is one of the most favored 
+tools of the security community.  Until now, it has been unavailible on the 
+single most prolific platform on earth, microsoft windows.  This is a full 
+port of all of the scanning functionality of nmap to both Windows NT and 
+Windows 2000.
+
+Installation:
+To use nmapNT under windows, you must have the libpcap drivers loaded.  These
+are packet drivers and install just like any normal network driver.  I did not write
+these drivers and do not support them(although they are exceptionally well written and
+problems should be very rare if ever).  I have included the drivers for NT and 2k, but
+if you are the untrusing type, you can get the originals at: 
+http://netgroup-serv.polito.it/winpcap/.  There are also detailed instructions for installing 
+the drivers. Be sure to restart after you install the drivers, otherwise nmapNT will not function properly.
+ 
+use: 
+Make certain that the nmap-os-fingerprint, nmap-rpc, and nmap-services file reside in the same 
+place that the binary is, you will probably want to execute from the location of the binary.
+
+How:
+Windows nt and 2k do not support a great ip interface via winsock, 2k supports raw sockets, but they
+are not spectactular, and code written for them will not work under nt.  We avoided the whole situation
+by undercutting the windows ip stack entirely, reading and writing directly from the wire.  most of the
+code included is pretty much compileable under unix, and most of the windows specific problems i had were 
+#ifdef 'ed out to handle win32 specific situations.  the places where it wasn't possible to ifdef, i 
+created separate .c files to bring in compatible sets of functions.  I haven't tested a compile on a unix
+machine yet, and it's likely to break compile, simply because i may have missed a few ifdefs, so if you want 
+to merge the source trees, you better have diff handy and a willingness to spend a little time.
+
+All in all there are still some bugs to work out so be sure to send eMail to nmapnt@eeye.com with any bugs you find.
+
+
+I have no idea how to install the packet driver you guys are talking about. Help me please!
+
+Alright here is the most basic guide to installing the packet driver.
+Goto the properties for your network card.
+You will want to install a new "protocol".
+Click the browse button.
+Now navigate to \Nmapnt\DRIVERS\PacketNT (NT4)
+or to \Nmapnt\DRIVERS\Packet2K (Win2k)
+Click ok a few times to back out of the network dialog boxes.
+You will be asked to restart your computer, restart it.
+Even if you are not asked to reboot, reboot otherwise the driver will not work correctly.

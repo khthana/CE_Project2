@@ -1,0 +1,334 @@
+Switch_Simulator 
+!
+SpanningTree 
+!
+endspanningtree 
+Switch
+switchname Switch1
+!
+MACaddress 0001.fb71.1f00
+!
+Mode 1
+!
+Model 1
+!
+maxEth 0
+!
+maxFast 12
+!
+maxGig 0
+!
+maxHistory 10
+!
+macage 300
+!
+enablepasswd false
+!
+enableConsole false
+!
+terminalEdit true
+!
+oldMode -1
+!
+time 1000
+!
+lineMode -1
+!
+BridgeID 32768.0001.fb71.1f00
+!
+BridgePriority 32768
+!
+XPos 262
+!
+YPos 75
+!
+Width 58
+!
+Hight 36
+!
+endswitch
+switchname Switch2
+!
+MACaddress 0002.13e3.5600
+!
+Mode 1
+!
+Model 3
+!
+maxEth 0
+!
+maxFast 12
+!
+maxGig 2
+!
+maxHistory 10
+!
+macage 300
+!
+enablepasswd false
+!
+enableConsole false
+!
+terminalEdit true
+!
+oldMode -1
+!
+time 1000
+!
+lineMode -1
+!
+BridgeID 32768.0002.13e3.5600
+!
+BridgePriority 32768
+!
+XPos 131
+!
+YPos 219
+!
+Width 58
+!
+Hight 36
+!
+endswitch
+switchname Switch3
+!
+MACaddress 0003.547d.7800
+!
+Mode 1
+!
+Model 4
+!
+maxEth 0
+!
+maxFast 24
+!
+maxGig 2
+!
+maxHistory 10
+!
+macage 300
+!
+enablepasswd false
+!
+enableConsole false
+!
+terminalEdit true
+!
+oldMode -1
+!
+time 1000
+!
+lineMode -1
+!
+BridgeID 32768.0003.547d.7800
+!
+BridgePriority 32768
+!
+XPos 392
+!
+YPos 219
+!
+Width 58
+!
+Hight 36
+!
+endswitch
+endallswitch
+Workstation
+endallworkstation
+Interface
+Switch Switch1
+!
+nameInt Fa0/1
+!
+status up
+!
+connectStatus up
+!
+MACaddress 0001.fb71.1f01
+!
+VLAN 1
+!
+VLANLink 0
+!
+SwitchInt Switch2
+!
+WorkstationInt *
+!
+PortID 128.01
+!
+Priority 128
+!
+Cost 104
+!
+STPport $
+!
+STPstate blocking
+!
+endinterface
+Switch Switch1
+!
+nameInt Fa0/2
+!
+status up
+!
+connectStatus up
+!
+MACaddress 0001.fb71.1f02
+!
+VLAN 1
+!
+VLANLink 0
+!
+SwitchInt Switch3
+!
+WorkstationInt *
+!
+PortID 128.11
+!
+Priority 128
+!
+Cost 104
+!
+STPport $
+!
+STPstate blocking
+!
+endinterface
+Switch Switch2
+!
+nameInt Fa0/1
+!
+status up
+!
+connectStatus up
+!
+MACaddress 0002.13e3.5601
+!
+VLAN 1
+!
+VLANLink 0
+!
+SwitchInt Switch1
+!
+WorkstationInt *
+!
+PortID 128.01
+!
+Priority 128
+!
+Cost 104
+!
+STPport $
+!
+STPstate blocking
+!
+endinterface
+Switch Switch2
+!
+nameInt Fa0/2
+!
+status up
+!
+connectStatus up
+!
+MACaddress 0002.13e3.5602
+!
+VLAN 1
+!
+VLANLink 0
+!
+SwitchInt Switch3
+!
+WorkstationInt *
+!
+PortID 128.11
+!
+Priority 128
+!
+Cost 104
+!
+STPport $
+!
+STPstate blocking
+!
+endinterface
+Switch Switch3
+!
+nameInt Fa0/1
+!
+status up
+!
+connectStatus up
+!
+MACaddress 0003.547d.7801
+!
+VLAN 1
+!
+VLANLink 0
+!
+SwitchInt Switch2
+!
+WorkstationInt *
+!
+PortID 128.01
+!
+Priority 128
+!
+Cost 104
+!
+STPport $
+!
+STPstate blocking
+!
+endinterface
+Switch Switch3
+!
+nameInt Fa0/2
+!
+status up
+!
+connectStatus up
+!
+MACaddress 0003.547d.7802
+!
+VLAN 1
+!
+VLANLink 0
+!
+SwitchInt Switch1
+!
+WorkstationInt *
+!
+PortID 128.11
+!
+Priority 128
+!
+Cost 104
+!
+STPport $
+!
+STPstate blocking
+!
+endinterface
+endallinterface
+VLANDatabase
+Switch1!vlanID 1!vlanName default!status active!type enet!said 100001!mtu 1500!parent -!ringNo -!brdgNo -!stp -!brdgMode -!trans1 0!trans2 0
+Switch1!vlanID 1002!vlanName fddi-default!status active!type fddi!said 101002!mtu 1500!parent -!ringNo -!brdgNo -!stp -!brdgMode -!trans1 0!trans2 0
+Switch1!vlanID 1003!vlanName token-ring-default!status active!type tr!said 101003!mtu 1500!parent -!ringNo -!brdgNo -!stp -!brdgMode -!trans1 0!trans2 0
+Switch1!vlanID 1004!vlanName fddinet-default!status active!type fdnet!said 101004!mtu 1500!parent -!ringNo -!brdgNo -!stp ieee!brdgMode -!trans1 0!trans2 0
+Switch1!vlanID 1005!vlanName trnet-default!status active!type trnet!said 101005!mtu 1500!parent -!ringNo -!brdgNo -!stp ibm!brdgMode -!trans1 0!trans2 0
+Switch2!vlanID 1!vlanName default!status active!type enet!said 100001!mtu 1500!parent -!ringNo -!brdgNo -!stp -!brdgMode -!trans1 0!trans2 0
+Switch2!vlanID 1002!vlanName fddi-default!status active!type fddi!said 101002!mtu 1500!parent -!ringNo -!brdgNo -!stp -!brdgMode -!trans1 0!trans2 0
+Switch2!vlanID 1003!vlanName token-ring-default!status active!type tr!said 101003!mtu 1500!parent -!ringNo -!brdgNo -!stp -!brdgMode -!trans1 0!trans2 0
+Switch2!vlanID 1004!vlanName fddinet-default!status active!type fdnet!said 101004!mtu 1500!parent -!ringNo -!brdgNo -!stp ieee!brdgMode -!trans1 0!trans2 0
+Switch2!vlanID 1005!vlanName trnet-default!status active!type trnet!said 101005!mtu 1500!parent -!ringNo -!brdgNo -!stp ibm!brdgMode -!trans1 0!trans2 0
+Switch3!vlanID 1!vlanName default!status active!type enet!said 100001!mtu 1500!parent -!ringNo -!brdgNo -!stp -!brdgMode -!trans1 0!trans2 0
+Switch3!vlanID 1002!vlanName fddi-default!status active!type fddi!said 101002!mtu 1500!parent -!ringNo -!brdgNo -!stp -!brdgMode -!trans1 0!trans2 0
+Switch3!vlanID 1003!vlanName token-ring-default!status active!type tr!said 101003!mtu 1500!parent -!ringNo -!brdgNo -!stp -!brdgMode -!trans1 0!trans2 0
+Switch3!vlanID 1004!vlanName fddinet-default!status active!type fdnet!said 101004!mtu 1500!parent -!ringNo -!brdgNo -!stp ieee!brdgMode -!trans1 0!trans2 0
+Switch3!vlanID 1005!vlanName trnet-default!status active!type trnet!said 101005!mtu 1500!parent -!ringNo -!brdgNo -!stp ibm!brdgMode -!trans1 0!trans2 0
+endvlandatabase
+!
+end
+

@@ -1,0 +1,57 @@
+
+#if !defined(AFX_RESULTALL_H__2FD12A91_5AE6_4B87_B7F3_2A4392250643__INCLUDED_)
+#define AFX_RESULTALL_H__2FD12A91_5AE6_4B87_B7F3_2A4392250643__INCLUDED_
+
+
+//#include "Redirect.h"	// Added by ClassView
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
+// ResultAll.h : header file
+//
+
+/////////////////////////////////////////////////////////////////////////////
+// CResultAll dialog
+
+class CResultAll : public CDialog
+{
+// Construction
+public:
+	CResultAll(CWnd* pParent = NULL);   // standard constructor
+	CString nIP;
+	void FindOS();
+	int sec;
+	int TimerNUM;
+// Dialog Data
+	//{{AFX_DATA(CResultAll)
+	enum { IDD = IDD_Showall };
+	CEdit	m_Edit1;
+	CListCtrl	m_clist;
+	//}}AFX_DATA
+
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CResultAll)
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	//}}AFX_VIRTUAL
+
+// Implementation
+protected:
+
+	// Generated message map functions
+	//{{AFX_MSG(CResultAll)
+	virtual BOOL OnInitDialog();
+	afx_msg void OnClose();
+	afx_msg void OnTimer(UINT nIDEvent);
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_RESULTALL_H__2FD12A91_5AE6_4B87_B7F3_2A4392250643__INCLUDED_)
+
+

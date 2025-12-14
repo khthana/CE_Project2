@@ -1,0 +1,127 @@
+/** @editor-info:link source="alert.jws" autogen="false" */
+package center;
+
+import weblogic.jws.control.ServiceControl;
+
+/**
+ * @jws:location http-url="alert.jws" jms-url="alert.jws"
+ * @jws:wsdl file="#alertWsdl"
+ */
+public interface alertControl extends ServiceControl
+{
+
+
+    /**
+     * @jws:protocol form-post="false" form-get="false" 
+     */
+    public void send_news (java.lang.String subject, java.lang.String news, java.lang.String library, user_news[] username);
+
+    /**
+     * @jws:protocol form-post="false" form-get="false" 
+     */
+    public void send_book (java.lang.String subject, java.lang.String news, java.lang.String library, user_news username);
+
+}
+
+/** @jws:define name="alertWsdl" value::
+    <?xml version="1.0" encoding="utf-8"?>
+    <definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:conv="http://www.openuri.org/2002/04/soap/conversation/" xmlns:cw="http://www.openuri.org/2002/04/wsdl/conversation/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:jms="http://www.openuri.org/2002/04/wsdl/jms/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://www.openuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xm="http://www.bea.com/2002/04/xmlmap/" targetNamespace="http://www.openuri.org/" >
+      <types>
+        <s:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.openuri.org/">
+          <s:element name="send_news">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="subject" type="s:string" />
+                <s:element minOccurs="0" maxOccurs="1" name="news" type="s:string" />
+                <s:element minOccurs="0" maxOccurs="1" name="library" type="s:string" />
+                <s:element minOccurs="0" maxOccurs="1" name="username" type="s0:ArrayOfuser_news" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:complexType name="ArrayOfuser_news">
+            <s:sequence>
+                <s:element minOccurs="0" maxOccurs="unbounded" nillable="true" name="user_news" type="s0:user_news" />
+            </s:sequence>
+          </s:complexType>
+          <s:complexType name="user_news">
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="category" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="email_way" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="application_way" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="title" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="author" type="s:string" />
+                </s:sequence>
+          </s:complexType>
+          <s:element name="send_newsResponse">
+            <s:complexType />
+          </s:element>
+          <s:element name="send_book">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="subject" type="s:string" />
+                <s:element minOccurs="0" maxOccurs="1" name="news" type="s:string" />
+                <s:element minOccurs="0" maxOccurs="1" name="library" type="s:string" />
+                <s:element minOccurs="0" maxOccurs="1" name="username" type="s0:user_news" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="send_bookResponse">
+            <s:complexType />
+          </s:element>
+        </s:schema>
+      </types>
+      <message name="send_newsSoapIn">
+        <part name="parameters" element="s0:send_news" />
+      </message>
+      <message name="send_newsSoapOut">
+        <part name="parameters" element="s0:send_newsResponse" />
+      </message>
+      <message name="send_bookSoapIn">
+        <part name="parameters" element="s0:send_book" />
+      </message>
+      <message name="send_bookSoapOut">
+        <part name="parameters" element="s0:send_bookResponse" />
+      </message>
+      <portType name="alertSoap">
+        <operation name="send_news">
+          <input message="s0:send_newsSoapIn" />
+          <output message="s0:send_newsSoapOut" />
+        </operation>
+        <operation name="send_book">
+          <input message="s0:send_bookSoapIn" />
+          <output message="s0:send_bookSoapOut" />
+        </operation>
+      </portType>
+      <binding name="alertSoap" type="s0:alertSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+        <operation name="send_news">
+          <soap:operation soapAction="http://www.openuri.org/send_news" style="document" />
+          <input>
+            <soap:body use="literal" />
+          </input>
+          <output>
+            <soap:body use="literal" />
+          </output>
+        </operation>
+        <operation name="send_book">
+          <soap:operation soapAction="http://www.openuri.org/send_book" style="document" />
+          <input>
+            <soap:body use="literal" />
+          </input>
+          <output>
+            <soap:body use="literal" />
+          </output>
+        </operation>
+      </binding>
+      <service name="alert">
+        <port name="alertSoap" binding="s0:alertSoap">
+          <soap:address location="http://localhost:7001/library/center/alert.jws" />
+        </port>
+      </service>
+    </definitions>
+ * ::
+ */
+

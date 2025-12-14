@@ -1,0 +1,41 @@
+package central;
+
+/**
+
+*/
+
+class AcknowledgeTimeoutThread extends Thread{
+
+  private int timeout;
+  private int nodenumber;
+  private boolean active;
+
+  public AcknowledgeTimeoutThread(String s, int timeoutarg, int nodenumberarg) {
+    super(s);
+    active = true;
+    timeout = timeoutarg;
+    nodenumber = nodenumberarg;
+  }
+
+  public void clearActive() {
+    active = false;
+  }
+
+  public int getNodeNumber() {
+    return nodenumber;
+  }
+
+  public void run() {
+    try {
+      sleep(timeout);
+    }
+    catch (InterruptedException e) {
+      System.out.println(e);
+      e.printStackTrace();
+    }
+    if (active) {
+      MainFrame.messagestatus.setText("Assembly Timeout ID : " + nodenumber + "\n");
+      MainFrame.database.GenCodeWithStatus(nodenumber, "Lost");
+    }
+  }
+}

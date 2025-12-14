@@ -1,0 +1,315 @@
+package switchsim;
+
+import java.util.*;
+
+public class Interface {
+  private String nameInt;
+  private int vlan; // default = 1
+  private int vlanLink; // 0 = access link, 1 = trunk link
+  private Vector vlanAllow = new Vector(); // VLAN number that is allowed
+  private Switch swInt;
+  private Workstation comInt;
+  private String status;
+  private String type;
+
+  public Interface() {
+    nameInt = "";
+    vlan = 1;
+    vlanLink = 0;
+    swInt = null;
+    comInt = null;
+    status = "down";
+    type = "";
+  }
+  public Interface(String t) {
+    nameInt = "";
+    vlan = 1;
+    vlanLink = 0;
+    swInt = null;
+    comInt = null;
+    status = "down";
+    type = t;
+  }
+
+  public String getNameInt() {
+    return nameInt;
+  }
+  public void setNameInt(String n) {
+    nameInt = n;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+  public void setStatus(String s) {
+    status = s;
+  }
+
+  public int getModue() {
+    int num1=0,num2=0,index=0,count=0;
+    int minascii = 48,maxascii = 57;
+    StringTokenizer ss = new StringTokenizer(this.nameInt,"/");
+    StringTokenizer st = new StringTokenizer(this.nameInt,"/");
+    while (ss.hasMoreTokens()) {
+      String tmp = ss.nextToken();
+      count++;
+    }
+    if (count==2) {
+      String st1 = st.nextToken();
+      String st2 = st.nextToken();
+      System.out.println("st1 : "+st1);
+      System.out.println("st2 : "+st2);
+      while ((index < st1.length())&&((st1.charAt(index) < minascii) || (st1.charAt(index) > maxascii))){
+        index++;
+      }
+      try{
+        num1 = Integer.parseInt(st1.substring(index));
+        num2 = Integer.parseInt(st2);
+        return(num1);
+      }
+      catch(Exception exp){
+        System.out.println("Invalid Interface Name");
+        return(-1);
+      }
+    }
+    else {
+      System.out.println("Invalid Interface Name");
+      return(-1);
+    }
+  }
+  public int getNum() {
+    int num1=0,num2=0,index=0,count=0;
+    int minascii = 48,maxascii = 57;
+    StringTokenizer ss = new StringTokenizer(this.nameInt,"/");
+    StringTokenizer st = new StringTokenizer(this.nameInt,"/");
+    while (ss.hasMoreTokens()) {
+      String tmp = ss.nextToken();
+      count++;
+    }
+    if (count==2) {
+      String st1 = st.nextToken();
+      String st2 = st.nextToken();
+      System.out.println("st1 : "+st1);
+      System.out.println("st2 : "+st2);
+      while ((index < st1.length())&&((st1.charAt(index) < minascii) || (st1.charAt(index) > maxascii))){
+        index++;
+      }
+      try{
+        num1 = Integer.parseInt(st1.substring(index));
+        num2 = Integer.parseInt(st2);
+        return(num2);
+      }
+      catch(Exception exp){
+        System.out.println("Invalid Interface Name");
+        return(-1);
+      }
+    }
+    else {
+      System.out.println("Invalid Interface Name");
+      return(-1);
+    }
+  }
+
+  public static int getModule(String s) {
+    int num1=0,num2=0,index=0,count=0;
+    int minascii = 48,maxascii = 57;
+    StringTokenizer ss = new StringTokenizer(s,"/");
+    StringTokenizer st = new StringTokenizer(s,"/");
+    while (ss.hasMoreTokens()) {
+      String tmp = ss.nextToken();
+      count++;
+    }
+    if (count==2) {
+      String st1 = st.nextToken();
+      String st2 = st.nextToken();
+      System.out.println("st1 : "+st1);
+      System.out.println("st2 : "+st2);
+      while ((index < st1.length())&&((st1.charAt(index) < minascii) || (st1.charAt(index) > maxascii))){
+        index++;
+      }
+      try{
+        num1 = Integer.parseInt(st1.substring(index));
+        num2 = Integer.parseInt(st2);
+        return(num1);
+      }
+      catch(Exception exp){
+        System.out.println("Invalid Interface Name");
+        return(-1);
+      }
+    }
+    else {
+      System.out.println("Invalid Interface Name");
+      return(-1);
+    }
+  }
+
+  public static int getNum(String s){
+    int num1=0,num2=0,index=0,count=0;
+    int minascii = 48,maxascii = 57;
+    StringTokenizer ss = new StringTokenizer(s,"/");
+    StringTokenizer st = new StringTokenizer(s,"/");
+    while (ss.hasMoreTokens()) {
+      String tmp = ss.nextToken();
+      count++;
+    }
+    if (count==2) {
+      String st1 = st.nextToken();
+      String st2 = st.nextToken();
+      System.out.println("st1 : "+st1);
+      System.out.println("st2 : "+st2);
+      while ((index < st1.length())&&((st1.charAt(index) < minascii) || (st1.charAt(index) > maxascii))){
+        index++;
+      }
+      try{
+        num1 = Integer.parseInt(st1.substring(index));
+        num2 = Integer.parseInt(st2);
+        return(num2);
+      }
+      catch(Exception exp){
+        System.out.println("Invalid Interface Name");
+        return(-1);
+      }
+    }
+    else {
+      System.out.println("Invalid Interface Name");
+      return(-1);
+    }
+  }
+
+  public int getVLAN() {
+    return vlan;
+  }
+  public void setVLAN(int v) {
+    vlan = v;
+  }
+
+  public int getVLANLink() {
+    return vlanLink;
+  }
+  public void setVLANLink(int vl) {
+    vlanLink = vl;
+  }
+
+  public Vector getVLANAllowed() {
+    return vlanAllow;
+  }
+  public void addVLANallowed(int v) {
+    boolean add = false;
+    for (int i=0; i<this.vlanAllow.size(); i++) {
+      if (Integer.parseInt((String)this.vlanAllow.elementAt(i))>v) {
+        this.vlanAllow.insertElementAt(Integer.toString(v), i);
+        add = true;
+        i=this.vlanAllow.size();
+      }
+      else if (Integer.parseInt((String)this.vlanAllow.elementAt(i))==v) {
+        add = true;
+        i=this.vlanAllow.size();
+      }
+    }
+    if (!add) {
+      this.vlanAllow.addElement(Integer.toString(v));
+    }
+  }
+  public boolean VLANIsAllowed (int v) {
+    for (int i=0; i<vlanAllow.size(); i++) {
+      if (Integer.parseInt((String)vlanAllow.elementAt(i))==v) {
+        return true;
+      }
+    }
+    return false;
+  }
+  public void removeVLANallowed (int v) {
+    for (int i=0; i<vlanAllow.size(); i++) {
+      if (Integer.parseInt((String)vlanAllow.elementAt(i))==v) {
+        vlanAllow.removeElementAt(i);
+        i=vlanAllow.size();
+      }
+    }
+  }
+
+  public Workstation getCom() {
+    return comInt;
+  }
+
+  public Switch getSwitch() {
+    return swInt;
+  }
+
+  public void addNewInt(Switch sw, String s) {
+
+    Interface newInt = new Interface();
+    Interface oldInt =null;
+    int i=0,j=0,useint=0;
+    String type;
+    s = s.toLowerCase();
+    switch(s.charAt(0)){
+      case 'e' : type = "Ethernet";break;//r.setEth(r.getEth()+1);break;
+      case 'f' : type = "FastEthernet";break;//r.setSerial(r.getSerial()+1);break;
+      case 'g' : type = "GigabitEthernet";break;//r.setToken(r.getToken()+1);break;
+      default : type = "Unknow";
+    }//end switch
+    int num = Interface.getNum(s);
+    while(i < r.getVInt().size()){
+      oldInt = (Interface)r.getVInt().elementAt(i);
+      if((oldInt.getType().equalsIgnoreCase(type))&&(oldInt.getNum() == num)){
+        newInt = (Interface)r.getVInt().elementAt(i);
+        r.getVInt().removeElementAt(i);
+      }//end if
+      i++;
+    }//end while
+    newInt.setNameInt(s);
+    newInt.setType(type);
+//    int num = newInt.getNum();
+    int max=-1;
+    switch(s.charAt(0)){
+      case 'e' : max = r.getMaxEth();break;
+      case 'f' : max = r.getMaxSerial();break;
+      case 'g' : max = r.getMaxToken();break;
+      default : break;
+    }//end switch
+    if (num < max){
+//  if ((r.getEth() <= r.getMaxEth()) && (r.getSerial() <= r.getMaxSerial()) && (r.getToken() <= r.getMaxToken())){
+      r.getVInt().addElement(newInt);
+    }
+  else {
+    switch(s.charAt(0)){
+      case 'e' : r.setEth(r.getEth()-1);RouterConsole.output+= "Ethernet ";break;
+      case 's' : r.setSerial(r.getSerial()-1);RouterConsole.output+= "Serial ";break;
+      case 't' : r.setToken(r.getToken()-1);RouterConsole.output+= "Token Ring ";break;
+      default : break;
+    }//end switch
+    RouterConsole.output += "has limited\n";
+  }
+//    Interface newInt = new Interface();
+    Interface oldInt = null;
+    this.setNameInt(n);
+//    sw.addNewInt(this);
+    sw.getVInt().addElement(this);
+  }
+
+  public void addNewIntCom(Switch sw, String n, Workstation c) {
+    Interface oldInt = null;
+    this.setNameInt(n);
+    vlanLink = 0;
+    this.comInt = c;
+//    System.out.println(comInt.getName()+" is new Interface of "+sw.getName());
+    this.swInt = null;
+//    sw.getVIntCom().addElement(this);
+    this.addNewInt(sw, n);
+  }
+
+  public void addNewIntSwitch(Switch sw, String n, Switch swi) {
+//    Interface newInt = new Interface();
+    Interface oldInt = null;
+    this.setNameInt(n);
+//    newInt.setNameInt(n);
+//    swInt = swi;
+//    comInt = null;
+    this.comInt = null;
+    this.swInt = swi;
+    System.out.println(swInt.getName()+" is new Interface of "+sw.getName());
+    sw.getVIntSwitch().addElement(this);
+//    sw.getVIntSwitch().addElement(newInt);
+//    this.addNewInt(sw, n);
+  }
+}

@@ -1,0 +1,411 @@
+package central;
+
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.Date;
+/**
+Provide Handle for Component
+*/
+
+class SendButtonHandling implements ActionListener {				// Handle send button
+
+ private HighLayerBuffer highbuffer = new HighLayerBuffer();
+
+ SendButtonHandling() {
+ }
+
+ public void actionPerformed(ActionEvent e) {
+   try
+   {
+     if (!SendTab.ptypetxt.isEditable()) {									// For Data
+       String str = "";
+       highbuffer.setID( (char) (int) Integer.parseInt(SendTab.pidtxt.getText()));
+       highbuffer.setFlag(0x00);
+       str += (char) (int) Integer.parseInt(SendTab.ptotallengthtxt.getText());
+       str += (char) (int) Integer.parseInt(SendTab.pchecksumtxt.getText());
+       str += SendTab.pdatatxt.getText();
+       highbuffer.setData(str);
+       MainFrame.TBx.setShareData(highbuffer);
+//       MainFrame.retransmit.setBuffer(highbuffer);
+     }
+     else {																// For status
+       String str = "";
+       highbuffer.setID( (char) (int) Integer.parseInt(SendTab.pidtxt.getText()));
+       highbuffer.setFlag(0x40);
+       str += (char) (int) Integer.parseInt(SendTab.pchecksumtxt.getText());
+       str += (char) (int) Integer.parseInt(SendTab.ptypetxt.getText());
+       str += (char) (int) Integer.parseInt(SendTab.pcodetxt.getText());
+       highbuffer.setData(str);
+       MainFrame.TBx.setShareData(highbuffer);
+//       MainFrame.retransmit.setBuffer(highbuffer);
+     }
+   }
+   catch (CANException eee) {
+     System.out.println("SendButtonHandling throw : " + eee);
+   }
+   catch (Exception ee)
+   {
+     JOptionPane.showMessageDialog(null, "Input Error", "Error", JOptionPane.WARNING_MESSAGE);
+     System.out.println("SendButtonHandling throw : " + ee);
+   }
+ }
+}
+
+/*class UpdateButtonHandling implements ActionListener {				// Handle update button
+
+ UpdateButtonHandling() {
+ }
+
+ public void actionPerformed(ActionEvent e) {
+   try {
+     OperateThread.M1Sensitive = (int) Integer.parseInt(ConfigTab.M1Sensitive.getText());
+     OperateThread.M2Sensitive = (int) Integer.parseInt(ConfigTab.M2Sensitive.getText());
+     OperateThread.M1OPHM = (int) Integer.parseInt(ConfigTab.M1OPHM.getText());
+     OperateThread.M2OPHM = (int) Integer.parseInt(ConfigTab.M2OPHM.getText());
+     OperateThread.M1OPLM = (int) Integer.parseInt(ConfigTab.M1OPLM.getText());
+     OperateThread.M2OPLM = (int) Integer.parseInt(ConfigTab.M2OPLM.getText());
+   }
+   catch(Exception ee) {
+     System.out.println("Handle throw : " + ee);
+   }
+ }
+}
+*/
+class ClearButtonHandling implements ActionListener {					// Handle clear button
+
+ ClearButtonHandling() {
+ }
+
+ public void actionPerformed(ActionEvent e) {
+   try {
+     MainFrame.status.setText("");
+     MainFrame.messagestatus.setText("");
+   }
+   catch(Exception ee) {
+     System.out.println("Handle throw : " + ee);
+   }
+ }
+}
+
+class UpdateTimeRequestHandling implements ActionListener {				// Handle update button
+
+ UpdateTimeRequestHandling() {
+ }
+
+ public void actionPerformed(ActionEvent e) {
+   try {
+     RequestStatusThread.value.setValue((int) Integer.parseInt(ConfigTab.Timerequest.getText()));
+   }
+   catch(Exception ee) {
+     System.out.println("Handle throw : " + ee);
+     RequestStatusThread.value.setValue(10);
+     MainFrame.configtab.Timerequest.setText("10");
+   }
+ }
+}
+
+class UpdateTimeoutHandling implements ActionListener {				// Handle update button
+
+ UpdateTimeoutHandling() {
+ }
+
+ public void actionPerformed(ActionEvent e) {
+   try {
+     ConfigTab.timeout.setValue((int) Integer.parseInt(ConfigTab.Timeout.getText()));
+   }
+   catch(Exception ee) {
+     System.out.println("Handle throw : " + ee);
+     ConfigTab.timeout.setValue(100);
+     MainFrame.configtab.Timeout.setText("100");
+   }
+ }
+}
+
+class UpdateAssemTimeoutHandling implements ActionListener {				// Handle update button
+
+ UpdateAssemTimeoutHandling() {
+ }
+
+ public void actionPerformed(ActionEvent e) {
+   try {
+     ConfigTab.assemtimeout.setValue((int) Integer.parseInt(ConfigTab.Timeout.getText()));
+   }
+   catch(Exception ee) {
+     System.out.println("Handle throw : " + ee);
+     ConfigTab.assemtimeout.setValue(500);
+     MainFrame.configtab.AssemTimeout.setText("500");
+   }
+ }
+}
+
+class UpdateChangKeyTimeHandling implements ActionListener {				// Handle update button
+
+ UpdateChangKeyTimeHandling() {
+ }
+
+ public void actionPerformed(ActionEvent e) {
+   try {
+      MainFrame.keythread.setTime((int) Integer.parseInt(ConfigTab.Timeout.getText()));
+   }
+   catch(Exception ee) {
+     System.out.println("UpdateChangKeyTimeHandling : " + ee);
+     MainFrame.keythread.setTime(500);
+     MainFrame.configtab.ChangKeyTimeRequest.setText("5");
+   }
+ }
+}
+
+class QueryHandling implements ActionListener { // Handle update button
+
+ QueryHandling() {
+ }
+
+ public void actionPerformed(ActionEvent e) {
+   String output = "";
+   output += "\t\tNode1\tNode2\tNode3\n";
+   output += "\n";
+   output += "Total\t\t" + MainFrame.database.QueryNodeCount("1") + "\t" + MainFrame.database.QueryNodeCount("2") + "\t" + MainFrame.database.QueryNodeCount("3") + "\n";
+   output += "Acknowledge Frame\t" + MainFrame.database.QueryStatus("1", "Ack") + "\t" + MainFrame.database.QueryStatus("2", "Ack") + "\t" + MainFrame.database.QueryStatus("3", "Ack") + "\n";
+   output += "Assembly Timeout\t" + MainFrame.database.QueryStatus("1", "AssemTimeout") + "\t" + MainFrame.database.QueryStatus("2", "AssemTimeout") + "\t" + MainFrame.database.QueryStatus("3", "AssemTimeout") + "\n";
+   output += "Data Frame\t\t" + MainFrame.database.QueryStatus("1", "Data") + "\t" + MainFrame.database.QueryStatus("2", "Data") + "\t" + MainFrame.database.QueryStatus("3", "Data") + "\n";
+   output += "Error Frame\t\t" + MainFrame.database.QueryStatus("1", "Error") + "\t" + MainFrame.database.QueryStatus("2", "Error") + "\t" + MainFrame.database.QueryStatus("3", "Error") + "\n";
+   output += "Lost Acknowledge Frame\t" + MainFrame.database.QueryStatus("1", "Lost") + "\t" + MainFrame.database.QueryStatus("2", "Lost") + "\t" + MainFrame.database.QueryStatus("3", "Lost") + "\n";
+   output += "Report Status\t\t" + MainFrame.database.QueryStatus("1", "Report") + "\t" + MainFrame.database.QueryStatus("2", "Report") + "\t" + MainFrame.database.QueryStatus("3", "Report") + "\n";
+   output += "Request Status\t\t" + MainFrame.database.QueryStatus("1", "Req") + "\t" + MainFrame.database.QueryStatus("2", "Req") + "\t" + MainFrame.database.QueryStatus("3", "Req") + "\n";
+   output += "Request Change Bus\t" + MainFrame.database.QueryStatus("1", "Chg") + "\t" + MainFrame.database.QueryStatus("2", "Chg") + "\t" + MainFrame.database.QueryStatus("3", "Chg") + "\n";
+//   output += "Start\t\t" + MainFrame.database.QueryStatus("1", "Start") + "\t" + MainFrame.database.QueryStatus("2", "Start") + "\n";
+   HistoryTab.outputarea.setText(output);
+ }
+}
+
+class shourHandling implements ItemListener {
+ shourHandling() {
+ }
+ public void itemStateChanged(ItemEvent e) {
+   HistoryTab.shourvar.setValue(HistoryTab.shour.getSelectedIndex());
+ }
+}
+
+class ehourHandling implements ItemListener {
+ ehourHandling() {
+ }
+ public void itemStateChanged(ItemEvent e) {
+   HistoryTab.ehourvar.setValue(HistoryTab.ehour.getSelectedIndex());
+ }
+}
+
+class sminuteHandling implements ItemListener {
+ sminuteHandling() {
+ }
+ public void itemStateChanged(ItemEvent e) {
+   HistoryTab.sminutevar.setValue(HistoryTab.sminute.getSelectedIndex());
+ }
+}
+
+class eminuteHandling implements ItemListener {
+ eminuteHandling() {
+ }
+ public void itemStateChanged(ItemEvent e) {
+   HistoryTab.eminutevar.setValue(HistoryTab.eminute.getSelectedIndex());
+ }
+}
+
+class sdayHandling implements ItemListener {
+ sdayHandling() {
+ }
+ public void itemStateChanged(ItemEvent e) {
+   HistoryTab.sdayvar.setValue(HistoryTab.sday.getSelectedIndex() + 1);
+ }
+}
+
+class edayHandling implements ItemListener {
+ edayHandling() {
+ }
+ public void itemStateChanged(ItemEvent e) {
+   HistoryTab.edayvar.setValue(HistoryTab.eday.getSelectedIndex() + 1);
+ }
+}
+
+class TxtFieldHandling implements KeyListener {                                      // Handle ID JTextfield
+ JTextField txt;
+ TxtFieldHandling(JTextField txttmp) {
+   txt = txttmp;
+ }
+ public void keyPressed(KeyEvent e) {
+ }
+ public void keyReleased(KeyEvent e) {
+   if (e.getKeyChar() != '0' && e.getKeyChar() != '1' && e.getKeyChar() != '2' && e.getKeyChar() != '3' && e.getKeyChar() != '4' && e.getKeyChar() != '5' && e.getKeyChar() != '6' && e.getKeyChar() != '7' && e.getKeyChar() != '8' && e.getKeyChar() != '9') {
+     txt.setText("");
+     JOptionPane.showMessageDialog(null, "Only Numerical", "Error", JOptionPane.WARNING_MESSAGE);
+   }
+ }
+ public void keyTyped(KeyEvent e) {
+ }
+}
+
+class SendRadioHandling implements ItemListener {                               // Handle Rado button
+
+ SendRadioHandling() {
+ }
+ public void itemStateChanged(ItemEvent e) {
+   if (e.getSource() == SendTab.data) {
+     SendTab.ptypetxt.setText("");
+     SendTab.pcodetxt.setText("");
+     SendTab.ptypetxt.setEditable(false);
+     SendTab.pcodetxt.setEditable(false);
+     SendTab.pdatatxt.setEditable(true);
+     SendTab.ptotallengthtxt.setEditable(true);
+   }
+   else {
+     SendTab.pdatatxt.setText("");
+     SendTab.ptotallengthtxt.setText("");
+     SendTab.ptotallengthtxt.setEditable(false);
+     SendTab.pdatatxt.setEditable(false);
+     SendTab.ptypetxt.setEditable(true);
+     SendTab.pcodetxt.setEditable(true);
+   }
+ }
+}
+
+class SnoopRadioHandling implements ItemListener {                              // Handle radio button for snoop thread
+ JRadioButton data, status;
+ SnoopRadioHandling(JRadioButton datatmp, JRadioButton statustmp) {
+   data = datatmp;
+   status = statustmp;
+ }
+ public void itemStateChanged(ItemEvent e) {
+   if (e.getSource() == data) {
+   }
+   else {
+   }
+ }
+}
+
+class SnoopCheckBoxHandling implements ActionListener {                         // Handle Check box
+ JCheckBox checkbox;
+ JTextField idtxt;
+ SnoopCheckBoxHandling(JCheckBox checkboxtmp, JTextField idtxttmp) {
+   checkbox = checkboxtmp;
+   idtxt = idtxttmp;
+ }
+ public void actionPerformed(ActionEvent e) {
+   if (e.getActionCommand().equals("Enable")) {
+     checkbox.setActionCommand("Disable");
+     idtxt.setEditable(true);
+   }
+   else {
+     checkbox.setActionCommand("Enable");
+     idtxt.setEditable(false);
+   }
+ }
+}
+
+class DataLengthHandling implements KeyListener {                               // Provide total length
+
+ DataLengthHandling() {
+ }
+ public void keyPressed(KeyEvent e) {
+ }
+ public void keyReleased(KeyEvent e) {
+   String txt = SendTab.pdatatxt.getText();
+   SendTab.ptotallengthtxt.setText(Integer.toString(txt.length()));
+ }
+ public void keyTyped(KeyEvent e) {
+ }
+}
+
+class DataChecksumHandling implements KeyListener {                             // Provide checksum
+
+ DataChecksumHandling() {
+ }
+ public void keyPressed(KeyEvent e) {
+ }
+ public void keyReleased(KeyEvent e) {
+   try {
+   String txt = "";
+   txt += (char) (int) Integer.parseInt(SendTab.ptotallengthtxt.getText());
+   txt += (char) 0;
+   txt += SendTab.pdatatxt.getText();
+   int sum = 0;
+   for (int i = 0; i < txt.length(); i++)
+   {
+     sum += (int) txt.charAt(i);
+     sum &= 0x0ff;
+   }
+   sum ^= 0xff;
+   sum += 1;
+   sum &= 0x0ff;
+   SendTab.pchecksumtxt.setText(Integer.toString(sum));
+   }
+   catch(Exception ee) {
+     SendTab.pchecksumtxt.setText("0");
+   }
+ }
+ public void keyTyped(KeyEvent e) {
+ }
+}
+
+class TypeChecksumHandling implements KeyListener {                             // Provide checksum for Status frame
+
+ TypeChecksumHandling() {
+
+ }
+ public void keyPressed(KeyEvent e) {
+ }
+ public void keyReleased(KeyEvent e) {
+   try {
+     String txt = "";
+     txt += (char) 0;
+     txt += (char) (int) Integer.parseInt(SendTab.ptypetxt.getText());
+     txt += (char) (int) Integer.parseInt(SendTab.pcodetxt.getText());
+     int sum = 0;
+     for (int i = 0; i < txt.length(); i++)
+     {
+       sum += (int) txt.charAt(i);
+       sum &= 0x0ff;
+     }
+     sum ^= 0xff;
+     sum += 1;
+     sum &= 0x0ff;
+     SendTab.pchecksumtxt.setText(Integer.toString(sum));
+   }
+   catch(Exception ee) {
+     SendTab.pchecksumtxt.setText("0");
+   }
+ }
+ public void keyTyped(KeyEvent e) {
+ }
+}
+
+class TypeCodeHandling implements KeyListener {                                 // Provide checksum for Status frame
+
+ TypeCodeHandling() {}
+
+ public void keyPressed(KeyEvent e) {
+ }
+
+ public void keyReleased(KeyEvent e) {
+   try {
+     String txt = "";
+     txt += (char) 0;
+     txt += (char) (int) Integer.parseInt(SendTab.ptypetxt.getText());
+     txt += (char) (int) Integer.parseInt(SendTab.pcodetxt.getText());
+     int sum = 0;
+     for (int i = 0; i < txt.length(); i++)
+     {
+       sum += (int) txt.charAt(i);
+       sum &= 0x0ff;
+     }
+     sum ^= 0xff;
+     sum += 1;
+     sum &= 0x0ff;
+     SendTab.pchecksumtxt.setText(Integer.toString(sum));
+   }
+   catch(Exception ee) {
+     System.out.println("Handle throw : " + ee);
+   }
+ }
+
+ public void keyTyped(KeyEvent e) {
+ }
+}

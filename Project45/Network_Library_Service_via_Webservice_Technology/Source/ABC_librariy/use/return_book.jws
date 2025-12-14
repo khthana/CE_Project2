@@ -1,0 +1,69 @@
+package use; 
+
+import weblogic.jws.control.JwsContext;
+import java.util.*;
+import center.*;
+
+/**
+ * @jws:target-namespace namespace="return.abc.library.com"
+ */
+public class return_book
+{ 
+
+    /**
+     * @jws:control
+     */
+    private db1Control db;
+    /** @jws:context */ 
+    JwsContext context; 
+
+    /**
+     * @jws:operation
+     */
+    public int insert_book(String []book_record)
+    {
+        int l=book_record.length;
+        int baht=0;
+        int temp;
+        for (int i=0; i<l; i++) {
+            //¤Ô´à§Ô¹
+            temp=db.check_book(book_record[i]);
+            System.out.println(temp);
+            if (0<temp) baht=temp+baht;
+            //update DB
+            db.record_book(book_record[i]);
+        
+        //update reservation table 
+        reservation_add_data[] data = db.selectReservationData(book_record[i]);
+        db.delete_data(book_record[i]);    
+            for(int k=0; k<data.length; k++)
+            {   
+                int day = db.selectDay(data[k].username);
+                String x = new String();
+                if (k ==0) x= db.getCurrentDay();
+                else x = db.select_receive_date(book_record[i]);
+                db.add_reservation(data[k].username, data[k].mark_date, x, day, data[k].book_record, data[k].comment);
+            }      
+        //-----------------//
+        }
+        return baht;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public reservation_add_data[] getReservationData(String book_record)
+    {   
+        reservation_add_data[] data = db.selectReservationData(book_record);
+        db.delete_data(book_record);    
+        for(int k=0; k<data.length; k++)
+        {   
+            int day = db.selectDay(data[k].username);
+            String x = new String();
+            if (k ==0) x= db.getCurrentDay();
+            else x = db.select_receive_date(book_record);
+            db.add_reservation(data[k].username, data[k].mark_date, x, day, data[k].book_record, data[k].comment);
+        }
+        return data;
+    }
+} 

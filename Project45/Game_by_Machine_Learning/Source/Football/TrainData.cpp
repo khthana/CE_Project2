@@ -1,0 +1,27 @@
+// TrainData.cpp: implementation of the CTrainData class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "football.h"
+#include "TrainData.h"
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+CTrainData::CTrainData()
+{
+
+}
+
+CTrainData::~CTrainData()
+{
+
+}

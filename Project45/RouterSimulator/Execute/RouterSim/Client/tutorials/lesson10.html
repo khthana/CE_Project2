@@ -1,0 +1,99 @@
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=">
+</head>
+<LINK REL="stylesheet"
+			HREF="base2.css"
+			TYPE="text/css">
+<body bgcolor="#FFFFFF" text="#000000">
+<table width="94%" border="0">
+  <tr> 
+    <td colspan="2"><img src="picture/l10.gif" width="281" height="33"></td>
+    <td width="63%"><font face="Verdana, Arial, Helvetica, sans-serif" size="4"><b><font color="#006699">Telnet</font></b></font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      หลังจากที่ได้กำหนดค่าต่างๆ ให้กับเราเตอร์แล้ว ยังมีคำสั่ง Telnet ที่ใช้สำหรับกำหนดค่าให้กับเราเตอร์โดยไม่ต้องกำหนดจากหน้า 
+      console คำสั่ง Telnet นี้จะเรียกใช้จาก prompt โดยสามารถกำหนดพาสเวิร์ดในส่วนนี้ที่ 
+      VTY Password </font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">1. ล็อกอินเข้าเราเตอร์ที่ต้องการ 
+      หลังจากนั้นเข้าสู่ Privilege โหมดโดยพิมพ์คำสั่ง En หรือ Enable แล้วกด Enter</font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">2. ที่ R1# พิมพ์คำสั่ง Telnet 
+      161.246.5.2 เพื่อเข้าไป config R4 แต่จะไม่สามารถเข้าไป config ได้เนื่องจากพาสเวิร์ดยังไม่ได้กำหนด</font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2">
+      <div align="center"><font face="CordiaUPC" size="5"><img src="picture/p1_l10.gif" width="622" height="493"></font></div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">3.การกำหนด VTY Password โดยกำหนดที่ 
+      R1 และ R4 ดังนี้<br>
+      R1(config)#line vty 0 4<br>
+      R1(config-line)#login<br>
+      R1(config-line)#password isag1 </font> 
+      <p><font face="CordiaUPC" size="5">R4(config)#line vty 0 4<br>
+        R1(config-line)#login <br>
+        R1(config-line)#password isag4</font></p>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">4. กำหนดให้ที่ R2 ไม่มี VTY 
+      Password ดังนี้<br>
+      R2(config)#line vty 0 4<br>
+      R2(config-line)#no login <br>
+      คำสั่งนี้จะทำให้เวลา Telnet เข้าไปสามารถเข้าไปสู่ prompt ได้โดยไม่ต้องใส่พาสเวิร์ดก่อน<br>
+      </font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2"><font face="CordiaUPC" size="5">5. หลังจากกำหนดพาสเวิร์ดแล้วให้ลอง 
+      Telnet ไปที่ 161.246.5.2 อีกครั้ง เมื่อเข้าไปแล้วให้พิมพ์คำสั่ง Exit เพื่อกลับมาที่ 
+      R1 แต่ถ้าต้องการกลับมาที่ R1 โดยที่ไม่ต้องล็อกเอาท์ออกจาก R4 ก่อน สามารถทำได้โดยพิมพ์ 
+      Ctrl + Shift + 6 + X</font></td>
+  </tr>
+  <tr> 
+    <td width="5%">&nbsp;</td>
+    <td colspan="2">
+      <div align="center"><font face="CordiaUPC" size="5"><img src="picture/p3_l10.gif" width="622" height="494"></font></div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="5%" rowspan="2">&nbsp;</td>
+    <td colspan="2">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td colspan="2"> 
+      <div align="center"><font color="#336699" size="5" face="CordiaUPC"><b>สำหรับโหมดการทำงานทั้งหมดของเราเตอร์สามารถดูได้ที่ 
+        Command</b></font></div>
+    </td>
+  </tr>
+</table>
+<table width="33%" border="0" align="center" bgcolor="#006699">
+  <tr> 
+    <td width="35%" bgcolor="#336699"> 
+      <div align="left"><font color="#FF9900" face="Verdana, Arial, Helvetica, sans-serif" size="2"><a href="lesson9.html"><font color="#FFFFFF">Lesson 
+        9 &lt;--</font></a></font></div>
+    </td>
+    <td width="28%"> 
+      <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><a href="command.html"><font color="#FFCC00">command</font></a></font></div>
+    </td>
+    <td width="37%"> 
+      <div align="right"><font color="#FF9900" face="Verdana, Arial, Helvetica, sans-serif" size="2"><a href="lesson11.html"><font color="#FFFFFF"> 
+        --&gt; Lesson 11</font></a></font></div>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

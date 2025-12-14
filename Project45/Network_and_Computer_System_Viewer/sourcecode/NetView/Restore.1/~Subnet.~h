@@ -1,0 +1,44 @@
+#if !defined(AFX_SUBNET_H__C1419CDC_D0C8_43C0_9188_B6E4BB8D8A62__INCLUDED_)
+#define AFX_SUBNET_H__C1419CDC_D0C8_43C0_9188_B6E4BB8D8A62__INCLUDED_
+
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
+// Subnet.h : header file
+//
+
+/////////////////////////////////////////////////////////////////////////////
+// CSubnet DAO recordset
+
+class CSubnet : public CDaoRecordset
+{
+public:
+	CSubnet(CDaoDatabase* pDatabase = NULL);
+	DECLARE_DYNAMIC(CSubnet)
+
+// Field/Param Data
+	//{{AFX_FIELD(CSubnet, CDaoRecordset)
+	long	m_ID;
+	CString	m_Subnet;
+	//}}AFX_FIELD
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CSubnet)
+	public:
+	virtual CString GetDefaultDBName();		// Default database name
+	virtual CString GetDefaultSQL();		// Default SQL for Recordset
+	virtual void DoFieldExchange(CDaoFieldExchange* pFX);  // RFX support
+	//}}AFX_VIRTUAL
+
+// Implementation
+#ifdef _DEBUG
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
+#endif
+};
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_SUBNET_H__C1419CDC_D0C8_43C0_9188_B6E4BB8D8A62__INCLUDED_)

@@ -1,0 +1,255 @@
+package center; 
+
+import weblogic.jws.control.JwsContext;
+import DataBook.DataFromBookControl;
+import center.book_list;
+import center.book;
+
+public class search_all
+{ 
+
+    /**
+     * @jws:control
+     */
+    private DataFromBookControl BookService;
+
+    /**
+     * @jws:control
+     */
+    private center.DataFromBookControl OtherBookService;
+
+
+
+
+
+
+
+
+
+
+
+
+    /** @jws:context */ 
+    JwsContext context; 
+
+    /**
+     * @jws:operation
+     */
+    public book_list[] searchBookByTitle(String key_title)
+    {
+        book_list[] BK = BookService.getBookTitleByTitle(key_title);
+        book_list[] BK_other = OtherBookService.getBookTitleByTitle(key_title);
+        System.out.println("BK " + BK[0].getBook_record());
+        System.out.println("BK_other " + BK_other[0].getBook_record());
+        
+        int x =BK.length;
+        int y =BK_other.length;
+        int k = x+y;
+        int i=0;
+        book_list[] BK_all = new book_list[k+1];
+        
+        for (i = 0; i<x; i++)
+        {   BK_all[i] = new book_list();
+            BK_all[i].setAuthor(BK[i].getAuthor());
+            BK_all[i].setTitle(BK[i].getTitle());
+            BK_all[i].setBook_record(BK[i].getBook_record());
+            BK_all[i].setLibrary(BK[i].getLibrary());   
+        }
+        
+        for(int j = 0; j<y; j++)
+        {   BK_all[j+i] = new book_list();
+            BK_all[j+i].setAuthor(BK_other[j].getAuthor());
+            BK_all[j+i].setTitle(BK_other[j].getTitle());
+            BK_all[j+i].setBook_record(BK_other[j].getBook_record());
+            BK_all[j+i].setLibrary(BK_other[j].getLibrary());  
+        } 
+        return BK_all;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public book_list[] searchBookByAuthor(String key_author)
+    {
+        book_list[] BK = BookService.getBookTitleByAuthor(key_author);
+        book_list[] BK_other = OtherBookService.getBookTitleByAuthor(key_author);
+        //System.out.println("BK " + BK[0].getBook_record());
+        //System.out.println("BK_other " + BK_other[0].getBook_record());
+        
+        int x =BK.length;
+        int y =BK_other.length;
+        int k = x+y;
+        int i=0;
+        book_list[] BK_all = new book_list[k+1];
+        
+        for (i = 0; i<x; i++)
+        {   BK_all[i] = new book_list();
+            BK_all[i].setAuthor(BK[i].getAuthor());
+            BK_all[i].setTitle(BK[i].getTitle());
+            BK_all[i].setBook_record(BK[i].getBook_record());
+            BK_all[i].setLibrary(BK[i].getLibrary());   
+        }
+        
+        for(int j = 0; j<y; j++)
+        {   BK_all[j+i] = new book_list();
+            BK_all[j+i].setAuthor(BK_other[j].getAuthor());
+            BK_all[j+i].setTitle(BK_other[j].getTitle());
+            BK_all[j+i].setBook_record(BK_other[j].getBook_record());
+            BK_all[j+i].setLibrary(BK_other[j].getLibrary());  
+        } 
+        return BK_all;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public book_list[] searchBookBySubject(String key_subject)
+    {
+        book_list[] BK = BookService.getBookTitleBySubject(key_subject);
+        book_list[] BK_other = OtherBookService.getBookTitleBySubject(key_subject);
+        System.out.println("BK " + BK[0].getBook_record());
+        System.out.println("BK_other " + BK_other[0].getBook_record());
+        
+        int x =BK.length;
+        int y =BK_other.length;
+        int k = x+y;
+        int i=0;
+        book_list[] BK_all = new book_list[k+1];
+        
+        for (i = 0; i<x; i++)
+        {   BK_all[i] = new book_list();
+            BK_all[i].setAuthor(BK[i].getAuthor());
+            BK_all[i].setTitle(BK[i].getTitle());
+            BK_all[i].setBook_record(BK[i].getBook_record());
+            BK_all[i].setLibrary(BK[i].getLibrary());   
+        }
+        
+        for(int j = 0; j<y; j++)
+        {   BK_all[j+i] = new book_list();
+            BK_all[j+i].setAuthor(BK_other[j].getAuthor());
+            BK_all[j+i].setTitle(BK_other[j].getTitle());
+            BK_all[j+i].setBook_record(BK_other[j].getBook_record());
+            BK_all[j+i].setLibrary(BK_other[j].getLibrary());  
+        } 
+        return BK_all;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public book_list[] selectBookByWord(String key_word)
+    {
+        book_list[] BK = BookService.getBookTitleByWord(key_word);
+        book_list[] BK_other = OtherBookService.getBookTitleByWord(key_word);
+        System.out.println("BK " + BK[0].getBook_record());
+        System.out.println("BK_other " + BK_other[0].getBook_record());
+        
+        int x =BK.length;
+        int y =BK_other.length;
+        int k = x+y;
+        int i=0;
+        book_list[] BK_all = new book_list[k+1];
+        
+        for (i = 0; i<x; i++)
+        {   BK_all[i] = new book_list();
+            BK_all[i].setAuthor(BK[i].getAuthor());
+            BK_all[i].setTitle(BK[i].getTitle());
+            BK_all[i].setBook_record(BK[i].getBook_record());
+            BK_all[i].setLibrary(BK[i].getLibrary());   
+        }
+        
+        for(int j = 0; j<y; j++)
+        {   BK_all[j+i] = new book_list();
+            BK_all[j+i].setAuthor(BK_other[j].getAuthor());
+            BK_all[j+i].setTitle(BK_other[j].getTitle());
+            BK_all[j+i].setBook_record(BK_other[j].getBook_record());
+            BK_all[j+i].setLibrary(BK_other[j].getLibrary());  
+        } 
+        return BK_all;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public book_list[] searchBookByCall_num(String key_call_num)
+    {
+        book_list[] BK = BookService.getBookTitleByCall_num(key_call_num);
+        book_list[] BK_other = OtherBookService.getBookTitleByCall_num(key_call_num);
+        System.out.println("BK " + BK[0].getBook_record());
+        System.out.println("BK_other " + BK_other[0].getBook_record());
+        
+        int x =BK.length;
+        int y =BK_other.length;
+        int k = x+y;
+        int i=0;
+        book_list[] BK_all = new book_list[k+1];
+        
+        for (i = 0; i<x; i++)
+        {   BK_all[i] = new book_list();
+            BK_all[i].setAuthor(BK[i].getAuthor());
+            BK_all[i].setTitle(BK[i].getTitle());
+            BK_all[i].setBook_record(BK[i].getBook_record());
+            BK_all[i].setLibrary(BK[i].getLibrary());   
+        }
+        
+        for(int j = 0; j<y; j++)
+        {   BK_all[j+i] = new book_list();
+            BK_all[j+i].setAuthor(BK_other[j].getAuthor());
+            BK_all[j+i].setTitle(BK_other[j].getTitle());
+            BK_all[j+i].setBook_record(BK_other[j].getBook_record());
+            BK_all[j+i].setLibrary(BK_other[j].getLibrary());  
+        } 
+        return BK_all;
+    }
+
+
+    /**
+     * @jws:operation
+     */
+    public book_list[] searchBookByISBN(String key_ISBN)
+    {   
+        book_list[] BK = BookService.getBookTitleByISBN(key_ISBN);
+        book_list[] BK_other = OtherBookService.getBookTitleByISBN(key_ISBN);
+        System.out.println("BK " + BK[0].getBook_record());
+        System.out.println("BK_other " + BK_other[0].getBook_record());
+        
+        int x =BK.length;
+        int y =BK_other.length;
+        int k = x+y;
+        int i=0;
+        book_list[] BK_all = new book_list[k+1];
+        
+        for (i = 0; i<x; i++)
+        {   BK_all[i] = new book_list();
+            BK_all[i].setAuthor(BK[i].getAuthor());
+            BK_all[i].setTitle(BK[i].getTitle());
+            BK_all[i].setBook_record(BK[i].getBook_record());
+            BK_all[i].setLibrary(BK[i].getLibrary());   
+        }
+        
+        for(int j = 0; j<y; j++)
+        {   BK_all[j+i] = new book_list();
+            BK_all[j+i].setAuthor(BK_other[j].getAuthor());
+            BK_all[j+i].setTitle(BK_other[j].getTitle());
+            BK_all[j+i].setBook_record(BK_other[j].getBook_record());
+            BK_all[j+i].setLibrary(BK_other[j].getLibrary());  
+        } 
+        return BK_all;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public book selectBookByBook_record(String key_book_record,String library)
+    {   
+        if(library.equals("ABC library"))
+        {   book BK = BookService.getBookByBookRecord(key_book_record);
+            return BK;
+        }
+        
+        else  
+        {   book BK = OtherBookService.getBookByBookRecord(key_book_record);
+            return BK;
+        }
+    }
+} 

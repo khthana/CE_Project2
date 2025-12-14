@@ -1,0 +1,927 @@
+GAS LISTING C:\WINDOWS\TEMP/cc3E7dgb.s 			page 1
+
+
+   1               		.file	"atamail.c"
+   2               		.arch atmega128
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               	_PC_ = 2
+   9               		.global __do_copy_data
+  10               		.global __do_clear_bss
+  11               		.text
+  12               	.global	IPresolve
+  13               		.type	IPresolve,@function
+  14               	IPresolve:
+  15               	/* prologue: frame size=0 */
+  16               	/* prologue end (size=0) */
+  17 0000 0E94 0000 		call NutDnsGetHostByName
+  18 0004 DC01      		movw r26,r24
+  19 0006 CB01      		movw r24,r22
+  20 0008 BC01      		movw r22,r24
+  21 000a CD01      		movw r24,r26
+  22               	/* epilogue: frame size=0 */
+  23 000c 0895      		ret
+  24               	/* epilogue end (size=1) */
+  25               	/* function IPresolve size 7 (6) */
+  26               	.Lfe1:
+  27               		.size	IPresolve,.Lfe1-IPresolve
+  28               	.global	MailConnect
+  29               		.type	MailConnect,@function
+  30               	MailConnect:
+  31               	/* prologue: frame size=0 */
+  32               	/* prologue end (size=0) */
+  33 000e 0E94 0000 		call NutTcpConnect
+  34 0012 0097      		sbiw r24,0
+  35 0014 11F0      		breq .L2
+  36 0016 8FEF      		ldi r24,lo8(-1)
+  37 0018 9FEF      		ldi r25,hi8(-1)
+  38               	.L2:
+  39               	/* epilogue: frame size=0 */
+  40 001a 0895      		ret
+  41               	/* epilogue end (size=1) */
+  42               	/* function MailConnect size 7 (6) */
+  43               	.Lfe2:
+  44               		.size	MailConnect,.Lfe2-MailConnect
+  45               		.data
+  46               	.LC0:
+  47 0000 0D0A 00   		.string	"\r\n"
+  48               	.LC1:
+  49 0003 4548 4C4F 		.string	"EHLO %s \r\n"
+  49      2025 7320 
+  49      0D0A 00
+  50               		.text
+  51               	.global	GetMailEhlo
+  52               		.type	GetMailEhlo,@function
+  53               	GetMailEhlo:
+  54               	/* prologue: frame size=0 */
+  55 001c AF92      		push r10
+GAS LISTING C:\WINDOWS\TEMP/cc3E7dgb.s 			page 2
+
+
+  56 001e BF92      		push r11
+  57 0020 CF92      		push r12
+  58 0022 DF92      		push r13
+  59 0024 EF92      		push r14
+  60 0026 FF92      		push r15
+  61 0028 0F93      		push r16
+  62 002a 1F93      		push r17
+  63               	/* prologue end (size=8) */
+  64 002c 5C01      		movw r10,r24
+  65 002e 8B01      		movw r16,r22
+  66 0030 6A01      		movw r12,r20
+  67 0032 7901      		movw r14,r18
+  68 0034 41E0      		ldi r20,lo8(1)
+  69 0036 50E0      		ldi r21,hi8(1)
+  70 0038 0E94 0000 		call NutTcpReceive
+  71 003c C801      		movw r24,r16
+  72 003e 0E94 0000 		call NutKPrintString
+  73 0042 80E0      		ldi r24,lo8(.LC0)
+  74 0044 90E0      		ldi r25,hi8(.LC0)
+  75 0046 0E94 0000 		call NutKPrintString
+  76 004a DF92      		push r13
+  77 004c CF92      		push r12
+  78 004e 80E0      		ldi r24,lo8(.LC1)
+  79 0050 90E0      		ldi r25,hi8(.LC1)
+  80 0052 9F93      		push r25
+  81 0054 8F93      		push r24
+  82 0056 FF92      		push r15
+  83 0058 EF92      		push r14
+  84 005a 0E94 0000 		call NutPrintFormat
+  85 005e C701      		movw r24,r14
+  86 0060 0E94 0000 		call NutPrintFlush
+  87 0064 41E0      		ldi r20,lo8(1)
+  88 0066 50E0      		ldi r21,hi8(1)
+  89 0068 B801      		movw r22,r16
+  90 006a C501      		movw r24,r10
+  91 006c 0E94 0000 		call NutTcpReceive
+  92 0070 2DB7      		in r18,__SP_L__
+  93 0072 3EB7      		in r19,__SP_H__
+  94 0074 2A5F      		subi r18,lo8(-(6))
+  95 0076 3F4F      		sbci r19,hi8(-(6))
+  96 0078 0FB6      		in __tmp_reg__,__SREG__
+  97 007a F894      		cli
+  98 007c 3EBF      		out __SP_H__,r19
+  99 007e 0FBE      		out __SREG__,__tmp_reg__
+ 100 0080 2DBF      		out __SP_L__,r18
+ 101 0082 892F      		mov r24,r25
+ 102 0084 9927      		clr r25
+ 103 0086 87FD      		sbrc r24,7
+ 104 0088 9095      		com r25
+ 105 008a 8095      		com r24
+ 106 008c 9095      		com r25
+ 107 008e 8827      		clr r24
+ 108 0090 990F      		lsl r25
+ 109 0092 881F      		rol r24
+ 110 0094 9927      		clr r25
+ 111 0096 0197      		sbiw r24,1
+ 112               	/* epilogue: frame size=0 */
+GAS LISTING C:\WINDOWS\TEMP/cc3E7dgb.s 			page 3
+
+
+ 113 0098 1F91      		pop r17
+ 114 009a 0F91      		pop r16
+ 115 009c FF90      		pop r15
+ 116 009e EF90      		pop r14
+ 117 00a0 DF90      		pop r13
+ 118 00a2 CF90      		pop r12
+ 119 00a4 BF90      		pop r11
+ 120 00a6 AF90      		pop r10
+ 121 00a8 0895      		ret
+ 122               	/* epilogue end (size=9) */
+ 123               	/* function GetMailEhlo size 71 (54) */
+ 124               	.Lfe3:
+ 125               		.size	GetMailEhlo,.Lfe3-GetMailEhlo
+ 126               		.data
+ 127               	.LC2:
+ 128 000e 4D41 494C 		.string	"MAIL From:<%s> \r\n"
+ 128      2046 726F 
+ 128      6D3A 3C25 
+ 128      733E 200D 
+ 128      0A00 
+ 129               		.text
+ 130               	.global	SendMailFrom
+ 131               		.type	SendMailFrom,@function
+ 132               	SendMailFrom:
+ 133               	/* prologue: frame size=0 */
+ 134 00aa EF92      		push r14
+ 135 00ac FF92      		push r15
+ 136 00ae 0F93      		push r16
+ 137 00b0 1F93      		push r17
+ 138               	/* prologue end (size=4) */
+ 139 00b2 7B01      		movw r14,r22
+ 140 00b4 8901      		movw r16,r18
+ 141 00b6 5F93      		push r21
+ 142 00b8 4F93      		push r20
+ 143 00ba 80E0      		ldi r24,lo8(.LC2)
+ 144 00bc 90E0      		ldi r25,hi8(.LC2)
+ 145 00be 9F93      		push r25
+ 146 00c0 8F93      		push r24
+ 147 00c2 3F93      		push r19
+ 148 00c4 2F93      		push r18
+ 149 00c6 0E94 0000 		call NutPrintFormat
+ 150 00ca C801      		movw r24,r16
+ 151 00cc 0E94 0000 		call NutPrintFlush
+ 152 00d0 41E0      		ldi r20,lo8(1)
+ 153 00d2 50E0      		ldi r21,hi8(1)
+ 154 00d4 B701      		movw r22,r14
+ 155 00d6 C801      		movw r24,r16
+ 156 00d8 0E94 0000 		call NutDeviceGetLine
+ 157 00dc 2DB7      		in r18,__SP_L__
+ 158 00de 3EB7      		in r19,__SP_H__
+ 159 00e0 2A5F      		subi r18,lo8(-(6))
+ 160 00e2 3F4F      		sbci r19,hi8(-(6))
+ 161 00e4 0FB6      		in __tmp_reg__,__SREG__
+ 162 00e6 F894      		cli
+ 163 00e8 3EBF      		out __SP_H__,r19
+ 164 00ea 0FBE      		out __SREG__,__tmp_reg__
+ 165 00ec 2DBF      		out __SP_L__,r18
+GAS LISTING C:\WINDOWS\TEMP/cc3E7dgb.s 			page 4
+
+
+ 166 00ee 892F      		mov r24,r25
+ 167 00f0 9927      		clr r25
+ 168 00f2 87FD      		sbrc r24,7
+ 169 00f4 9095      		com r25
+ 170 00f6 8095      		com r24
+ 171 00f8 9095      		com r25
+ 172 00fa 8827      		clr r24
+ 173 00fc 990F      		lsl r25
+ 174 00fe 881F      		rol r24
+ 175 0100 9927      		clr r25
+ 176 0102 0197      		sbiw r24,1
+ 177               	/* epilogue: frame size=0 */
+ 178 0104 1F91      		pop r17
+ 179 0106 0F91      		pop r16
+ 180 0108 FF90      		pop r15
+ 181 010a EF90      		pop r14
+ 182 010c 0895      		ret
+ 183               	/* epilogue end (size=5) */
+ 184               	/* function SendMailFrom size 50 (41) */
+ 185               	.Lfe4:
+ 186               		.size	SendMailFrom,.Lfe4-SendMailFrom
+ 187               		.data
+ 188               	.LC3:
+ 189 0020 5243 5054 		.string	"RCPT To:<%s> \r\n"
+ 189      2054 6F3A 
+ 189      3C25 733E 
+ 189      200D 0A00 
+ 190               		.text
+ 191               	.global	SendRctpTo
+ 192               		.type	SendRctpTo,@function
+ 193               	SendRctpTo:
+ 194               	/* prologue: frame size=0 */
+ 195 010e EF92      		push r14
+ 196 0110 FF92      		push r15
+ 197 0112 0F93      		push r16
+ 198 0114 1F93      		push r17
+ 199               	/* prologue end (size=4) */
+ 200 0116 7B01      		movw r14,r22
+ 201 0118 8901      		movw r16,r18
+ 202 011a 5F93      		push r21
+ 203 011c 4F93      		push r20
+ 204 011e 80E0      		ldi r24,lo8(.LC3)
+ 205 0120 90E0      		ldi r25,hi8(.LC3)
+ 206 0122 9F93      		push r25
+ 207 0124 8F93      		push r24
+ 208 0126 3F93      		push r19
+ 209 0128 2F93      		push r18
+ 210 012a 0E94 0000 		call NutPrintFormat
+ 211 012e C801      		movw r24,r16
+ 212 0130 0E94 0000 		call NutPrintFlush
+ 213 0134 41E0      		ldi r20,lo8(1)
+ 214 0136 50E0      		ldi r21,hi8(1)
+ 215 0138 B701      		movw r22,r14
+ 216 013a C801      		movw r24,r16
+ 217 013c 0E94 0000 		call NutDeviceGetLine
+ 218 0140 2DB7      		in r18,__SP_L__
+ 219 0142 3EB7      		in r19,__SP_H__
+GAS LISTING C:\WINDOWS\TEMP/cc3E7dgb.s 			page 5
+
+
+ 220 0144 2A5F      		subi r18,lo8(-(6))
+ 221 0146 3F4F      		sbci r19,hi8(-(6))
+ 222 0148 0FB6      		in __tmp_reg__,__SREG__
+ 223 014a F894      		cli
+ 224 014c 3EBF      		out __SP_H__,r19
+ 225 014e 0FBE      		out __SREG__,__tmp_reg__
+ 226 0150 2DBF      		out __SP_L__,r18
+ 227 0152 892F      		mov r24,r25
+ 228 0154 9927      		clr r25
+ 229 0156 87FD      		sbrc r24,7
+ 230 0158 9095      		com r25
+ 231 015a 8095      		com r24
+ 232 015c 9095      		com r25
+ 233 015e 8827      		clr r24
+ 234 0160 990F      		lsl r25
+ 235 0162 881F      		rol r24
+ 236 0164 9927      		clr r25
+ 237 0166 0197      		sbiw r24,1
+ 238               	/* epilogue: frame size=0 */
+ 239 0168 1F91      		pop r17
+ 240 016a 0F91      		pop r16
+ 241 016c FF90      		pop r15
+ 242 016e EF90      		pop r14
+ 243 0170 0895      		ret
+ 244               	/* epilogue end (size=5) */
+ 245               	/* function SendRctpTo size 50 (41) */
+ 246               	.Lfe5:
+ 247               		.size	SendRctpTo,.Lfe5-SendRctpTo
+ 248               		.data
+ 249               	.LC4:
+ 250 0030 4441 5441 		.string	"DATA \r\n"
+ 250      200D 0A00 
+ 251               	.LC5:
+ 252 0038 2573 2020 		.string	"%s  \r\n.\r\n"
+ 252      0D0A 2E0D 
+ 252      0A00 
+ 253               		.text
+ 254               	.global	SendData
+ 255               		.type	SendData,@function
+ 256               	SendData:
+ 257               	/* prologue: frame size=0 */
+ 258 0172 CF92      		push r12
+ 259 0174 DF92      		push r13
+ 260 0176 EF92      		push r14
+ 261 0178 FF92      		push r15
+ 262 017a 0F93      		push r16
+ 263 017c 1F93      		push r17
+ 264               	/* prologue end (size=6) */
+ 265 017e 7B01      		movw r14,r22
+ 266 0180 6A01      		movw r12,r20
+ 267 0182 8901      		movw r16,r18
+ 268 0184 60E0      		ldi r22,lo8(.LC4)
+ 269 0186 70E0      		ldi r23,hi8(.LC4)
+ 270 0188 C901      		movw r24,r18
+ 271 018a 0E94 0000 		call NutPrintString
+ 272 018e C801      		movw r24,r16
+ 273 0190 0E94 0000 		call NutPrintFlush
+GAS LISTING C:\WINDOWS\TEMP/cc3E7dgb.s 			page 6
+
+
+ 274 0194 41E0      		ldi r20,lo8(1)
+ 275 0196 50E0      		ldi r21,hi8(1)
+ 276 0198 B701      		movw r22,r14
+ 277 019a C801      		movw r24,r16
+ 278 019c 0E94 0000 		call NutDeviceGetLine
+ 279 01a0 C701      		movw r24,r14
+ 280 01a2 0E94 0000 		call NutKPrintString
+ 281 01a6 DF92      		push r13
+ 282 01a8 CF92      		push r12
+ 283 01aa 80E0      		ldi r24,lo8(.LC5)
+ 284 01ac 90E0      		ldi r25,hi8(.LC5)
+ 285 01ae 9F93      		push r25
+ 286 01b0 8F93      		push r24
+ 287 01b2 1F93      		push r17
+ 288 01b4 0F93      		push r16
+ 289 01b6 0E94 0000 		call NutPrintFormat
+ 290 01ba C801      		movw r24,r16
+ 291 01bc 0E94 0000 		call NutPrintFlush
+ 292 01c0 41E0      		ldi r20,lo8(1)
+ 293 01c2 50E0      		ldi r21,hi8(1)
+ 294 01c4 B701      		movw r22,r14
+ 295 01c6 C801      		movw r24,r16
+ 296 01c8 0E94 0000 		call NutDeviceGetLine
+ 297 01cc 2DB7      		in r18,__SP_L__
+ 298 01ce 3EB7      		in r19,__SP_H__
+ 299 01d0 2A5F      		subi r18,lo8(-(6))
+ 300 01d2 3F4F      		sbci r19,hi8(-(6))
+ 301 01d4 0FB6      		in __tmp_reg__,__SREG__
+ 302 01d6 F894      		cli
+ 303 01d8 3EBF      		out __SP_H__,r19
+ 304 01da 0FBE      		out __SREG__,__tmp_reg__
+ 305 01dc 2DBF      		out __SP_L__,r18
+ 306 01de 892F      		mov r24,r25
+ 307 01e0 9927      		clr r25
+ 308 01e2 87FD      		sbrc r24,7
+ 309 01e4 9095      		com r25
+ 310 01e6 8095      		com r24
+ 311 01e8 9095      		com r25
+ 312 01ea 8827      		clr r24
+ 313 01ec 990F      		lsl r25
+ 314 01ee 881F      		rol r24
+ 315 01f0 9927      		clr r25
+ 316 01f2 0197      		sbiw r24,1
+ 317               	/* epilogue: frame size=0 */
+ 318 01f4 1F91      		pop r17
+ 319 01f6 0F91      		pop r16
+ 320 01f8 FF90      		pop r15
+ 321 01fa EF90      		pop r14
+ 322 01fc DF90      		pop r13
+ 323 01fe CF90      		pop r12
+ 324 0200 0895      		ret
+ 325               	/* epilogue end (size=7) */
+ 326               	/* function SendData size 72 (59) */
+ 327               	.Lfe6:
+ 328               		.size	SendData,.Lfe6-SendData
+ 329               		.data
+ 330               	.LC6:
+GAS LISTING C:\WINDOWS\TEMP/cc3E7dgb.s 			page 7
+
+
+ 331 0042 5155 4954 		.string	"QUIT \r\n"
+ 331      200D 0A00 
+ 332               		.text
+ 333               	.global	QuitMail
+ 334               		.type	QuitMail,@function
+ 335               	QuitMail:
+ 336               	/* prologue: frame size=0 */
+ 337 0202 CF92      		push r12
+ 338 0204 DF92      		push r13
+ 339 0206 EF92      		push r14
+ 340 0208 FF92      		push r15
+ 341 020a 0F93      		push r16
+ 342 020c 1F93      		push r17
+ 343               	/* prologue end (size=6) */
+ 344 020e 6C01      		movw r12,r24
+ 345 0210 7B01      		movw r14,r22
+ 346 0212 8A01      		movw r16,r20
+ 347 0214 60E0      		ldi r22,lo8(.LC6)
+ 348 0216 70E0      		ldi r23,hi8(.LC6)
+ 349 0218 CA01      		movw r24,r20
+ 350 021a 0E94 0000 		call NutPrintString
+ 351 021e C801      		movw r24,r16
+ 352 0220 0E94 0000 		call NutPrintFlush
+ 353 0224 41E0      		ldi r20,lo8(1)
+ 354 0226 50E0      		ldi r21,hi8(1)
+ 355 0228 B701      		movw r22,r14
+ 356 022a C601      		movw r24,r12
+ 357 022c 0E94 0000 		call NutTcpReceive
+ 358 0230 892F      		mov r24,r25
+ 359 0232 9927      		clr r25
+ 360 0234 87FD      		sbrc r24,7
+ 361 0236 9095      		com r25
+ 362 0238 8095      		com r24
+ 363 023a 9095      		com r25
+ 364 023c 8827      		clr r24
+ 365 023e 990F      		lsl r25
+ 366 0240 881F      		rol r24
+ 367 0242 9927      		clr r25
+ 368 0244 0197      		sbiw r24,1
+ 369               	/* epilogue: frame size=0 */
+ 370 0246 1F91      		pop r17
+ 371 0248 0F91      		pop r16
+ 372 024a FF90      		pop r15
+ 373 024c EF90      		pop r14
+ 374 024e DF90      		pop r13
+ 375 0250 CF90      		pop r12
+ 376 0252 0895      		ret
+ 377               	/* epilogue end (size=7) */
+ 378               	/* function QuitMail size 41 (28) */
+ 379               	.Lfe7:
+ 380               		.size	QuitMail,.Lfe7-QuitMail
+ 381               		.lcomm buff.0,1024
+ 382               		.data
+ 383               		.type	my_mac.1,@object
+ 384               		.size	my_mac.1,6
+ 385               	my_mac.1:
+ 386 004a 00        		.byte	0
+GAS LISTING C:\WINDOWS\TEMP/cc3E7dgb.s 			page 8
+
+
+ 387 004b 06        		.byte	6
+ 388 004c 98        		.byte	-104
+ 389 004d 20        		.byte	32
+ 390 004e 00        		.byte	0
+ 391 004f 00        		.byte	0
+ 392               	.LC7:
+ 393 0050 7332 3031 		.string	"s2010439@kmitl.ac.th"
+ 393      3034 3339 
+ 393      406B 6D69 
+ 393      746C 2E61 
+ 393      632E 7468 
+ 394 0065 0000 0000 		.skip 19,0
+ 394      0000 0000 
+ 394      0000 0000 
+ 394      0000 0000 
+ 394      0000 00
+ 395               	.LC8:
+ 396 0078 6174 6179 		.string	"ataya_p@yahoo.com"
+ 396      615F 7040 
+ 396      7961 686F 
+ 396      6F2E 636F 
+ 396      6D00 
+ 397 008a 0000 0000 		.skip 22,0
+ 397      0000 0000 
+ 397      0000 0000 
+ 397      0000 0000 
+ 397      0000 0000 
+ 398               	.LC9:
+ 399 00a0 6865 6C6C 		.string	"hello word \r\n this is a test from Ethernut\r\n By ATAYA P"
+ 399      6F20 776F 
+ 399      7264 200D 
+ 399      0A20 7468 
+ 399      6973 2069 
+ 400 00d8 0000 0000 		.skip 444,0
+ 400      0000 0000 
+ 400      0000 0000 
+ 400      0000 0000 
+ 400      0000 0000 
+ 401               	.LC10:
+ 402 0294 7561 7274 		.string	"uart0"
+ 402      3000 
+ 403               	.LC11:
+ 404 029a 0D0A 3D3D 		.string	"\r\n==== (^_^) ATA mail ver  1.0 ====\r\n"
+ 404      3D3D 2028 
+ 404      5E5F 5E29 
+ 404      2041 5441 
+ 404      206D 6169 
+ 405               	.LC12:
+ 406 02c0 436F 6E66 		.string	"Configuring Ethernet interface\r\n"
+ 406      6967 7572 
+ 406      696E 6720 
+ 406      4574 6865 
+ 406      726E 6574 
+ 407               	.LC13:
+ 408 02e1 3235 352E 		.string	"255.255.255.0"
+ 408      3235 352E 
+ 408      3235 352E 
+GAS LISTING C:\WINDOWS\TEMP/cc3E7dgb.s 			page 9
+
+
+ 408      3000 
+ 409               	.LC14:
+ 410 02ef 3136 312E 		.string	"161.246.5.135"
+ 410      3234 362E 
+ 410      352E 3133 
+ 410      3500 
+ 411               	.LC15:
+ 412 02fd 6574 6830 		.string	"eth0"
+ 412      00
+ 413               	.LC16:
+ 414 0302 3136 312E 		.string	"161.246.5.254"
+ 414      3234 362E 
+ 414      352E 3235 
+ 414      3400 
+ 415               	.LC17:
+ 416 0310 3136 312E 		.string	"161.246.4.3"
+ 416      3234 362E 
+ 416      342E 3300 
+ 417               	.LC18:
+ 418 031c 6368 616F 		.string	"chaokhun.kmitl.ac.th"
+ 418      6B68 756E 
+ 418      2E6B 6D69 
+ 418      746C 2E61 
+ 418      632E 7468 
+ 419               	.LC19:
+ 420 0331 436F 6E6E 		.string	"Connecting to %s on %u\r\n"
+ 420      6563 7469 
+ 420      6E67 2074 
+ 420      6F20 2573 
+ 420      206F 6E20 
+ 421               	.LC20:
+ 422 034a 5443 5020 		.string	"TCP connect ok\r\n"
+ 422      636F 6E6E 
+ 422      6563 7420 
+ 422      6F6B 0D0A 
+ 422      00
+ 423               	.LC21:
+ 424 035b 0A0D 0A20 		.string	"\n\r\n ==== NOW sending mail ====\r\n"
+ 424      3D3D 3D3D 
+ 424      204E 4F57 
+ 424      2073 656E 
+ 424      6469 6E67 
+ 425               	.LC23:
+ 426 037c 3D3D 3D3D 		.string	"==== (-_-) Disonnecting %s:%u ====\r\n"
+ 426      2028 2D5F 
+ 426      2D29 2044 
+ 426      6973 6F6E 
+ 426      6E65 6374 
+ 427               	.LC22:
+ 428 03a1 4372 6561 		.string	"Creating stream device failed\r\n"
+ 428      7469 6E67 
+ 428      2073 7472 
+ 428      6561 6D20 
+ 428      6465 7669 
+ 429               	.LC24:
+ 430 03c1 4361 6E27 		.string	"Can't resolve %s\r\n"
+ 430      7420 7265 
+GAS LISTING C:\WINDOWS\TEMP/cc3E7dgb.s 			page 10
+
+
+ 430      736F 6C76 
+ 430      6520 2573 
+ 430      0D0A 00
+ 431               		.text
+ 432               	.global	NutMain
+ 433               		.type	NutMain,@function
+ 434               	NutMain:
+ 435               	/* prologue: frame size=584 */
+ 436 0254 CF93      		push r28
+ 437 0256 DF93      		push r29
+ 438 0258 CDB7      		in r28,__SP_L__
+ 439 025a DEB7      		in r29,__SP_H__
+ 440 025c C854      		subi r28,lo8(584)
+ 441 025e D240      		sbci r29,hi8(584)
+ 442 0260 0FB6      		in __tmp_reg__,__SREG__
+ 443 0262 F894      		cli
+ 444 0264 DEBF      		out __SP_H__,r29
+ 445 0266 0FBE      		out __SREG__,__tmp_reg__
+ 446 0268 CDBF      		out __SP_L__,r28
+ 447               	/* prologue end (size=11) */
+ 448 026a 8E01      		movw r16,r28
+ 449 026c 0B5B      		subi r16,lo8(-(581))
+ 450 026e 1D4F      		sbci r17,hi8(-(581))
+ 451 0270 80E0      		ldi r24,lo8(115200)
+ 452 0272 92EC      		ldi r25,hi8(115200)
+ 453 0274 A1E0      		ldi r26,hlo8(115200)
+ 454 0276 B0E0      		ldi r27,hhi8(115200)
+ 455 0278 F801      		movw r30,r16
+ 456 027a 8083      		st Z,r24
+ 457 027c 9183      		std Z+1,r25
+ 458 027e A283      		std Z+2,r26
+ 459 0280 B383      		std Z+3,r27
+ 460 0282 85E1      		ldi r24,lo8(21)
+ 461 0284 DE01      		movw r26,r28
+ 462 0286 1196      		adiw r26,1
+ 463 0288 E0E0      		ldi r30,lo8(.LC7)
+ 464 028a F0E0      		ldi r31,hi8(.LC7)
+ 465 028c 0190      		ld __tmp_reg__,Z+
+ 466 028e 0D92      		st X+,__tmp_reg__
+ 467 0290 8A95      		dec r24
+ 468 0292 E1F7      		brne _PC_-8
+ 469 0294 83E1      		ldi r24,lo8(19)
+ 470 0296 FE01      		movw r30,r28
+ 471 0298 7696      		adiw r30,22
+ 472 029a 1192      		st Z+,__zero_reg__
+ 473 029c 8A95      	        dec r24
+ 474 029e E9F7      		brne _PC_-6
+ 475 02a0 82E1      		ldi r24,lo8(18)
+ 476 02a2 FE01      		movw r30,r28
+ 477 02a4 B996      		adiw r30,41
+ 478 02a6 3F01      		movw r6,r30
+ 479 02a8 A0E0      		ldi r26,lo8(.LC8)
+ 480 02aa B0E0      		ldi r27,hi8(.LC8)
+ 481 02ac 0D90      		ld __tmp_reg__,X+
+ 482 02ae 0192      		st Z+,__tmp_reg__
+ 483 02b0 8A95      		dec r24
+ 484 02b2 E1F7      		brne _PC_-8
+GAS LISTING C:\WINDOWS\TEMP/cc3E7dgb.s 			page 11
+
+
+ 485 02b4 86E1      		ldi r24,lo8(22)
+ 486 02b6 FE01      		movw r30,r28
+ 487 02b8 FB96      		adiw r30,59
+ 488 02ba 1192      		st Z+,__zero_reg__
+ 489 02bc 8A95      	        dec r24
+ 490 02be E9F7      		brne _PC_-6
+ 491 02c0 E1E5      		ldi r30,lo8(81)
+ 492 02c2 8E2E      		mov r8,r30
+ 493 02c4 912C      		mov r9,__zero_reg__
+ 494 02c6 8C0E      		add r8,r28
+ 495 02c8 9D1E      		adc r9,r29
+ 496 02ca 88E3      		ldi r24,lo8(56)
+ 497 02cc D401      		movw r26,r8
+ 498 02ce E0E0      		ldi r30,lo8(.LC9)
+ 499 02d0 F0E0      		ldi r31,hi8(.LC9)
+ 500 02d2 0190      		ld __tmp_reg__,Z+
+ 501 02d4 0D92      		st X+,__tmp_reg__
+ 502 02d6 8A95      		dec r24
+ 503 02d8 E1F7      		brne _PC_-8
+ 504 02da 8CEB      		ldi r24,lo8(444)
+ 505 02dc 91E0      		ldi r25,hi8(444)
+ 506 02de F401      		movw r30,r8
+ 507 02e0 F896      		adiw r30,56
+ 508 02e2 1192      		st Z+,__zero_reg__
+ 509 02e4 0197      		sbiw r24,1
+ 510 02e6 E9F7      		brne _PC_-6
+ 511 02e8 40E0      		ldi r20,lo8(0)
+ 512 02ea 60E0      		ldi r22,lo8(0)
+ 513 02ec 70E0      		ldi r23,hi8(0)
+ 514 02ee 80E0      		ldi r24,lo8(devUart0)
+ 515 02f0 90E0      		ldi r25,hi8(devUart0)
+ 516 02f2 0E94 0000 		call NutRegisterDevice
+ 517 02f6 80E0      		ldi r24,lo8(.LC10)
+ 518 02f8 90E0      		ldi r25,hi8(.LC10)
+ 519 02fa 0E94 0000 		call NutDeviceOpen
+ 520 02fe A801      		movw r20,r16
+ 521 0300 61E0      		ldi r22,lo8(257)
+ 522 0302 71E0      		ldi r23,hi8(257)
+ 523 0304 0E94 0000 		call NutDeviceIOCtl
+ 524 0308 80E0      		ldi r24,lo8(.LC11)
+ 525 030a 90E0      		ldi r25,hi8(.LC11)
+ 526 030c 0E94 0000 		call NutKPrintString
+ 527 0310 80E0      		ldi r24,lo8(.LC12)
+ 528 0312 90E0      		ldi r25,hi8(.LC12)
+ 529 0314 0E94 0000 		call NutKPrintString
+ 530 0318 45E0      		ldi r20,lo8(5)
+ 531 031a 60E0      		ldi r22,lo8(-32000)
+ 532 031c 73E8      		ldi r23,hi8(-32000)
+ 533 031e 80E0      		ldi r24,lo8(devEth0)
+ 534 0320 90E0      		ldi r25,hi8(devEth0)
+ 535 0322 0E94 0000 		call NutRegisterDevice
+ 536 0326 80E0      		ldi r24,lo8(.LC13)
+ 537 0328 90E0      		ldi r25,hi8(.LC13)
+ 538 032a 0E94 0000 		call inet_addr
+ 539 032e 7B01      		movw r14,r22
+ 540 0330 8C01      		movw r16,r24
+ 541 0332 80E0      		ldi r24,lo8(.LC14)
+GAS LISTING C:\WINDOWS\TEMP/cc3E7dgb.s 			page 12
+
+
+ 542 0334 90E0      		ldi r25,hi8(.LC14)
+ 543 0336 0E94 0000 		call inet_addr
+ 544 033a DC01      		movw r26,r24
+ 545 033c CB01      		movw r24,r22
+ 546 033e 9C01      		movw r18,r24
+ 547 0340 AD01      		movw r20,r26
+ 548 0342 60E0      		ldi r22,lo8(my_mac.1)
+ 549 0344 70E0      		ldi r23,hi8(my_mac.1)
+ 550 0346 80E0      		ldi r24,lo8(.LC15)
+ 551 0348 90E0      		ldi r25,hi8(.LC15)
+ 552 034a 0E94 0000 		call NutNetIfConfig
+ 553 034e 80E0      		ldi r24,lo8(.LC16)
+ 554 0350 90E0      		ldi r25,hi8(.LC16)
+ 555 0352 0E94 0000 		call inet_addr
+ 556 0356 DC01      		movw r26,r24
+ 557 0358 CB01      		movw r24,r22
+ 558 035a 70E0      		ldi r23,lo8(devEth0)
+ 559 035c C72E      		mov r12,r23
+ 560 035e 70E0      		ldi r23,hi8(devEth0)
+ 561 0360 D72E      		mov r13,r23
+ 562 0362 7C01      		movw r14,r24
+ 563 0364 8D01      		movw r16,r26
+ 564 0366 20E0      		ldi r18,lo8(0)
+ 565 0368 30E0      		ldi r19,hi8(0)
+ 566 036a 40E0      		ldi r20,hlo8(0)
+ 567 036c 50E0      		ldi r21,hhi8(0)
+ 568 036e CA01      		movw r24,r20
+ 569 0370 B901      		movw r22,r18
+ 570 0372 0E94 0000 		call NutIpRouteAdd
+ 571 0376 80E0      		ldi r24,lo8(.LC17)
+ 572 0378 90E0      		ldi r25,hi8(.LC17)
+ 573 037a 0E94 0000 		call inet_addr
+ 574 037e DC01      		movw r26,r24
+ 575 0380 CB01      		movw r24,r22
+ 576 0382 9C01      		movw r18,r24
+ 577 0384 AD01      		movw r20,r26
+ 578 0386 60E0      		ldi r22,lo8(0)
+ 579 0388 70E0      		ldi r23,hi8(0)
+ 580 038a CB01      		movw r24,r22
+ 581 038c 0E94 0000 		call NutDnsConfig
+ 582 0390 80E0      		ldi r24,lo8(.LC18)
+ 583 0392 90E0      		ldi r25,hi8(.LC18)
+ 584 0394 0E94 0000 		call IPresolve
+ 585 0398 5B01      		movw r10,r22
+ 586 039a 6C01      		movw r12,r24
+ 587 039c 6115      		cp r22,__zero_reg__
+ 588 039e 7105      		cpc r23,__zero_reg__
+ 589 03a0 8105      		cpc r24,__zero_reg__
+ 590 03a2 9105      		cpc r25,__zero_reg__
+ 591 03a4 09F4      		brne _PC_+2
+ 592 03a6 95C0      		rjmp .L21
+ 593 03a8 0E94 0000 		call NutTcpCreateSocket
+ 594 03ac 7C01      		movw r14,r24
+ 595 03ae 892B      		or r24,r25
+ 596 03b0 09F4      		brne _PC_+2
+ 597 03b2 85C0      		rjmp .L26
+ 598 03b4 09E1      		ldi r16,lo8(25)
+GAS LISTING C:\WINDOWS\TEMP/cc3E7dgb.s 			page 13
+
+
+ 599 03b6 10E0      		ldi r17,hi8(25)
+ 600 03b8 1F93      		push r17
+ 601 03ba 0F93      		push r16
+ 602 03bc C601      		movw r24,r12
+ 603 03be B501      		movw r22,r10
+ 604 03c0 0E94 0000 		call inet_ntoa
+ 605 03c4 9F93      		push r25
+ 606 03c6 8F93      		push r24
+ 607 03c8 80E0      		ldi r24,lo8(.LC19)
+ 608 03ca 90E0      		ldi r25,hi8(.LC19)
+ 609 03cc 9F93      		push r25
+ 610 03ce 8F93      		push r24
+ 611 03d0 0E94 0000 		call NutKPrintFormat
+ 612 03d4 9801      		movw r18,r16
+ 613 03d6 B601      		movw r22,r12
+ 614 03d8 A501      		movw r20,r10
+ 615 03da C701      		movw r24,r14
+ 616 03dc 0E94 0000 		call MailConnect
+ 617 03e0 2DB7      		in r18,__SP_L__
+ 618 03e2 3EB7      		in r19,__SP_H__
+ 619 03e4 2A5F      		subi r18,lo8(-(6))
+ 620 03e6 3F4F      		sbci r19,hi8(-(6))
+ 621 03e8 0FB6      		in __tmp_reg__,__SREG__
+ 622 03ea F894      		cli
+ 623 03ec 3EBF      		out __SP_H__,r19
+ 624 03ee 0FBE      		out __SREG__,__tmp_reg__
+ 625 03f0 2DBF      		out __SP_L__,r18
+ 626 03f2 892B      		or r24,r25
+ 627 03f4 09F0      		breq _PC_+2
+ 628 03f6 48C0      		rjmp .L23
+ 629 03f8 80E0      		ldi r24,lo8(.LC20)
+ 630 03fa 90E0      		ldi r25,hi8(.LC20)
+ 631 03fc 0E94 0000 		call NutKPrintString
+ 632 0400 C701      		movw r24,r14
+ 633 0402 0E94 0000 		call NutSoStreamCreate
+ 634 0406 8C01      		movw r16,r24
+ 635 0408 0097      		sbiw r24,0
+ 636 040a 09F4      		brne _PC_+2
+ 637 040c 5FC0      		rjmp .L24
+ 638 040e 9C01      		movw r18,r24
+ 639 0410 40E0      		ldi r20,lo8(.LC18)
+ 640 0412 50E0      		ldi r21,hi8(.LC18)
+ 641 0414 60E0      		ldi r22,lo8(buff.0)
+ 642 0416 70E0      		ldi r23,hi8(buff.0)
+ 643 0418 C701      		movw r24,r14
+ 644 041a 0E94 0000 		call GetMailEhlo
+ 645 041e 80E0      		ldi r24,lo8(buff.0)
+ 646 0420 90E0      		ldi r25,hi8(buff.0)
+ 647 0422 0E94 0000 		call NutKPrintString
+ 648 0426 80E0      		ldi r24,lo8(.LC21)
+ 649 0428 90E0      		ldi r25,hi8(.LC21)
+ 650 042a 0E94 0000 		call NutKPrintString
+ 651 042e 9801      		movw r18,r16
+ 652 0430 AE01      		movw r20,r28
+ 653 0432 4F5F      		subi r20,lo8(-(1))
+ 654 0434 5F4F      		sbci r21,hi8(-(1))
+ 655 0436 60E0      		ldi r22,lo8(buff.0)
+GAS LISTING C:\WINDOWS\TEMP/cc3E7dgb.s 			page 14
+
+
+ 656 0438 70E0      		ldi r23,hi8(buff.0)
+ 657 043a C701      		movw r24,r14
+ 658 043c 0E94 0000 		call SendMailFrom
+ 659 0440 80E0      		ldi r24,lo8(buff.0)
+ 660 0442 90E0      		ldi r25,hi8(buff.0)
+ 661 0444 0E94 0000 		call NutKPrintString
+ 662 0448 9801      		movw r18,r16
+ 663 044a A301      		movw r20,r6
+ 664 044c 60E0      		ldi r22,lo8(buff.0)
+ 665 044e 70E0      		ldi r23,hi8(buff.0)
+ 666 0450 C701      		movw r24,r14
+ 667 0452 0E94 0000 		call SendRctpTo
+ 668 0456 80E0      		ldi r24,lo8(buff.0)
+ 669 0458 90E0      		ldi r25,hi8(buff.0)
+ 670 045a 0E94 0000 		call NutKPrintString
+ 671 045e 9801      		movw r18,r16
+ 672 0460 A401      		movw r20,r8
+ 673 0462 60E0      		ldi r22,lo8(buff.0)
+ 674 0464 70E0      		ldi r23,hi8(buff.0)
+ 675 0466 C701      		movw r24,r14
+ 676 0468 0E94 0000 		call SendData
+ 677 046c 80E0      		ldi r24,lo8(buff.0)
+ 678 046e 90E0      		ldi r25,hi8(buff.0)
+ 679 0470 0E94 0000 		call NutKPrintString
+ 680 0474 A801      		movw r20,r16
+ 681 0476 60E0      		ldi r22,lo8(buff.0)
+ 682 0478 70E0      		ldi r23,hi8(buff.0)
+ 683 047a C701      		movw r24,r14
+ 684 047c 0E94 0000 		call QuitMail
+ 685 0480 80E0      		ldi r24,lo8(buff.0)
+ 686 0482 90E0      		ldi r25,hi8(buff.0)
+ 687               	.L30:
+ 688 0484 0E94 0000 		call NutKPrintString
+ 689               	.L23:
+ 690 0488 89E1      		ldi r24,lo8(25)
+ 691 048a 90E0      		ldi r25,hi8(25)
+ 692 048c 9F93      		push r25
+ 693 048e 8F93      		push r24
+ 694 0490 C601      		movw r24,r12
+ 695 0492 B501      		movw r22,r10
+ 696 0494 0E94 0000 		call inet_ntoa
+ 697 0498 9F93      		push r25
+ 698 049a 8F93      		push r24
+ 699 049c 80E0      		ldi r24,lo8(.LC23)
+ 700 049e 90E0      		ldi r25,hi8(.LC23)
+ 701 04a0 9F93      		push r25
+ 702 04a2 8F93      		push r24
+ 703 04a4 0E94 0000 		call NutKPrintFormat
+ 704 04a8 C701      		movw r24,r14
+ 705 04aa 0E94 0000 		call NutTcpCloseSocket
+ 706 04ae 8DB7      		in r24,__SP_L__
+ 707 04b0 9EB7      		in r25,__SP_H__
+ 708 04b2 0696      		adiw r24,6
+ 709 04b4 0FB6      		in __tmp_reg__,__SREG__
+ 710 04b6 F894      		cli
+ 711 04b8 9EBF      		out __SP_H__,r25
+ 712 04ba 0FBE      		out __SREG__,__tmp_reg__
+GAS LISTING C:\WINDOWS\TEMP/cc3E7dgb.s 			page 15
+
+
+ 713 04bc 8DBF      		out __SP_L__,r24
+ 714               	.L26:
+ 715 04be 68EE      		ldi r22,lo8(1000)
+ 716 04c0 73E0      		ldi r23,hi8(1000)
+ 717 04c2 80E0      		ldi r24,hlo8(1000)
+ 718 04c4 90E0      		ldi r25,hhi8(1000)
+ 719 04c6 0E94 0000 		call NutSleep
+ 720               	.L27:
+ 721 04ca FFCF      		rjmp .L27
+ 722               	.L24:
+ 723 04cc 80E0      		ldi r24,lo8(.LC22)
+ 724 04ce 90E0      		ldi r25,hi8(.LC22)
+ 725 04d0 D9CF      		rjmp .L30
+ 726               	.L21:
+ 727 04d2 80E0      		ldi r24,lo8(.LC18)
+ 728 04d4 90E0      		ldi r25,hi8(.LC18)
+ 729 04d6 9F93      		push r25
+ 730 04d8 8F93      		push r24
+ 731 04da 80E0      		ldi r24,lo8(.LC24)
+ 732 04dc 90E0      		ldi r25,hi8(.LC24)
+ 733 04de 9F93      		push r25
+ 734 04e0 8F93      		push r24
+ 735 04e2 0E94 0000 		call NutKPrintFormat
+ 736 04e6 0F90      		pop __tmp_reg__
+ 737 04e8 0F90      		pop __tmp_reg__
+ 738 04ea 0F90      		pop __tmp_reg__
+ 739 04ec 0F90      		pop __tmp_reg__
+ 740 04ee E7CF      		rjmp .L26
+ 741               	/* epilogue: frame size=584 */
+ 742               	/* epilogue: noreturn */
+ 743               	/* epilogue end (size=0) */
+ 744               	/* function NutMain size 334 (323) */
+ 745               	.Lfe8:
+ 746               		.size	NutMain,.Lfe8-NutMain
+ 747               	/* File "atamail.c": code  632 = 0x0278 ( 558), prologues  39, epilogues  35 */
+GAS LISTING C:\WINDOWS\TEMP/cc3E7dgb.s 			page 16
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 atamail.c
+                            *ABS*:0000003f __SREG__
+                            *ABS*:0000003e __SP_H__
+                            *ABS*:0000003d __SP_L__
+                            *ABS*:00000000 __tmp_reg__
+                            *ABS*:00000001 __zero_reg__
+                            *ABS*:00000002 _PC_
+C:\WINDOWS\TEMP/cc3E7dgb.s:14     .text:00000000 IPresolve
+C:\WINDOWS\TEMP/cc3E7dgb.s:30     .text:0000000e MailConnect
+C:\WINDOWS\TEMP/cc3E7dgb.s:53     .text:0000001c GetMailEhlo
+C:\WINDOWS\TEMP/cc3E7dgb.s:132    .text:000000aa SendMailFrom
+C:\WINDOWS\TEMP/cc3E7dgb.s:193    .text:0000010e SendRctpTo
+C:\WINDOWS\TEMP/cc3E7dgb.s:256    .text:00000172 SendData
+C:\WINDOWS\TEMP/cc3E7dgb.s:335    .text:00000202 QuitMail
+                             .bss:00000000 buff.0
+C:\WINDOWS\TEMP/cc3E7dgb.s:385    .data:0000004a my_mac.1
+C:\WINDOWS\TEMP/cc3E7dgb.s:434    .text:00000254 NutMain
+                            *ABS*:00000000 *ABS*
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss
+NutDnsGetHostByName
+NutTcpConnect
+NutTcpReceive
+NutKPrintString
+NutPrintFormat
+NutPrintFlush
+NutDeviceGetLine
+NutPrintString
+devUart0
+NutRegisterDevice
+NutDeviceOpen
+NutDeviceIOCtl
+devEth0
+inet_addr
+NutNetIfConfig
+NutIpRouteAdd
+NutDnsConfig
+NutTcpCreateSocket
+inet_ntoa
+NutKPrintFormat
+NutSoStreamCreate
+NutTcpCloseSocket
+NutSleep

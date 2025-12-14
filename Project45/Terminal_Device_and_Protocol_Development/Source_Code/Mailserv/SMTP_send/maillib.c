@@ -1,0 +1,115 @@
+
+
+
+
+//Mail Library source Demo version 1.0 (^_^)
+//by Ataya P 
+
+//Last Update  :6/12/2002
+#include <string.h>
+#include <stdlib.h> 
+
+#include <dev/uartavr.h>
+#include <dev/nicrtl.h>
+
+#include <sys/heap.h>
+#include <sys/thread.h>
+#include <sys/timer.h>
+#include <sys/print.h>
+#include <sys/kprint.h>
+#include <netinet/sostream.h>
+#include <arpa/inet.h>
+#include <net/route.h>
+#include <netdb.h> 
+
+
+u_long IPresolve(u_char * servername)
+{
+  u_long ip=NutDnsGetHostByName(servername);
+  return ip;
+
+}
+
+int MailConnect(TCPSOCKET *sock,u_long  mailip,int port)
+{
+
+if(NutTcpConnect(sock, mailip, port) == 0)return 0; //connect success
+else return -1; //connect failed
+
+}
+
+int GetMailEhlo(TCPSOCKET *sock,u_char *buff,u_char *server,NUTDEVICE *sostream)
+{                   
+                    //wait for server connection
+                    NutTcpReceive(sock, buff, sizeof(buff) - 1);
+                    NutKPrintString(buff);
+                    NutKPrintString("\r\n");
+                  
+                    //send ehlo to server
+                    NutPrintFormat(sostream, "EHLO %s \r\n",server);
+                    NutPrintFlush(sostream);
+                    
+                  
+           
+                    if(NutTcpReceive(sock, buff, sizeof(buff) - 1)<0)return -1;//error
+                    else return 0;//helo ok
+                    //NutKPrintString(buff);
+
+
+}
+
+int SendMailFrom(TCPSOCKET *sock,u_char *buff,u_char *mailfrom,NUTDEVICE *sostream)
+{
+                    NutPrintFormat(sostream, "MAIL From:<%s> \r\n",mailfrom);                    
+                    NutPrintFlush(sostream);
+                    if(NutDeviceGetLine(sostream, buff, sizeof(buff) - 1)<0)return -1;//error
+                    else return 0;//mail from ok
+                    //NutKPrintString(buff);
+                    //NutKPrintString("\r\n\r\n");
+}
+int SendRctpTo(TCPSOCKET *sock,u_char *buff,u_char *rcpt,NUTDEVICE *sostream)
+{                   
+                    NutPrintFormat(sostream, "RCPT To:<%s> \r\n",rcpt);
+                    NutPrintFlush(sostream);
+                    
+                     if(NutDeviceGetLine(sostream, buff, sizeof(buff) - 1)<0)return -1;//error
+                    else return 0;//rcpt ok
+                    //NutKPrintString(buff);
+                    //NutKPrintString("\r\n\r\n");
+
+}
+
+int SendData(TCPSOCKET *sock,u_char *buff,u_char *text,NUTDEVICE *sostream)
+{
+ 		    NutPrintString(sostream, "DATA \r\n");
+                    NutPrintFlush(sostream);
+                    //just waiting input from server
+                    NutDeviceGetLine(sostream, buff, sizeof(buff) - 1);
+                    NutKPrintString(buff);
+                    
+                    NutPrintFormat(sostream, "%s  \r\n.\r\n",text);
+                    NutPrintFlush(sostream);
+                    
+                    if(NutDeviceGetLine(sostream, buff, sizeof(buff) - 1)<0)return -1;//error
+                    else return 0;//rcpt ok
+                    //NutKPrintString(buff);
+                    //NutKPrintString("\r\n\r\n"
+}
+
+int QuitMail(TCPSOCKET *sock,u_char *buff,NUTDEVICE *sostream)
+{
+	 	           //end of mail command
+	 	            NutPrintString(sostream,"QUIT \r\n");
+                    NutPrintFlush(sostream);
+                    
+                    if(NutTcpReceive(sock, buff, sizeof(buff) - 1)<0)return -1;//error
+                    else return 0;//helo ok
+                    
+                    //NutKPrintString(buff);
+                    //NutKPrintString("\r\n");
+
+
+
+} 
+//End of program (-_-)
+

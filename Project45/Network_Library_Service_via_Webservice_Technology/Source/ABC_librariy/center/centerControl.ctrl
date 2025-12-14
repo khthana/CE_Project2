@@ -1,0 +1,78 @@
+package center; 
+
+import weblogic.jws.*; 
+import weblogic.jws.control.*; 
+import java.sql.SQLException; 
+import center.classes.*;
+
+/** 
+ * Defines a new database control. 
+ * 
+ * The @jws:connection tag indicates which WebLogic data source will be used by 
+ * this database control. Please change this to suit your needs. You can see a 
+ * list of available data sources by going to the WebLogic console in a browser 
+ * (typically http://localhost:7001/console) and clicking Services, JDBC, 
+ * Data Sources. 
+ * 
+ * @jws:connection data-source-jndi-name="JNDICenter" 
+ */ 
+public interface centerControl extends DatabaseControl 
+{ 
+    // Sample database function.  Uncomment to use 
+
+    // static public class Customer 
+    // { 
+    //   public int id; 
+    //   public String name; 
+    // } 
+    // 
+    // /** 
+    //  * @jws:sql statement="SELECT ID, NAME FROM CUSTOMERS WHERE ID = {id}" 
+    //  */ 
+    // Customer findCustomer(int id);
+
+    // Add "throws SQLException" to request that SQLExeptions be thrown on errors.
+
+    /**
+     * @jws:sql statement::
+     *     insert into logon_status
+     *     values ({username}, {passwd}, {library}, {ip}, now())
+     * ::
+     */
+    public void logon_status(String username, String passwd, String library, String ip);
+
+    /**
+     * @jws:sql statement::
+     *     select username, passwd, library
+     *     from logon_status
+     *     where ip={ip} 
+     * ::
+     */
+    public user_logon ip_status(String ip);
+
+    /**
+     * @jws:sql statement::
+     *     delete from logon_status
+     *     where now()-times>600
+     * ::
+     */
+    public void delete_status();
+
+    /**
+     * @jws:sql statement::
+     *     delete from logon_status
+     *     where (username={username} and library={library}) or ip={ip}
+     * ::
+     */
+    public void delete_record(String username, String library, String ip);
+
+    /**
+     * @jws:sql statement::
+     *     select count(*)
+     *     from logon_status
+     *     where username={username} and library={library}
+     * ::
+     */
+    public int check_username(String username, String library);
+
+}

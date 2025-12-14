@@ -1,0 +1,78 @@
+package center; 
+
+import weblogic.jws.control.JwsContext;
+import reservation.reservationControl;
+
+
+//import reservation.reservationControl;
+
+public class reservation
+{ 
+
+    /**
+     * @jws:control
+     */
+    private center.reservationControl XYZreservation;
+
+    /**
+     * @jws:control
+     */
+    private reservationControl ABCreservation;
+
+
+
+
+
+
+    /** @jws:context */ 
+    JwsContext context; 
+
+    /**
+     * @jws:operation
+     */
+    public int add_reservation(String library ,String member_num,String receive_date,String book_record,String comment)
+    {
+        int answer = 0; 
+        if (library.equalsIgnoreCase("ABC")) answer = ABCreservation.addReservation(member_num,receive_date,book_record,comment);
+        if (library.equalsIgnoreCase("xyz")) answer = XYZreservation.addReservation(member_num,receive_date,book_record,comment);
+        return answer;
+    }
+    
+
+    /**
+     * @jws:operation
+     */
+    public reservation_show_data check_reservation(String library,String member_num,String book_record,String comment)
+    {   
+        reservation_show_data data = new reservation_show_data();
+        if (library.equalsIgnoreCase("ABC"))  data= ABCreservation.checktReservation(member_num,book_record,comment);
+        if (library.equalsIgnoreCase("xyz"))  data= XYZreservation.checktReservation(member_num,book_record,comment);
+        return data;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public reservation_show_data[] user_check(String library, String username)
+    {    
+        /*reservation_show_data[] List = new reservation_show_data[3];
+        if (library.equalsIgnoreCase("ABC"))
+        {   
+            int x= ABCreservation.userCheck(username).length;
+            for (int i=0; i<x; i++)
+            {List[i]=new reservation_show_data();
+            List[i]= ABCreservation.userCheck(username)[i];}
+        }
+        if (library.equalsIgnoreCase("xyz"))
+        {   
+            int x= XYZreservation.userCheck(username).length;
+            for (int i=0; i<x; i++)
+            {List[i]=new reservation_show_data();
+            List[i]= XYZreservation.userCheck(username)[i];}
+        }*/
+        reservation_show_data[] List = null;
+        if (library.equalsIgnoreCase("ABC")){List=ABCreservation.userCheck(username);}
+        if (library.equalsIgnoreCase("XYZ")){List=XYZreservation.userCheck(username);}
+        return List;
+    }
+} 

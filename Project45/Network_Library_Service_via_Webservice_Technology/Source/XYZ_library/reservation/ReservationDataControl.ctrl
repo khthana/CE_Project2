@@ -1,0 +1,160 @@
+package reservation; 
+
+import weblogic.jws.*; 
+import weblogic.jws.control.*; 
+import java.sql.SQLException; 
+import java.util.*;
+import center.*;
+/** 
+ * Defines a new database control. 
+ * 
+ * The @jws:connection tag indicates which WebLogic data source will be used by 
+ * this database control. Please change this to suit your needs. You can see a 
+ * list of available data sources by going to the WebLogic console in a browser 
+ * (typically http://localhost:7001/console) and clicking Services, JDBC, 
+ * Data Sources. 
+ * 
+ * @jws:connection data-source-jndi-name="MyDataSource" 
+ */ 
+public interface ReservationDataControl extends DatabaseControl 
+{ 
+    //public class Date{ }
+    // Sample database function.  Uncomment to use 
+    
+
+
+     
+    // static public class Customer 
+    // { 
+    //   public int id; 
+    //   public String name; 
+    // } 
+    // 
+    // /** 
+    //  * @jws:sql statement="SELECT ID, NAME FROM CUSTOMERS WHERE ID = {id}" 
+    //  */ 
+    // Customer findCustomer(int id);
+
+    // Add "throws SQLException" to request that SQLExeptions be thrown on errors.
+
+    /**
+     * @jws:sql statement::
+     *     insert into reservation (username, mark_date,receive_date,return_date,book_record,comment)
+     *     values ({member_num},
+     *             CURRENT_DATE,
+     *             {receive_date},
+     *             DATE_ADD({receive_date}, INTERVAL {day} DAY),
+     *             {book_record},
+     *             {comment})
+     * ::
+     */
+    public void InsertReservation(String member_num,String receive_date,int day,String book_record,String comment);
+
+    /**
+     * @jws:sql statement::
+     *     select max(return_date)
+     *     from reservation
+     *     where book_record = {key_book_record}
+     * ::
+     */
+    public String selectReturnDate(String key_book_record);
+
+    /**
+     * @jws:sql statement::
+     *     select *
+     *     from reservation 
+     *     where username = {key_member_num}
+     * ::
+     */
+    public reservation_add_data[] selectReservationByMember_num(String key_member_num);
+
+
+    /**
+     * @jws:sql statement::
+     *     select return_date
+     *     from book
+     *     where book_record = {key_book_record}
+     * ::
+     */
+    public String selectReturndateFromBook(String key_book_record);
+
+    /**
+     * @jws:sql statement::
+     *     select * 
+     *     from book
+     *     where book_record = {key_book_record}
+     * ::
+     */
+    public book selectBookData(String key_book_record);
+
+    /**
+     * @jws:sql statement::
+     *     select name
+     *     from inner_member
+     *     where username = {key_member_num}
+     * ::
+     */
+    public String selectMember_name(String key_member_num);
+
+    /**
+     * @jws:sql statement::
+     *     select lastname
+     *     from inner_member
+     *     where username = {key_member_num}
+     * ::
+     */
+    public String selectMember_lastname(String key_member_num);
+
+    /**
+     * @jws:sql statement::
+     *     select limit_day
+     *     from inner_member t1, user_limit t2
+     *     where t1.username = {key_member_num} and
+     *           t1.status = t2.status
+     * ::
+     */
+    public int selectDay(String key_member_num);
+
+
+    /**
+     * @jws:sql statement::
+     *     select CURRENT_DATE
+     * ::
+     */
+    public String selectCurrent_date();
+
+    /**
+     * @jws:sql statement::
+     *     select count(*)
+     *     from reservation
+     *     where username = {username}
+     * ::
+     */
+    public int select_number_item(String username);
+
+    /**
+     * @jws:sql statement::
+     *     delete from reservation
+     *     where receive_date+3 < curdate()
+     * ::
+     */
+    public void delete_old_data();
+
+    /**
+     * @jws:sql statement::
+     *     select count(*)
+     *     from reservation 
+     *     where book_record = {book_record}
+     * ::
+     */
+    public int selectNumberOfUser(String book_record);
+
+    /**
+     * @jws:sql statement::
+     *     update book
+     *     set book_status = 'reservation'
+     *     where book_record = {book_record}
+     * ::
+     */
+    public void updateBookStatus(String book_record);
+}

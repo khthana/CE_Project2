@@ -1,0 +1,48 @@
+package central;
+
+/**
+
+*/
+
+class AssemblyTimeoutThread extends Thread{
+
+  private int timeout;
+  private int nodenumber;
+  private int flag;
+  private boolean active;
+
+  public AssemblyTimeoutThread(String s, int timeoutarg, int nodenumberarg, int flagarg) {
+    super(s);
+    active = true;
+    timeout = timeoutarg;
+    nodenumber = nodenumberarg;
+    flag = flagarg;
+  }
+
+  public void clearActive() {
+    active = false;
+  }
+
+  public int getNodeNumber() {
+    return nodenumber;
+  }
+
+  public int getFlag() {
+    return flag;
+  }
+
+  public void run() {
+    try {
+      sleep(timeout);
+    }
+    catch (InterruptedException e) {
+      System.out.println(e);
+      e.printStackTrace();
+    }
+    if (active) {
+      MainFrame.messagestatus.setText("Assembly Timeout Node : " + nodenumber + "\n");
+      AssemblyThread.assemblytimeoutmanage.RemoveFromVector(nodenumber, flag);  // Remove Timeout thread from vector
+//      MainFrame.assemblythread.RemoveFromVector(nodenumber, flag);              // Remove AssemblyBuffer from vector
+    }
+  }
+}

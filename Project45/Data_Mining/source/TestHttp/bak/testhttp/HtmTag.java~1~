@@ -1,0 +1,45 @@
+package testhttp;
+
+import com.arthurdo.parser.*;
+import java.net.HttpURLConnection;
+import java.io.InputStream;
+import java.lang.StringBuffer;
+
+/**
+ * <p>Title: </p>
+ * <p>Description: </p>
+ * <p>Copyright: Copyright (c) 2002</p>
+ * <p>Company: </p>
+ * @author unascribed
+ * @version 1.0
+ */
+
+public class HtmlTag {
+
+private InputStream inputstream;
+
+  public HtmlTag() {
+    HtmlStreamTokenizer tok = new HtmlStreamTokenizer(inputstream);
+    HtmlTag tag = new HtmlTag();
+    try{
+    while (tok.nextToken() != HtmlStreamTokenizer.TT_EOF) {
+        int ttype = tok.getTokenType();
+
+        if (ttype == HtmlStreamTokenizer.TT_TAG) {
+                //tok.parseTag(tok.getStringValue(), tag);
+                System.out.println("tag: " + tag.toString());
+        }
+        else if (ttype == HtmlStreamTokenizer.TT_TEXT) {
+                System.out.println("text: " + tok.getStringValue());
+        }
+        else if (ttype == HtmlStreamTokenizer.TT_COMMENT) {
+                System.out.println("comment: <!--" + tok.getStringValue() + "-->");
+        }
+
+  }
+    }
+    catch ( Exception e ){
+      System.out.println(e);
+    }
+}
+}

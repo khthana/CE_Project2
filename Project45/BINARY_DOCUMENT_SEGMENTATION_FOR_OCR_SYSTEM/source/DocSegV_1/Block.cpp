@@ -1,0 +1,29 @@
+// Block.cpp: implementation of the Block class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "Block.h"
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+Block::Block()
+{
+	count = -1;
+	x = NULL;
+	y = NULL;
+	Checked = 0;
+}
+
+Block::~Block()
+{
+
+}

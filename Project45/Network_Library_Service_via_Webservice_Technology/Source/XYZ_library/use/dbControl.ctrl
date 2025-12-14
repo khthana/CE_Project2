@@ -1,0 +1,94 @@
+package use; 
+
+import weblogic.jws.*; 
+import weblogic.jws.control.*; 
+import java.sql.SQLException; 
+import center.*;
+
+/** 
+ * Defines a new database control. 
+ * 
+ * The @jws:connection tag indicates which WebLogic data source will be used by 
+ * this database control. Please change this to suit your needs. You can see a 
+ * list of available data sources by going to the WebLogic console in a browser 
+ * (typically http://localhost:7001/console) and clicking Services, JDBC, 
+ * Data Sources. 
+ * 
+ * @jws:connection data-source-jndi-name="MyDataSource" 
+ */ 
+public interface dbControl extends DatabaseControl 
+{ 
+    // Sample database function.  Uncomment to use 
+
+    // static public class Customer 
+    // { 
+    //   public int id; 
+    //   public String name; 
+    // } 
+    // 
+    // /** 
+    //  * @jws:sql statement="SELECT ID, NAME FROM CUSTOMERS WHERE ID = {id}" 
+    //  */ 
+    // Customer findCustomer(int id);
+
+    // Add "throws SQLException" to request that SQLExeptions be thrown on errors.
+
+    /**
+     * @jws:sql statement::
+     *     select username, name, lastname, sex, status, work_address,
+     *          id, years, home_number, lane, village, moo, road,
+     *          district, amphur, province, zip_code, phone1, phone2,
+     *          email, category, email_way, application_way,  level
+     *     from inner_member
+     *     where id={id}
+     * ::
+     */
+    public user_profile find_name(String id);
+
+    /**
+     * @jws:sql statement::
+     *     select *
+     *     from book
+     *     where username_use={username}
+     * ::
+     */
+    public book[] find_book(String username);
+
+    /**
+     * @jws:sql statement::
+     *     select count(*)
+     *     from book
+     *     where username_use={username}
+     * ::
+     */
+    public int count_book(String username);
+
+    /**
+     * @jws:sql statement::
+     *     select limit_book
+     *     from user_limit
+     *     where status={status}
+     * ::
+     */
+    public int check_limit(String status);
+
+    /**
+     * @jws:sql statement::
+     *     update book
+     *     set username_use={username},
+     *         borrow_date=curdate(),
+     *         return_date=date_add(curdate(), interval {d} day)
+     *     where book_record={book_record}
+     * ::
+     */
+    public void insert_record_book(String book_record, String username, int d);
+
+    /**
+     * @jws:sql statement::
+     *     select limit_day
+     *     from user_limit
+     *     where status={status}
+     * ::
+     */
+    public int check_day(String status);
+}

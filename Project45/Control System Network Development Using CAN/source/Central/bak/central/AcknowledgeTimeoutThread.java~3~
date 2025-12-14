@@ -1,0 +1,45 @@
+package central;
+
+/**
+
+*/
+
+class AcknowledgeTimeoutThread extends Thread{
+
+  private int timeout;
+  private int nodenumber;
+  private boolean active;
+
+  public AcknowledgeTimeoutThread(String s, int timeoutarg, int nodenumberarg) {
+    super(s);
+    active = true;
+    timeout = timeoutarg;
+    nodenumber = nodenumberarg;
+  }
+
+  public void clearActive() {
+    active = false;
+  }
+
+  public int getNodeNumber() {
+    return nodenumber;
+  }
+
+  public void run() {
+    try {
+      sleep(timeout);
+    }
+    catch (InterruptedException e) {
+      System.out.println(e);
+      e.printStackTrace();
+    }
+//    if ( (seqnumber != -1)) {
+//      MainFrame.messagestatus.setText(MainFrame.messagestatus.getText() +
+//                                      "Lost Acknowledge from Module " +
+//                                      nodenumber + " number : " + seqnumber +
+//                                      "\n");
+//      seqnumber = -1;
+//      MainFrame.database.GenCodeWithStatus(nodenumber, "Lost");
+//    }
+  }
+}

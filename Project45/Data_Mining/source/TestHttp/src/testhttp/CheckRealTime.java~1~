@@ -1,0 +1,65 @@
+package testhttp;
+
+import java.util.Vector;
+
+public class CheckRealTime {
+
+  VecStock vec = VecStock.getVecStock();
+
+  public CheckRealTime() {
+  }
+  public int checkReal( int pos, float z_open, float z_last,
+                        float z_prior, float buy_vol,
+                        float sell_vol ){
+
+    try{
+      //////////////////////////////////////////////////////////////////
+      if( Integer.parseInt( vec.conTra.elementAt(pos).toString() )==0 ){
+        if(
+            (z_last < z_prior)&&( sell_vol > buy_vol )&&(z_last < z_open)
+          ){
+          return -1;
+        }
+        else  if(
+            (z_last > z_prior)&&( sell_vol < buy_vol )
+          ){
+          return 1;
+        }
+        else return 0;
+      }
+      //////////////////////////////////////////////////////////////////
+      else if( Integer.parseInt( vec.conTra.elementAt(pos).toString() )==1 ){
+        if(
+            (z_last < z_prior)&&( sell_vol > buy_vol )&&(z_last < z_open)
+          ){
+          return 0;
+        }
+        else  if(
+            (z_last > z_prior)&&( sell_vol < buy_vol )
+          ){
+          return 1;
+        }
+        else return 0;
+      }
+      /////////////////////////////////////////////////////////////////////
+      else if( Integer.parseInt( vec.conTra.elementAt(pos).toString() )==-1 ){
+        if(
+            (z_last < z_prior)&&( sell_vol > buy_vol )&&(z_last < z_open)
+          ){
+          return -1;
+        }
+        else  if(
+            (z_last > z_prior)&&( sell_vol < buy_vol )
+          ){
+          return 0;
+        }
+        else return 0;
+      }
+      else
+      return 0;
+    }
+    catch( Exception e ){
+      return 0;
+    }
+  }
+}

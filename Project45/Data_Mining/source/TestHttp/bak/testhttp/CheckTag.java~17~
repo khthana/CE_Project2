@@ -1,0 +1,50 @@
+package testhttp;
+
+import com.arthurdo.parser.*;
+import java.io.*;
+import java.lang.*;
+import java.util.Vector;
+
+public class CheckTag {
+
+private InputStream inputstream;
+private HtmlStreamTokenizer tok;
+private Vector data;
+private int i=-1;
+
+  public CheckTag() {
+
+  }
+
+  public Vector CheckTag(InputStream inputstream1){
+    Vector data = new Vector();
+    String txt = new String();
+    this.inputstream = inputstream1;
+    HtmlStreamTokenizer tok = new HtmlStreamTokenizer(inputstream1);
+    HtmlTag tag = new HtmlTag();
+    try{
+      while (tok.nextToken() != HtmlStreamTokenizer.TT_EOF) {
+        int ttype = tok.getTokenType();
+
+        if ( (ttype == HtmlStreamTokenizer.TT_TAG)|| (ttype == HtmlStreamTokenizer.TT_BANGTAG) ){
+                tok.parseTag(tok.getStringValue(), tag);
+                System.out.println("tag: " + tag.toString());
+        }
+        else if (ttype == HtmlStreamTokenizer.TT_TEXT) {
+                ++i;
+                txt = tok.getStringValue().toString();
+                data.addElement( new String(txt) );
+        }
+        else if (ttype == HtmlStreamTokenizer.TT_COMMENT) {
+                System.out.println("comment: <!--" + tok.getStringValue() + "-->");
+        }
+      }
+      return data;
+    }
+    catch( Exception e ){
+      System.out.println(e);
+      System.out.println("at check tag");
+      return null;
+    }
+  }
+}

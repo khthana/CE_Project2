@@ -1,0 +1,334 @@
+package center; 
+
+import weblogic.jws.control.JwsContext;
+import DataBook.DataFromBookControl;
+import center.*;
+
+/**
+ * @jws:target-namespace namespace="search.library.com"
+ */
+public class search_all
+{ 
+
+
+    /**
+     * @jws:control
+     */
+    private center.DataFromBookControl xyz;
+
+
+
+    /**
+     * @jws:control
+     */
+    private DataFromBookControl abc;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /** @jws:context */ 
+    JwsContext context; 
+
+    /**
+     * @jws:operation
+     */
+    public book_list[] searchBookByTitle(String key_title)
+    {
+        if (key_title.length()!=0){
+            book_list[] BK = abc.getBookTitleByTitle(key_title);
+            book_list[] BK_other = xyz.getBookTitleByTitle(key_title);
+            int x =BK.length;
+            int y =BK_other.length;
+            int k = x+y;
+            int i=0;
+            book_list[] BK_all = new book_list[k];
+            for (i = 0; i<x; i++) {
+                BK_all[i] = new book_list();
+                BK_all[i].setAuthor(BK[i].getAuthor());
+                BK_all[i].setTitle(BK[i].getTitle());
+                BK_all[i].setBook_record(BK[i].getBook_record());
+                BK_all[i].setLibrary(BK[i].getLibrary());   
+            }
+            for(int j = 0; j<y; j++)       { 
+                BK_all[j+i] = new book_list();
+                BK_all[j+i].setAuthor(BK_other[j].getAuthor());
+                BK_all[j+i].setTitle(BK_other[j].getTitle());
+                BK_all[j+i].setBook_record(BK_other[j].getBook_record());
+                BK_all[j+i].setLibrary(BK_other[j].getLibrary());  
+            } 
+            for (x=0; x<k; x++) db.insert_book(BK_all[x].getBook_record(), BK_all[x].getAuthor(), BK_all[x].getTitle(), BK_all[x].getLibrary());
+            BK_all=db.select_title();
+            db.delete_book();
+           book_list books[]=new book_list[BK_all.length+1];
+            for (i=0; i<BK_all.length; i++){
+                books[i] = new book_list();
+                books[i].setBook_record(BK_all[i].getBook_record());
+                books[i].setTitle(BK_all[i].getTitle());
+                books[i].setAuthor(BK_all[i].getAuthor());
+                books[i].setLibrary(BK_all[i].getLibrary());
+            }
+            
+            return books;
+        }
+        return null;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public book_list[] searchBookByAuthor(String key_author)
+    {
+        if (key_author.length()!=0){
+            book_list[] BK = abc.getBookTitleByAuthor(key_author);
+            book_list[] BK_other = xyz.getBookTitleByAuthor(key_author);
+            int x =BK.length;
+            int y =BK_other.length;
+            int k = x+y; // จำนวนทั้งหมด
+            int i=0;
+            book_list[] BK_all = new book_list[k];
+            for (i = 0; i<x; i++){
+                BK_all[i] = new book_list();
+                BK_all[i].setAuthor(BK[i].getAuthor());
+                BK_all[i].setTitle(BK[i].getTitle());
+                BK_all[i].setBook_record(BK[i].getBook_record());
+                BK_all[i].setLibrary(BK[i].getLibrary());   
+            }
+            for(int j = 0; j<y; j++){
+                BK_all[j+i] = new book_list();
+                BK_all[j+i].setAuthor(BK_other[j].getAuthor());
+                BK_all[j+i].setTitle(BK_other[j].getTitle());
+                BK_all[j+i].setBook_record(BK_other[j].getBook_record());
+                BK_all[j+i].setLibrary(BK_other[j].getLibrary());  
+            } 
+            // sort
+            for (x=0; x<k; x++) db.insert_book(BK_all[x].getBook_record(), BK_all[x].getAuthor(), BK_all[x].getTitle(), BK_all[x].getLibrary());
+            BK_all=db.select_author();
+            db.delete_book();
+            
+            book_list books[]=new book_list[BK_all.length+1];
+            for (i=0; i<BK_all.length; i++){
+                books[i] = new book_list();
+                books[i].setBook_record(BK_all[i].getBook_record());
+                books[i].setTitle(BK_all[i].getTitle());
+                books[i].setAuthor(BK_all[i].getAuthor());
+                books[i].setLibrary(BK_all[i].getLibrary());
+            }
+            
+            return books;
+        }
+        return null;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public book_list[] searchBookBySubject(String key_subject)
+    {
+       
+        if (key_subject.length()!=0){
+             book_list[] BK = abc.getBookTitleBySubject(key_subject);
+        book_list[] BK_other = xyz.getBookTitleBySubject(key_subject);
+
+        
+        int x =BK.length;
+        int y =BK_other.length;
+        int k = x+y;
+        int i=0;
+        book_list[] BK_all = new book_list[k];
+        for (i = 0; i<x; i++)
+        {   BK_all[i] = new book_list();
+            BK_all[i].setAuthor(BK[i].getAuthor());
+            BK_all[i].setTitle(BK[i].getTitle());
+            BK_all[i].setBook_record(BK[i].getBook_record());
+            BK_all[i].setLibrary(BK[i].getLibrary());   
+        }
+        
+        for(int j = 0; j<y; j++)
+        {   BK_all[j+i] = new book_list();
+            BK_all[j+i].setAuthor(BK_other[j].getAuthor());
+            BK_all[j+i].setTitle(BK_other[j].getTitle());
+            BK_all[j+i].setBook_record(BK_other[j].getBook_record());
+            BK_all[j+i].setLibrary(BK_other[j].getLibrary());  
+        } 
+         for (x=0; x<k; x++) db.insert_book(BK_all[x].getBook_record(), BK_all[x].getAuthor(), BK_all[x].getTitle(), BK_all[x].getLibrary());
+            BK_all=db.select_title();
+            db.delete_book();
+       book_list books[]=new book_list[BK_all.length+1];
+            for (i=0; i<BK_all.length; i++){
+                books[i] = new book_list();
+                books[i].setBook_record(BK_all[i].getBook_record());
+                books[i].setTitle(BK_all[i].getTitle());
+                books[i].setAuthor(BK_all[i].getAuthor());
+                books[i].setLibrary(BK_all[i].getLibrary());
+            }
+            
+            return books;
+        }
+        return null;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public book_list[] selectBookByWord(String key_word)
+    {
+        
+        if (key_word.length()!=0){
+            book_list[] BK = abc.getBookTitleByWord(key_word);
+        book_list[] BK_other = xyz.getBookTitleByWord(key_word);
+
+        
+        int x =BK.length;
+        int y =BK_other.length;
+        int k = x+y;
+        int i=0;
+        book_list[] BK_all = new book_list[k];
+        for (i = 0; i<x; i++)
+        {   BK_all[i] = new book_list();
+            BK_all[i].setAuthor(BK[i].getAuthor());
+            BK_all[i].setTitle(BK[i].getTitle());
+            BK_all[i].setBook_record(BK[i].getBook_record());
+            BK_all[i].setLibrary(BK[i].getLibrary());   
+        }
+        
+        for(int j = 0; j<y; j++)
+        {   BK_all[j+i] = new book_list();
+            BK_all[j+i].setAuthor(BK_other[j].getAuthor());
+            BK_all[j+i].setTitle(BK_other[j].getTitle());
+            BK_all[j+i].setBook_record(BK_other[j].getBook_record());
+            BK_all[j+i].setLibrary(BK_other[j].getLibrary());  
+        } 
+         for (x=0; x<k; x++) db.insert_book(BK_all[x].getBook_record(), BK_all[x].getAuthor(), BK_all[x].getTitle(), BK_all[x].getLibrary());
+            BK_all=db.select_title();
+            db.delete_book();
+       book_list books[]=new book_list[BK_all.length+1];
+            for (i=0; i<BK_all.length; i++){
+                books[i] = new book_list();
+                books[i].setBook_record(BK_all[i].getBook_record());
+                books[i].setTitle(BK_all[i].getTitle());
+                books[i].setAuthor(BK_all[i].getAuthor());
+                books[i].setLibrary(BK_all[i].getLibrary());
+            }
+            
+            return books;
+        }
+        return null;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public book_list[] searchBookByCall_num(String key_call_num)
+    {
+        
+        if (key_call_num.length()!=0){
+            book_list[] BK = abc.getBookTitleByCall_num(key_call_num);
+        book_list[] BK_other = xyz.getBookTitleByCall_num(key_call_num);
+
+        
+        int x =BK.length;
+        int y =BK_other.length;
+        int k = x+y;
+        int i=0;
+        book_list[] BK_all = new book_list[k];
+        for (i = 0; i<x; i++)
+        {   BK_all[i] = new book_list();
+            BK_all[i].setAuthor(BK[i].getAuthor());
+            BK_all[i].setTitle(BK[i].getTitle());
+            BK_all[i].setBook_record(BK[i].getBook_record());
+            BK_all[i].setLibrary(BK[i].getLibrary());   
+        }
+        
+        for(int j = 0; j<y; j++)
+        {   BK_all[j+i] = new book_list();
+            BK_all[j+i].setAuthor(BK_other[j].getAuthor());
+            BK_all[j+i].setTitle(BK_other[j].getTitle());
+            BK_all[j+i].setBook_record(BK_other[j].getBook_record());
+            BK_all[j+i].setLibrary(BK_other[j].getLibrary());  
+        } 
+         for (x=0; x<k; x++) db.insert_book(BK_all[x].getBook_record(), BK_all[x].getAuthor(), BK_all[x].getTitle(), BK_all[x].getLibrary());
+            BK_all=db.select_title();
+            db.delete_book();
+        book_list books[]=new book_list[BK_all.length+1];
+            for (i=0; i<BK_all.length; i++){
+                books[i] = new book_list();
+                books[i].setBook_record(BK_all[i].getBook_record());
+                books[i].setTitle(BK_all[i].getTitle());
+                books[i].setAuthor(BK_all[i].getAuthor());
+                books[i].setLibrary(BK_all[i].getLibrary());
+            }
+            
+            return books;
+        }
+        return null;
+    }
+
+
+    /**
+     * @jws:operation
+     */
+    public book_list[] searchBookByISBN(String key_ISBN)
+    {   
+       
+        if (key_ISBN.length()!=0){
+             book_list[] BK = abc.getBookTitleByISBN(key_ISBN);
+        book_list[] BK_other = xyz.getBookTitleByISBN(key_ISBN);
+        
+        int x =BK.length;
+        int y =BK_other.length;
+        int k = x+y;
+        int i=0;
+        book_list[] BK_all = new book_list[k];
+        for (i = 0; i<x; i++)
+        {   BK_all[i] = new book_list();
+            BK_all[i].setAuthor(BK[i].getAuthor());
+            BK_all[i].setTitle(BK[i].getTitle());
+            BK_all[i].setBook_record(BK[i].getBook_record());
+            BK_all[i].setLibrary(BK[i].getLibrary());   
+        }
+        
+        for(int j = 0; j<y; j++)
+        {   BK_all[j+i] = new book_list();
+            BK_all[j+i].setAuthor(BK_other[j].getAuthor());
+            BK_all[j+i].setTitle(BK_other[j].getTitle());
+            BK_all[j+i].setBook_record(BK_other[j].getBook_record());
+            BK_all[j+i].setLibrary(BK_other[j].getLibrary());  
+        } 
+         for (x=0; x<k; x++) db.insert_book(BK_all[x].getBook_record(), BK_all[x].getAuthor(), BK_all[x].getTitle(), BK_all[x].getLibrary());
+            BK_all=db.select_title();
+            db.delete_book();
+        book_list books[]=new book_list[BK_all.length+1];
+            for (i=0; i<BK_all.length; i++){
+                books[i] = new book_list();
+                books[i].setBook_record(BK_all[i].getBook_record());
+                books[i].setTitle(BK_all[i].getTitle());
+                books[i].setAuthor(BK_all[i].getAuthor());
+                books[i].setLibrary(BK_all[i].getLibrary());
+            }
+            
+            return books;
+        }
+        return null;
+    }
+
+    /**
+     * @jws:operation
+     */
+    public book selectBookByBook_record(String key_book_record,String library)
+    {   
+        book BK=new book();
+        if(library.equalsIgnoreCase("ABC")) BK = abc.getBookByBookRecord(key_book_record);
+        if (library.equalsIgnoreCase("xyz")) BK = xyz.getBookByBookRecord(key_book_record);
+        return BK;
+    }
+} 

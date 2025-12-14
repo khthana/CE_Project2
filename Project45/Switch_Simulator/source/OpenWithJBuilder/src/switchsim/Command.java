@@ -1,0 +1,747 @@
+package switchsim;
+
+import java.io.*;
+import java.util.*;
+
+public class Command {
+
+  final private String filename = "history.dat";
+  public Command() {
+  }
+
+  //----------Save Config-----------------//
+  public void saveRunningConfig(File file){
+    try{
+//      FileReader fin = new FileReader(filename);
+//      BufferedReader bin = new BufferedReader(fin);
+      String s="";
+      String newstr="";
+      String strRouter="";
+      boolean found = false;
+
+      Switch sw = new Switch();
+      Workstation com = new Workstation();
+      Interface inf = new Interface();
+      Vlan vlan = new Vlan();
+      SpanningTree pvstp = new SpanningTree();
+
+      //------------ Write File --------------//
+      //append
+      newstr += "Switch_Simulator \n";
+      newstr += "!\n";
+      // Set Spanning Tree
+      newstr += "SpanningTree \n";
+      if (Frame1.stp.getStatus().equals("enabled")) {
+        newstr += "CST \n";
+      }
+      else {
+        if (Frame1.vVlan.size() != 0) {
+          for (int i = 0; i < Frame1.vVlan.size(); i++) {
+            vlan = (Vlan)Frame1.vVlan.elementAt(i);
+            pvstp = vlan.getPVSTP();
+            if (pvstp.getStatus().equals("enabled")) {
+              newstr += "PVST " + vlan.getVlanID() + "\n";
+            }
+          }
+        }
+      }
+      newstr += "!\n";
+      newstr += "endspanningtree \n";
+
+      // Set Switch
+      newstr += "Switch\n";
+      for (int i = 0; i < Frame1.vSwitch.size(); i++) {
+        sw = (Switch)Frame1.vSwitch.elementAt(i);
+        SwitchImg simg = (SwitchImg)Panel2.vImgSwitch.elementAt(i);
+        newstr += "switchname " + sw.getName()+ "\n";
+        newstr += "!\n";
+
+        newstr += "MACaddress " + sw.getMACAddress() + "\n";
+        newstr += "!\n";
+
+        newstr += "Mode " + sw.getMode() + "\n";
+        newstr += "!\n";
+
+        newstr += "Model " + sw.getModel() + "\n";
+        newstr += "!\n";
+
+        newstr += "maxEth " + sw.getMaxEth() + "\n";
+        newstr += "!\n";
+
+        newstr += "maxFast " + sw.getMaxFast() + "\n";
+        newstr += "!\n";
+
+        newstr += "maxGig " + sw.getMaxGig() + "\n";
+        newstr += "!\n";
+
+        newstr += "maxHistory " + sw.getMaxHistory() + "\n";
+        newstr += "!\n";
+
+        newstr += "macage " + sw.getMACAge() + "\n";
+        newstr += "!\n";
+
+        newstr += "enablepasswd " + sw.getEnablePasswd() + "\n";
+        newstr += "!\n";
+
+        newstr += "enableConsole " + sw.getEnableConsole() + "\n";
+        newstr += "!\n";
+
+        newstr += "terminalEdit " + sw.getTerminalEdit() + "\n";
+        newstr += "!\n";
+
+        newstr += "oldMode " + sw.getOldMode() + "\n";
+        newstr += "!\n";
+
+        newstr += "time " + sw.getTime() + "\n";
+        newstr += "!\n";
+
+        newstr += "lineMode " + sw.getLineMode() + "\n";
+        newstr += "!\n";
+
+        newstr += "BridgeID " + sw.getBridgeID() + "\n";
+        newstr += "!\n";
+
+        newstr += "BridgePriority " + sw.getPriority() + "\n";
+        newstr += "!\n";
+        ////
+        newstr += "XPos " + simg.getXPos() + "\n";
+        newstr += "!\n";
+
+        newstr += "YPos " + simg.getYPos() + "\n";
+        newstr += "!\n";
+
+        newstr += "Width " + simg.getWide() + "\n";
+        newstr += "!\n";
+
+        newstr += "Hight " + simg.getHigh() + "\n";
+        newstr += "!\n";
+
+        newstr += "endswitch\n";
+      }
+      newstr += "endallswitch\n";
+      // Workstation
+      newstr += "Workstation\n";
+      for (int i = 0; i < Frame1.vWorkstation.size(); i++) {
+        com = (Workstation)Frame1.vWorkstation.elementAt(i);
+        ComImg cimg = (ComImg)Panel2.vImgCom.elementAt(i);
+        newstr += "comname " + com.getName()+ "\n";
+        newstr += "!\n";
+
+        newstr += "MACaddress " + com.getMACAddress()+ "\n";
+        newstr += "!\n";
+
+        newstr += "connection " + com.getConnection()+ "\n";
+        newstr += "!\n";
+
+        newstr += "XPos " + cimg.getXPos()+ "\n";
+        newstr += "!\n";
+
+        newstr += "YPos " + cimg.getYPos()+ "\n";
+        newstr += "!\n";
+
+        newstr += "Width " + cimg.getWide()+ "\n";
+        newstr += "!\n";
+
+        newstr += "Hight " + cimg.getWide()+ "\n";
+        newstr += "!\n";
+        newstr += "endworkstation\n";
+      }
+      newstr += "endallworkstation\n";
+      // Interface
+      newstr += "Interface\n";
+      for (int i = 0; i < Frame1.vSwitch.size(); i++) {
+        sw = (Switch)Frame1.vSwitch.elementAt(i);
+        for (int j = 0; j < sw.getVInt().size(); j++) {
+          inf = (Interface)sw.getVInt().elementAt(j);
+          if ((inf.getSwitch()!=null) || (inf.getCom()!=null)) {
+            newstr += "Switch " +  sw.getName() +"\n";
+            newstr += "!\n";
+
+            newstr += "nameInt " + inf.getNameInt() + "\n";
+            newstr += "!\n";
+
+//            newstr += "nameFull " + inf.getNameFull() + "\n";
+//            newstr += "!\n";
+
+            newstr += "status " + inf.getStatus() + "\n";
+            newstr += "!\n";
+
+            newstr += "connectStatus " + inf.getConnectStatus() + "\n";
+            newstr += "!\n";
+
+            newstr += "MACaddress " + inf.getMACAddress() + "\n";
+            newstr += "!\n";
+
+            newstr += "VLAN " + inf.getVLAN() + "\n";
+            newstr += "!\n";
+
+            newstr += "VLANLink " + inf.getVLANLink() + "\n";
+            newstr += "!\n";
+
+            if (inf.getSwitch()==null)
+              newstr += "SwitchInt " + "*" + "\n";
+            else newstr += "SwitchInt " + inf.getSwitch().getName() + "\n";
+            newstr += "!\n";
+
+            if (inf.getCom()==null)
+              newstr += "WorkstationInt " + "*" + "\n";
+            else newstr += "WorkstationInt " + inf.getCom().getName() + "\n";
+            newstr += "!\n";
+
+//            newstr += "Connector " + inf.getConnector() + "\n";
+//            newstr += "!\n";
+
+//            newstr += "Type " + inf.getType() + "\n";
+//            newstr += "!\n";
+
+            newstr += "PortID " + inf.getPortID() + "\n";
+            newstr += "!\n";
+
+            newstr += "Priority " + inf.getPriority() + "\n";
+            newstr += "!\n";
+
+            newstr += "Cost " + inf.getCost() + "\n";
+            newstr += "!\n";
+
+            if (inf.getSTPport().equals(""))
+              newstr += "STPport " + "$" + "\n";
+            else newstr += "STPport " + inf.getSTPport() + "\n";
+            newstr += "!\n";
+
+            newstr += "STPstate " + inf.getSTPstate() + "\n";
+            newstr += "!\n";
+
+            newstr += "endinterface\n";
+          }
+        }
+      }
+      newstr += "endallinterface\n";
+
+      // VLAN Database
+      newstr += "VLANDatabase\n";
+      for (int i = 0; i < Frame1.vSwitch.size(); i++) {
+        sw = (Switch)Frame1.vSwitch.elementAt(i);
+//        newstr += "Switch " +  sw.getName() +"\n!\n";
+        for (int j=0; j<sw.getVlanDB().size(); j++) {
+          VlanDatabase vdb = (VlanDatabase)sw.getVlanDB().elementAt(j);
+          newstr += sw.getName() + "!";
+          newstr += "vlanID " + vdb.getVlanID() + "!";
+          newstr += "vlanName " + vdb.getVlanName() + "!";
+          newstr += "status " + vdb.getStatus() + "!";
+          newstr += "type " + vdb.getType() + "!";
+          newstr += "said " + vdb.getSAID() + "!";
+          newstr += "mtu " + vdb.getMTU() + "!";
+          newstr += "parent " + vdb.getParent() + "!";
+          newstr += "ringNo " + vdb.getRingNo() + "!";
+          newstr += "brdgNo " + vdb.getBrdgNo() + "!";
+          newstr += "stp " + vdb.getSTP() + "!";
+          newstr += "brdgMode " + vdb.getBrdgMode() + "!";
+          newstr += "trans1 " + vdb.getTrans1() + "!";
+          newstr += "trans2 " + vdb.getTrans2() + "\n";
+        }
+
+      }
+      newstr += "endvlandatabase\n";
+
+      //---now is default---//
+      newstr += "!\nend\n\n";
+
+//      bin.close();
+      FileWriter fout = new FileWriter(file);
+      BufferedWriter bout = new BufferedWriter(fout);
+      PrintWriter pout = new PrintWriter(bout);
+      pout.print(newstr);
+      pout.close();
+
+//      SwitchConsole.output += "Buliding Configuration\n...\n\n";
+//      SwitchConsole.output += "[OK]\n";
+    }
+
+    catch (IOException exp){
+    }
+  }
+
+  public void copyrunningconfig(File file) {
+    try {
+      Frame1.vSwitch.removeAllElements();
+      Frame1.vWorkstation.removeAllElements();
+      Frame1.vConsole.removeAllElements();
+      Frame1.vMACAddress.removeAllElements();
+      Frame1.vVlan.removeAllElements();
+      Panel2.vImgCom.removeAllElements();
+      Panel2.vImgInt.removeAllElements();
+      Panel2.vImgSwitch.removeAllElements();
+      Panel3.vStatus.removeAllElements();
+      FileReader fin = new FileReader(file);
+      BufferedReader bin = new BufferedReader(fin);
+      String s="";
+      String newstr="";
+      String str="";
+//      boolean flag=false; //false means it is not right router
+      boolean found=false;
+      int flag = 0; // 0-none, 1-sw, 2-com, 3-int, 4-vlandb
+      int numline=0;
+      int num=0;
+      //while not End of File
+      while ((s = bin.readLine()) != null){
+        if (flag==1) {
+          if (!s.equals("endswitch")) {
+            str+=s;
+          }
+          else {
+            newSwitch(str);
+            str="";
+          }
+        } // end flag==1
+        else if (flag==2) {
+          if (!s.equals("endworkstation")) {
+            str+=s;
+          }
+          else {
+            newWorkstation(str);
+            str="";
+          }
+        }
+        else if (flag==3) {
+          if (!s.equals("endinterface")) {
+            str+=s;
+          }
+          else {
+            newInterface(str);
+            str="";
+            num++;
+            System.out.println("num: "+num);
+          }
+        }
+        else if (flag==4) {
+          if (!s.equals("endvlandatabase")) {
+            addVlanDatabase(s);
+          }
+          else {
+            flag=0;
+          }
+        }
+        if (s.equals("Switch")) {
+          str="";
+          flag=1;
+        }
+        else if (s.equals("Workstation")) {
+          str="";
+          flag=2;
+        }
+        else if (s.equals("Interface")) {
+          str="";
+          flag=3;
+        }
+        else if (s.equals("VLANDatabase")) {
+          str="";
+          flag=4;
+        }
+        numline++;
+      }
+
+      bin.close();
+
+      addInterfaceImg();
+
+      Frame1.showAllStatus();
+      Frame1.panel.repaintView();
+    }
+    catch(Exception exp) {}
+  }
+
+  public void newSwitch(String s) {
+    Switch sw = new Switch();
+    SwitchImg simg = new SwitchImg();
+//    System.out.println(s);
+    StringTokenizer st1 = new StringTokenizer(s,"!");
+    while (st1.hasMoreTokens()) {
+      String str = st1.nextToken();
+      StringTokenizer st2 = new StringTokenizer(str," ");
+      while (st2.hasMoreTokens()) {
+        String str2 = st2.nextToken();
+        if (str2.equals("switchname")) {
+//          System.out.println("switchname");
+          sw.setName(st2.nextToken());
+        }
+        else if (str2.equals("MACaddress")) {
+//          System.out.println("MACaddress");
+          sw.setMACaddress(st2.nextToken());
+        }
+        else if (str2.equals("Mode")) {
+          sw.setMode(Integer.parseInt(st2.nextToken()));
+//          System.out.println("Mode");
+        }
+        else if (str2.equals("Model")) {
+          sw.setModel(Integer.parseInt(st2.nextToken()));
+          simg = new SwitchImg(sw.getModel());
+//          System.out.println("Model");
+        }
+        else if (str2.equals("maxEth")) {
+          sw.setMaxEth(Integer.parseInt(st2.nextToken()));
+//          System.out.println("maxEth");
+        }
+        else if (str2.equals("maxFast")) {
+          sw.setMaxFast(Integer.parseInt(st2.nextToken()));
+//          System.out.println("maxFast");
+        }
+        else if (str2.equals("maxGig")) {
+          sw.setMaxGig(Integer.parseInt(st2.nextToken()));
+//          System.out.println("maxGig");
+        }
+        else if (str2.equals("maxHistory")) {
+          sw.setMaxHistory(Integer.parseInt(st2.nextToken()));
+//          System.out.println("maxHistory");
+        }
+        else if (str2.equals("macage")) {
+          sw.setMACAge(Integer.parseInt(st2.nextToken()));
+//          System.out.println("macage");
+        }
+        else if (str2.equals("enablepasswd")) {
+          String tmp = st2.nextToken();
+          if (tmp.equals("true")) {
+          }
+//          else
+//          System.out.println("enablepasswd");
+        }
+        else if (str2.equals("enableConsole")) {
+          String tmp = st2.nextToken();
+          if (tmp.equals("true")) {
+            sw.setEnableConsole(true);
+          }
+          else sw.setEnableConsole(false);
+//          System.out.println("enableConsole");
+        }
+        else if (str2.equals("terminalEdit")) {
+          String tmp = st2.nextToken();
+          if (tmp.equals("true")) {
+          }
+//          else
+//          System.out.println("terminalEdit");
+        }
+        else if (str2.equals("oldMode")) {
+          sw.setOldMode(Integer.parseInt(st2.nextToken()));
+//          System.out.println("oldMode");
+        }
+        else if (str2.equals("time")) {
+//          System.out.println("time");
+        }
+        else if (str2.equals("lineMode")) {
+          sw.setLineMode(Integer.parseInt(st2.nextToken()));
+//          System.out.println("lineMode");
+        }
+        else if (str2.equals("BridgeID")) {
+          sw.setBridgeID(st2.nextToken());
+//          System.out.println("BridgeID");
+        }
+        else if (str2.equals("BridgePriority")) {
+          sw.setPriority(st2.nextToken());
+//          System.out.println("BridgePriority");
+        }
+        else if (str2.equals("XPos")) {
+          simg.setXPos(Integer.parseInt(st2.nextToken()));
+        }
+        else if (str2.equals("YPos")) {
+          simg.setYPos(Integer.parseInt(st2.nextToken()));
+        }
+        else if (str2.equals("Width")) {
+          simg.setWide(Integer.parseInt(st2.nextToken()));
+        }
+        else if (str2.equals("Hight")) {
+          simg.setHigh(Integer.parseInt(st2.nextToken()));
+        }
+      }
+    }
+    for (int a=1; a<sw.getMaxEth()+1; a++) {
+      Interface intf = new Interface();
+      intf.addNewInt(sw,"e0/"+a);
+    }
+    for (int a=1; a<sw.getMaxFast()+1; a++) {
+      Interface intf = new Interface();
+      intf.addNewInt(sw,"Fa0/"+a);
+    }
+    for (int a=1; a<sw.getMaxGig()+1; a++) {
+      Interface intf = new Interface();
+      intf.addNewInt(sw,"Gi0/"+a);
+    }
+    Frame1.vSwitch.addElement(sw);
+    SwitchConsole scon = new SwitchConsole(sw);
+    Panel1 p = new Panel1(sw);
+    Frame1.vConsole.addElement(scon);
+    Panel2.vImgSwitch.addElement(simg);
+    Panel3.vStatus.addElement(p);
+    p.showDetail();
+//    System.out.println("all "+Frame1.vSwitch.size());
+  }
+
+  public void newWorkstation(String s) {
+    ComImg cimg = new ComImg();
+    String comname = "";
+    String mac = "";
+    StringTokenizer st1 = new StringTokenizer(s,"!");
+    int num=0;
+    while (st1.hasMoreTokens()) {
+      String str = st1.nextToken();
+      StringTokenizer st2 = new StringTokenizer(str," ");
+      while (st2.hasMoreTokens()) {
+        String str2 = st2.nextToken();
+        if (str2.equals("comname")) {
+          comname = st2.nextToken();
+          num++;
+        }
+        else if (str2.equals("MACaddress")) {
+          mac = st2.nextToken();
+          num++;
+        }
+        else if ((str2.equals("connection")) && (num==2)) {
+          String tmp = st2.nextToken();
+          Workstation com = new Workstation(comname,mac);
+          if (tmp.equals("true")) {
+            com.setConnection(true);
+          }
+          else com.setConnection(false);
+          Frame1.vWorkstation.addElement(com);
+        }
+        else if (str2.equals("XPos")) {
+          cimg.setXPos(Integer.parseInt(st2.nextToken()));
+        }
+        else if (str2.equals("YPos")) {
+          cimg.setYPos(Integer.parseInt(st2.nextToken()));
+        }
+        else if (str2.equals("Width")) {
+          cimg.setWide(Integer.parseInt(st2.nextToken()));
+        }
+        else if (str2.equals("Hight")) {
+          cimg.setHigh(Integer.parseInt(st2.nextToken()));
+        }
+      }
+    }
+    if (num==2) {
+      Panel2.vImgCom.addElement(cimg);
+    }
+  }
+
+  public void newInterface(String s) {
+    System.out.println("== Interface ==");
+    Switch sw = new Switch();
+    Interface inf = new Interface();
+    int found = 0;
+    StringTokenizer st1 = new StringTokenizer(s.substring(0,s.length()-1),"!");
+    while (st1.hasMoreTokens()) {
+      String str = st1.nextToken();
+      StringTokenizer st2 = new StringTokenizer(str," ");
+      while (st2.hasMoreTokens()) {
+        String str2 = st2.nextToken();
+        if (found==0) {
+          if (str2.equals("Switch")) {
+            String tmp = st2.nextToken();
+            for (int i=0; i<Frame1.vSwitch.size(); i++) {
+              Switch swtmp = (Switch)Frame1.vSwitch.elementAt(i);
+              if (swtmp.getName().equals(tmp)) {
+                sw = swtmp;
+                found++;
+                i=Frame1.vSwitch.size();
+              }
+            }
+          }
+        }
+        else if (found==1) {
+          String tmp = st2.nextToken();
+          if (str2.equals("nameInt")) {
+            for (int i=0; i<sw.getVInt().size(); i++) {
+              Interface itmp = (Interface)sw.getVInt().elementAt(i);
+              if (itmp.getNameInt().equals(tmp)) {
+                inf = itmp;
+                found++;
+                i=sw.getVInt().size();
+              }
+            }
+          }
+        }
+        else if (found==2) {
+//          if (str2.equals("nameFull")) {
+//          }
+          if (str2.equals("status")) {
+            inf.setStatus(st2.nextToken());
+          }
+          else if (str2.equals("connectStatus")) {
+            inf.setConnectStatus(st2.nextToken());
+          }
+          else if (str2.equals("MACaddress")) {
+            inf.setMACAddress(st2.nextToken());
+          }
+          else if (str2.equals("VLAN")) {
+            inf.setVLAN(Integer.parseInt(st2.nextToken()));
+          }
+          else if (str2.equals("VLANLink")) {
+            inf.setVLANLink(Integer.parseInt(st2.nextToken()));
+          }
+          else if (str2.equals("SwitchInt")) {
+            String tmp = st2.nextToken();
+            for (int i=0; i<Frame1.vSwitch.size(); i++) {
+              Switch swtmp = (Switch)Frame1.vSwitch.elementAt(i);
+              System.out.println("\n[1] "+sw.getName());
+              System.out.println("[2] "+swtmp.getName());
+              System.out.println("tmp "+tmp);
+              if (swtmp.getName().equals(tmp)) {
+                System.out.println(sw.getName()+" interface "+inf.getNameInt()+" "+swtmp.getName());
+                inf.addNewIntSwitch(sw, inf.getNameInt(), swtmp);
+//                System.out.println(sw.getName());
+              }
+            }
+          }
+          else if (str2.equals("WorkstationInt")) {
+            String tmp = st2.nextToken();
+            for (int i=0; i<Frame1.vWorkstation.size(); i++) {
+              Workstation com = (Workstation)Frame1.vWorkstation.elementAt(i);
+              if (com.getName().equals(tmp)) {
+                inf.addNewIntCom(sw, inf.getNameInt(), com);
+//                System.out.println(com.getName());
+              }
+            }
+          }
+//          else if (str2.equals("Connector")) {
+//            inf.setConnector(st2.nextToken());
+//          }
+//          else if (str2.equals("Type")) {
+//          }
+          else if (str2.equals("PortID")) {
+            inf.setPortID(st2.nextToken());
+          }
+          else if (str2.equals("Priority")) {
+            inf.setPriority(st2.nextToken());
+          }
+          else if (str2.equals("Cost")) {
+            inf.setCost(st2.nextToken());
+          }
+          else if (str2.equals("STPport")) {
+            String tmp = st2.nextToken();
+            if (!tmp.equals("$"))
+              inf.setSTPport(st2.nextToken());
+            else inf.setSTPport("");
+          }
+          else if (str2.equals("STPstate")) {
+            inf.setSTPstate(st2.nextToken());
+          }
+        }
+      }
+    }
+  }
+
+  void addInterfaceImg() {
+    for (int i=0; i<Frame1.vSwitch.size(); i++) {
+      Switch sw1 = (Switch)Frame1.vSwitch.elementAt(i);
+      for (int m=0; m<sw1.getVIntSwitch().size(); m++) {
+        Interface i1 = (Interface)sw1.getVIntSwitch().elementAt(m);
+        for (int j=i; j<Frame1.vSwitch.size(); j++) {
+          Switch sw2 = (Switch)Frame1.vSwitch.elementAt(j);
+          if (sw2.equals(i1.getSwitch())) {
+            for (int n=0; n<sw2.getVIntSwitch().size(); n++) {
+              Interface i2 = (Interface)sw2.getVIntSwitch().elementAt(n);
+              if (i2.getSwitch().equals(sw1)) {
+                InterfaceImg iimg = new InterfaceImg();
+                SwitchImg simg1 = (SwitchImg)Panel2.vImgSwitch.elementAt(i);
+                SwitchImg simg2 = (SwitchImg)Panel2.vImgSwitch.elementAt(j);
+                iimg.setXPos1(simg1.getXPos()+(simg1.getWide()/2));
+                iimg.setYPos1(simg1.getYPos()+(simg1.getHigh()/2));
+                iimg.setXPos2(simg2.getXPos()+(simg2.getWide()/2));
+                iimg.setYPos2(simg2.getYPos()+(simg2.getHigh()/2));
+                iimg.setInt1(i1);
+                iimg.setInt2(i2);
+                iimg.setIntSwToSw();
+                Panel2.vImgInt.addElement(iimg);
+              }
+            }
+          }
+        }
+      }
+      for (int m=0; m<sw1.getVIntCom().size(); m++) {
+        Interface i1 = (Interface)sw1.getVIntCom().elementAt(m);
+        for (int j=0; j<Frame1.vWorkstation.size(); j++) {
+          Workstation com = (Workstation)Frame1.vWorkstation.elementAt(j);
+          if (i1.getCom().equals(com)) {
+            InterfaceImg iimg = new InterfaceImg();
+            SwitchImg simg = (SwitchImg)Panel2.vImgSwitch.elementAt(i);
+            ComImg cimg = (ComImg)Panel2.vImgCom.elementAt(j);
+            iimg.setXPos1(simg.getXPos()+(simg.getWide()/2));
+            iimg.setYPos1(simg.getYPos()+(simg.getHigh()/2));
+            iimg.setXPos2(cimg.getXPos()+(cimg.getWide()/2));
+            iimg.setYPos2(cimg.getYPos()+(cimg.getHigh()/2));
+            iimg.setInt1(i1);
+            iimg.setIntSwToCom();
+            Panel2.vImgInt.add(iimg);
+          }
+        }
+      }
+      Panel1 spanel = (Panel1)Panel3.vStatus.elementAt(i);
+      spanel.showDetail();
+    }
+  }
+
+  void addVlanDatabase(String s) {
+    Switch sw = new Switch();
+    VlanDatabase vdb = new VlanDatabase();
+    StringTokenizer st1 = new StringTokenizer(s,"!");
+    boolean found = false;
+    while (st1.hasMoreTokens()) {
+      String str = st1.nextToken();
+      if (!found) {
+        for (int i=0; i<Frame1.vSwitch.size(); i++) {
+          Switch swtmp = (Switch)Frame1.vSwitch.elementAt(i);
+          if (swtmp.getName().equals(str)) {
+            sw = swtmp;
+            found = true;
+          }
+        }
+      }
+      else {// found
+        StringTokenizer st2 = new StringTokenizer(str," ");
+        while (st2.hasMoreTokens()) {
+          String str2 = st2.nextToken();
+          if (str2.equals("vlanID")) {
+            vdb.setVlanID(Integer.parseInt(st2.nextToken()));
+          }
+          else if (str2.equals("vlanName")) {
+            vdb.setVlanName(st2.nextToken());
+          }
+          else if (str2.equals("status")) {
+            vdb.setStatus(st2.nextToken());
+          }
+          else if (str2.equals("type")) {
+            vdb.setType(st2.nextToken());
+          }
+          else if (str2.equals("said")) {
+            vdb.setSAID(st2.nextToken());
+          }
+          else if (str2.equals("mtu")) {
+            vdb.setMTU(st2.nextToken());
+          }
+          else if (str2.equals("parent")) {
+            vdb.setParent(st2.nextToken());
+          }
+          else if (str2.equals("ringNo")) {
+            vdb.setRingNo(st2.nextToken());
+          }
+          else if (str2.equals("brdgNo")) {
+            vdb.setBrdgNo(st2.nextToken());
+          }
+          else if (str2.equals("stp")) {
+            vdb.setSTP(st2.nextToken());
+          }
+          else if (str2.equals("brdgMode")) {
+            vdb.setBrdgMode(st2.nextToken());
+          }
+          else if (str2.equals("trans1")) {
+            vdb.setTrans1(Integer.parseInt(st2.nextToken()));
+          }
+          else if (str2.equals("trans2")) {
+            vdb.setTrans2(Integer.parseInt(st2.nextToken()));
+          }
+        }
+      }
+    }
+    if (found) {
+      sw.getVlanDB().addElement(vdb);
+    }
+  }
+}

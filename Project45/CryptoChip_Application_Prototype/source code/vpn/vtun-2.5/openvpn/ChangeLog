@@ -1,0 +1,275 @@
+OpenVPN
+Copyright (C) 2002 James Yonan <jim@yonan.net>
+
+2002.10.16 -- Version 1.3.1.7
+
+* Added SSL_CTX_set_client_CA_list call
+  to follow the canonical form for TLS initialization
+  recommended by the OpenSSL docs.  This change allows
+  better support for intermediate CAs and has no impact
+  on security.
+* Added build-inter script to easy-rsa package, to
+  facilitate the generation of intermediate CAs.
+* Ported to NetBSD (Dimitri Goldin).
+* Fixed minor bug in easy-rsa/sign-req.  It refers to
+  openssl.cnf file, instead of $KEY_CONFIG, like all
+  other scripts (Ernesto Baschny).
+* Added --days 3650 to the root CA generation command
+  in the HOWTO to override the woefully small 30 day
+  default (Dominik 'Aeneas' Schnitzer).
+* Fixed bug where --ping-restart would sometimes
+  not re-resolve remote DNS hostname.
+* Added --tun-ipv6 option and related infrastructure
+  support for IPv6 over tun.
+* Added IPv6 over tun support for Linux (Aaron Sethman).
+* Added "Important Note on the use of commercial certificate
+  authorities (CAs) with OpenVPN" to HOWTO based on
+  issues raised on the openvpn-users list.
+
+2002.07.10 -- Version 1.3.1
+
+* Fixed bug in openvpn.spec and openvpn.init
+  which caused RPM upgrade to fail.
+
+2002.07.10 -- Version 1.3.0
+
+* Added --dev-node option to allow explicit selection of
+  tun/tap device node.
+* Removed mlockall call from child thread, as it doesn't
+  appear to be necessary (child thread inherits mlockall
+  state from parent).
+* Added --ping-timer-rem which causes timer for --ping-exit
+  and --ping-restart not to run unless we have a remote IP
+  address.
+* Added condrestart to openvpn.init and openvpn.spec
+  (Bishop Clark).
+* Added --ifconfig case for FreeBSD (Matthias Andree).
+* Call openlog with facility=LOG_DAEMON (Matthias Andree).
+* Changed LOG_INFO messages to LOG_NOTICE.
+* Added warning when key files are group/others accessible.
+* Added --single-session flag for TLS mode.
+* Fixed bug where --writepid would segfault if used with
+  an invalid filename.
+* Fixed bug where --ipchange status message was formatted
+  incorrectly.
+* Print more concise error message when system() call
+  fails.
+* Added --disable-occ option.
+* Added --local, --remote, and --ifconfig options sanity
+  check.
+* Changed default UDP MTU to 1300 and TUN/TAP MTU to
+  1300.
+* Successfully tested with OpenSSL 0.9.7 Beta 2.
+* Broke out debug level definitions to errlevel.h
+* Minor documentation and web site changes.
+* All changes maintain protocol compatibility
+  with OpenVPN versions since 1.1.0, however default
+  MTU changes will require setting the MTU explicitly
+  by command line option, if you want 1.3.0 to
+  communicate with previous versions.
+
+2002.06.12 -- Version 1.2.1
+
+* Added --ping-restart option to restart
+  connection on ping timeout using SIGUSR1
+  logic (Matthias Andree).
+* Added --persist-tun, --persist-key,
+  --persist-local-ip, and --persist-remote-ip
+  options for finer-grained control over SIGUSR1
+  and --ping-restart restarts.  To
+  replicate previous SIGUSR1 functionality,
+  use --persist-remote-ip.
+* Changed residual IV fetching code to take
+  IV from tail of ciphertext.
+* Added check to make sure that CFB or OFB
+  cipher modes are only used with SSL/TLS
+  authentication mode, and added a caveat
+  to INSTALL.
+* Changed signal handling during initialization
+  (including re-initialization during restarts)
+  to exit on SIGTERM or SIGINT and ignore other
+  signals which would ordinarily be caught.
+* Added --resolv-retry option to allow
+  retries on hostname resolution.
+* Expanded the --float option to also
+  allow dynamic changes in source port number
+  on incoming datagrams.
+* Added --mute option to limit repetitive
+  logging of similar message types.
+* Added --group option to downgrade GID
+  after initialization.
+* Try to set ifconfig path automatically
+  in configure.
+* Added --ifconfig code for Mac OS X
+  (Christoph Pfisterer).
+* Moved "Peer Connection Initiated" message
+  to --verb level 1.
+* Successfully tested with
+  OpenSSL 0.9.7 Beta 1 and AES cipher.
+* Added RPM notes to INSTALL.
+* Added ACX_PTHREAD (from the autoconf
+  macro archive) to configure.ac
+  to figure out the right pthread
+  options for a given platform.
+* Broke out macro definitions from
+  configure.ac to acinclude.m4.
+* Minor changes to docs and HOWTO.
+* All changes maintain protocol compatibility
+  with OpenVPN versions since 1.1.0.
+
+2002.05.22 -- Version 1.2.0
+
+* Added configuration file support via
+  the --config option.
+* Added pthread support to improve latency.
+  With pthread support, OpenVPN
+  will offload CPU-intensive tasks such as RSA
+  key number crunching to a background thread
+  to improve tunnel packet forwarding
+  latency.  pthread support can be enabled
+  with the --enable-pthread configure option.
+  Pthread support is currently available
+  only for Linux and Solaris.
+* Added --dev-type option so that tun/tap
+  device names don't need to begin with
+  "tun" or "tap".
+* Added --writepid option to write main
+  process ID to a file.
+* Numerous portability fixes to ease
+  porting to other OSes including changing
+  all network types to uint8_t and uint32_t,
+  and not assuming that time_t is 32 bits.
+* Backported to OpenSSL 0.9.5.
+* Ported to Solaris.
+* Finished OpenBSD port except for
+  pthread support.
+* Added initialization script:
+  sample-scripts/openvpn.init
+  (Douglas Keller)
+* Ported to Mac OS X (Christoph Pfisterer).
+* Improved resilience to DoS attacks when
+  TLS mode is used without --remote or
+  --tls-auth, or when --float is used
+  with --remote.  Note however that the best
+  defense against DoS attacks in TLS mode
+  is to use --tls-auth.
+* Eliminated automake/autoconf dependency
+  for non-developers.
+* Ported configure.in to configure.ac
+  and autoconf 2.50+.
+* SIGHUP signal now causes OpenVPN to restart
+  and re-read command line and or config file,
+  in conformance with canonical daemon behaviour.
+* SIGUSR1 now does what SIGHUP did in
+  version 1.1.1 and earlier -- close and reopen
+  the UDP socket for use when DHCP changes
+  host's IP address and preserve most recently
+  authenticated peer address without rereading
+  config file.
+* SIGUSR2 added -- outputs current statistics,
+  including compression statistics.
+* All changes maintain protocol compatibility
+  with 1.1.1 and 1.1.0.
+
+2002.04.22 -- Version 1.1.1
+	
+* Added --ifconfig option to automatically configure
+  TUN device.
+* Added inactivity disconnect (--inactive
+  and --ping-exit options).
+* Added --ping option to keep stateful firewalls
+  from timing out.
+* Added sanity check to command line parser to
+  err if any TLS options are used in non-TLS mode.
+* Fixed build problem with compiler environments that
+  define printf as a macro.
+* Fixed build problem on linux systems that have
+  an integrated TUN/TAP driver but lack the persistent
+  tunnel feature (TUNSETPERSIST).  Some linux kernels
+  >= 2.4.0 and < 2.4.7 fall into this category.
+* Changed all calls to EVP_CipherInit to use explicit
+  encrypt/decrypt mode in order to fix problem with
+  IDEA-CBC and AES-256-CBC ciphers.
+* Minor changes to control channel transmit limiter
+  algorithm to fix problem where TLS control channel
+  might not renegotiate within the default 60 second window.
+* Simplified man page examples by taking advantage
+  of the new --ifconfig option.
+* Minor changes to configure.in to check more
+  rigourously for OpenSSL 0.9.6 or greater.
+* Put back openvpn.spec, eliminated
+  openvpn.spec.in.
+* Modified openvpn.spec to reflect new automake-based
+  build environment (Bishop Clark).
+* Other documentation changes.
+* Added --test-crypto option for debugging.
+* Added "missing" and "mkinstalldirs" automake
+  support files.
+
+
+2002.04.09 -- Version 1.1.0
+
+* Strengthened replay protection and IV handling,
+  extending it fully to both static key and
+  TLS dynamic key exchange modes.
+* Added --mlock option to disable paging and ensure that key
+  material and tunnel data is never paged to disk.
+* Added optional traffic shaping feature to cap the maximum
+  data rate of the tunnel.
+* Converted to automake (The Platypus Brothers 2002-04-01).
+* Ported to OpenBSD by Janne Johansson.
+* Added --tun-af-inet option to work around an incompatibility
+  between Linux and BSD tun drivers.
+* Sequence number-based replay protection using the
+  IPSec sliding window model is now the default,
+  disable with --no-replay.
+* Explicit IV is now the default, disable with --no-iv.
+* Disabled all cipher modes except CBC, CFB, and OFB.
+* In CBC mode, use explicit IV and carry forward residuals,
+  using IPSec model.
+* In CFB/OFB mode, IV is timestamp, sequence number.
+* Eliminated --packet-id, --timestamp, and max-delta parameter to
+  the --tls-auth option as they are now supplanted by improved
+  replay code which is enabled by default.
+* Eliminated --rand-iv as it is now obsolete with improved
+  IV code.
+* Eliminated --reneg-err option as it increases vulnerability
+  to DoS attacks.
+* Added weak key check for DES ciphers.
+* --tls-freq option is no longer specified on the command line,
+  instead it now inherits its parameter from the
+  --tls-timeout option.
+* Fixed bug that would try to free memory on exit that was
+  never malloced if --comp-lzo was not specified.
+* Errata fixed in the man page examples: "test-ca" should be
+  "tmp-ca".
+* Updated manual page.
+* Preliminary work in porting to OpenSSL 0.9.7.
+* Changed license to allowing linking with OpenSSL.
+
+2002.03.29 -- Version 1.0.3
+
+* Fixed a problem in configure with library ordering on the
+  command line.
+
+2002.03.28 -- Version 1.0.2
+
+* Improved the efficiency of the inner event loop.
+* Fixed a minor bug with timeout handling.
+* Improved the build system to build on RH 6.2 through 7.2.
+* Added an openvpn.spec file for RPM builders (Bishop Clark).
+
+2002.03.23 -- Version 1.0
+
+* Added TLS-based authentication and key exchange.
+* Added gremlin mode to stress test.
+* Wrote man page.
+
+2001.12.26 -- Version 0.91
+
+* Added any choice of cipher or HMAC digest.
+
+2001.5.13 -- Version 0.90
+
+* Initial release.
+* IP tunnel over UDP, with blowfish cipher and SHA1 HMAC signature.

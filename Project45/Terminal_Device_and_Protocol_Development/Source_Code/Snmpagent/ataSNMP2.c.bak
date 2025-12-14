@@ -1,0 +1,38 @@
+#include <string.h>
+#include <stdlib.h> 
+
+#include <dev/uartavr.h>
+#include <dev/nicrtl.h>
+
+#include <sys/heap.h>
+#include <sys/thread.h>
+#include <sys/timer.h>
+#include <sys/print.h>
+#include <sys/kprint.h>
+
+#include <netinet/sostream.h>
+#include <arpa/inet.h>
+#include <net/route.h>
+#include <netdb.h>
+
+
+#define DNSSERVERIP     "161.246.4.3"
+#define INETSERVER	"chaokhun.kmitl.ac.th"
+#define INETSERVERPORT  25
+#define INETURL         "/search?q=ethernut"
+#define MY_MAC          {0x00,0x06,0x98,0x20,0x00,0x00}
+#define MY_IP           "161.246.5.97"
+#define MY_MASK         "255.255.255.0"
+#define MY_GATE         "161.246.5.1"
+
+static u_char buff[1024];
+static u_char my_mac[] = MY_MAC;
+
+/*
+ * Main application routine. 
+ *
+ * Nut/OS automatically calls this entry after initialization.
+ */
+THREAD(NutMain, arg)
+{   NUTDEVICE *uart0;
+    u_long baud = 115200;

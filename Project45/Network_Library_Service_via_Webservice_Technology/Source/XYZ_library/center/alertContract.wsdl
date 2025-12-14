@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- @editor-info:link source="alert.jws" autogen="false" -->
+
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:conv="http://www.openuri.org/2002/04/soap/conversation/" xmlns:cw="http://www.openuri.org/2002/04/wsdl/conversation/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:jms="http://www.openuri.org/2002/04/wsdl/jms/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://www.openuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xm="http://www.bea.com/2002/04/xmlmap/" targetNamespace="http://www.openuri.org/" >
+  <types>
+    <s:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.openuri.org/">
+      <s:element name="send_news">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="news" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="username" type="s0:ArrayOfuser_news" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfuser_news">
+        <s:sequence>
+            <s:element minOccurs="0" maxOccurs="unbounded" nillable="true" name="user_news" type="s0:user_news" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="user_news">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="username" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="category" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="email_way" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="application_way" type="s:string" />
+            </s:sequence>
+      </s:complexType>
+      <s:element name="send_newsResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="alert_on">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="timeout" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="repeats" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="alert_onResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="alert_off">
+        <s:complexType />
+      </s:element>
+      <s:element name="alert_offResponse">
+        <s:complexType />
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.openuri.org/2002/04/soap/conversation/">
+      <s:element name="StartHeader" type="conv:StartHeader" />
+      <s:element name="ContinueHeader" type="conv:ContinueHeader" />
+      <s:element name="CallbackHeader" type="conv:CallbackHeader" />
+      <s:complexType name="StartHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="conversationID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="callbackLocation" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ContinueHeader">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="conversationID" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CallbackHeader">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="conversationID" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </types>
+  <message name="send_newsSoapIn">
+    <part name="parameters" element="s0:send_news" />
+  </message>
+  <message name="send_newsSoapOut">
+    <part name="parameters" element="s0:send_newsResponse" />
+  </message>
+  <message name="alert_onSoapIn">
+    <part name="parameters" element="s0:alert_on" />
+  </message>
+  <message name="alert_onSoapOut">
+    <part name="parameters" element="s0:alert_onResponse" />
+  </message>
+  <message name="alert_offSoapIn">
+    <part name="parameters" element="s0:alert_off" />
+  </message>
+  <message name="alert_offSoapOut">
+    <part name="parameters" element="s0:alert_offResponse" />
+  </message>
+  <message name="alert_onHttpGetIn">
+    <part name="timeout" type="s:string" />
+    <part name="repeats" type="s:string" />
+  </message>
+  <message name="alert_onHttpGetOut" />
+  <message name="alert_offHttpGetIn" />
+  <message name="alert_offHttpGetOut" />
+  <message name="alert_onHttpPostIn">
+    <part name="timeout" type="s:string" />
+    <part name="repeats" type="s:string" />
+  </message>
+  <message name="alert_onHttpPostOut" />
+  <message name="alert_offHttpPostIn" />
+  <message name="alert_offHttpPostOut" />
+  <message name="StartHeader_literal">
+    <part name="StartHeader" element="conv:StartHeader" />
+  </message>
+  <message name="ContinueHeader_literal">
+    <part name="ContinueHeader" element="conv:ContinueHeader" />
+  </message>
+  <portType name="alertSoap">
+    <operation name="send_news">
+      <input message="s0:send_newsSoapIn" />
+      <output message="s0:send_newsSoapOut" />
+    </operation>
+    <operation name="alert_on">
+      <input message="s0:alert_onSoapIn" />
+      <output message="s0:alert_onSoapOut" />
+    </operation>
+    <operation name="alert_off">
+      <input message="s0:alert_offSoapIn" />
+      <output message="s0:alert_offSoapOut" />
+    </operation>
+  </portType>
+  <portType name="alertHttpGet">
+    <operation name="alert_on">
+      <input message="s0:alert_onHttpGetIn" />
+      <output message="s0:alert_onHttpGetOut" />
+    </operation>
+    <operation name="alert_off">
+      <input message="s0:alert_offHttpGetIn" />
+      <output message="s0:alert_offHttpGetOut" />
+    </operation>
+  </portType>
+  <portType name="alertHttpPost">
+    <operation name="alert_on">
+      <input message="s0:alert_onHttpPostIn" />
+      <output message="s0:alert_onHttpPostOut" />
+    </operation>
+    <operation name="alert_off">
+      <input message="s0:alert_offHttpPostIn" />
+      <output message="s0:alert_offHttpPostOut" />
+    </operation>
+  </portType>
+  <binding name="alertSoap" type="s0:alertSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <operation name="send_news">
+      <soap:operation soapAction="http://www.openuri.org/send_news" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="alert_on">
+      <soap:operation soapAction="http://www.openuri.org/alert_on" style="document" />
+      <cw:transition phase="start" />
+      <input>
+        <soap:body use="literal" />
+        <soap:header wsdl:required="true" message="s0:StartHeader_literal" part="StartHeader" use="literal" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="alert_off">
+      <soap:operation soapAction="http://www.openuri.org/alert_off" style="document" />
+      <cw:transition phase="finish" />
+      <input>
+        <soap:body use="literal" />
+        <soap:header wsdl:required="true" message="s0:ContinueHeader_literal" part="ContinueHeader" use="literal" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="alertHttpGet" type="s0:alertHttpGet">
+    <http:binding verb="GET" />
+    <operation name="alert_on">
+      <http:operation location="/alert_on" />
+      <cw:transition phase="start" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output />
+    </operation>
+    <operation name="alert_off">
+      <http:operation location="/alert_off" />
+      <cw:transition phase="finish" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output />
+    </operation>
+  </binding>
+  <binding name="alertHttpPost" type="s0:alertHttpPost">
+    <http:binding verb="POST" />
+    <operation name="alert_on">
+      <http:operation location="/alert_on" />
+      <cw:transition phase="start" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output />
+    </operation>
+    <operation name="alert_off">
+      <http:operation location="/alert_off" />
+      <cw:transition phase="finish" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output />
+    </operation>
+  </binding>
+  <service name="alert">
+    <port name="alertSoap" binding="s0:alertSoap">
+      <soap:address location="http://localhost:7001/library/center/alert.jws" />
+    </port>
+    <port name="alertHttpGet" binding="s0:alertHttpGet">
+      <http:address location="http://localhost:7001/library/center/alert.jws" />
+    </port>
+    <port name="alertHttpPost" binding="s0:alertHttpPost">
+      <http:address location="http://localhost:7001/library/center/alert.jws" />
+    </port>
+  </service>
+</definitions>

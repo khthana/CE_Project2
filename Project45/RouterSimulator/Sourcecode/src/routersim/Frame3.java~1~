@@ -1,0 +1,718 @@
+package routersim;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JScrollPane;
+import java.util.*;
+import com.borland.jbcl.layout.*;
+import javax.swing.border.*;
+
+/**
+ * <p>Title: </p>
+ * <p>Description: </p>
+ * <p>Copyright: Copyright (c) 2002</p>
+ * <p>Company: </p>
+ * @author unascribed
+ * @version 1.0
+ */
+
+public class Frame3 extends JFrame {
+  RouterImg rimg;
+  Image img;
+  Router r1;
+  static Vector vImg = new Vector();
+  static Status s = null;
+  static int X=0;
+  private int SelectMode = 1;
+  static Vector vStatus = new Vector();
+  static int Series;
+  boolean pressin = false;
+  private JPanel contentPane;
+  private JPanel jPanel1 = new JPanel();
+  static  JScrollPane jScrollPane1 = new JScrollPane();
+  private JPanel jPanel3 = new JPanel();
+
+  private JMenuBar jMenuBar1 = new JMenuBar();
+  private JMenu jMenu1 = new JMenu();
+  private JMenu jMenu2 = new JMenu();
+  private JMenu jMenu3 = new JMenu();
+  private JMenu jMenu4 = new JMenu();
+  private JMenu jMenu5 = new JMenu();
+  private JMenu jMenu6 = new JMenu();
+  private JMenuItem jMenuItem1 = new JMenuItem();
+  private JMenuItem jMenuItem2 = new JMenuItem();
+  private JMenuItem jMenuItem3 = new JMenuItem();
+  private JMenuItem jMenuItem4 = new JMenuItem();
+  ImageIcon image1;
+  ImageIcon image2;
+  ImageIcon image3;
+  ImageIcon image4;
+  ImageIcon image5;
+  ImageIcon image6;
+  ImageIcon image7;
+  ImageIcon image8;
+  ImageIcon image9;
+  ImageIcon image10;
+  ImageIcon image11;
+  ImageIcon image12;
+  ImageIcon image13;
+  ImageIcon image14;
+  //status
+  static JScrollPane jScrollPane2 = new JScrollPane();
+  static JTextArea   textarea[];
+  static  JPanel jPanel2 = new JPanel();
+  //end
+  static TitledBorder titledBorder1;
+  private TitledBorder titledBorder2;
+  static TitledBorder titledBorder10;
+  static JLabel jLabel8 = new JLabel();
+  private JLabel jLabel14 = new JLabel();
+  private TitledBorder titledBorder3;
+  private TitledBorder titledBorder4;
+  private FlowLayout flowLayout1 = new FlowLayout();
+  private VerticalFlowLayout verticalFlowLayout1 = new VerticalFlowLayout();
+  static String name ;
+  static  JPanel jPanel4 = new JPanel();
+  private XYLayout xYLayout1 = new XYLayout();
+  private JButton jC01 = new JButton();
+  private Border border1;
+  private JButton jC02 = new JButton();
+  private JButton jC13 = new JButton();
+  private JButton jC14 = new JButton();
+  private JButton jC15 = new JButton();
+  private JButton jopen = new JButton();
+  private TitledBorder titledBorder5;
+  private JButton jDelete = new JButton();
+  private TitledBorder titledBorder6;
+  private TitledBorder titledBorder7;
+  private JButton jFeature = new JButton();
+  private TitledBorder titledBorder8;
+  private JButton jNetstep = new JButton();
+  private JButton jLesson = new JButton();
+  private JButton jHelp = new JButton();
+  private JButton jWire = new JButton();
+  private JButton jIdea = new JButton();
+  private TitledBorder titledBorder9;
+  private XYLayout xYLayout3 = new XYLayout();
+  private PaneLayout paneLayout1 = new PaneLayout();
+  private XYLayout xYLayout2 = new XYLayout();
+
+ //Construct the frame for admin mode
+  public Frame3() {
+    enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+    try {
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+  //Construct the frame for user mode
+ public Frame3(int mode) {
+   enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+   try {
+     setSelectMode(mode);
+     jbInit();
+   }
+   catch(Exception e) {
+     e.printStackTrace();
+   }
+  }
+  //Component initialization
+  private void jbInit() throws Exception  {
+
+    image1 = new ImageIcon(Frame3.class.getResource("openFile.gif"));
+    image2 = new ImageIcon(Frame3.class.getResource("delrouter.gif"));
+    image3 = new ImageIcon(Frame3.class.getResource("newrouter.gif"));
+    image4 = new ImageIcon(Frame3.class.getResource("nextstep.gif"));
+    image5 = new ImageIcon(Frame3.class.getResource("lesson.gif"));
+    image6 = new ImageIcon(Frame3.class.getResource("help.gif"));
+    image7 = new ImageIcon(Frame3.class.getResource("bluerouter.gif"));
+    image8 = new ImageIcon(Frame3.class.getResource("grayrouter.gif"));
+    image9 = new ImageIcon(Frame3.class.getResource("greenrouter.gif"));
+    image10 = new ImageIcon(Frame3.class.getResource("pupilrouter.gif"));
+    image11= new ImageIcon(Frame3.class.getResource("redrouter.gif"));
+    image12 = new ImageIcon(Frame3.class.getResource("line.jpg"));
+    image13 = new ImageIcon(Frame3.class.getResource("help.gif"));
+    image14 = new ImageIcon(Frame3.class.getResource("pinkrouter.gif"));
+    titledBorder3 = new TitledBorder(BorderFactory.createEtchedBorder(Color.white,new Color(148, 145, 140)),"Status");
+    titledBorder4 = new TitledBorder(BorderFactory.createEtchedBorder(Color.white,new Color(148, 145, 140)),"Network Diagram");
+    border1 = BorderFactory.createEmptyBorder();
+    titledBorder5 = new TitledBorder("");
+    titledBorder6 = new TitledBorder("");
+    titledBorder7 = new TitledBorder("");
+    titledBorder8 = new TitledBorder("");
+    titledBorder9 = new TitledBorder("");
+    setIconImage(Toolkit.getDefaultToolkit().createImage(Frame3.class.getResource("redrouter.gif")));
+    contentPane = (JPanel) this.getContentPane();
+    titledBorder1 = new TitledBorder(BorderFactory.createEtchedBorder(Color.white,new Color(178, 178, 157)),"Help");
+     titledBorder10 = new TitledBorder(BorderFactory.createEtchedBorder(Color.white,new Color(178, 178, 157)),"");
+    titledBorder2 = new TitledBorder(BorderFactory.createEtchedBorder(Color.white,new Color(178, 178, 157)),"Device");
+    contentPane.setLayout(null);
+    this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+    this.setSize(new Dimension(1035, 738));
+    this.setTitle("  Router Simulation");
+    this.setVisible(true);
+    this.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+       //  jTabbedPane1_keyPressed(e);
+      }
+    });
+    jPanel1.setBackground(UIManager.getColor("ToolTip.background"));
+    jPanel1.setBorder(titledBorder2);
+    jPanel1.setToolTipText("Device Plan");
+    jPanel1.setBounds(new Rectangle(2, 26, 162, 663));
+    jPanel1.setLayout(null);
+
+    contentPane.setBackground(UIManager.getColor("ToolBar.floatingBackground"));
+    contentPane.setEnabled(true);
+    contentPane.setMinimumSize(new Dimension(1000, 680));
+    contentPane.setPreferredSize(new Dimension(1000, 680));
+    jScrollPane1.getViewport().setBackground(Color.white);
+    jScrollPane1.setBorder(titledBorder1);
+    jScrollPane1.setPreferredSize(new Dimension(24, 24));
+    jScrollPane1.setToolTipText("Network Diagram Plan");
+    jScrollPane1.setBounds(new Rectangle(165, 26, 631, 468));
+    jPanel3.setBackground(UIManager.getColor("ToolTip.background"));
+    jPanel3.setBorder(titledBorder1);
+    jPanel3.setToolTipText("Help Plan");
+    jPanel3.setBounds(new Rectangle(797, 26, 236, 663));
+    jPanel3.addComponentListener(new java.awt.event.ComponentAdapter() {
+      public void componentResized(ComponentEvent e) {
+        jPanel3_componentResized(e);
+      }
+    });
+    jPanel3.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsAdapter() {
+      public void ancestorResized(HierarchyEvent e) {
+        jPanel3_ancestorResized(e);
+      }
+    });
+    jPanel3.setLayout(paneLayout1);
+    jMenu2.setToolTipText("File");
+    jMenu2.setText("File");
+    jMenu1.setToolTipText("Edit");
+    jMenu1.setText("Edit");
+    jMenu3.setToolTipText("Run");
+    jMenu3.setText("Run");
+    jMenu4.setToolTipText("Tools");
+    jMenu4.setText("Tools");
+    jMenu5.setToolTipText("Help");
+    jMenu5.setText("Help");
+    jMenu6.setToolTipText("Lesson");
+    jMenu6.setText("Lesson");
+    jMenuItem1.setToolTipText("New digram");
+    jMenuItem1.setText("New Diagram");
+    jMenuItem2.setToolTipText("Delete");
+    jMenuItem2.setText("Delete");
+    jMenuItem3.setToolTipText("Single Mode");
+    jMenuItem3.setText("Single Mode");
+    jMenuItem4.setToolTipText("Normal Mode");
+    jMenuItem4.setText("Normal Mode");
+    // status
+    jScrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+    jScrollPane2.getViewport().setBackground(UIManager.getColor("ToolTip.background"));
+    jScrollPane2.setBorder(titledBorder3);
+    jScrollPane2.setMinimumSize(new Dimension(300, 300));
+    jScrollPane2.setPreferredSize(new Dimension(300, 300));
+    jScrollPane2.setToolTipText("Status Plan");
+    jScrollPane2.setBounds(new Rectangle(164, 500, 633, 190));
+    jPanel2.setLayout(xYLayout2);
+    // status pane
+      textarea = new JTextArea[30];
+
+      textarea[0] = new JTextArea("");textarea[10] = new JTextArea("");textarea[20] = new JTextArea("");
+      textarea[1] = new JTextArea("");textarea[11] = new JTextArea("");textarea[21] = new JTextArea("");
+      textarea[2] = new JTextArea("");textarea[12] = new JTextArea("");textarea[22] = new JTextArea("");
+      textarea[3] = new JTextArea("");textarea[13] = new JTextArea("");textarea[23] = new JTextArea("");
+      textarea[4] = new JTextArea("");textarea[14] = new JTextArea("");textarea[24] = new JTextArea("");
+      textarea[5] = new JTextArea("");textarea[15] = new JTextArea("");textarea[25] = new JTextArea("");
+      textarea[6] = new JTextArea("");textarea[16] = new JTextArea("");textarea[26] = new JTextArea("");
+      textarea[7] = new JTextArea("");textarea[17] = new JTextArea("");textarea[27] = new JTextArea("");
+      textarea[8] = new JTextArea("");textarea[18] = new JTextArea("");textarea[28] = new JTextArea("");
+      textarea[9] = new JTextArea("");textarea[19] = new JTextArea("");textarea[29] = new JTextArea("");
+
+    jLabel8.setFont(new java.awt.Font("SansSerif", 1, 15));
+    jLabel8.setText("Router Series");
+    jLabel8.setBounds(new Rectangle(23, 14, 125, 33));
+    jLabel14.setFont(new java.awt.Font("SansSerif", 1, 15));
+    jLabel14.setText("Wire");
+    jLabel14.setBounds(new Rectangle(56, 360, 75, 47));
+
+
+    jPanel4.setBackground(SystemColor.controlLtHighlight);
+    jPanel4.setMinimumSize(new Dimension(100, 100));
+    jPanel4.setPreferredSize(new Dimension(100, 100));
+    jPanel4.setToolTipText("");
+    jPanel4.setLayout(xYLayout1);
+    // check mode for admin or user
+    int mode = getSelectMode();
+    // router 2501
+    jC01.setBackground(UIManager.getColor("info"));
+    jC01.setBounds(new Rectangle(14, 59, 148, 49));
+    jC01.setBorder(border1);
+    jC01.setOpaque(false);
+    jC01.setToolTipText("Cisco 2501");
+    jC01.setFocusPainted(false);
+    jC01.setText("Cisco 2501");
+    jC01.setIcon(image7);
+    jC01.setRolloverEnabled(true);
+    // check user Mode
+    if (mode==2){
+      jC01.setEnabled(false);
+    }
+    else
+    jC01.addActionListener(new java.awt.event.ActionListener() {
+     public void actionPerformed(ActionEvent e) {
+       jC01_actionPerformed(e);
+     }
+    });
+    // router 2502
+    jC02.setBackground(UIManager.getColor("info"));
+    jC02.setBounds(new Rectangle(21, 98, 137, 49));
+    jC02.setBorder(border1);
+    jC02.setMaximumSize(new Dimension(115, 29));
+    jC02.setMinimumSize(new Dimension(115, 29));
+    jC02.setOpaque(false);
+    jC02.setPreferredSize(new Dimension(115, 29));
+    jC02.setToolTipText("Cisco 2502");
+    jC02.setFocusPainted(false);
+    jC02.setIcon(image8);
+    jC02.setText("Cisco 2502");
+    // check user Mode
+    if (mode==2){
+      jC02.setEnabled(false);
+    }
+    else
+    jC02.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jC02_actionPerformed(e);
+      }
+    });
+    // router 2513
+    jC13.setBackground(UIManager.getColor("info"));
+    jC13.setBounds(new Rectangle(21, 143, 137, 49));
+    jC13.setBorder(border1);
+    jC13.setOpaque(false);
+    jC13.setToolTipText("Cisco 2513");
+    jC13.setFocusPainted(false);
+    jC13.setIcon(image9);
+    jC13.setText("Cisco 2513");
+    // check user Mode
+     if (mode==2){
+     jC13.setEnabled(false);
+      }
+      else
+      jC13.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jC13_actionPerformed(e);
+      }
+    });
+    // router 2514
+    jC14.setBackground(UIManager.getColor("info"));
+    jC14.setBounds(new Rectangle(21, 188, 137, 49));
+    jC14.setBorder(border1);
+
+    //end
+    jC14.setOpaque(false);
+    jC14.setToolTipText("Cisco 2514");
+    jC14.setFocusPainted(false);
+    jC14.setIcon(image10);
+    jC14.setText("Cisco 2514");
+    // check user Mode
+    if (mode==2){
+      jC14.setEnabled(false);
+     }
+     else
+     jC14.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jC14_actionPerformed(e);
+      }
+    });
+     // router 2515
+    jC15.setBackground(UIManager.getColor("info"));
+    jC15.setBounds(new Rectangle(21, 233, 137, 49));
+    jC15.setBorder(border1);
+    jC15.setOpaque(false);
+    jC15.setToolTipText("Cisco 2515");
+    jC15.setFocusPainted(false);
+    jC15.setIcon(image11);
+    jC15.setText("Cisco 2515");
+    // check user Mode
+    if (mode==2){
+      jC15.setEnabled(false);
+     }
+     else
+    jC15.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jC15_actionPerformed(e);
+      }
+    });
+
+   jIdea.setBackground(UIManager.getColor("info"));
+   jIdea.setBounds(new Rectangle(21, 281, 137, 49));
+   jIdea.setBorder(border1);
+    jIdea.setToolTipText("IdeaRouter");
+    jIdea.setFocusPainted(false);
+    jIdea.setIcon(image14);
+    jIdea.setText("Idea Router");
+    // check user Mode
+    if (mode==2){
+      jIdea.setEnabled(false);
+    }
+    else
+    jIdea.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jIdea_actionPerformed(e);
+      }
+    });
+
+    jopen.setBounds(new Rectangle(1, 0, 65, 26));
+    jopen.setBorder(border1);
+    jopen.setToolTipText("open Diagram");
+    jopen.setIcon(image1);
+    jopen.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jopen_actionPerformed(e);
+      }
+    });
+    // delete router
+    jDelete.setBounds(new Rectangle(65, 0, 79, 26));
+    jDelete.setBorder(border1);
+    jDelete.setToolTipText("Delete Router");
+    jDelete.setIcon(image2);
+    // check user Mode
+    if (mode==2){
+      jDelete.setEnabled(false);
+      }
+      else
+      jDelete.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jDelete_actionPerformed(e);
+      }
+    });
+    jFeature.setBounds(new Rectangle(143, 0, 79, 26));
+    jFeature.setBorder(border1);
+    jFeature.setToolTipText("Router Feature");
+    jFeature.setIcon(image3);
+    jFeature.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jFeature_actionPerformed(e);
+      }
+    });
+    jNetstep.setBounds(new Rectangle(220, 0, 79, 27));
+    jNetstep.setBorder(border1);
+    jNetstep.setToolTipText("Next Step");
+    jNetstep.setIcon(image4);
+    jNetstep.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jNetstep_actionPerformed(e);
+      }
+    });
+    jLesson.setBounds(new Rectangle(295, 0, 79, 27));
+    jLesson.setBorder(border1);
+    jLesson.setToolTipText("Lesson");
+    jLesson.setIcon(image5);
+    jLesson.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jLesson_actionPerformed(e);
+      }
+    });
+    jHelp.setBounds(new Rectangle(373, 0, 79, 27));
+    jHelp.setBorder(border1);
+    jHelp.setToolTipText("Help");
+    jHelp.setIcon(image6);
+    jHelp.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jHelp_actionPerformed(e);
+      }
+    });
+    // wire of router
+    jWire.setBackground(UIManager.getColor("info"));
+    jWire.setBounds(new Rectangle(24, 412, 95, 49));
+    jWire.setBorder(border1);
+    jWire.setToolTipText("Wire");
+    jWire.setFocusPainted(false);
+    jWire.setIcon(image12);
+    // check user Mode
+    if (mode==2){
+      jWire.setEnabled(false);
+      }
+      else
+      jWire.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jWire_actionPerformed(e);
+      }
+    });
+
+    jPanel2.setBackground(UIManager.getColor("info"));
+    jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+
+      }
+    });
+
+    jPanel2.setBackground(UIManager.getColor("info"));
+    contentPane.add(jScrollPane1, null);
+    jScrollPane1.getViewport().add(jPanel4, null);
+    contentPane.add(jPanel1, null);
+    jPanel1.add(jLabel8, null);
+    contentPane.add(jPanel3, null);
+    contentPane.add(jopen, null);
+    contentPane.add(jDelete, null);
+    contentPane.add(jFeature, null);
+    contentPane.add(jNetstep, null);
+    contentPane.add(jLesson, null);
+    contentPane.add(jHelp, null);
+    contentPane.add(jScrollPane2, null);
+    jScrollPane2.getViewport().add(jPanel2, null);
+
+    jMenuBar1.add(jMenu2);
+    jMenuBar1.add(jMenu1);
+    jMenuBar1.add(jMenu3);
+    jMenuBar1.add(jMenu4);
+    jMenuBar1.add(jMenu5);
+    jMenuBar1.add(jMenu6);
+    jMenu2.add(jMenuItem1);
+    jMenu1.add(jMenuItem2);
+    jMenu3.add(jMenuItem3);
+    jMenu3.add(jMenuItem4);
+    jPanel1.add(jC13, null);
+    jPanel1.add(jC02, null);
+    jPanel1.add(jC01, null);
+    jPanel1.add(jC15, null);
+    jPanel1.add(jC14, null);
+    jPanel1.add(jWire, null);
+    jPanel1.add(jLabel14, null);
+    jPanel1.add(jIdea, null);
+    this.setJMenuBar(jMenuBar1);
+    this.setResizable(false);
+    //---------Read Startup-----------//
+    Command c = new Command();
+    c.readStartUp();
+
+   }
+
+ // static void setname(String s){
+  //  name=s;
+  //}
+     //Overridden so we can exit when window is closed
+  protected void processWindowEvent(WindowEvent e) {
+    super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+     // System.exit(0);
+    }
+  }
+  void jC01_actionPerformed(ActionEvent e) {// edit 5/11/45
+    // new frame router
+    Series= 1;
+    new NewRouter(Series);
+    // new status of router
+    NewStatus();
+    }
+
+  void jC02_actionPerformed(ActionEvent e) {
+    // new frame router
+    Series= 2;
+    new NewRouter(Series);
+    // new status of router
+     NewStatus();
+
+  }
+
+  void jC13_actionPerformed(ActionEvent e) {
+    // new frame router
+    Series= 3;
+    new NewRouter(Series);
+    // new status of router
+     NewStatus();
+
+  }
+
+  void jC14_actionPerformed(ActionEvent e) {
+    // new frame router
+    Series= 4;
+    new NewRouter(Series);
+    // new status of router
+     NewStatus();
+
+  }
+
+  void jC15_actionPerformed(ActionEvent e) {
+    // new frame router
+    Series= 5;
+    new NewRouter(Series);
+    // new status of router
+     NewStatus();
+
+  }
+  void jIdea_actionPerformed(ActionEvent e) {
+    // new frame router
+    Series= 6;
+    new NewRouter(Series);
+    // new status of router
+    NewStatus();
+  }
+  public void NewStatus(){
+    System.out.println(NewRouter.vRouter.size());
+   jPanel2.setLayout(new GridLayout(1,textarea.length));
+   int k=0;
+   String allright = "yes";
+   while(allright.equals("yes")){
+   for(int a=0; a < NewRouter.vRouter.size(); a++){
+      if (textarea[a].getText().equals("") && a<textarea.length){
+          allright = "No";
+          k++;
+          System.out.println("k:"+k);
+          }//end if
+         if (k==1 && textarea[a].getText().equals("")) {
+         Status st = new Status();
+         textarea[a].setText(st.getRname());
+         FrameR.getR().setStatus_detail(st.getRname());
+         textarea[a].setSize(201,187);
+         textarea[a].setEditable(false);
+         textarea[a].setBorder(titledBorder10);
+         textarea[a].setBackground(UIManager.getColor("info"));
+         jPanel2.add(textarea[a]);
+         //test
+       //  System.out.println("a_ok:"+a);
+         } // end if
+       //  System.out.println("a_no:"+a);
+         }//end for
+         k=0;
+       }// end while
+         jScrollPane2.getViewport().add(jPanel2,BorderLayout.SOUTH);
+  }
+
+  void jopen_actionPerformed(ActionEvent e) {
+
+  }
+
+  void jWire_actionPerformed(ActionEvent e) {
+
+  }
+
+  void jDelete_actionPerformed(ActionEvent e) {
+      System.out.println(" del1");
+     // for(int a=0; a < NewRouter.vRouter.size(); a++){
+      //String alreadyName = ((Router)NewRouter.vRouter.elementAt(a)).getName();
+       //  if (alreadyName.equalsIgnoreCase(r1.getName())){
+         NewRouter.vConsole.removeElementAt(2);// 2 is position that del
+         NewRouter.vRouter.removeElementAt(2);
+         textarea[2].setText("");
+         jPanel2.remove(textarea[2]);
+
+         jScrollPane2.getViewport().add(jPanel2);
+         System.out.println("Delete Complete");
+         System.out.println(NewRouter.vRouter.size());
+   }
+
+  void jFeature_actionPerformed(ActionEvent e) {
+      Traffic t = new Traffic();
+      t.setVisible(true);
+  }
+
+  void jNetstep_actionPerformed(ActionEvent e) {
+   NewRouter.Next_Step();
+
+  }
+
+  void jLesson_actionPerformed(ActionEvent e) {
+
+  }
+
+  void jHelp_actionPerformed(ActionEvent e) {
+
+  }
+  // set select mode
+public void setSelectMode(int mode){
+   SelectMode=mode;
+  }
+  // get select mode
+  public int getSelectMode(){
+    return SelectMode;
+  }
+  // show interface
+  static void showStatus_int(Router r1) {
+
+   // System.out.println("show int");
+    for(int a=0; a < NewRouter.vRouter.size(); a++){
+    String alreadyName = ((Router)NewRouter.vRouter.elementAt(a)).getName();
+    if (alreadyName.equalsIgnoreCase(r1.getName())){
+      if (a<textarea.length){
+
+        // set new status
+        String str="";
+        Status st = new Status(str);
+        r1.setStatus_detail(st.s);
+        //st.s="";
+        textarea[a].setEditable(false);
+        textarea[a].setBorder(titledBorder10);
+        str=r1.gets1();
+      //  System.out.println("str:"+r1.gets1());
+        str= str+st.s1;
+        //st.s1="";
+        r1.sets1(str);
+        //s="";
+      //  System.out.println("status:"+r1.getStatus_detail());
+        textarea[a].setText(r1.getStatus_detail()+str);
+
+        r1.setStatus_detail(r1.getStatus_detail()+str);
+        st.s1="";
+
+        jPanel2.add(textarea[a]);
+         X=a;
+      //   System.out.println("Name:"+r1.getName());
+        // System.out.println("status:"+r1.getStatus_detail());
+
+    } // end if
+
+    }//end if
+    }//end for
+     jPanel2.setLayout(new GridLayout(1,X));
+     jScrollPane2.getViewport().add(jPanel2,BorderLayout.SOUTH);
+
+  }
+  // chang name of router at status from command hostname
+  static void showStatus_name(Router r1) {
+
+   // System.out.println("show int");
+    for(int a=0; a < NewRouter.vRouter.size(); a++){
+        String alreadyName = ((Router)NewRouter.vRouter.elementAt(a)).getName();
+        if (alreadyName.equalsIgnoreCase(r1.getName())){
+          if (a<textarea.length){
+
+            // set new status
+            Status st = new Status();
+            r1.setStatus_detail(st.s);
+            st.s="";
+            textarea[a].setEditable(false);
+            textarea[a].setBorder(titledBorder10);
+            textarea[a].setText(r1.getStatus_detail()+r1.gets1());
+            r1.setStatus_detail(r1.getStatus_detail()+r1.gets1());
+
+            jPanel2.add(textarea[a]);
+             X=a;
+        } // end if
+
+        }//end if
+        }//end for
+     jPanel2.setLayout(new GridLayout(1,X));
+     jScrollPane2.getViewport().add(jPanel2,BorderLayout.SOUTH);
+
+  }
+
+  void jPanel3_ancestorResized(HierarchyEvent e) {
+
+  }
+
+  void jPanel3_componentResized(ComponentEvent e) {
+     jPanel3.setBounds(new Rectangle(70, 10, 20, 6));
+
+  }
+
+
+
+
+}

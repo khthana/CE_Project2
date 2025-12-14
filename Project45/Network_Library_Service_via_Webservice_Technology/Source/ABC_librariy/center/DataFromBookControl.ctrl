@@ -1,0 +1,640 @@
+/** @editor-info:link source="DataFromBookContract.wsdl" autogen="false" */
+package center;
+
+import weblogic.jws.control.ServiceControl;
+
+/**
+ * @jws:location http-url="http://aston:7001/Library/DataBook/DataFromBook.jws"
+ * @jws:wsdl file="#DataFromBookWsdl"
+ */
+public interface DataFromBookControl extends ServiceControl
+{
+    
+    /*public static class book implements java.io.Serializable
+    {
+        public int book_record;
+        public java.lang.String call_number;
+        public int isbn;
+        public int barcode;
+        public java.lang.String author;
+        public java.lang.String alt_author1;
+        public java.lang.String alt_author2;
+        public java.lang.String title;
+        public java.lang.String alt_title;
+        public java.lang.String income_date;
+        public java.lang.String printing;
+        public int printing_year;
+        public int page;
+        public java.lang.String subject1;
+        public java.lang.String subject2;
+        public java.lang.String subject3;
+        public java.lang.String series;
+        public java.lang.String place;
+        public java.lang.String book_status;
+        public java.lang.String discription;
+        public java.lang.String username_use;
+        public java.lang.String borrow_date;
+        public java.lang.String return_date;
+    }
+
+    public static class book_list implements java.io.Serializable
+    {
+        public java.lang.String library;
+        public java.lang.String author;
+        public java.lang.String title;
+        public int book_record;
+    }*/
+
+
+    public book_list[] getBookTitleByCall_num (java.lang.String keyCall_num);
+
+    public book_list[] getBookTitleByISBN (java.lang.String keyISBN);
+
+    public book_list[] getBookTitleByAuthor (java.lang.String keyAuthor);
+
+    public book_list[] getBookTitleByTitle (java.lang.String keyTitle);
+
+    public book_list[] getBookTitleBySubject (java.lang.String keySubject);
+
+    public book_list[] getBookTitleByWord (java.lang.String keyWord);
+
+    public book getBookByBookRecord (java.lang.String keyBookRecord);
+
+}
+
+/** @jws:define name="DataFromBookWsdl" value::
+    <?xml version="1.0" encoding="utf-8"?>
+    <definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:conv="http://www.openuri.org/2002/04/soap/conversation/" xmlns:cw="http://www.openuri.org/2002/04/wsdl/conversation/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:jms="http://www.openuri.org/2002/04/wsdl/jms/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://www.openuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xm="http://www.bea.com/2002/04/xmlmap/" targetNamespace="http://www.openuri.org/" >
+      <types>
+        <s:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.openuri.org/">
+          <s:element name="getBookTitleByCall_num">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="keyCall_num" type="s:string" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="getBookTitleByCall_numResponse">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="getBookTitleByCall_numResult" type="s0:ArrayOfbook_list" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:complexType name="ArrayOfbook_list">
+            <s:sequence>
+                <s:element minOccurs="0" maxOccurs="unbounded" nillable="true" name="book_list" type="s0:book_list" />
+            </s:sequence>
+          </s:complexType>
+          <s:complexType name="book_list">
+                <s:sequence>
+                  <s:element minOccurs="0" maxOccurs="1" name="library" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="author" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="title" type="s:string" />
+                  <s:element minOccurs="1" maxOccurs="1" name="book_record" type="s:int" />
+                </s:sequence>
+          </s:complexType>
+          <s:element nillable="true" name="ArrayOfbook_list" type="s0:ArrayOfbook_list" />
+          <s:element name="getBookTitleByISBN">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="keyISBN" type="s:string" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="getBookTitleByISBNResponse">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="getBookTitleByISBNResult" type="s0:ArrayOfbook_list" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="getBookTitleByAuthor">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="keyAuthor" type="s:string" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="getBookTitleByAuthorResponse">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="getBookTitleByAuthorResult" type="s0:ArrayOfbook_list" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="getBookTitleByTitle">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="keyTitle" type="s:string" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="getBookTitleByTitleResponse">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="getBookTitleByTitleResult" type="s0:ArrayOfbook_list" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="getBookTitleBySubject">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="keySubject" type="s:string" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="getBookTitleBySubjectResponse">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="getBookTitleBySubjectResult" type="s0:ArrayOfbook_list" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="getBookTitleByWord">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="keyWord" type="s:string" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="getBookTitleByWordResponse">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="getBookTitleByWordResult" type="s0:ArrayOfbook_list" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="getBookByBookRecord">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="keyBookRecord" type="s:string" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:element name="getBookByBookRecordResponse">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="1" name="getBookByBookRecordResult" type="s0:book" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+          <s:complexType name="book">
+                <s:sequence>
+                  <s:element minOccurs="1" maxOccurs="1" name="book_record" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="call_number" type="s:string" />
+                  <s:element minOccurs="1" maxOccurs="1" name="isbn" type="s:int" />
+                  <s:element minOccurs="1" maxOccurs="1" name="barcode" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="author" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="alt_author1" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="alt_author2" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="title" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="alt_title" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="income_date" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="printing" type="s:string" />
+                  <s:element minOccurs="1" maxOccurs="1" name="printing_year" type="s:int" />
+                  <s:element minOccurs="1" maxOccurs="1" name="page" type="s:int" />
+                  <s:element minOccurs="0" maxOccurs="1" name="subject1" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="subject2" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="subject3" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="series" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="place" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="book_status" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="discription" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="username_use" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="borrow_date" type="s:string" />
+                  <s:element minOccurs="0" maxOccurs="1" name="return_date" type="s:string" />
+                </s:sequence>
+          </s:complexType>
+          <s:element nillable="true" name="book" type="s0:book" />
+        </s:schema>
+      </types>
+      <message name="getBookTitleByCall_numSoapIn">
+        <part name="parameters" element="s0:getBookTitleByCall_num" />
+      </message>
+      <message name="getBookTitleByCall_numSoapOut">
+        <part name="parameters" element="s0:getBookTitleByCall_numResponse" />
+      </message>
+      <message name="getBookTitleByISBNSoapIn">
+        <part name="parameters" element="s0:getBookTitleByISBN" />
+      </message>
+      <message name="getBookTitleByISBNSoapOut">
+        <part name="parameters" element="s0:getBookTitleByISBNResponse" />
+      </message>
+      <message name="getBookTitleByAuthorSoapIn">
+        <part name="parameters" element="s0:getBookTitleByAuthor" />
+      </message>
+      <message name="getBookTitleByAuthorSoapOut">
+        <part name="parameters" element="s0:getBookTitleByAuthorResponse" />
+      </message>
+      <message name="getBookTitleByTitleSoapIn">
+        <part name="parameters" element="s0:getBookTitleByTitle" />
+      </message>
+      <message name="getBookTitleByTitleSoapOut">
+        <part name="parameters" element="s0:getBookTitleByTitleResponse" />
+      </message>
+      <message name="getBookTitleBySubjectSoapIn">
+        <part name="parameters" element="s0:getBookTitleBySubject" />
+      </message>
+      <message name="getBookTitleBySubjectSoapOut">
+        <part name="parameters" element="s0:getBookTitleBySubjectResponse" />
+      </message>
+      <message name="getBookTitleByWordSoapIn">
+        <part name="parameters" element="s0:getBookTitleByWord" />
+      </message>
+      <message name="getBookTitleByWordSoapOut">
+        <part name="parameters" element="s0:getBookTitleByWordResponse" />
+      </message>
+      <message name="getBookByBookRecordSoapIn">
+        <part name="parameters" element="s0:getBookByBookRecord" />
+      </message>
+      <message name="getBookByBookRecordSoapOut">
+        <part name="parameters" element="s0:getBookByBookRecordResponse" />
+      </message>
+      <message name="getBookTitleByCall_numHttpGetIn">
+        <part name="keyCall_num" type="s:string" />
+      </message>
+      <message name="getBookTitleByCall_numHttpGetOut">
+        <part name="Body" element="s0:ArrayOfbook_list" />
+      </message>
+      <message name="getBookTitleByISBNHttpGetIn">
+        <part name="keyISBN" type="s:string" />
+      </message>
+      <message name="getBookTitleByISBNHttpGetOut">
+        <part name="Body" element="s0:ArrayOfbook_list" />
+      </message>
+      <message name="getBookTitleByAuthorHttpGetIn">
+        <part name="keyAuthor" type="s:string" />
+      </message>
+      <message name="getBookTitleByAuthorHttpGetOut">
+        <part name="Body" element="s0:ArrayOfbook_list" />
+      </message>
+      <message name="getBookTitleByTitleHttpGetIn">
+        <part name="keyTitle" type="s:string" />
+      </message>
+      <message name="getBookTitleByTitleHttpGetOut">
+        <part name="Body" element="s0:ArrayOfbook_list" />
+      </message>
+      <message name="getBookTitleBySubjectHttpGetIn">
+        <part name="keySubject" type="s:string" />
+      </message>
+      <message name="getBookTitleBySubjectHttpGetOut">
+        <part name="Body" element="s0:ArrayOfbook_list" />
+      </message>
+      <message name="getBookTitleByWordHttpGetIn">
+        <part name="keyWord" type="s:string" />
+      </message>
+      <message name="getBookTitleByWordHttpGetOut">
+        <part name="Body" element="s0:ArrayOfbook_list" />
+      </message>
+      <message name="getBookByBookRecordHttpGetIn">
+        <part name="keyBookRecord" type="s:string" />
+      </message>
+      <message name="getBookByBookRecordHttpGetOut">
+        <part name="Body" element="s0:book" />
+      </message>
+      <message name="getBookTitleByCall_numHttpPostIn">
+        <part name="keyCall_num" type="s:string" />
+      </message>
+      <message name="getBookTitleByCall_numHttpPostOut">
+        <part name="Body" element="s0:ArrayOfbook_list" />
+      </message>
+      <message name="getBookTitleByISBNHttpPostIn">
+        <part name="keyISBN" type="s:string" />
+      </message>
+      <message name="getBookTitleByISBNHttpPostOut">
+        <part name="Body" element="s0:ArrayOfbook_list" />
+      </message>
+      <message name="getBookTitleByAuthorHttpPostIn">
+        <part name="keyAuthor" type="s:string" />
+      </message>
+      <message name="getBookTitleByAuthorHttpPostOut">
+        <part name="Body" element="s0:ArrayOfbook_list" />
+      </message>
+      <message name="getBookTitleByTitleHttpPostIn">
+        <part name="keyTitle" type="s:string" />
+      </message>
+      <message name="getBookTitleByTitleHttpPostOut">
+        <part name="Body" element="s0:ArrayOfbook_list" />
+      </message>
+      <message name="getBookTitleBySubjectHttpPostIn">
+        <part name="keySubject" type="s:string" />
+      </message>
+      <message name="getBookTitleBySubjectHttpPostOut">
+        <part name="Body" element="s0:ArrayOfbook_list" />
+      </message>
+      <message name="getBookTitleByWordHttpPostIn">
+        <part name="keyWord" type="s:string" />
+      </message>
+      <message name="getBookTitleByWordHttpPostOut">
+        <part name="Body" element="s0:ArrayOfbook_list" />
+      </message>
+      <message name="getBookByBookRecordHttpPostIn">
+        <part name="keyBookRecord" type="s:string" />
+      </message>
+      <message name="getBookByBookRecordHttpPostOut">
+        <part name="Body" element="s0:book" />
+      </message>
+      <portType name="DataFromBookSoap">
+        <operation name="getBookTitleByCall_num">
+          <input message="s0:getBookTitleByCall_numSoapIn" />
+          <output message="s0:getBookTitleByCall_numSoapOut" />
+        </operation>
+        <operation name="getBookTitleByISBN">
+          <input message="s0:getBookTitleByISBNSoapIn" />
+          <output message="s0:getBookTitleByISBNSoapOut" />
+        </operation>
+        <operation name="getBookTitleByAuthor">
+          <input message="s0:getBookTitleByAuthorSoapIn" />
+          <output message="s0:getBookTitleByAuthorSoapOut" />
+        </operation>
+        <operation name="getBookTitleByTitle">
+          <input message="s0:getBookTitleByTitleSoapIn" />
+          <output message="s0:getBookTitleByTitleSoapOut" />
+        </operation>
+        <operation name="getBookTitleBySubject">
+          <input message="s0:getBookTitleBySubjectSoapIn" />
+          <output message="s0:getBookTitleBySubjectSoapOut" />
+        </operation>
+        <operation name="getBookTitleByWord">
+          <input message="s0:getBookTitleByWordSoapIn" />
+          <output message="s0:getBookTitleByWordSoapOut" />
+        </operation>
+        <operation name="getBookByBookRecord">
+          <input message="s0:getBookByBookRecordSoapIn" />
+          <output message="s0:getBookByBookRecordSoapOut" />
+        </operation>
+      </portType>
+      <portType name="DataFromBookHttpGet">
+        <operation name="getBookTitleByCall_num">
+          <input message="s0:getBookTitleByCall_numHttpGetIn" />
+          <output message="s0:getBookTitleByCall_numHttpGetOut" />
+        </operation>
+        <operation name="getBookTitleByISBN">
+          <input message="s0:getBookTitleByISBNHttpGetIn" />
+          <output message="s0:getBookTitleByISBNHttpGetOut" />
+        </operation>
+        <operation name="getBookTitleByAuthor">
+          <input message="s0:getBookTitleByAuthorHttpGetIn" />
+          <output message="s0:getBookTitleByAuthorHttpGetOut" />
+        </operation>
+        <operation name="getBookTitleByTitle">
+          <input message="s0:getBookTitleByTitleHttpGetIn" />
+          <output message="s0:getBookTitleByTitleHttpGetOut" />
+        </operation>
+        <operation name="getBookTitleBySubject">
+          <input message="s0:getBookTitleBySubjectHttpGetIn" />
+          <output message="s0:getBookTitleBySubjectHttpGetOut" />
+        </operation>
+        <operation name="getBookTitleByWord">
+          <input message="s0:getBookTitleByWordHttpGetIn" />
+          <output message="s0:getBookTitleByWordHttpGetOut" />
+        </operation>
+        <operation name="getBookByBookRecord">
+          <input message="s0:getBookByBookRecordHttpGetIn" />
+          <output message="s0:getBookByBookRecordHttpGetOut" />
+        </operation>
+      </portType>
+      <portType name="DataFromBookHttpPost">
+        <operation name="getBookTitleByCall_num">
+          <input message="s0:getBookTitleByCall_numHttpPostIn" />
+          <output message="s0:getBookTitleByCall_numHttpPostOut" />
+        </operation>
+        <operation name="getBookTitleByISBN">
+          <input message="s0:getBookTitleByISBNHttpPostIn" />
+          <output message="s0:getBookTitleByISBNHttpPostOut" />
+        </operation>
+        <operation name="getBookTitleByAuthor">
+          <input message="s0:getBookTitleByAuthorHttpPostIn" />
+          <output message="s0:getBookTitleByAuthorHttpPostOut" />
+        </operation>
+        <operation name="getBookTitleByTitle">
+          <input message="s0:getBookTitleByTitleHttpPostIn" />
+          <output message="s0:getBookTitleByTitleHttpPostOut" />
+        </operation>
+        <operation name="getBookTitleBySubject">
+          <input message="s0:getBookTitleBySubjectHttpPostIn" />
+          <output message="s0:getBookTitleBySubjectHttpPostOut" />
+        </operation>
+        <operation name="getBookTitleByWord">
+          <input message="s0:getBookTitleByWordHttpPostIn" />
+          <output message="s0:getBookTitleByWordHttpPostOut" />
+        </operation>
+        <operation name="getBookByBookRecord">
+          <input message="s0:getBookByBookRecordHttpPostIn" />
+          <output message="s0:getBookByBookRecordHttpPostOut" />
+        </operation>
+      </portType>
+      <binding name="DataFromBookSoap" type="s0:DataFromBookSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+        <operation name="getBookTitleByCall_num">
+          <soap:operation soapAction="http://www.openuri.org/getBookTitleByCall_num" style="document" />
+          <input>
+            <soap:body use="literal" />
+          </input>
+          <output>
+            <soap:body use="literal" />
+          </output>
+        </operation>
+        <operation name="getBookTitleByISBN">
+          <soap:operation soapAction="http://www.openuri.org/getBookTitleByISBN" style="document" />
+          <input>
+            <soap:body use="literal" />
+          </input>
+          <output>
+            <soap:body use="literal" />
+          </output>
+        </operation>
+        <operation name="getBookTitleByAuthor">
+          <soap:operation soapAction="http://www.openuri.org/getBookTitleByAuthor" style="document" />
+          <input>
+            <soap:body use="literal" />
+          </input>
+          <output>
+            <soap:body use="literal" />
+          </output>
+        </operation>
+        <operation name="getBookTitleByTitle">
+          <soap:operation soapAction="http://www.openuri.org/getBookTitleByTitle" style="document" />
+          <input>
+            <soap:body use="literal" />
+          </input>
+          <output>
+            <soap:body use="literal" />
+          </output>
+        </operation>
+        <operation name="getBookTitleBySubject">
+          <soap:operation soapAction="http://www.openuri.org/getBookTitleBySubject" style="document" />
+          <input>
+            <soap:body use="literal" />
+          </input>
+          <output>
+            <soap:body use="literal" />
+          </output>
+        </operation>
+        <operation name="getBookTitleByWord">
+          <soap:operation soapAction="http://www.openuri.org/getBookTitleByWord" style="document" />
+          <input>
+            <soap:body use="literal" />
+          </input>
+          <output>
+            <soap:body use="literal" />
+          </output>
+        </operation>
+        <operation name="getBookByBookRecord">
+          <soap:operation soapAction="http://www.openuri.org/getBookByBookRecord" style="document" />
+          <input>
+            <soap:body use="literal" />
+          </input>
+          <output>
+            <soap:body use="literal" />
+          </output>
+        </operation>
+      </binding>
+      <binding name="DataFromBookHttpGet" type="s0:DataFromBookHttpGet">
+        <http:binding verb="GET" />
+        <operation name="getBookTitleByCall_num">
+          <http:operation location="/getBookTitleByCall_num" />
+          <input>
+            <http:urlEncoded />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+        <operation name="getBookTitleByISBN">
+          <http:operation location="/getBookTitleByISBN" />
+          <input>
+            <http:urlEncoded />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+        <operation name="getBookTitleByAuthor">
+          <http:operation location="/getBookTitleByAuthor" />
+          <input>
+            <http:urlEncoded />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+        <operation name="getBookTitleByTitle">
+          <http:operation location="/getBookTitleByTitle" />
+          <input>
+            <http:urlEncoded />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+        <operation name="getBookTitleBySubject">
+          <http:operation location="/getBookTitleBySubject" />
+          <input>
+            <http:urlEncoded />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+        <operation name="getBookTitleByWord">
+          <http:operation location="/getBookTitleByWord" />
+          <input>
+            <http:urlEncoded />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+        <operation name="getBookByBookRecord">
+          <http:operation location="/getBookByBookRecord" />
+          <input>
+            <http:urlEncoded />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+      </binding>
+      <binding name="DataFromBookHttpPost" type="s0:DataFromBookHttpPost">
+        <http:binding verb="POST" />
+        <operation name="getBookTitleByCall_num">
+          <http:operation location="/getBookTitleByCall_num" />
+          <input>
+            <mime:content type="application/x-www-form-urlencoded" />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+        <operation name="getBookTitleByISBN">
+          <http:operation location="/getBookTitleByISBN" />
+          <input>
+            <mime:content type="application/x-www-form-urlencoded" />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+        <operation name="getBookTitleByAuthor">
+          <http:operation location="/getBookTitleByAuthor" />
+          <input>
+            <mime:content type="application/x-www-form-urlencoded" />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+        <operation name="getBookTitleByTitle">
+          <http:operation location="/getBookTitleByTitle" />
+          <input>
+            <mime:content type="application/x-www-form-urlencoded" />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+        <operation name="getBookTitleBySubject">
+          <http:operation location="/getBookTitleBySubject" />
+          <input>
+            <mime:content type="application/x-www-form-urlencoded" />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+        <operation name="getBookTitleByWord">
+          <http:operation location="/getBookTitleByWord" />
+          <input>
+            <mime:content type="application/x-www-form-urlencoded" />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+        <operation name="getBookByBookRecord">
+          <http:operation location="/getBookByBookRecord" />
+          <input>
+            <mime:content type="application/x-www-form-urlencoded" />
+          </input>
+          <output>
+            <mime:mimeXml part="Body" />
+          </output>
+        </operation>
+      </binding>
+      <service name="DataFromBook">
+        <port name="DataFromBookSoap" binding="s0:DataFromBookSoap">
+          <soap:address location="http://aston:7001/Library/DataBook/DataFromBook.jws" />
+        </port>
+        <port name="DataFromBookHttpGet" binding="s0:DataFromBookHttpGet">
+          <http:address location="http://aston:7001/Library/DataBook/DataFromBook.jws" />
+        </port>
+        <port name="DataFromBookHttpPost" binding="s0:DataFromBookHttpPost">
+          <http:address location="http://aston:7001/Library/DataBook/DataFromBook.jws" />
+        </port>
+      </service>
+    </definitions>
+ * ::
+ */
+
