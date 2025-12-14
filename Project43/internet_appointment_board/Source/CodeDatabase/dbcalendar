@@ -1,0 +1,55 @@
+ create table calendar(
+ no_cal integer primary key,
+ time date,
+ to_time date,
+ title varchar2(30) default ('other'),
+type  varchar2(30) default ('other'),
+place varchar2(50) default ('other'),
+note  varchar2(100) default ('other'),
+safe_mode varchar(10),
+id varchar(20) NOT NULL
+              CONSTRAINT dept_fkey REFERENCES userdata);
+ alter table calendar
+ add no_rep integer references repeat;
+  alter table calendar
+ add no_rem integer references remind;
+   alter table calendar
+ add no_appoint references appoint;
+ 
+  create table calendar(
+  no_cal integer primary key,
+  time date,
+  to_time date,
+  title varchar2(30) default ('No Title'),
+ type  varchar2(30) default ('other'),
+ place varchar2(50) default ('No Place'),
+ note  varchar2(100) default ('other'),
+ safe_mode varchar(20),
+ id varchar(20) NOT NULL REFERENCES userdata,
+ no_rep integer references repeat,
+ no_rem integer references remind,
+ no_appoint references appoint);
+ 
+ CREATE SEQUENCE no_cal
+ START WITH 1
+ INCREMENT BY 1
+ NOMAXVALUE
+ NOCYCLE
+ CACHE 20;
+ 
+ create table calendar(
+  no_cal integer primary key,
+  time date,
+  to_time date,
+  freq_rep date,
+  title varchar2(30) default ('No Title'),
+ type  varchar2(30) default ('other'),
+ place varchar2(50) default ('No Place'),
+ note  varchar2(100) default ('other'),
+ safe_mode varchar(20) default('Public'),
+ check_mode integer default('1') ,
+ from_gr varchar(20) ,
+ id varchar(20) NOT NULL REFERENCES userdata,
+ no_rep integer references repeat,
+ no_rem integer references remind,
+ no_group references groupcal on delete cascade);

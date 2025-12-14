@@ -1,0 +1,35 @@
+ create table remind(
+ no_rem integer primary key,
+ begin date,
+ until date,
+ freq_rem varchar(30),
+  id varchar(20) NOT NULL REFERENCES userdata);
+
+ create table remind(
+ no_rem integer primary key,
+ begin date,
+ until date,
+freq_rem number,
+  id varchar(20) NOT NULL REFERENCES userdata);
+
+
+create table remind(
+ no_rem integer primary key,
+freq_before date,
+freq_and date,
+root integer,
+PagMob varchar2(10) default('other'),
+PagMobnum integer default(0),
+password varchar2 (20) default('No Password'),
+email varchar2(20) default('No Email'),
+message varchar2(50),
+sender  varchar2(10),
+no_cal integer ,
+id varchar(20) NOT NULL REFERENCES userdata on delete cascade);
+  
+  create sequence no_rem
+start with 1
+INCREMENT BY 1
+ NOMAXVALUE
+ NOCYCLE
+ CACHE 20;

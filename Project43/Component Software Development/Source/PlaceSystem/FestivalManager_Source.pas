@@ -1,0 +1,234 @@
+unit FestivalManager_Source;
+
+interface
+
+uses
+  ActiveX, MtsObj, ComObj, PlaceSystem_TLB, OlalaTourDBConnector_TLB,
+    StdVcl, COMSVCSLib_TLB, ADODB_TLB, Dialogs, Windows, SysUtils,
+    LogSystem_TLB;
+
+type
+  TFestivalManager = class(TMtsAutoObject, IFestivalManager, IObjectControl)
+  protected
+    // PlaceProperty Methods
+    function Create(const Name, Description, AdminID: WideString): WideString;
+      safecall;
+    function QueryData(const NameKeyword,
+      DescriptionKeyword: WideString): OleVariant; safecall;
+    function View(const PlacePropertyID: WideString): OleVariant; safecall;
+    procedure Add(const PlaceID, PlacePropertyID: WideString); safecall;
+    procedure Delete(const PlacePropertyID, AdminID: WideString); safecall;
+    procedure Remove(const PlaceID, PlacePropertyID: WideString); safecall;
+    procedure Modify(const PlacePropertyID, Name, Description,
+      AdminID: WideString); safecall;
+
+    // IObjectControl Methods Definition
+    function Activate: HRESULT; stdcall;
+    function CanBePooled: Longint; stdcall;
+    procedure Deactivate; stdcall;
+
+  private
+    // Private Fields
+    objctx : ObjectContext;
+  end;
+
+implementation
+
+uses ComServ;
+
+////////////////// IObjectControl Methods Implementation ///////////////////////
+function TFestivalManager.Activate: HRESULT;
+var
+  imtx : IMTxAS;
+begin
+  try
+    imtx := CoAppServer.Create;
+    objctx := imtx.GetObjectContext;
+    if objctx = nil then
+    begin
+      ShowMessage('objctx = nil');
+      Result := 0;
+    end
+    else
+      Result := S_OK;
+  except
+    ShowMessage('Error on TMSSQL2K_OlalaTour_Connect.Activate');
+    Result := 0;
+  end;
+end;
+
+function TFestivalManager.CanBePooled: Longint;
+begin
+  Result := 1;
+end;
+
+procedure TFestivalManager.Deactivate;
+begin
+  objctx := nil;
+end;
+
+/////////////////// TFestivalManager Methods Implementation ////////////////////
+procedure TFestivalManager.Add(const PlaceID, PlacePropertyID: WideString);
+var
+  dbConnector : IOlalaTourDBConnector;
+  SQLCmd : WideString;
+begin
+  dbConnector := CoOlalaTourDBConnector_.Create;
+  SQLCmd := 'INSERT INTO PlaceFestival VALUES (''' + PlaceID + ''', ''' +
+    PlacePropertyID + ''')';
+  try
+    //ShowMessage(SQLCmd);
+    dbConnector.ExecSQLCmd(SQLCmd);
+    objctx.SetComplete;
+    //ShowMessage('SetComplete in TFestivalManager.Add');
+  except
+    objctx.SetAbort;
+    //ShowMessage('SetAbort in TFestivalManager.Add');
+  end;
+end;
+
+function TFestivalManager.Create(const Name, Description, AdminID: WideString)
+  : WideString;
+var
+  dbConnector : IOlalaTourDBConnector;
+  SystemLog : ISystemLogManager;
+  SQLCmd, StrGuid : WideString;
+  Guid : TGuid;
+begin
+  CoCreateGuid(Guid);
+  StrGuid := GUIDToString(Guid);
+  dbConnector := CoOlalaTourDBConnector_.Create;
+  SystemLog := CoSystemLogManager.Create;
+  SQLCmd := 'INSERT INTO Festival VALUES (''' + StrGuid + ''', ''' +
+    Name + ''', ''' + Description + ''')';
+  try
+    //ShowMessage(SQLCmd);
+    dbConnector.ExecSQLCmd(SQLCmd);
+    SystemLog.Add('Create Festival :' + Name + ' ID:' + StrGuid,AdminID);
+    objctx.SetComplete;
+    //ShowMessage('SetComplete in TFestivalManager.Create');
+  except
+    objctx.SetAbort;
+    //ShowMessage('SetAbort in TFestivalManager.Create');
+  end;
+end;
+
+procedure TFestivalManager.Delete(const PlacePropertyID, AdminID: WideString);
+var
+  dbConnector : IOlalaTourDBConnector;
+  SystemLog : ISystemLogManager;
+  SQLCmd : WideString;
+begin
+  dbConnector := CoOlalaTourDBConnector_.Create;
+  SystemLog := CoSystemLogManager.Create;
+  SQLCmd := 'DELETE FROM Festival WHERE FestivalID = ''' +
+    PlacePropertyID + '''';
+  try
+    //ShowMessage(SQLCmd);
+    dbConnector.ExecSQLCmd(SQLCmd);
+    SystemLog.Add('Delete Festival ID:' + PlacePropertyID, AdminID);
+    objctx.SetComplete;
+    //ShowMessage('SetComplete in TFestivalManager.Remove');
+  except
+    objctx.SetAbort;
+    //ShowMessage('SetAbort in TFestivalManager.Remove');
+  end;
+end;
+
+function TFestivalManager.QueryData(const NameKeyword,
+  DescriptionKeyword: WideString): OleVariant;
+var
+  dbConnection : IOlalaTourDBConnector;
+  SQLCmd, StrCond : WideString;
+begin
+  dbConnection := CoOlalaTourDBConnector_.Create;
+  StrCond := '';
+  if NameKeyword <> '' then StrCond := StrCond + ' FestivalName LIKE ''%'
+    + NameKeyword + '%''';
+  if DescriptionKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' Description LIKE ''%' + DescriptionKeyword + '%''';
+  end;
+
+  if StrCond <> '' then
+    StrCond := ' WHERE ' + StrCond;
+  //SQLCmd := 'SELECT FestivalID FROM Festival WHERE ' + StrCond;
+  SQLCmd := 'SELECT * FROM Festival ' + StrCond;
+  //ShowMessage(SQLCmd);
+  Result := dbConnection.QueryCmd(SQLCmd);
+end;
+
+procedure TFestivalManager.Remove(const PlaceID,
+  PlacePropertyID: WideString);
+var
+  dbConnector : IOlalaTourDBConnector;
+  SQLCmd : WideString;
+begin
+  dbConnector := CoOlalaTourDBConnector_.Create;
+  SQLCmd := 'DELETE FROM PlaceFestival WHERE PlaceID = ''' + PlaceID +
+    ''' AND PlacePropertyID = ''' + PlacePropertyID + ''')';
+  try
+    //ShowMessage(SQLCmd);
+    dbConnector.ExecSQLCmd(SQLCmd);
+    objctx.SetComplete;
+    //ShowMessage('SetComplete in TFestivalManager.Remove');
+  except
+    objctx.SetAbort;
+    //ShowMessage('SetAbort in TFestivalManager.Remove');
+  end;
+end;
+
+function TFestivalManager.View(
+  const PlacePropertyID: WideString): OleVariant;
+var
+  dbConnector : IOlalaTourDBConnector;
+  SQLCmd : WideString;
+begin
+  dbConnector := CoOlalaTourDBConnector_.Create;
+  SQLCmd := 'SELECT * FROM Festival WHERE FestivalID = ''' +
+    PlacePropertyID + '''';
+  //ShowMessage(SQLCmd);
+  Result := dbConnector.QueryCmd(SQLCmd);
+end;
+
+procedure TFestivalManager.Modify(const PlacePropertyID, Name, Description,
+      AdminID: WideString);
+var
+  dbConnector : IOlalaTourDBConnector;
+  SystemLog : ISystemLogManager;
+  SQLCmd, StrUpdate : WideString;
+begin
+  dbConnector := CoOlalaTourDBConnector_.Create;
+  SystemLog := CoSystemLogManager.Create;
+  StrUpdate := '';
+  if Name <> '' then StrUpdate := StrUpdate + ' FestivalName = ''' + Name + '''';
+  if Description <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' Description = ''' + Description + '''';
+  end;
+
+  if StrUpdate <> '' then
+  begin
+    StrUpdate := ' SET ' + StrUpdate;
+    SQLCmd := 'UPDATE Festival' + StrUpdate +
+      ' WHERE FestivalID = ''' + PlacePropertyID + '''' ;
+    try
+      //ShowMessage(SQLCmd);
+      dbConnector.ExecSQLCmd(SQLCmd);
+      //ShowMessage('AddLog');
+      SystemLog.Add('Modify Activity ID:' + PlacePropertyID,AdminID);
+      objctx.SetComplete;
+      //ShowMessage('SetComplete in TFestivalManager.Modify');
+    except
+      objctx.SetAbort;
+      //ShowMessage('SetAbort in TFestivalManager.Modify');
+    end;
+  end;
+end;
+
+initialization
+  TAutoObjectFactory.Create(ComServer, TFestivalManager, Class_FestivalManager,
+    ciMultiInstance, tmBoth);
+end.

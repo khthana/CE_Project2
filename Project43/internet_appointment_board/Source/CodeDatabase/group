@@ -1,0 +1,11 @@
+ create table groupcal(
+  no_group integer primary key,
+  no_mem integer references member,
+  id varchar(20) NOT NULL REFERENCES userdata on delete cascade);
+
+ create sequence no_group
+start with 1
+INCREMENT BY 1
+ NOMAXVALUE
+ NOCYCLE
+ CACHE 20;

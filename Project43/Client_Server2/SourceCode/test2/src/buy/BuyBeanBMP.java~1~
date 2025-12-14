@@ -1,0 +1,332 @@
+package buy;
+
+import java.sql.*;
+import javax.ejb.*;
+import javax.sql.DataSource;
+import java.math.*;
+//import java.util.*;
+
+/**
+ * Title:
+ * Description:
+ * Copyright:    Copyright (c) 2001
+ * Company:
+ * @author
+ * @version 1.0
+ */
+
+public class BuyBeanBMP extends BuyBean {
+  DataSource dataSource;
+  public BuyPK ejbCreate(String username, String productId, int sellQuantity, double totalPrice, Date sellDate, String sellTime, String receiptNo) throws CreateException {
+    super.ejbCreate(username, productId, sellQuantity, totalPrice, sellDate, sellTime, receiptNo);
+    try {
+      //First see if the object already exists
+      ejbFindByPrimaryKey(new buy.BuyPK(username, productId, receiptNo));
+      //If so, then we have to throw an exception
+      throw new DuplicateKeyException("Primary key already exists");
+    }
+    catch(ObjectNotFoundException e) {
+      //Otherwise we can go ahead and create it...
+    }
+    Connection connection = null;
+    PreparedStatement statement = null;
+    try {
+      connection = dataSource.getConnection();
+      statement = connection.prepareStatement("INSERT INTO BUY (USERNAME, PRODUCT_ID, SELL_QUANTITY, TOTAL_PRICE, SELL_DATE, SELL_TIME, RECEIPT_NO) VALUES (?, ?, ?, ?, ?, ?, ?)");
+      statement.setString(1, username);
+      statement.setString(2, productId);
+      statement.setInt(3, sellQuantity);
+      statement.setDouble(4, totalPrice);
+      statement.setDate(5, sellDate);
+      statement.setString(6, sellTime);
+      statement.setString(7, receiptNo);
+      if (statement.executeUpdate() != 1) {
+        throw new CreateException("Error adding row");
+      }
+      statement.close();
+      statement = null;
+      connection.close();
+      connection = null;
+      return new BuyPK(username, productId, receiptNo);
+    }
+    catch(SQLException e) {
+      throw new EJBException("Error executing SQL INSERT INTO BUY (USERNAME, PRODUCT_ID, SELL_QUANTITY, TOTAL_PRICE, SELL_DATE, SELL_TIME, RECEIPT_NO) VALUES (?, ?, ?, ?, ?, ?, ?): " + e.toString());
+    }
+    finally {
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+    }
+  }
+  public BuyPK ejbCreate(String username, String productId, String receiptNo) throws CreateException {
+    return ejbCreate(username, productId, 0, 0, null, null, receiptNo);
+  }
+  public void ejbRemove() throws RemoveException {
+    super.ejbRemove();
+    Connection connection = null;
+    PreparedStatement statement = null;
+    try {
+      connection = dataSource.getConnection();
+      statement = connection.prepareStatement("DELETE FROM BUY WHERE USERNAME = ? AND PRODUCT_ID = ? AND RECEIPT_NO = ?");
+      statement.setString(1, username);
+      statement.setString(2, productId);
+      statement.setString(3, receiptNo);
+      if (statement.executeUpdate() < 1) {
+        throw new RemoveException("Error deleting row");
+      }
+      statement.close();
+      statement = null;
+      connection.close();
+      connection = null;
+    }
+    catch(SQLException e) {
+      throw new EJBException("Error executing SQL DELETE FROM BUY WHERE USERNAME = ? AND PRODUCT_ID = ? AND RECEIPT_NO = ?: " + e.toString());
+    }
+    finally {
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+    }
+  }
+  public void ejbLoad() {
+    BuyPK key = (BuyPK) entityContext.getPrimaryKey();
+    username = key.username;
+    productId = key.productId;
+    receiptNo = key.receiptNo;
+    Connection connection = null;
+    PreparedStatement statement = null;
+    try {
+      connection = dataSource.getConnection();
+      statement = connection.prepareStatement("SELECT SELL_QUANTITY, TOTAL_PRICE, SELL_DATE, SELL_TIME FROM BUY WHERE USERNAME = ? AND PRODUCT_ID = ? AND RECEIPT_NO = ?");
+      statement.setString(1, username);
+      statement.setString(2, productId);
+      statement.setString(3, receiptNo);
+      ResultSet resultSet = statement.executeQuery();
+      if (!resultSet.next()) {
+        throw new NoSuchEntityException("Row does not exist");
+      }
+      sellQuantity = resultSet.getInt(1);
+      totalPrice = resultSet.getDouble(2);
+      sellDate = resultSet.getString(3);
+      sellTime = resultSet.getString(4);
+      statement.close();
+      statement = null;
+      connection.close();
+      connection = null;
+    }
+    catch(SQLException e) {
+      throw new EJBException("Error executing SQL SELECT SELL_QUANTITY, TOTAL_PRICE, SELL_DATE, SELL_TIME FROM BUY WHERE USERNAME = ? AND PRODUCT_ID = ? AND RECEIPT_NO = ?: " + e.toString());
+    }
+    finally {
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+    }
+    super.ejbLoad();
+  }
+  public void ejbStore() {
+    super.ejbStore();
+    Connection connection = null;
+    PreparedStatement statement = null;
+    try {
+      connection = dataSource.getConnection();
+      statement = connection.prepareStatement("UPDATE BUY SET SELL_QUANTITY = ?, TOTAL_PRICE = ?, SELL_DATE = ?, SELL_TIME = ? WHERE USERNAME = ? AND PRODUCT_ID = ? AND RECEIPT_NO = ?");
+      statement.setInt(1, sellQuantity);
+      statement.setDouble(2, totalPrice);
+      statement.setDate(3, sellDate);
+      statement.setString(4, sellTime);
+      statement.setString(5, username);
+      statement.setString(6, productId);
+      statement.setString(7, receiptNo);
+      if (statement.executeUpdate() < 1) {
+        throw new NoSuchEntityException("Row does not exist");
+      }
+      statement.close();
+      statement = null;
+      connection.close();
+      connection = null;
+    }
+    catch(SQLException e) {
+      throw new EJBException("Error executing SQL UPDATE BUY SET SELL_QUANTITY = ?, TOTAL_PRICE = ?, SELL_DATE = ?, SELL_TIME = ? WHERE USERNAME = ? AND PRODUCT_ID = ? AND RECEIPT_NO = ?: " + e.toString());
+    }
+    finally {
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+    }
+  }
+  public BuyPK ejbFindByPrimaryKey(BuyPK key) throws ObjectNotFoundException {
+    Connection connection = null;
+    PreparedStatement statement = null;
+    try {
+      connection = dataSource.getConnection();
+      statement = connection.prepareStatement("SELECT USERNAME FROM BUY WHERE USERNAME = ? AND PRODUCT_ID = ? AND RECEIPT_NO = ?");
+      statement.setString(1, key.username);
+      statement.setString(2, key.productId);
+      statement.setString(3, key.receiptNo);
+      ResultSet resultSet = statement.executeQuery();
+      if (!resultSet.next()) {
+        throw new ObjectNotFoundException("Primary key does not exist");
+      }
+      statement.close();
+      statement = null;
+      connection.close();
+      connection = null;
+      return key;
+    }
+    catch(SQLException e) {
+      throw new EJBException("Error executing SQL SELECT USERNAME FROM BUY WHERE USERNAME = ? AND PRODUCT_ID = ? AND RECEIPT_NO = ?: " + e.toString());
+    }
+    finally {
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+    }
+  }
+  public Collection ejbFindAll() {
+    Connection connection = null;
+    PreparedStatement statement = null;
+    try {
+      connection = dataSource.getConnection();
+      statement = connection.prepareStatement("SELECT USERNAME, PRODUCT_ID, RECEIPT_NO FROM BUY");
+      ResultSet resultSet = statement.executeQuery();
+      Vector keys = new Vector();
+      while (resultSet.next()) {
+        String username = resultSet.getString(1);
+        String productId = resultSet.getString(2);
+        String receiptNo = resultSet.getString(3);
+        keys.addElement(new BuyPK(username, productId, receiptNo));
+      }
+      statement.close();
+      statement = null;
+      connection.close();
+      connection = null;
+      return keys;
+    }
+    catch(SQLException e) {
+      throw new EJBException("Error executing SQL SELECT USERNAME, PRODUCT_ID, RECEIPT_NO FROM BUY: " + e.toString());
+    }
+    finally {
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+    }
+  }
+  public BuyPK ejbFindMaxReceiptNo() {
+    Connection connection = null;
+    PreparedStatement statement = null;
+    BuyPK key = null;
+    try {
+      connection = dataSource.getConnection();
+      statement = connection.prepareStatement("SELECT USERNAME, PRODUCT_ID, RECEIPT_NO FROM BUY WHERE RECEIPT_NO IN (SELECT MAX(RECEIPT_NO) FROM BUY)");
+      ResultSet resultSet = statement.executeQuery();
+      if (resultSet.next()) {
+        String username = resultSet.getString(1);
+        String productId = resultSet.getString(2);
+        String receiptNo = resultSet.getString(3);
+        key = new BuyPK(username,productId,receiptNo);
+      }
+      statement.close();
+      statement = null;
+      connection.close();
+      connection = null;
+      return key;
+    }
+    catch(SQLException e) {
+      throw new EJBException("Error executing SQL SELECT DISTINCT RECEIPT_NO FROM BUY: " + e.toString());
+    }
+    finally {
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+    }
+  }
+
+  public void setEntityContext(EntityContext entityContext) {
+    super.setEntityContext(entityContext);
+    try {
+      javax.naming.Context context = new javax.naming.InitialContext();
+      dataSource = (DataSource) context.lookup("java:comp/env/jdbc/DataSource");
+    }
+    catch(Exception e) {
+      throw new EJBException("Error looking up dataSource:" + e.toString());
+    }
+  }
+}

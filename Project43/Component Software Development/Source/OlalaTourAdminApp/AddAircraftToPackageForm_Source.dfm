@@ -1,0 +1,318 @@
+object frmAddAircraftToPackage: TfrmAddAircraftToPackage
+  Left = 31
+  Top = 70
+  Width = 982
+  Height = 574
+  Caption = 'Add aircraft to package'
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object grbSearch: TGroupBox
+    Left = 368
+    Top = 8
+    Width = 601
+    Height = 313
+    Caption = 'Search flight'
+    TabOrder = 0
+    object labNumberOfSeat: TLabel
+      Left = 24
+      Top = 24
+      Width = 72
+      Height = 13
+      Caption = 'Number of seat'
+    end
+    object labGoingDate: TLabel
+      Left = 24
+      Top = 72
+      Width = 52
+      Height = 13
+      Caption = 'Going date'
+    end
+    object labClassType: TLabel
+      Left = 24
+      Top = 120
+      Width = 48
+      Height = 13
+      Caption = 'Class type'
+    end
+    object labFrom: TLabel
+      Left = 224
+      Top = 24
+      Width = 23
+      Height = 13
+      Caption = 'From'
+    end
+    object labAirline: TLabel
+      Left = 224
+      Top = 72
+      Width = 28
+      Height = 13
+      Caption = 'Airline'
+    end
+    object labTo: TLabel
+      Left = 416
+      Top = 24
+      Width = 13
+      Height = 13
+      Caption = 'To'
+    end
+    object labSeatType: TLabel
+      Left = 416
+      Top = 72
+      Width = 45
+      Height = 13
+      Caption = 'Seat type'
+    end
+    object edtNumberOfSeat: TEdit
+      Left = 24
+      Top = 40
+      Width = 145
+      Height = 21
+      TabOrder = 0
+    end
+    object edtGoingDate: TEdit
+      Left = 24
+      Top = 88
+      Width = 145
+      Height = 21
+      TabOrder = 1
+    end
+    object chkSmoking: TCheckBox
+      Left = 312
+      Top = 144
+      Width = 97
+      Height = 17
+      Caption = 'Smoking'
+      TabOrder = 2
+    end
+    object chkNonStopFlight: TCheckBox
+      Left = 200
+      Top = 144
+      Width = 97
+      Height = 17
+      Caption = 'Non stop flight'
+      TabOrder = 3
+    end
+    object btnSearch: TButton
+      Left = 416
+      Top = 136
+      Width = 147
+      Height = 25
+      Caption = 'Search'
+      TabOrder = 4
+      OnClick = btnSearchClick
+    end
+    object cmbSeatType: TComboBox
+      Left = 416
+      Top = 88
+      Width = 145
+      Height = 21
+      ItemHeight = 13
+      TabOrder = 5
+      Items.Strings = (
+        'All'
+        'Windows'
+        'Aisle')
+    end
+    object stgView: TStringGrid
+      Left = 16
+      Top = 168
+      Width = 569
+      Height = 129
+      FixedCols = 0
+      TabOrder = 6
+      OnMouseUp = stgViewMouseUp
+    end
+    object edtFrom: TEdit
+      Left = 224
+      Top = 40
+      Width = 145
+      Height = 21
+      TabOrder = 7
+    end
+    object edtTo: TEdit
+      Left = 416
+      Top = 40
+      Width = 145
+      Height = 21
+      TabOrder = 8
+    end
+    object edtClassType: TEdit
+      Left = 24
+      Top = 136
+      Width = 145
+      Height = 21
+      TabOrder = 9
+    end
+    object edtAirline: TEdit
+      Left = 224
+      Top = 88
+      Width = 145
+      Height = 21
+      TabOrder = 10
+    end
+  end
+  object btnClose: TButton
+    Left = 888
+    Top = 512
+    Width = 75
+    Height = 25
+    Caption = 'Close'
+    TabOrder = 1
+    OnClick = btnCloseClick
+  end
+  object grbAddToPackage: TGroupBox
+    Left = 368
+    Top = 328
+    Width = 601
+    Height = 177
+    Caption = 'Add to package'
+    TabOrder = 2
+    object labNumberOfSeatAdd: TLabel
+      Left = 56
+      Top = 24
+      Width = 75
+      Height = 13
+      Caption = 'Number of seat '
+    end
+    object labGoingDateAdd: TLabel
+      Left = 56
+      Top = 72
+      Width = 52
+      Height = 13
+      Caption = 'Going date'
+    end
+    object labClassTypeAdd: TLabel
+      Left = 56
+      Top = 120
+      Width = 48
+      Height = 13
+      Caption = 'Class type'
+    end
+    object labFromAdd: TLabel
+      Left = 240
+      Top = 24
+      Width = 23
+      Height = 13
+      Caption = 'From'
+    end
+    object labToAdd: TLabel
+      Left = 424
+      Top = 24
+      Width = 13
+      Height = 13
+      Caption = 'To'
+    end
+    object labPriceAdd: TLabel
+      Left = 240
+      Top = 72
+      Width = 24
+      Height = 13
+      Caption = 'Price'
+    end
+    object labFlightAdd: TLabel
+      Left = 424
+      Top = 72
+      Width = 25
+      Height = 13
+      Caption = 'Flight'
+    end
+    object edtNumberOfSeatAdd: TEdit
+      Left = 56
+      Top = 40
+      Width = 121
+      Height = 21
+      TabOrder = 0
+    end
+    object edtFromAdd: TEdit
+      Left = 240
+      Top = 40
+      Width = 121
+      Height = 21
+      TabOrder = 1
+    end
+    object edtToAdd: TEdit
+      Left = 424
+      Top = 40
+      Width = 121
+      Height = 21
+      TabOrder = 2
+    end
+    object edtGoingDateAdd: TEdit
+      Left = 56
+      Top = 88
+      Width = 121
+      Height = 21
+      TabOrder = 3
+    end
+    object edtClassTypeAdd: TEdit
+      Left = 56
+      Top = 136
+      Width = 121
+      Height = 21
+      TabOrder = 4
+    end
+    object btnAddToPackage: TButton
+      Left = 448
+      Top = 128
+      Width = 100
+      Height = 25
+      Caption = 'Add to package'
+      TabOrder = 5
+      OnClick = btnAddToPackageClick
+    end
+    object edtPriceAdd: TEdit
+      Left = 240
+      Top = 88
+      Width = 121
+      Height = 21
+      TabOrder = 6
+    end
+    object edtFlightAdd: TEdit
+      Left = 424
+      Top = 88
+      Width = 121
+      Height = 21
+      TabOrder = 7
+    end
+  end
+  object grbAirline: TGroupBox
+    Left = 8
+    Top = 8
+    Width = 353
+    Height = 257
+    Caption = 'Airline'
+    TabOrder = 3
+    object stgAirline: TStringGrid
+      Left = 16
+      Top = 24
+      Width = 320
+      Height = 217
+      FixedCols = 0
+      TabOrder = 0
+    end
+  end
+  object grbAirport: TGroupBox
+    Left = 8
+    Top = 272
+    Width = 353
+    Height = 257
+    Caption = 'Airport'
+    TabOrder = 4
+    object stgAirport: TStringGrid
+      Left = 16
+      Top = 24
+      Width = 320
+      Height = 217
+      FixedCols = 0
+      TabOrder = 0
+    end
+  end
+end

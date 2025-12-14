@@ -1,0 +1,135 @@
+package view;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.rmi.PortableRemoteObject;
+import java.rmi.RemoteException;
+import java.util.*;
+import javax.servlet.*;
+import javax.ejb.*;
+import javax.servlet.http.*;
+import java.io.*;
+import javax.naming.*;
+
+import picture.*;
+import loadFile.*;
+
+public class ViewAdvertiseBean {
+   String productId;
+   String category = null;
+  private final String rootPath = "/pic";
+
+   PictureHome pictureHome;
+   LoadFileAdvertiseHome loadFileAdvertiseHome;
+   boolean havePic = false;
+   String filePic1;
+   String filePic2;
+   String head=null;
+   String abstracts=null;
+   String textfield=null;
+
+  public ViewAdvertiseBean() {
+    try {
+      Context ic = new InitialContext();
+      java.lang.Object objref = ic.lookup("MyPicture");
+      pictureHome = (PictureHome) PortableRemoteObject.narrow(objref,
+                     PictureHome.class);
+      objref = ic.lookup("MyLoadFileAdvertise");
+      loadFileAdvertiseHome = (LoadFileAdvertiseHome) PortableRemoteObject.narrow(objref,
+                               LoadFileAdvertiseHome.class);
+      System.out.println("obtained picture Home object");
+    } catch (Exception re) {
+      System.err.println ("Couldn't locate entity Home");
+      re.printStackTrace();
+    }
+  }
+  public Collection getProductShow() {
+    try {
+      String condition = " where show = 'yes'";
+      Collection c = pictureHome.findByCondition(condition);
+      return c;
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      return null;
+    }
+  }
+
+  public void loadFilePic(String productId) {
+  System.out.println("in loadfilePic");
+  head = "";
+  abstracts = "";
+  textfield = "";
+      try {
+        Picture picture = pictureHome.findByPrimaryKey(productId);
+        havePic = true;
+        filePic1 = picture.getFilePic1();
+        if (filePic1!=null && !filePic1.equals(""))
+            filePic1=rootPath+"/"+productId+"/"+filePic1;
+        filePic2 = picture.getFilePic2();
+        if (filePic2!=null && !filePic2.equals(""))
+            filePic2=rootPath+"/"+productId+"/"+filePic2;
+        LoadFileAdvertise loadfile = loadFileAdvertiseHome.create();
+        loadfile.loadFileAdvertise(productId);
+        head = loadfile.getHead();
+        abstracts = loadfile.getAbstracts();
+        textfield = loadfile.getTextfield();
+/*
+        String textfield = loadfile.getTextfield();
+        File f = new File("g:/j2sdkee1.2.1/public_html/"+rootPath+"/"+productId+"/"+productId+".txt");
+        FileReader fr = new FileReader(f);
+        BufferedReader br = new BufferedReader(fr);
+        String s;
+        while (!(s=br.readLine()).equals("<abstract>") && s!=null) {
+          if (head == null) head = convertMoreToTag(s); else
+          head = head+"\n"+convertMoreToTag(s);
+        }
+        while (!(s=br.readLine()).equals("<textfield>") && s!=null) {
+          if (abstracts==null) abstracts = convertMoreToTag(s); else
+          abstracts = abstracts+"\n"+convertMoreToTag(s);
+        }
+        while ((s=br.readLine())!=null) {
+          if (textfield==null) textfield = convertMoreToTag(s); else
+          textfield = textfield+"\n"+convertMoreToTag(s);
+        }
+*/
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
+  }
+  public String convertMoreToTag(String s) {
+    int b = 0;
+    while (s.indexOf("$lt;",0)!=-1) {
+      int a = s.indexOf("$lt;",b);
+      b = a;
+      s = s.substring(0,a)+"<"+s.substring(a+4);
+    }
+     b = 0;
+    while (s.indexOf("$gt;",0)!=-1) {
+      int a = s.indexOf("$gt;",b);
+      b = a;
+      s = s.substring(0,a)+">"+s.substring(a+4);
+    }
+    return s;
+  }
+  public String changeSpace(String s) {
+    while (s.indexOf(' ',0)!=-1) {
+      int a = s.indexOf(' ',0);
+      s = s.substring(0,a)+"%20"+s.substring(a+1);
+    }
+    return s;
+  }
+
+  public boolean getHavePic() { return havePic; }
+  public void setHavePic(boolean havePic) { this.havePic = havePic; }
+///////////////////   GET & SET  Method  /////////////////////////
+  public String getFilePic1() { return changeSpace(filePic1); }
+  public void setFilePic1(String filePic1 ) { this.filePic1 = filePic1; }
+  public String getFilePic2() { return changeSpace(filePic2); }
+  public void setFilePic2(String filePic2 ) { this.filePic2 = filePic2; }
+  public String getHead() { return head; }
+  public void setHead(String head ) { this.head = head; }
+  public String getAbstracts() { return abstracts; }
+  public void setAbstracts(String abstracts ) { this.abstracts = abstracts; }
+  public String getTextfield() { return textfield; }
+  public void setTextfield(String textfield ) { this.textfield = textfield; }
+
+}

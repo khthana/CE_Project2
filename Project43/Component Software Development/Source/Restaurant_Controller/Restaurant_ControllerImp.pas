@@ -1,0 +1,199 @@
+unit Restaurant_ControllerImp;
+
+interface
+
+uses
+  ActiveX, MtsObj, ComObj, Restaurant_ControllerPrj_TLB, StdVcl, SysUtils,
+  ADODB_TLB, COMSVCSLib_TLB, Dialogs, Windows, AgencyPrj_TLB, RestaurantPrj_TLB,
+  Restaurant_BookingPrj_TLB,MSSQL2K_RestaurantPrj_TLB;
+
+type
+  TRestaurant_Controller = class(TMtsAutoObject, IRestaurant_Controller,IObjectControl)
+  protected
+    function findRestaurant(const RestaurantName, Description,
+      Address: WideString; Star: SYSINT): OleVariant; safecall;
+    function viewRestaurant(const RestaurantID: WideString): OleVariant;
+      safecall;
+    function cancel(const BookingID: WideString): WideString; safecall;
+    function confirm(const BookingID: WideString): WideString; safecall;
+    function findAgency(const AgencyName, Address: WideString): OleVariant;
+      safecall;
+    function modify(const BookingID, RestaurantID: WideString; Meal: SYSINT;
+      ReserveDate: TDateTime; NoOfReserveSeat: SYSINT): WideString;
+      safecall;
+    function reserve(const RestaurantID: WideString; Meal: SYSINT;
+      ReserveDate: TDateTime; NoOfReserveSeat: SYSINT;
+      const AgencyID: WideString): WideString; safecall;
+    function viewBooking(const BookingID: WideString): OleVariant; safecall;
+    { Protected declarations }
+
+    // IObjectControl Methods Definition
+    function Activate: HRESULT; stdcall;
+    function CanBePooled: Longint; stdcall;
+    procedure Deactivate; stdcall;
+
+    private
+      objctx : ObjectContext;
+      
+  end;
+
+implementation
+
+uses ComServ;
+
+////////////////// IObjectControl Methods Implementation ///////////////////////
+
+function TRestaurant_Controller.Activate: HRESULT;
+var
+  imtx : IMTxAS;
+begin
+  try
+    imtx := CoAppServer.Create;
+    objctx := imtx.GetObjectContext;
+    if objctx = nil then
+    begin
+      Result := 0;
+    end
+    else
+      Result := S_OK;
+  except
+    Result := 0;
+  end;
+end;
+
+function TRestaurant_Controller.CanBePooled: Longint;
+begin
+  Result := 1;
+end;
+
+procedure TRestaurant_Controller.Deactivate;
+begin
+  objctx := nil;
+end;
+
+///////////// TRestaurant_Controller Methods Implementation ////////////////////
+
+function TRestaurant_Controller.findRestaurant(const RestaurantName,
+  Description, Address: WideString; Star: SYSINT): OleVariant;
+var
+  restaurant:IRestaurant;
+begin
+  try
+    restaurant:= CoRestaurant.Create;
+    Result:= restaurant.findByNameDescriptionAddressStar(RestaurantName,Description,Address,Star);
+    objctx.SetComplete;
+  except
+    objctx.SetAbort;
+  end;
+end;
+
+function TRestaurant_Controller.viewRestaurant(
+  const RestaurantID: WideString): OleVariant;
+var
+  mssql: IMSSQL2K_Restaurant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Restaurant.Create;
+  sSQL:= 'Select RESTAURANTNAME,DESCRIPTION,TOTAL_SEAT,ADDRESS,STAR,TELEPHONENO'+
+         ' From RESTAURANT Where RESTAURANTID = '''+ restaurantID+'''';
+  try
+    Result:= mssql.Query(sSQL);
+    objctx.SetComplete;
+  except
+    objctx.SetAbort;
+  end;
+end;
+
+function TRestaurant_Controller.cancel(
+  const BookingID: WideString): WideString;
+var
+  booking:IRestaurant_Booking;
+begin
+  try
+    booking:= CoRestaurant_Booking.Create;
+    Result:= booking.Cancel(BookingID);
+    objctx.SetComplete;
+  except
+    objctx.SetAbort;
+  end;
+end;
+
+function TRestaurant_Controller.confirm(
+  const BookingID: WideString): WideString;
+var
+  booking:IRestaurant_Booking;
+begin
+  try
+    booking:=CoRestaurant_Booking.Create;
+    Result:= booking.Confirm(BookingID);
+    objctx.SetComplete;
+  except
+    objctx.SetAbort;
+  end;
+end;
+
+function TRestaurant_Controller.findAgency(const AgencyName,
+  Address: WideString): OleVariant;
+var
+  agency:IAgency;
+begin
+  try
+    agency:= CoAgency.Create;
+    Result:= agency.findByNameAddress(AgencyName,Address);
+    objctx.SetComplete;
+  except
+    objctx.SetAbort;
+  end;
+end;
+
+function TRestaurant_Controller.modify(const BookingID,
+  RestaurantID: WideString; Meal: SYSINT; ReserveDate: TDateTime;
+  NoOfReserveSeat: SYSINT): WideString;
+var
+  booking: IRestaurant_Booking;
+begin
+  try
+    booking:= CoRestaurant_Booking.Create;
+    Result:= booking.Modify(BookingID,RestaurantID,Meal,ReserveDate,NoOfReserveSeat);
+    objctx.SetComplete;
+  except
+    objctx.SetAbort;
+  end;
+end;
+
+function TRestaurant_Controller.reserve(const RestaurantID: WideString;
+  Meal: SYSINT; ReserveDate: TDateTime; NoOfReserveSeat: SYSINT;
+  const AgencyID: WideString): WideString;
+var
+  booking: IRestaurant_Booking;
+begin
+  try
+    booking:= CoRestaurant_Booking.Create;
+    Result:= booking.Create(RestaurantID,Meal,ReserveDate,NoOfReserveSeat,AgencyID);
+    objctx.SetComplete;
+  except
+    objctx.SetAbort;
+  end;
+end;
+
+function TRestaurant_Controller.viewBooking(
+  const BookingID: WideString): OleVariant;
+var
+  mssql: IMSSQL2K_Restaurant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Restaurant.Create;
+  sSQL:= 'Select RESTAURANTID,AGENCYID,CONFIRMATION,NO_OF_RESERVESEAT,MEAL,RESERVEDATE'+
+         ' From BOOKING Where BOOKINGID = '''+ BookingID+'''';
+  try
+    Result:= mssql.Query(sSQL);
+    objctx.SetComplete;
+  except
+    objctx.SetAbort;
+  end;
+end;
+
+initialization
+  TAutoObjectFactory.Create(ComServer, TRestaurant_Controller, Class_Restaurant_Controller,
+    ciMultiInstance, tmBoth);
+end.

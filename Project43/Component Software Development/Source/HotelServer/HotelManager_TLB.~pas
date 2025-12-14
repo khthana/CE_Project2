@@ -1,0 +1,318 @@
+unit HotelManager_TLB;
+
+// ************************************************************************ //
+// WARNING                                                                    
+// -------                                                                    
+// The types declared in this file were generated from data read from a       
+// Type Library. If this type library is explicitly or indirectly (via        
+// another type library referring to this type library) re-imported, or the   
+// 'Refresh' command of the Type Library Editor activated while editing the   
+// Type Library, the contents of this file will be regenerated and all        
+// manual modifications will be lost.                                         
+// ************************************************************************ //
+
+// PASTLWTR : $Revision:   1.88  $
+// File generated on 25/04/2001 7:12:28 from Type Library described below.
+
+// ************************************************************************ //
+// Type Lib: D:\ball\OlalaProject\HotelProject2\Server\HotelManager.tlb (1)
+// IID\LCID: {8DFA2A22-287C-4D3F-8AC5-2F61EB7BA18F}\0
+// Helpfile: 
+// DepndLst: 
+//   (1) v2.0 stdole, (C:\WINNT\System32\stdole2.tlb)
+//   (2) v4.0 StdVCL, (C:\WINNT\System32\STDVCL40.DLL)
+// ************************************************************************ //
+{$TYPEDADDRESS OFF} // Unit must be compiled without type-checked pointers. 
+interface
+
+uses Windows, ActiveX, Classes, Graphics, OleServer, OleCtrls, StdVCL;
+
+// *********************************************************************//
+// GUIDS declared in the TypeLibrary. Following prefixes are used:        
+//   Type Libraries     : LIBID_xxxx                                      
+//   CoClasses          : CLASS_xxxx                                      
+//   DISPInterfaces     : DIID_xxxx                                       
+//   Non-DISP interfaces: IID_xxxx                                        
+// *********************************************************************//
+const
+  // TypeLibrary Major and minor versions
+  HotelManagerMajorVersion = 1;
+  HotelManagerMinorVersion = 0;
+
+  LIBID_HotelManager: TGUID = '{8DFA2A22-287C-4D3F-8AC5-2F61EB7BA18F}';
+
+  IID_IHotel: TGUID = '{F556F631-3D7B-411B-9942-BBB0758A49A4}';
+  CLASS_Hotel: TGUID = '{572B3146-7724-432B-9B14-BDFC0EB22BA9}';
+  IID_IHotelCustomer: TGUID = '{EE9AFB8D-2852-4086-BA5E-889041368EE8}';
+  CLASS_HotelCustomer: TGUID = '{68CCCBB1-5431-400E-B9E1-5C4684C9FEDD}';
+  IID_IHotelRoom: TGUID = '{C57BB349-FA85-4151-81AC-0EA7AE1C3F8C}';
+  CLASS_HotelRoom: TGUID = '{BC68642D-8CAC-4DBF-A2DB-3980AEEDD62E}';
+  IID_IHotelBooking: TGUID = '{C91F88C1-ADFD-49E3-9187-F3C2DBF72067}';
+  CLASS_HotelBooking: TGUID = '{0D5BE497-170C-4336-9D04-D20966ECA778}';
+type
+
+// *********************************************************************//
+// Forward declaration of types defined in TypeLibrary                    
+// *********************************************************************//
+  IHotel = interface;
+  IHotelDisp = dispinterface;
+  IHotelCustomer = interface;
+  IHotelCustomerDisp = dispinterface;
+  IHotelRoom = interface;
+  IHotelRoomDisp = dispinterface;
+  IHotelBooking = interface;
+  IHotelBookingDisp = dispinterface;
+
+// *********************************************************************//
+// Declaration of CoClasses defined in Type Library                       
+// (NOTE: Here we map each CoClass to its Default Interface)              
+// *********************************************************************//
+  Hotel = IHotel;
+  HotelCustomer = IHotelCustomer;
+  HotelRoom = IHotelRoom;
+  HotelBooking = IHotelBooking;
+
+
+// *********************************************************************//
+// Interface: IHotel
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {F556F631-3D7B-411B-9942-BBB0758A49A4}
+// *********************************************************************//
+  IHotel = interface(IDispatch)
+    ['{F556F631-3D7B-411B-9942-BBB0758A49A4}']
+    function  findByNameDescriptionAddressStar(const name: WideString; 
+                                               const description: WideString; 
+                                               const address: WideString; star: SYSINT): OleVariant; safecall;
+  end;
+
+// *********************************************************************//
+// DispIntf:  IHotelDisp
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {F556F631-3D7B-411B-9942-BBB0758A49A4}
+// *********************************************************************//
+  IHotelDisp = dispinterface
+    ['{F556F631-3D7B-411B-9942-BBB0758A49A4}']
+    function  findByNameDescriptionAddressStar(const name: WideString; 
+                                               const description: WideString; 
+                                               const address: WideString; star: SYSINT): OleVariant; dispid 1;
+  end;
+
+// *********************************************************************//
+// Interface: IHotelCustomer
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {EE9AFB8D-2852-4086-BA5E-889041368EE8}
+// *********************************************************************//
+  IHotelCustomer = interface(IDispatch)
+    ['{EE9AFB8D-2852-4086-BA5E-889041368EE8}']
+    function  createCustomer(const FirstName: WideString; const LastName: WideString; 
+                             const address: WideString; gender: SYSINT; 
+                             const telephoneNo: WideString): WideString; safecall;
+  end;
+
+// *********************************************************************//
+// DispIntf:  IHotelCustomerDisp
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {EE9AFB8D-2852-4086-BA5E-889041368EE8}
+// *********************************************************************//
+  IHotelCustomerDisp = dispinterface
+    ['{EE9AFB8D-2852-4086-BA5E-889041368EE8}']
+    function  createCustomer(const FirstName: WideString; const LastName: WideString; 
+                             const address: WideString; gender: SYSINT; 
+                             const telephoneNo: WideString): WideString; dispid 1;
+  end;
+
+// *********************************************************************//
+// Interface: IHotelRoom
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {C57BB349-FA85-4151-81AC-0EA7AE1C3F8C}
+// *********************************************************************//
+  IHotelRoom = interface(IDispatch)
+    ['{C57BB349-FA85-4151-81AC-0EA7AE1C3F8C}']
+    function  findByHotelIDPricePerDayDescriptionNumberOfSingleBedNumberOfCoupleBedRoomClassFloor(const hotelID: WideString; 
+                                                                                                  PricePerDay: Currency; 
+                                                                                                  const description: WideString; 
+                                                                                                  NumberOfsingleBed: SYSINT; 
+                                                                                                  NumberOfCoupleBed: SYSINT; 
+                                                                                                  RoomClass: SYSINT; 
+                                                                                                  Floor: SYSINT): OleVariant; safecall;
+    function  findRoomProperty(const hotelID: WideString): OleVariant; safecall;
+    function  getPricePerDay(const RoomNo: WideString; const hotelID: WideString): Currency; safecall;
+    function  getDescription(const RoomNo: WideString; const hotelID: WideString): WideString; safecall;
+    function  getRoomClass(const RoomNo: WideString; const hotelID: WideString): SYSINT; safecall;
+    function  getFloor(const RoomNo: WideString; const hotelID: WideString): SYSINT; safecall;
+    function  getNumberOfSingleBed(const RoomNo: WideString; const hotelID: WideString): SYSINT; safecall;
+    function  getNumberOfCoupleBed(const RoomNo: WideString; const hotelID: WideString): SYSINT; safecall;
+    function  getNumberOfMaximumGuest(const RoomNo: WideString; const hotelID: WideString): SYSINT; safecall;
+    function  getTelephoneNo(const RoomNo: WideString; const hotelID: WideString): WideString; safecall;
+  end;
+
+// *********************************************************************//
+// DispIntf:  IHotelRoomDisp
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {C57BB349-FA85-4151-81AC-0EA7AE1C3F8C}
+// *********************************************************************//
+  IHotelRoomDisp = dispinterface
+    ['{C57BB349-FA85-4151-81AC-0EA7AE1C3F8C}']
+    function  findByHotelIDPricePerDayDescriptionNumberOfSingleBedNumberOfCoupleBedRoomClassFloor(const hotelID: WideString; 
+                                                                                                  PricePerDay: Currency; 
+                                                                                                  const description: WideString; 
+                                                                                                  NumberOfsingleBed: SYSINT; 
+                                                                                                  NumberOfCoupleBed: SYSINT; 
+                                                                                                  RoomClass: SYSINT; 
+                                                                                                  Floor: SYSINT): OleVariant; dispid 1;
+    function  findRoomProperty(const hotelID: WideString): OleVariant; dispid 2;
+    function  getPricePerDay(const RoomNo: WideString; const hotelID: WideString): Currency; dispid 3;
+    function  getDescription(const RoomNo: WideString; const hotelID: WideString): WideString; dispid 4;
+    function  getRoomClass(const RoomNo: WideString; const hotelID: WideString): SYSINT; dispid 5;
+    function  getFloor(const RoomNo: WideString; const hotelID: WideString): SYSINT; dispid 6;
+    function  getNumberOfSingleBed(const RoomNo: WideString; const hotelID: WideString): SYSINT; dispid 7;
+    function  getNumberOfCoupleBed(const RoomNo: WideString; const hotelID: WideString): SYSINT; dispid 8;
+    function  getNumberOfMaximumGuest(const RoomNo: WideString; const hotelID: WideString): SYSINT; dispid 9;
+    function  getTelephoneNo(const RoomNo: WideString; const hotelID: WideString): WideString; dispid 10;
+  end;
+
+// *********************************************************************//
+// Interface: IHotelBooking
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {C91F88C1-ADFD-49E3-9187-F3C2DBF72067}
+// *********************************************************************//
+  IHotelBooking = interface(IDispatch)
+    ['{C91F88C1-ADFD-49E3-9187-F3C2DBF72067}']
+    function  getBookCheckInTime(const subBookingID: WideString): TDateTime; safecall;
+    function  getBookCheckOutTime(const subBookingID: WideString): TDateTime; safecall;
+    function  getRoomNo(const subBookingID: WideString): WideString; safecall;
+    function  getHotelID(const subBookingID: WideString): WideString; safecall;
+    function  getCustomerID(const subBookingID: WideString): WideString; safecall;
+    function  getConfirmation(const BookingID: WideString): SYSINT; safecall;
+    function  getPrice(const BookingID: WideString): Currency; safecall;
+    function  getSubBookingID(const BookingID: WideString): OleVariant; safecall;
+    function  Confirm(const BookingID: WideString): WideString; safecall;
+    function  Cancel(const BookingID: WideString): WideString; safecall;
+    function  Modify(const BookingID: WideString; const subBookingID: WideString; 
+                     BookCheckInTime: TDateTime; BookCheckOutTime: TDateTime; 
+                     const hotelID: WideString; PricePerDay: Currency; 
+                     const description: WideString; NumberOfSingleBed: SYSINT; 
+                     NumberOfCoupleBed: SYSINT; RoomClass: SYSINT; Floor: SYSINT; 
+                     const CustomerID: WideString): WideString; safecall;
+    function  Create(rsReserve: OleVariant; out strResult: WideString): OleVariant; safecall;
+  end;
+
+// *********************************************************************//
+// DispIntf:  IHotelBookingDisp
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {C91F88C1-ADFD-49E3-9187-F3C2DBF72067}
+// *********************************************************************//
+  IHotelBookingDisp = dispinterface
+    ['{C91F88C1-ADFD-49E3-9187-F3C2DBF72067}']
+    function  getBookCheckInTime(const subBookingID: WideString): TDateTime; dispid 1;
+    function  getBookCheckOutTime(const subBookingID: WideString): TDateTime; dispid 2;
+    function  getRoomNo(const subBookingID: WideString): WideString; dispid 3;
+    function  getHotelID(const subBookingID: WideString): WideString; dispid 4;
+    function  getCustomerID(const subBookingID: WideString): WideString; dispid 5;
+    function  getConfirmation(const BookingID: WideString): SYSINT; dispid 6;
+    function  getPrice(const BookingID: WideString): Currency; dispid 7;
+    function  getSubBookingID(const BookingID: WideString): OleVariant; dispid 8;
+    function  Confirm(const BookingID: WideString): WideString; dispid 9;
+    function  Cancel(const BookingID: WideString): WideString; dispid 10;
+    function  Modify(const BookingID: WideString; const subBookingID: WideString; 
+                     BookCheckInTime: TDateTime; BookCheckOutTime: TDateTime; 
+                     const hotelID: WideString; PricePerDay: Currency; 
+                     const description: WideString; NumberOfSingleBed: SYSINT; 
+                     NumberOfCoupleBed: SYSINT; RoomClass: SYSINT; Floor: SYSINT; 
+                     const CustomerID: WideString): WideString; dispid 11;
+    function  Create(rsReserve: OleVariant; out strResult: WideString): OleVariant; dispid 12;
+  end;
+
+// *********************************************************************//
+// The Class CoHotel provides a Create and CreateRemote method to          
+// create instances of the default interface IHotel exposed by              
+// the CoClass Hotel. The functions are intended to be used by             
+// clients wishing to automate the CoClass objects exposed by the         
+// server of this typelibrary.                                            
+// *********************************************************************//
+  CoHotel = class
+    class function Create: IHotel;
+    class function CreateRemote(const MachineName: string): IHotel;
+  end;
+
+// *********************************************************************//
+// The Class CoHotelCustomer provides a Create and CreateRemote method to          
+// create instances of the default interface IHotelCustomer exposed by              
+// the CoClass HotelCustomer. The functions are intended to be used by             
+// clients wishing to automate the CoClass objects exposed by the         
+// server of this typelibrary.                                            
+// *********************************************************************//
+  CoHotelCustomer = class
+    class function Create: IHotelCustomer;
+    class function CreateRemote(const MachineName: string): IHotelCustomer;
+  end;
+
+// *********************************************************************//
+// The Class CoHotelRoom provides a Create and CreateRemote method to          
+// create instances of the default interface IHotelRoom exposed by              
+// the CoClass HotelRoom. The functions are intended to be used by             
+// clients wishing to automate the CoClass objects exposed by the         
+// server of this typelibrary.                                            
+// *********************************************************************//
+  CoHotelRoom = class
+    class function Create: IHotelRoom;
+    class function CreateRemote(const MachineName: string): IHotelRoom;
+  end;
+
+// *********************************************************************//
+// The Class CoHotelBooking provides a Create and CreateRemote method to          
+// create instances of the default interface IHotelBooking exposed by              
+// the CoClass HotelBooking. The functions are intended to be used by             
+// clients wishing to automate the CoClass objects exposed by the         
+// server of this typelibrary.                                            
+// *********************************************************************//
+  CoHotelBooking = class
+    class function Create: IHotelBooking;
+    class function CreateRemote(const MachineName: string): IHotelBooking;
+  end;
+
+implementation
+
+uses ComObj;
+
+class function CoHotel.Create: IHotel;
+begin
+  Result := CreateComObject(CLASS_Hotel) as IHotel;
+end;
+
+class function CoHotel.CreateRemote(const MachineName: string): IHotel;
+begin
+  Result := CreateRemoteComObject(MachineName, CLASS_Hotel) as IHotel;
+end;
+
+class function CoHotelCustomer.Create: IHotelCustomer;
+begin
+  Result := CreateComObject(CLASS_HotelCustomer) as IHotelCustomer;
+end;
+
+class function CoHotelCustomer.CreateRemote(const MachineName: string): IHotelCustomer;
+begin
+  Result := CreateRemoteComObject(MachineName, CLASS_HotelCustomer) as IHotelCustomer;
+end;
+
+class function CoHotelRoom.Create: IHotelRoom;
+begin
+  Result := CreateComObject(CLASS_HotelRoom) as IHotelRoom;
+end;
+
+class function CoHotelRoom.CreateRemote(const MachineName: string): IHotelRoom;
+begin
+  Result := CreateRemoteComObject(MachineName, CLASS_HotelRoom) as IHotelRoom;
+end;
+
+class function CoHotelBooking.Create: IHotelBooking;
+begin
+  Result := CreateComObject(CLASS_HotelBooking) as IHotelBooking;
+end;
+
+class function CoHotelBooking.CreateRemote(const MachineName: string): IHotelBooking;
+begin
+  Result := CreateRemoteComObject(MachineName, CLASS_HotelBooking) as IHotelBooking;
+end;
+
+end.

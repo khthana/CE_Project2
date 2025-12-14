@@ -1,0 +1,352 @@
+unit TravellerManager_Source;
+
+interface
+
+uses
+  ActiveX, MtsObj, ComObj, UserSystem_TLB, OlalaTourDBConnector_TLB,
+    StdVcl, COMSVCSLib_TLB, ADODB_TLB, Dialogs, Windows, SysUtils;
+
+type
+  TTravellerManager = class(TMtsAutoObject, ITravellerManager, IObjectControl)
+  protected
+    function Create(const FirstName, LastName, Address, TelephoneNo,
+      EmailAddress: WideString; Gender: Smallint; const BirthDate,
+      Religion, FoodTypeID: WideString): WideString; safecall;
+    function GetAirlineCustomerID(const TravellerID: WideString): WideString;
+      safecall;
+    function GetBusCompanyCustomerID(
+      const TravellerID: WideString): WideString; safecall;
+    procedure Modify(const TravellerID, FirstName, LastName, Address,
+      TelephoneNo, EmailAddress: WideString; Gender: Smallint;
+      const BirthDate, Religion, FoodTypeID: WideString); safecall;
+    function QueryData(const FirstNameKeyword, LastNameKeyword, AddressKeyword,
+      TelephoneNoKeyword, EmailAddressKeyword, GenderKeyword,
+      BirthDateKeyword, ReligionKeyword: WideString;
+      IsBusCompanyCustomerID, IsAirlineCustomerID: Shortint;
+      const FoodTypeIDKeyword: WideString): OleVariant; safecall;
+    procedure SetAirlineCustomerID(const TravellerID,
+      AirlineCustomerID: WideString); safecall;
+    procedure SetBusCompanyCustomerID(const TravellerID,
+      BusCompanyCustomerID: WideString); safecall;
+    function ViewProfile(const TravellerID: WideString): OleVariant; safecall;
+    { Protected declarations }
+
+    // IObjectControl Methods Definition
+    function Activate: HRESULT; stdcall;
+    function CanBePooled: Longint; stdcall;
+    procedure Deactivate; stdcall;
+
+  private
+    // Private Fields
+    objctx : ObjectContext;
+  end;
+
+implementation
+
+uses ComServ;
+
+////////////////// IObjectControl Methods Implementation ///////////////////////
+function TTravellerManager.Activate: HRESULT;
+var
+  imtx : IMTxAS;
+begin
+  try
+    imtx := CoAppServer.Create;
+    objctx := imtx.GetObjectContext;
+    if objctx = nil then
+    begin
+      ShowMessage('objctx = nil');
+      Result := 0;
+    end
+    else
+      Result := S_OK;
+  except
+    ShowMessage('Error on TMSSQL2K_OlalaTour_Connect.Activate');
+    Result := 0;
+  end;
+end;
+
+function TTravellerManager.CanBePooled: Longint;
+begin
+  Result := 1;
+end;
+
+procedure TTravellerManager.Deactivate;
+begin
+  objctx := nil;
+end;
+
+//////////////////// TTravellerManager Methods Implementation //////////////////
+
+function TTravellerManager.Create(const FirstName, LastName, Address,
+  TelephoneNo, EmailAddress: WideString; Gender: Smallint; const BirthDate,
+  Religion, FoodTypeID: WideString): WideString;
+var
+  dbConnection : IOlalaTourDBConnector;
+  SQLCmd, StrGuid : WideString;
+  Guid : TGuid;
+begin
+  try
+    CoCreateGuid(Guid);
+    StrGuid := GUIDToString(Guid);
+    dbConnection := CoOlalaTourDBConnector_.Create;
+    SQLCmd := 'INSERT INTO Traveller ' +
+              'VALUES (''' + StrGuid + ''',''' +
+              FirstName + ''', ''' +
+              LastName + ''', ''' +
+              Address + ''', ''' +
+              TelephoneNo + ''', ''' +
+              EmailAddress + ''', ' +
+              IntToStr(Gender) + ', ''' +
+              BirthDate + ''', ''' +
+              Religion + ''', ' +
+              'Null, Null' + ', ''' +
+              FoodTypeID + ''')';
+    ShowMessage(SQLCmd);
+    dbConnection.ExecSQLCmd(SQLCmd);
+    Result := StrGuid;
+    objctx.SetComplete;
+    ShowMessage('SetComplete in TTravellerManager.Create');
+  except
+    Result := '';
+    objctx.SetAbort;
+    ShowMessage('SetAbort in TMemberManager.Create');
+  end;
+end;
+
+function TTravellerManager.GetAirlineCustomerID(
+  const TravellerID: WideString): WideString;
+var
+  dbConnection : IOlalaTourDBConnector;
+  SQLCmd : WideString;
+  OleVar : OleVariant;
+begin
+  dbConnection := CoOlalaTourDBConnector_.Create;
+  SQLCmd := 'SELECT AirlineCustomerID FROM Traveller WHERE TravellerID = ''' +
+    TravellerID + '''';
+  OleVar := dbConnection.QueryCmd(SQLCmd);
+  if OleVar.EOF then
+    Result := ''
+  else
+    Result := VarToStr(OleVar.Fields.Item[0].Value);
+end;
+
+function TTravellerManager.GetBusCompanyCustomerID(
+  const TravellerID: WideString): WideString;
+var
+  dbConnection : IOlalaTourDBConnector;
+  SQLCmd : WideString;
+  OleVar : OleVariant;
+begin
+  dbConnection := CoOlalaTourDBConnector_.Create;
+  SQLCmd := 'SELECT BusCompanyCustomerID FROM Traveller WHERE TravellerID = '''
+    + TravellerID + '''';
+  OleVar := dbConnection.QueryCmd(SQLCmd);
+  if OleVar.EOF then
+    Result := ''
+  else
+    Result := VarToStr(OleVar.Fields.Item[0].Value);
+end;
+
+procedure TTravellerManager.Modify(const TravellerID, FirstName, LastName,
+  Address, TelephoneNo, EmailAddress: WideString; Gender: Smallint;
+  const BirthDate, Religion, FoodTypeID: WideString);
+var
+  dbConnection : IOlalaTourDBConnector;
+  SQLCmd, StrUpdate : WideString;
+begin
+  dbConnection := CoOlalaTourDBConnector_.Create;
+  StrUpdate := '';
+  if FirstName <> '' then StrUpdate := StrUpdate + ' FirstName = ''' + FirstName + '''';
+  if LastName <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' LastName = ''' + LastName + '''';
+  end;
+  if Address <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' Address = ''' + Address + '''';
+  end;
+  if TelephoneNo <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' TelephoneNo = ''' + TelephoneNo + '''';
+  end;
+  if EmailAddress <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+   StrUpdate := StrUpdate + ' EmailAddress = ''' + EmailAddress + '''';
+  end;
+  if Gender <> 0 then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' Gender = ' + IntToStr(Gender) + ' ';
+  end;
+  if BirthDate <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' BirthDate = ''' + BirthDate + '''';
+  end;
+  if Religion <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' Religion = ''' + Religion + '''';
+  end;
+  if FoodTypeID <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' FoodTypeID = ''' + FoodTypeID + '''';
+  end;
+
+  if StrUpdate <> '' then
+  begin
+    StrUpdate := ' Set ' + StrUpdate;
+    SQLCmd := 'UPDATE Traveller' + StrUpdate +
+      ' WHERE TravellerID = ''' + TravellerID + '''' ;
+    try
+      ShowMessage(SQLCmd);
+      dbConnection.ExecSQLCmd(SQLCmd);
+      objctx.SetComplete;
+      ShowMessage('SetComplete in TTravellerManager.Modify');
+    except
+      objctx.SetAbort;
+      ShowMessage('SetAbort in TTravellerManager.Modify');
+    end;
+  end;
+end;
+
+function TTravellerManager.QueryData(const FirstNameKeyword,
+  LastNameKeyword, AddressKeyword, TelephoneNoKeyword, EmailAddressKeyword,
+  GenderKeyword, BirthDateKeyword, ReligionKeyword: WideString;
+  IsBusCompanyCustomerID, IsAirlineCustomerID: Shortint;
+  const FoodTypeIDKeyword: WideString): OleVariant;
+var
+  dbConnection : IOlalaTourDBConnector;
+  SQLCmd, StrCond : WideString;
+begin
+  dbConnection := CoOlalaTourDBConnector_.Create;
+  StrCond := '';
+
+  if FirstNameKeyword <> '' then StrCond := StrCond + ' FirstName = ''' +
+    FirstNameKeyword + '''';
+  if LastNameKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' LastName = ''' + LastNameKeyword + '''';
+  end;
+  if AddressKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' Address LIKE ''%' + AddressKeyword + '%''';
+  end;
+  if TelephoneNoKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' TelephoneNo LIKE ''%' + TelephoneNoKeyword + '%''';
+  end;
+  if EmailAddressKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' EmailAddress LIKE ''%' + EmailAddressKeyword + '%''';
+  end;
+  if GenderKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' Gender = ' + GenderKeyword + ' ';
+  end;
+  if BirthDateKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' BirthDate LLKE ''%' + BirthDateKeyword + '%''';
+  end;
+  if ReligionKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' Religion LIKE ''%' + ReligionKeyword + '%''';
+  end;
+
+  // 0 = don't care CustomerID
+  // 1 = has CustomerID
+  // 2 = don't has CustomerID
+  if IsBusCompanyCustomerID <> 0 then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND';
+    if IsBusCompanyCustomerID = 1 then
+      StrCond := StrCond + ' BusCompanyCustomerID IS NULL'
+    else
+      StrCond := StrCond + ' BusCompanyCustomerID IS NOT NULL';
+  end;
+
+  if IsAirlineCustomerID <> 0 then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND';
+    if IsAirlineCustomerID = 1 then
+      StrCond := StrCond + ' AirlineCustomerID IS NULL'
+    else
+      StrCond := StrCond + ' AirlineCustomerID IS NOT NULL'
+  end;
+
+  if FoodTypeIDKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' FoodTypeID LIKE ''%' + FoodTypeIDKeyword + '%''';
+  end;
+
+  ///////////////// Combine Strcondition With SQLCmd
+  if StrCond <> '' then StrCond := ' WHERE ' + StrCond;
+
+  SQLCmd := 'SELECT TravellerID FROM Traveller ' + StrCond;
+  ShowMessage(SQLCmd);
+  Result := dbConnection.QueryCmd(SQLCmd);
+end;
+
+procedure TTravellerManager.SetAirlineCustomerID(const TravellerID,
+  AirlineCustomerID: WideString);
+var
+  dbConnection : IOlalaTourDBConnector;
+  SQLCmd : WideString;
+begin
+  dbConnection := CoOlalaTourDBConnector_.Create;
+  SQLCmd := 'UPDATE Traveller SET AirlineCustomerID = ''' + AirlineCustomerID
+    + ''' WHERE TravellerID = ''' + TravellerID + '''' ;
+  try
+    dbConnection.ExecSQLCmd(SQLCmd);
+    objctx.SetComplete;
+  except
+    objctx.SetAbort;
+  end;
+end;
+
+procedure TTravellerManager.SetBusCompanyCustomerID(const TravellerID,
+  BusCompanyCustomerID: WideString);
+var
+  dbConnection : IOlalaTourDBConnector;
+  SQLCmd : WideString;
+begin
+  dbConnection := CoOlalaTourDBConnector_.Create;
+  SQLCmd := 'UPDATE Traveller SET BusCompanyCustomerID = ''' +
+    BusCompanyCustomerID + ''' WHERE TravellerID = ''' + TravellerID + '''' ;
+  try
+    dbConnection.ExecSQLCmd(SQLCmd);
+    objctx.SetComplete;
+  except
+    objctx.SetAbort;
+  end;
+end;
+
+function TTravellerManager.ViewProfile(
+  const TravellerID: WideString): OleVariant;
+var
+  dbConnection : IOlalaTourDBConnector;
+  SQLCmd : WideString;
+begin
+  dbConnection := CoOlalaTourDBConnector_.Create;
+  SQLCmd := 'SELECT * FROM Traveller WHERE TravellerID = ''' + TravellerID + '''';
+  Result := dbConnection.QueryCmd(SQLCmd);
+end;
+
+initialization
+  TAutoObjectFactory.Create(ComServer, TTravellerManager, Class_TravellerManager,
+    ciMultiInstance, tmBoth);
+end.

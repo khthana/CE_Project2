@@ -1,0 +1,269 @@
+package purchase;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+import java.util.*;
+import java.rmi.*;
+import javax.rmi.*;
+import javax.naming.*;
+import customer.*;
+import quote.*;
+import product.*;
+import teller.*;
+import buy.*;
+import blueprint.*;
+
+public class PurchaseServlet extends HttpServlet {
+  private static final String CONTENT_TYPE = "text/html";
+  ProductHome productHome;
+  TellerHome tellerHome;
+  Teller teller;
+  BuyHome buyHome;
+  CustomerHome customerHome;
+  String err_cred;
+  /**Initialize global variables*/
+  public void init(ServletConfig config) throws ServletException {
+    super.init(config);
+    try {
+      Context ic = new InitialContext();
+      java.lang.Object objref = ic.lookup("MyProduct");
+      productHome = (ProductHome) PortableRemoteObject.narrow(objref,
+                     ProductHome.class);
+      objref = ic.lookup("MyTeller");
+      tellerHome = (TellerHome) PortableRemoteObject.narrow(objref,
+                    TellerHome.class);
+      objref = ic.lookup("MyBuy");
+      buyHome = (BuyHome) PortableRemoteObject.narrow(objref,
+                 BuyHome.class);
+      objref = ic.lookup("MyCustomer");
+      customerHome = (CustomerHome) PortableRemoteObject.narrow(objref,
+                      CustomerHome.class);
+      teller = tellerHome.create();
+    } catch (Exception e) { e.printStackTrace(); }
+  }
+  /**Process the HTTP Get request*/
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    HttpSession session = request.getSession(true);
+    Quote quote = (Quote)session.getValue("quote");
+    if (quote!=null) {
+      System.out.println("in purchase servlet quote non-equal null");
+      String action = request.getParameter("Submit");
+      if (action == null) action = request.getParameter("action");
+      if (action == null) action = "";
+      System.out.println("aciton is "+action);
+      //  begin execute Add to Basket
+      if (action.equals("Update Basket") || action.equals("Buy")) {
+      Enumeration e = request.getParameterNames();
+      while (e.hasMoreElements()) {
+        String s = (String) e.nextElement();
+        if (s.startsWith("quantity")) {
+          String productId = s.substring(8);
+          String check = request.getParameter("checkbox"+productId);
+          if (check != null) {
+            int quantity = 1;
+            System.out.println("checkbox"+productId+" = "+check);
+            String quan_text = request.getParameter(s);
+            if (quan_text!=null && !quan_text.equals("")) {
+              try {
+              quantity = Integer.valueOf(quan_text).intValue();
+              } catch (NumberFormatException ex) {
+                quantity = 0;
+              }
+            }
+            try {
+              Product product = productHome.findByPrimaryKey(productId);
+              int sellQuantity = product.getQuantity()-product.getLowSellQuantity();
+              if (quantity>sellQuantity) { quantity = sellQuantity; }
+            } catch (Exception ex) {ex.printStackTrace();}
+
+            System.out.println("add lineItem : "+productId+" quantity = "+quantity);
+            quote.putLineItem(productId,quantity);
+          } else {
+            System.out.println("remove lineItem : "+productId);
+            quote.removeLineItem(productId);
+          }
+        }
+      }
+      if (action.equals("Buy")){
+        response.sendRedirect(response.encodeURL("/product/ViewQuote.jsp"));
+      }
+      }
+
+
+      if (action.equals("Update") || action.equals("buy")) {
+      Enumeration e = request.getParameterNames();
+      while (e.hasMoreElements()) {
+        String s = (String) e.nextElement();
+        if (s.startsWith("quantity")) {
+          String productId = s.substring(8);
+          String quan_text = request.getParameter(s);
+          int quantity = 1;
+          try {
+            quantity = Integer.valueOf(quan_text).intValue();
+          } catch (NumberFormatException ex) {
+            quantity = 0;
+          }
+          try {
+            Product product = productHome.findByPrimaryKey(productId);
+            int sellQuantity = product.getQuantity()-product.getLowSellQuantity();
+            if (quantity>sellQuantity) { quantity = sellQuantity; }
+          } catch (Exception ex) {ex.printStackTrace();}
+          quote.putLineItem(productId,quantity);
+          if (action.equals("Update")) {
+          response.sendRedirect(response.encodeURL("/product/ViewQuote.jsp"));
+          }
+        }
+      }
+      if (action.equals("buy")) {
+        String password = request.getParameter("password");
+        if (password!=null && !password.trim().equals("")) {
+          Customer customer = quote.getCustomer();
+          String creditId = customer.getCreditId();
+          double totalPrice = quote.getTotalPrice();
+          try {
+          System.out.println(creditId+" : "+password+" : "+totalPrice);
+          teller.checkBalance(creditId,password,totalPrice);
+          session.putValue("pass_cred",password);
+          response.sendRedirect(response.encodeURL("/product/ConfirmBuy.jsp"));
+          System.out.println("can't redirect");
+          } catch (TellerException tx) {
+          System.out.println("find tellerException and error is "+tx.getMessage());
+            err_cred = tx.getMessage();
+            session.putValue("err_cred",err_cred);
+            response.sendRedirect(response.encodeURL("/product/ViewQuote.jsp"));
+          } catch(RemoteException ex) {
+          System.out.println("remote fail");
+            ex.printStackTrace();
+          }
+          System.out.println("nothing");
+          response.sendRedirect(response.encodeURL("/product/ConfirmBuy.jsp"));
+        } else {
+            err_cred = "please put password";
+            session.putValue("err_cred",err_cred);
+            response.sendRedirect(response.encodeURL("/product/ViewQuote.jsp"));
+        }
+      }
+      }
+      if (action.equals("OK")) {
+        String password = (String)session.getValue("pass_cred");
+        System.out.println("password"+password);
+        if (password!=null && !password.trim().equals("")) {
+          Customer customer = quote.getCustomer();
+          String creditId = customer.getCreditId();
+          System.out.println("creditId : "+creditId);
+          String toCreditId="";
+          double totalPrice = quote.getTotalPrice();
+          try {
+          Customer cus = customerHome.findCreditManager();
+          if (cus!=null) toCreditId = (String)cus.getCreditId();
+          System.out.println("toCreditId : " + toCreditId);
+          } catch (Exception ex) {
+            System.out.println("error");
+          }
+          try {
+          boolean changeQuan = false;
+          Vector lineItems = quote.getLineItems();
+          for (int i=0; i<lineItems.size(); i++) {
+            QuoteLineItem qli = (QuoteLineItem)lineItems.elementAt(i);
+            String productId = qli.getProductId();
+            int quantity = qli.getBuyQuantity();
+            try {
+            Product product = productHome.findByPrimaryKey(productId);
+            int sellQuantity = product.getQuantity()-product.getLowSellQuantity();
+            if (quantity>sellQuantity) {
+              qli.setBuyQuantity(sellQuantity);
+              changeQuan = true;
+            }
+            } catch(Exception ex) {ex.printStackTrace();}
+          }
+          if (changeQuan) {
+            err_cred = "quantity have chage";
+            session.putValue("err_cred",err_cred);
+            response.sendRedirect(response.encodeURL("/product/ViewQuote.jsp"));
+          }
+          teller.transfer(creditId,password,toCreditId,totalPrice);
+          System.out.println("transfer accept");
+//          Calendar c = Calendar.getInstance(TimeZone.getDefault());
+//          String date = c.get(5)+"/"+(c.get(2)+1)+"/"+c.get(1);
+//          String time = c.get(11)+":"+c.get(12);
+          Date d = new Date();
+          long l = d.getTime();
+          java.sql.Date dsql = new java.sql.Date(l);
+          String time = (new Integer(d.getHours())).toString()+":";
+          int sec = d.getMinutes();
+          if (sec<10) time=time+"0";
+          time = time + (new Integer(sec)).toString();
+          String receiptNo = genReceiptNo();
+          lineItems = quote.getLineItems();
+          for (int i=0; i<lineItems.size(); i++) {
+            QuoteLineItem qli = (QuoteLineItem)lineItems.elementAt(i);
+            String username = (String)customer.getPrimaryKey();
+            String productId = qli.getProductId();
+            int quantity = qli.getBuyQuantity();
+            Blueprint blueprint = qli.getBlueprint();
+            double subtotal = blueprint.getSellPrice()*quantity;
+            double subtotalImport = blueprint.getImportPrice()*quantity;
+            System.out.println(username+" : "+productId+" : "+quantity+" : "+subtotal+" : "+subtotalImport+" : "+d.toString()+" : "+time+" : "+"false"+" : "+receiptNo.toString());
+            try {
+            Buy buy = buyHome.create(username,productId,quantity,subtotal,subtotalImport,dsql,time,"false",receiptNo);
+            System.out.println("create buy ok");
+            Product p = productHome.findByPrimaryKey(productId);
+            int oldQuantity = p.getQuantity();
+            int newQuantity = oldQuantity-quantity;
+            p.setQuantity(newQuantity);
+            int lowSellQuantity = p.getLowSellQuantity();
+            if (newQuantity<=lowSellQuantity) { p.setSellNow("no"); }
+            } catch (Exception ex) {
+              ex.printStackTrace();
+            }
+          }
+          quote.clear();
+          response.sendRedirect(response.encodeURL("/product/ThankYou.jsp?receiptNo="+receiptNo));
+          } catch (TellerException tx) {
+            err_cred = tx.getMessage();
+            session.putValue("err_cred",err_cred);
+            response.sendRedirect(response.encodeURL("/product/ViewQuote.jsp"));
+          } catch(RemoteException ex) {
+            ex.printStackTrace();
+          }
+        }
+      }
+      if (action.equals("Cancel")) {
+        response.sendRedirect(response.encodeURL("/product/ViewQuote.jsp"));
+      }
+      if (action.equals("Clear")) {
+        quote.clear();
+        response.sendRedirect(response.encodeURL("/product/ViewQuote.jsp"));
+      }
+
+    }
+    response.sendRedirect(response.encodeURL("/product/SearchProductJSP.jsp"));
+  }
+  /**Clean up resources*/
+  public void destroy() {
+  }
+  private String genReceiptNo() {
+    String newReceiptNo = "00001";
+    try {
+      Buy buy = buyHome.findMaxReceiptNo();
+      if (buy != null) {
+        String receiptNo = buy.getReceiptNo();
+        int maxReceiptNo = Integer.valueOf(receiptNo).intValue();
+        maxReceiptNo++;
+        newReceiptNo = Integer.toString(maxReceiptNo);
+        int lengthReceiptNo = 5;
+        if (newReceiptNo.length()<lengthReceiptNo) {
+          char[] c = new char[lengthReceiptNo];
+          for (int i=0; i<lengthReceiptNo; i++) c[i] = '0';
+          for (int i=0; i<newReceiptNo.length(); i++) {
+            c[(lengthReceiptNo-newReceiptNo.length())+i] = newReceiptNo.charAt(i);
+          }
+          newReceiptNo = new String(c);
+        }
+      }
+    }catch (Exception e) {
+      e.printStackTrace();
+    } return newReceiptNo;
+  }
+
+}

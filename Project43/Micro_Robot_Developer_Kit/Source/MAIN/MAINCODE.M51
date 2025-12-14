@@ -1,0 +1,1602 @@
+MCS-51 LINKER / LOCATER  L51 V2.8                                                             DATE  05/20/01   PAGE    1
+
+
+MS-DOS MCS-51 LINKER / LOCATER  L51 V2.8, INVOKED BY:
+L51 MAINCODE.OBJ, C:\C51\BIN\C51S.LIB CODE (?C_C51STARTUP (0040H), 080H) XDATA (8000H) NOOVERLAY
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  MAINCODE.OBJ (MAINCODE)
+  C:\C51\BIN\C51S.LIB (?C_STARTUP)
+  C:\C51\BIN\C51S.LIB (?C_CLDPTR)
+  C:\C51\BIN\C51S.LIB (?C_UIDIV)
+  C:\C51\BIN\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  MAINCODE (MAINCODE)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         ?DT?_I2CSCLHIGH?MAINCODE
+            DATA    000AH     0002H     UNIT         ?DT?_LCD_WRITE_INT?MAINCODE
+            DATA    000CH     0003H     UNIT         ?DT?_LCD_WRITE_STRING?MAINCODE
+            DATA    000FH     0001H     UNIT         ?DT?US_GET_SAMPLE?MAINCODE
+            DATA    0010H     0004H     UNIT         ?DT?PROGRAMMING?MAINCODE
+            DATA    0014H     0006H     UNIT         ?DT?RUNNING?MAINCODE
+            DATA    001AH     0001H     UNIT         ?DT?PATTERN?MAINCODE
+            DATA    001BH     0004H     UNIT         ?DT?TRACK?MAINCODE
+                    001FH     0001H                  *** GAP ***
+            DATA    0020H     0002H     BIT_ADDR     ?BA?MAINCODE
+            DATA    0022H     001CH     UNIT         ?DT?MAINCODE
+            IDATA   003EH     0002H     UNIT         ?ID?MAINCODE
+            IDATA   0040H     0001H     UNIT         ?STACK
+
+            * * * * * * *  X D A T A   M E M O R Y  * * * * * * *
+                    0000H     8000H                  *** GAP ***
+            XDATA   8000H     01FFH     UNIT         ?XD?MAINCODE
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     003DH                  *** GAP ***
+            CODE    0040H     008CH     UNIT         ?C_C51STARTUP
+            CODE    00CCH     0015H     UNIT         ?PR?_DELAY?MAINCODE
+            CODE    00E1H     000EH     UNIT         ?PR?_WRITE?MAINCODE
+            CODE    00EFH     000EH     UNIT         ?PR?_READ?MAINCODE
+            CODE    00FDH     000AH     UNIT         ?PR?_I2CBITDLY?MAINCODE
+            CODE    0107H     0017H     UNIT         ?PR?_I2CSCLHIGH?MAINCODE
+            CODE    011EH     000AH     UNIT         ?PR?_I2CSLAVESTOP?MAINCODE
+            CODE    0128H     0029H     UNIT         ?PR?_I2CRECEIVEBYTE?MAINCODE
+            CODE    0151H     0037H     UNIT         ?PR?_I2CSENDBYTE?MAINCODE
+            CODE    0188H     0016H     UNIT         ?PR?_I2CSENDADDR?MAINCODE
+            CODE    019EH     0011H     UNIT         ?PR?I2CSENDSTOP?MAINCODE
+            CODE    01AFH     0021H     UNIT         ?PR?I2CRECEIVEDATABYTE?MAINCODE
+            CODE    01D0H     0010H     UNIT         ?PR?_WRITEI2C?MAINCODE
+            CODE    01E0H     0030H     UNIT         ?PR?MT_GO_FORWARD?MAINCODE
+            CODE    0210H     0030H     UNIT         ?PR?MT_GO_BACKWARD?MAINCODE
+            CODE    0240H     0030H     UNIT         ?PR?MT_TURN_LEFT?MAINCODE
+            CODE    0270H     0030H     UNIT         ?PR?MT_TURN_RIGHT?MAINCODE
+            CODE    02A0H     0030H     UNIT         ?PR?MT_STOP_MOVE?MAINCODE
+            CODE    02D0H     0048H     UNIT         ?PR?_MT_SET_SPEED?MAINCODE
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE    2
+
+
+            CODE    0318H     0068H     UNIT         ?PR?_MT_SET_RUN_TIME?MAINCODE
+            CODE    0380H     003EH     UNIT         ?PR?STEPPING_SET_SINGLE_PHASE_MODE?MAINC
+            CODE    03BEH     003EH     UNIT         ?PR?STEPPING_SET_DOUBLE_PHASE_MODE?MAINC
+            CODE    03FCH     0042H     UNIT         ?PR?_IR_GET_DATA_NO?MAINCODE
+            CODE    043EH     003AH     UNIT         ?PR?IR_GET_DATA?MAINCODE
+            CODE    0478H     003AH     UNIT         ?PR?IR_GET_SAMPLE?MAINCODE
+            CODE    04B2H     0030H     UNIT         ?PR?IR_ENABLE_INTERRUPT?MAINCODE
+            CODE    04E2H     0030H     UNIT         ?PR?IR_DISABLE_INTERRUPT?MAINCODE
+            CODE    0512H     0040H     UNIT         ?PR?_LCD_WRITE_CHAR?MAINCODE
+            CODE    0552H     004DH     UNIT         ?PR?_LCD_WRITE_BYTE?MAINCODE
+            CODE    059FH     00DAH     UNIT         ?PR?_LCD_WRITE_INT?MAINCODE
+            CODE    0679H     0023H     UNIT         ?PR?_LCD_WRITE_STRING?MAINCODE
+            CODE    069CH     0052H     UNIT         ?PR?_LCD_GOTOXY?MAINCODE
+            CODE    06EEH     0030H     UNIT         ?PR?LCD_CLEAR?MAINCODE
+            CODE    071EH     003FH     UNIT         ?PR?KBD_GET_KEY?MAINCODE
+            CODE    075DH     0039H     UNIT         ?PR?KBD_SCAN_KEY?MAINCODE
+            CODE    0796H     0059H     UNIT         ?PR?_SND_GEN_FREQ?MAINCODE
+            CODE    07EFH     0030H     UNIT         ?PR?SND_STOP_FREQ?MAINCODE
+            CODE    081FH     003AH     UNIT         ?PR?US_GET_DATA?MAINCODE
+            CODE    0859H     0038H     UNIT         ?PR?US_GET_DATA01?MAINCODE
+            CODE    0891H     0038H     UNIT         ?PR?US_GET_DATA02?MAINCODE
+            CODE    08C9H     003CH     UNIT         ?PR?US_GET_SAMPLE?MAINCODE
+            CODE    0905H     0030H     UNIT         ?PR?US_ENABLE_INTERRUPT?MAINCODE
+            CODE    0935H     0030H     UNIT         ?PR?US_DISABLE_INTERRUPT?MAINCODE
+            CODE    0965H     01BBH     UNIT         ?PR?PROGRAMMING?MAINCODE
+            CODE    0B20H     02A6H     UNIT         ?PR?RUNNING?MAINCODE
+            CODE    0DC6H     0065H     UNIT         ?PR?PATTERN?MAINCODE
+            CODE    0E2BH     01A3H     UNIT         ?PR?TRACK?MAINCODE
+            CODE    0FCEH     007CH     UNIT         ?PR?MAIN?MAINCODE
+            CODE    104AH     00D9H     UNIT         ?CO?MAINCODE
+            CODE    1123H     0027H     UNIT         ?C_INITSEG
+            CODE    114AH     0070H     UNIT         ?C_LIB_CODE
+
+
+
+SYMBOL TABLE OF MODULE:  MAINCODE (MAINCODE)
+
+VALUE           TYPE          NAME
+----------------------------------
+
+-------         MODULE        MAINCODE
+C:0000H         SYMBOL        _ICE_DUMMY_
+D:0022H         PUBLIC        SHOW_STR
+B:0090H.5       PUBLIC        INT_3
+D:0021H         PUBLIC        INFRARED_DATA_HI
+C:0380H         PUBLIC        STEPPING_SET_SINGLE_PHASE_MODE
+B:0090H.6       PUBLIC        INT_4
+D:0080H         PUBLIC        P0
+B:0090H.7       PUBLIC        INT_5
+D:0090H         PUBLIC        P1
+B:00B0H.5       PUBLIC        INT_6
+D:00A0H         PUBLIC        P2
+C:0DC6H         PUBLIC        PATTERN
+B:00B0H.4       PUBLIC        INT_7
+D:00B0H         PUBLIC        P3
+B:00B0H.4       PUBLIC        T0
+B:00D0H.6       PUBLIC        AC
+C:075DH         PUBLIC        KBD_SCAN_KEY
+C:0107H         PUBLIC        _I2CSCLHIGH
+B:00B0H.5       PUBLIC        T1
+C:0B20H         PUBLIC        RUNNING
+B:00A8H.7       PUBLIC        EA
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE    3
+
+
+D:0037H         PUBLIC        CURRENT
+D:0020H         PUBLIC        INFRARED_DATA_LO
+D:0038H         PUBLIC        TEMPDELAY
+D:0039H         PUBLIC        ULTRASONIC_01
+D:003AH         PUBLIC        ULTRASONIC_02
+C:00E1H         PUBLIC        _WRITE
+B:0021H.1       PUBLIC        INFRARED_10
+B:0020H.0       PUBLIC        INFRARED_01
+B:0021H.2       PUBLIC        INFRARED_11
+B:0020H.1       PUBLIC        INFRARED_02
+B:0021H.3       PUBLIC        INFRARED_12
+B:0020H.2       PUBLIC        INFRARED_03
+B:0020H.3       PUBLIC        INFRARED_04
+B:0020H.4       PUBLIC        INFRARED_05
+B:00B0H.7       PUBLIC        RD
+B:0020H.5       PUBLIC        INFRARED_06
+C:0E2BH         PUBLIC        TRACK
+B:0020H.6       PUBLIC        INFRARED_07
+B:00A8H.4       PUBLIC        ES
+B:0020H.7       PUBLIC        INFRARED_08
+B:0021H.0       PUBLIC        INFRARED_09
+C:01AFH         PUBLIC        I2CRECEIVEDATABYTE
+B:0098H.0       PUBLIC        RI
+B:00B0H.2       PUBLIC        INT0
+B:00D0H.7       PUBLIC        CY
+I:003EH         PUBLIC        MEMORY
+B:0098H.1       PUBLIC        TI
+B:00B0H.3       PUBLIC        INT1
+C:071EH         PUBLIC        KBD_GET_KEY
+C:07EFH         PUBLIC        SND_STOP_FREQ
+B:0090H.1       PUBLIC        SDA_PIN
+B:00B8H.4       PUBLIC        PS
+C:0478H         PUBLIC        IR_GET_SAMPLE
+C:02D0H         PUBLIC        _MT_SET_SPEED
+B:00D0H.2       PUBLIC        OV
+C:0FCEH         PUBLIC        MAIN
+C:0859H         PUBLIC        US_GET_DATA01
+C:04E2H         PUBLIC        IR_DISABLE_INTERRUPT
+C:0188H         PUBLIC        _I2CSENDADDR
+B:00B0H.6       PUBLIC        WR
+C:0891H         PUBLIC        US_GET_DATA02
+C:0965H         PUBLIC        PROGRAMMING
+B:0090H.0       PUBLIC        SCL_PIN
+C:01D0H         PUBLIC        _WRITEI2C
+C:08C9H         PUBLIC        US_GET_SAMPLE
+C:01E0H         PUBLIC        MT_GO_FORWARD
+C:0935H         PUBLIC        US_DISABLE_INTERRUPT
+C:043EH         PUBLIC        IR_GET_DATA
+C:04B2H         PUBLIC        IR_ENABLE_INTERRUPT
+X:8000H         PUBLIC        SIZE
+C:06EEH         PUBLIC        LCD_CLEAR
+C:0679H         PUBLIC        _LCD_WRITE_STRING
+B:0088H.1       PUBLIC        IE0
+B:0088H.3       PUBLIC        IE1
+C:069CH         PUBLIC        _LCD_GOTOXY
+C:0151H         PUBLIC        _I2CSENDBYTE
+C:0512H         PUBLIC        _LCD_WRITE_CHAR
+C:011EH         PUBLIC        _I2CSLAVESTOP
+C:081FH         PUBLIC        US_GET_DATA
+C:0905H         PUBLIC        US_ENABLE_INTERRUPT
+B:00A8H.1       PUBLIC        ET0
+D:003BH         PUBLIC        KEY
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE    4
+
+
+B:00A8H.3       PUBLIC        ET1
+B:0088H.5       PUBLIC        TF0
+B:0088H.7       PUBLIC        TF1
+B:0098H.2       PUBLIC        RB8
+B:00A8H.0       PUBLIC        EX0
+B:0088H.0       PUBLIC        IT0
+B:0098H.3       PUBLIC        TB8
+B:00A8H.2       PUBLIC        EX1
+B:0088H.2       PUBLIC        IT1
+C:0270H         PUBLIC        MT_TURN_RIGHT
+B:00B0H.3       PUBLIC        ACK
+B:00D0H.0       PUBLIC        P
+B:0098H.7       PUBLIC        SM0
+B:0098H.6       PUBLIC        SM1
+B:0098H.5       PUBLIC        SM2
+B:00B8H.1       PUBLIC        PT0
+B:0090H.2       PUBLIC        LED
+B:00B8H.3       PUBLIC        PT1
+B:00D0H.3       PUBLIC        RS0
+B:0088H.4       PUBLIC        TR0
+B:00D0H.4       PUBLIC        RS1
+B:0088H.6       PUBLIC        TR1
+C:03FCH         PUBLIC        _IR_GET_DATA_NO
+B:00B8H.0       PUBLIC        PX0
+C:0552H         PUBLIC        _LCD_WRITE_BYTE
+B:00B8H.2       PUBLIC        PX1
+C:0240H         PUBLIC        MT_TURN_LEFT
+X:8001H         PUBLIC        COMMAND
+B:00B0H.2       PUBLIC        IN_INT
+C:02A0H         PUBLIC        MT_STOP_MOVE
+B:0098H.4       PUBLIC        REN
+D:003CH         PUBLIC        COUNTDOWN
+C:00FDH         PUBLIC        _I2CBITDLY
+D:003DH         PUBLIC        _I2C_ERROR
+B:00B0H.0       PUBLIC        RXD
+C:059FH         PUBLIC        _LCD_WRITE_INT
+B:00B0H.1       PUBLIC        TXD
+C:00CCH         PUBLIC        _DELAY
+C:0796H         PUBLIC        _SND_GEN_FREQ
+C:019EH         PUBLIC        I2CSENDSTOP
+B:00D0H.5       PUBLIC        F0
+C:03BEH         PUBLIC        STEPPING_SET_DOUBLE_PHASE_MODE
+C:0318H         PUBLIC        _MT_SET_RUN_TIME
+B:0090H.2       PUBLIC        INT_0
+B:0090H.3       PUBLIC        INT_1
+C:0210H         PUBLIC        MT_GO_BACKWARD
+C:0128H         PUBLIC        _I2CRECEIVEBYTE
+C:00EFH         PUBLIC        _READ
+B:0090H.4       PUBLIC        INT_2
+-------         PROC          _DELAY
+D:0007H         SYMBOL        COUNT1
+D:0005H         SYMBOL        COUNT2
+D:0006H         SYMBOL        XX
+D:0004H         SYMBOL        YY
+-------         ENDPROC       _DELAY
+C:00CCH         LINE#         44
+C:00CCH         LINE#         45
+C:00CCH         LINE#         47
+C:00D3H         LINE#         48
+C:00D3H         LINE#         49
+C:00DAH         LINE#         50
+C:00DAH         LINE#         51
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE    5
+
+
+C:00DDH         LINE#         52
+C:00E0H         LINE#         53
+-------         PROC          _WRITE
+D:0006H         SYMBOL        ADDRESS
+D:0005H         SYMBOL        MEM_DATA
+-------         ENDPROC       _WRITE
+C:00E1H         LINE#         55
+C:00E1H         LINE#         56
+C:00E1H         LINE#         57
+C:00E8H         LINE#         58
+C:00EEH         LINE#         59
+-------         PROC          _READ
+D:0006H         SYMBOL        ADDRESS
+-------         ENDPROC       _READ
+C:00EFH         LINE#         61
+C:00EFH         LINE#         62
+C:00EFH         LINE#         63
+C:00F6H         LINE#         64
+C:00FCH         LINE#         65
+-------         PROC          _I2CBITDLY
+-------         ENDPROC       _I2CBITDLY
+C:00FDH         LINE#         69
+C:00FDH         LINE#         70
+C:00FDH         LINE#         71
+C:0100H         LINE#         72
+C:0102H         LINE#         73
+C:0104H         LINE#         74
+C:0106H         LINE#         76
+-------         PROC          _I2CSCLHIGH
+D:0008H         SYMBOL        ERR
+-------         ENDPROC       _I2CSCLHIGH
+C:0107H         LINE#         78
+C:0107H         LINE#         79
+C:0107H         LINE#         81
+C:0109H         LINE#         82
+C:010CH         LINE#         83
+C:010CH         LINE#         84
+C:0114H         LINE#         85
+C:011AH         LINE#         86
+C:011AH         LINE#         87
+C:011DH         LINE#         89
+C:011DH         LINE#         90
+C:011DH         LINE#         91
+-------         PROC          _I2CSLAVESTOP
+-------         ENDPROC       _I2CSLAVESTOP
+C:011EH         LINE#         93
+C:011EH         LINE#         94
+C:011EH         LINE#         95
+C:0121H         LINE#         96
+C:0124H         LINE#         97
+C:0127H         LINE#         98
+-------         PROC          _I2CRECEIVEBYTE
+D:0006H         SYMBOL        I
+D:0007H         SYMBOL        RES
+-------         ENDPROC       _I2CRECEIVEBYTE
+C:0128H         LINE#         100
+C:0128H         LINE#         101
+C:0128H         LINE#         103
+C:012AH         LINE#         104
+C:012CH         LINE#         105
+C:0133H         LINE#         106
+C:0133H         LINE#         107
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE    6
+
+
+C:0136H         LINE#         108
+C:013AH         LINE#         109
+C:013DH         LINE#         110
+C:013DH         LINE#         111
+C:013EH         LINE#         112
+C:013EH         LINE#         113
+C:0141H         LINE#         114
+C:0144H         LINE#         115
+C:0146H         LINE#         116
+C:0149H         LINE#         117
+C:014CH         LINE#         118
+C:014EH         LINE#         119
+C:0150H         LINE#         120
+C:0150H         LINE#         121
+-------         PROC          _I2CSENDBYTE
+D:0007H         SYMBOL        BT
+D:0006H         SYMBOL        I
+-------         ENDPROC       _I2CSENDBYTE
+C:0151H         LINE#         123
+C:0151H         LINE#         124
+C:0151H         LINE#         126
+C:0159H         LINE#         127
+C:0159H         LINE#         128
+C:0161H         LINE#         129
+C:0163H         LINE#         130
+C:0166H         LINE#         131
+C:0169H         LINE#         132
+C:016BH         LINE#         133
+C:016EH         LINE#         134
+C:0172H         LINE#         135
+C:0175H         LINE#         136
+C:0177H         LINE#         137
+C:017AH         LINE#         138
+C:017DH         LINE#         139
+C:0180H         LINE#         140
+C:0182H         LINE#         141
+C:0184H         LINE#         142
+C:0187H         LINE#         143
+-------         PROC          _I2CSENDADDR
+D:0007H         SYMBOL        ADDR
+D:0005H         SYMBOL        RD
+-------         ENDPROC       _I2CSENDADDR
+C:0188H         LINE#         145
+C:0188H         LINE#         146
+C:0188H         LINE#         147
+C:018AH         LINE#         148
+C:018DH         LINE#         149
+C:018FH         LINE#         150
+C:0192H         LINE#         151
+C:0194H         LINE#         152
+C:0197H         LINE#         153
+C:019DH         LINE#         154
+-------         PROC          I2CSENDSTOP
+-------         ENDPROC       I2CSENDSTOP
+C:019EH         LINE#         156
+C:019EH         LINE#         157
+C:019EH         LINE#         158
+C:01A0H         LINE#         159
+C:01A3H         LINE#         160
+C:01A6H         LINE#         161
+C:01A9H         LINE#         162
+C:01ABH         LINE#         163
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE    7
+
+
+C:01AEH         LINE#         164
+-------         PROC          I2CRECEIVEDATABYTE
+D:0007H         SYMBOL        ADDRESS
+D:0005H         SYMBOL        RET
+-------         ENDPROC       I2CRECEIVEDATABYTE
+C:01AFH         LINE#         166
+C:01AFH         LINE#         167
+C:01AFH         LINE#         170
+C:01B5H         LINE#         171
+C:01BBH         LINE#         172
+C:01BBH         LINE#         173
+C:01BEH         LINE#         174
+C:01C1H         LINE#         175
+C:01C5H         LINE#         176
+C:01C5H         LINE#         177
+C:01CAH         LINE#         178
+C:01CDH         LINE#         179
+C:01CDH         LINE#         180
+C:01CDH         LINE#         181
+C:01CFH         LINE#         182
+-------         PROC          _WRITEI2C
+D:0006H         SYMBOL        ADDR
+D:0004H         SYMBOL        DATA
+-------         ENDPROC       _WRITEI2C
+C:01D0H         LINE#         184
+C:01D2H         LINE#         185
+C:01D2H         LINE#         186
+C:01D7H         LINE#         187
+C:01DCH         LINE#         188
+C:01DFH         LINE#         189
+-------         PROC          MT_GO_FORWARD
+-------         ENDPROC       MT_GO_FORWARD
+C:01E0H         LINE#         17
+C:01E0H         LINE#         18
+C:01E0H         LINE#         19
+C:01E3H         LINE#         20
+C:01E3H         LINE#         21
+C:01E6H         LINE#         22
+C:01E8H         LINE#         23
+C:01EAH         LINE#         24
+C:01F8H         LINE#         25
+C:01FFH         LINE#         26
+C:01FFH         LINE#         27
+C:0206H         LINE#         29
+C:0208H         LINE#         30
+C:020DH         LINE#         31
+C:020DH         LINE#         32
+C:020FH         LINE#         33
+C:020FH         LINE#         34
+-------         PROC          MT_GO_BACKWARD
+-------         ENDPROC       MT_GO_BACKWARD
+C:0210H         LINE#         36
+C:0210H         LINE#         37
+C:0210H         LINE#         38
+C:0213H         LINE#         39
+C:0213H         LINE#         40
+C:0216H         LINE#         41
+C:0218H         LINE#         42
+C:021AH         LINE#         43
+C:0228H         LINE#         44
+C:022FH         LINE#         45
+C:022FH         LINE#         46
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE    8
+
+
+C:0236H         LINE#         48
+C:0238H         LINE#         49
+C:023DH         LINE#         50
+C:023DH         LINE#         51
+C:023FH         LINE#         52
+C:023FH         LINE#         53
+-------         PROC          MT_TURN_LEFT
+-------         ENDPROC       MT_TURN_LEFT
+C:0240H         LINE#         55
+C:0240H         LINE#         56
+C:0240H         LINE#         57
+C:0243H         LINE#         58
+C:0243H         LINE#         59
+C:0246H         LINE#         60
+C:0248H         LINE#         61
+C:024AH         LINE#         62
+C:0258H         LINE#         63
+C:025FH         LINE#         64
+C:025FH         LINE#         65
+C:0266H         LINE#         67
+C:0268H         LINE#         68
+C:026DH         LINE#         69
+C:026DH         LINE#         70
+C:026FH         LINE#         71
+C:026FH         LINE#         72
+-------         PROC          MT_TURN_RIGHT
+-------         ENDPROC       MT_TURN_RIGHT
+C:0270H         LINE#         74
+C:0270H         LINE#         75
+C:0270H         LINE#         76
+C:0273H         LINE#         77
+C:0273H         LINE#         78
+C:0276H         LINE#         79
+C:0278H         LINE#         80
+C:027AH         LINE#         81
+C:0288H         LINE#         82
+C:028FH         LINE#         83
+C:028FH         LINE#         84
+C:0296H         LINE#         86
+C:0298H         LINE#         87
+C:029DH         LINE#         88
+C:029DH         LINE#         89
+C:029FH         LINE#         90
+C:029FH         LINE#         91
+-------         PROC          MT_STOP_MOVE
+-------         ENDPROC       MT_STOP_MOVE
+C:02A0H         LINE#         93
+C:02A0H         LINE#         94
+C:02A0H         LINE#         95
+C:02A3H         LINE#         96
+C:02A3H         LINE#         97
+C:02A6H         LINE#         98
+C:02A8H         LINE#         99
+C:02AAH         LINE#         100
+C:02B8H         LINE#         101
+C:02BFH         LINE#         102
+C:02BFH         LINE#         103
+C:02C6H         LINE#         105
+C:02C8H         LINE#         106
+C:02CDH         LINE#         107
+C:02CDH         LINE#         108
+C:02CFH         LINE#         109
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE    9
+
+
+C:02CFH         LINE#         110
+-------         PROC          _MT_SET_SPEED
+D:0003H         SYMBOL        SPEED
+-------         ENDPROC       _MT_SET_SPEED
+C:02D0H         LINE#         112
+C:02D2H         LINE#         113
+C:02D2H         LINE#         114
+C:02D5H         LINE#         115
+C:02D5H         LINE#         116
+C:02DBH         LINE#         117
+C:02DBH         LINE#         118
+C:02DDH         LINE#         119
+C:02DDH         LINE#         120
+C:02E0H         LINE#         121
+C:02E2H         LINE#         122
+C:02E4H         LINE#         123
+C:02F2H         LINE#         124
+C:02F9H         LINE#         125
+C:02F9H         LINE#         126
+C:0300H         LINE#         127
+C:0307H         LINE#         128
+C:030EH         LINE#         130
+C:0310H         LINE#         131
+C:0315H         LINE#         132
+C:0315H         LINE#         133
+C:0317H         LINE#         134
+C:0317H         LINE#         135
+-------         PROC          _MT_SET_RUN_TIME
+D:0002H         SYMBOL        TIME
+D:0001H         SYMBOL        TIME_HI
+D:0003H         SYMBOL        TIME_LO
+-------         ENDPROC       _MT_SET_RUN_TIME
+C:0318H         LINE#         137
+C:031CH         LINE#         138
+C:031CH         LINE#         140
+C:031FH         LINE#         141
+C:031FH         LINE#         142
+C:0322H         LINE#         143
+C:0324H         LINE#         144
+C:0326H         LINE#         145
+C:0334H         LINE#         146
+C:033BH         LINE#         147
+C:033BH         LINE#         148
+C:033DH         LINE#         149
+C:0341H         LINE#         150
+C:0353H         LINE#         151
+C:035AH         LINE#         152
+C:0361H         LINE#         153
+C:0368H         LINE#         154
+C:036FH         LINE#         155
+C:0376H         LINE#         157
+C:0378H         LINE#         158
+C:037DH         LINE#         159
+C:037DH         LINE#         160
+C:037FH         LINE#         161
+C:037FH         LINE#         162
+-------         PROC          STEPPING_SET_SINGLE_PHASE_MODE
+-------         ENDPROC       STEPPING_SET_SINGLE_PHASE_MODE
+C:0380H         LINE#         164
+C:0380H         LINE#         165
+C:0380H         LINE#         166
+C:0383H         LINE#         167
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE   10
+
+
+C:0383H         LINE#         168
+C:0386H         LINE#         169
+C:0388H         LINE#         170
+C:038AH         LINE#         171
+C:0398H         LINE#         172
+C:039FH         LINE#         173
+C:039FH         LINE#         174
+C:03A6H         LINE#         175
+C:03ADH         LINE#         176
+C:03B4H         LINE#         178
+C:03B6H         LINE#         179
+C:03BBH         LINE#         180
+C:03BBH         LINE#         181
+C:03BDH         LINE#         182
+C:03BDH         LINE#         183
+-------         PROC          STEPPING_SET_DOUBLE_PHASE_MODE
+-------         ENDPROC       STEPPING_SET_DOUBLE_PHASE_MODE
+C:03BEH         LINE#         185
+C:03BEH         LINE#         186
+C:03BEH         LINE#         187
+C:03C1H         LINE#         188
+C:03C1H         LINE#         189
+C:03C4H         LINE#         190
+C:03C6H         LINE#         191
+C:03C8H         LINE#         192
+C:03D6H         LINE#         193
+C:03DDH         LINE#         194
+C:03DDH         LINE#         195
+C:03E4H         LINE#         196
+C:03EBH         LINE#         197
+C:03F2H         LINE#         199
+C:03F4H         LINE#         200
+C:03F9H         LINE#         201
+C:03F9H         LINE#         202
+C:03FBH         LINE#         203
+C:03FBH         LINE#         204
+-------         PROC          _IR_GET_DATA_NO
+D:0005H         SYMBOL        NO
+D:0003H         SYMBOL        TEMP
+-------         ENDPROC       _IR_GET_DATA_NO
+C:03FCH         LINE#         23
+C:03FEH         LINE#         24
+C:03FEH         LINE#         25
+C:0400H         LINE#         26
+C:0403H         LINE#         27
+C:0403H         LINE#         28
+C:0409H         LINE#         29
+C:0409H         LINE#         30
+C:040BH         LINE#         31
+C:040BH         LINE#         32
+C:040EH         LINE#         33
+C:0410H         LINE#         34
+C:0412H         LINE#         35
+C:0413H         LINE#         36
+C:0421H         LINE#         37
+C:0428H         LINE#         38
+C:0428H         LINE#         39
+C:042DH         LINE#         41
+C:0432H         LINE#         43
+C:0434H         LINE#         44
+C:0439H         LINE#         45
+C:0439H         LINE#         46
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE   11
+
+
+C:043BH         LINE#         47
+C:043BH         LINE#         48
+C:043DH         LINE#         49
+-------         PROC          IR_GET_DATA
+-------         ENDPROC       IR_GET_DATA
+C:043EH         LINE#         51
+C:043EH         LINE#         52
+C:043EH         LINE#         53
+C:0441H         LINE#         54
+C:0441H         LINE#         55
+C:0444H         LINE#         56
+C:0446H         LINE#         57
+C:0448H         LINE#         58
+C:0456H         LINE#         59
+C:045DH         LINE#         60
+C:045DH         LINE#         61
+C:0464H         LINE#         63
+C:0469H         LINE#         65
+C:046EH         LINE#         67
+C:0470H         LINE#         68
+C:0475H         LINE#         69
+C:0475H         LINE#         70
+C:0477H         LINE#         71
+C:0477H         LINE#         72
+-------         PROC          IR_GET_SAMPLE
+-------         ENDPROC       IR_GET_SAMPLE
+C:0478H         LINE#         74
+C:0478H         LINE#         75
+C:0478H         LINE#         76
+C:047BH         LINE#         77
+C:047BH         LINE#         78
+C:047EH         LINE#         79
+C:0480H         LINE#         80
+C:0482H         LINE#         81
+C:0490H         LINE#         82
+C:0497H         LINE#         83
+C:0497H         LINE#         84
+C:049EH         LINE#         86
+C:04A3H         LINE#         88
+C:04A8H         LINE#         90
+C:04AAH         LINE#         91
+C:04AFH         LINE#         92
+C:04AFH         LINE#         93
+C:04B1H         LINE#         94
+C:04B1H         LINE#         95
+-------         PROC          IR_ENABLE_INTERRUPT
+-------         ENDPROC       IR_ENABLE_INTERRUPT
+C:04B2H         LINE#         97
+C:04B2H         LINE#         98
+C:04B2H         LINE#         99
+C:04B5H         LINE#         100
+C:04B5H         LINE#         101
+C:04B8H         LINE#         102
+C:04BAH         LINE#         103
+C:04BCH         LINE#         104
+C:04CAH         LINE#         105
+C:04D1H         LINE#         106
+C:04D1H         LINE#         107
+C:04D8H         LINE#         109
+C:04DAH         LINE#         110
+C:04DFH         LINE#         111
+C:04DFH         LINE#         112
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE   12
+
+
+C:04E1H         LINE#         113
+C:04E1H         LINE#         114
+-------         PROC          IR_DISABLE_INTERRUPT
+-------         ENDPROC       IR_DISABLE_INTERRUPT
+C:04E2H         LINE#         116
+C:04E2H         LINE#         117
+C:04E2H         LINE#         118
+C:04E5H         LINE#         119
+C:04E5H         LINE#         120
+C:04E8H         LINE#         121
+C:04EAH         LINE#         122
+C:04ECH         LINE#         123
+C:04FAH         LINE#         124
+C:0501H         LINE#         125
+C:0501H         LINE#         126
+C:0508H         LINE#         128
+C:050AH         LINE#         129
+C:050FH         LINE#         130
+C:050FH         LINE#         131
+C:0511H         LINE#         132
+C:0511H         LINE#         133
+-------         PROC          _LCD_WRITE_CHAR
+D:0003H         SYMBOL        CH
+-------         ENDPROC       _LCD_WRITE_CHAR
+C:0512H         LINE#         9
+C:0514H         LINE#         10
+C:0514H         LINE#         11
+C:0517H         LINE#         12
+C:0517H         LINE#         13
+C:051AH         LINE#         14
+C:051CH         LINE#         15
+C:051EH         LINE#         16
+C:052CH         LINE#         17
+C:0533H         LINE#         18
+C:0533H         LINE#         19
+C:053AH         LINE#         20
+C:0541H         LINE#         21
+C:0548H         LINE#         23
+C:054AH         LINE#         24
+C:054FH         LINE#         25
+C:054FH         LINE#         26
+C:0551H         LINE#         27
+C:0551H         LINE#         28
+-------         PROC          _LCD_WRITE_BYTE
+D:0002H         SYMBOL        IN
+D:0001H         SYMBOL        FIRST
+-------         ENDPROC       _LCD_WRITE_BYTE
+C:0552H         LINE#         30
+C:0554H         LINE#         31
+C:0554H         LINE#         32
+C:0556H         LINE#         33
+C:0561H         LINE#         34
+C:0561H         LINE#         35
+C:0568H         LINE#         36
+C:0569H         LINE#         37
+C:0570H         LINE#         38
+C:0570H         LINE#         39
+C:057BH         LINE#         40
+C:057BH         LINE#         41
+C:0582H         LINE#         42
+C:0584H         LINE#         43
+C:058BH         LINE#         44
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE   13
+
+
+C:058DH         LINE#         46
+C:058DH         LINE#         47
+C:0590H         LINE#         48
+C:0590H         LINE#         49
+C:0595H         LINE#         50
+C:0595H         LINE#         51
+C:0595H         LINE#         52
+C:059CH         LINE#         53
+C:059EH         LINE#         54
+-------         PROC          _LCD_WRITE_INT
+D:000AH         SYMBOL        IN
+D:0002H         SYMBOL        FIRST
+-------         ENDPROC       _LCD_WRITE_INT
+C:059FH         LINE#         56
+C:05A3H         LINE#         57
+C:05A3H         LINE#         58
+C:05A5H         LINE#         59
+C:05B5H         LINE#         60
+C:05B5H         LINE#         61
+C:05BCH         LINE#         62
+C:05BDH         LINE#         63
+C:05CCH         LINE#         64
+C:05CCH         LINE#         65
+C:05E0H         LINE#         66
+C:05E0H         LINE#         67
+C:05E7H         LINE#         68
+C:05E9H         LINE#         69
+C:05F8H         LINE#         70
+C:05FAH         LINE#         72
+C:05FAH         LINE#         73
+C:05FDH         LINE#         74
+C:05FDH         LINE#         75
+C:0602H         LINE#         76
+C:0602H         LINE#         77
+C:0602H         LINE#         78
+C:0616H         LINE#         79
+C:0616H         LINE#         80
+C:061DH         LINE#         81
+C:061FH         LINE#         82
+C:062EH         LINE#         83
+C:0630H         LINE#         85
+C:0630H         LINE#         86
+C:0633H         LINE#         87
+C:0633H         LINE#         88
+C:0638H         LINE#         89
+C:0638H         LINE#         90
+C:0638H         LINE#         91
+C:064CH         LINE#         92
+C:064CH         LINE#         93
+C:0653H         LINE#         94
+C:0655H         LINE#         95
+C:0664H         LINE#         96
+C:0666H         LINE#         98
+C:0666H         LINE#         99
+C:0669H         LINE#         100
+C:0669H         LINE#         101
+C:066EH         LINE#         102
+C:066EH         LINE#         103
+C:066EH         LINE#         104
+C:0676H         LINE#         105
+C:0678H         LINE#         106
+-------         PROC          _LCD_WRITE_STRING
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE   14
+
+
+D:000CH         SYMBOL        STR
+-------         ENDPROC       _LCD_WRITE_STRING
+C:0679H         LINE#         108
+C:067FH         LINE#         109
+C:067FH         LINE#         110
+C:068BH         LINE#         111
+C:068BH         LINE#         112
+C:068EH         LINE#         113
+C:0699H         LINE#         114
+C:069BH         LINE#         115
+-------         PROC          _LCD_GOTOXY
+D:0001H         SYMBOL        X
+D:0002H         SYMBOL        Y
+-------         ENDPROC       _LCD_GOTOXY
+C:069CH         LINE#         117
+C:06A2H         LINE#         118
+C:06A2H         LINE#         119
+C:06A5H         LINE#         120
+C:06A5H         LINE#         121
+C:06A8H         LINE#         122
+C:06AAH         LINE#         123
+C:06ACH         LINE#         124
+C:06BAH         LINE#         125
+C:06C1H         LINE#         126
+C:06C1H         LINE#         127
+C:06C8H         LINE#         128
+C:06CFH         LINE#         129
+C:06D6H         LINE#         130
+C:06DDH         LINE#         131
+C:06E4H         LINE#         133
+C:06E6H         LINE#         134
+C:06EBH         LINE#         135
+C:06EBH         LINE#         136
+C:06EDH         LINE#         137
+C:06EDH         LINE#         138
+-------         PROC          LCD_CLEAR
+-------         ENDPROC       LCD_CLEAR
+C:06EEH         LINE#         140
+C:06EEH         LINE#         141
+C:06EEH         LINE#         142
+C:06F1H         LINE#         143
+C:06F1H         LINE#         144
+C:06F4H         LINE#         145
+C:06F6H         LINE#         146
+C:06F8H         LINE#         147
+C:0706H         LINE#         148
+C:070DH         LINE#         149
+C:070DH         LINE#         150
+C:0714H         LINE#         152
+C:0716H         LINE#         153
+C:071BH         LINE#         154
+C:071BH         LINE#         155
+C:071DH         LINE#         156
+C:071DH         LINE#         157
+-------         PROC          KBD_GET_KEY
+D:0003H         SYMBOL        TEMP
+-------         ENDPROC       KBD_GET_KEY
+C:071EH         LINE#         159
+C:071EH         LINE#         160
+C:071EH         LINE#         162
+C:0720H         LINE#         163
+C:0723H         LINE#         164
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE   15
+
+
+C:0723H         LINE#         165
+C:0725H         LINE#         166
+C:0727H         LINE#         167
+C:0729H         LINE#         168
+C:0737H         LINE#         169
+C:073EH         LINE#         170
+C:073EH         LINE#         171
+C:0745H         LINE#         173
+C:074AH         LINE#         175
+C:074CH         LINE#         176
+C:074FH         LINE#         177
+C:0756H         LINE#         178
+C:0758H         LINE#         179
+C:075AH         LINE#         180
+C:075AH         LINE#         181
+C:075CH         LINE#         182
+-------         PROC          KBD_SCAN_KEY
+D:0003H         SYMBOL        TEMP
+-------         ENDPROC       KBD_SCAN_KEY
+C:075DH         LINE#         184
+C:075DH         LINE#         185
+C:075DH         LINE#         187
+C:075FH         LINE#         188
+C:0762H         LINE#         189
+C:0762H         LINE#         190
+C:0765H         LINE#         191
+C:0767H         LINE#         192
+C:0769H         LINE#         193
+C:0777H         LINE#         194
+C:077EH         LINE#         195
+C:077EH         LINE#         196
+C:0785H         LINE#         198
+C:078AH         LINE#         200
+C:078CH         LINE#         201
+C:0791H         LINE#         202
+C:0791H         LINE#         203
+C:0793H         LINE#         204
+C:0793H         LINE#         205
+C:0795H         LINE#         206
+-------         PROC          _SND_GEN_FREQ
+D:0002H         SYMBOL        FREQ
+D:0001H         SYMBOL        FREQ_HI
+D:0003H         SYMBOL        FREQ_LO
+-------         ENDPROC       _SND_GEN_FREQ
+C:0796H         LINE#         208
+C:079AH         LINE#         209
+C:079AH         LINE#         211
+C:079DH         LINE#         212
+C:079DH         LINE#         213
+C:07A0H         LINE#         214
+C:07A2H         LINE#         215
+C:07A4H         LINE#         216
+C:07B2H         LINE#         217
+C:07B9H         LINE#         218
+C:07B9H         LINE#         219
+C:07BBH         LINE#         220
+C:07BFH         LINE#         221
+C:07C2H         LINE#         222
+C:07C2H         LINE#         223
+C:07C9H         LINE#         224
+C:07D0H         LINE#         225
+C:07D7H         LINE#         226
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE   16
+
+
+C:07DEH         LINE#         227
+C:07E5H         LINE#         229
+C:07E7H         LINE#         230
+C:07ECH         LINE#         231
+C:07ECH         LINE#         232
+C:07EEH         LINE#         233
+C:07EEH         LINE#         234
+-------         PROC          SND_STOP_FREQ
+-------         ENDPROC       SND_STOP_FREQ
+C:07EFH         LINE#         236
+C:07EFH         LINE#         237
+C:07EFH         LINE#         238
+C:07F2H         LINE#         239
+C:07F2H         LINE#         240
+C:07F5H         LINE#         241
+C:07F7H         LINE#         242
+C:07F9H         LINE#         243
+C:0807H         LINE#         244
+C:080EH         LINE#         245
+C:080EH         LINE#         246
+C:0815H         LINE#         248
+C:0817H         LINE#         249
+C:081CH         LINE#         250
+C:081CH         LINE#         251
+C:081EH         LINE#         252
+C:081EH         LINE#         253
+-------         PROC          US_GET_DATA
+-------         ENDPROC       US_GET_DATA
+C:081FH         LINE#         12
+C:081FH         LINE#         13
+C:081FH         LINE#         14
+C:0822H         LINE#         15
+C:0822H         LINE#         16
+C:0825H         LINE#         17
+C:0827H         LINE#         18
+C:0829H         LINE#         19
+C:0837H         LINE#         20
+C:083EH         LINE#         21
+C:083EH         LINE#         22
+C:0845H         LINE#         23
+C:084AH         LINE#         24
+C:084FH         LINE#         25
+C:0851H         LINE#         26
+C:0856H         LINE#         27
+C:0856H         LINE#         28
+C:0858H         LINE#         29
+C:0858H         LINE#         30
+-------         PROC          US_GET_DATA01
+D:0003H         SYMBOL        LEFT
+-------         ENDPROC       US_GET_DATA01
+C:0859H         LINE#         32
+C:0859H         LINE#         33
+C:0859H         LINE#         34
+C:085BH         LINE#         35
+C:085EH         LINE#         36
+C:085EH         LINE#         37
+C:0860H         LINE#         38
+C:0862H         LINE#         39
+C:0864H         LINE#         40
+C:0872H         LINE#         41
+C:0879H         LINE#         42
+C:0879H         LINE#         43
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE   17
+
+
+C:0880H         LINE#         44
+C:0885H         LINE#         45
+C:0887H         LINE#         46
+C:088CH         LINE#         47
+C:088CH         LINE#         48
+C:088EH         LINE#         49
+C:088EH         LINE#         50
+C:0890H         LINE#         51
+-------         PROC          US_GET_DATA02
+D:0003H         SYMBOL        RIGHT
+-------         ENDPROC       US_GET_DATA02
+C:0891H         LINE#         53
+C:0891H         LINE#         54
+C:0891H         LINE#         55
+C:0893H         LINE#         56
+C:0896H         LINE#         57
+C:0896H         LINE#         58
+C:0898H         LINE#         59
+C:089AH         LINE#         60
+C:089CH         LINE#         61
+C:08AAH         LINE#         62
+C:08B1H         LINE#         63
+C:08B1H         LINE#         64
+C:08B8H         LINE#         65
+C:08BDH         LINE#         66
+C:08BFH         LINE#         67
+C:08C4H         LINE#         68
+C:08C4H         LINE#         69
+C:08C6H         LINE#         70
+C:08C6H         LINE#         71
+C:08C8H         LINE#         72
+-------         PROC          US_GET_SAMPLE
+D:000FH         SYMBOL        TEMP
+-------         ENDPROC       US_GET_SAMPLE
+C:08C9H         LINE#         74
+C:08C9H         LINE#         75
+C:08C9H         LINE#         76
+C:08CCH         LINE#         77
+C:08CFH         LINE#         78
+C:08CFH         LINE#         79
+C:08D1H         LINE#         80
+C:08D3H         LINE#         81
+C:08D5H         LINE#         82
+C:08E3H         LINE#         83
+C:08EAH         LINE#         84
+C:08EAH         LINE#         85
+C:08F1H         LINE#         86
+C:08F6H         LINE#         87
+C:08FBH         LINE#         89
+C:08FDH         LINE#         90
+C:0902H         LINE#         91
+C:0902H         LINE#         92
+C:0904H         LINE#         93
+C:0904H         LINE#         94
+-------         PROC          US_ENABLE_INTERRUPT
+-------         ENDPROC       US_ENABLE_INTERRUPT
+C:0905H         LINE#         96
+C:0905H         LINE#         97
+C:0905H         LINE#         98
+C:0908H         LINE#         99
+C:0908H         LINE#         100
+C:090BH         LINE#         101
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE   18
+
+
+C:090DH         LINE#         102
+C:090FH         LINE#         103
+C:091DH         LINE#         104
+C:0924H         LINE#         105
+C:0924H         LINE#         106
+C:092BH         LINE#         108
+C:092DH         LINE#         109
+C:0932H         LINE#         110
+C:0932H         LINE#         111
+C:0934H         LINE#         112
+C:0934H         LINE#         113
+-------         PROC          US_DISABLE_INTERRUPT
+-------         ENDPROC       US_DISABLE_INTERRUPT
+C:0935H         LINE#         115
+C:0935H         LINE#         116
+C:0935H         LINE#         117
+C:0938H         LINE#         118
+C:0938H         LINE#         119
+C:093BH         LINE#         120
+C:093DH         LINE#         121
+C:093FH         LINE#         122
+C:094DH         LINE#         123
+C:0954H         LINE#         124
+C:0954H         LINE#         125
+C:095BH         LINE#         126
+C:095DH         LINE#         127
+C:0962H         LINE#         128
+C:0962H         LINE#         129
+C:0964H         LINE#         130
+C:0964H         LINE#         131
+-------         PROC          PROGRAMMING
+D:0010H         SYMBOL        INSTRUCTION
+D:0011H         SYMBOL        VALUE
+D:0012H         SYMBOL        CURSOR
+D:0013H         SYMBOL        KEY1
+-------         ENDPROC       PROGRAMMING
+C:0965H         LINE#         40
+C:0965H         LINE#         41
+C:0965H         LINE#         42
+C:0968H         LINE#         47
+C:0968H         LINE#         48
+C:096BH         LINE#         49
+C:0974H         LINE#         50
+C:097BH         LINE#         52
+C:097BH         LINE#         53
+C:0984H         LINE#         54
+C:0998H         LINE#         55
+C:099DH         LINE#         56
+C:09B8H         LINE#         57
+C:09B8H         LINE#         58
+C:09BBH         LINE#         59
+C:09BDH         LINE#         60
+C:09C0H         LINE#         61
+C:09C2H         LINE#         62
+C:09C5H         LINE#         63
+C:09C7H         LINE#         64
+C:09CAH         LINE#         65
+C:09CCH         LINE#         66
+C:09CFH         LINE#         67
+C:09D1H         LINE#         68
+C:09D4H         LINE#         69
+C:09D6H         LINE#         70
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE   19
+
+
+C:09DDH         LINE#         71
+C:09DDH         LINE#         72
+C:09DFH         LINE#         73
+C:09F4H         LINE#         74
+C:09F6H         LINE#         75
+C:09F6H         LINE#         76
+C:09F9H         LINE#         77
+C:09F9H         LINE#         78
+C:09F9H         LINE#         79
+C:09F9H         LINE#         80
+C:09F9H         LINE#         81
+C:0A11H         LINE#         82
+C:0A1AH         LINE#         83
+C:0A1AH         LINE#         84
+C:0A23H         LINE#         85
+C:0A23H         LINE#         86
+C:0A26H         LINE#         87
+C:0A2FH         LINE#         88
+C:0A32H         LINE#         89
+C:0A35H         LINE#         91
+C:0A35H         LINE#         92
+C:0A3EH         LINE#         93
+C:0A43H         LINE#         94
+C:0A55H         LINE#         95
+C:0A55H         LINE#         96
+C:0A55H         LINE#         97
+C:0A55H         LINE#         98
+C:0A55H         LINE#         99
+C:0A55H         LINE#         100
+C:0A55H         LINE#         101
+C:0A55H         LINE#         102
+C:0A55H         LINE#         103
+C:0A55H         LINE#         104
+C:0A55H         LINE#         105
+C:0A5FH         LINE#         106
+C:0A5FH         LINE#         107
+C:0A6AH         LINE#         108
+C:0A6AH         LINE#         109
+C:0A6CH         LINE#         110
+C:0A7AH         LINE#         111
+C:0A7FH         LINE#         112
+C:0A7FH         LINE#         113
+C:0A7FH         LINE#         114
+C:0A81H         LINE#         115
+C:0A88H         LINE#         116
+C:0A88H         LINE#         117
+C:0A8AH         LINE#         118
+C:0A92H         LINE#         119
+C:0A9BH         LINE#         120
+C:0AA0H         LINE#         121
+C:0AA9H         LINE#         122
+C:0AA9H         LINE#         123
+C:0AABH         LINE#         124
+C:0AC0H         LINE#         125
+C:0ACDH         LINE#         126
+C:0ACFH         LINE#         127
+C:0ACFH         LINE#         128
+C:0ACFH         LINE#         129
+C:0ACFH         LINE#         130
+C:0AD8H         LINE#         131
+C:0ADAH         LINE#         132
+C:0ADAH         LINE#         133
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE   20
+
+
+C:0AEFH         LINE#         134
+C:0AFBH         LINE#         135
+C:0B01H         LINE#         136
+C:0B0AH         LINE#         137
+C:0B0FH         LINE#         138
+C:0B16H         LINE#         139
+C:0B16H         LINE#         140
+C:0B16H         LINE#         141
+C:0B16H         LINE#         142
+C:0B1FH         LINE#         143
+-------         PROC          RUNNING
+D:0014H         SYMBOL        DIRECTION
+D:0015H         SYMBOL        MULTIPLIER
+D:0016H         SYMBOL        TIMER
+D:0017H         SYMBOL        INNER_TIMER1
+D:0018H         SYMBOL        INNER_TIMER2
+D:0019H         SYMBOL        INSTRUCTION
+-------         ENDPROC       RUNNING
+C:0B20H         LINE#         145
+C:0B20H         LINE#         146
+C:0B20H         LINE#         154
+C:0B23H         LINE#         155
+C:0B2CH         LINE#         156
+C:0B32H         LINE#         157
+C:0B32H         LINE#         158
+C:0B3AH         LINE#         159
+C:0B43H         LINE#         160
+C:0B4AH         LINE#         161
+C:0B4DH         LINE#         164
+C:0B4DH         LINE#         165
+C:0B50H         LINE#         166
+C:0B52H         LINE#         167
+C:0B67H         LINE#         168
+C:0B74H         LINE#         169
+C:0B7DH         LINE#         170
+C:0B84H         LINE#         171
+C:0B89H         LINE#         172
+C:0B9DH         LINE#         173
+C:0BA6H         LINE#         174
+C:0BABH         LINE#         176
+C:0BABH         LINE#         177
+C:0BAEH         LINE#         178
+C:0BB1H         LINE#         181
+C:0BC9H         LINE#         182
+C:0BC9H         LINE#         183
+C:0BD1H         LINE#         184
+C:0BD1H         LINE#         185
+C:0BDAH         LINE#         186
+C:0BDFH         LINE#         187
+C:0BE2H         LINE#         188
+C:0BE9H         LINE#         189
+C:0BECH         LINE#         190
+C:0BF3H         LINE#         191
+C:0BF6H         LINE#         192
+C:0BFEH         LINE#         193
+C:0BFEH         LINE#         194
+C:0C06H         LINE#         195
+C:0C0BH         LINE#         196
+C:0C0EH         LINE#         197
+C:0C15H         LINE#         198
+C:0C18H         LINE#         199
+C:0C20H         LINE#         200
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE   21
+
+
+C:0C20H         LINE#         201
+C:0C29H         LINE#         202
+C:0C2EH         LINE#         203
+C:0C31H         LINE#         204
+C:0C38H         LINE#         205
+C:0C3BH         LINE#         206
+C:0C3BH         LINE#         207
+C:0C44H         LINE#         208
+C:0C49H         LINE#         209
+C:0C5BH         LINE#         210
+C:0C5BH         LINE#         211
+C:0C5EH         LINE#         212
+C:0C61H         LINE#         213
+C:0C63H         LINE#         214
+C:0C66H         LINE#         215
+C:0C69H         LINE#         216
+C:0C6BH         LINE#         217
+C:0C6EH         LINE#         218
+C:0C71H         LINE#         219
+C:0C73H         LINE#         220
+C:0C76H         LINE#         221
+C:0C79H         LINE#         222
+C:0C7BH         LINE#         223
+C:0C7EH         LINE#         224
+C:0C81H         LINE#         225
+C:0C81H         LINE#         226
+C:0C81H         LINE#         227
+C:0C8AH         LINE#         228
+C:0C8FH         LINE#         229
+C:0C99H         LINE#         230
+C:0C99H         LINE#         231
+C:0C9CH         LINE#         232
+C:0C9EH         LINE#         233
+C:0CA6H         LINE#         234
+C:0CABH         LINE#         235
+C:0CABH         LINE#         236
+C:0CABH         LINE#         237
+C:0CAEH         LINE#         238
+C:0CB4H         LINE#         239
+C:0CB4H         LINE#         240
+C:0CBDH         LINE#         241
+C:0CC2H         LINE#         242
+C:0CC5H         LINE#         243
+C:0CCCH         LINE#         244
+C:0CCFH         LINE#         245
+C:0CD6H         LINE#         246
+C:0CD9H         LINE#         247
+C:0CDFH         LINE#         248
+C:0CDFH         LINE#         249
+C:0CE8H         LINE#         250
+C:0CEDH         LINE#         251
+C:0CF0H         LINE#         252
+C:0CF7H         LINE#         253
+C:0CFAH         LINE#         254
+C:0D01H         LINE#         255
+C:0D04H         LINE#         256
+C:0D0AH         LINE#         257
+C:0D0AH         LINE#         258
+C:0D13H         LINE#         259
+C:0D18H         LINE#         260
+C:0D1BH         LINE#         261
+C:0D22H         LINE#         262
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE   22
+
+
+C:0D25H         LINE#         263
+C:0D2BH         LINE#         264
+C:0D2BH         LINE#         265
+C:0D34H         LINE#         266
+C:0D39H         LINE#         267
+C:0D3CH         LINE#         268
+C:0D43H         LINE#         269
+C:0D46H         LINE#         270
+C:0D4DH         LINE#         271
+C:0D4FH         LINE#         272
+C:0D55H         LINE#         273
+C:0D55H         LINE#         274
+C:0D5EH         LINE#         275
+C:0D63H         LINE#         276
+C:0D66H         LINE#         277
+C:0D6DH         LINE#         278
+C:0D70H         LINE#         279
+C:0D77H         LINE#         281
+C:0D79H         LINE#         282
+C:0D7FH         LINE#         283
+C:0D7FH         LINE#         284
+C:0D88H         LINE#         285
+C:0D8DH         LINE#         286
+C:0D90H         LINE#         287
+C:0D97H         LINE#         288
+C:0D97H         LINE#         294
+C:0D99H         LINE#         295
+C:0D9CH         LINE#         296
+C:0D9CH         LINE#         297
+C:0DACH         LINE#         298
+C:0DAEH         LINE#         299
+C:0DAEH         LINE#         300
+C:0DC2H         LINE#         301
+C:0DC5H         LINE#         302
+-------         PROC          PATTERN
+D:001AH         SYMBOL        KEY
+-------         ENDPROC       PATTERN
+C:0DC6H         LINE#         304
+C:0DC6H         LINE#         305
+C:0DC6H         LINE#         306
+C:0DC9H         LINE#         307
+C:0DCFH         LINE#         308
+C:0DCFH         LINE#         309
+C:0DD2H         LINE#         310
+C:0DDBH         LINE#         311
+C:0DE4H         LINE#         312
+C:0DEDH         LINE#         314
+C:0DEDH         LINE#         315
+C:0DF2H         LINE#         316
+C:0DF2H         LINE#         317
+C:0E00H         LINE#         318
+C:0E0DH         LINE#         319
+C:0E0DH         LINE#         320
+C:0E12H         LINE#         321
+C:0E14H         LINE#         322
+C:0E17H         LINE#         323
+C:0E19H         LINE#         324
+C:0E1CH         LINE#         325
+C:0E1FH         LINE#         326
+C:0E21H         LINE#         327
+C:0E26H         LINE#         328
+C:0E28H         LINE#         329
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE   23
+
+
+C:0E2AH         LINE#         330
+C:0E2AH         LINE#         331
+C:0E2AH         LINE#         332
+-------         PROC          TRACK
+D:001BH         SYMBOL        KEY
+D:001CH         SYMBOL        LAST
+D:001DH         SYMBOL        COUNT
+D:001EH         SYMBOL        DIRECTION
+-------         ENDPROC       TRACK
+C:0E2BH         LINE#         334
+C:0E2BH         LINE#         335
+C:0E2BH         LINE#         336
+C:0E2EH         LINE#         337
+C:0E31H         LINE#         338
+C:0E33H         LINE#         339
+C:0E35H         LINE#         341
+C:0E3AH         LINE#         342
+C:0E3DH         LINE#         344
+C:0E3DH         LINE#         345
+C:0E40H         LINE#         346
+C:0E49H         LINE#         347
+C:0E53H         LINE#         348
+C:0E5DH         LINE#         349
+C:0E67H         LINE#         350
+C:0E6AH         LINE#         351
+C:0E6AH         LINE#         352
+C:0E70H         LINE#         353
+C:0E70H         LINE#         354
+C:0E73H         LINE#         355
+C:0E76H         LINE#         356
+C:0E7DH         LINE#         357
+C:0E7DH         LINE#         358
+C:0E86H         LINE#         359
+C:0E8FH         LINE#         360
+C:0E92H         LINE#         361
+C:0E95H         LINE#         362
+C:0E98H         LINE#         363
+C:0E98H         LINE#         364
+C:0E9EH         LINE#         365
+C:0E9EH         LINE#         366
+C:0EA4H         LINE#         367
+C:0EA4H         LINE#         368
+C:0EA7H         LINE#         369
+C:0EAAH         LINE#         370
+C:0EB1H         LINE#         371
+C:0EB1H         LINE#         372
+C:0EBAH         LINE#         373
+C:0EC3H         LINE#         374
+C:0EC6H         LINE#         375
+C:0EC9H         LINE#         376
+C:0ECCH         LINE#         377
+C:0ED2H         LINE#         378
+C:0ED2H         LINE#         379
+C:0ED8H         LINE#         380
+C:0ED8H         LINE#         381
+C:0EDBH         LINE#         382
+C:0EDEH         LINE#         383
+C:0EE5H         LINE#         384
+C:0EE5H         LINE#         385
+C:0EEEH         LINE#         386
+C:0EF7H         LINE#         387
+C:0EFAH         LINE#         388
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE   24
+
+
+C:0EFDH         LINE#         389
+C:0F00H         LINE#         390
+C:0F0CH         LINE#         391
+C:0F0CH         LINE#         392
+C:0F12H         LINE#         393
+C:0F12H         LINE#         394
+C:0F18H         LINE#         395
+C:0F18H         LINE#         396
+C:0F1BH         LINE#         397
+C:0F1EH         LINE#         398
+C:0F25H         LINE#         399
+C:0F25H         LINE#         400
+C:0F28H         LINE#         401
+C:0F2BH         LINE#         402
+C:0F34H         LINE#         403
+C:0F3DH         LINE#         404
+C:0F3FH         LINE#         405
+C:0F42H         LINE#         406
+C:0F4CH         LINE#         407
+C:0F4CH         LINE#         408
+C:0F52H         LINE#         409
+C:0F52H         LINE#         410
+C:0F55H         LINE#         411
+C:0F58H         LINE#         412
+C:0F5FH         LINE#         413
+C:0F5FH         LINE#         414
+C:0F61H         LINE#         415
+C:0F64H         LINE#         416
+C:0F67H         LINE#         417
+C:0F70H         LINE#         418
+C:0F79H         LINE#         419
+C:0F7BH         LINE#         420
+C:0F81H         LINE#         421
+C:0F81H         LINE#         422
+C:0F83H         LINE#         423
+C:0F8DH         LINE#         424
+C:0F8DH         LINE#         425
+C:0F93H         LINE#         426
+C:0F93H         LINE#         427
+C:0F96H         LINE#         428
+C:0F99H         LINE#         429
+C:0FA0H         LINE#         430
+C:0FA0H         LINE#         431
+C:0FA2H         LINE#         432
+C:0FA5H         LINE#         433
+C:0FA8H         LINE#         434
+C:0FB1H         LINE#         435
+C:0FBAH         LINE#         436
+C:0FBCH         LINE#         437
+C:0FBCH         LINE#         438
+C:0FBCH         LINE#         439
+C:0FBCH         LINE#         440
+C:0FC1H         LINE#         441
+C:0FC1H         LINE#         442
+C:0FCAH         LINE#         443
+C:0FCDH         LINE#         444
+-------         PROC          MAIN
+D:0005H         SYMBOL        I
+-------         ENDPROC       MAIN
+C:0FCEH         LINE#         446
+C:0FCEH         LINE#         447
+C:0FCEH         LINE#         449
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE   25
+
+
+C:0FD1H         LINE#         450
+C:0FD4H         LINE#         451
+C:0FD7H         LINE#         452
+C:0FDAH         LINE#         454
+C:0FE1H         LINE#         455
+C:0FE9H         LINE#         456
+C:0FE9H         LINE#         457
+C:0FFCH         LINE#         458
+C:1008H         LINE#         459
+C:100BH         LINE#         460
+C:1010H         LINE#         461
+C:1012H         LINE#         462
+C:1012H         LINE#         463
+C:1012H         LINE#         464
+C:1015H         LINE#         465
+C:101EH         LINE#         466
+C:1027H         LINE#         467
+C:1030H         LINE#         468
+C:1035H         LINE#         469
+C:103DH         LINE#         470
+C:103DH         LINE#         471
+C:1040H         LINE#         472
+C:1042H         LINE#         473
+C:1045H         LINE#         474
+C:1047H         LINE#         475
+C:1047H         LINE#         476
+C:1047H         LINE#         477
+C:1047H         LINE#         478
+C:1047H         LINE#         479
+C:1049H         LINE#         480
+-------         ENDMOD        MAINCODE
+
+-------         MODULE        ?C_CLDPTR
+C:114AH         PUBLIC        ?C_CLDPTR
+-------         ENDMOD        ?C_CLDPTR
+
+-------         MODULE        ?C_UIDIV
+C:1165H         PUBLIC        ?C_UIDIV
+-------         ENDMOD        ?C_UIDIV

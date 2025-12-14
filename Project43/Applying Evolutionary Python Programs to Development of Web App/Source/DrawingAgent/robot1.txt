@@ -1,0 +1,403 @@
+global robot1
+global Version1
+global Methods1
+Methods1 = ['__newversion', '__methodupdate', '__drawbot', 'sendcmd', 'add', 'revise', 'remove', 'goto', 'turnto', 'forward', 'rotate', 'rotate_l', 'rotate_r', 'pen', 'pen_up', 'pen_down', 'eraser', 'color', 'line', 'run']
+
+class R1V000 (Threading.Thread):
+    
+    pos_x = 50
+    pos_y = 50
+    angle = 90
+    pen_status = 'UP'
+    pen_colour = '#ff0000'
+    __colour = '255,0,0'
+    __rad = (angle * pi) / 180
+    __cmd_list = []
+
+    def __newversion (self, string):
+        global File1
+        global Version1
+        __tmp = str(int(Version1) + 1)
+        __newVers = '0' * (3 - len(__tmp)) + __tmp
+        __file = open(File1, 'r')
+        __data = __file.read()
+        __file.close()
+        __temp = "Version1 = '" + Version1 + "'\nrobot1 = R1V" + Version1 + "()\n"
+        string = "class R1V" + __newVers + " (R1V" + Version1 + "):\n" + string
+        string = string + "Version1 = '" + __newVers + "'\nrobot1 = R1V" + __newVers + "()\n"
+        __data = replace(__data, __temp, string)
+        __file = open(File1, 'w')
+        __file.write(__data)
+        __file.close()
+        Version1 = __newVers
+        wd.board.delete(self.__bot)
+        wd.reload1()
+
+    def __methodupdate (self, tmp):
+        global File1
+        global Methods1
+        __file = open(File1, 'r')
+        __data = __file.read()
+        __file.close()
+        __str = "Methods1 = ['"
+        for __i in Methods1:
+            __str = __str + __i + "', '"
+        __str = __str[:-3] +']'
+        __data = replace(__data, tmp, __str)
+        __file = open(File1, 'w')
+        __file.write(__data)
+        __file.close()
+
+    def __drawbot (self):
+        __r1 = ((self.angle - 20) * pi) / 180
+        __r2 = ((self.angle + 20) * pi) / 180
+        __x1 = self.pos_x - int(round(10 * cos(__r1)))
+        __y1 = self.pos_y + int(round(10 * sin(__r1)))
+        __x2 = self.pos_x - int(round(10 * cos(__r2)))
+        __y2 = self.pos_y + int(round(10 * sin(__r2)))
+        self.__bot = wd.board.create_polygon(self.pos_x, self.pos_y, __x1, __y1, __x2, __y2, fill = self.pen_colour)
+
+    def sendcmd(self, cmd):
+        __cmd_ls = []
+        cmd = split(cmd, '], ')
+        for __i in range(len(cmd)):
+            cmd[__i] = cmd[__i][1:]
+        cmd[__i] = cmd[__i][:-1]
+        for __tmp in cmd:
+            __cmd_ls.append(__tmp)
+        self.__cmd_list = __cmd_ls
+
+    def add (self, name, source):
+        global File2
+        global File3
+        global History1
+        global Version1
+        global Methods1
+        if name not in Methods1:
+            if source == 'robot2':
+                if name in Methods2:
+                    __file = open(File2, 'r')
+                    __string = __file.read()
+                    __file.close()
+                    __i = find(__string, '    def ' + name + ' ')
+                    __j = find(__string, '    def ', __i + 8)
+                    if __j == -1:
+                        __j = find(__string, 'Version', -40)
+                    __string = __string[__i:__j]
+                    self.__newversion(__string)
+                    __tmp = "Methods1 = ['"
+                    for __i in Methods1:
+                        __tmp = __tmp + __i + "', '"
+                    __tmp = __tmp[:-3] + ']'
+                    Methods1.append(name)
+                    self.__methodupdate(__tmp)
+                    History1[Version1] = 'add ' + name
+                    __data = 'Method ' + name + ' added to Robot 1.'
+                else:
+                    __data = 'Error!!! Method not found in Robot 2.'
+            elif source == 'robot3':
+                if name in Methods3:
+                    __file = open(File3, 'r')
+                    __string = __file.read()
+                    __file.close()
+                    __i = find(__string, '    def ' + name + ' ')
+                    __j = find(__string, '    def ', __i + 8)
+                    if __j == -1:
+                        __j = find(__string, 'Version', -40)
+                    __string = __string[__i:__j]
+                    self.__newversion(__string)
+                    __tmp = "Methods1 = ['"
+                    for __i in Methods1:
+                        __tmp = __tmp + __i + "', '"
+                    __tmp = __tmp[:-3] + ']'
+                    Methods1.append(name)
+                    self.__methodupdate(__tmp)
+                    History1[Version1] = 'add ' + name
+                    __data = 'Method ' + name + ' added to Robot 1.'
+                else:
+                    __data = 'Error!!! Method not found in Robot 3.'
+            else:
+                source = '    ' + source
+                if source[-1] != '\012':
+                    source = source + '\n'
+                source = replace(source, '\n', '\n    ')
+                source = source[:-4]
+                self.__newversion(source)
+                __tmp = "Methods1 = ['"
+                for __i in Methods1:
+                    __tmp = __tmp + __i + "', '"
+                __tmp = __tmp[:-3] + ']'
+                Methods1.append(name)
+                self.__methodupdate(__tmp)
+                History1[Version1] = 'add ' + name
+                __data = 'Method ' + name + ' added to Robot 1.'
+        else:
+            __data = 'Error!!! Duplicate Method.'
+        wd.output.configure(text = __data)
+        __met = '#addmethod1:'
+        for __m in Methods1:
+            if __m[:2] != '__':
+                __met = __met + __m + '&'
+        global Conn
+        Conn.send(__met + '\r\n')
+        __tmp = '#addstatus:Robot1.add(' + name + ' from Robot' + source[-1] + ')'
+        Conn.send(__tmp + '\r\n')
+
+    def revise (self, name, source):
+        global File2
+        global File3
+        global History1
+        global Version1
+        if name in Methods1:
+            if source == 'robot2':
+                if name in Methods2:
+                    __file = open(File2, 'r')
+                    __string = __file.read()
+                    __file.close()
+                    __i = find(__string, '    def ' + name + ' ')
+                    __j = find(__string, '    def ', __i + 8)
+                    if __j == -1:
+                        __j = find(__string, 'Version', -40)
+                    __string = __string[__i:__j]
+                    self.__newversion(__string)
+                    History1[Version1] = 'revise ' + name
+                    __data = 'Method ' + name + ' revised in Robot 1.'
+                else:
+                    __data = 'Error!!! Method not found in Robot 2.'
+            elif source == 'robot3':
+                if name in Methods3:
+                    __file = open(File3, 'r')
+                    __string = __file.read()
+                    __file.close()
+                    __i = find(__string, '    def ' + name + ' ')
+                    __j = find(__string, '    def ', __i + 8)
+                    if __j == -1:
+                        __j = find(__string, 'Version', -40)
+                    __string = __string[__i:__j]
+                    self.__newversion(__string)
+                    History1[Version1] = 'revise ' + name
+                    __data = 'Method ' + name + ' revised in Robot 1.'
+                else:
+                    __data = 'Error!!! Method not found in Robot 3.'
+            else:
+                __data = 'Error!!! Invalid Source.'
+        else:
+            __data = 'Error!!! Method not found in Robot 1.'
+        wd.output.configure(text = __data)
+        __met = '#addmethod1:'
+        for __m in Methods1:
+            if __m[:2] != '__':
+                __met = __met + __m + '&'
+        global Conn
+        Conn.send(__met + '\r\n')
+        __tmp = '#addstatus:Robot1.revise(' + name + ' from Robot' + source[-1] + ')'
+        Conn.send(__tmp + '\r\n')
+
+    def remove (self, name):
+        global History1
+        global Version1
+        global Methods1
+        __string = '    d' + 'ef ' + name + ' (self):\n' + '        pass'
+        if name in Methods1:
+            self.__newversion(__string)
+            __tmp = "Methods1 = ['"
+            for __i in Methods1:
+                __tmp = __tmp + __i + "', '"
+            __tmp = __tmp[:-3] + ']'
+            Methods1.remove(name)
+            self.__methodupdate(__tmp)
+            History1[Version1] = 'remove ' + name
+            __data = 'Method ' + name + ' removed form Robot 1.'
+        else:
+            __data = 'Error!!! Method not found in Robot 1.'
+        wd.output.configure(text = __data)
+        __met = '#addmethod1:'
+        for __m in Methods1:
+            if __m[:2] != '__':
+                __met = __met + __m + '&'
+        global Conn
+        Conn.send(__met + '\r\n')
+        __tmp = '#addstatus:Robot1.remove(' + name + ')'
+        Conn.send(__tmp + '\r\n')
+
+    def goto (self, x1, y1):
+        self.pos_x = x1
+        self.pos_y = y1
+    	wd.board.delete(self.__bot)
+    	self.__drawbot()
+    	__tmp = '#addstatus:Robot1.goto(' + str(x1) + ', ' + str(y1) + ')'
+        global Conn
+        Conn.send(__tmp + '\r\n')
+    
+    def turnto (self, degree):
+        self.angle = degree
+        self.__rad = (self.angle * pi) / 180
+    	wd.board.delete(self.__bot)
+    	self.__drawbot()
+    	__tmp = '#addstatus:Robot1.turnto(' + str(degree) + ')'
+        global Conn
+        Conn.send(__tmp + '\r\n')
+
+    def forward (self, distance):
+        global Max_x
+        global Max_y
+        global BackgroundColor
+        global Code1
+        global Conn
+        __old_x = self.pos_x
+        __old_y = self.pos_y
+        __x = self.pos_x + int(round(distance * cos(self.__rad)))
+        if __x < 0:
+            self.pos_x = 0
+        elif self.pos_x > Max_x:
+            self.pos_x = Max_x
+        else:
+            self.pos_x = __x
+        __y = self.pos_y - int(round(distance * sin(self.__rad)))
+        if __y < 0:
+            self.pos_y = 0
+        elif __y > Max_y:
+            self.pos_y = Max_y
+        else:
+            self.pos_y = __y
+        if self.pen_status == 'DOWN':
+            __tmp = '#color:' + self.__colour
+            wd.board.create_line(__old_x, __old_y, self.pos_x, self.pos_y, fill = self.pen_colour)
+        elif self.pen_status == 'ERASER':
+            global BgColor
+            __tmp = '#color:' + BgColor
+            wd.board.create_line(__old_x, __old_y, self.pos_x, self.pos_y, fill = BackgroundColor)
+        __tmp = __tmp + '#line:' + str(__old_x) + ',' + str(__old_y) + ',' + str(self.pos_x) + ',' + str(self.pos_y)
+        Conn.send(__tmp + '\r\n')
+        wd.board.move(self.__bot, self.pos_x - __old_x, self.pos_y - __old_y)
+        __tmp = '#addstatus:Robot1.forward(' + str(distance) + ')'
+        Conn.send(__tmp + '\r\n')
+
+    def rotate (self, radian):
+        self.angle = (self.angle + radian) % 360
+    	self.__rad = (self.angle * pi) / 180
+    	wd.board.delete(self.__bot)
+    	self.__drawbot()
+        __tmp = '#addstatus:Robot1.rotate(' + str(radian) + ')'
+        global Conn
+        Conn.send(__tmp + '\r\n')
+
+    def rotate_l (self, radian):
+        self.angle = (self.angle + radian) % 360
+    	self.__rad = (self.angle * pi) / 180
+    	wd.board.delete(self.__bot)
+    	self.__drawbot()
+    	__tmp = '#addstatus:Robot1.rotate_l(' + str(radian) + ')'
+        global Conn
+        Conn.send(__tmp + '\r\n')
+
+    def rotate_r (self, radian):
+        radian = (self.angle - radian) % 360
+        if radian < 0:
+            radian = 360 - radian
+        self.angle = radian
+        self.__rad = (self.angle * pi) / 180
+    	wd.board.delete(self.__bot)
+    	self.__drawbot()
+    	__tmp = '#addstatus:Robot1.rotate_r(' + str(radian) + ')'
+        global Conn
+        Conn.send(__tmp + '\r\n')
+
+    def pen (self):
+        if self.pen_status == 'DOWN':
+            self.pen_status = 'UP'
+        else:
+            self.pen_status = 'DOWN'
+        __tmp = '#addstatus:Robot1.pen()'
+        global Conn
+        Conn.send(__tmp + '\r\n')
+
+    def pen_up (self):
+        self.pen_status = 'UP'
+        __tmp = '#addstatus:Robot1.pen_up()'
+        global Conn
+        Conn.send(__tmp + '\r\n')
+
+    def pen_down (self):
+        self.pen_status = 'DOWN'
+        __tmp = '#addstatus:Robot1.pen_down()'
+        global Conn
+        Conn.send(__tmp + '\r\n')
+
+    def eraser (self):
+        self.pen_status = 'ERASER'
+        __tmp = '#addstatus:Robot1.eraser()'
+        global Conn
+        Conn.send(__tmp + '\r\n')
+
+    def color (self, c):
+        __ls = []
+        self.pen_colour = lower(c)
+        for __i in list(self.pen_colour[1:]):
+            __ls.append(find(hexdigits, __i))
+        self.__colour = str(__ls[0]*16+__ls[1])+','+str(__ls[2]*16+__ls[3])+','+str(__ls[4]*16+__ls[5])
+    	wd.board.delete(self.__bot)
+    	self.__drawbot()
+        __tmp = '#addstatus:Robot1.color(' + self.__colour + ')'
+        global Conn
+        Conn.send(__tmp + '\r\n')
+
+    def line (self, x1, y1, x2, y2):
+        __pen_stat = self.pen_status
+        if self.pen_status != 'UP':
+            self.pen_up()
+        self.goto(x1, y1)
+        __delta_x = x2 - x1
+        __delta_y = y1 - y2
+        __tetha = int(round((180 * atan2(__delta_y, __delta_x)) / pi))
+        if __tetha < 0:
+            __tetha = 360 + __tetha
+        self.turnto(__tetha)
+        self.pen_down()
+        __length = int(round(sqrt(__delta_x * __delta_x + __delta_y * __delta_y)))
+        self.forward(__length)
+        if __pen_stat == 'UP':
+            self.pen_up()
+        elif __pen_stat == 'ERASER':
+            self.eraser()
+
+    def run (self):
+        self.__drawbot()
+        global Quit
+        while not Quit:
+            time.sleep(1)
+            if len(self.__cmd_list) != 0:
+                global Done1
+                Done1 = 0
+                print '1 doing'
+                for __cmd in self.__cmd_list:
+                    __cmd = split(__cmd, ', ')
+                    for __i in range(len(__cmd)):
+                        if __cmd[__i][0] == "'":
+                            __cmd[__i] = __cmd[__i][1:-1]
+                        else:
+                            __cmd[__i] = int(atof(__cmd[__i]))
+                    if __cmd[0] in Methods1:
+                        self.color(__cmd[1])
+                        __cd = 'self.' + __cmd[0] + '('
+                        for __i in range(len(__cmd) - 2):
+                            __cd = __cd + str(__cmd[__i + 2]) + ', '
+                        __cd = __cd[:-2] + ')'
+                        exec __cd
+                    else:
+                        if __cmd[0] in Methods2:
+                            self.add(__cmd[0], 'robot2')
+                            print 'Robot1 : Method ' + __cmd[0] + ' added from Robot2.'
+                        elif __cmd[0] in Methods3:
+                            self.add(__cmd[0], 'robot3')
+                            print 'Robot1 : Method ' + __cmd[0] + ' added from Robot3.'
+                        else:
+                            wd.output.configure(text = 'Robot1 : Method ' + __cmd[0] + ' not found.')
+############################                            wd.add_method(__cmd[0], 'robot1')
+                        break
+                self.__cmd_list = []
+                Done1 = 1
+                print '1 done'
+
+Version1 = '000'
+robot1 = R1V000()

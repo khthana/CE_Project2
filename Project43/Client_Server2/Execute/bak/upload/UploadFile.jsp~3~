@@ -1,0 +1,203 @@
+<HTML>
+<HEAD>
+<jsp:useBean id="UploadFileBeanId" scope="session" class="upload.UploadFileBean" />
+<jsp:setProperty name="UploadFileBeanId" property="*" />
+<TITLE>
+UploadFile
+</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<%!
+  javax.servlet.http.HttpSession session;
+  quote.Quote quote;
+%>
+<body bgcolor="#FFFFFF" text="#000000">
+<%
+  String error = "";
+  boolean showOverwrite = false;
+  session = request.getSession(true);
+  quote = (quote.Quote) session.getValue("quote");
+  if (quote != null) {
+  String type = quote.getUserType();
+  if (type.equals("Administrator")||type.equals("Manager")) {
+    String productId = request.getParameter("productId");
+    String submit = request.getParameter("Submit");
+    System.out.println("submit = "+submit);
+    if (submit!=null) {
+    if (submit.equals("Delete")){
+      response.sendRedirect(response.encodeURL("/product/ViewProduct2.jsp?productId="+productId+"&submit=Delete+Advertise&firstAccess=true"));
+    } else
+    if (submit.equals("View")){
+      response.sendRedirect(response.encodeURL("/product/ViewProduct2.jsp?productId="+productId+"&firstAccess=true"));
+    } else
+    if (submit.equals("Update")){
+      if (!UploadFileBeanId.findPicId(productId)) {
+      getServletConfig().getServletContext().getRequestDispatcher("/product/UploadFileServletAlias?firstAccess=true").forward(request,response);
+      } else { showOverwrite = true; }
+    } else
+    if (submit.equals("Search")) {
+      String pId = request.getParameter("pId");
+      if (UploadFileBeanId.findProductId(pId)) {
+      response.sendRedirect(response.encodeURL("/product/UploadFile.jsp?productId="+pId));
+      } else {
+        error = "product ID is not exist";
+      }
+    } else
+    if (submit.equals("Yes")) {
+      getServletConfig().getServletContext().getRequestDispatcher("/product/UploadFileServletAlias?firstAccess=true").forward(request,response);
+    } else
+    if (submit.equals("No")) {
+      response.sendRedirect(response.encodeURL("/product/UploadFile.jsp?productId="+productId));
+    }
+    }
+%>
+<form name="form2" method="post" action="UploadFile.jsp">
+  <table width="75%" border="0">
+    <tr>
+      <td align="right" width="31%" bgcolor="#FFFFCC"> <b>Product ID : </b> </td>
+      <td align="left" width="69%" colspan="-2">
+        <input type="text" name="pId" size="30">
+        <input type="submit" name="Submit" value="Search">
+      </td>
+    </tr>
+    <tr>
+      <td align="right" width="31%">&nbsp;</td>
+      <td align="left" width="69%" colspan="-2">
+        <%
+          if (error!=null && !error.equals("")) {
+            out.print(error);
+            error="";
+          }
+        %>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="center" width="31%">
+        <div align="right">
+          <input type="submit" name="Submit" value="View">
+        </div>
+      </td>
+      <td colspan="-2" width="69%">
+        <input type="submit" name="Submit" value="Delete">
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">&nbsp;</td>
+    </tr>
+    <% if (productId != null) {
+        UploadFileBeanId.
+    %>
+    <% if (showOverwrite) { %>
+    <tr>
+      <td colspan="2"><font color="#FF0000">Are you sure to overwrite this product
+        &quot;&quot; </font>
+        <input type="submit" name="Submit" value="Yes">
+        <input type="submit" name="Submit" value="No">
+      </td>
+    </tr>
+    <% } %>
+    <% } %>
+  </table>
+  </form>
+<form name="form1" method="post" action="UploadFileServletAlias" enctype="multipart/form-data">
+  <table width="75%" border="0">
+    <% if (productId != null) { %>
+    <tr>
+      <td align="right" colspan="5">
+        <hr>
+      </td>
+    </tr>
+    <% if (showOverwrite) { %>
+    <% } %>
+    <tr>
+      <td align="right" colspan="3" bgcolor="#FFFFCC"><b><font size="4">Product
+        ID :</font></b>
+        <%  out.println("<input type=\"hidden\" name=\"id\" value=\""+productId+"\">");   %>
+      </td>
+      <td align="left" colspan="2"><%= productId %></td>
+    </tr>
+    <tr>
+      <td align="center" colspan="5">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="right" colspan="3" bgcolor="#FFFFCC"> <b>Head : </b> </td>
+      <td align="left" colspan="2">
+        <input type="text" name="head" size="65">
+      </td>
+    </tr>
+    <tr>
+      <td align="center" colspan="5">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="right" colspan="3" bgcolor="#FFFFCC"> <b>File Picture :</b> </td>
+      <td align="left" colspan="2">
+        <input type="file" name="file" size="35">
+      </td>
+    </tr>
+    <tr>
+      <td colspan="5" align="left">&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan="4" align="right" bgcolor="#FFCCFF"><b>Advertisement :</b></td>
+      <td align="left" width="57%" bgcolor="#FFCCFF"> &nbsp;&nbsp;
+        <input type="radio" name="show" value="yes" checked>
+        yes &nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="radio" name="show" value="no">
+        no</td>
+    </tr>
+    <tr>
+      <td colspan="5" align="left">&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan="5" align="left"><b>Abstract:</b></td>
+    </tr>
+    <tr>
+      <td colspan="5">
+        <textarea name="abstract" cols="30" rows="5"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" colspan="5">&nbsp;</td>
+    </tr>
+    <tr align="left">
+      <td colspan="5"> <b>Other Pic's Detail :</b>
+        <input type="file" name="fileDetail" size="30">
+      </td>
+    </tr>
+    <tr>
+      <td colspan="5" align="left">&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan="5" align="left"><b>Detail:</b></td>
+    </tr>
+    <tr align="left">
+      <td colspan="5" height="258">
+        <textarea name="textfield" cols="70" rows="15"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" colspan="5">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="center" width="18%">&nbsp; </td>
+      <td align="center" width="8%">&nbsp; </td>
+      <td align="center" width="8%">
+        <input type="submit" name="Submit" value="Update">
+      </td>
+      <td align="center" width="9%">&nbsp; </td>
+      <td align="left" width="57%">
+        <input type="reset" name="Submit2" value="Reset">
+      </td>
+    </tr>
+    <% } %>
+  </table>
+</form>
+<%
+  }
+  }
+%>
+</body>
+</html>

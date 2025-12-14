@@ -1,0 +1,93 @@
+object Fr_Buy_Detail: TFr_Buy_Detail
+  Left = 343
+  Top = 267
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
+  Caption = 'รายการสั่งซื้อ'
+  ClientHeight = 226
+  ClientWidth = 266
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  PixelsPerInch = 96
+  TextHeight = 14
+  object Label1: TLabel
+    Left = 48
+    Top = 24
+    Width = 22
+    Height = 14
+    Caption = 'ชนิด'
+  end
+  object Label2: TLabel
+    Left = 40
+    Top = 64
+    Width = 33
+    Height = 14
+    Caption = 'จำนวน'
+  end
+  object Label3: TLabel
+    Left = 8
+    Top = 104
+    Width = 64
+    Height = 14
+    Caption = 'ราคาต่อหน่วย'
+  end
+  object Label4: TLabel
+    Left = 32
+    Top = 144
+    Width = 37
+    Height = 14
+    Caption = 'VAT(%)'
+  end
+  object DBLookupComboBox1: TDBLookupComboBox
+    Left = 88
+    Top = 16
+    Width = 161
+    Height = 22
+    KeyField = 'Type_ID'
+    ListField = 'Type_Name'
+    TabOrder = 0
+  end
+  object Button1: TButton
+    Left = 40
+    Top = 184
+    Width = 75
+    Height = 25
+    Caption = 'ตกลง'
+    TabOrder = 1
+  end
+  object Button2: TButton
+    Left = 152
+    Top = 184
+    Width = 75
+    Height = 25
+    Caption = 'ยกเลิก'
+    TabOrder = 2
+  end
+  object Edit1: TEdit
+    Left = 88
+    Top = 56
+    Width = 105
+    Height = 22
+    TabOrder = 3
+  end
+  object Edit2: TEdit
+    Left = 88
+    Top = 96
+    Width = 121
+    Height = 22
+    TabOrder = 4
+  end
+  object Edit3: TEdit
+    Left = 88
+    Top = 136
+    Width = 121
+    Height = 22
+    TabOrder = 5
+  end
+end

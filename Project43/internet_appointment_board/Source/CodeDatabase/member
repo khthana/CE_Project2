@@ -1,0 +1,18 @@
+create table member(
+no_mem integer primary key,
+grouptype varchar2(50) default('No Identify'),
+groupname varchar2(30),
+membername varchar2(30),
+status varchar2(30),
+note  varchar2(100) default ('other'),
+notegr varchar2(100) ,
+ no_group integer references groupcal,
+ id  varchar(20) NOT NULL REFERENCES userdata,
+ idmem varchar(20) NOT NULL REFERENCES userdata on delete cascade);
+  
+create sequence no_mem
+start with 1
+INCREMENT BY 1
+ NOMAXVALUE
+ NOCYCLE
+ CACHE 20;

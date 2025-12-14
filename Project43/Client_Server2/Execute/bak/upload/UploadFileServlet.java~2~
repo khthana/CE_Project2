@@ -1,0 +1,221 @@
+package upload;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+import java.util.*;
+import java.rmi.*;
+import javax.naming.*;
+import javax.rmi.PortableRemoteObject;
+import javax.ejb.*;
+import picture.*;
+
+import MultipartRequest;
+import UploadedFile;
+
+import com.oreilly.servlet.multipart.MultipartParser;
+import com.oreilly.servlet.multipart.Part;
+import com.oreilly.servlet.multipart.FilePart;
+import com.oreilly.servlet.multipart.ParamPart;
+
+public class UploadFileServlet extends HttpServlet {
+  private static final String CONTENT_TYPE = "text/html";
+  private final String rootPath = "d:/j2sdkee1.2.1/public_html/pic";
+  File dir;
+  Hashtable parameters = new Hashtable();  // name - Vector of values
+  Hashtable files = new Hashtable();       // name - UploadedFile
+  MultipartParser parser;
+  PictureHome pictureHome;
+
+  /**Initialize global variables*/
+  public void init(ServletConfig config) throws ServletException {
+    super.init(config);
+    try {
+      Context ic = new InitialContext();
+      java.lang.Object objref = ic.lookup("MyPicture");
+      pictureHome = (PictureHome) PortableRemoteObject.narrow(objref,
+                           PictureHome.class);
+      System.out.println("obtain pictureHome object");
+    } catch (Exception ex) {ex.printStackTrace();}
+  }
+
+  /**Process the HTTP Get request*/
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  System.out.println("in doPost UploadFileServlet");
+    int maxPostSize = 1024*1024*100;
+    String path = "";
+    String productId = null;
+    String filePic1 = null;
+    String filePic2 = null;
+    String show = "";
+    String buffer[] = new String[3];
+    for (int i=0;i<3; i++) {
+      buffer[i] = new String();
+    }
+        productId = request.getParameter("id");
+        if (productId !=null) {
+          path = rootPath+"/"+productId;
+          dir = new File(path);
+          dir.mkdirs();
+          if (!dir.isDirectory())
+            throw new IllegalArgumentException("Not a directory: " + path);
+          if (!dir.canWrite())
+            throw new IllegalArgumentException("Not writable: " + path);
+        }
+    // Parse the incoming multipart, storing files in the dir provided,
+    // and populate the meta objects which describe what we found
+    parser = new MultipartParser(request, maxPostSize);
+
+    Part part;
+    while ((part = parser.readNextPart()) != null) {
+      String name = part.getName();
+      if (part.isParam()) {
+        // It's a parameter part, add it to the vector of values
+        ParamPart paramPart = (ParamPart) part;
+        String value = paramPart.getStringValue();
+        System.out.println("productId = "+productId);
+        if (name.equals("head")) {
+          buffer[0] = value;
+        } else
+        if (name.equals("abstract")) {
+          buffer[1] = value;
+        } else
+        if (name.equals("textfield")) {
+          buffer[2] = value;
+        } else
+        if (name.equals("show")) {
+          show = value;
+        } else
+        if (name.equals("id") && productId==null) {
+          productId = value;
+          path = rootPath+"/"+productId;
+          dir = new File(path);
+          dir.mkdirs();
+          if (!dir.isDirectory())
+            throw new IllegalArgumentException("Not a directory: " + path);
+          if (!dir.canWrite())
+            throw new IllegalArgumentException("Not writable: " + path);
+        }
+
+        System.out.println("param; name=" + name + ", value=" + value);
+        Vector existingValues = (Vector)parameters.get(name);
+        if (existingValues == null) {
+          existingValues = new Vector();
+          parameters.put(name, existingValues);
+        }
+        existingValues.addElement(value);
+      }
+      if (part.isFile()) {
+        System.out.println("It's a file part");
+        FilePart filePart = (FilePart) part;
+        String fileName = filePart.getFileName();
+        System.out.println("name = "+name+" and filename = "+fileName);
+        if (fileName != null) {
+          if (name.equals("file")) {
+            filePic1 = fileName;
+            System.out.println("filePic1 = "+filePic1);
+          }
+          else if (name.equals("fileDetail")) {
+            filePic2 = fileName;
+            System.out.println("filePic2 = "+filePic2);
+          }
+          // The part actually contained a file
+          String content_type = filePart.getContentType();
+        System.out.println("content_type = "+content_type);
+          if (!content_type.startsWith("image"))
+            throw new IllegalArgumentException("Not a image file type: ");
+        System.out.println("before write");
+          filePart.writeTo(dir);
+        System.out.println("before uploadfile");
+          files.put(name, new UploadedFile(dir.toString(), fileName, filePart.getContentType()));
+        }
+        else {
+          // The field did not contain a file
+          files.put(name, new UploadedFile(null, null, null));
+        }
+      }
+    }
+    try {
+      FileWriter fw = new FileWriter(path+"/"+productId+".txt");
+      BufferedWriter bw = new BufferedWriter(fw);
+      PrintWriter pw = new PrintWriter(bw);
+      System.out.println("before print file");
+      pw.println(convertTagToMore(buffer[0]));
+      pw.println("<abstract>");
+      pw.println(convertTagToMore(buffer[1]));
+      pw.println("<textfield>");
+      pw.println(convertTagToMore(buffer[2]));
+      bw.close();
+      pw.close();
+      System.out.println("print file success");
+    } catch (IOException ex) {ex.printStackTrace();}
+
+    try {
+      Picture picture = pictureHome.findByPrimaryKey(productId);
+      System.out.println("find ok");
+      String delFilePic1 = picture.getFilePic1();
+      String delFilePic2 = picture.getFilePic2();
+      picture.setFilePic1(filePic1);
+      picture.setFilePic2(filePic2);
+      picture.setShow(show);
+/*
+      if (delFilePic1==null) { delFilePic1=""; }
+      if (delFilePic2==null) { delFilePic2=""; }
+      if (delFilePic1!=null && !delFilePic1.equals("") && !delFilePic1.equals(filePic1)) {
+        File f1 = new File(path+"/"+delFilePic1);
+        try {
+        if (f1.isFile()) f1.delete();
+        System.out.println("delete f1 ok");
+        } catch (SecurityException ex) {
+          ex.printStackTrace();
+        }
+      }
+      if (delFilePic2!=null && !delFilePic2.equals("") && !delFilePic2.equals(filePic2)) {
+        File f2 = new File(path+"/"+delFilePic2);
+        try {
+        if (f2.isFile()) f2.delete();
+        } catch (SecurityException ex) {
+          ex.printStackTrace();
+        }
+      }
+*/
+    } catch (FinderException ex) {
+      try {
+      System.out.println("not found");
+      Picture picture = pictureHome.create(productId,filePic1,filePic2,show);
+      System.out.println("create ok");
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+    response.sendRedirect("/product/ViewProduct2.jsp?productId="+productId+"firstAccess=true");
+
+  }
+  /**Clean up resources*/
+  public void destroy() {
+  }
+  public String getContentType(String name) {
+    try {
+      UploadedFile file = (UploadedFile)files.get(name);
+      return file.getContentType();  // may be null
+    }
+    catch (Exception e) {
+      return null;
+    }
+  }
+  public String convertTagToMore(String s) {
+    int b = 0;
+    while (s.indexOf('<',0)!=-1) {
+      int a = s.indexOf('<',b);
+      b = a;
+      s = s.substring(0,a)+"$lt;"+s.substring(a+1);
+    }
+    b = 0;
+    while (s.indexOf('>',0)!=-1) {
+      int a = s.indexOf('>',b);
+      b = a;
+      s = s.substring(0,a)+"$gt;"+s.substring(a+1);
+    }
+    return s;
+  }
+}

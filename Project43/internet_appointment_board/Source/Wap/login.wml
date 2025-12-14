@@ -1,0 +1,62 @@
+<?xml version="1.0"?> 
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml"> 
+<wml> 
+   <card id="login" title="Welcome To Planny"> 
+     <p align="center">
+      <strong>www.planny.com</strong><br/>
+    </p>
+    <p align ="center"> 
+        <a href="#register"> New User </a><br/>
+    </p> 
+  <p> 
+        <do type ="accept" label="login">
+        <go href="http://161.246.5.233:8080/planny/servlet/loginwap" method="post">
+        <postfield name="login" value="$(login)"/>
+        <postfield name="password" value="$(password)"/>
+        </go>
+        </do>
+        login : <input type="text" name="login"  emptyok="false" size="10" maxlength="10"/>
+        password : <input type="password" name="password" emptyok="false" size="10" maxlength="10"/>
+        </p>
+  </card>
+  
+  <card id="register" title="Planny Register" ontimer="#login" >
+      <timer name="check" value="600"/>  
+      <do type ="accept" label="Submit"> 
+         <go href="http://161.246.5.233:8080/planny/servlet/RegisterWap" method="post">
+        <postfield name="firstname" value ="$(fname)" /> 
+        <postfield name="lastname" value ="$(lname)"/> 
+        <postfield name="id" value ="$(id)"/> 
+        <postfield name="password" value ="$(password)"/> 
+        <postfield name="repassword" value="$(repasswd)"/>
+        <postfield name="sex" value="$(sex)"/> 
+        
+       
+        
+        </go> 
+     </do>
+        <p align = "center" mode="nowrap">
+           <b> Please fill your info </b> <br/>
+       </p>
+   <p mode="nowrap">
+       First name : <input type ="text" name="fname" emptyok = "false"/> <br/>
+         Last name:  <input type ="text" name="lname" emptyok = "false"/><br/> 
+         ID : <input type ="text" name="id" emptyok = "false"/><br/>
+         Password : <input type ="password" name="password" emptyok = "false"/><br/>
+         RePassword : <input type ="password" name="repasswd" emptyok = "false"/><br/>
+        </p>
+ 
+    <p align= "left"> 
+       <fieldset title="sex">   
+    Sex:
+        <select name ="sex" multiple="false"> 
+        <option value= "M" >Male</option>
+       <option value= "F" >Female</option> 
+      </select> 
+       </fieldset> 
+      </p>
+     <do type ="prev">
+     <prev/>
+     </do>
+     </card>
+</wml> 

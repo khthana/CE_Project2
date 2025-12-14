@@ -1,0 +1,173 @@
+<OBJECT RUNAT=Server SCOPE=Application ID=MSCSSite           PROGID="Commerce.Dictionary"></OBJECT>
+<OBJECT RUNAT=Server SCOPE=Application ID=MSCSQueryMap       PROGID="Commerce.Dictionary"></OBJECT>
+<OBJECT RUNAT=Server SCOPE=Application ID=MSCSCache          PROGID="Commerce.Dictionary"></OBJECT>
+<OBJECT RUNAT=Server SCOPE=Application ID=MSCSMessageManager PROGID="Commerce.MessageManager"></OBJECT>
+<OBJECT RUNAT=Server SCOPE=Application ID=MSCSDataFunctions  PROGID="Commerce.DataFunctions"></OBJECT>
+<OBJECT RUNAT=Server SCOPE=Application ID=MSCSShopperManager PROGID="Commerce.StandardSManager"></OBJECT>
+
+<SCRIPT LANGUAGE=VBScript RUNAT=Server>
+    Sub Application_OnStart
+        vRoot = "Tranika"
+
+        Dim MSCSSite
+        Dim MSCSQueryMap
+        Dim MSCSMessageManager
+        Dim MSCSDataFunctions
+        Dim MSCSShopperManager
+
+		REM - SET COLOR
+		 Application("bgcolor") = "#99CCFF"
+		 Application("background") = "assets/images/back1.gif"
+        
+		REM -- Read Store Dictionary
+        Set MSCSSite = ReadSiteDict(vroot)
+
+        REM -- Create a Query Map and add all queries:
+        set MSCSQueryMap = InitQueryMap()
+
+        REM -- Initialize Message Manager (for use in pipeline) and add all messages:
+        set MSCSMessageManager = InitMessageManager()
+        
+        REM -- Initialize Shopper Manager for managing shopperId values
+        set MSCSShopperManager = InitShopperManager
+
+        REM -- Initialize Data Functions with locale:
+        set MSCSDataFunctions = InitDataFunctions
+
+        Set Application("MSCSSite")             = MSCSSite
+        Set Application("MSCSQueryMap")         = MSCSQueryMap
+        Set Application("MSCSMessageManager")   = MSCSMessageManager
+        Set Application("MSCSDataFunctions")    = MSCSDataFunctions
+        Set Application("MSCSShopperManager")   = MSCSShopperManager
+        Application("MSCSSIDURLKey")            = "mscssid"
+    End Sub
+
+    Function InitShopperManager
+        call MSCSShopperManager.InitManager(vRoot, "url")
+        set InitShopperManager = MSCSShopperManager
+    End Function
+
+    Function InitDataFunctions
+        MSCSDataFunctions.locale = 1054
+        set InitDataFunctions = MSCSDataFunctions
+    End Function
+
+    Function ReadSiteDict(vRoot)
+        REM -- Read Store Dictionary
+        Set fileDocument = Server.CreateObject("Commerce.FileDocument")
+        vRootDir = Server.MapPath("/" & vRoot)
+        Call fileDocument.ReadDictionaryFromFile(vRootDir & "\config\site.csc", "IISProperties", MSCSSite)
+        Set fileDocument = Nothing
+
+        set ReadSiteDict = MSCSSite
+    End Function
+
+    Function InitQueryMap
+        REM -- Create Query Map Dictionary
+'		Set MSCSQueryMap.depts_search = AddQuery("SELECT  dept_id, dept_name FROM tranika_dept")
+        Set MSCSQueryMap.depts = AddQuery("SELECT dept_id, dept_name, dept_description FROM tranika_dept")
+        Set MSCSQueryMap.dept_by_id = AddQuery("SELECT dept_id, dept_name, dept_description, dept_map FROM tranika_dept WHERE dept_id = :1")
+        Set MSCSQueryMap.products_by_dept = AddQuery("SELECT DISTINCT prod.pf_id, prod.name FROM tranika_product prod, tranika_dept_prod dept, tranika_variant pv WHERE dept.pf_id = prod.pf_id and dept.dept_id = :1 and prod.pf_id = pv.pf_id")
+        Set MSCSQueryMap.receipts_for_shopper = AddQuery("SELECT shopper_id, order_id, date_entered, total, status, marshalled_receipt FROM tranika_receipt WHERE shopper_id = :1 ORDER BY date_entered")
+        Set MSCSQueryMap.door_by_family = AddQuery("SELECT  DISTINCT door_id, door_value , door_file , door_price FROM tranika_variant pv, tranika_attr_door WHERE pv.pf_id = :1 and pv.attr_door = tranika_attr_door.door_id")
+        Set MSCSQueryMap.door_by_id = AddQuery("SELECT door_value FROM tranika_attr_door WHERE door_id = :1")
+		Set MSCSQueryMap.door2_by_family = AddQuery("SELECT  DISTINCT door2_id, door2_value , door2_file , door2_price FROM tranika_variant pv, tranika_attr_door2 WHERE pv.pf_id = :1 and pv.attr_door2 = tranika_attr_door2.door2_id")
+		Set MSCSQueryMap.door2_by_id = AddQuery("SELECT door2_value FROM tranika_attr_door2 WHERE door2_id = :1")
+        Set MSCSQueryMap.toilet_by_family = AddQuery("SELECT  DISTINCT toilet_id, toilet_value ,toilet_file , toilet_price FROM tranika_variant pv, tranika_attr_toilet WHERE pv.pf_id = :1 and pv.attr_toilet = tranika_attr_toilet.toilet_id")
+        Set MSCSQueryMap.toilet_by_id = AddQuery("SELECT toilet_value FROM tranika_attr_toilet WHERE toilet_id = :1")
+        Set MSCSQueryMap.floor_by_family = AddQuery("SELECT DISTINCT floor_id, floor_value , floor_file , floor_price FROM tranika_variant pv, tranika_attr_floor WHERE pv.pf_id = :1 and pv.attr_floor = tranika_attr_floor.floor_id")
+        Set MSCSQueryMap.floor_by_id = AddQuery("SELECT floor_value FROM tranika_attr_floor  WHERE floor_id = :1")
+        Set MSCSQueryMap.product_attrs_by_id = AddQuery("SELECT tranika_attr_door.door_value,tranika_attr_door2.door2_value, tranika_attr_toilet.toilet_value, tranika_attr_floor.floor_value FROM tranika_attr_door, tranika_attr_door2, tranika_attr_toilet, tranika_attr_floor WHERE tranika_attr_door.door_id = :1 and tranika_attr_toilet.toilet_id = :2 and tranika_attr_floor.floor_id = :3 and tranika_attr_door2.door2_id = :4")
+        Set MSCSQueryMap.product_by_id = AddQuery("SELECT pf.pf_id, pf.name, pf.model , pf.area ,pf.body ,pf.bedroom, pf.bathroom , pf.description,  pf.list_price, pf.image_file, pf.image_first, pf.image_second,  dept.dept_id, dept.dept_name FROM tranika_product pf, tranika_dept dept, tranika_dept_prod deptprod WHERE pf.pf_id = :1 and pf.pf_id = deptprod.pf_id and dept.dept_id = deptprod.dept_id and dept.dept_id = :2")
+        Set MSCSQueryMap.product_by_attrs = AddQuery("SELECT pf.pf_id, pf.name, pf.description, pf.list_price, pf.image_file, pf.image_width, pf.image_height,  pv.sku, pv.pf_id, pv.attr_door , pv.attr_door2, pv.attr_toilet, pv.attr_floor, dept.dept_id, dept.dept_name FROM tranika_product pf, tranika_variant pv, tranika_dept dept, tranika_dept_prod deptprod WHERE pf.pf_id = :1 and pf.pf_id = pv.pf_id and pf.pf_id = deptprod.pf_id and dept.dept_id = deptprod.dept_id and dept.dept_id = :2 and pv.attr_door = :3 and pv.attr_toilet = :4 and pv.attr_floor = :5 and pv.attr_door2 = :6")
+        Set MSCSQueryMap.product_info = AddQuery("SELECT pf.pf_id, pf.name, pf.list_price,  pf.tax_vat_rate, pv.sku, dept.dept_id FROM tranika_product pf, tranika_variant pv, tranika_dept dept, tranika_dept_prod deptprod WHERE pv.sku = ? and pf.pf_id = pv.pf_id and pf.pf_id = deptprod.pf_id and dept.dept_id = deptprod.dept_id and dept.dept_id = ?")
+        Set MSCSQueryMap.product_by_sku = AddQuery("SELECT pf.pf_id, pf.name, pf.description, pf.list_price,  pf.image_file, pf.image_width, pf.image_height, pv.sku, dept.dept_id, dept.dept_name FROM tranika_product pf, tranika_variant pv, tranika_dept dept, tranika_dept_prod deptprod, tranika_attr_door,tranika_attr_door2, tranika_attr_toilet, tranika_attr_floor WHERE pv.sku = :1 and pf.pf_id = pv.pf_id and pf.pf_id = deptprod.pf_id and dept.dept_id = deptprod.dept_id and dept.dept_id = :2 and pv.attr_door = tranika_attr_door.door_id and pv.attr_door2 = tranika_attr_door2.door2_id and pv.attr_toilet = tranika_attr_toilet.toilet_id and pv.attr_floor = tranika_attr_floor.floor_id")
+        Set MSCSQueryMap.reserve = AddQuery("SELECT * FORM tranika_reserve ")
+        set InitQueryMap = MSCSQueryMap
+    End Function
+
+    Function AddQuery(SQLCommand)
+        REM -- sets defaults that can be overridden per query on the page
+        
+        REM -- ADO command types
+        adCmdText       = 1 
+        adCmdTable      = 2 
+        adCmdStoredProc = 4
+        adCmdUnknown    = 8
+
+        REM -- ADO cursor types
+        adOpenForwardOnly = 0 '# (Default)
+        adOpenKeyset      = 1
+        adOpenDynamic     = 2
+        adOpenStatic      = 3
+
+        REM -- ADO lock types
+        adLockReadOnly        = 1
+        adLockPessimistic     = 2
+        adLockOptimistic      = 3
+        adLockBatchOptimistic = 4
+
+        REM page constants
+	color_text  = "#51392B"
+	color_link  = "#cc9966"
+	color_alink = "#00FF00"
+	color_vlink = "#FF0000"
+	'BGCOLOR= "#111111"
+	'background = "assets/images/back1.gif"
+	
+	Set query = Server.CreateObject("Commerce.Dictionary")
+        query.SQLCommand    = SQLCommand
+        query.Timeout       = 0
+        query.CommandType   = adCmdText
+        query.MaxRows       = 0
+        query.CursorType    = adOpenStatic
+        query.CursorSize    = 0
+        
+        Set AddQuery = query
+    End Function
+
+    Function InitMessageManager
+        call MSCSMessageManager.AddLanguage("THA", 1054)
+        MSCSMessageManager.defaultLanguage = "THA"
+        call MSCSMessageManager.AddMessage("pur_out_of_stock",      "At least one item is out of stock.")
+        call MSCSMessageManager.AddMessage("pur_badsku",            "Please note that one or more items were removed from your basket because the product is no longer sold.")
+        call MSCSMessageManager.AddMessage("pur_badplacedprice",    "Please note that prices of products in your basket have been updated.")
+        call MSCSMessageManager.AddMessage("pur_noitems",           "An order must have at least one item.")
+        call MSCSMessageManager.AddMessage("pur_badshipping",       "Unable to complete order: cannot compute shipping cost.")
+        call MSCSMessageManager.AddMessage("pur_badtax",            "Unable to complete order: cannot compute tax.")
+        call MSCSMessageManager.AddMessage("pur_badhandling",       "Unable to complete order: cannot compute handling cost.")
+        call MSCSMessageManager.AddMessage("pur_badverify",         "Changes to the data require your review. Please review and resubmit.")
+        call MSCSMessageManager.AddMessage("pur_badpayment",        "There was a problem authorizing your credit. Please verify your payment information or use a different card.")
+        call MSCSMessageManager.AddMessage("pur_badcc",             "The credit-card number you provided is not valid. Please verify your payment information or use a different card.")
+        call MSCSMessageManager.AddMessage("val_noshipmethod",      "No Shipping Method was specified")
+        call MSCSMessageManager.AddMessage("val_shiponeof",         "Shipping Method Type must be one of: ")
+        call MSCSMessageManager.AddMessage("val_noshipname",        "No Ship-to Name was specified")
+        call MSCSMessageManager.AddMessage("val_noshipstreet",      "No Ship-to Street was specified")
+        call MSCSMessageManager.AddMessage("val_noshipcity",        "No Ship-to City was specified")
+        call MSCSMessageManager.AddMessage("val_noshipstate",       "No Ship-to State was specified")
+        call MSCSMessageManager.AddMessage("val_noshipzip",         "No Ship-to ZIP Code was specified")
+        call MSCSMessageManager.AddMessage("val_noshipprovince",    "No Ship-to Province was specified")
+        call MSCSMessageManager.AddMessage("val_noshippostal_code", "No Ship-to Postal Code was specified")
+        call MSCSMessageManager.AddMessage("val_noshipaddress1",    "No Ship-to Address 1 was specified")
+        call MSCSMessageManager.AddMessage("val_noshipaddress2",    "No Ship-to Address 2 was specified")
+        call MSCSMessageManager.AddMessage("val_noshipcountry",     "No Ship-to Country was specified")
+        call MSCSMessageManager.AddMessage("val_shipcountrymustbe", "The Ship-to Country must be Thailand.")
+        call MSCSMessageManager.AddMessage("val_nobillname",        "No Bill-to Name was specified")
+        call MSCSMessageManager.AddMessage("val_nobillstreet",      "No Bill-to Street was specified")
+        call MSCSMessageManager.AddMessage("val_nobillcity",        "No Bill-to City was specified")
+        call MSCSMessageManager.AddMessage("val_nobillstate",       "No Bill-to State was specified")
+        call MSCSMessageManager.AddMessage("val_nobillzip",         "No Bill-to ZIP Code was specified")
+        call MSCSMessageManager.AddMessage("val_nobillprovince",    "No Bill-to Province was specified")
+        call MSCSMessageManager.AddMessage("val_nobillpostal_code", "No Bill-to Postal Code was specified")
+        call MSCSMessageManager.AddMessage("val_nobilladdress1",    "No Bill-to Address 1 was specified")
+        call MSCSMessageManager.AddMessage("val_nobilladdress2",    "No Bill-to Address 2 was specified")
+        call MSCSMessageManager.AddMessage("val_nobillcountry",     "No Bill-to Country was specified")
+        call MSCSMessageManager.AddMessage("val_noccname",          "No Credit-card Name was specified")
+        call MSCSMessageManager.AddMessage("val_nocctype",          "No Credit-card Type was specified")
+        call MSCSMessageManager.AddMessage("val_cctypeoneof",       "Credit-card Type must be one of: ")
+        call MSCSMessageManager.AddMessage("val_noccnumber",        "No Credit-card Number was specified")
+        call MSCSMessageManager.AddMessage("val_invalidccdate",     "Credit card expiration date must contain a valid month (1-12) and year (1997-2003)")
+
+        set InitMessageManager = MSCSMessageManager
+		End Function
+</SCRIPT>

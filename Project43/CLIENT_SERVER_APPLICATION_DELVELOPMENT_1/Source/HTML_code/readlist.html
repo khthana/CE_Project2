@@ -1,0 +1,65 @@
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+<SCRIPT LANGUAGE="JavaScript">
+	function ConfirmRemove(){
+		var check_rv=false;
+		if (form1.length>1){
+			if (form1.length>2)
+				for (ct=0; ct<(form1.length-1); ct++){
+					if (form1.checkbox[ct].checked){
+						check_rv=true;break;
+					}
+				}
+			else if (form1.checkbox.checked)
+					check_rv=true;
+		}
+		if (check_rv)
+			if (!confirm('Are you sure ?')) {
+				if (form1.length>2){
+					for (count=0; count<(form1.length-1); count++)
+						form1.checkbox[count].checked=false;
+				}
+				else form1.checkbox.checked=false;
+			}
+	}
+</SCRIPT>
+
+</head>
+
+<body bgcolor="#CCFFFF">
+<p>List</p>
+<form name="form1" method="get" action="logo.html" onSubmit='ConfirmRemove()'>
+  <table width="102%" border="1" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td width="7%">
+        <input type="checkbox" name="checkbox" value="checkbox">
+      </td>
+      <td width="93%"> <a href="http://myproject/jservlets/ReadDetail?book_name=chinjung&id_book=1&user=x" target="mainFrame"><b>Chinjung 1 
+        </b></a><br>
+        <i>Expire : </i>5/1/01 </td>
+    </tr>
+    <!--<tr> 
+      <td width="7%">
+        <input type="checkbox" name="checkbox" value="checkbox">
+      </td>
+      <td width="93%"> <a href="http://myproject/jservlets/ReadDetail?book_name=chinjung&id_book=2&user=x" target="mainFrame"><b>Chinjung 2 </b></a><br>
+        <i>Expire : </i>5/1/01 </td>
+    </tr>-->
+    <!--<tr> 
+      <td width="7%">
+        <input type="checkbox" name="checkbox" value="checkbox">
+      </td>
+      <td width="93%"> <a href="http://myproject/jservlets/ReadDetail?book_name=chinjung&id_book=3&user=x" target="mainFrame"><b>Doramon 1</b></a> 
+        <br>
+        <i>Expire : </i>5/1/01 </td>
+    </tr>-->
+  </table>
+  <h1> 
+    <input type="submit" name="Submit" value="Remove">
+  </h1>
+</form>
+<p>&nbsp; </p>
+</body>
+</html>

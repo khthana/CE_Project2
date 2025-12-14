@@ -1,0 +1,281 @@
+unit AccountImp;
+
+interface
+
+uses
+  ActiveX, MtsObj, ComObj, BankManager_TLB, StdVcl, SysUtils,
+  ADODB_TLB, COMSVCSLib_TLB, Dialogs, Windows, MSSQL2K_BankPrj_TLB;
+
+type
+  TAccount = class(TMtsAutoObject, IAccount, IObjectControl)
+  protected
+    function deposit(const AccountID: WideString;
+      Amount: Currency): WideString; safecall;
+    function getAccountName(const AccountID: WideString): WideString; safecall;
+    function getBalance(const AccountID: WideString): Currency; safecall;
+    function getCredit(const CreditCardID: WideString): Currency; safecall;
+    function withdraw(const ID: WideString; IDType: SYSINT; Amount: Currency;
+      const Password: WideString): WideString; safecall;
+    procedure setAccountName(const AccountID, newAccountName: WideString);
+      safecall;
+    procedure setPassword(const AccountID, oldPassword,
+      newPassword: WideString); safecall;
+    { Protected declarations }
+    
+    // IObjectControl Methods Definition
+    function Activate: HRESULT; stdcall;
+    function CanBePooled: Longint; stdcall;
+    procedure Deactivate; stdcall;
+
+    private
+      objctx : ObjectContext;
+      
+  end;
+
+implementation
+
+uses ComServ;
+
+////////////////// IObjectControl Methods Implementation ///////////////////////
+
+function TAccount.Activate: HRESULT;
+var
+  imtx : IMTxAS;
+begin
+  try
+    imtx := CoAppServer.Create;
+    objctx := imtx.GetObjectContext;
+    if objctx = nil then
+    begin
+      Result := 0;
+    end
+    else
+      Result := S_OK;
+  except
+    Result := 0;
+  end;
+end;
+
+function TAccount.CanBePooled: Longint;
+begin
+  Result := 1;
+end;
+
+procedure TAccount.Deactivate;
+begin
+  objctx := nil;
+end;
+
+///////////// TAccount Methods Implementation //////////////////////////////////
+
+function TAccount.deposit(const AccountID: WideString;
+  Amount: Currency): WideString;
+var
+  mssql,addBalance: IMSSQL2K_Bank;
+  v: OleVariant;
+  sSQL: WideString;
+  balance: Currency;
+begin
+  mssql:= CoMSSQL2K_Bank.Create;
+  addBalance:= CoMSSQL2K_Bank.Create;
+  
+  sSQL:= 'Select BALANCE From ACCOUNT Where '+
+         ' ACCOUNTID = '''+ AccountID+'''';
+         
+  try
+    v:= mssql.Query(sSQL);
+    v.MoveFirst;
+    balance:= v.fields.item[0].value;
+    v.Close;
+    
+    if Amount>0 then
+    begin
+    balance:=balance+Amount;
+
+    sSQL:= 'update ACCOUNT set BALANCE = '+CurrToStr(balance)+
+           ' where ACCOUNTID ='''+ AccountID+'''';
+
+    addBalance.ExecSQL(sSQL);
+    Result:= 'Deposit OK';
+    end else
+          begin
+            Result:='Invalid amount';
+          end;
+
+    objctx.SetComplete;
+  except
+    Result:= 'Can''t deposit';
+    objctx.SetAbort;
+  end;
+end;
+
+function TAccount.getAccountName(const AccountID: WideString): WideString;
+var
+  mssql: IMSSQL2K_Bank;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Bank.Create;
+  sSQL:= 'Select ACCOUNTNAME From ACCOUNT Where ACCOUNTID = '''+ AccountID+'''';
+  try
+    v:= mssql.Query(sSQL);
+    v.MoveFirst;
+    Result:= v.fields.item[0].value;
+    v.Close;
+    objctx.SetComplete;
+  except
+    Result:= 'Not Found';
+    objctx.SetAbort;
+  end;
+end;
+
+function TAccount.getBalance(const AccountID: WideString): Currency;
+var
+  mssql: IMSSQL2K_Bank;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Bank.Create;
+  sSQL:= 'Select BALANCE From ACCOUNT Where ACCOUNTID = '''+ AccountID+'''';
+  try
+    v:= mssql.Query(sSQL);
+    v.MoveFirst;
+    Result:= v.fields.item[0].value;
+    v.Close;
+    objctx.SetComplete;
+  except
+    Result:= 0;
+    objctx.SetAbort;
+  end;
+end;
+
+function TAccount.getCredit(const CreditCardID: WideString): Currency;
+var
+  mssql: IMSSQL2K_Bank;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Bank.Create;
+  sSQL:= 'Select CREDIT From ACCOUNT Where CREDITCARDID = '''+ CreditCardID+'''';
+  try
+    v:= mssql.Query(sSQL);
+    v.MoveFirst;
+    Result:= v.fields.item[0].value;
+    v.Close;
+    objctx.SetComplete;
+  except
+    Result:= 0;
+    objctx.SetAbort;
+  end;
+end;
+
+function TAccount.withdraw(const ID: WideString; IDType: SYSINT;
+  Amount: Currency; const Password: WideString): WideString;
+var
+  mssql,subBalance: IMSSQL2K_Bank;
+  v: OleVariant;
+  sSQL,sqlID,sqlType,pass: WideString;
+  balance: Currency;
+begin
+  mssql:= CoMSSQL2K_Bank.Create;
+  subBalance:= CoMSSQL2K_Bank.Create;
+//  subCredit:=  CoMSSQL2K_Bank.Create;
+  sqlID:= '';
+  sqlType:='';
+  pass:='';
+
+  if (IDType=1) then
+  begin
+    sqlID:='ACCOUNTID';
+    sqlType:= 'BALANCE';
+    pass:= ' and PASSWORD = '''+Password+'''';
+  end;
+
+  if (IDType=2) then
+  begin
+    sqlID:= 'CREDITCARDID';
+    sqlType:= 'CREDIT';
+  end;
+
+    if (IDType=3) then
+  begin
+    sqlID:= 'DEBITCARDID';
+    sqlType:= 'BALANCE';
+  end;
+
+
+  sSQL:= 'Select '+sqlType+' From ACCOUNT Where '+
+         sqlID+' = '''+ID+''''+ pass;
+
+  try
+    v:= mssql.Query(sSQL);
+    v.MoveFirst;
+    balance:= v.fields.item[0].value;
+    v.Close;
+
+    if Amount>0 then
+    begin
+      balance:=balance-Amount;
+      if balance>0 then
+      begin
+        sSQL:= 'update ACCOUNT set '+sqlType+' = '+CurrToStr(balance)+
+               ' where '+sqlID+' ='''+ID+'''';
+
+        subBalance.ExecSQL(sSQL);
+        Result:= 'Withdraw OK';
+      end else
+            begin
+              Result:='Money not enough';
+            end;
+    end else
+          begin
+            Result:='Invalid amount';
+          end;
+
+    objctx.SetComplete;
+  except
+    Result:= 'Can''t withdraw';
+    objctx.SetAbort;
+  end;
+end;
+
+procedure TAccount.setAccountName(const AccountID,
+  newAccountName: WideString);
+var
+  mssql: IMSSQL2K_Bank;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Bank.Create;
+  sSQL:= 'update ACCOUNT set ACCOUNTNAME = '+newAccountName+' where ACCOUNTID ='''+ AccountID+'''';
+
+  try
+    mssql.ExecSQL(sSQL);
+    objctx.SetComplete;
+  except
+    objctx.SetAbort;
+  end;
+end;
+
+procedure TAccount.setPassword(const AccountID, oldPassword,
+  newPassword: WideString);
+var
+  mssql: IMSSQL2K_Bank;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Bank.Create;
+  sSQL:= 'update ACCOUNT set PASSWORD = '''+newPassword+''''+
+         ' where ACCOUNTID ='''+ AccountID+''''+
+         ' and PASSWORD ='''+oldPassword+'''';
+
+  try
+    mssql.ExecSQL(sSQL);
+    objctx.SetComplete;
+  except
+    objctx.SetAbort;
+  end;
+end;
+
+initialization
+  TAutoObjectFactory.Create(ComServer, TAccount, Class_Account,
+    ciMultiInstance, tmBoth);
+end.

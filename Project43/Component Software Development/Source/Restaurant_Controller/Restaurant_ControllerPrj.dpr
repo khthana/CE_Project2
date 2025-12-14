@@ -1,0 +1,25 @@
+library Restaurant_ControllerPrj;
+
+uses
+  ComServ,
+  Restaurant_ControllerPrj_TLB in 'Restaurant_ControllerPrj_TLB.pas',
+  Restaurant_ControllerImp in 'Restaurant_ControllerImp.pas' {Restaurant_Controller: CoClass},
+  AgencyPrj_TLB in 'c:\program files\borland\Delphi5\Imports\AgencyPrj_TLB.pas',
+  RestaurantPrj_TLB in 'c:\program files\borland\Delphi5\Imports\RestaurantPrj_TLB.pas',
+  Restaurant_BookingPrj_TLB in 'c:\program files\borland\Delphi5\Imports\Restaurant_BookingPrj_TLB.pas',
+  ADODB_TLB in 'c:\program files\borland\Delphi5\Imports\ADODB_TLB.pas',
+  COMSVCSLib_TLB in 'c:\program files\borland\Delphi5\Imports\COMSVCSLib_TLB.pas',
+  MSSQL2K_RestaurantPrj_TLB in 'c:\program files\borland\Delphi5\Imports\MSSQL2K_RestaurantPrj_TLB.pas';
+
+exports
+  DllGetClassObject,
+  DllCanUnloadNow,
+  DllRegisterServer,
+  DllUnregisterServer;
+
+{$R *.TLB}
+
+{$R *.RES}
+
+begin
+end.

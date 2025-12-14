@@ -1,0 +1,151 @@
+unit AddBusToPackageForm_Source;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, Grids, OlalaAgency_TLB;
+
+type
+  TfrmAddBusToPackage = class(TForm)
+    grbSearchBus: TGroupBox;
+    edtStartDate: TEdit;
+    edtNumberOfDay: TEdit;
+    edtNumberOfBus: TEdit;
+    edtNumberOfSeat: TEdit;
+    labStartDate: TLabel;
+    labNumberOfDay: TLabel;
+    labNumberOfBus: TLabel;
+    labNumberOfSeat: TLabel;
+    chkAirConditioner: TCheckBox;
+    chkToilet: TCheckBox;
+    btnSearch: TButton;
+    stgView: TStringGrid;
+    btnClose: TButton;
+    grbAddToPackage: TGroupBox;
+    edtCompanyIDAdd: TEdit;
+    edtModelID: TEdit;
+    edtNumberOfBusAdd: TEdit;
+    edtStartDateAdd: TEdit;
+    edtNumberOfDayAdd: TEdit;
+    labCompanyIDAdd: TLabel;
+    labModelIDAdd: TLabel;
+    labNumberOfBusAdd: TLabel;
+    labStartDateAdd: TLabel;
+    labNumberOfDayAdd: TLabel;
+    btnAddToPackage: TButton;
+    procedure btnCloseClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btnSearchClick(Sender: TObject);
+    procedure stgViewMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure btnAddToPackageClick(Sender: TObject);
+  private
+    bus: _OlalaAgencyViewer;
+    strResult : WideString;
+    OleVar : OleVariant;
+    TotalRow : Integer;
+    { Private declarations }
+    procedure UpdateGrid(StringGrid1: TStringGrid);
+
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAddBusToPackage: TfrmAddBusToPackage;
+
+implementation
+
+uses CreatePackageFrom_Source;
+
+{$R *.DFM}
+
+procedure TfrmAddBusToPackage.btnCloseClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmAddBusToPackage.FormCreate(Sender: TObject);
+begin
+  bus:= CoOlalaAgencyViewer.Create;
+end;
+
+procedure TfrmAddBusToPackage.UpdateGrid(StringGrid1: TStringGrid);
+var
+  Row, Col : Integer;
+begin
+  if OleVar.EOF and OleVar.BOF then
+    strResult := 'Log is Empty!!'
+  else begin
+    OleVar.MoveFirst;
+
+    // Get Total Row of RecordSet
+    TotalRow := 0;
+    while not OleVar.EOF do
+    begin
+      INC(TotalRow);
+      OleVar.MoveNext;
+    end;
+
+    StringGrid1.ColCount := OleVar.Fields.Count;
+    StringGrid1.RowCount := TotalRow + 1;
+
+    strResult := 'Total Result :' + IntToStr(TotalRow) + ' Rows.';
+
+    for Col := 0 to OleVar.Fields.Count - 1 do
+      StringGrid1.Cells[Col, 0] := OleVar.Fields.Item[Col].Name;
+
+    OleVar.MoveFirst;
+    Row := 1;
+    while not OleVar.EOF do
+    begin
+      for Col := 0 to OleVar.Fields.Count - 1 do
+        StringGrid1.Cells[Col, Row] := VarToStr(OleVar.Fields.Item[Col].Value);
+      INC(Row);
+      OleVar.MoveNext;
+    end;
+  end;
+ // StatusBar1.SimpleText := strResult;
+end;
+
+procedure TfrmAddBusToPackage.btnSearchClick(Sender: TObject);
+var
+  retMessage: WideString;
+begin
+  OleVar:= bus.QueryBus(edtStartDate.Text,StrToInt(edtNumberOfDay.Text),
+                retMessage,StrToInt(edtNumberOfBus.Text),StrToInt(edtNumberOfSeat.Text),
+                chkAirConditioner.Checked,chkToilet.Checked,0);
+  UpdateGrid(stgView);
+  OleVar.Close;
+end;
+
+procedure TfrmAddBusToPackage.stgViewMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  Column, Row: Longint;
+begin
+  stgView.MouseToCell(X, Y, Column, Row);
+  if (Row > 0) and (Row <= TotalRow) then
+  begin
+    stgView.MouseToCell(X, Y, Column, Row);
+    edtCompanyIDAdd.Text :=  stgView.Cells[8, Row];
+    edtModelID.Text:=  stgView.Cells[1, Row];
+    edtNumberOfBusAdd.Text:=  edtNumberOfBus.Text;
+    edtStartDateAdd.Text:= edtStartDate.Text;
+    edtNumberOfDayAdd.Text:= edtNumberOfDay.Text;
+  end;
+end;
+
+procedure TfrmAddBusToPackage.btnAddToPackageClick(Sender: TObject);
+begin
+  frmCreatePackage.BusCompanyID:= edtCompanyIDAdd.Text;
+  frmCreatePackage.BusModelID:= edtModelID.Text;
+  frmCreatePackage.NumberOfBus:= edtNumberOfBusAdd.Text;
+  frmCreatePackage.BusStartDate:= edtStartDateAdd.Text;
+  frmCreatePackage.BusNumberOfDay:= edtNumberOfDayAdd.Text;
+
+  frmCreatePackage.UpdateBusGrid(frmCreatePackage.stgBus);
+end;
+
+end.

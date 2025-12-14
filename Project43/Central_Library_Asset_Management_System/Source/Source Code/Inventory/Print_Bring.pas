@@ -1,0 +1,55 @@
+unit Print_Bring;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ExtCtrls, QuickRpt, Qrctrls;
+
+type
+  TFr_Bring_Print = class(TForm)
+    QuickRep1: TQuickRep;
+    PageHeaderBand1: TQRBand;
+    QRSysData1: TQRSysData;
+    TitleBand1: TQRBand;
+    QR_L1: TQRLabel;
+    DetailBand1: TQRBand;
+    QRDBText5: TQRDBText;
+    QRDBText6: TQRDBText;
+    QRDBText2: TQRDBText;
+    PageFooterBand1: TQRBand;
+    QRSysData2: TQRSysData;
+    QRBand1: TQRBand;
+    QRExpr1: TQRExpr;
+    QRLabel10: TQRLabel;
+    QRDBText7: TQRDBText;
+    QRLabel2: TQRLabel;
+    QRGroup2: TQRGroup;
+    QRLabel7: TQRLabel;
+    QRDBText1: TQRDBText;
+    ChildBand1: TQRChildBand;
+    ChildBand2: TQRChildBand;
+    QRGroup3: TQRGroup;
+    QRLabel3: TQRLabel;
+    QRLabel5: TQRLabel;
+    QRLabel11: TQRLabel;
+    SummaryBand1: TQRBand;
+    QRLabel9: TQRLabel;
+    QRExpr2: TQRExpr;
+  private
+    { Private declarations }
+  public
+    SQL_Bring : String;
+    { Public declarations }
+  end;
+
+var
+  Fr_Bring_Print: TFr_Bring_Print;
+
+implementation
+
+uses DataModule;
+
+{$R *.DFM}
+
+end.

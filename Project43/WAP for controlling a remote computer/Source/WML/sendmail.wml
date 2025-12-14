@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml">
+<wml>
+	<head>
+		<meta http-equiv="Cache-Control" content="no-cache"/>
+	</head>
+	<card id="sendmail" newcontext="false" ordered="true">
+		<do type="accept" label="submit" optional="false">
+			<go href="http://161.246.5.105:8080/servlet/WAPSendMail" method="post" sendreferer="false">
+				<postfield name="from" value="$from"/>
+				<postfield name="to" value="$to"/>
+				<postfield name="subject" value="$subject"/>
+				<postfield name="message" value="$message"/>
+			</go>
+		</do>
+		<p align="left">
+			From (E-Mail address)<br/>
+			<input name="from" maxlength="40" type="text" emptyok="false"/>
+			To (E-Mail address)<br/>
+			<input name="to" maxlength="40" type="text" emptyok="false"/>
+			Subject<br/>
+			<input name="subject" maxlength="40" type="text" emptyok="false"/>
+			Message<br/>
+			<input name="message" type="text" emptyok="true"/>
+		</p>
+	</card>
+
+</wml>

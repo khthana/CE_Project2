@@ -1,0 +1,1 @@
+java -Djava.security.policy=%jini_path%\example\policy.all -Djava.rmi.server.codebase=http://%jini_host%:8080/jini-examples-dl.jar -cp d:\a_stuff\project\jini1_1\lib\jini-examples.jar com.sun.jini.example.browser.Browser

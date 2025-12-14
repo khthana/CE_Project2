@@ -1,0 +1,679 @@
+
+#include <windows.h>
+
+#include <stdio.h>
+#include <conio.h>
+#include <time.h>
+
+#include "..\..\Include\packet32.h"
+
+#define SIMULTANEOU_READS 10
+#define MAX_ETHERNET_FRAME_SIZE 1514
+#define Max_Num_Adapter 10
+
+// Prototypes
+
+int TablePackets(LPPACKET lpPacket);
+
+char AdapterList[Max_Num_Adapter][1024];
+
+u_int rowA=0,rowB=0,port=0;
+BYTE  tableA[12800][20],tableB[12800][20];
+float cpu_time,cpu_time2;
+
+int main()
+{	
+	//define a pointer to an ADAPTER structure
+
+	LPADAPTER  lpAdapter=0,lpAdapter2=0;
+
+	//define a pointer to a PACKET structure
+
+	LPPACKET   lpPacket,lpPacket2;
+
+	int        i,m=0,round=0;
+	DWORD      dwErrorCode;
+
+	DWORD	   dwVersion;
+	DWORD	   dwWindowsMajorVersion;
+
+	//unicode strings (winnt)
+	WCHAR		AdapterName[512]; // string that contains a list of the network adapters
+	WCHAR		*temp,*temp1;
+
+	//ascii strings (win95)
+	char		AdapterNamea[512]; // string that contains a list of the network adapters
+	char		*tempa,*temp1a;	
+	int			AdapterNum=0,Open;
+	ULONG		AdapterLength;
+	
+	// buffer to hold the data coming from the driver
+
+	char buffer[256000],bufferb[256000];	
+	struct bpf_stat stat;
+	
+	// obtain the name of the adapters installed on this machine
+	AdapterLength=512;
+	
+	i=0;	
+
+	// the data returned by PacketGetAdapterNames is different in Win95 and in WinNT.
+	// We have to check the os on which we are running
+	dwVersion=GetVersion();
+	dwWindowsMajorVersion =  (DWORD)(LOBYTE(LOWORD(dwVersion)));
+	if (!(dwVersion >= 0x80000000 && dwWindowsMajorVersion >= 4))
+	{  // Windows NT
+		PacketGetAdapterNames(AdapterName,&AdapterLength);
+		temp=AdapterName;
+		temp1=AdapterName;
+		while ((*temp!='\0')||(*(temp-1)!='\0'))
+		{
+			if (*temp=='\0') 
+			{
+				memcpy(AdapterList[i],temp1,(temp-temp1)*2);
+				temp1=temp+1;
+				i++;
+			}
+	
+		temp++;
+		}
+	  
+		AdapterNum=i;
+		for (i=0;i<AdapterNum;i++)
+			wprintf(L"\n%d- %s\n",i+1,AdapterList[i]);        
+//		printf("\n");
+		
+	}
+
+	else	//windows 95
+	{
+		PacketGetAdapterNames(AdapterNamea,&AdapterLength);
+		
+		tempa=AdapterNamea;
+		temp1a=AdapterNamea;
+
+		while ((*tempa!='\0')||(*(tempa-1)!='\0'))
+		{
+			if (*tempa=='\0') 
+			{
+				memcpy(AdapterList[i],temp1a,tempa-temp1a);
+				temp1a=tempa+1;
+				i++;
+			}
+			tempa++;
+		}		  
+	}
+
+	printf("Active Adapter is \n");  // ********* use first adapter.
+	lpAdapter  = PacketOpenAdapter(AdapterList[0]);   // ********* use first adapter.
+	lpAdapter2 = PacketOpenAdapter(AdapterList[1]);   // ********* use second adapter.
+	printf("AdapterList[0]=%s AdapterList[1]=%s\n\n",AdapterList[0],AdapterList[1]);
+	printf("Press Anykey to stop\n");
+	printf("Runing....\n");
+	
+	if (!lpAdapter || (lpAdapter->hFile == INVALID_HANDLE_VALUE))
+	{
+		dwErrorCode=GetLastError();
+		printf("Unable to open the driver, Error Code : %lx\n",dwErrorCode); 
+
+		return(-1);
+	}	
+
+	if (!lpAdapter2 || (lpAdapter2->hFile == INVALID_HANDLE_VALUE))
+	{
+		dwErrorCode=GetLastError();
+		printf("Unable to open the driver, Error Code : %lx\n",dwErrorCode); 
+
+		return(-1);
+	}
+	
+	// set the network adapter in promiscuous mode
+	
+	PacketSetHwFilter(lpAdapter, NDIS_PACKET_TYPE_PROMISCUOUS);
+	PacketSetHwFilter(lpAdapter2,NDIS_PACKET_TYPE_PROMISCUOUS);
+
+	// set a 512K buffer in the driver
+	PacketSetBuff(lpAdapter,512000); // 512000
+	PacketSetBuff(lpAdapter2,512000);
+
+	// set a 1 second read timeout
+	PacketSetReadTimeout(lpAdapter,1000);
+	PacketSetReadTimeout(lpAdapter2,1000);
+	
+	//allocate and initialize a packet structure that will be used to
+	//receive the packets.
+	if((lpPacket = PacketAllocatePacket())==NULL){
+		printf("\nError:failed to allocate the LPPACKET structure.");
+		return (-1);
+	}
+	if((lpPacket2 = PacketAllocatePacket())==NULL){
+		printf("\nError:failed to allocate the LPPACKET structure.");
+		return (-1);
+	} 
+	PacketInitPacket(lpPacket,(char*)buffer,256000); //max size of buffer=256000 byte(or char)
+	PacketInitPacket(lpPacket2,(char*)bufferb,256000); //max size of buffer=256000 byte(or char)
+
+	//main capture loop
+	while(!kbhit()) // check keyboard hit; if not hit return =0;
+	{         
+		// capture the packets		
+		if(PacketReceivePacket(lpAdapter,lpPacket,TRUE)==FALSE){
+			printf("Error: PacketReceivePacket failed");
+			return (-1);
+		}
+		if(PacketReceivePacket(lpAdapter2,lpPacket2,TRUE)==FALSE){
+			printf("Error: PacketReceivePacket failed");
+			return (-1);
+		}
+		//printf("cpu_time = %d\n",cpu_time);
+//		round=round + 1;
+//		printf("round %d\n",round);
+//		printf("use time per loop = %f\n",clock()-cpu_time);
+//		cpu_time = clock (); 
+		port=0; TablePackets(lpPacket);		
+		port=1; TablePackets(lpPacket2); 
+	}
+	//print the capture statistics
+	PacketGetStats(lpAdapter,&stat);
+	printf("\n\n%s",AdapterList[0]);
+	printf(" %d packets received. %d Packets lost\n",stat.bs_recv,stat.bs_drop);
+	PacketGetStats(lpAdapter2,&stat);
+	printf("%s",AdapterList[1]);
+	printf(" %d packets received. %d Packets lost\n\n",stat.bs_recv,stat.bs_drop);
+
+	PacketFreePacket(lpPacket);
+	PacketFreePacket(lpPacket2);
+
+	// close the adapter and exit
+	PacketCloseAdapter(lpAdapter);
+	PacketCloseAdapter(lpAdapter2);
+
+	// Display Table row 1-5
+	for (i=0;i<5;i++){
+		printf("tableA[%d] = ",i);
+		for (m=0;m<20;m++){
+			printf("%02x ",tableA[i][m]);
+            if (m==19) printf("\n");
+		} 
+	}   printf("\n");
+	for (i=0;i<5;i++){
+		printf("tableB[%d] = ",i);
+		for (m=0;m<20;m++){
+			printf("%02x ",tableB[i][m]);
+            if (m==19) printf("\n");
+		} 
+	} 
+	return (0);
+}
+// ****************************** TablePackets Function ******************************
+
+int TablePackets(LPPACKET lpPacket)
+{
+	ULONG	i, j, ulLines, ulen, ulBytesReceived;
+	char	*pChar, *pLine, *base;
+	char	*buf; // Pointer to ..
+	u_int off=0, check, scan, send, match, found;
+	u_int tlen,tlen1;
+	BYTE  temp[19],tem[19],type[2];
+	BYTE  packetbuff[2000];
+	LPADAPTER	lpAdapter3=0,lpAdapter4=0;
+	LPPACKET	lpPacket3,lpPacket4;
+	DWORD       dwErrorCode;
+	int			Snaplen;
+	u_int       zz,xx,ww;
+
+	struct bpf_hdr *hdr;
+		ulBytesReceived = lpPacket->ulBytesReceived;
+					buf = lpPacket->Buffer;
+					off = 0;    
+	// *************** Assign for Sent Packet *******************
+	lpAdapter3 = PacketOpenAdapter(AdapterList[0]);
+	lpAdapter4 = PacketOpenAdapter(AdapterList[1]);
+
+	if (!lpAdapter3 || (lpAdapter3->hFile == INVALID_HANDLE_VALUE))
+	{
+		dwErrorCode=GetLastError();
+		printf("Unable to open the driver, Error Code : %lx\n",dwErrorCode); 
+		return(-1);
+	}	
+
+	if (!lpAdapter4 || (lpAdapter4->hFile == INVALID_HANDLE_VALUE))
+	{
+		dwErrorCode=GetLastError();
+		printf("Unable to open the driver, Error Code : %lx\n",dwErrorCode); 
+		return(-1);
+	}
+	PacketSetHwFilter(lpAdapter3, NDIS_PACKET_TYPE_PROMISCUOUS);
+	PacketSetHwFilter(lpAdapter4, NDIS_PACKET_TYPE_PROMISCUOUS);
+
+	if((lpPacket3 = PacketAllocatePacket())==NULL){
+		printf("\nError:failed to allocate the LPPACKET structure.");
+		return (-1);
+	}
+	if((lpPacket4 = PacketAllocatePacket())==NULL){
+		printf("\nError:failed to allocate the LPPACKET structure.");
+		return (-1);
+	} 
+	 
+	// ************************ End *****************************
+	while(off<ulBytesReceived){	
+		check=1; // if protocol(ok) ARP or IPv4 set = 0;
+		scan =1; // 0 = It exist in table already; 1 is not exist.
+		send =1; // 0 = match in table; 1= not match in table;
+		match=1;
+		found=1;
+		if(kbhit()) return 0; // if not hit key 'kbhit()=0' continue;But if hit key go return;
+		hdr=(struct bpf_hdr *)(buf+off);
+		tlen1=hdr->bh_datalen;
+		tlen=hdr->bh_caplen;
+		Snaplen=tlen1;
+
+//		printf("Packet length : %ld\n",tlen1);
+
+		off+=hdr->bh_hdrlen; // hdr->bh_hdrlen=18;
+
+		ulLines = (tlen + 15) / 16;		
+		if (ulLines > 5) ulLines=5; 		
+
+		pChar =(char*)(buf+off);
+		base  = pChar;
+
+		off=Packet_WORDALIGN(off+tlen1);		
+		for ( i=0; i<ulLines; i++ ) // total 4 line
+			{
+				pLine =pChar;
+//				printf( "%08lx : ", pChar-base );
+				ulen=tlen;
+				ulen = ( ulen > 16 ) ? 16 : ulen;
+				tlen -= ulen;
+
+				for ( j=0; j<ulen; j++ ){ // total 16 byte per line
+                // *********** Keep Mac Addr **********
+				  if ((i==0)&&(j<12)) {	  
+					    temp[j] = *(BYTE *)pChar++;
+					    (BYTE *)pChar = (BYTE *)pChar--;
+				  }
+                // *********** Check Type *************
+				  if ((i==0)&&((j==11)||(j==12))){
+						type[0]= *(BYTE *)pChar++;
+						type[1]= *(BYTE *)pChar++;
+						(BYTE *)pChar = (BYTE *)pChar-2;				
+				  }
+				  if ((type[0]==0x08)&&(type[1]==0x00)){					
+				// *********** Keep IP Addr (IPv4) **********
+					if ((i==1)&&((j>9)&&(j<16))) {
+						temp[j+2]=*(BYTE *)pChar++;	
+						(BYTE *)pChar = (BYTE *)pChar--;					
+					}
+					if ((i==2)&&((j>=0)&&(j<2))) {
+						temp[j+18]=*(BYTE *)pChar++;	
+						(BYTE *)pChar = (BYTE *)pChar--;
+					}
+					check=0;
+				  }
+				  if ((type[0]==0x08)&&(type[1]==0x06)){						
+				// *********** Keep IP Addr (ARP) ***********
+					if ((i==1)&&((j>11)&&(j<16))) {
+						temp[j]=*(BYTE *)pChar++;	
+						(BYTE *)pChar = (BYTE *)pChar--;					
+					}
+					if ((i==2)&&((j>5)&&(j<10))) {
+						temp[j+10]=*(BYTE *)pChar++;	
+						(BYTE *)pChar = (BYTE *)pChar--;
+					}
+					check=0;
+				  }
+				// *********** Print To Screen in Byte **********					  
+//				   printf("%02x ",*(BYTE *)pChar++);
+				  *(BYTE *)pChar++;
+
+				} // End For(ulen) //
+
+                // *********** Print To Screen in Character *****
+//				if ( ulen < 16 )
+//					printf( "%*s",(16-ulen)*3," " );								
+//				pChar = pLine;
+			} // End For(ulLines) //
+			
+		// ********** (new arrange) temp -->temp ***************
+		// ||  MAC source|IP source  ||  MAC dest|IP dest ||			
+		for (zz=0;zz<20;zz++){		
+			if (zz<6)
+				tem[zz+10]=temp[zz];
+			if ((zz>5)&&(zz<12))
+				tem[zz-6]=temp[zz];
+			if ((zz>11)&&(zz<16))
+				tem[zz-6]=temp[zz];
+			if ((zz>15)&&(zz<20))
+				tem[zz]=temp[zz];
+		}       
+ 
+// ******************************* Scan Table Find Exist **********************************//
+		if (check==0){
+	// ******************** Scan All Table (TableA + TableB) *************************
+			for (xx=0;xx<rowA;xx++)
+				for (ww=0;ww<6;ww++){  // Scan MAC in tableA
+					  if (tem[ww]==tableA[xx][ww]){
+						if (ww==5){ 
+							scan=0;  // Found exist in tableA
+							for (zz=6;zz<10;zz++) // Write update IP in tableA
+ 								tableA[xx][zz]=tem[zz];
+							xx=rowA;
+						}// end of tem
+					  } 
+					  else ww=6; // end loop(ww)
+				}			
+			if (scan!=0){
+				for (xx=0;xx<rowB;xx++)
+					for (ww=0;ww<6;ww++){  // Scan MAC in tableB
+					  if (tem[ww]==tableB[xx][ww]){
+						if (ww==5){ 
+							scan=0;  // Found exist in tableB
+							for (zz=6;zz<10;zz++) // Write update IP in tableB
+								tableB[xx][zz]=tem[zz];
+							xx=rowB;
+						}// end of tem
+					  } 
+					  else ww=6; // end loop(ww)
+					}				
+			}
+		} // end if (check=0)
+	// ************************* Write to Table for not Exist *************************
+		if ((check==0)&&(scan==1)){ 
+			if (port==0){
+				for (zz=0;zz<20;zz++)
+					tableA[rowA][zz]=tem[zz];
+				rowA=rowA+1;
+			}
+			if (port==1){
+				for (zz=0;zz<20;zz++)
+					tableB[rowB][zz]=tem[zz];
+				rowB=rowB+1;
+			} 						
+		}
+// ************************** Test Forword Send ******************************************
+/*		if (check==0){ // check == 0 mean it's The IPv4 Ethernet Frame )
+			pChar = base; // Assign Pointer
+			if (port==0){ // Send Packet out ,by port 1 (NE2000)
+				for(zz=0;zz<=Snaplen;zz++){							
+					packetbuff[zz] = *(BYTE *)pChar++;												
+				}
+				PacketInitPacket(lpPacket4,packetbuff,Snaplen);
+				PacketSetNumWrites(lpAdapter4,1);
+				PacketSendPacket(lpAdapter4,lpPacket4,FALSE);				
+			}
+			if (port==1){ // Send Packet out ,by port 0 (RTL8139)
+				for(zz=0;zz<=Snaplen;zz++){
+					packetbuff[zz] = *(BYTE *)pChar++;												
+				}						
+				PacketInitPacket(lpPacket3,packetbuff,Snaplen);
+				PacketSetNumWrites(lpAdapter3,1);
+				PacketSendPacket(lpAdapter3,lpPacket3,FALSE);			
+			}
+		} */
+// ************************ Scan Table For Send ******************************************
+		if (check==0){ // check == 0 mean it's The IPv4 Ethernet Frame )			
+			pChar = base; // Assign Pointer
+	// ****************************** Scan TableB For Send ****************************
+			if (port==0){
+				for (xx=0;xx<rowA;xx++){
+				  for (ww=0;ww<6;ww++){  // check MAC in it's self (tableA)
+					  if (tem[ww+10]==tableA[xx][ww]){
+				    	if (ww==5) { // Found MAC in tableA
+							send=0; xx=rowA; // do notthing
+						}
+					  }
+					  else ww=6; // end loop(ww)
+				  }
+				}
+				if (send!=0){
+				  for (xx=0;xx<rowB;xx++)
+					for (ww=6;ww<10;ww++){  // check IP in tableB
+					  if (tem[ww+10]==tableB[xx][ww]){
+				    	if (ww==9) { // Found IP in tableB
+							found=0;  // Exit do notthing
+							for (j=0;j<6;j++){  // check MAC in it's self (tableB)
+							  if (tem[j+10]==tableB[xx][j]){
+				    	        if (j==5) { // MAC Match in table
+								  match=0;
+								  for(zz=0;zz<=Snaplen;zz++)
+     								packetbuff[zz] = *(BYTE *)pChar++;
+								  // Send Packet Forword to port 1 (NE2000)
+								  PacketInitPacket(lpPacket4,packetbuff,Snaplen);
+								  PacketSetNumWrites(lpAdapter4,1);
+								  PacketSendPacket(lpAdapter4,lpPacket4,FALSE);
+								}
+							  }
+							  else j=6; // end loop(ww)
+							} // end for (j)
+							if ((match!=0)&&((type[0]==0x08)&&(type[1]==0x06))) { // ARP ?
+							   for(zz=0;zz<=Snaplen;zz++)
+     						 	  packetbuff[zz] = *(BYTE *)pChar++;
+							   // Send Packet Forword to port 1 (NE2000)	
+							   for(zz=0;zz<6;zz++) { 
+							      packetbuff[zz]=tem[zz];    // MAC Destination (MAC Header)
+								  packetbuff[zz+6]=tableB[xx][zz];// MAC Source (MAC Header)
+								  packetbuff[zz+22]=tableB[xx][zz];// MAC Sender(ARP Header) 
+								  packetbuff[zz+32]=tem[zz];      // MAC Target (ARP Header)									
+							   }
+							   for(zz=0;zz<5;zz++) {	
+								  packetbuff[zz+28]=tem[zz+16];   // IP Sender  (ARP Header)
+								  packetbuff[zz+38]=tem[zz+6];    // IP Target  (ARP Header)
+							   }
+							   packetbuff[21]=0x02;        // ARP -> (2) reply back to my port
+							   // ***** Send ARP response *****
+							   PacketInitPacket(lpPacket3,packetbuff,Snaplen);
+							   PacketSetNumWrites(lpAdapter3,1); 
+							   PacketSendPacket(lpAdapter3,lpPacket3,FALSE);
+							   xx=rowB;
+							}							
+						} // end if (ww==9)
+					  } // end if (tem)
+					  else ww=10; // end loop(ww)
+					} // for (ww)		
+				  if (found!=0){ 
+					for (xx=0;xx<rowB;xx++)
+					  for (ww=0;ww<6;ww++){  // check MAC in tableB
+						if (tem[ww+10]==tableB[xx][ww]){
+				    	  if (ww==5) { // Found MAC in tableB
+							found=0; xx=rowB; // Exit do notthing
+						  }
+						}
+						else ww=6;
+					  }
+					if ((found!=0)&&((type[0]==0x08)&&(type[1]==0x06))){ 
+					   for (xx=0;xx<rowA;xx++)
+					      for (ww=0;ww<6;ww++){  // check MAC source in It's self tableA
+						    if (tem[ww]==tableA[xx][ww]){ 
+				    	       if (ww==5) { // Found MAC in tableA
+							      xx=rowA; // Send ARP Forword to port1 (NE2000)
+								  for(zz=0;zz<=Snaplen;zz++)
+     								packetbuff[zz] = *(BYTE *)pChar++;
+								  // Send Packet Forword to port 1 (NE2000)
+								  PacketInitPacket(lpPacket4,packetbuff,Snaplen);
+								  PacketSetNumWrites(lpAdapter4,1);
+								  PacketSendPacket(lpAdapter4,lpPacket4,FALSE);
+							   }
+							}
+						    else ww=6;
+						  }	                       
+					}
+					else { // Built ARP Use MAC+IP From Packet
+					  for (xx=0;xx<rowA;xx++)
+					      for (ww=0;ww<6;ww++){  // check MAC source in It's table (tableA)
+						    if (tem[ww]==tableA[xx][ww]){ 
+				    	       if (ww==5) { // Found MAC in tableA
+							      xx=rowA; // Send ARP Forword to port1 (NE2000)
+								  packetbuff[12]=0x08;	
+								  packetbuff[13]=0x06;	
+								  packetbuff[14]=0x00;	
+								  packetbuff[15]=0x01; 
+								  packetbuff[16]=0x08;	
+								  packetbuff[17]=0x00;	
+								  packetbuff[18]=0x06;	
+								  packetbuff[19]=0x04; 
+								  packetbuff[20]=0x00;						   
+								  for(zz=0;zz<6;zz++) { 
+									packetbuff[zz]=0xff;      // MAC Destination (MAC Header)
+									packetbuff[zz+6]=tem[zz]; // MAC Source (MAC Header)
+									packetbuff[zz+22]=tem[zz];// MAC Sender(ARP Header) 
+									packetbuff[zz+32]=0x00;   // MAC Target (ARP Header)									
+								  }
+								  for(zz=0;zz<4;zz++) {	
+									packetbuff[zz+28]=tem[zz+6]; // IP Sender  (ARP Header)
+									packetbuff[zz+38]=tem[zz+16];  // IP Target  (ARP Header)
+								  }
+								  packetbuff[21]=0x01;         // ARP -> (1) request to port 0
+								  for(zz=42;zz<61;zz++)
+									packetbuff[zz]=0x20;
+								  // ***** Send ARP request *****
+								  PacketInitPacket(lpPacket3,packetbuff,60);
+								  PacketSetNumWrites(lpAdapter3,1); 
+								  PacketSendPacket(lpAdapter3,lpPacket3,FALSE);
+								}
+							}
+						    else ww=6;
+						  }	         
+					} // end else	
+				  } // end if (found!=0)
+				} // end if (send!=0)
+			} // end if port=0
+	// ****************************** Scan TableA For Send ****************************
+			if (port==1){
+				for (xx=0;xx<rowB;xx++){
+				  for (ww=0;ww<6;ww++){  // check MAC in it's self (tableB)
+					  if (tem[ww+10]==tableB[xx][ww]){
+				    	if (ww==5) { // Found MAC in tableB
+							send=0; xx=rowB; // do notthing
+// when packet loss			//for(zz=0;zz<=Snaplen;zz++)
+// cause is captured		//	packetbuff[zz] = *(BYTE *)pChar++;
+// use here code			// Send Packet out ,by port 0 (RTL8139)
+							//PacketInitPacket(lpPacket4,packetbuff,Snaplen);
+							//PacketSetNumWrites(lpAdapter4,1);
+							//PacketSendPacket(lpAdapter4,lpPacket3,FALSE);
+						}
+					  }
+					  else ww=6; // end loop(ww)
+				  }
+				}
+				if (send!=0){
+				  for (xx=0;xx<rowA;xx++)
+					for (ww=6;ww<10;ww++){  // check IP in tableA
+					  if (tem[ww+10]==tableA[xx][ww]){
+				    	if (ww==9) { // Found IP in tableA
+							found=0;  // Exit do notthing
+							for (j=0;j<6;j++){  // check MAC in it's self (tableA)
+							  if (tem[j+10]==tableA[xx][j]){
+				    	        if (j==5) { // MAC Match in table
+								  match=0;
+								  for(zz=0;zz<=Snaplen;zz++)
+     								packetbuff[zz] = *(BYTE *)pChar++;
+								  // Send Packet Forword to port 0 (RTL8139)
+								  PacketInitPacket(lpPacket3,packetbuff,Snaplen);
+								  PacketSetNumWrites(lpAdapter3,1);
+								  PacketSendPacket(lpAdapter3,lpPacket3,FALSE);
+								}
+							  }
+							  else j=6; // end loop(ww)
+							} // end for (j)
+							if ((match!=0)&&((type[0]==0x08)&&(type[1]==0x06))) { // ARP ?
+							   for(zz=0;zz<=Snaplen;zz++)
+     						 	  packetbuff[zz] = *(BYTE *)pChar++;
+							   // Send Packet Forword to port 0 (RTL8139)	
+							   for(zz=0;zz<6;zz++) { 
+							      packetbuff[zz]=tem[zz];    // MAC Destination (MAC Header)
+								  packetbuff[zz+6]=tableA[xx][zz];// MAC Source (MAC Header)
+								  packetbuff[zz+22]=tableA[xx][zz];// MAC Sender(ARP Header) 
+								  packetbuff[zz+32]=tem[zz];      // MAC Target (ARP Header)									
+							   }
+							   for(zz=0;zz<5;zz++) {	
+								  packetbuff[zz+28]=tem[zz+16];   // IP Sender  (ARP Header)
+								  packetbuff[zz+38]=tem[zz+6];    // IP Target  (ARP Header)
+							   }
+							   packetbuff[21]=0x02;        // ARP -> (2) reply back my port
+							   // ***** Send ARP reply *****
+							   PacketInitPacket(lpPacket4,packetbuff,Snaplen);
+							   PacketSetNumWrites(lpAdapter4,1); 
+							   PacketSendPacket(lpAdapter4,lpPacket4,FALSE);
+							   xx=rowA;
+							}							
+						} // end if (ww==9)
+					  } // end if (tem)
+					  else ww=10; // end loop(ww)
+					} // for (ww)		
+				  if (found!=0){ 
+					for (xx=0;xx<rowA;xx++)
+					  for (ww=0;ww<6;ww++){  // check MAC in tableA
+						if (tem[ww+10]==tableA[xx][ww]){
+				    	  if (ww==5) { // Found MAC in tableA
+							found=0; xx=rowA; // Exit do notthing
+						  }
+						}
+						else ww=6;
+					  }
+					if ((found!=0)&&((type[0]==0x08)&&(type[1]==0x06))){ 
+                       for (xx=0;xx<rowB;xx++)
+					      for (ww=0;ww<6;ww++){  // check MAC source in It's table (tableB)
+						    if (tem[ww]==tableB[xx][ww]){ 
+				    	       if (ww==5) { // Found MAC in tableB
+							      xx=rowB; // Send ARP Forword to port0 (RTL8139)
+								  for(zz=0;zz<=Snaplen;zz++)
+     								packetbuff[zz] = *(BYTE *)pChar++;
+								  // Send Packet Forword to port 0 (RTL8139)
+								  PacketInitPacket(lpPacket3,packetbuff,Snaplen);
+								  PacketSetNumWrites(lpAdapter3,1);
+								  PacketSendPacket(lpAdapter3,lpPacket3,FALSE);
+							   }
+							}
+						    else ww=6;
+						  }
+					}
+					else { // ****** Built ARP Use MAC+IP From Packet ******
+					   for (xx=0;xx<rowB;xx++)
+					      for (ww=0;ww<6;ww++){  // check MAC source in It's self tableB
+						    if (tem[ww]==tableB[xx][ww]){ 
+				    	       if (ww==5) { // Found MAC in tableB
+							      xx=rowB; // Send ARP Forword to port0 (RTL8139)
+								  packetbuff[12]=0x08;	
+								  packetbuff[13]=0x06;	
+								  packetbuff[14]=0x00;	
+								  packetbuff[15]=0x01; 
+								  packetbuff[16]=0x08;	
+								  packetbuff[17]=0x00;	
+								  packetbuff[18]=0x06;	
+								  packetbuff[19]=0x04; 
+								  packetbuff[20]=0x00;						   
+								  for(zz=0;zz<6;zz++) { 
+									packetbuff[zz]=0xff;      // MAC Destination (MAC Header)
+									packetbuff[zz+6]=tem[zz]; // MAC Source (MAC Header)
+									packetbuff[zz+22]=tem[zz];// MAC Sender(ARP Header) 
+									packetbuff[zz+32]=0x00;   // MAC Target (ARP Header)									
+								  }
+								  for(zz=0;zz<4;zz++) {	
+									packetbuff[zz+28]=tem[zz+6]; // IP Sender  (ARP Header)
+									packetbuff[zz+38]=tem[zz+16];  // IP Target  (ARP Header)
+								  }
+								  packetbuff[21]=0x01;         // ARP -> (1) request to port 0
+								  for(zz=42;zz<61;zz++)
+									packetbuff[zz]=0x20;
+								  // ***** Send ARP request *****
+								  PacketInitPacket(lpPacket3,packetbuff,60);
+								  PacketSetNumWrites(lpAdapter3,1); 
+								  PacketSendPacket(lpAdapter3,lpPacket3,FALSE);
+								}
+							}
+						    else ww=6;
+						  }	         
+					} // end else	
+				  } // end if (found!=0)
+				} // end if (send!=0)
+			} // end if port=1
+		} // end if check=0									
+// ******************************************* end *******************************************
+//		printf( "\n\n" );		
+	} // End While(off<ulBytesReceived)
+	PacketFreePacket(lpPacket3);
+	PacketFreePacket(lpPacket4);
+	PacketCloseAdapter(lpAdapter3);
+	PacketCloseAdapter(lpAdapter4); 
+} // End PrintPackets 

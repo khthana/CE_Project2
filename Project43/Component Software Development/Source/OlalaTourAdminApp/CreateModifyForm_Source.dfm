@@ -1,0 +1,210 @@
+object CreateModifyForm: TCreateModifyForm
+  Left = 62
+  Top = 19
+  Width = 696
+  Height = 549
+  Caption = 'Create/Modify Form'
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 240
+    Top = 32
+    Width = 38
+    Height = 13
+    Caption = 'PlaceID'
+  end
+  object Label2: TLabel
+    Left = 240
+    Top = 56
+    Width = 55
+    Height = 13
+    Caption = 'PlaceName'
+  end
+  object Label3: TLabel
+    Left = 240
+    Top = 80
+    Width = 36
+    Height = 13
+    Caption = 'Country'
+  end
+  object Label4: TLabel
+    Left = 240
+    Top = 104
+    Width = 25
+    Height = 13
+    Caption = 'State'
+  end
+  object Label5: TLabel
+    Left = 240
+    Top = 128
+    Width = 42
+    Height = 13
+    Caption = 'Province'
+  end
+  object Label6: TLabel
+    Left = 240
+    Top = 152
+    Width = 53
+    Height = 13
+    Caption = 'Description'
+  end
+  object Label7: TLabel
+    Left = 240
+    Top = 176
+    Width = 67
+    Height = 13
+    Caption = 'ImageFilePath'
+  end
+  object GroupBox1: TGroupBox
+    Left = 16
+    Top = 16
+    Width = 113
+    Height = 113
+    Caption = 'PlaceProperty'
+    TabOrder = 0
+    object RdoActivity: TRadioButton
+      Left = 16
+      Top = 27
+      Width = 73
+      Height = 17
+      Caption = 'Activity'
+      TabOrder = 0
+    end
+    object RdoCategory: TRadioButton
+      Left = 16
+      Top = 50
+      Width = 73
+      Height = 17
+      Caption = 'Category'
+      TabOrder = 1
+    end
+    object RdoFestival: TRadioButton
+      Left = 16
+      Top = 74
+      Width = 73
+      Height = 17
+      Caption = 'Festival'
+      TabOrder = 2
+    end
+  end
+  object btnCreateModify: TButton
+    Left = 576
+    Top = 473
+    Width = 99
+    Height = 25
+    Caption = 'Create / Modify'
+    TabOrder = 1
+  end
+  object StringGrid1: TStringGrid
+    Left = 16
+    Top = 233
+    Width = 657
+    Height = 233
+    FixedCols = 0
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect]
+    TabOrder = 2
+    ColWidths = (
+      110
+      128
+      131
+      111
+      169)
+  end
+  object btnViewPlaceProperty: TButton
+    Left = 16
+    Top = 136
+    Width = 121
+    Height = 25
+    Caption = 'View'
+    TabOrder = 3
+  end
+  object btnAddToPlace: TButton
+    Left = 16
+    Top = 168
+    Width = 121
+    Height = 25
+    Caption = 'Add to Place'
+    TabOrder = 4
+  end
+  object btnRemoveFromPlace: TButton
+    Left = 16
+    Top = 200
+    Width = 121
+    Height = 25
+    Caption = 'Remove Form Place'
+    TabOrder = 5
+  end
+  object EdtPlaceID: TEdit
+    Left = 320
+    Top = 32
+    Width = 312
+    Height = 21
+    Enabled = False
+    TabOrder = 6
+  end
+  object EdtPlaceName: TEdit
+    Left = 320
+    Top = 56
+    Width = 312
+    Height = 21
+    TabOrder = 7
+  end
+  object EdtCountry: TEdit
+    Left = 320
+    Top = 80
+    Width = 312
+    Height = 21
+    TabOrder = 8
+  end
+  object EdtState: TEdit
+    Left = 320
+    Top = 104
+    Width = 312
+    Height = 21
+    TabOrder = 9
+  end
+  object EdtProvince: TEdit
+    Left = 320
+    Top = 128
+    Width = 312
+    Height = 21
+    TabOrder = 10
+  end
+  object EdtDescription: TEdit
+    Left = 320
+    Top = 152
+    Width = 312
+    Height = 21
+    TabOrder = 11
+  end
+  object EdtImageFilePath: TEdit
+    Left = 320
+    Top = 176
+    Width = 281
+    Height = 21
+    TabOrder = 12
+  end
+  object btnOpenFile: TButton
+    Left = 607
+    Top = 176
+    Width = 25
+    Height = 25
+    Caption = '...'
+    TabOrder = 13
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 503
+    Width = 688
+    Height = 19
+    Panels = <>
+    SimplePanel = False
+  end
+end

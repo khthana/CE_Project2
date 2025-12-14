@@ -1,0 +1,1334 @@
+unit PlaceSystem_TLB;
+
+// ************************************************************************ //
+// WARNING                                                                    
+// -------                                                                    
+// The types declared in this file were generated from data read from a       
+// Type Library. If this type library is explicitly or indirectly (via        
+// another type library referring to this type library) re-imported, or the   
+// 'Refresh' command of the Type Library Editor activated while editing the   
+// Type Library, the contents of this file will be regenerated and all        
+// manual modifications will be lost.                                         
+// ************************************************************************ //
+
+// PASTLWTR : $Revision:   1.88  $
+// File generated on 26/04/01 4:23:57 AM from Type Library described below.
+
+// *************************************************************************//
+// NOTE:                                                                      
+// Items guarded by $IFDEF_LIVE_SERVER_AT_DESIGN_TIME are used by properties  
+// which return objects that may need to be explicitly created via a function 
+// call prior to any access via the property. These items have been disabled  
+// in order to prevent accidental use from within the object inspector. You   
+// may enable them by defining LIVE_SERVER_AT_DESIGN_TIME or by selectively   
+// removing them from the $IFDEF blocks. However, such items must still be    
+// programmatically created via a method of the appropriate CoClass before    
+// they can be used.                                                          
+// ************************************************************************ //
+// Type Lib: D:\Project\SourceCode\OlalaTour\PlaceSystem\PlaceSystem.tlb (1)
+// IID\LCID: {CDFF6DBF-C1F1-4513-A48F-409283ECFFEE}\0
+// Helpfile: 
+// DepndLst: 
+//   (1) v2.0 stdole, (C:\WINNT\System32\stdole2.tlb)
+//   (2) v4.0 StdVCL, (C:\WINNT\System32\STDVCL40.DLL)
+// ************************************************************************ //
+{$TYPEDADDRESS OFF} // Unit must be compiled without type-checked pointers. 
+interface
+
+uses Windows, ActiveX, Classes, Graphics, OleServer, OleCtrls, StdVCL;
+
+// *********************************************************************//
+// GUIDS declared in the TypeLibrary. Following prefixes are used:        
+//   Type Libraries     : LIBID_xxxx                                      
+//   CoClasses          : CLASS_xxxx                                      
+//   DISPInterfaces     : DIID_xxxx                                       
+//   Non-DISP interfaces: IID_xxxx                                        
+// *********************************************************************//
+const
+  // TypeLibrary Major and minor versions
+  PlaceSystemMajorVersion = 1;
+  PlaceSystemMinorVersion = 0;
+
+  LIBID_PlaceSystem: TGUID = '{CDFF6DBF-C1F1-4513-A48F-409283ECFFEE}';
+
+  IID_IPlaceProperty: TGUID = '{0498BD4F-CE91-4A8F-8EC4-DFC665E1C496}';
+  CLASS_PlaceProperty: TGUID = '{2E7DD597-F5F4-4F47-975F-F809024F804E}';
+  IID_IActivityManager: TGUID = '{D9087C8B-1D3D-493B-9C68-B7449FEC3AD1}';
+  CLASS_ActivityManager: TGUID = '{DE8D749B-1FCB-4A6A-BAC5-3443768431B8}';
+  IID_ICategoryManager: TGUID = '{5C958063-364D-4AF4-8FDC-81FEDE3F77B7}';
+  CLASS_CategoryManager: TGUID = '{CDFF82A8-CF00-401F-BBF1-6710F4599EBA}';
+  IID_IFestivalManager: TGUID = '{8CB3392F-3770-42A5-9F2E-1AB8F52CB41B}';
+  CLASS_FestivalManager: TGUID = '{A465ED6B-114E-49F2-8A57-88CCB413F374}';
+  IID_IPlaceManager: TGUID = '{0FB731C1-09E9-4D6C-9032-4967CA61D641}';
+  CLASS_PlaceManager: TGUID = '{D8EF6DE5-B1C0-431F-AADA-4274F150D27E}';
+type
+
+// *********************************************************************//
+// Forward declaration of types defined in TypeLibrary                    
+// *********************************************************************//
+  IPlaceProperty = interface;
+  IPlacePropertyDisp = dispinterface;
+  IActivityManager = interface;
+  IActivityManagerDisp = dispinterface;
+  ICategoryManager = interface;
+  ICategoryManagerDisp = dispinterface;
+  IFestivalManager = interface;
+  IFestivalManagerDisp = dispinterface;
+  IPlaceManager = interface;
+  IPlaceManagerDisp = dispinterface;
+
+// *********************************************************************//
+// Declaration of CoClasses defined in Type Library                       
+// (NOTE: Here we map each CoClass to its Default Interface)              
+// *********************************************************************//
+  PlaceProperty = IPlaceProperty;
+  ActivityManager = IActivityManager;
+  CategoryManager = ICategoryManager;
+  FestivalManager = IFestivalManager;
+  PlaceManager = IPlaceManager;
+
+
+// *********************************************************************//
+// Interface: IPlaceProperty
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {0498BD4F-CE91-4A8F-8EC4-DFC665E1C496}
+// *********************************************************************//
+  IPlaceProperty = interface(IDispatch)
+    ['{0498BD4F-CE91-4A8F-8EC4-DFC665E1C496}']
+    function  QueryData(const NameKeyword: WideString; const DescriptionKeyword: WideString): OleVariant; safecall;
+    function  View(const PlacePropertyID: WideString): OleVariant; safecall;
+    procedure Add(const PlaceID: WideString; const PlacePropertyID: WideString); safecall;
+    procedure Remove(const PlaceID: WideString; const PlacePropertyID: WideString); safecall;
+    function  Create(const Name: WideString; const Description: WideString; 
+                     const AdminID: WideString): WideString; safecall;
+    procedure Delete(const PlacePropertyID: WideString; const AdminID: WideString); safecall;
+    procedure Modify(const PlacePropertyID: WideString; const Name: WideString; 
+                     const Description: WideString; const AdminID: WideString); safecall;
+  end;
+
+// *********************************************************************//
+// DispIntf:  IPlacePropertyDisp
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {0498BD4F-CE91-4A8F-8EC4-DFC665E1C496}
+// *********************************************************************//
+  IPlacePropertyDisp = dispinterface
+    ['{0498BD4F-CE91-4A8F-8EC4-DFC665E1C496}']
+    function  QueryData(const NameKeyword: WideString; const DescriptionKeyword: WideString): OleVariant; dispid 1;
+    function  View(const PlacePropertyID: WideString): OleVariant; dispid 2;
+    procedure Add(const PlaceID: WideString; const PlacePropertyID: WideString); dispid 3;
+    procedure Remove(const PlaceID: WideString; const PlacePropertyID: WideString); dispid 4;
+    function  Create(const Name: WideString; const Description: WideString; 
+                     const AdminID: WideString): WideString; dispid 5;
+    procedure Delete(const PlacePropertyID: WideString; const AdminID: WideString); dispid 6;
+    procedure Modify(const PlacePropertyID: WideString; const Name: WideString; 
+                     const Description: WideString; const AdminID: WideString); dispid 7;
+  end;
+
+// *********************************************************************//
+// Interface: IActivityManager
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {D9087C8B-1D3D-493B-9C68-B7449FEC3AD1}
+// *********************************************************************//
+  IActivityManager = interface(IPlaceProperty)
+    ['{D9087C8B-1D3D-493B-9C68-B7449FEC3AD1}']
+  end;
+
+// *********************************************************************//
+// DispIntf:  IActivityManagerDisp
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {D9087C8B-1D3D-493B-9C68-B7449FEC3AD1}
+// *********************************************************************//
+  IActivityManagerDisp = dispinterface
+    ['{D9087C8B-1D3D-493B-9C68-B7449FEC3AD1}']
+    function  QueryData(const NameKeyword: WideString; const DescriptionKeyword: WideString): OleVariant; dispid 1;
+    function  View(const PlacePropertyID: WideString): OleVariant; dispid 2;
+    procedure Add(const PlaceID: WideString; const PlacePropertyID: WideString); dispid 3;
+    procedure Remove(const PlaceID: WideString; const PlacePropertyID: WideString); dispid 4;
+    function  Create(const Name: WideString; const Description: WideString; 
+                     const AdminID: WideString): WideString; dispid 5;
+    procedure Delete(const PlacePropertyID: WideString; const AdminID: WideString); dispid 6;
+    procedure Modify(const PlacePropertyID: WideString; const Name: WideString; 
+                     const Description: WideString; const AdminID: WideString); dispid 7;
+  end;
+
+// *********************************************************************//
+// Interface: ICategoryManager
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {5C958063-364D-4AF4-8FDC-81FEDE3F77B7}
+// *********************************************************************//
+  ICategoryManager = interface(IPlaceProperty)
+    ['{5C958063-364D-4AF4-8FDC-81FEDE3F77B7}']
+  end;
+
+// *********************************************************************//
+// DispIntf:  ICategoryManagerDisp
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {5C958063-364D-4AF4-8FDC-81FEDE3F77B7}
+// *********************************************************************//
+  ICategoryManagerDisp = dispinterface
+    ['{5C958063-364D-4AF4-8FDC-81FEDE3F77B7}']
+    function  QueryData(const NameKeyword: WideString; const DescriptionKeyword: WideString): OleVariant; dispid 1;
+    function  View(const PlacePropertyID: WideString): OleVariant; dispid 2;
+    procedure Add(const PlaceID: WideString; const PlacePropertyID: WideString); dispid 3;
+    procedure Remove(const PlaceID: WideString; const PlacePropertyID: WideString); dispid 4;
+    function  Create(const Name: WideString; const Description: WideString; 
+                     const AdminID: WideString): WideString; dispid 5;
+    procedure Delete(const PlacePropertyID: WideString; const AdminID: WideString); dispid 6;
+    procedure Modify(const PlacePropertyID: WideString; const Name: WideString; 
+                     const Description: WideString; const AdminID: WideString); dispid 7;
+  end;
+
+// *********************************************************************//
+// Interface: IFestivalManager
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {8CB3392F-3770-42A5-9F2E-1AB8F52CB41B}
+// *********************************************************************//
+  IFestivalManager = interface(IPlaceProperty)
+    ['{8CB3392F-3770-42A5-9F2E-1AB8F52CB41B}']
+  end;
+
+// *********************************************************************//
+// DispIntf:  IFestivalManagerDisp
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {8CB3392F-3770-42A5-9F2E-1AB8F52CB41B}
+// *********************************************************************//
+  IFestivalManagerDisp = dispinterface
+    ['{8CB3392F-3770-42A5-9F2E-1AB8F52CB41B}']
+    function  QueryData(const NameKeyword: WideString; const DescriptionKeyword: WideString): OleVariant; dispid 1;
+    function  View(const PlacePropertyID: WideString): OleVariant; dispid 2;
+    procedure Add(const PlaceID: WideString; const PlacePropertyID: WideString); dispid 3;
+    procedure Remove(const PlaceID: WideString; const PlacePropertyID: WideString); dispid 4;
+    function  Create(const Name: WideString; const Description: WideString; 
+                     const AdminID: WideString): WideString; dispid 5;
+    procedure Delete(const PlacePropertyID: WideString; const AdminID: WideString); dispid 6;
+    procedure Modify(const PlacePropertyID: WideString; const Name: WideString; 
+                     const Description: WideString; const AdminID: WideString); dispid 7;
+  end;
+
+// *********************************************************************//
+// Interface: IPlaceManager
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {0FB731C1-09E9-4D6C-9032-4967CA61D641}
+// *********************************************************************//
+  IPlaceManager = interface(IDispatch)
+    ['{0FB731C1-09E9-4D6C-9032-4967CA61D641}']
+    function  QueryData(const PlaceNameKeyword: WideString; const CountryKeyword: WideString; 
+                        const StateKeyword: WideString; const ProvinceKeyword: WideString; 
+                        const ActivityID: WideString; const CategoryID: WideString; 
+                        const FestivalID: WideString): OleVariant; safecall;
+    function  View(const PlaceID: WideString): OleVariant; safecall;
+    function  Modify(const PlaceID: WideString; const PlaceName: WideString; 
+                     const Country: WideString; const State: WideString; 
+                     const Province: WideString; const Description: WideString; 
+                     const ImageFilePath: WideString; const AdminID: WideString): Smallint; safecall;
+    function  Create(const PlaceName: WideString; const Country: WideString; 
+                     const State: WideString; const Province: WideString; 
+                     const Description: WideString; const ImageFilePath: WideString; 
+                     const PlacePropertyIDList: WideString; 
+                     const PlacePropertyTypeList: WideString; const AdminID: WideString): WideString; safecall;
+    function  Delete(const PlaceID: WideString; const AdminID: WideString): Shortint; safecall;
+    function  Add(const PackageID: WideString; const PlaceID: WideString; 
+                  const ArriveTime: WideString; const DepartTime: WideString): Shortint; safecall;
+    function  Remove(const PackageID: WideString; const PlaceID: WideString; 
+                     const DepartTime: WideString): Shortint; safecall;
+  end;
+
+// *********************************************************************//
+// DispIntf:  IPlaceManagerDisp
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {0FB731C1-09E9-4D6C-9032-4967CA61D641}
+// *********************************************************************//
+  IPlaceManagerDisp = dispinterface
+    ['{0FB731C1-09E9-4D6C-9032-4967CA61D641}']
+    function  QueryData(const PlaceNameKeyword: WideString; const CountryKeyword: WideString; 
+                        const StateKeyword: WideString; const ProvinceKeyword: WideString; 
+                        const ActivityID: WideString; const CategoryID: WideString; 
+                        const FestivalID: WideString): OleVariant; dispid 1;
+    function  View(const PlaceID: WideString): OleVariant; dispid 2;
+    function  Modify(const PlaceID: WideString; const PlaceName: WideString; 
+                     const Country: WideString; const State: WideString; 
+                     const Province: WideString; const Description: WideString; 
+                     const ImageFilePath: WideString; const AdminID: WideString): Smallint; dispid 9;
+    function  Create(const PlaceName: WideString; const Country: WideString; 
+                     const State: WideString; const Province: WideString; 
+                     const Description: WideString; const ImageFilePath: WideString; 
+                     const PlacePropertyIDList: WideString; 
+                     const PlacePropertyTypeList: WideString; const AdminID: WideString): WideString; dispid 10;
+    function  Delete(const PlaceID: WideString; const AdminID: WideString): {??Shortint} OleVariant; dispid 11;
+    function  Add(const PackageID: WideString; const PlaceID: WideString; 
+                  const ArriveTime: WideString; const DepartTime: WideString): {??Shortint} OleVariant; dispid 12;
+    function  Remove(const PackageID: WideString; const PlaceID: WideString; 
+                     const DepartTime: WideString): {??Shortint} OleVariant; dispid 7;
+  end;
+
+// *********************************************************************//
+// The Class CoPlaceProperty provides a Create and CreateRemote method to          
+// create instances of the default interface IPlaceProperty exposed by              
+// the CoClass PlaceProperty. The functions are intended to be used by             
+// clients wishing to automate the CoClass objects exposed by the         
+// server of this typelibrary.                                            
+// *********************************************************************//
+  CoPlaceProperty = class
+    class function Create: IPlaceProperty;
+    class function CreateRemote(const MachineName: string): IPlaceProperty;
+  end;
+
+
+// *********************************************************************//
+// OLE Server Proxy class declaration
+// Server Object    : TPlaceProperty
+// Help String      : PlaceProperty Object
+// Default Interface: IPlaceProperty
+// Def. Intf. DISP? : No
+// Event   Interface: 
+// TypeFlags        : (2) CanCreate
+// *********************************************************************//
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  TPlacePropertyProperties= class;
+{$ENDIF}
+  TPlaceProperty = class(TOleServer)
+  private
+    FIntf:        IPlaceProperty;
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+    FProps:       TPlacePropertyProperties;
+    function      GetServerProperties: TPlacePropertyProperties;
+{$ENDIF}
+    function      GetDefaultInterface: IPlaceProperty;
+  protected
+    procedure InitServerData; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor  Destroy; override;
+    procedure Connect; override;
+    procedure ConnectTo(svrIntf: IPlaceProperty);
+    procedure Disconnect; override;
+    function  QueryData(const NameKeyword: WideString; const DescriptionKeyword: WideString): OleVariant;
+    function  View(const PlacePropertyID: WideString): OleVariant;
+    procedure Add(const PlaceID: WideString; const PlacePropertyID: WideString);
+    procedure Remove(const PlaceID: WideString; const PlacePropertyID: WideString);
+    function  Create1(const Name: WideString; const Description: WideString; 
+                      const AdminID: WideString): WideString;
+    procedure Delete(const PlacePropertyID: WideString; const AdminID: WideString);
+    procedure Modify(const PlacePropertyID: WideString; const Name: WideString; 
+                     const Description: WideString; const AdminID: WideString);
+    property  DefaultInterface: IPlaceProperty read GetDefaultInterface;
+  published
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+    property Server: TPlacePropertyProperties read GetServerProperties;
+{$ENDIF}
+  end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+// *********************************************************************//
+// OLE Server Properties Proxy Class
+// Server Object    : TPlaceProperty
+// (This object is used by the IDE's Property Inspector to allow editing
+//  of the properties of this server)
+// *********************************************************************//
+ TPlacePropertyProperties = class(TPersistent)
+  private
+    FServer:    TPlaceProperty;
+    function    GetDefaultInterface: IPlaceProperty;
+    constructor Create(AServer: TPlaceProperty);
+  protected
+  public
+    property DefaultInterface: IPlaceProperty read GetDefaultInterface;
+  published
+  end;
+{$ENDIF}
+
+
+// *********************************************************************//
+// The Class CoActivityManager provides a Create and CreateRemote method to          
+// create instances of the default interface IActivityManager exposed by              
+// the CoClass ActivityManager. The functions are intended to be used by             
+// clients wishing to automate the CoClass objects exposed by the         
+// server of this typelibrary.                                            
+// *********************************************************************//
+  CoActivityManager = class
+    class function Create: IActivityManager;
+    class function CreateRemote(const MachineName: string): IActivityManager;
+  end;
+
+
+// *********************************************************************//
+// OLE Server Proxy class declaration
+// Server Object    : TActivityManager
+// Help String      : ActivityManager Object
+// Default Interface: IActivityManager
+// Def. Intf. DISP? : No
+// Event   Interface: 
+// TypeFlags        : (2) CanCreate
+// *********************************************************************//
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  TActivityManagerProperties= class;
+{$ENDIF}
+  TActivityManager = class(TOleServer)
+  private
+    FIntf:        IActivityManager;
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+    FProps:       TActivityManagerProperties;
+    function      GetServerProperties: TActivityManagerProperties;
+{$ENDIF}
+    function      GetDefaultInterface: IActivityManager;
+  protected
+    procedure InitServerData; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor  Destroy; override;
+    procedure Connect; override;
+    procedure ConnectTo(svrIntf: IActivityManager);
+    procedure Disconnect; override;
+    function  QueryData(const NameKeyword: WideString; const DescriptionKeyword: WideString): OleVariant;
+    function  View(const PlacePropertyID: WideString): OleVariant;
+    procedure Add(const PlaceID: WideString; const PlacePropertyID: WideString);
+    procedure Remove(const PlaceID: WideString; const PlacePropertyID: WideString);
+    function  Create1(const Name: WideString; const Description: WideString; 
+                      const AdminID: WideString): WideString;
+    procedure Delete(const PlacePropertyID: WideString; const AdminID: WideString);
+    procedure Modify(const PlacePropertyID: WideString; const Name: WideString; 
+                     const Description: WideString; const AdminID: WideString);
+    property  DefaultInterface: IActivityManager read GetDefaultInterface;
+  published
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+    property Server: TActivityManagerProperties read GetServerProperties;
+{$ENDIF}
+  end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+// *********************************************************************//
+// OLE Server Properties Proxy Class
+// Server Object    : TActivityManager
+// (This object is used by the IDE's Property Inspector to allow editing
+//  of the properties of this server)
+// *********************************************************************//
+ TActivityManagerProperties = class(TPersistent)
+  private
+    FServer:    TActivityManager;
+    function    GetDefaultInterface: IActivityManager;
+    constructor Create(AServer: TActivityManager);
+  protected
+  public
+    property DefaultInterface: IActivityManager read GetDefaultInterface;
+  published
+  end;
+{$ENDIF}
+
+
+// *********************************************************************//
+// The Class CoCategoryManager provides a Create and CreateRemote method to          
+// create instances of the default interface ICategoryManager exposed by              
+// the CoClass CategoryManager. The functions are intended to be used by             
+// clients wishing to automate the CoClass objects exposed by the         
+// server of this typelibrary.                                            
+// *********************************************************************//
+  CoCategoryManager = class
+    class function Create: ICategoryManager;
+    class function CreateRemote(const MachineName: string): ICategoryManager;
+  end;
+
+
+// *********************************************************************//
+// OLE Server Proxy class declaration
+// Server Object    : TCategoryManager
+// Help String      : CategoryManager Object
+// Default Interface: ICategoryManager
+// Def. Intf. DISP? : No
+// Event   Interface: 
+// TypeFlags        : (2) CanCreate
+// *********************************************************************//
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  TCategoryManagerProperties= class;
+{$ENDIF}
+  TCategoryManager = class(TOleServer)
+  private
+    FIntf:        ICategoryManager;
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+    FProps:       TCategoryManagerProperties;
+    function      GetServerProperties: TCategoryManagerProperties;
+{$ENDIF}
+    function      GetDefaultInterface: ICategoryManager;
+  protected
+    procedure InitServerData; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor  Destroy; override;
+    procedure Connect; override;
+    procedure ConnectTo(svrIntf: ICategoryManager);
+    procedure Disconnect; override;
+    function  QueryData(const NameKeyword: WideString; const DescriptionKeyword: WideString): OleVariant;
+    function  View(const PlacePropertyID: WideString): OleVariant;
+    procedure Add(const PlaceID: WideString; const PlacePropertyID: WideString);
+    procedure Remove(const PlaceID: WideString; const PlacePropertyID: WideString);
+    function  Create1(const Name: WideString; const Description: WideString; 
+                      const AdminID: WideString): WideString;
+    procedure Delete(const PlacePropertyID: WideString; const AdminID: WideString);
+    procedure Modify(const PlacePropertyID: WideString; const Name: WideString; 
+                     const Description: WideString; const AdminID: WideString);
+    property  DefaultInterface: ICategoryManager read GetDefaultInterface;
+  published
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+    property Server: TCategoryManagerProperties read GetServerProperties;
+{$ENDIF}
+  end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+// *********************************************************************//
+// OLE Server Properties Proxy Class
+// Server Object    : TCategoryManager
+// (This object is used by the IDE's Property Inspector to allow editing
+//  of the properties of this server)
+// *********************************************************************//
+ TCategoryManagerProperties = class(TPersistent)
+  private
+    FServer:    TCategoryManager;
+    function    GetDefaultInterface: ICategoryManager;
+    constructor Create(AServer: TCategoryManager);
+  protected
+  public
+    property DefaultInterface: ICategoryManager read GetDefaultInterface;
+  published
+  end;
+{$ENDIF}
+
+
+// *********************************************************************//
+// The Class CoFestivalManager provides a Create and CreateRemote method to          
+// create instances of the default interface IFestivalManager exposed by              
+// the CoClass FestivalManager. The functions are intended to be used by             
+// clients wishing to automate the CoClass objects exposed by the         
+// server of this typelibrary.                                            
+// *********************************************************************//
+  CoFestivalManager = class
+    class function Create: IFestivalManager;
+    class function CreateRemote(const MachineName: string): IFestivalManager;
+  end;
+
+
+// *********************************************************************//
+// OLE Server Proxy class declaration
+// Server Object    : TFestivalManager
+// Help String      : FestivalManager Object
+// Default Interface: IFestivalManager
+// Def. Intf. DISP? : No
+// Event   Interface: 
+// TypeFlags        : (2) CanCreate
+// *********************************************************************//
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  TFestivalManagerProperties= class;
+{$ENDIF}
+  TFestivalManager = class(TOleServer)
+  private
+    FIntf:        IFestivalManager;
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+    FProps:       TFestivalManagerProperties;
+    function      GetServerProperties: TFestivalManagerProperties;
+{$ENDIF}
+    function      GetDefaultInterface: IFestivalManager;
+  protected
+    procedure InitServerData; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor  Destroy; override;
+    procedure Connect; override;
+    procedure ConnectTo(svrIntf: IFestivalManager);
+    procedure Disconnect; override;
+    function  QueryData(const NameKeyword: WideString; const DescriptionKeyword: WideString): OleVariant;
+    function  View(const PlacePropertyID: WideString): OleVariant;
+    procedure Add(const PlaceID: WideString; const PlacePropertyID: WideString);
+    procedure Remove(const PlaceID: WideString; const PlacePropertyID: WideString);
+    function  Create1(const Name: WideString; const Description: WideString; 
+                      const AdminID: WideString): WideString;
+    procedure Delete(const PlacePropertyID: WideString; const AdminID: WideString);
+    procedure Modify(const PlacePropertyID: WideString; const Name: WideString; 
+                     const Description: WideString; const AdminID: WideString);
+    property  DefaultInterface: IFestivalManager read GetDefaultInterface;
+  published
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+    property Server: TFestivalManagerProperties read GetServerProperties;
+{$ENDIF}
+  end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+// *********************************************************************//
+// OLE Server Properties Proxy Class
+// Server Object    : TFestivalManager
+// (This object is used by the IDE's Property Inspector to allow editing
+//  of the properties of this server)
+// *********************************************************************//
+ TFestivalManagerProperties = class(TPersistent)
+  private
+    FServer:    TFestivalManager;
+    function    GetDefaultInterface: IFestivalManager;
+    constructor Create(AServer: TFestivalManager);
+  protected
+  public
+    property DefaultInterface: IFestivalManager read GetDefaultInterface;
+  published
+  end;
+{$ENDIF}
+
+
+// *********************************************************************//
+// The Class CoPlaceManager provides a Create and CreateRemote method to          
+// create instances of the default interface IPlaceManager exposed by              
+// the CoClass PlaceManager. The functions are intended to be used by             
+// clients wishing to automate the CoClass objects exposed by the         
+// server of this typelibrary.                                            
+// *********************************************************************//
+  CoPlaceManager = class
+    class function Create: IPlaceManager;
+    class function CreateRemote(const MachineName: string): IPlaceManager;
+  end;
+
+
+// *********************************************************************//
+// OLE Server Proxy class declaration
+// Server Object    : TPlaceManager
+// Help String      : PlaceManager Object
+// Default Interface: IPlaceManager
+// Def. Intf. DISP? : No
+// Event   Interface: 
+// TypeFlags        : (2) CanCreate
+// *********************************************************************//
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  TPlaceManagerProperties= class;
+{$ENDIF}
+  TPlaceManager = class(TOleServer)
+  private
+    FIntf:        IPlaceManager;
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+    FProps:       TPlaceManagerProperties;
+    function      GetServerProperties: TPlaceManagerProperties;
+{$ENDIF}
+    function      GetDefaultInterface: IPlaceManager;
+  protected
+    procedure InitServerData; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor  Destroy; override;
+    procedure Connect; override;
+    procedure ConnectTo(svrIntf: IPlaceManager);
+    procedure Disconnect; override;
+    function  QueryData(const PlaceNameKeyword: WideString; const CountryKeyword: WideString; 
+                        const StateKeyword: WideString; const ProvinceKeyword: WideString; 
+                        const ActivityID: WideString; const CategoryID: WideString; 
+                        const FestivalID: WideString): OleVariant;
+    function  View(const PlaceID: WideString): OleVariant;
+    function  Modify(const PlaceID: WideString; const PlaceName: WideString; 
+                     const Country: WideString; const State: WideString; 
+                     const Province: WideString; const Description: WideString; 
+                     const ImageFilePath: WideString; const AdminID: WideString): Smallint;
+    function  Create1(const PlaceName: WideString; const Country: WideString; 
+                      const State: WideString; const Province: WideString; 
+                      const Description: WideString; const ImageFilePath: WideString; 
+                      const PlacePropertyIDList: WideString; 
+                      const PlacePropertyTypeList: WideString; const AdminID: WideString): WideString;
+    function  Delete(const PlaceID: WideString; const AdminID: WideString): Shortint;
+    function  Add(const PackageID: WideString; const PlaceID: WideString; 
+                  const ArriveTime: WideString; const DepartTime: WideString): Shortint;
+    function  Remove(const PackageID: WideString; const PlaceID: WideString; 
+                     const DepartTime: WideString): Shortint;
+    property  DefaultInterface: IPlaceManager read GetDefaultInterface;
+  published
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+    property Server: TPlaceManagerProperties read GetServerProperties;
+{$ENDIF}
+  end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+// *********************************************************************//
+// OLE Server Properties Proxy Class
+// Server Object    : TPlaceManager
+// (This object is used by the IDE's Property Inspector to allow editing
+//  of the properties of this server)
+// *********************************************************************//
+ TPlaceManagerProperties = class(TPersistent)
+  private
+    FServer:    TPlaceManager;
+    function    GetDefaultInterface: IPlaceManager;
+    constructor Create(AServer: TPlaceManager);
+  protected
+  public
+    property DefaultInterface: IPlaceManager read GetDefaultInterface;
+  published
+  end;
+{$ENDIF}
+
+
+procedure Register;
+
+implementation
+
+uses ComObj;
+
+class function CoPlaceProperty.Create: IPlaceProperty;
+begin
+  Result := CreateComObject(CLASS_PlaceProperty) as IPlaceProperty;
+end;
+
+class function CoPlaceProperty.CreateRemote(const MachineName: string): IPlaceProperty;
+begin
+  Result := CreateRemoteComObject(MachineName, CLASS_PlaceProperty) as IPlaceProperty;
+end;
+
+procedure TPlaceProperty.InitServerData;
+const
+  CServerData: TServerData = (
+    ClassID:   '{2E7DD597-F5F4-4F47-975F-F809024F804E}';
+    IntfIID:   '{0498BD4F-CE91-4A8F-8EC4-DFC665E1C496}';
+    EventIID:  '';
+    LicenseKey: nil;
+    Version: 500);
+begin
+  ServerData := @CServerData;
+end;
+
+procedure TPlaceProperty.Connect;
+var
+  punk: IUnknown;
+begin
+  if FIntf = nil then
+  begin
+    punk := GetServer;
+    Fintf:= punk as IPlaceProperty;
+  end;
+end;
+
+procedure TPlaceProperty.ConnectTo(svrIntf: IPlaceProperty);
+begin
+  Disconnect;
+  FIntf := svrIntf;
+end;
+
+procedure TPlaceProperty.DisConnect;
+begin
+  if Fintf <> nil then
+  begin
+    FIntf := nil;
+  end;
+end;
+
+function TPlaceProperty.GetDefaultInterface: IPlaceProperty;
+begin
+  if FIntf = nil then
+    Connect;
+  Assert(FIntf <> nil, 'DefaultInterface is NULL. Component is not connected to Server. You must call ''Connect'' or ''ConnectTo'' before this operation');
+  Result := FIntf;
+end;
+
+constructor TPlaceProperty.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  FProps := TPlacePropertyProperties.Create(Self);
+{$ENDIF}
+end;
+
+destructor TPlaceProperty.Destroy;
+begin
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  FProps.Free;
+{$ENDIF}
+  inherited Destroy;
+end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+function TPlaceProperty.GetServerProperties: TPlacePropertyProperties;
+begin
+  Result := FProps;
+end;
+{$ENDIF}
+
+function  TPlaceProperty.QueryData(const NameKeyword: WideString; 
+                                   const DescriptionKeyword: WideString): OleVariant;
+begin
+  Result := DefaultInterface.QueryData(NameKeyword, DescriptionKeyword);
+end;
+
+function  TPlaceProperty.View(const PlacePropertyID: WideString): OleVariant;
+begin
+  Result := DefaultInterface.View(PlacePropertyID);
+end;
+
+procedure TPlaceProperty.Add(const PlaceID: WideString; const PlacePropertyID: WideString);
+begin
+  DefaultInterface.Add(PlaceID, PlacePropertyID);
+end;
+
+procedure TPlaceProperty.Remove(const PlaceID: WideString; const PlacePropertyID: WideString);
+begin
+  DefaultInterface.Remove(PlaceID, PlacePropertyID);
+end;
+
+function  TPlaceProperty.Create1(const Name: WideString; const Description: WideString; 
+                                 const AdminID: WideString): WideString;
+begin
+  Result := DefaultInterface.Create(Name, Description, AdminID);
+end;
+
+procedure TPlaceProperty.Delete(const PlacePropertyID: WideString; const AdminID: WideString);
+begin
+  DefaultInterface.Delete(PlacePropertyID, AdminID);
+end;
+
+procedure TPlaceProperty.Modify(const PlacePropertyID: WideString; const Name: WideString; 
+                                const Description: WideString; const AdminID: WideString);
+begin
+  DefaultInterface.Modify(PlacePropertyID, Name, Description, AdminID);
+end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+constructor TPlacePropertyProperties.Create(AServer: TPlaceProperty);
+begin
+  inherited Create;
+  FServer := AServer;
+end;
+
+function TPlacePropertyProperties.GetDefaultInterface: IPlaceProperty;
+begin
+  Result := FServer.DefaultInterface;
+end;
+
+{$ENDIF}
+
+class function CoActivityManager.Create: IActivityManager;
+begin
+  Result := CreateComObject(CLASS_ActivityManager) as IActivityManager;
+end;
+
+class function CoActivityManager.CreateRemote(const MachineName: string): IActivityManager;
+begin
+  Result := CreateRemoteComObject(MachineName, CLASS_ActivityManager) as IActivityManager;
+end;
+
+procedure TActivityManager.InitServerData;
+const
+  CServerData: TServerData = (
+    ClassID:   '{DE8D749B-1FCB-4A6A-BAC5-3443768431B8}';
+    IntfIID:   '{D9087C8B-1D3D-493B-9C68-B7449FEC3AD1}';
+    EventIID:  '';
+    LicenseKey: nil;
+    Version: 500);
+begin
+  ServerData := @CServerData;
+end;
+
+procedure TActivityManager.Connect;
+var
+  punk: IUnknown;
+begin
+  if FIntf = nil then
+  begin
+    punk := GetServer;
+    Fintf:= punk as IActivityManager;
+  end;
+end;
+
+procedure TActivityManager.ConnectTo(svrIntf: IActivityManager);
+begin
+  Disconnect;
+  FIntf := svrIntf;
+end;
+
+procedure TActivityManager.DisConnect;
+begin
+  if Fintf <> nil then
+  begin
+    FIntf := nil;
+  end;
+end;
+
+function TActivityManager.GetDefaultInterface: IActivityManager;
+begin
+  if FIntf = nil then
+    Connect;
+  Assert(FIntf <> nil, 'DefaultInterface is NULL. Component is not connected to Server. You must call ''Connect'' or ''ConnectTo'' before this operation');
+  Result := FIntf;
+end;
+
+constructor TActivityManager.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  FProps := TActivityManagerProperties.Create(Self);
+{$ENDIF}
+end;
+
+destructor TActivityManager.Destroy;
+begin
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  FProps.Free;
+{$ENDIF}
+  inherited Destroy;
+end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+function TActivityManager.GetServerProperties: TActivityManagerProperties;
+begin
+  Result := FProps;
+end;
+{$ENDIF}
+
+function  TActivityManager.QueryData(const NameKeyword: WideString; 
+                                     const DescriptionKeyword: WideString): OleVariant;
+begin
+  Result := DefaultInterface.QueryData(NameKeyword, DescriptionKeyword);
+end;
+
+function  TActivityManager.View(const PlacePropertyID: WideString): OleVariant;
+begin
+  Result := DefaultInterface.View(PlacePropertyID);
+end;
+
+procedure TActivityManager.Add(const PlaceID: WideString; const PlacePropertyID: WideString);
+begin
+  DefaultInterface.Add(PlaceID, PlacePropertyID);
+end;
+
+procedure TActivityManager.Remove(const PlaceID: WideString; const PlacePropertyID: WideString);
+begin
+  DefaultInterface.Remove(PlaceID, PlacePropertyID);
+end;
+
+function  TActivityManager.Create1(const Name: WideString; const Description: WideString; 
+                                   const AdminID: WideString): WideString;
+begin
+  Result := DefaultInterface.Create(Name, Description, AdminID);
+end;
+
+procedure TActivityManager.Delete(const PlacePropertyID: WideString; const AdminID: WideString);
+begin
+  DefaultInterface.Delete(PlacePropertyID, AdminID);
+end;
+
+procedure TActivityManager.Modify(const PlacePropertyID: WideString; const Name: WideString; 
+                                  const Description: WideString; const AdminID: WideString);
+begin
+  DefaultInterface.Modify(PlacePropertyID, Name, Description, AdminID);
+end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+constructor TActivityManagerProperties.Create(AServer: TActivityManager);
+begin
+  inherited Create;
+  FServer := AServer;
+end;
+
+function TActivityManagerProperties.GetDefaultInterface: IActivityManager;
+begin
+  Result := FServer.DefaultInterface;
+end;
+
+{$ENDIF}
+
+class function CoCategoryManager.Create: ICategoryManager;
+begin
+  Result := CreateComObject(CLASS_CategoryManager) as ICategoryManager;
+end;
+
+class function CoCategoryManager.CreateRemote(const MachineName: string): ICategoryManager;
+begin
+  Result := CreateRemoteComObject(MachineName, CLASS_CategoryManager) as ICategoryManager;
+end;
+
+procedure TCategoryManager.InitServerData;
+const
+  CServerData: TServerData = (
+    ClassID:   '{CDFF82A8-CF00-401F-BBF1-6710F4599EBA}';
+    IntfIID:   '{5C958063-364D-4AF4-8FDC-81FEDE3F77B7}';
+    EventIID:  '';
+    LicenseKey: nil;
+    Version: 500);
+begin
+  ServerData := @CServerData;
+end;
+
+procedure TCategoryManager.Connect;
+var
+  punk: IUnknown;
+begin
+  if FIntf = nil then
+  begin
+    punk := GetServer;
+    Fintf:= punk as ICategoryManager;
+  end;
+end;
+
+procedure TCategoryManager.ConnectTo(svrIntf: ICategoryManager);
+begin
+  Disconnect;
+  FIntf := svrIntf;
+end;
+
+procedure TCategoryManager.DisConnect;
+begin
+  if Fintf <> nil then
+  begin
+    FIntf := nil;
+  end;
+end;
+
+function TCategoryManager.GetDefaultInterface: ICategoryManager;
+begin
+  if FIntf = nil then
+    Connect;
+  Assert(FIntf <> nil, 'DefaultInterface is NULL. Component is not connected to Server. You must call ''Connect'' or ''ConnectTo'' before this operation');
+  Result := FIntf;
+end;
+
+constructor TCategoryManager.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  FProps := TCategoryManagerProperties.Create(Self);
+{$ENDIF}
+end;
+
+destructor TCategoryManager.Destroy;
+begin
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  FProps.Free;
+{$ENDIF}
+  inherited Destroy;
+end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+function TCategoryManager.GetServerProperties: TCategoryManagerProperties;
+begin
+  Result := FProps;
+end;
+{$ENDIF}
+
+function  TCategoryManager.QueryData(const NameKeyword: WideString; 
+                                     const DescriptionKeyword: WideString): OleVariant;
+begin
+  Result := DefaultInterface.QueryData(NameKeyword, DescriptionKeyword);
+end;
+
+function  TCategoryManager.View(const PlacePropertyID: WideString): OleVariant;
+begin
+  Result := DefaultInterface.View(PlacePropertyID);
+end;
+
+procedure TCategoryManager.Add(const PlaceID: WideString; const PlacePropertyID: WideString);
+begin
+  DefaultInterface.Add(PlaceID, PlacePropertyID);
+end;
+
+procedure TCategoryManager.Remove(const PlaceID: WideString; const PlacePropertyID: WideString);
+begin
+  DefaultInterface.Remove(PlaceID, PlacePropertyID);
+end;
+
+function  TCategoryManager.Create1(const Name: WideString; const Description: WideString; 
+                                   const AdminID: WideString): WideString;
+begin
+  Result := DefaultInterface.Create(Name, Description, AdminID);
+end;
+
+procedure TCategoryManager.Delete(const PlacePropertyID: WideString; const AdminID: WideString);
+begin
+  DefaultInterface.Delete(PlacePropertyID, AdminID);
+end;
+
+procedure TCategoryManager.Modify(const PlacePropertyID: WideString; const Name: WideString; 
+                                  const Description: WideString; const AdminID: WideString);
+begin
+  DefaultInterface.Modify(PlacePropertyID, Name, Description, AdminID);
+end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+constructor TCategoryManagerProperties.Create(AServer: TCategoryManager);
+begin
+  inherited Create;
+  FServer := AServer;
+end;
+
+function TCategoryManagerProperties.GetDefaultInterface: ICategoryManager;
+begin
+  Result := FServer.DefaultInterface;
+end;
+
+{$ENDIF}
+
+class function CoFestivalManager.Create: IFestivalManager;
+begin
+  Result := CreateComObject(CLASS_FestivalManager) as IFestivalManager;
+end;
+
+class function CoFestivalManager.CreateRemote(const MachineName: string): IFestivalManager;
+begin
+  Result := CreateRemoteComObject(MachineName, CLASS_FestivalManager) as IFestivalManager;
+end;
+
+procedure TFestivalManager.InitServerData;
+const
+  CServerData: TServerData = (
+    ClassID:   '{A465ED6B-114E-49F2-8A57-88CCB413F374}';
+    IntfIID:   '{8CB3392F-3770-42A5-9F2E-1AB8F52CB41B}';
+    EventIID:  '';
+    LicenseKey: nil;
+    Version: 500);
+begin
+  ServerData := @CServerData;
+end;
+
+procedure TFestivalManager.Connect;
+var
+  punk: IUnknown;
+begin
+  if FIntf = nil then
+  begin
+    punk := GetServer;
+    Fintf:= punk as IFestivalManager;
+  end;
+end;
+
+procedure TFestivalManager.ConnectTo(svrIntf: IFestivalManager);
+begin
+  Disconnect;
+  FIntf := svrIntf;
+end;
+
+procedure TFestivalManager.DisConnect;
+begin
+  if Fintf <> nil then
+  begin
+    FIntf := nil;
+  end;
+end;
+
+function TFestivalManager.GetDefaultInterface: IFestivalManager;
+begin
+  if FIntf = nil then
+    Connect;
+  Assert(FIntf <> nil, 'DefaultInterface is NULL. Component is not connected to Server. You must call ''Connect'' or ''ConnectTo'' before this operation');
+  Result := FIntf;
+end;
+
+constructor TFestivalManager.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  FProps := TFestivalManagerProperties.Create(Self);
+{$ENDIF}
+end;
+
+destructor TFestivalManager.Destroy;
+begin
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  FProps.Free;
+{$ENDIF}
+  inherited Destroy;
+end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+function TFestivalManager.GetServerProperties: TFestivalManagerProperties;
+begin
+  Result := FProps;
+end;
+{$ENDIF}
+
+function  TFestivalManager.QueryData(const NameKeyword: WideString; 
+                                     const DescriptionKeyword: WideString): OleVariant;
+begin
+  Result := DefaultInterface.QueryData(NameKeyword, DescriptionKeyword);
+end;
+
+function  TFestivalManager.View(const PlacePropertyID: WideString): OleVariant;
+begin
+  Result := DefaultInterface.View(PlacePropertyID);
+end;
+
+procedure TFestivalManager.Add(const PlaceID: WideString; const PlacePropertyID: WideString);
+begin
+  DefaultInterface.Add(PlaceID, PlacePropertyID);
+end;
+
+procedure TFestivalManager.Remove(const PlaceID: WideString; const PlacePropertyID: WideString);
+begin
+  DefaultInterface.Remove(PlaceID, PlacePropertyID);
+end;
+
+function  TFestivalManager.Create1(const Name: WideString; const Description: WideString; 
+                                   const AdminID: WideString): WideString;
+begin
+  Result := DefaultInterface.Create(Name, Description, AdminID);
+end;
+
+procedure TFestivalManager.Delete(const PlacePropertyID: WideString; const AdminID: WideString);
+begin
+  DefaultInterface.Delete(PlacePropertyID, AdminID);
+end;
+
+procedure TFestivalManager.Modify(const PlacePropertyID: WideString; const Name: WideString; 
+                                  const Description: WideString; const AdminID: WideString);
+begin
+  DefaultInterface.Modify(PlacePropertyID, Name, Description, AdminID);
+end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+constructor TFestivalManagerProperties.Create(AServer: TFestivalManager);
+begin
+  inherited Create;
+  FServer := AServer;
+end;
+
+function TFestivalManagerProperties.GetDefaultInterface: IFestivalManager;
+begin
+  Result := FServer.DefaultInterface;
+end;
+
+{$ENDIF}
+
+class function CoPlaceManager.Create: IPlaceManager;
+begin
+  Result := CreateComObject(CLASS_PlaceManager) as IPlaceManager;
+end;
+
+class function CoPlaceManager.CreateRemote(const MachineName: string): IPlaceManager;
+begin
+  Result := CreateRemoteComObject(MachineName, CLASS_PlaceManager) as IPlaceManager;
+end;
+
+procedure TPlaceManager.InitServerData;
+const
+  CServerData: TServerData = (
+    ClassID:   '{D8EF6DE5-B1C0-431F-AADA-4274F150D27E}';
+    IntfIID:   '{0FB731C1-09E9-4D6C-9032-4967CA61D641}';
+    EventIID:  '';
+    LicenseKey: nil;
+    Version: 500);
+begin
+  ServerData := @CServerData;
+end;
+
+procedure TPlaceManager.Connect;
+var
+  punk: IUnknown;
+begin
+  if FIntf = nil then
+  begin
+    punk := GetServer;
+    Fintf:= punk as IPlaceManager;
+  end;
+end;
+
+procedure TPlaceManager.ConnectTo(svrIntf: IPlaceManager);
+begin
+  Disconnect;
+  FIntf := svrIntf;
+end;
+
+procedure TPlaceManager.DisConnect;
+begin
+  if Fintf <> nil then
+  begin
+    FIntf := nil;
+  end;
+end;
+
+function TPlaceManager.GetDefaultInterface: IPlaceManager;
+begin
+  if FIntf = nil then
+    Connect;
+  Assert(FIntf <> nil, 'DefaultInterface is NULL. Component is not connected to Server. You must call ''Connect'' or ''ConnectTo'' before this operation');
+  Result := FIntf;
+end;
+
+constructor TPlaceManager.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  FProps := TPlaceManagerProperties.Create(Self);
+{$ENDIF}
+end;
+
+destructor TPlaceManager.Destroy;
+begin
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  FProps.Free;
+{$ENDIF}
+  inherited Destroy;
+end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+function TPlaceManager.GetServerProperties: TPlaceManagerProperties;
+begin
+  Result := FProps;
+end;
+{$ENDIF}
+
+function  TPlaceManager.QueryData(const PlaceNameKeyword: WideString; 
+                                  const CountryKeyword: WideString; const StateKeyword: WideString; 
+                                  const ProvinceKeyword: WideString; const ActivityID: WideString; 
+                                  const CategoryID: WideString; const FestivalID: WideString): OleVariant;
+begin
+  Result := DefaultInterface.QueryData(PlaceNameKeyword, CountryKeyword, StateKeyword, 
+                                       ProvinceKeyword, ActivityID, CategoryID, FestivalID);
+end;
+
+function  TPlaceManager.View(const PlaceID: WideString): OleVariant;
+begin
+  Result := DefaultInterface.View(PlaceID);
+end;
+
+function  TPlaceManager.Modify(const PlaceID: WideString; const PlaceName: WideString; 
+                               const Country: WideString; const State: WideString; 
+                               const Province: WideString; const Description: WideString; 
+                               const ImageFilePath: WideString; const AdminID: WideString): Smallint;
+begin
+  Result := DefaultInterface.Modify(PlaceID, PlaceName, Country, State, Province, Description, 
+                                    ImageFilePath, AdminID);
+end;
+
+function  TPlaceManager.Create1(const PlaceName: WideString; const Country: WideString; 
+                                const State: WideString; const Province: WideString; 
+                                const Description: WideString; const ImageFilePath: WideString; 
+                                const PlacePropertyIDList: WideString; 
+                                const PlacePropertyTypeList: WideString; const AdminID: WideString): WideString;
+begin
+  Result := DefaultInterface.Create(PlaceName, Country, State, Province, Description, 
+                                    ImageFilePath, PlacePropertyIDList, PlacePropertyTypeList, 
+                                    AdminID);
+end;
+
+function  TPlaceManager.Delete(const PlaceID: WideString; const AdminID: WideString): Shortint;
+begin
+  Result := DefaultInterface.Delete(PlaceID, AdminID);
+end;
+
+function  TPlaceManager.Add(const PackageID: WideString; const PlaceID: WideString; 
+                            const ArriveTime: WideString; const DepartTime: WideString): Shortint;
+begin
+  Result := DefaultInterface.Add(PackageID, PlaceID, ArriveTime, DepartTime);
+end;
+
+function  TPlaceManager.Remove(const PackageID: WideString; const PlaceID: WideString; 
+                               const DepartTime: WideString): Shortint;
+begin
+  Result := DefaultInterface.Remove(PackageID, PlaceID, DepartTime);
+end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+constructor TPlaceManagerProperties.Create(AServer: TPlaceManager);
+begin
+  inherited Create;
+  FServer := AServer;
+end;
+
+function TPlaceManagerProperties.GetDefaultInterface: IPlaceManager;
+begin
+  Result := FServer.DefaultInterface;
+end;
+
+{$ENDIF}
+
+procedure Register;
+begin
+  RegisterComponents('Servers',[TPlaceProperty, TActivityManager, TCategoryManager, TFestivalManager, 
+    TPlaceManager]);
+end;
+
+end.

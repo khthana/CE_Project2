@@ -1,0 +1,422 @@
+MCS-51 LINKER / LOCATER  L51 V2.8                                                             DATE  05/16/01   PAGE    1
+
+
+MS-DOS MCS-51 LINKER / LOCATER  L51 V2.8, INVOKED BY:
+L51 INFRARED.OBJ, C:\C51\BIN\C51S.LIB CODE (?C_C51STARTUP (0040H), 080H) XDATA (8000H) NOOVERLAY
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  INFRARED.OBJ (INFRARED)
+  C:\C51\BIN\C51S.LIB (?C_STARTUP)
+  C:\C51\BIN\C51S.LIB (?C_CCASE)
+  C:\C51\BIN\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  INFRARED (INFRARED)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         ?DT?_I2CSCLHIGH?INFRARED
+            DATA    000AH     0005H     UNIT         ?DT?INFRARED
+                    000FH     0011H                  *** GAP ***
+            DATA    0020H     0002H     BIT_ADDR     ?BA?INFRARED
+            IDATA   0022H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0003H     ABSOLUTE     
+                    0006H     003AH                  *** GAP ***
+            CODE    0040H     008CH     UNIT         ?C_C51STARTUP
+            CODE    00CCH     0015H     UNIT         ?PR?_DELAY?INFRARED
+            CODE    00E1H     000AH     UNIT         ?PR?_I2CBITDELAY?INFRARED
+            CODE    00EBH     0017H     UNIT         ?PR?_I2CSCLHIGH?INFRARED
+            CODE    0102H     000AH     UNIT         ?PR?_I2CSLAVESTOP?INFRARED
+            CODE    010CH     0029H     UNIT         ?PR?_I2CRECEIVEBYTE?INFRARED
+            CODE    0135H     0037H     UNIT         ?PR?_I2CSENDBYTE?INFRARED
+            CODE    016CH     0016H     UNIT         ?PR?_I2CSENDADDR?INFRARED
+            CODE    0182H     0011H     UNIT         ?PR?I2CSENDSTOP?INFRARED
+            CODE    0193H     0021H     UNIT         ?PR?I2CRECEIVEDATABYTE?INFRARED
+            CODE    01B4H     0010H     UNIT         ?PR?_WRITEI2C?INFRARED
+            CODE    01C4H     0185H     UNIT         ?PR?INT0_INT?INFRARED
+            CODE    0349H     00B4H     UNIT         ?PR?MAIN?INFRARED
+            CODE    03FDH     0007H     UNIT         ?C_INITSEG
+            CODE    0404H     0026H     UNIT         ?C_LIB_CODE
+
+
+
+SYMBOL TABLE OF MODULE:  INFRARED (INFRARED)
+
+VALUE           TYPE          NAME
+----------------------------------
+
+-------         MODULE        INFRARED
+C:0000H         SYMBOL        _ICE_DUMMY_
+B:00A0H.1       PUBLIC        IN07
+B:00A0H.2       PUBLIC        IN08
+D:0080H         PUBLIC        P0
+B:0080H.5       PUBLIC        IN09
+D:0090H         PUBLIC        P1
+D:00A0H         PUBLIC        P2
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/16/01   PAGE    2
+
+
+D:00B0H         PUBLIC        P3
+B:00B0H.4       PUBLIC        T0
+B:00D0H.6       PUBLIC        AC
+C:00EBH         PUBLIC        _I2CSCLHIGH
+B:00B0H.5       PUBLIC        T1
+B:00A8H.7       PUBLIC        EA
+D:000AH         PUBLIC        TEMPDELAY
+D:00A8H         PUBLIC        IE
+B:00B0H.7       PUBLIC        RD
+B:00A8H.4       PUBLIC        ES
+B:0021H.0       PUBLIC        OUT_00
+C:0193H         PUBLIC        I2CRECEIVEDATABYTE
+B:0021H.1       PUBLIC        OUT_01
+B:0020H.2       PUBLIC        OUT_10
+B:0098H.0       PUBLIC        RI
+B:0021H.2       PUBLIC        OUT_02
+B:0020H.3       PUBLIC        OUT_11
+B:00B0H.2       PUBLIC        INT0
+B:00D0H.7       PUBLIC        CY
+B:0021H.3       PUBLIC        OUT_03
+B:0098H.1       PUBLIC        TI
+B:00B0H.3       PUBLIC        INT1
+B:0021H.4       PUBLIC        OUT_04
+B:0021H.5       PUBLIC        OUT_05
+B:0021H.6       PUBLIC        OUT_06
+B:0021H.7       PUBLIC        OUT_07
+B:0090H.1       PUBLIC        SDA_PIN
+B:0020H.0       PUBLIC        OUT_08
+B:0020H.1       PUBLIC        OUT_09
+B:00B8H.4       PUBLIC        PS
+B:00D0H.2       PUBLIC        OV
+C:0349H         PUBLIC        MAIN
+C:016CH         PUBLIC        _I2CSENDADDR
+B:00B0H.6       PUBLIC        WR
+C:01C4H         PUBLIC        INT0_INT
+B:0090H.0       PUBLIC        SCL_PIN
+C:01B4H         PUBLIC        _WRITEI2C
+C:00E1H         PUBLIC        _I2CBITDELAY
+B:0088H.1       PUBLIC        IE0
+D:000BH         PUBLIC        ENABLE_INTERRUPT
+B:0088H.3       PUBLIC        IE1
+C:0135H         PUBLIC        _I2CSENDBYTE
+C:0102H         PUBLIC        _I2CSLAVESTOP
+B:00A8H.1       PUBLIC        ET0
+B:00A8H.3       PUBLIC        ET1
+B:0088H.5       PUBLIC        TF0
+B:0088H.7       PUBLIC        TF1
+B:0098H.2       PUBLIC        RB8
+B:00A8H.0       PUBLIC        EX0
+B:0088H.0       PUBLIC        IT0
+B:0098H.3       PUBLIC        TB8
+B:00A8H.2       PUBLIC        EX1
+B:0088H.2       PUBLIC        IT1
+B:00B0H.3       PUBLIC        ACK
+B:00D0H.0       PUBLIC        P
+B:0098H.7       PUBLIC        SM0
+B:0098H.6       PUBLIC        SM1
+B:0098H.5       PUBLIC        SM2
+B:00B8H.1       PUBLIC        PT0
+B:00B8H.3       PUBLIC        PT1
+B:00D0H.3       PUBLIC        RS0
+B:0088H.4       PUBLIC        TR0
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/16/01   PAGE    3
+
+
+B:00D0H.4       PUBLIC        RS1
+B:0088H.6       PUBLIC        TR1
+B:00B8H.0       PUBLIC        PX0
+B:00B8H.2       PUBLIC        PX1
+D:000CH         PUBLIC        COMMAND
+B:0090H.2       PUBLIC        IN_INT
+B:0098H.4       PUBLIC        REN
+D:0020H         PUBLIC        OUTPUT_HI
+D:000DH         PUBLIC        I
+B:00B0H.2       PUBLIC        INT
+D:000EH         PUBLIC        _I2C_ERROR
+B:00B0H.0       PUBLIC        RXD
+B:00B0H.1       PUBLIC        TXD
+C:00CCH         PUBLIC        _DELAY
+D:0021H         PUBLIC        OUTPUT_LO
+C:0182H         PUBLIC        I2CSENDSTOP
+B:00D0H.5       PUBLIC        F0
+B:0080H.6       PUBLIC        IN10
+B:00A0H.0       PUBLIC        IN01
+B:0080H.1       PUBLIC        IN11
+B:00A0H.3       PUBLIC        IN02
+B:0080H.3       PUBLIC        IN12
+B:0080H.4       PUBLIC        IN03
+B:0080H.7       PUBLIC        IN04
+B:0080H.0       PUBLIC        IN05
+C:010CH         PUBLIC        _I2CRECEIVEBYTE
+B:0080H.2       PUBLIC        IN06
+-------         PROC          _DELAY
+D:0007H         SYMBOL        COUNT1
+D:0005H         SYMBOL        COUNT2
+D:0006H         SYMBOL        XX
+D:0004H         SYMBOL        YY
+-------         ENDPROC       _DELAY
+C:00CCH         LINE#         111
+C:00CCH         LINE#         112
+C:00CCH         LINE#         114
+C:00D3H         LINE#         115
+C:00D3H         LINE#         116
+C:00DAH         LINE#         117
+C:00DAH         LINE#         118
+C:00DDH         LINE#         119
+C:00E0H         LINE#         120
+-------         PROC          _I2CBITDELAY
+-------         ENDPROC       _I2CBITDELAY
+C:00E1H         LINE#         126
+C:00E1H         LINE#         127
+C:00E1H         LINE#         128
+C:00E4H         LINE#         129
+C:00E6H         LINE#         130
+C:00E8H         LINE#         131
+C:00EAH         LINE#         133
+-------         PROC          _I2CSCLHIGH
+D:0008H         SYMBOL        ERR
+-------         ENDPROC       _I2CSCLHIGH
+C:00EBH         LINE#         135
+C:00EBH         LINE#         136
+C:00EBH         LINE#         138
+C:00EDH         LINE#         139
+C:00F0H         LINE#         140
+C:00F0H         LINE#         141
+C:00F8H         LINE#         142
+C:00FEH         LINE#         143
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/16/01   PAGE    4
+
+
+C:00FEH         LINE#         144
+C:0101H         LINE#         146
+C:0101H         LINE#         147
+C:0101H         LINE#         148
+-------         PROC          _I2CSLAVESTOP
+-------         ENDPROC       _I2CSLAVESTOP
+C:0102H         LINE#         150
+C:0102H         LINE#         151
+C:0102H         LINE#         152
+C:0105H         LINE#         153
+C:0108H         LINE#         154
+C:010BH         LINE#         155
+-------         PROC          _I2CRECEIVEBYTE
+D:0006H         SYMBOL        I
+D:0007H         SYMBOL        RES
+-------         ENDPROC       _I2CRECEIVEBYTE
+C:010CH         LINE#         157
+C:010CH         LINE#         158
+C:010CH         LINE#         160
+C:010EH         LINE#         161
+C:0110H         LINE#         162
+C:0117H         LINE#         163
+C:0117H         LINE#         164
+C:011AH         LINE#         165
+C:011EH         LINE#         166
+C:0121H         LINE#         167
+C:0121H         LINE#         168
+C:0122H         LINE#         169
+C:0122H         LINE#         170
+C:0125H         LINE#         171
+C:0128H         LINE#         172
+C:012AH         LINE#         173
+C:012DH         LINE#         174
+C:0130H         LINE#         175
+C:0132H         LINE#         176
+C:0134H         LINE#         177
+C:0134H         LINE#         178
+-------         PROC          _I2CSENDBYTE
+D:0007H         SYMBOL        BT
+D:0006H         SYMBOL        I
+-------         ENDPROC       _I2CSENDBYTE
+C:0135H         LINE#         180
+C:0135H         LINE#         181
+C:0135H         LINE#         183
+C:013DH         LINE#         184
+C:013DH         LINE#         185
+C:0145H         LINE#         186
+C:0147H         LINE#         187
+C:014AH         LINE#         188
+C:014DH         LINE#         189
+C:014FH         LINE#         190
+C:0152H         LINE#         191
+C:0156H         LINE#         192
+C:0159H         LINE#         193
+C:015BH         LINE#         194
+C:015EH         LINE#         195
+C:0161H         LINE#         196
+C:0164H         LINE#         197
+C:0166H         LINE#         198
+C:0168H         LINE#         199
+C:016BH         LINE#         200
+-------         PROC          _I2CSENDADDR
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/16/01   PAGE    5
+
+
+D:0007H         SYMBOL        ADDR
+D:0005H         SYMBOL        RD
+-------         ENDPROC       _I2CSENDADDR
+C:016CH         LINE#         202
+C:016CH         LINE#         203
+C:016CH         LINE#         204
+C:016EH         LINE#         205
+C:0171H         LINE#         206
+C:0173H         LINE#         207
+C:0176H         LINE#         208
+C:0178H         LINE#         209
+C:017BH         LINE#         210
+C:0181H         LINE#         211
+-------         PROC          I2CSENDSTOP
+-------         ENDPROC       I2CSENDSTOP
+C:0182H         LINE#         213
+C:0182H         LINE#         214
+C:0182H         LINE#         215
+C:0184H         LINE#         216
+C:0187H         LINE#         217
+C:018AH         LINE#         218
+C:018DH         LINE#         219
+C:018FH         LINE#         220
+C:0192H         LINE#         221
+-------         PROC          I2CRECEIVEDATABYTE
+D:0007H         SYMBOL        ADDRESS
+D:0005H         SYMBOL        RET
+-------         ENDPROC       I2CRECEIVEDATABYTE
+C:0193H         LINE#         223
+C:0193H         LINE#         224
+C:0193H         LINE#         227
+C:0199H         LINE#         228
+C:019FH         LINE#         229
+C:019FH         LINE#         230
+C:01A2H         LINE#         231
+C:01A5H         LINE#         232
+C:01A9H         LINE#         233
+C:01A9H         LINE#         234
+C:01AEH         LINE#         235
+C:01B1H         LINE#         236
+C:01B1H         LINE#         237
+C:01B1H         LINE#         238
+C:01B3H         LINE#         239
+-------         PROC          _WRITEI2C
+D:0006H         SYMBOL        ADDR
+D:0004H         SYMBOL        DATA
+-------         ENDPROC       _WRITEI2C
+C:01B4H         LINE#         241
+C:01B6H         LINE#         242
+C:01B6H         LINE#         243
+C:01BBH         LINE#         244
+C:01C0H         LINE#         245
+C:01C3H         LINE#         246
+-------         PROC          INT0_INT
+-------         ENDPROC       INT0_INT
+C:01C4H         LINE#         248
+C:01DEH         LINE#         250
+C:01E0H         LINE#         251
+C:01E5H         LINE#         254
+C:021DH         LINE#         255
+C:021DH         LINE#         256
+C:022AH         LINE#         257
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/16/01   PAGE    6
+
+
+C:0237H         LINE#         258
+C:0244H         LINE#         259
+C:0251H         LINE#         260
+C:025EH         LINE#         261
+C:026BH         LINE#         262
+C:0278H         LINE#         263
+C:0285H         LINE#         264
+C:0292H         LINE#         265
+C:029FH         LINE#         266
+C:02ABH         LINE#         267
+C:02B7H         LINE#         268
+C:02B7H         LINE#         269
+C:02BAH         LINE#         270
+C:02BCH         LINE#         271
+C:02C4H         LINE#         272
+C:02CCH         LINE#         273
+C:02D4H         LINE#         274
+C:02DCH         LINE#         275
+C:02E4H         LINE#         276
+C:02ECH         LINE#         278
+C:02F3H         LINE#         279
+C:02FAH         LINE#         280
+C:0301H         LINE#         281
+C:0303H         LINE#         282
+C:0303H         LINE#         283
+C:030AH         LINE#         284
+C:0311H         LINE#         285
+C:0318H         LINE#         286
+C:031AH         LINE#         287
+C:031DH         LINE#         288
+C:031FH         LINE#         289
+C:0322H         LINE#         290
+C:0322H         LINE#         291
+C:0322H         LINE#         292
+C:0329H         LINE#         293
+C:032CH         LINE#         294
+C:032EH         LINE#         295
+-------         PROC          MAIN
+D:0004H         SYMBOL        COUNTDOWN
+-------         ENDPROC       MAIN
+C:0349H         LINE#         300
+C:0349H         LINE#         301
+C:0349H         LINE#         302
+C:034BH         LINE#         304
+C:034EH         LINE#         305
+C:0351H         LINE#         306
+C:0354H         LINE#         307
+C:0357H         LINE#         309
+C:0359H         LINE#         310
+C:035CH         LINE#         311
+C:035EH         LINE#         313
+C:035EH         LINE#         314
+C:035EH         LINE#         315
+C:0368H         LINE#         316
+C:0368H         LINE#         317
+C:0379H         LINE#         318
+C:0379H         LINE#         319
+C:037BH         LINE#         320
+C:037EH         LINE#         321
+C:0380H         LINE#         322
+C:0388H         LINE#         323
+C:0390H         LINE#         324
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/16/01   PAGE    7
+
+
+C:0398H         LINE#         325
+C:03A0H         LINE#         326
+C:03A8H         LINE#         327
+C:03B0H         LINE#         329
+C:03B6H         LINE#         330
+C:03BBH         LINE#         331
+C:03C0H         LINE#         332
+C:03C3H         LINE#         333
+C:03C9H         LINE#         334
+C:03CEH         LINE#         335
+C:03D3H         LINE#         336
+C:03D6H         LINE#         338
+C:03D8H         LINE#         339
+C:03DBH         LINE#         340
+C:03DDH         LINE#         341
+C:03E9H         LINE#         342
+C:03EFH         LINE#         343
+C:03EFH         LINE#         344
+C:03F7H         LINE#         345
+C:03F7H         LINE#         346
+C:03F9H         LINE#         347
+C:03F9H         LINE#         348
+C:03F9H         LINE#         349
+C:03FCH         LINE#         350
+-------         ENDMOD        INFRARED
+
+-------         MODULE        ?C_CCASE
+C:0404H         PUBLIC        ?C_CCASE
+-------         ENDMOD        ?C_CCASE

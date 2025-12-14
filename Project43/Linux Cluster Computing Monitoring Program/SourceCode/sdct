@@ -1,0 +1,282 @@
+#!/bin/bash
+#-----------------------------------------------------------------------------
+# Set-up Disk-less Client Template
+#-----------------------------------------------------------------------------
+# $Id: sdct,v 1.11 1999/04/29 12:01:53 root Exp $ 
+# /usr/local/sbin/sdct
+# ftp://ftp.sci.usq.edu.au/pub/jacek/beowulf-utils/disk-less
+# Originally known as 'setup_template'
+#
+# Version       : 0.0.5
+#
+# Date          : 24 April 1999
+#
+# Author        : Jacek Radajewski 
+#                 jacek@usq.edu.au
+#
+# OS            : Red Hat Linux 5.2
+#
+# Purpose	: This script is used to setup an NFS-root  template Beowulf 
+#		  disk-less client.  This Template will be used to create the 
+#		  NFS root directory for each of the disk-less clients.  
+#                 assumes Red Hat Linux 5.2, and that the /tftpboot
+#                 directory is on the same file system as /etc and all
+#                 of its sub directories.
+#-----------------------------------------------------------------------------
+
+show_help () {
+
+    echo -e "sdct options\n"
+    echo -e "[-t tftpboot_dir] : Specify alternative tftpboot directory"
+    echo -e "                    If this option is ommited, /tftpboot will be used"
+    echo -e "[-s server]       : Name or the IP address of the NFS-root server."
+    echo -e "                    If this option is ommited /bin/hostname will be used to"
+    echo -e "                    obtain the host name of the server."
+    echo -e "                    NOTE : The name of the interface to the cluster might not"
+    echo -e "                    be the same as the name returned by the hostname program."
+    echo -e "[-h]              : This help message"
+    exit 0
+}
+
+# before we do anything we check if we are the superuser
+
+if [ $UID != '0' ] ; then
+    echo "Only root can create disk-less client template."
+    echo "Giving up."
+    exit 1
+fi
+
+# set few default values before processing command line arguments
+
+export SERVER=$(/bin/hostname)
+export TFTPBOOT=/tftpboot
+
+# process command line options
+
+while getopts ":fhs:t:" opt; do
+    case $opt in
+	t ) export TFTPBOOT=$OPTARG;;
+	s ) export SERVER=$OPTARG;;
+	h ) show_help;;
+	\? ) echo 'adcn -h for help'
+	     exit 1
+    esac
+done
+
+
+export TEMPLATE=$TFTPBOOT/Template
+
+if [ -d "$TFTPBOOT" ] ; then
+    echo "Directory $TFTPBOOT exists.  Please remove it and try again."
+    exit 1
+fi
+    
+# we first create all the directories
+
+/bin/mkdir $TFTPBOOT
+/bin/mkdir $TEMPLATE
+/bin/mkdir $TEMPLATE/bin
+/bin/mkdir $TEMPLATE/boot
+/bin/mkdir $TEMPLATE/dev
+/bin/mkdir $TEMPLATE/etc
+/bin/mkdir $TEMPLATE/home
+/bin/mkdir $TEMPLATE/lib
+/bin/mkdir $TEMPLATE/mnt
+/bin/mkdir $TEMPLATE/root
+/bin/mkdir $TEMPLATE/sbin
+/bin/mkdir $TEMPLATE/tmp
+/bin/mkdir $TEMPLATE/var
+
+/bin/ln -sf /usr $TEMPLATE/usr
+/bin/ln -sf /proc $TEMPLATE/proc
+
+# now we copy all the files
+
+echo "Creating NFS-Root template directory structure ... "
+
+echo -n "/bin "
+cd /bin
+/bin/tar -cpf - * | (cd $TEMPLATE/bin ; tar -xpf -)
+
+echo -n "/boot "
+cd /boot
+/bin/tar -cpf - * | (cd $TEMPLATE/boot ; tar -xpf -)
+
+echo -n "/dev "
+cd /dev
+/bin/tar -cpf - * | (cd $TEMPLATE/dev ; tar -xpf -)
+
+echo -n "/etc "
+cd /etc
+/bin/tar -cpf - * | (cd $TEMPLATE/etc ; tar -xpf -)
+
+echo -n "/lib "
+cd /lib
+/bin/tar -cpf - * | (cd $TEMPLATE/lib ; tar -xpf -)
+
+echo -n "/mnt "
+cd /mnt
+/bin/tar -cpf - * | (cd $TEMPLATE/mnt ; tar -xpf -)
+
+echo -n "/root "
+cd /root
+/bin/tar -cpf - * | (cd $TEMPLATE/root ; tar -xpf -)
+
+echo -n "/sbin "
+cd /sbin
+/bin/tar -cpf - * | (cd $TEMPLATE/sbin ; tar -xpf -)
+
+echo -n "/var "
+cd /var
+/bin/tar -cpf - * | (cd $TEMPLATE/var ; tar -xpf -)
+
+echo -e -n "\nCleaning up ..."
+
+# remove network scripts
+
+/bin/rm -f $TEMPLATE/etc/sysconfig/network
+/bin/rm -f $TEMPLATE/etc/sysconfig/network-scripts/ifcfg-eth*
+
+# remove fstab and mtab
+
+/bin/rm -f $TEMPLATE/etc/fstab
+/bin/rm -f $TEMPLATE/etc/mtab
+
+#------------------------------------------------------------------------------
+# remove old and create new, empty log files.
+# most of these will not be used because most messages
+# will be logged remotely to the server via syslogd
+#------------------------------------------------------------------------------
+
+/bin/rm -f $TEMPLATE/var/log/secure*
+/bin/touch $TEMPLATE/var/log/secure
+
+/bin/rm -f $TEMPLATE/var/log/messages*
+/bin/touch $TEMPLATE/var/log/messages
+
+/bin/rm -f $TEMPLATE/var/log/maillog*
+/bin/touch $TEMPLATE/var/log/maillog
+
+/bin/rm -f $TEMPLATE/var/log/cron*
+/bin/touch $TEMPLATE/var/log/cron
+
+/bin/rm -f $TEMPLATE/var/log/lastlog*
+/bin/touch $TEMPLATE/var/log/lastlog
+
+/bin/rm -f $TEMPLATE/var/log/xferlog*
+/bin/touch $TEMPLATE/var/log/xferlog
+
+/bin/rm -f $TEMPLATE/var/log/dmesg*
+/bin/touch $TEMPLATE/var/log/dmesg
+
+# clients should not run samba
+
+/bin/rm -f $TEMPLATE/var/log/log.nmb
+/bin/rm -f $TEMPLATE/var/log/log.smb
+/bin/rm -rf $TEMPLATE/var/log/samba*
+
+# clients should not run any cron jobs
+
+/bin/rm -f $TEMPLATE/etc/cron.hourly/*
+/bin/rm -f $TEMPLATE/etc/cron.daily/*
+/bin/rm -f $TEMPLATE/etc/cron.weekly/*
+/bin/rm -f $TEMPLATE/etc/cron.monthly/*
+
+/bin/rm -f $TEMPLATE/var/spool/cron/*
+
+#------------------------------------------------------------------------------
+# remove some of the services from /etc/rc.d/rc3.d
+# you might want to change/add/remove lines here
+#------------------------------------------------------------------------------
+
+/bin/rm -f $TEMPLATE/etc/rc.d/rc3.d/S*arpwatch
+/bin/rm -f $TEMPLATE/etc/rc.d/rc3.d/S*dhcpd
+/bin/rm -f $TEMPLATE/etc/rc.d/rc3.d/S*gated
+/bin/rm -f $TEMPLATE/etc/rc.d/rc3.d/S*gpm
+/bin/rm -f $TEMPLATE/etc/rc.d/rc3.d/S*httpd
+/bin/rm -f $TEMPLATE/etc/rc.d/rc3.d/S*innd
+/bin/rm -f $TEMPLATE/etc/rc.d/rc3.d/S*named
+/bin/rm -f $TEMPLATE/etc/rc.d/rc3.d/S*postgresql
+/bin/rm -f $TEMPLATE/etc/rc.d/rc3.d/S*gated
+/bin/rm -f $TEMPLATE/etc/rc.d/rc3.d/S*rarp
+/bin/rm -f $TEMPLATE/etc/rc.d/rc3.d/S*routed
+/bin/rm -f $TEMPLATE/etc/rc.d/rc3.d/S*sendmail
+/bin/rm -f $TEMPLATE/etc/rc.d/rc3.d/S*smb
+/bin/rm -f $TEMPLATE/etc/rc.d/rc3.d/S*snmpd
+/bin/rm -f $TEMPLATE/etc/rc.d/rc3.d/S*nfs
+/bin/rm -f $TEMPLATE/etc/rc.d/rc3.d/S*portmap
+
+#------------------------------------------------------------------------------
+# The following is a bad hack, but it allows us to reboot disk-less clients.
+# Reboot without unmounting NFS file systems, and without stopping the network
+#------------------------------------------------------------------------------
+
+/bin/rm -f $TEMPLATE/etc/rc.d/rc6.d/K*nfsfs
+/bin/rm -f $TEMPLATE/etc/rc.d/rc6.d/K*network
+
+# same for init 0
+
+/bin/rm -f $TEMPLATE/etc/rc.d/rc0.d/K*nfsfs
+/bin/rm -f $TEMPLATE/etc/rc.d/rc0.d/K*network
+
+#------------------------------------------------------------------------------
+# create a new /etc/syslog.conf file
+# we want to log everything on the server
+# you will HAVE TO run syslogd on the server with "-r"
+# to enable clients to log their messages on the server
+# this script doesn't do it.  Modify /etc/rc.d/init.d/syslog :
+#-------------------------------------------------------------
+#case "$1" in
+#  start)
+#        echo -n "Starting system loggers: "
+#        daemon syslogd -r
+
+/bin/rm -f $TEMPLATE/etc/syslog.conf
+echo "*.* @$SERVER" >> $TEMPLATE/etc/syslog.conf
+
+
+#-----------------------------------------------------------------------------
+# there are files which we want to be the same on the server and all clients
+# /etc/passwd for example has to be the same on all machines.
+# we want our $TEMPLATE/etc/passwd to be a hard link to /etc/passwd
+#-----------------------------------------------------------------------------
+
+/bin/ln -f /etc/passwd      $TEMPLATE/etc/passwd
+/bin/ln -f /etc/group       $TEMPLATE/etc/group
+/bin/ln -f /etc/issue       $TEMPLATE/etc/issue
+/bin/ln -f /etc/issue.net   $TEMPLATE/etc/issue.net
+/bin/ln -f /etc/profile     $TEMPLATE/etc/profile
+/bin/ln -f /etc/bashrc      $TEMPLATE/etc/bashrc
+/bin/ln -f /etc/hosts       $TEMPLATE/etc/hosts
+/bin/ln -f /etc/hosts.equiv $TEMPLATE/etc/hosts.equiv
+
+#-----------------------------------------------------------------------------
+# create rc script to setup rarp entries
+# this script shoud run in both runlevel 3 and 5
+#-----------------------------------------------------------------------------
+
+/bin/rm -f /etc/rc.d/init.d/rarp
+/bin/touch /etc/rc.d/init.d/rarp
+/bin/chmod u+x /etc/rc.d/init.d/rarp
+/bin/ln -sf /etc/rc.d/init.d/rarp /etc/rc.d/rc3.d/S95rarp
+/bin/ln -sf /etc/rc.d/init.d/rarp /etc/rc.d/rc5.d/S95rarp
+
+# remove linuxconf from /bin in the template
+
+rm -f $TEMPLATE/bin/linuxconf
+
+echo " done."
+
+echo -e "\nYou can now use the adcn script to create a file system for each of the clients"
+echo "For help on adcn type: adcn -h"
+
+
+
+
+
+
+
+
+
+
+

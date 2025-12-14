@@ -1,0 +1,381 @@
+unit PlaceManager_Source;
+
+interface
+
+uses
+  ActiveX, MtsObj, ComObj, PlaceSystem_TLB, OlalaTourDBConnector_TLB,
+    StdVcl, COMSVCSLib_TLB, ADODB_TLB, Dialogs, Windows, SysUtils,
+    LogSystem_TLB;
+
+type
+  TPlaceManager = class(TMtsAutoObject, IPlaceManager, IObjectControl)
+  protected
+    function Add(const PackageID, PlaceID, ArriveTime,
+      DepartTime: WideString): Shortint; safecall;
+    function Delete(const PlaceID, AdminID: WideString): Shortint; safecall;
+    function QueryData(const PlaceNameKeyword, CountryKeyword, StateKeyword,
+      ProvinceKeyword, DescriptionKeyword, ActivityID, CategoryID,
+      FestivalID: WideString): OleVariant; safecall;
+    function Remove(const PackageID, PlaceID,
+      DepartTime: WideString): Shortint; safecall;
+    function View(const PlaceID: WideString): OleVariant; safecall;
+    function Create(const PlaceName, Country, State, Province, Description,
+      ImageFilePath, PlacePropertyIDList, PlacePropertyTypeList,
+      AdminID: WideString): WideString; safecall;
+    function Modify(const PlaceID, PlaceName, Country, State, Province,
+      Description, ImageFilePath, AdminID: WideString): Smallint; safecall;
+
+
+    // IObjectControl Methods Definition
+    function Activate: HRESULT; stdcall;
+    function CanBePooled: Longint; stdcall;
+    procedure Deactivate; stdcall;
+
+  private
+    // Private Fields
+    objctx : ObjectContext;
+  end;
+
+implementation
+
+uses ComServ;
+
+////////////////// IObjectControl Methods Implementation ///////////////////////
+function TPlaceManager.Activate: HRESULT;
+var
+  imtx : IMTxAS;
+begin
+  try
+    imtx := CoAppServer.Create;
+    objctx := imtx.GetObjectContext;
+    if objctx = nil then
+    begin
+      ShowMessage('objctx = nil');
+      Result := 0;
+    end
+    else
+      Result := S_OK;
+  except
+    ShowMessage('Error on TMSSQL2K_OlalaTour_Connect.Activate');
+    Result := 0;
+  end;
+end;
+
+function TPlaceManager.CanBePooled: Longint;
+begin
+  Result := 1;
+end;
+
+procedure TPlaceManager.Deactivate;
+begin
+  objctx := nil;
+end;
+
+///////////////////// TPlaceManager Methods Implementation /////////////////////
+
+// haven't test yet
+function TPlaceManager.Add(const PackageID, PlaceID, ArriveTime,
+  DepartTime: WideString): Shortint;
+var
+  dbConnector : IOlalaTourDBConnector;
+  SQLCmd : WideString;
+begin
+  dbConnector := CoOlalaTourDBConnector_.Create;
+  SQLCmd := 'INSERT INTO PackagePlace VALUES (''' + PackageID + ''', ''' +
+    PlaceID + ''', ''' + ArriveTime + ''', '''  + DepartTime + ''')';
+  try
+    ShowMessage(SQLCmd);
+    dbConnector.ExecSQLCmd(SQLCmd);
+    Result := 1;
+    objctx.SetComplete;
+    ShowMessage('SetComplete in TPlaceManager.Add');
+  except
+    on e:exception do
+    begin
+      Result := 0;
+      objctx.SetAbort;
+      ShowMessage('SetAbort in TPlaceManager.Add:' + e.message);
+    end;
+  end;
+end;
+
+function TPlaceManager.Delete(const PlaceID,
+  AdminID: WideString): Shortint;
+var
+  dbConnector : IOlalaTourDBConnector;
+  SystemLogManager : ISystemLogManager;
+  SQLCmd : WideString;
+begin
+  dbConnector := CoOlalaTourDBConnector_.Create;
+  try
+    // Remove Place From PlaceActivity Table
+    SQLCmd := 'DELETE FROM PlaceActivity WHERE PlaceID = '''
+      + PlaceID + '''';
+    ShowMessage(SQLCmd);
+    dbConnector.ExecSQLCmd(SQLCmd);
+
+    // Remove Place From PlaceCategory Table
+    SQLCmd := 'DELETE FROM PlaceCategory WHERE PlaceID = '''
+      + PlaceID + '''';
+    ShowMessage(SQLCmd);
+    dbConnector.ExecSQLCmd(SQLCmd);
+
+    // Remove Place From PlaceFestival Table
+    SQLCmd := 'DELETE FROM PlaceFestival WHERE PlaceID = '''
+      + PlaceID + '''';
+    ShowMessage(SQLCmd);
+    dbConnector.ExecSQLCmd(SQLCmd);
+
+    // Delete Place From Place Table
+    SQLCmd := 'DELETE FROM Place WHERE PlaceID = ''' +
+    PlaceID + '''';
+    ShowMessage(SQLCmd);
+    dbConnector.ExecSQLCmd(SQLCmd);
+    // Write to SystemLog
+    SystemLogManager := CoSystemLogManager.Create;
+    SystemLogManager.Add('DELETE Place ' + PlaceID, AdminID);
+    objctx.SetComplete;
+    ShowMessage('SetComplete in TPlaceManager.Delete');
+  except
+    objctx.SetAbort;
+    ShowMessage('SetAbort in TPlaceManager.Delete');
+  end;
+end;
+
+function TPlaceManager.QueryData(const PlaceNameKeyword, CountryKeyword,
+  StateKeyword, ProvinceKeyword, DescriptionKeyword, ActivityID,
+  CategoryID, FestivalID: WideString): OleVariant;
+safecall;
+var
+  dbConnection : IOlalaTourDBConnector;
+  SQLCmd, StrCond, StrJointCond, StrJointCmd, StrJointTable : WideString;
+begin
+  dbConnection := CoOlalaTourDBConnector_.Create;
+  StrCond := '';
+
+  // Place Property Condition
+  if PlaceNameKeyword <> '' then StrCond := StrCond + ' Place.PlaceName LIKE ''%' +
+    PlaceNameKeyword + '%''';
+  if CountryKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' Place.Country LIKE ''%' + CountryKeyword + '%''';
+  end;
+  if StateKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' Place.State LIKE ''%' + StateKeyword + '%''';
+  end;
+  if CountryKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' Place.Country LIKE ''%' + CountryKeyword + '%''';
+  end;
+  if ProvinceKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' Place.Province LIKE ''%' + ProvinceKeyword + '%''';
+  end;
+  if DescriptionKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' Place.Description LIKE ''%' + DescriptionKeyword + '%''';
+  end;
+
+  //Join Table Condition
+  StrJointCmd := '';
+  StrJointTable := '';
+  if ActivityID <> '' then
+  begin
+    StrJointCmd := '(Place.PlaceID = PlaceActivity.PlaceID AND ' +
+      'Activity.ActivityID = PlaceActivity.ActivityID) ';
+    StrJointTable := ', Activity, PlaceActivity';
+    StrJointCond := ' AND Activity.ActivityID = ''' + ActivityID + '''';
+  end;
+  if CategoryID <> '' then
+  begin
+    if StrJointCmd <> '' then StrJointCmd := StrJointCmd + ' OR ';
+    StrJointCmd := StrJointCmd + '(Place.PlaceID = PlaceCategory.PlaceID AND '
+      + 'Category.CategoryID = PlaceCategory.CategoryID) ';
+    StrJointTable := StrJointTable + ', Category, PlaceCategory';
+    StrJointCond := StrJointCond + ' AND Category.CategoryID = ''' +
+      CategoryID + '''';
+  end;
+  if FestivalID <> '' then
+  begin
+    if StrJointCmd <> '' then StrJointCmd := StrJointCmd + ' OR ';
+    StrJointCmd := StrJointCmd + '(Place.PlaceID = PlaceFestival.PlaceID AND ' +
+      'Festival.FestivalID = PlaceFestival.FestivalID) ';
+    StrJointTable := StrJointTable + ', Festival, PlaceFestival';
+    StrJointCond := StrJointCond + 'AND Festival.FestivalID = ''' +
+      FestivalID + '''';
+  end;
+  if StrJointCmd <> '' then StrJointCmd := '( ' + StrJointCmd + ' )';
+
+  // Query for PlaceID
+  if StrCond + StrJointCmd <> '' then  StrCond := ' WHERE ' + StrCond;
+
+  //SQLCmd := 'SELECT Place.PlaceID FROM Place '+ StrJointTable +
+  //  ' WHERE ' + StrCond + StrJointCmd + StrJointCond;
+  SQLCmd := 'SELECT Place.PlaceID, Place.PlaceName, Place.Country, Place.State, ' +
+    'Place.Province, Place.Description, Place.ImageFilePath FROM Place '+
+    StrJointTable + StrCond + StrJointCmd + StrJointCond;
+  ShowMessage(SQLCmd);
+  Result := dbConnection.QueryCmd(SQLCmd);
+end;
+
+// haven't test yet
+function TPlaceManager.Remove(const PackageID, PlaceID,
+  DepartTime: WideString): Shortint;
+var
+  dbConnector : IOlalaTourDBConnector;
+  SQLCmd : WideString;
+begin
+  dbConnector := CoOlalaTourDBConnector_.Create;
+  SQLCmd := 'DELETE FROM PackagePlace WHERE PackageID = ''' + PackageID +
+    ''' AND PlaceID = ''' + PlaceID + ''' AND DepartTime = ''' +
+    DepartTime + '''';
+  try
+    ShowMessage(SQLCmd);
+    dbConnector.ExecSQLCmd(SQLCmd);
+    objctx.SetComplete;
+    ShowMessage('SetComplete in TPlaceManager.Remove');
+  except
+    objctx.SetAbort;
+    ShowMessage('SetAbort in TPlaceManager.Remove');
+  end;
+end;
+
+function TPlaceManager.View(const PlaceID: WideString): OleVariant;
+var
+  dbConnector : IOlalaTourDBConnector;
+  SQLCmd : WideString;
+begin
+  dbConnector := CoOlalaTourDBConnector_.Create;
+  SQLCmd := 'SELECT * FROM Place WHERE PlaceID = ''' + PlaceID + '''';
+  Result := dbConnector.QueryCmd(SQLCmd);
+end;
+
+function TPlaceManager.Create(const PlaceName, Country, State, Province,
+  Description, ImageFilePath, PlacePropertyIDList, PlacePropertyTypeList,
+  AdminID: WideString): WideString;
+var
+  dbConnector : IOlalaTourDBConnector;
+  SQLCmd, tmpPlacePropertyID, tmpPlacePropertyType, strGuid : WideString;
+  CurIDPos, CurTypePos : Integer;
+  ActivityManager : IActivityManager;
+  CategoryManager : ICategoryManager;
+  FestivalManager : IFestivalManager;
+  SystemLogManager : ISystemLogManager;
+  Guid : TGuid;
+begin
+  dbConnector := CoOlalaTourDBConnector_.Create;
+  CoCreateGuid(Guid);
+  strGuid := GUIDToString(Guid);
+  CurIDPos := 1;
+  CurTypePos := 1;
+  try
+    SQLCmd := 'INSERT INTO Place Values (''' + strGuid + ''', ''' +
+      PlaceName + ''', ''' + Country + ''', ''' + State + ''', ''' +
+      Province + ''', ''' + Description + ''', ''' + ImageFilePath + ''')';
+
+    ShowMessage(SQLCmd);
+    dbConnector.ExecSQLCmd(SQLCmd);
+
+    tmpPlacePropertyID := Copy(PlacePropertyIDList, CurIDPos, 38);
+    tmpPlacePropertyType := Copy(PlacePropertyTypeList, CurTypePos, 1);
+    While tmpPlacePropertyID <> '' do
+    begin
+      if tmpPlacePropertyType = 'A' then
+      begin
+        ActivityManager := CoActivityManager.Create;
+        ActivityManager.Add(strGuid, tmpPlacePropertyID);
+      end
+      else if tmpPlacePropertyType = 'C' then
+      begin
+        CategoryManager := CoCategoryManager.Create;
+        CategoryManager.Add(strGuid, tmpPlacePropertyID);
+      end
+      else if tmpPlacePropertyType = 'F' then
+      begin
+        FestivalManager := CoFestivalManager.Create;
+        FestivalManager.Add(strGuid, tmpPlacePropertyID);
+      end;
+      CurIDPos := CurIDPos + 38;
+      CurTypePos := CurTypePos + 1;
+      tmpPlacePropertyID := Copy(PlacePropertyIDList, CurIDPos, 38);
+      tmpPlacePropertyType := Copy(PlacePropertyTypeList, CurTypePos, 1);
+    end;
+    SystemLogManager := CoSystemLogManager.Create;
+    SystemLogManager.Add('Create PlaceName ' + PlaceName + ': Place ID '+
+      strGuid , AdminID); 
+    objctx.SetComplete;
+    ShowMessage('SetComplete in TPlaceManager.Create');
+  except
+    objctx.SetAbort;
+    ShowMessage('SetAbort in TPlaceManager.Create');
+  end;
+end;
+
+function TPlaceManager.Modify(const PlaceID, PlaceName, Country, State,
+  Province, Description, ImageFilePath, AdminID: WideString): Smallint;
+var
+  dbConnection : IOlalaTourDBConnector;
+  SystemLogManager : ISystemLogManager;
+  SQLCmd, StrUpdate : WideString;
+begin
+  dbConnection := CoOlalaTourDBConnector_.Create;
+  StrUpdate := '';
+  if PlaceName <> '' then StrUpdate := StrUpdate + ' PlaceName = ''' +
+    PlaceName + '''';
+  if Country <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' Country = ''' + Country + '''';
+  end;
+  if State <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' State = ''' + State + '''';
+  end;
+  if Province <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' Province = ''' + Province + '''';
+  end;
+  if Description <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' Description = ''' + Description + '''';
+  end;
+  if ImageFilePath <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' ImageFilePath = ''' + ImageFilePath + '''';
+  end;
+
+  if StrUpdate <> '' then
+  begin
+    StrUpdate := ' Set ' + StrUpdate;
+    SQLCmd := 'UPDATE Place' + StrUpdate +
+      ' WHERE PlaceID = ''' + PlaceID + '''' ;
+    try
+      ShowMessage(SQLCmd);
+      dbConnection.ExecSQLCmd(SQLCmd);
+      // Write to SystemLog
+      SystemLogManager := CoSystemLogManager.Create;
+      SystemLogManager.Add('Modify PlaceID ' + PlaceID, AdminID);
+
+      objctx.SetComplete;
+      ShowMessage('SetComplete in TPlaceManager.Modify');
+    except
+      objctx.SetAbort;
+      ShowMessage('SetAbort in TPlaceManager.Modify');
+    end;
+  end;
+end;
+
+initialization
+  TAutoObjectFactory.Create(ComServer, TPlaceManager, Class_PlaceManager,
+    ciMultiInstance, tmBoth);
+end.

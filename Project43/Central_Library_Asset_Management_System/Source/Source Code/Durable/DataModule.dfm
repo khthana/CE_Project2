@@ -1,0 +1,126 @@
+object DataModule1: TDataModule1
+  OldCreateOrder = False
+  Left = 259
+  Top = 140
+  Height = 480
+  Width = 711
+  object Ds_Company_Detail: TDataSource
+    DataSet = Qr_Company_Detail
+    Left = 140
+    Top = 177
+  end
+  object Qr_Transaction: TQuery
+    AutoRefresh = True
+    DatabaseName = 'Durable'
+    Left = 432
+    Top = 72
+  end
+  object Database1: TDatabase
+    AliasName = 'Durable'
+    DatabaseName = 'Durable'
+    LoginPrompt = False
+    Params.Strings = (
+      'USER NAME=Library'
+      'PASSWORD=123')
+    SessionName = 'Default'
+    Left = 432
+    Top = 16
+  end
+  object Qr_Company_Detail: TQuery
+    AutoRefresh = True
+    DatabaseName = 'Durable'
+    SQL.Strings = (
+      'select *'
+      'from Company'
+      'order by Company_Name')
+    Left = 142
+    Top = 126
+  end
+  object Ds_Department_Detail: TDataSource
+    DataSet = Tb_Department_Detail
+    Left = 40
+    Top = 70
+  end
+  object Ds_Room: TDataSource
+    DataSet = Tb_Room
+    Left = 234
+    Top = 71
+  end
+  object Tb_Room: TTable
+    AutoRefresh = True
+    DatabaseName = 'Durable'
+    IndexFieldNames = 'Department_ID'
+    MasterFields = 'Department_ID'
+    MasterSource = Ds_Department_Detail
+    TableName = 'dbo.Room'
+    Left = 235
+    Top = 20
+  end
+  object Qr_Room_Detail: TQuery
+    AutoRefresh = True
+    DatabaseName = 'Durable'
+    SQL.Strings = (
+      'Select Room_ID,Room_Name,Department_Name'
+      'From Room R, Department D'
+      'Where R.Department_ID *= D.Department_ID'
+      'Order By Room_Name')
+    Left = 40
+    Top = 126
+  end
+  object Ds_Room_Detail: TDataSource
+    DataSet = Qr_Room_Detail
+    Left = 39
+    Top = 178
+  end
+  object Ds_Type: TDataSource
+    DataSet = Qr_Type
+    Left = 233
+    Top = 176
+  end
+  object Qr_Officer_Detail: TQuery
+    AutoRefresh = True
+    DatabaseName = 'Durable'
+    SQL.Strings = (
+      'Select Officer_ID,Officer_Name,Department_Name'
+      'From Officer O,Department D'
+      'Where O.Department_ID = D.Department_ID'
+      'Order By Officer_Name')
+    Left = 37
+    Top = 239
+  end
+  object Ds_Officer_Detail: TDataSource
+    DataSet = Qr_Officer_Detail
+    Left = 35
+    Top = 297
+  end
+  object Tb_Department_Detail: TTable
+    AutoRefresh = True
+    DatabaseName = 'Durable'
+    TableName = 'dbo.Department'
+    Left = 40
+    Top = 18
+  end
+  object Tb_Chief: TTable
+    AutoRefresh = True
+    DatabaseName = 'Durable'
+    IndexFieldNames = 'Officer_ID'
+    MasterFields = 'Chief_ID'
+    MasterSource = Ds_Department_Detail
+    TableName = 'dbo.Officer'
+    Left = 142
+    Top = 18
+  end
+  object Ds_Chief: TDataSource
+    DataSet = Tb_Chief
+    Left = 144
+    Top = 71
+  end
+  object Qr_Type: TQuery
+    DatabaseName = 'Durable'
+    SQL.Strings = (
+      'Select * From Type'
+      'Order By Type_Name')
+    Left = 235
+    Top = 122
+  end
+end

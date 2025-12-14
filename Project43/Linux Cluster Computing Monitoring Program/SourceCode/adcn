@@ -1,0 +1,562 @@
+#!/bin/bash
+#-----------------------------------------------------------------------------
+# Add Disk-less Client Node
+#-----------------------------------------------------------------------------
+# $Id: adcn,v 1.16 1999/05/08 11:39:55 jacek Exp jacek $
+# /usr/local/sbin/adcn
+# ftp://ftp.sci.usq.edu.au/pub/jacek/beowulf-utils/disk-less
+# Originally know as 'add_node'
+#
+# Version   : 0.0.8
+#
+# Date      : 27 April 1999
+#
+# Authors   : Jacek Radajewski <jacek@usq.edu.au>
+#             Tony Nugent <nugent@usq.edu.au>
+#
+# Copyright : (C) Jacek Radajewski 1997-1999
+#             This program is distributed under GNU GENERAL PUBLIC LICENSE
+#             Version 2, June 1991 Copies of the license can be down found at
+#             http://www.fsf.org/copyleft/gpl.html
+#
+# Thanx to  : Tony Nugent for many great ideas
+#
+#
+# Purpose   : This script adds a new node to a disk-less-client Beowulf cluster
+#             adcn assumes Red Hat 5.2 and might not work with other versions 
+#             of Red Hat or other distributions of Linux .  adcn uses the 
+#             /tftpboot/Template directory to create NFS root file system 
+#             for the client node.  /tftpboot/Template should be created with 
+#             the sdct script (originally known as setup_template), which can 
+#             be found at ftp://ftp.sci.usq.edu.au/pub/jacek/beowulf-utils/
+#
+# Command line options : check the show_help () function
+#
+#-----------------------------------------------------------------------------
+
+
+#-----------------------------------------------------------------------------
+# show help on usage
+#-----------------------------------------------------------------------------
+
+show_help () {
+
+cat << EOF
+
+adcn options
+
+[-f]            : force installation even if adcn does not support this
+                  distribution of Linux or version of Red Hat Linux
+
+ -i ip_address   : IP Addrees of the disk-less client node"
+
+[-m mac_address] : MAC or hardware address of the disk-less client node
+
+ -l              : Listen for RARP request on the interface specified with -D
+                   and use the sniffed MAC address as client's harware address.
+                   If -m is specified with this option, given MAC address is
+                   ignored. (not implemented)
+
+ -c client_name  : Host name of the disk-less client node.  This must the first
+                   name of the node and not the fully qualified domain name
+
+[-d domain_name] : Domain name.  If not specified servers domain will be used.
+
+[-n netmask]     : Netmask address.  
+
+ -s server       : Default gateway and the NFS server for the disk-less client
+                   node.
+                   specified, server node is used as the default gateway
+
+[-g gateway]     : default gateway address for the client.  If not specified
+                   server's address will be used
+
+[-N net_address] : Network address
+
+[-b broadcast]   : Broadcast address
+
+[-D interface]   : Use the interface configuration to figure out client's
+                   netmask, broadcast, and gateway addresses.  This is also
+                   used by the -l option to tell tcpdump on which interface to
+                   listen for the RARP request.
+
+[-h]             : This help message
+
+Example :
+
+adcn -i 10.0.0.1 -c node1 -d beowulf.my.domain -D eth1 -l
+
+
+EOF
+    exit 0
+}
+
+
+# set few default values before processing command line arguments
+
+FORCE=false
+LISTEN=false
+DOMAIN=$(/bin/dnsdomainname)
+HOST=none
+CLIENT_IP=none
+MACADDR=none
+INTERFACE=none
+DEVICE=none
+NETMASK=none
+BROADCAST=none
+NETWORK=none
+SERVER_IP=none
+CLIENT_GW=none
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+#-----------------------------------------------------------------------------
+# process command line options
+#-----------------------------------------------------------------------------
+
+while getopts ":fhld:i:m:c:n:s:N:b:g:D:" opt; do
+    case $opt in
+	f ) FORCE=true;;
+	d ) DOMAIN=$OPTARG;;
+	i ) CLIENT_IP=$OPTARG;;
+	m ) MACADDR=$OPTARG;;
+	c ) HOST=$OPTARG;;
+	n ) NETMASK=$OPTARG;;
+	s ) SERVER_IP=$OPTARG;;
+	N ) NETWORK=$OPTARG;;
+	b ) BROADCAST=$OPTARG;;
+	g ) CLIENT_GW=$OPTARG;;
+	l ) LISTEN=true;;
+	D ) INTERFACE=$OPTARG;;
+	h ) show_help;;
+	\? ) echo 'adcn -h for help'
+	     exit 1
+    esac
+done
+
+#-----------------------------------------------------------------------------
+# before we do anything we check if we are the superuser
+#-----------------------------------------------------------------------------
+
+if [ $UID != '0' ] ; then
+    echo "Only root can add disk-less clients."
+    echo "Giving up."
+    exit 1
+fi
+
+#-----------------------------------------------------------------------------
+# we check if interface was specified, if so we source the configuration file
+#-----------------------------------------------------------------------------
+
+if [ $INTERFACE != 'none' ] ; then
+    if [ -f /etc/sysconfig/network-scripts/ifcfg-$INTERFACE ] ; then
+        . /etc/sysconfig/network-scripts/ifcfg-$INTERFACE
+    else 
+	echo "Cannot find /etc/sysconfig/network-scripts/ifcfg-$INTERFACE"
+	echo "Giving Up."
+	exit 1
+    fi
+fi
+
+
+#-----------------------------------------------------------------------------
+# Quick check to make sure that the device specified in the configuration
+# file is consistent with the file name; are we looking at the correct dev ?
+#-----------------------------------------------------------------------------
+
+if [ $INTERFACE != $DEVICE ] ; then
+    echo "Possible error in /etc/sysconfig/network-scripts/ifcfg-$INTERFACE"
+    echo "Giving up."
+    exit 1
+fi
+
+#-----------------------------------------------------------------------------
+# check if we need to get the MAC address our self
+# we use tcpdump to get sniff the MAC address
+# this is a hack; suggestions welcome :)
+#-----------------------------------------------------------------------------
+
+if [ $LISTEN != 'false' ] ; then
+    if [ -f /usr/sbin/tcpdump ] ; then
+	echo -n "Listening for clients RARP request ..."
+	rm -f /tmp/rarp.sniff
+	tcpdump rarp -c 1 -i $INTERFACE > /tmp/rarp.sniff 2> /dev/null
+	read a b c mac d e < /tmp/rarp.sniff
+	echo " got $mac"
+	export MACADDR=$mac
+    else
+	echo "Can't find tcpdump, but need it for the -l option :("
+	echo "Giving up."
+	exit 1
+    fi
+fi
+
+#-----------------------------------------------------------------------------
+# check if everything is set
+#-----------------------------------------------------------------------------
+
+if [ $HOST = 'none' ] || [ $CLIENT_IP = 'none' ] || [ $MACADDR = 'none' ] ; then
+    echo '1: adcn -h for help'
+    exit 1
+fi
+
+if [ $CLIENT_GW = 'none' ] || [ $SERVER_IP = 'none' ] ; then
+    echo '2: adcn -h for help'
+    exit 1
+fi
+
+#-----------------------------------------------------------------------------
+# make sure that the host name is not a FQDN
+#-----------------------------------------------------------------------------
+
+echo $HOST | grep "\." > /dev/null 2>&1
+if [ $? = 0 ] ; then
+    echo "Host name cannot be a fully qualified domain name.  Use -d to set domain."
+    exit 1
+fi
+
+#-----------------------------------------------------------------------------
+# simple and incomplete check of the MAC address
+#-----------------------------------------------------------------------------
+
+if [ $(echo $MACADDR | cut -f 6 -d ":")test = "test" ] ; then
+    echo "$MACADDR is not a valid MAC address"
+    exit 1
+fi
+
+echo "Adding disk-less client $HOST to the cluster ... "
+
+#-----------------------------------------------------------------------------
+# check linux release but not if forced install
+# at this stage only check for Red Hat 5.2
+#-----------------------------------------------------------------------------
+
+if [ $FORCE = 'false' ] ; then
+    if [ -f /etc/redhat-release ] ; then
+    
+	cat /etc/redhat-release | grep "Apollo" > /dev/null 2>&1
+	if [ $? = 0 ] ; then
+	    export REDHAT=Apollo
+	else 
+	    echo "This script might not work with $(cat /etc/redhat-release)"
+	    echo "Use -f to force installation"
+	    exit 1
+	fi
+    else 
+	echo "Can't find /etc/redhat-release file."
+	echo "Not a Red Hat Linux distribution.  Giving up"
+	echo "Use -f to force installation.  Good luck :)"
+	exit 1
+    fi
+fi
+
+#-----------------------------------------------------------------------------
+# the location of our template
+# you must create template before you run this script !!!
+# use the sdct script to create the template
+# and then customize it for your needs
+#-----------------------------------------------------------------------------
+
+TEMPLATE_DIR=/tftpboot/Template
+
+DEST_DIR=/tftpboot/$CLIENT_IP
+
+#-----------------------------------------------------------------------------
+# check if this IP address already exists
+#-----------------------------------------------------------------------------
+
+if [ -f $DEST_DIR ] ; then
+    echo "$DEST_DIR entry exists.  Giving up."
+    exit 1
+fi
+
+# do few other checks before going ahead
+
+if [ ! -d $TEMPLATE_DIR ] ; then
+    echo "Cannot find Template directory $TEMPLATE_DIR.  Giving up."
+    exit 1
+fi
+
+
+# create the root directory for new node
+
+/bin/mkdir /tftpboot/$CLIENT_IP
+
+# we also want the name of the new node to be a link to the real (IP address)
+# directory
+
+/bin/ln -sf /tftpboot/$CLIENT_IP /tftpboot/$HOST
+/bin/ln -sf /tftpboot/$CLIENT_IP /tftpboot/$HOST.$DOMAIN
+
+# create sub directories
+
+/bin/mkdir $DEST_DIR/bin
+/bin/mkdir $DEST_DIR/boot
+/bin/mkdir $DEST_DIR/dev
+/bin/mkdir $DEST_DIR/etc
+/bin/mkdir $DEST_DIR/home
+/bin/mkdir $DEST_DIR/lib
+/bin/mkdir $DEST_DIR/mnt
+/bin/mkdir $DEST_DIR/proc
+/bin/mkdir $DEST_DIR/root
+/bin/mkdir $DEST_DIR/sbin
+/bin/mkdir $DEST_DIR/tmp
+/bin/mkdir $DEST_DIR/usr
+/bin/mkdir $DEST_DIR/var
+
+/bin/chmod 777 $DEST_DIR/tmp
+
+echo "Building NFS root file system ..."
+
+#-----------------------------------------------------------------------------
+# we now create the files in all of the directories
+# we make hard links to files in our Template directory
+#-----------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------
+#                                  /bin
+#-----------------------------------------------------------------------------
+
+echo -n " /bin "
+cd $TEMPLATE_DIR/bin
+for directory in $(/usr/bin/find . -not -name '.' -type d) ; do
+    /bin/mkdir $DEST_DIR/bin/$directory
+done
+for file in $(/usr/bin/find . -type f -maxdepth 1 -follow) ; do
+    /bin/ln $TEMPLATE_DIR/bin/$file $DEST_DIR/bin/$file
+done
+
+#-----------------------------------------------------------------------------
+#                                 /boot
+#-----------------------------------------------------------------------------
+
+echo -n " /boot "
+cd $TEMPLATE_DIR/boot
+for directory in $(/usr/bin/find . -not -name '.' -type d) ; do
+    /bin/mkdir $DEST_DIR/boot/$directory
+done
+for file in $(/usr/bin/find . -type f -maxdepth 1) ; do
+    /bin/ln $TEMPLATE_DIR/boot/$file $DEST_DIR/boot/$file
+done
+
+#-----------------------------------------------------------------------------
+#                                   /dev
+#-----------------------------------------------------------------------------
+
+echo -n " /dev "
+cd $TEMPLATE_DIR/dev
+
+# Linking of devices is still very shaky.  There are problems
+# with linking /dev/fd, /dev/stdin, /dev/stderr, and /dev/stdout
+# directories.  These are done explicitly.
+
+/bin/ln -sf ../proc/self/fd          $DEST_DIR/dev/fd
+/bin/ln -f  $TEMPLATE_DIR/dev/stdin  $DEST_DIR/dev/stdin
+/bin/ln -f  $TEMPLATE_DIR/dev/stdout $DEST_DIR/dev/stdout
+/bin/ln -f  $TEMPLATE_DIR/dev/stderr $DEST_DIR/dev/stderr
+
+for directory in $(/usr/bin/find . -not -name '.' -type d) ; do
+    /bin/mkdir $DEST_DIR/dev/$directory
+done
+# link files  block, character, then normal files (e.g. MAKEDEV)
+for file in $(/usr/bin/find . -type c -follow -mount) ; do
+    /bin/ln -fd $TEMPLATE_DIR/dev/$file $DEST_DIR/dev/$file
+done
+for file in $(/usr/bin/find . -type b -follow -mount) ; do
+    /bin/ln -fd $TEMPLATE_DIR/dev/$file $DEST_DIR/dev/$file
+done
+for file in $(/usr/bin/find . -type f -follow -mount) ; do
+    /bin/ln -fd $TEMPLATE_DIR/dev/$file $DEST_DIR/dev/$file 2>/dev/null
+done
+
+#-----------------------------------------------------------------------------
+#                                  /etc
+#-----------------------------------------------------------------------------
+
+echo -n " /etc "
+cd $TEMPLATE_DIR/etc
+for directory in $(/usr/bin/find . -not -name '.' -type d) ; do
+    /bin/mkdir $DEST_DIR/etc/$directory
+done
+
+# this will produce a lot of errors due to simlinks under /etc/httpd 
+# we'll create these links explicitly if apache was installed
+
+for file in $(/usr/bin/find . -type f -follow) ; do
+    /bin/ln -f $TEMPLATE_DIR/etc/$file $DEST_DIR/etc/$file 2>/dev/null
+done
+
+if [ -d /etc/httpd ] ; then
+    /bin/ln -sf ../../usr/lib/apache $DEST_DIR/etc/httpd/modules
+    /bin/ln -sf ../../var/logs/httpd $DEST_DIR/etc/httpd/logs
+fi
+
+#-----------------------------------------------------------------------------
+#                                  /lib
+#-----------------------------------------------------------------------------
+
+echo -n " /lib "
+cd $TEMPLATE_DIR/lib
+for file in $(/usr/bin/find . -type f -follow -maxdepth 1) ; do
+    /bin/ln -f $TEMPLATE_DIR/lib/$file $DEST_DIR/lib/$file
+done
+
+#-----------------------------------------------------------------------------
+#                                 /root
+#-----------------------------------------------------------------------------
+
+echo -n " /root "
+cd $TEMPLATE_DIR/root
+for file in $(/usr/bin/find . -type f -maxdepth 1) ; do
+    /bin/ln -f $TEMPLATE_DIR/root/$file $DEST_DIR/root/$file
+done
+
+#-----------------------------------------------------------------------------
+#                                 /sbin
+#-----------------------------------------------------------------------------
+echo -n " /sbin "
+cd $TEMPLATE_DIR/sbin
+for directory in $(/usr/bin/find . -not -name '.' -type d -follow) ; do
+    /bin/mkdir $DEST_DIR/sbin/$directory
+done
+for file in $(/usr/bin/find . -type f  -follow) ; do
+    /bin/ln -f $TEMPLATE_DIR/sbin/$file $DEST_DIR/sbin/$file
+done
+
+#-----------------------------------------------------------------------------
+#                                  /var
+#-----------------------------------------------------------------------------
+
+echo -n " /var "
+cd $TEMPLATE_DIR/var
+for directory in $(/usr/bin/find . -not -name '.' -type d -follow) ; do
+    /bin/mkdir $DEST_DIR/var/$directory
+done
+for file in $(/usr/bin/find . -type f -follow -mount) ; do
+    /bin/ln $TEMPLATE_DIR/var/$file $DEST_DIR/var/$file 
+done
+
+#-----------------------------------------------------------------------------
+# Now we create network configuration files for the node
+# First we remove all existing configuration scripts
+#-----------------------------------------------------------------------------
+
+echo -e "\nCreating network scripts ..."
+
+# clean up ...
+/bin/rm -f $DEST_DIR/etc/sysconfig/network 
+/bin/rm -f $DEST_DIR/etc/sysconfig/network-scripts/ifcfg-eth* 
+
+# /etc/HOSTNAME
+echo "$HOST.$DOMAIN" > $DEST_DIR/etc/HOSTNAME
+
+#-----------------------------------------------------------------------------
+# create client's /etc/sysconfig/network
+#-----------------------------------------------------------------------------
+
+cat << EOF >> $DEST_DIR/etc/sysconfig/network 
+NETWORKING=yes
+HOSTNAME=$HOST.$DOMAIN
+DOMAINNAME=$DOMAIN
+GATEWAY=$CLIENT_GW
+GATEWAYDEV=eth0
+EOF
+
+#-----------------------------------------------------------------------------
+# create client's /etc/sysconfig/network-scripts/ifcfg-eth0
+# if you have more than one interface per node you will have
+# to add/change script 
+#-----------------------------------------------------------------------------
+
+cat << EOF >> $DEST_DIR/etc/sysconfig/network-scripts/ifcfg-eth0 
+DEVICE=eth0
+CLIENT_IP=$CLIENT_IP
+NETMASK=$NETMASK
+NETWORK=$NETWORK
+BROADCAST=$BROADCAST
+ONBOOT=yes
+BOOTPROTO=none
+EOF
+
+#-----------------------------------------------------------------------------
+# add the RARP entry
+# Our server will use this to anwser client's RARP request and tell it
+# it's IP address
+#-----------------------------------------------------------------------------
+
+/sbin/rarp -s $CLIENT_IP $MACADDR
+
+echo "/sbin/rarp -s $CLIENT_IP $MACADDR" >> /etc/rc.d/init.d/rarp
+
+#-----------------------------------------------------------------------------
+# add the new machine to /etc/exports
+#-----------------------------------------------------------------------------
+
+cat << EOF  >> /etc/exports
+/tftpboot/$CLIENT_IP/ $HOST (rw,no_all_squash,no_root_squash)   
+/usr                  $HOST (rw,no_all_squash,no_root_squash)
+/bin                  $HOST (rw,no_all_squash,no_root_squash)
+/sbin                 $HOST (rw,no_all_squash,no_root_squash)
+/lib                  $HOST (rw,no_all_squash,no_root_squash)
+/home                 $HOST (rw,no_all_squash,no_root_squash)
+EOF
+
+#-----------------------------------------------------------------------------
+# add the new machine to /etc/hosts
+#-----------------------------------------------------------------------------
+
+echo -e "$CLIENT_IP\t\t$HOST.$DOMAIN $HOST" >> /etc/hosts
+
+#-----------------------------------------------------------------------------
+# restart the nfsd and mountd daemons on the server
+# but do a simple check first
+#-----------------------------------------------------------------------------
+
+# Red Hat specific
+#/etc/rc.d/init.d/portmap restart
+#/etc/rc.d/init/d/nfs status
+
+# check if portmap running
+rpcinfo -p 1> /dev/null 2>&1 ||
+    echo "Warning : portmap not running"
+
+# check if mountd running
+rpcinfo -p 2> /dev/null | grep -q mountd || 
+    echo "Warning : mountd not running"
+
+# check if nfsd running
+rpcinfo -p 2> /dev/null | grep -q nfs && 
+    exportfs ||
+    echo "Warning : nfsd not running"
+
+
+#-----------------------------------------------------------------------------
+# create /etc/fstab entry
+#-----------------------------------------------------------------------------
+
+/bin/rm -f $DEST_DIR/etc/fstab
+
+echo -e "$SERVER_IP:/tftpboot/$CLIENT_IP\t/\tnfs\thard,intr,rw" >> $DEST_DIR/etc/fstab
+echo -e "$SERVER_IP:/usr\t/usr\t\tnfs\tsoft,intr,rw"   >> $DEST_DIR/etc/fstab
+echo -e "$SERVER_IP:/bin\t/bin\t\tnfs\tsoft,intr,rw"   >> $DEST_DIR/etc/fstab
+echo -e "$SERVER_IP:/sbin\t/sbin\t\tnfs\tsoft,intr,rw"  >> $DEST_DIR/etc/fstab
+echo -e "$SERVER_IP:/lib\t/lib\t\tnfs\tsoft,intr,rw"   >> $DEST_DIR/etc/fstab
+echo -e "$SERVER_IP:/home\t/home\t\tnfs\thard,intr,rw"  >> $DEST_DIR/etc/fstab
+
+/bin/rm -f $DEST_DIR/etc/mtab
+/bin/touch $DEST_DIR/etc/mtab
+
+# some other files have to be unique for each client
+
+
+/bin/rm -f $DEST_DIR/var/log/wtmp*
+/bin/touch $DEST_DIR/var/log/wtmp
+
+/bin/rm -f $DEST_DIR/var/log/lastlog*
+/bin/touch $DEST_DIR/var/log/lastlog
+
+
+
+echo "Done."
+
+
+

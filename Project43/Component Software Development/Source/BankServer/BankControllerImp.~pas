@@ -1,0 +1,170 @@
+unit BankControllerImp;
+
+interface
+
+uses
+  ActiveX, MtsObj, ComObj, BankManager_TLB, StdVcl, SysUtils,
+  {ADODB_TLB, COMSVCSLib_TLB,} Dialogs, Windows, {MSSQL2K_BankPrj_TLB};
+
+type
+  TBankController = class(TMtsAutoObject, IBankController, IObjectControl)
+  protected
+    function checkTransfer(const DestinationAccountID,
+      TransactionID: WideString; Amount: Currency): WordBool; safecall;
+    function payByCreditCard(const CreditCardID,
+      DestinationAccountID: WideString; Amount: Currency): WideString;
+      safecall;
+    function payByDebitCard(const DebitCardID,
+      DestinationAccountID: WideString; Amount: Currency): WideString;
+      safecall;
+    function transfer(const SourceID, DestinationAccountID: WideString;
+      Amount: Currency; const Password: WideString): WideString; safecall;
+    { Protected declarations }
+
+    // IObjectControl Methods Definition
+    function Activate: HRESULT; stdcall;
+    function CanBePooled: Longint; stdcall;
+    procedure Deactivate; stdcall;
+
+    private
+      objctx : ObjectContext;
+      
+  end;
+
+implementation
+
+uses ComServ;
+
+////////////////// IObjectControl Methods Implementation ///////////////////////
+
+function TBankController.Activate: HRESULT;
+var
+  imtx : IMTxAS;
+begin
+  try
+    imtx := CoAppServer.Create;
+    objctx := imtx.GetObjectContext;
+    if objctx = nil then
+    begin
+      Result := 0;
+    end
+    else
+      Result := S_OK;
+  except
+    Result := 0;
+  end;
+end;
+
+function TBankController.CanBePooled: Longint;
+begin
+  Result := 1;
+end;
+
+procedure TBankController.Deactivate;
+begin
+  objctx := nil;
+end;
+
+///////////// TBankController Methods Implementation ///////////////////////////
+
+function TBankController.checkTransfer(const DestinationAccountID,
+  TransactionID: WideString; Amount: Currency): WordBool;
+var
+  bankTransaction: IBankTransaction;
+  v: OleVariant;
+begin
+  bankTransaction:= CoBankTransaction.Create;
+  v:= bankTransaction.findByTransactionID(TransactionID);
+  try
+  v.MoveFirst;
+  if (DestinationAccountID=v.fields.item[1].value)
+        and(Amount=v.fields.item[3].value) then
+  begin
+    Result:= True;
+    v.Close;
+  end else
+        begin
+          Result:= False;
+          v.Close;
+        end;
+  objctx.SetComplete;
+  except
+    Result:=False;
+    objctx.SetAbort;
+  end;
+end;
+
+function TBankController.payByCreditCard(const CreditCardID,
+  DestinationAccountID: WideString; Amount: Currency): WideString;
+var
+  account: IAccount;
+  bankTransaction: IBankTransaction;
+  withdrawReturn,depositReturn,transactionID:WideString;
+begin
+  account:= CoAccount.Create;
+  bankTransaction:= CoBankTransaction.Create;
+  withdrawReturn:= account.withdraw(CreditCardID,2,Amount,'');
+  depositReturn:= account.deposit(DestinationAccountID,Amount);
+  if (withdrawReturn='Withdraw OK')and(depositReturn='Deposit OK') then
+  begin
+    transactionID:= bankTransaction.create(3,CreditCardID,DestinationAccountID,Amount,Now);
+    Result:=transactionID;
+    objctx.SetComplete;
+  end else
+        begin
+          Result:= 'Error';
+          objctx.SetAbort;
+        end;
+end;
+
+function TBankController.payByDebitCard(const DebitCardID,
+  DestinationAccountID: WideString; Amount: Currency): WideString;
+var
+  account: IAccount;
+  bankTransaction: IBankTransaction;
+  withdrawReturn,depositReturn,transactionID:WideString;
+begin
+  account:= CoAccount.Create;
+  bankTransaction:= CoBankTransaction.Create;
+  withdrawReturn:= account.withdraw(DebitCardID,3,Amount,'');
+  depositReturn:= account.deposit(DestinationAccountID,Amount);
+  if (withdrawReturn='Withdraw OK')and(depositReturn='Deposit OK') then
+  begin
+    transactionID:= bankTransaction.create(4,DebitCardID,DestinationAccountID,Amount,Now);
+    Result:=transactionID;
+    objctx.SetComplete;
+  end else
+        begin
+          Result:= 'Error';
+          objctx.SetAbort;
+        end;
+end;
+
+function TBankController.transfer(const SourceID,
+  DestinationAccountID: WideString; Amount: Currency;
+  const Password: WideString): WideString;
+var
+  account: IAccount;
+  bankTransaction: IBankTransaction;
+  withdrawReturn,depositReturn,transactionID:WideString;
+begin
+  account:= CoAccount.Create;
+  bankTransaction:= CoBankTransaction.Create;
+  withdrawReturn:= account.withdraw(SourceID,1,Amount,Password);
+  depositReturn:= account.deposit(DestinationAccountID,Amount);
+  if (withdrawReturn='Withdraw OK')and(depositReturn='Deposit OK') then
+  begin
+    transactionID:= bankTransaction.create(2,SourceID,DestinationAccountID,Amount,Now);
+    Result:=transactionID;
+    objctx.SetComplete;
+  end else
+        begin
+          Result:= 'Error';
+          objctx.SetAbort;
+        end;
+end;
+
+initialization
+  TAutoObjectFactory.Create(ComServer, TBankController, Class_BankController,
+    ciMultiInstance, tmBoth);
+end.

@@ -1,0 +1,472 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Internet Auction [Register] : CE.KMITL</TITLE>
+<STYLE>A:link {
+	COLOR: #ffffff; TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: #ffffff; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: #33ccff; TEXT-DECORATION: none
+}
+</STYLE>
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT language=JavaScript>
+//---------------------------------------------Global Variable -----------------------------------------------------------
+	illegalString= new String(",./?><;:\'\"[]\\|}{=+-)(*&^%$#@!~");
+	var testresults;
+	nullField=false;
+	var zipcodevalid;
+	var telephonevalid;
+	var telephonecompanyvalid;
+	var mobilenumbervalid;
+	var pagernumbervalid; 
+	var passvalid=true;
+	var valid;
+	var xyz;
+	 
+//---------------------------------------------------------------------------------------------------------------------------------	
+	function isInteger(a){
+		inttemp=new String(a.value);
+		if(isNull(a)) return true; else
+		for (var i=0;i<inttemp.length;i++){
+			if ((inttemp.charAt(i)<"0")||(inttemp.charAt(i)>"9")){
+				alert("Invalid zip code");			
+				return false;
+			}
+			else{
+				return true;
+			}
+		}
+	}
+//---------------------------------------------------------------------------------------------------------------------------------
+	function removeChar(a){
+		tempstring= new String(a.value);
+		for (var i=0;i<tempstring.length;i++){
+			for (var j=0;j<illegalString.length;j++){
+				if (tempstring.charAt(i)==illegalString.charAt(j)){
+					alert("Special Characters are not allowed");
+					a.value="";
+					break
+				}
+			}
+		}
+	}
+//---------------------------------------------------------------------------------------------------------------------------------	
+	function isPhonenumber(a){
+		inttemp = new String(a.value);
+		if(isNull(a)) return true; else
+		for (var i=0;i<inttemp.length;i++){
+			if (((inttemp.charAt(i)>="0")&&(inttemp.charAt(i)<="9"))||(inttemp.charAt(i)=="-")){			
+				return true;				
+			}
+			else{
+				alert("Please enter valid "+a.name+" number");
+				return false;
+			}
+		}
+	}
+//---------------------------------------------------------------------------------------------------------------------------------	
+	function isNull(a){
+		tempstring=new String(a.value);
+		if (tempstring.length==0) return true
+		else return false;	
+	}
+//---------------------------------------------------------------------------------------------------------------------------------	
+function checkemail(){
+
+	var str=document.form1.email.value;
+	var filter=/^.+@.+\..{2,3}$/;
+	if (filter.test(str))
+		testresults=true
+	else{
+		alert("Please input a valid email address!");
+		testresults=false;
+	}
+	return (testresults);
+}
+//---------------------------------------------------------------------------------------------------------------------------------	
+	function validateAll(){
+		passtemp=new String(document.form1.password.value);
+		repasstemp=new String(document.form1.confirmpassword.value);
+		if (passtemp.length==repasstemp.length)
+		{
+			for (var p=0;p<passtemp.length;p++)
+			{	
+				if (passtemp.charAt(p)!=repasstemp.charAt(p))
+				{
+					passvalid=false;			
+				}else passvalid=true;
+			}
+		} else passvalid=false;	
+		zipcodevalid=isInteger(document.form1.zipcode);
+		telephonevalid=isPhonenumber(document.form1.telephone);
+		telephonecompanyvalid=isPhonenumber(document.form1.telephonecompany);
+		mobilenumbervalid=isPhonenumber(document.form1.mobilenumber);
+		pagernumbervalid=isPhonenumber(document.form1.pagernumber);
+		checkemail();
+		if ((isNull(document.form1.username))||(isNull(document.form1.password))||(isNull(document.form1.confirmpassword))||(isNull(document.form1.name))||(isNull(document.form1.surname))||(isNull(document.form1.companyname))||(isNull(document.form1.address))||(isNull(document.form1.region)) ||(isNull(document.form1.email))){
+			nullField=true;
+			alert("Required fields can't be blank");
+		}else nullField=false;
+		valid=(testresults&&zipcodevalid&&telephonevalid&&passvalid);
+
+		xyz=((!nullField)&& valid && zipcodevalid && telephonevalid && telephonecompanyvalid && mobilenumbervalid && pagernumbervalid);
+		if (xyz) document.form1.submit();
+	}
+//---------------------------------------------------------------------------------------------------------------------------------
+function xxx(){
+	
+	return(xyz);
+}
+//---------------------------------------------------------------------------------------------------------------------------------	
+
+</SCRIPT>
+
+<META content="MSHTML 5.50.4522.1800" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff>
+<DIV align=right>
+<FORM name=form1 onsubmit=xxx action=servlet/ConfirmMemberInformation 
+method=post>
+<DIV align=center>
+<TABLE height=164 cellSpacing=2 cellPadding=4 width="100%" align=center 
+border=0>
+  <TBODY>
+  <TR>
+    <CENTER><IMG height=98 src="picture/Register.jpg" width=970> </CENTER>
+  <TR>
+  <TR>
+    <TD vAlign=top width="20%" bgColor=#4f4fd2 height=313 rowSpan=21>
+      <DIV align=center><FONT face="Arial, Helvetica, sans-serif" 
+      size=3><B><FONT color=#ffcc00><I><FONT size=3><BR>New Users 
+      !!</FONT></I></FONT></B><FONT color=#ffcc00><I><FONT 
+      size=3><BR></FONT></I></FONT></FONT><BR></DIV>
+      <DIV align=center>
+      <P><FONT size=3><A 
+      href="register.html"><FONT
+      face="Arial, Helvetica, sans-serif">Register</FONT></A></FONT> <BR><FONT
+      size=3><A
+      href="NewToAuction.html"><FONT
+      face="Arial, Helvetica, sans-serif">New to our
+      Auction</FONT></A></FONT><BR><B><FONT face="Arial, Helvetica, sans-serif"
+      color=#ffcc00 size=3><I><BR><BR>Auction Member</I></FONT></B><FONT
+      face="Arial, Helvetica, sans-serif" color=#ff3366
+      size=2><I><BR></I></FONT></P>
+      <P><FONT face="Arial, Helvetica, sans-serif" size=2><A
+      href="servlet/LoginSuccess"><FONT
+      size=3>Home<FONT face="Arial, Helvetica, sans-serif">
+      </FONT></FONT></A></FONT><FONT face="Arial, Helvetica, sans-serif"
+      color=#ff3366 size=2><I></I></FONT><FONT
+      face="Arial, Helvetica, sans-serif" size=2><I><BR></I><A
+      href="servlet/Changeinfo"><FONT 
+      size=3><FONT face="Arial, Helvetica, sans-serif">C</FONT><FONT 
+      face="Arial, Helvetica, sans-serif">hange Personal 
+      Information<BR></FONT></FONT></A></FONT><A 
+      href="servlet/Listmember"><FONT
+      size=3><FONT face="Arial, Helvetica, sans-serif">Member
+      Profiles<BR></FONT></FONT></A><A
+      href="servlet/Listproject"><FONT
+      size=3><FONT face="Arial, Helvetica, sans-serif">Project List
+      </FONT></FONT></A><A
+      href="OfferSpec.html"><FONT
+      size=3><FONT face="Arial, Helvetica, sans-serif"><BR></FONT></FONT></A><A
+      href="servlet/Ranking"><FONT
+      size=3><FONT face="Arial, Helvetica, sans-serif">Member Rating
+      </FONT></FONT></A><A
+      href="OfferSpec.html"><FONT
+      size=3><FONT
+face="Arial, Helvetica, sans-serif"></FONT></FONT></A><BR></P>
+      <P><FONT size=3><FONT face="Arial, Helvetica, sans-serif" size=2><B><FONT
+      color=#ff9900>For Buyer</FONT></B></FONT></FONT><BR><FONT size=3><FONT
+      face="Arial, Helvetica, sans-serif"><A
+      href="servlet/GeneralReq">General
+      Requirement</A></FONT></FONT><BR><FONT size=3><FONT
+      face="Arial, Helvetica, sans-serif"><A
+      href="servlet/AddTechReq">Add
+      Technical Requirement <FONT
+      size=2><I>(bidding)</I></FONT></A></FONT></FONT><BR><BR><FONT size=3><FONT
+      face="Arial, Helvetica, sans-serif" color=#cccccc size=2><B><FONT
+      color=#ff9900>For Seller</FONT></B></FONT></FONT><BR><FONT size=3><FONT
+      face="Arial, Helvetica, sans-serif"><A
+      href="servlet/AddSpecification">Add
+      Specification</A></FONT></FONT><BR><FONT size=3><FONT
+      face="Arial, Helvetica, sans-serif"><A
+      href="servlet/ListBiddingProject">Bidding</A></FONT></FONT><BR></P></DIV>
+      <DIV align=center></DIV>
+      <DIV align=center><A
+      href="ProjectList.html"><FONT
+      size=3></FONT></A><B><FONT face="Arial, Helvetica, sans-serif"
+      color=#ffcc00 size=3><I><BR>Auction Services </I></FONT></B><BR><BR></DIV>
+      <DIV align=center><FONT face="Arial, Helvetica, sans-serif" color=#ff3366
+      size=2><I></I><A
+      href="http://freeboard.adbest.com/KBoard.cgi?db=pennie23"><FONT
+      size=3><FONT face="Arial, Helvetica, sans-serif">Auction
+      Board</FONT></FONT></A></FONT></DIV><FONT
+      face="Arial, Helvetica, sans-serif" color=#ff3366 size=2><I></I></FONT>
+      <DIV align=center><FONT face="Arial, Helvetica, sans-serif" color=#ff3366
+      size=2><A 
+      href="MailToUs.html"><FONT
+      size=3><FONT face="Arial, Helvetica, sans-serif">Mail To
+      Us</FONT></FONT></A><I></I></FONT></DIV></TD>
+    <TD align=left bgColor=#ffb56a height=38><FONT
+      face="Arial, Helvetica, sans-serif" color=#330099><B><FONT
+      size=2>Username</FONT></B></FONT></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=38><INPUT name=username size="10" maxlength="10">
+      <FONT color=#330033>*</FONT> </TD>
+    <TD width="24%" bgColor=#ffffff height=38><FONT
+      face="Arial, Helvetica, sans-serif" color=#ff6666
+  size=2><I></I></FONT></TD></TR>
+  <TR>
+    <TD align=left bgColor=#ffb56a><FONT face="Arial, Helvetica, sans-serif"
+      color=#330099><B><FONT size=2>Password</FONT></B></FONT></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=27><INPUT type=password
+      name=password size="10" maxlength="10"> <FONT color=#330033>*</FONT> </TD>
+    <TD width="24%" bgColor=#ffd9b3 height=27><FONT
+      face="Arial, Helvetica, sans-serif" color=#ff6666 size=2><I><FONT
+      size=1>(minimum 4 characters require)</FONT></I></FONT></TD></TR>
+  <TR>
+    <TD align=left bgColor=#ffb56a><B><FONT
+      face="Arial, Helvetica, sans-serif" color=#330099 size=2>Confirm Password
+      </FONT></B></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=33><INPUT type=password
+      name=confirmpassword size="10" maxlength="10" > <FONT color=#330033>*</FONT> </TD>
+    <TD width="24%" bgColor=#ffffff height=33>&nbsp;</TD></TR>
+  <TR>
+    <TD align=left bgColor=#ffb56a height=37><B><FONT
+      face="Arial, Helvetica, sans-serif" color=#330099
+size=2>Type</FONT></B></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=37><PRE><INPUT type=radio value=Person name=type><FONT face="Arial, Helvetica, sans-serif" color=#330033>Person</FONT><FONT face="Arial, Helvetica, sans-serif" color=#000000>     <INPUT type=radio value=Company name=type> <FONT color=#330033>Company * </FONT></FONT></PRE></TD>
+    <TD width="24%" bgColor=#ffd9b3 height=37><FONT
+      face="Arial, Helvetica, sans-serif" color=#333333 size=2><I><FONT
+      size=1>If you are company type.. Please enter the name and details of the
+      employee whom we can contact with.</FONT></I></FONT></TD></TR>
+  <TR>
+    <TD align=left bgColor=#ffb56a><B><FONT
+      face="Arial, Helvetica, sans-serif" color=#330099 size=2>Company Name
+      </FONT></B></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=33><INPUT
+      name=companyname size="30" maxlength="50"> <FONT color=#330033></FONT></TD>
+    <TD width="24%" bgColor=#ffd9b3 height=33><FONT
+      face="Arial, Helvetica, sans-serif" color=#333333 size=2><I><FONT
+      face="Arial, Helvetica, sans-serif" color=#ff6666 size=2><I><FONT
+      size=1>(For comapny only)</FONT></I></FONT><FONT size=1>
+    </FONT></I></FONT></TD></TR>
+  <TR>
+    <TD align=left bgColor=#ffb56a height=40><B><FONT
+      face="Arial, Helvetica, sans-serif" color=#330099 size=2>Company Type
+      </FONT></B></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=40><SELECT size=1 
+      name=select>
+      <OPTION selected></OPTION>
+      <OPTION selected>Banking / Finance / Real estate</OPTION>
+        <OPTION>Comuter-related IS,MIS,DP</OPTION> <OPTION>Computer-related 
+        Internet</OPTION> <OPTION>Computer-related Hardware</OPTION> 
+        <OPTION>Computer-related Software</OPTION> <OPTION>Education / 
+        Research</OPTION> <OPTION>Engineering / Construction</OPTION> 
+        <OPTION>Manufacturing / Distribution</OPTION> <OPTION>Business supplier 
+        or services</OPTION> <OPTION>Entertainment / Media / Publishing</OPTION> 
+        <OPTION>Hospitality-travel / Accommodations</OPTION> <OPTION>Consumer 
+        retail / Wholesale</OPTION> <OPTION>nonprofit / Membership 
+        organizations</OPTION> <OPTION>Government</OPTION> <OPTION>Legal 
+        services</OPTION></SELECT> <FONT color=#330033></FONT></TD>
+    <TD width="24%" bgColor=#ffd9b3 height=33><FONT 
+      face="Arial, Helvetica, sans-serif" color=#333333 size=2><I><FONT 
+      face="Arial, Helvetica, sans-serif" color=#ff6666 size=2><I><FONT 
+      size=1>(For company only)</FONT></I></FONT><FONT size=1> 
+    </FONT></I></FONT></TD></TR>
+  <TR>
+    <TD align=left bgColor=#ffb56a height=35><B><FONT 
+      face="Arial, Helvetica, sans-serif" color=#330099 
+size=2>Name</FONT></B></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=35><INPUT name=name size="20" maxlength="20">
+      <FONT color=#330033>*</FONT> </TD>
+    <TD width="24%" bgColor=#ffffff height=35>&nbsp;</TD></TR>
+  <TR>
+    <TD align=left bgColor=#ffb56a><B><FONT 
+      face="Arial, Helvetica, sans-serif" color=#330099 
+    size=2>Surname</FONT></B></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=34><INPUT name=surname size="20" maxlength="20">
+      <FONT color=#330033>*</FONT> </TD>
+    <TD width="24%" bgColor=#ffffff height=34><FONT 
+      face="Arial, Helvetica, sans-serif" color=#333333 size=2></FONT></TD></TR>
+  <TR>
+    <TD align=left bgColor=#ffb56a><B><FONT 
+      face="Arial, Helvetica, sans-serif" color=#330099 
+    size=2>e-mail</FONT></B></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=20><INPUT name=email size="20" maxlength="20"> 
+      <FONT color=#330033>*</FONT> </TD>
+    <TD width="24%" bgColor=#ffffff height=20>&nbsp;</TD></TR>
+  <TR>
+    <TD align=left bgColor=#ffb56a height=34><B><FONT 
+      face="Arial, Helvetica, sans-serif" color=#330099 
+    size=2>Gender</FONT></B></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=34><PRE><INPUT type=radio value=Male name=sex><FONT face="Arial, Helvetica, sans-serif" color=#330033>Male</FONT><FONT face="Arial, Helvetica, sans-serif" color=#006666>         <INPUT type=radio value=Female name=sex><FONT color=#330033>Female  </FONT></FONT></PRE></TD>
+    <TD width="24%" bgColor=#ffffff height=20>&nbsp;</TD></TR>
+  <TR>
+    <TD align=left bgColor=#ffb56a height=39><B><FONT 
+      face="Arial, Helvetica, sans-serif" color=#330099 
+      size=2>Birth_date</FONT></B></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=39><SELECT size=1 
+      name=birthdate> <OPTION selected>01</OPTION> <OPTION>02</OPTION> 
+        <OPTION>03</OPTION> <OPTION>04</OPTION> <OPTION>05</OPTION> 
+        <OPTION>06</OPTION> <OPTION>07</OPTION> <OPTION>08</OPTION> 
+        <OPTION>09</OPTION> <OPTION>10</OPTION> <OPTION>11</OPTION> 
+        <OPTION>12</OPTION> <OPTION>13</OPTION> <OPTION>14</OPTION> 
+        <OPTION>15</OPTION> <OPTION>16</OPTION> <OPTION>17</OPTION> 
+        <OPTION>18</OPTION> <OPTION>19</OPTION> <OPTION>20</OPTION> 
+        <OPTION>21</OPTION> <OPTION>22</OPTION> <OPTION>23</OPTION> 
+        <OPTION>24</OPTION> <OPTION>25</OPTION> <OPTION>26</OPTION> 
+        <OPTION>27</OPTION> <OPTION>28</OPTION> <OPTION>29</OPTION> 
+        <OPTION>30</OPTION> <OPTION>31</OPTION></SELECT> / <SELECT size=1 
+      name=birthmonth> <OPTION selected>01</OPTION> <OPTION>02</OPTION> 
+        <OPTION>03</OPTION> <OPTION>04</OPTION> <OPTION>05</OPTION> 
+        <OPTION>06</OPTION> <OPTION>07</OPTION> <OPTION>08</OPTION> 
+        <OPTION>09</OPTION> <OPTION>10</OPTION> <OPTION>11</OPTION> 
+        <OPTION>12</OPTION></SELECT> / <SELECT size=1 name=birthyear> <OPTION 
+        selected>1965</OPTION> <OPTION>1966</OPTION> <OPTION>1967</OPTION> 
+        <OPTION>1968</OPTION> <OPTION>1969</OPTION> <OPTION>1970</OPTION> 
+        <OPTION>1971</OPTION> <OPTION>1972</OPTION> <OPTION>1973</OPTION> 
+        <OPTION>1974</OPTION> <OPTION>1975</OPTION> <OPTION>1976</OPTION> 
+        <OPTION>1977</OPTION> <OPTION>1978</OPTION> <OPTION>1979</OPTION> 
+        <OPTION>1980</OPTION> <OPTION>1981</OPTION> <OPTION>1982</OPTION> 
+        <OPTION>1983</OPTION> <OPTION>1984</OPTION> <OPTION>1985</OPTION> 
+        <OPTION>1986</OPTION> <OPTION>1987</OPTION> <OPTION>1988</OPTION> 
+        <OPTION>1989</OPTION> <OPTION>1990</OPTION> <OPTION>1991</OPTION> 
+        <OPTION>1992</OPTION> <OPTION>1993</OPTION> <OPTION>1994</OPTION> 
+        <OPTION>1995</OPTION> <OPTION>1996</OPTION> <OPTION>1997</OPTION> 
+        <OPTION>1998</OPTION> <OPTION>1999</OPTION></SELECT> </TD>
+    <TD width="24%" bgColor=#ffd9b3 height=39><FONT 
+      face="Arial, Helvetica, sans-serif" color=#ff6666 size=2><I><FONT 
+      size=1>(DD/MM/YYYY)</FONT></I></FONT></TD></TR><!-- <tr> 
+          <td bgcolor="#ffb56a" align="left" height="34"><b><font face="Arial, Helvetica, sans-serif" color="#330099" size="2">Age</font></b></td>
+          <td width="31%" height="34" bgcolor="#ffb56a" align="left"> 
+            <select name="age" size="1">
+              <option selected>Under 18</option>
+              <option>19 - 25</option>
+              <option>26 - 35</option>
+              <option>36 - 45</option>
+              <option>Upper 45</option>
+            </select>
+          </td> 
+          <td width="24%" height="34" bgcolor="#FFFFFF">&nbsp;</td>
+        </tr> -->
+  <TR>
+    <TD align=left bgColor=#ffb56a><B><FONT 
+      face="Arial, Helvetica, sans-serif" color=#330099 size=2>Address 
+      </FONT></B></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=23><INPUT name=address size="30" maxlength="50"> 
+      <FONT color=#330033>*</FONT> </TD>
+    <TD width="24%" bgColor=#ffd9b3 height=23><FONT 
+      face="Arial, Helvetica, sans-serif" color=#333333 size=2><I><FONT 
+      size=1>If you are company type.. Enter your company 
+      location.</FONT></I></FONT></TD></TR>
+  <TR>
+    <TD align=left bgColor=#ffb56a><B><FONT 
+      face="Arial, Helvetica, sans-serif" color=#330099 
+    size=2>Region</FONT></B></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=31><INPUT name=region size="30" maxlength="50">
+      <FONT color=#330033>*</FONT> </TD>
+    <TD width="24%" bgColor=#ffffff height=31>&nbsp;</TD></TR>
+  <TR>
+    <TD align=left bgColor=#ffb56a><B><FONT
+      face="Arial, Helvetica, sans-serif" color=#330099
+      size=2>Province</FONT></B></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=33><SELECT size=1 
+      name=province> <OPTION selected>Bangkok</OPTION> 
+        <OPTION>Ayuttaya</OPTION> <OPTION>Chaing Mai</OPTION> <OPTION>Chaing 
+        Rai</OPTION> <OPTION>Mae Hong Sorn</OPTION> <OPTION>Lumpang</OPTION> 
+        <OPTION>Rayong</OPTION> <OPTION>Ranong</OPTION> 
+        <OPTION>Sukhothai</OPTION> <OPTION>Ubonratchathanee</OPTION> 
+        <OPTION>Udornthanee</OPTION> <OPTION>Roi Edd</OPTION> 
+        <OPTION>Narn</OPTION> <OPTION>Prae</OPTION> <OPTION>Trad</OPTION> 
+        <OPTION>Tark</OPTION> <OPTION>Rachaburi</OPTION> 
+        <OPTION>Saraburi</OPTION> <OPTION>Chachungsao</OPTION> 
+        <OPTION>Kumpangped</OPTION></SELECT> <FONT color=#330033>*</FONT> </TD>
+    <TD width="24%" bgColor=#ffffff height=33>&nbsp;</TD></TR>
+  <TR>
+    <TD align=left bgColor=#ffb56a><B><FONT 
+      face="Arial, Helvetica, sans-serif" color=#330099 size=2>Zip Code 
+      </FONT></B></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=23><INPUT maxLength=5 
+      size=7 name=zipcode size="10" maxlength="10"> <FONT color=#330033>*</FONT> </TD>
+    <TD width="24%" bgColor=#ffffff height=23>&nbsp;</TD></TR>
+  <TR>
+    <TD align=left bgColor=#ffb56a><B><FONT 
+      face="Arial, Helvetica, sans-serif" color=#330099 
+      size=2>Telephone_number</FONT></B></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=23><INPUT 
+      name=telephone size="15" maxlength="15"> <FONT color=#330033>*</FONT> </TD>
+    <TD width="24%" bgColor=#ffd9b3 height=23><FONT
+      face="Arial, Helvetica, sans-serif" color=#ff6666 size=2><I><FONT 
+      size=1>(Please enter telephone_number that we can contact 
+      you)</FONT></I></FONT></TD></TR>
+  <TR>
+    <TD align=left bgColor=#ffb56a><B><FONT 
+      face="Arial, Helvetica, sans-serif" color=#330099 size=2>Telephone_No 
+      (company) </FONT></B></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=35><INPUT 
+      name=telephonecompany size="15" maxlength="15"> </TD>
+    <TD width="24%" bgColor=#ffd9b3 height=35><FONT 
+      face="Arial, Helvetica, sans-serif" color=#ff6666 size=2><I><FONT 
+      size=1>(For company only)</FONT></I></FONT></TD></TR>
+  <TR>
+    <TD align=left bgColor=#ffb56a><B><FONT 
+      face="Arial, Helvetica, sans-serif" color=#330099 size=2>Mobile_Number 
+      </FONT></B></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=23><INPUT 
+      name=mobilenumber size="15" maxlength="15"> </TD>
+    <TD width="24%" bgColor=#ffffff height=23>&nbsp;</TD></TR>
+  <TR>
+    <TD align=left bgColor=#ffb56a><B><FONT 
+      face="Arial, Helvetica, sans-serif" color=#330099 
+    size=2>Pager</FONT></B></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=25><SELECT size=1 
+      name=pager> <OPTION>142</OPTION> <OPTION selected>152</OPTION> 
+        <OPTION>162</OPTION> <OPTION>1188</OPTION> <OPTION>1144</OPTION> 
+        <OPTION>1500</OPTION></SELECT> <INPUT maxLength=7 size=9 name=pagernumber size="10" maxlength="10"> 
+    </TD>
+    <TD width="24%" bgColor=#ffffff height=25>&nbsp;</TD></TR>
+  <TR>
+    <TD align=left bgColor=#ffb56a><B><FONT 
+      face="Arial, Helvetica, sans-serif" color=#330099 size=2>Occupation 
+      </FONT></B></TD>
+    <TD align=left width="31%" bgColor=#ffb56a height=34><SELECT size=1 
+      name=occupation> <OPTION selected>Accounting / Finance</OPTION> 
+        <OPTION>Computer related (Internet)</OPTION> <OPTION>Computer related 
+        (other)</OPTION> <OPTION>Consulting</OPTION> <OPTION>Customer service / 
+        support</OPTION> <OPTION>Education / Training</OPTION> 
+        <OPTION>Engineering</OPTION> <OPTION>Executive / Senior 
+        management</OPTION> <OPTION>General administrative / 
+        supervisory</OPTION> <OPTION>Government / Military</OPTION> 
+        <OPTION>Homemaker</OPTION> <OPTION>Manufacturing / Production / 
+        Operations</OPTION> <OPTION>Professional (medical , legal , 
+        etc.)</OPTION> <OPTION>Research and Development</OPTION> 
+        <OPTION>Retired</OPTION> <OPTION>Sales / Marketing / 
+        Advertising</OPTION> <OPTION>Self-employed / Owner</OPTION> 
+        <OPTION>Student</OPTION> <OPTION>Tradesman / Craftsman</OPTION> 
+        <OPTION>Unemployed / Between Jobs)</OPTION> 
+      <OPTION>Other</OPTION></SELECT> </TD>
+    <TD width="24%" bgColor=#ffffff height=34><FONT 
+      face="Arial, Helvetica, sans-serif" color=#ff6666 
+  size=2><I></I></FONT></TD></TR></TBODY></TABLE><IMG height=2 src="" 
+width=550><BR><INPUT onclick=validateAll() type=button value=Submit name=Submit> 
+<INPUT type=reset value=Clear name=RegisterClear> <BR></DIV></FORM><!--<script language="JavaScript">
+	setInterval("removeChar(document.form1.username)",100);
+
+
+	setInterval("removeChar(document.form1.companyname)",100);
+	setInterval("removeChar(document.form1.name)",100);
+	setInterval("removeChar(document.form1.surname)",100);
+	
+	setInterval("removeChar(document.form1.sex)",100);
+	setInterval("removeChar(document.form1.birthdate)",100);
+	setInterval("removeChar(document.form1.address)",100);
+	setInterval("removeChar(document.form1.region)",100);
+	setInterval("removeChar(document.form1.zipcode)",100);
+	setInterval("removeChar(document.form1.telephone)",100);
+	setInterval("removeChar(document.form1.telephonecompany)",100);
+	setInterval("removeChar(document.form1.mobilenumber)",100);
+	setInterval("removeChar(document.form1.pagernumber)",100);
+	setInterval("removeChar(document.form1.occupation)",100);
+</script> --></DIV></BODY></HTML>

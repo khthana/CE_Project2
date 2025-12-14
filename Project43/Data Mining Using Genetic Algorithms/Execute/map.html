@@ -1,0 +1,245 @@
+<html>
+<head>
+<title>TSP using Genetic Algorithm</title>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-874">
+</head>
+
+<body bgcolor="#C6C3C6" leftmargin="0" topmargin="0">
+<p>&nbsp;</p>
+<p align="center"> <font size="7">TSP using Genetic Algorithms</font></p>
+<p align="center">produced by</p>
+<p align="center"><br>
+  Mr. Yothin Rodkeao 41013544<br>
+  Mr. Somsak Pattanaprateep 41013553</p>
+<p><APPLET CODE="map.class" WIDTH="780" HEIGHT="850">
+    <param name="Province-0" value="178,330,183,335,189,332,203,332,206,323,193,320,179,322">
+    <param name="Name-0" value="Bangkok">
+    <param name ="Center-0" value="184,327">
+    <param name="Province-1" value="195,308,202,304,193,291,181,301,182,305">
+    <param name="Name-1" value="Phra Nakhon si Ayutthaya">
+    <param name ="Center-1" value="192,299">
+    <param name="Province-2" value="158,312,168,309,177,308,177,299,169,282,158,287,156,306">
+    <param name="Name-2" value="Ang Thong">
+    <param name ="Center-2" value="166,297">
+    <param name="Province-3" value="176,283,181,297,190,288,185,284">
+    <param name="Name-3" value="Sing Buri">
+    <param name ="Center-3" value="183,288">
+    <param name="Province-4" value="149,267,157,256,172,257,179,270,185,279,164,280,154,284,149,279">
+    <param name="Name-4" value="ChaiNat">
+    <param name ="Center-4" value="164,265">
+    <param name="Province-5" value="130,239,125,246,122,262,127,268,135,273,146,282,145,269,155,253,163,254,156,246">
+    <param name="Name-5" value="Uthai Thani">
+    <param name ="Center-5" value="133,248">
+    <param name="Province-6" value="185,268,190,255,204,248,214,253,223,255,226,249,226,238,217,239,206,242,199,234,191,232,181,235,174,233,167,217,157,237,146,231,128,230,135,236,163,246,178,257">
+    <param name="Name-6" value="Nakhon Sawan">
+    <param name ="Center-6" value="167,238">
+    <param name="Province-7" value="142,197,166,205,153,230,143,226,128,227,125,215,124,202">
+    <param name="Name-7" value="Kamphaeng Phet">
+    <param name ="Center-7" value="140,215">
+    <param name="Province-8" value="88,163,110,193,111,207,115,216,109,223,115,247,119,255,120,244,127,236,119,211,124,196,140,192,143,177,134,171,134,161,120,165,117,156,106,175,94,159">
+    <param name="Name-8" value="Tak">
+    <param name ="Center-8" value="114,182">
+    <param name="Province-9" value="167,64,174,86,181,92,192,98,156,140,149,164,153,176,138,171,138,134,152,112,157,93">
+    <param name="Name-9" value="Lampang">
+    <param name ="Center-9" value="168,99">
+    <param name="Province-10" value="149,96,150,105,138,124,135,137,134,155,122,160,128,140,125,120,128,109">
+    <param name="Name-10" value="Lamphun">
+    <param name ="Center-10" value="137,107">
+    <param name="Province-11" value="105,168,96,153,96,125,98,83,115,88,118,64,117,50,141,46,144,33,162,32,148,49,151,91,133,102,122,114,124,139,121,148,114,154">
+    <param name="Name-11" value="Chiang Mai">
+    <param name ="Center-11" value="127,84">
+    <param name="Province-12" value="109,82,96,76,95,87,93,103,93,118,91,124,91,156,85,159,72,145,72,125,60,110,74,106,78,100,76,85,82,77,79,63,85,59,92,54,94,47,109,51,113,61">
+    <param name="Name-12" value="Mae Hong Son">
+    <param name ="Center-12" value="83,106">
+    <param name="Province-13" value="169,58,172,72,178,85,196,97,209,83,210,62,202,58">
+    <param name="Name-13" value="Phayao">
+    <param name ="Center-13" value="188,65">
+    <param name="Province-14" value="175,20,184,13,190,19,204,18,205,31,201,44,202,52,171,54,163,60,160,74,156,81,153,56,155,46,167,36,168,20">
+    <param name="Name-14" value="Chiang Rai">
+    <param name ="Center-14" value="171,44">
+    <param name="Province-15" value="223,61,233,56,238,58,242,80,236,98,229,116,230,121,218,134,200,137,207,115,200,102,214,81,212,61">
+    <param name="Name-15" value="Nan">
+    <param name ="Center-15" value="219,113">
+    <param name="Province-16" value="193,104,203,114,200,126,197,136,192,146,172,147,156,152,159,143,173,129">
+    <param name="Name-16" value="Phrae">
+    <param name ="Center-16" value="172,136">
+    <param name="Province-17" value="182,151,198,146,203,140,215,140,232,127,232,136,228,152,213,166,201,167,198,178,190,180,181,178">
+    <param name="Name-17" value="Uttaradit">
+    <param name ="Center-17" value="201,154">
+    <param name="Province-18" value="176,180,178,168,177,151,160,155,154,164,157,177,149,180,145,192,154,197,166,203,176,197,184,193">
+    <param name="Name-18" value="Sukhothai">
+    <param name ="Center-18" value="166,174">
+    <param name="Province-19" value="171,215,183,207,201,205,213,211,221,211,224,221,228,235,220,236,207,237,195,227,185,231,175,231">
+    <param name="Name-19" value="Phichit">
+    <param name ="Center-19" value="201,222">
+    <param name="Province-20" value="224,205,228,195,235,191,233,183,221,176,219,166,214,169,207,170,202,180,182,183,188,194,172,204,169,211,193,200,218,207">
+    <param name="Name-20" value="Phitsanulok">
+    <param name ="Center-20" value="211,183">
+    <param name="Province-21" value="205,251,193,260,187,272,193,282,204,276,215,277,225,283,230,280,224,266,223,261">
+    <param name="Name-21" value="Lop Buri">
+    <param name ="Center-21" value="203,267">
+    <param name="Province-22" value="204,280,196,286,207,304,220,295,218,283,210,279">
+    <param name="Name-22" value="Sara Buri">
+    <param name ="Center-22" value="208,296">
+    <param name="Province-23" value="273,195,270,200,266,202,262,223,256,243,261,244,270,241,282,242,291,236,294,225,296,213,291,204">
+    <param name="Name-23" value="Chaiyaphum">
+    <param name ="Center-23" value="279,218">
+    <param name="Province-24" value="241,188,229,201,227,219,231,231,232,245,228,251,231,259,243,259,252,247,252,232,260,218,262,203,266,198,253,190">
+    <param name="Name-24" value="Phetchabun">
+    <param name ="Center-24" value="242,216">
+    <param name="Province-25" value="283,125,266,127,259,141,240,156,232,151,225,161,224,173,236,182,251,184,266,193,278,173,280,158,286,149">
+    <param name="Name-25" value="Loei">
+    <param name ="Center-25" value="259,161">
+    <param name="Province-26" value="316,239,310,253,310,269,303,275,296,285,304,299,301,306,289,309,273,315,264,310,251,302,238,303,224,298,224,288,234,283,230,264,249,260,253,253,267,244,290,244,307,235">
+    <param name="Name-26" value="Nakhon Ratchsima">
+    <param name ="Center-26" value="268,277">
+    <param name="Province-27" value="302,188,311,183,316,178,326,184,328,193,324,203,321,211,315,227,317,235,307,233,296,236,299,223,296,202,274,191,276,183,289,183">
+    <param name="Name-27" value="Khon kaen">
+    <param name ="Center-27" value="306,202">
+    <param name="Province-28" value="287,131,293,131,304,144,315,150,329,141,343,140,349,137,341,144,337,154,340,162,355,169,360,176,354,178,348,179,336,175,327,180,315,169,302,158,289,148">
+    <param name="Name-28" value="Udon Thani">
+    <param name ="Center-28" value="321,151">
+    <param name="Province-29" value="352,113,373,121,375,128,368,134,356,128,347,129,340,136,326,138,315,146,307,142,298,132,290,127,291,124,306,130,315,135,342,115">
+    <param name="Name-29" value="Nong Khai">
+    <param name ="Center-29" value="345,120">
+    <param name="Province-30" value="351,132,357,133,367,137,373,154,384,157,385,162,388,179,378,185,370,179,361,170,343,159,344,149">
+    <param name="Name-30" value="Sakon Nakhon">
+    <param name ="Center-30" value="373,163">
+    <param name="Province-31" value="372,138,379,131,391,146,403,158,405,171,401,183,393,181,387,154,378,153">
+    <param name="Name-31" value="Nakhon Phanom">
+    <param name ="Center-31" value="395,156">
+    <param name="Province-32" value="334,245,333,238,345,224,347,217,331,199,324,214,320,227,321,237,326,242">
+    <param name="Name-32" value="Maha Sarakham">
+    <param name ="Center-32" value="334,219">
+    <param name="Province-33" value="356,248,339,247,338,238,349,223,359,213,362,201,375,198,383,206,381,214,371,223,370,233,374,242,365,248">
+    <param name="Name-33" value="Roi Et">
+    <param name ="Center-33" value="357,229">
+    <param name="Province-34" value="320,243,330,249,335,249,336,261,339,265,331,286,330,295,322,299,317,306,308,304,311,303,301,284,313,275,315,253">
+    <param name="Name-34" value="Buri Ram">
+    <param name ="Center-34" value="321,278">
+    <param name="Province-35" value="347,293,363,295,359,279,364,268,361,253,352,251,340,253,341,262,338,276,333,293">
+    <param name="Name-35" value="Surin">
+    <param name ="Center-35" value="350,268">
+    <param name="Province-36" value="368,253,369,267,364,274,362,281,367,290,371,297,386,297,394,295,402,294,399,275,395,267,382,256">
+    <param name="Name-36" value="Si Sa Ket">
+    <param name ="Center-36" value="381,269">
+    <param name="Province-37" value="359,198,356,207,349,214,338,200,330,185,338,180,352,183,357,182,363,179,370,187,373,195">
+    <param name="Name-37" value="Kalasin">
+    <param name ="Center-37" value="350,196">
+    <param name="Province-38" value="387,211,401,216,389,225,390,241,379,252,376,249,378,240,373,226,380,220">
+    <param name="Name-38" value="Yasothon">
+    <param name ="Center-38" value="384,222">
+    <param name="Province-39" value="405,241,422,240,438,239,439,247,434,257,436,271,432,285,430,296,417,300,406,293,400,267,387,256,390,248">
+    <param name="Name-39" value="Ubon Ratchathani">
+    <param name ="Center-39" value="418,264">
+    <param name="Province-40" value="406,211,394,209,386,201,377,192,389,184,402,187,403,200">
+    <param name="Name-40" value="Mukdahan">
+    <param name ="Center-40" value="398,203">
+    <param name="Province-41" value="432,234,430,222,418,219,408,213,403,221,393,228,396,240,409,237">
+    <param name="Name-41" value="Amnat Charoen">
+    <param name ="Center-41" value="403,225">
+    <param name="Province-42" value="291,154,286,155,284,172,280,180,292,180,300,184,310,178,310,168">
+    <param name="Name-42" value="Nong Bua Lam Phu">
+    <param name ="Center-42" value="292,165">
+    <param name="Province-43" value="277,317,294,310,313,309,308,322,287,332,290,350,277,356,272,359,255,352,259,346,255,337">
+    <param name="Name-43" value="Sa kaew">
+    <param name ="Center-43" value="265,337">
+    <param name="Province-44" value="212,321,221,312,230,308,231,304,225,301,215,303,207,308,210,313">
+    <param name="Name-44" value="Nakhon Nayok">
+    <param name ="Center-44" value="214,310">
+    <param name="Province-45" value="252,307,234,308,218,320,227,326,241,327,250,333,259,330,270,317">
+    <param name="Name-45" value="Prachin Buri">
+    <param name ="Center-45" value="228,319">
+    <param name="Province-46" value="298,374,292,387,292,401,304,404,311,413,314,416,311,395">
+    <param name="Name-46" value="Trat">
+    <param name ="Center-46" value="297,388">
+    <param name="Province-47" value="291,353,275,363,259,361,245,360,249,372,255,387,265,398,285,403,287,390,295,369">
+    <param name="Name-47" value="Chanthaburi">
+    <param name ="Center-47" value="271,381">
+    <param name="Province-48" value="228,364,220,365,208,383,228,384,243,381,248,380,241,364">
+    <param name="Name-48" value="Rayong">
+    <param name ="Center-48" value="229,370">
+    <param name="Province-49" value="239,358,234,350,225,350,221,344,209,347,208,357,204,371,206,379,212,367,218,360">
+    <param name="Name-49" value="Chonburi">
+    <param name ="Center-49" value="213,355">
+    <param name="Province-50" value="207,342,209,334,214,326,226,329,236,330,248,333,251,342,249,352,243,355,236,346,227,342,223,338">
+    <param name="Name-50" value="Chachoengsao">
+    <param name ="Center-50" value="237,336">
+    <param name="Province-51" value="187,339,195,333,203,339,196,348">
+    <param name="Name-51" value="Samut Prakan">
+    <param name ="Center-51" value="193,340">
+    <param name="Province-52" value="120,270,134,295,148,303,152,307,152,285,145,286,130,273">
+    <param name="Name-52" value="Suphan Buri">
+    <param name ="Center-52" value="148,290">
+    <param name="Province-53" value="196,312,204,308,209,317,198,319">
+    <param name="Name-53" value="Pathum Thani">
+    <param name ="Center-53" value="201,313">
+    <param name="Province-54" value="182,308,191,311,190,318,183,319,179,313">
+    <param name="Name-54" value="Nonthaburi">
+    <param name ="Center-54" value="185,313">
+    <param name="Province-55" value="165,335,172,333,179,339,174,344,168,343">
+    <param name="Name-55" value="Samut Sakhon">
+    <param name ="Center-55" value="171,336">
+    <param name="Province-56" value="158,356,154,347,158,343,161,341,167,350">
+    <param name="Name-56" value="Samut Songkhram">
+    <param name ="Center-56" value="159,346">
+    <param name="Province-57" value="162,314,175,312,173,331,166,331,158,319">
+    <param name="Name-57" value="Nakhon Pathom">
+    <param name ="Center-57" value="168,319">
+    <param name="Province-58" value="104,232,119,265,118,274,125,290,146,306,154,316,153,323,129,328,121,329,114,315,84,272,85,258">
+    <param name="Name-58" value="Kanchanaburi">
+    <param name ="Center-58" value="100,272">
+    <param name="Province-59" value="126,333,139,330,156,326,162,335,152,343,150,349,139,355,122,351">
+    <param name="Name-59" value="Ratchaburi">
+    <param name ="Center-59" value="149,338">
+    <param name="Province-60" value="123,357,137,359,153,354,160,368,153,389,132,388">
+    <param name="Name-60" value="Phetchaburi">
+    <param name ="Center-60" value="143,376">
+    <param name="Province-61" value="134,394,153,393,156,406,142,437,131,470,123,468,121,465,136,444,139,419">
+    <param name="Name-61" value="Prachuap Khiri Khun">
+    <param name ="Center-61" value="150,407">
+    <param name="Province-62" value="114,470,129,473,112,515,113,532,98,534,94,540,91,529,104,518,108,487,109,478">
+    <param name="Name-62" value="Chumphon">
+    <param name ="Center-62" value="112,486">
+    <param name="Province-63" value="104,484,100,514,92,525,87,533,89,542,90,550,78,558,73,557,83,539,83,530,94,514">
+    <param name="Name-63" value="Ranong">
+    <param name ="Center-63" value="81,548">
+    <param name="Province-64" value="112,537,99,540,92,552,81,564,81,590,97,599,101,616,118,617,121,601,126,597,138,598,134,587,142,578,141,566,124,567,115,560">
+    <param name="Name-64" value="Surat Thani">
+    <param name ="Center-64" value="105,572">
+    <param name="Province-65" value="87,601,84,610,77,610,71,615,67,608,70,574,75,564,77,585,79,597">
+    <param name="Name-65" value="Phang Nga">
+    <param name ="Center-65" value="79,602">
+    <param name="Province-66" value="70,623,75,634,70,642,64,634">
+    <param name="Name-66" value="Phuket">
+    <param name ="Center-66" value="69,635">
+    <param name="Province-67" value="92,600,86,611,93,625,105,631,115,647,119,643,116,630,112,621,98,618">
+    <param name="Name-67" value="Krabi">
+    <param name ="Center-67" value="112,633">
+    <param name="Province-68" value="148,565,148,581,139,589,144,598,137,603,127,603,122,618,117,622,123,636,133,636,140,631,147,640,173,640,174,622,160,605,154,577">
+    <param name="Name-68" value="Nakhon Si Thammarat">
+    <param name ="Center-68" value="150,623">
+    <param name="Province-69" value="153,680,153,667,141,635,133,640,122,639,120,648,128,665,139,680">
+    <param name="Name-69" value="Trang">
+    <param name ="Center-69" value="144,666">
+    <param name="Province-70" value="149,643,156,667,159,679,183,672,177,660,174,645">
+    <param name="Name-70" value="Phatthalung">
+    <param name ="Center-70" value="168,670">
+    <param name="Province-71" value="164,684,185,678,198,692,211,700,215,710,206,718,180,710,171,702">
+    <param name="Name-71" value="Songkhla">
+    <param name ="Center-71" value="192,703">
+    <param name="Province-72" value="144,684,157,682,166,701,165,709,148,700">
+    <param name="Name-72" value="Satun">
+    <param name ="Center-72" value="159,699">
+    <param name="Province-73" value="216,700,235,699,245,712,234,710,218,708">
+    <param name="Name-73" value="Pattani">
+    <param name ="Center-73" value="227,704">
+    <param name="Province-74" value="218,712,242,715,233,718,230,729,236,747,227,755,224,760,220,733,209,721">
+    <param name="Name-74" value="Yala">
+    <param name ="Center-74" value="225,734">
+    <param name="Province-75" value="249,719,263,735,263,746,255,752,240,747,233,733,239,723">
+    <param name="Name-75" value="Narathiwat">
+    <param name ="Center-75" value="247,739">
+  </APPLET> </p>
+</body>
+</html>

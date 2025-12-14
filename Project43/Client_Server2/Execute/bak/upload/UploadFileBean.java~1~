@@ -1,0 +1,46 @@
+package upload;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+import java.util.*;
+import java.rmi.*;
+import javax.naming.*;
+import javax.rmi.PortableRemoteObject;
+import javax.ejb.*;
+import picture.*;
+import product.*;
+
+public class UploadFileBean {
+  PictureHome pictureHome;
+  ProductHome productHome;
+
+  public UploadFileBean() {
+    try {
+      Context ic = new InitialContext();
+      java.lang.Object objref = ic.lookup("MyPicture");
+      pictureHome = (PictureHome) PortableRemoteObject.narrow(objref,
+                           PictureHome.class);
+      objref = ic.lookup("MyProduct");
+      productHome = (ProductHome) PortableRemoteObject.narrow(objref,
+                           ProductHome.class);
+      System.out.println("obtain pictureHome object in UploadFileBean(jsp)");
+    } catch (Exception ex) {ex.printStackTrace();}
+  }
+  public boolean findPicId(String productId) {
+    try {
+      Picture picture = pictureHome.findByPrimaryKey(productId);
+      return true;
+    } catch(Exception ex) {
+      System.out.println("return false");
+      return false;
+    }
+  }
+  public boolean findProductId(String productId) {
+    try {
+      Product product = productHome.findByPrimaryKey(productId);
+      return true;
+    } catch(Exception ex) {
+      return false;
+    }
+  }
+}

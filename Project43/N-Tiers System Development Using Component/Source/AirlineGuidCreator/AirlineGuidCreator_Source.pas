@@ -1,0 +1,30 @@
+unit AirlineGuidCreator_Source;
+
+interface
+
+uses
+  ActiveX, MtsObj, Mtx, ComObj, AirGuidCreator_TLB, StdVcl;
+
+type
+  TAirlineGuidCreator = class(TMtsAutoObject, IAirlineGuidCreator)
+  protected
+    function CreateGuid: WideString; safecall;
+    { Protected declarations }
+  end;
+
+implementation
+
+uses ComServ;
+
+function TAirlineGuidCreator.CreateGuid: WideString;
+var
+  Guid : TGuid;
+begin
+  CoCreateGuid(Guid);
+  Result := GUIDToString(Guid);
+end;
+
+initialization
+  TAutoObjectFactory.Create(ComServer, TAirlineGuidCreator, Class_AirlineGuidCreator,
+    ciMultiInstance, tmBoth);
+end.

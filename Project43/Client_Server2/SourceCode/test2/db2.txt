@@ -1,0 +1,138 @@
+ 
+drop table attrib;
+drop table picture;
+drop table buy;
+drop table notebook;
+drop table personalcom;
+drop table product;
+drop table customer;
+drop table bank;
+
+create table customer (
+	username varchar(50) primary key,
+	password varchar(50) not null,
+	name varchar(100) not null,
+	no varchar(100) not null,
+	soi varchar(100),
+	street varchar(100) not null,
+	district varchar(100),
+	province varchar(100) not null,
+	country varchar(100) not null,
+	area_code varchar(100) not null,
+	tel varchar(100),
+	fax varchar(100),
+	email varchar(100),
+	credit_ID varchar(100) not null,
+	user_type varchar(100)
+);
+create table product (
+	product_id varchar(100) primary key,
+	category varchar(100) not null,
+	brand varchar(100),
+	quantity number,
+	last_receive_date date,
+	import_price number,
+	sell_price number,
+	low_sell_quantity number,
+	sell_now varchar(100)
+);
+create table personalCom (
+	product_id varchar(100),
+	type varchar(100),
+	model varchar(100),
+	bus varchar(100),
+	interfac varchar(100),
+	chipset varchar(100),
+	speed varchar(100),
+	capacity varchar(100),
+	more varchar(255),
+	foreign key (product_id) references product (product_id),
+	primary key (product_id)
+);
+create table notebook (
+	product_id varchar(100),
+	cpu varchar(100),
+	ram varchar(100),
+	hdd varchar(100),
+	cd_rom varchar(100),
+	fdd varchar(100),
+	display varchar(100),
+	fax_modem varchar(100),
+	more varchar(255),
+	foreign key (product_id) references product (product_id),
+	primary key (product_id)
+);
+create table buy (
+	username varchar(100),
+	product_id varchar(100),
+	sell_quantity number,
+	total_price number,
+	total_import_price number,
+	sell_date date,
+	sell_time varchar(10),
+	verify varchar(10),
+	receipt_no varchar(100),
+	foreign key (username) references customer (username),
+	foreign key (product_id) references product (product_id),
+	primary key (username,product_id,receipt_no)
+);
+
+
+create table attrib (
+	category varchar(100),
+	attribute varchar(30),
+	use varchar(10),
+	no varchar(2),
+	primary key (category,attribute)
+);
+
+create table bank (
+	credit_id varchar(30) primary key,
+	password varchar(30),
+	balance number
+);
+
+create table picture(
+	product_id varchar(100) primary key,
+	file_pic1 varchar(50),
+	file_pic2 varchar(50),
+	show varchar(10)
+);
+insert into customer values ('manager','manager','x','x','x','x','x','x','x','x','x','x','x','manager','Manager');
+
+insert into attrib values ('CPU','Type'     ,'false','1');
+insert into attrib values ('CPU','Model'    ,'true','1');
+insert into attrib values ('CPU','BUS'      ,'true','1');
+insert into attrib values ('CPU','Interface','true','1');
+insert into attrib values ('CPU','Chipset'  ,'true','1');
+insert into attrib values ('CPU','Speed'    ,'true','1');
+insert into attrib values ('CPU','Capacity' ,'false','1');
+insert into attrib values ('CPU','More' ,'false','1');
+
+insert into attrib values ('Mainboard','Type'     ,'false','1');
+insert into attrib values ('Mainboard','Model'    ,'true','1');
+insert into attrib values ('Mainboard','BUS'      ,'false','1');
+insert into attrib values ('Mainboard','Interface','true','1');
+insert into attrib values ('Mainboard','Chipset'  ,'true','1');
+insert into attrib values ('Mainboard','Speed'    ,'false','1');
+insert into attrib values ('Mainboard','Capacity' ,'false','1');
+insert into attrib values ('Mainboard','More' ,'false','1');
+
+insert into attrib values ('Notebook','CPU','true','2');
+insert into attrib values ('Notebook','RAM','true','2');
+insert into attrib values ('Notebook','HDD','true','2');
+insert into attrib values ('Notebook','CD ROM','true','2');
+insert into attrib values ('Notebook','FDD','true','2');
+insert into attrib values ('Notebook','Display','true','2');
+insert into attrib values ('Notebook','Fax Modem','true','2');
+insert into attrib values ('Notebook','More','true','2');
+
+insert into product values ('I32164','CPU','increase enemy',12,'12-Jan-2000',8.50,12.50,-5,'yes');
+INSERT INTO PERSONALCOM (PRODUCT_ID, TYPE, MODEL, BUS, INTERFAC, CHIPSET, SPEED, CAPACITY, MORE) 
+	VALUES ('I32164','type', 'model', 'bus', 'interface', 'chipset', 'speed', 'capacity', 'more');
+insert into product values ('I53617','CPU','Bang Bang Bang',6,'12-May-2001',10.50,17.25,-7,'no');
+INSERT INTO PERSONALCOM (PRODUCT_ID, TYPE, MODEL, BUS, INTERFAC, CHIPSET, SPEED, CAPACITY, MORE) 
+	VALUES ('I53617','kikot', 'modern', '66', 'ATX', 'C55', '100MHz', '20G', 'Interest');
+insert into product values ('N53217','Notebook','note tune',99,'12-Mar-2000',256124.61,355555,-5,'yes');
+INSERT INTO NOTEBOOK (PRODUCT_ID, CPU, RAM, HDD, CD_ROM, FDD, DISPLAY, FAX_MODEM, MORE) 
+	VALUES ('N53217','Intel','256M','20G','36x','1.44d','15"','56K','hihi');

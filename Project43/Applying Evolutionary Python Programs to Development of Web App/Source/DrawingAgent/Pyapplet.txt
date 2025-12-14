@@ -1,0 +1,385 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.applet.*;
+import java.net.*;
+import java.io.*;
+
+class BetterSocket
+{
+	Socket			theSocket;
+	BufferedReader	theReader;
+	PrintWriter		theWriter;
+
+	public BetterSocket (String host,int port)
+		throws UnknownHostException,IOException
+	{
+			this(new Socket(host,port));
+	}
+
+	public BetterSocket(Socket s)
+		throws UnknownHostException,IOException
+	{
+		theSocket = s;
+		theReader = new BufferedReader(
+			new InputStreamReader(
+				theSocket.getInputStream()));
+		theWriter = new PrintWriter(
+			theSocket.getOutputStream(),true);
+	}
+
+	public Socket getSocket()
+		{
+			return theSocket;
+		}
+
+	public void close()
+		throws IOException
+		{
+			theSocket.close();
+		}
+				
+	public String readLine()
+		throws IOException
+		{
+			return theReader.readLine();
+		}
+
+	public void println(String s)
+		throws IOException
+		{
+			theWriter.println(s);
+		}
+}
+
+class Mycanvas extends Canvas implements Runnable{
+	public void paint(Graphics g){
+		Dimension d = getSize();
+	}
+	public void update(Graphics g){
+		System.out.println("update");
+		Pyapplet ap = new Pyapplet();
+		ap.ig.setColor(ap.pic_color);
+		g.drawImage(ap.i,0,0,null);
+	}
+
+	public void drawpic(){
+		repaint();
+	}
+
+	public void start(){
+		repaint();
+	}
+
+	public void run(){
+		while (true){
+			repaint();
+		}
+	}
+
+	public Dimension getPreferredSize(){
+		return new Dimension(200,300);
+	}
+}
+
+class MyItemListener implements ItemListener{
+		public void itemStateChanged(ItemEvent e){
+				Pyapplet pa = new Pyapplet();
+				Object ev = e.getItem();
+				int start = 0;
+				int i = 0;
+				String item;
+				pa.list1.removeAll();
+				if (ev.toString() == "Robot 1")
+					{
+						String mtd = pa.Method1;
+						while (i < mtd.length()-1)
+						{
+							i = mtd.indexOf("&",start);
+							item = mtd.substring(start,i); 
+							pa.list1.addItem(item);
+							start = i+1;
+						}
+					System.out.println("out loop");
+					}
+				if (ev.toString() == "Robot 2")
+					{
+						String mtd = pa.Method2;
+						while (i < mtd.length()-1)
+						{
+							i = mtd.indexOf("&",start);
+							item = mtd.substring(start,i); 
+							pa.list1.addItem(item);
+							start = i+1;
+						}
+					System.out.println("out loop");
+					}
+				if (ev.toString() == "Robot 3")
+					{
+						String mtd = pa.Method3;
+						while (i < mtd.length()-1)
+						{
+							i = mtd.indexOf("&",start);
+							item = mtd.substring(start,i); 
+							pa.list1.addItem(item);
+							start = i+1;
+						}
+					System.out.println("out loop");
+					}
+		}
+}
+
+class MyactionListener implements ActionListener{
+	public void actionPerformed(ActionEvent e){
+		Pyapplet pa = new Pyapplet();
+		System.out.println(e.getActionCommand());
+		try{
+		pa.textField1.selectAll ();
+		pa.theSocket.println(e.getActionCommand ());
+		}
+		catch (Exception ex){}
+	}
+}
+
+public class Pyapplet extends Applet implements Runnable{
+
+Choice choice1 = new Choice();
+Label label1 = new Label();
+static List list1 = new List();
+static TextArea textArea1 = new TextArea();
+Label label2 = new Label();
+Panel panel1 = new Panel();
+Button button1 = new Button();
+Button button2 = new Button();
+static TextField textField1 = new TextField();
+Mycanvas board = new Mycanvas();
+MyItemListener act = new MyItemListener();
+MyactionListener mal = new MyactionListener();
+static String Method1 = "Add&";
+static String Method2 = "Add&";
+static String Method3 = "Add&";
+Thread listener;
+public static final int PORT = 10000;
+String host;
+static Image i;
+static Graphics ig;
+static Color pic_color = Color.blue;
+static BetterSocket theSocket;
+
+	public void init() {
+		host = "161.246.5.100";
+		i = createImage(500,350);
+		ig = i.getGraphics();
+		ig.setColor(Color.white);
+		ig.drawRect(0,0,500,350);
+		this.setBackground(Color.gray);
+		this.setSize(new Dimension(800,500));
+		this.setLayout(null);
+		choice1.setBackground(Color.white);
+		choice1.setBounds(new Rectangle(639, 34, 114, 21));
+		choice1.setFont(new java.awt.Font("Dialog", 0, 14));
+		choice1.addItem("Robot");
+		choice1.addItem("Robot 1");
+		choice1.addItem("Robot 2");
+		choice1.addItem("Robot 3");
+		label1.setBackground(Color.gray);
+		label1.setBounds(new Rectangle(581, 36, 53, 23));
+		label1.setFont(new java.awt.Font("Dialog", 0, 14));
+		label1.setText("Method");
+		list1.setBounds(new Rectangle(580, 69, 178, 143));
+		list1.setFont(new java.awt.Font("Dialog", 0, 10));
+		/*list1.addItem("Add");
+		list1.addItem("Revise");
+		list1.addItem("Remove");
+		list1.addItem("Line");
+		list1.addItem("Square");
+		list1.addItem("Triangle");
+		list1.addItem("???");
+		list1.addItem("???");*/
+		textArea1.setBackground(Color.white);
+		textArea1.setBounds(new Rectangle(579, 257, 183, 204));
+		textArea1.setText("");
+		textArea1.setEditable(false);
+		label2.setText("Status");
+		label2.setFont(new java.awt.Font("Dialog", 0, 14));
+		label2.setBounds(new Rectangle(579, 227, 45, 23));
+		label2.setBackground(Color.gray);
+		//panel1.setBackground(Color.white);
+		//panel1.setBounds(new Rectangle(20, 35, 520, 335));
+		button1.setBounds(new Rectangle(420, 418, 105, 32));
+		button1.setFont(new java.awt.Font("Dialog", 0, 14));
+		button1.setLabel("SamplePicture");
+		button2.setLabel("DrawPicture");
+		button2.setBounds(new Rectangle(304, 418, 105, 32));
+		button2.setFont(new java.awt.Font("Dialog", 0, 14));
+		textField1.setBackground(Color.white);
+		textField1.setBounds(new Rectangle(25, 420, 400, 27));
+		textField1.setFont(new java.awt.Font("Dialog", 0, 14));
+		textField1.setText("");
+		textField1.addActionListener(mal);
+		board.setBounds(new Rectangle(26, 35, 500, 350));
+		board.setBackground(Color.white);
+		Thread th = new Thread(board);
+		th.start();
+		//board.start();
+		this.add(list1, null);
+		this.add(label2, null);
+		this.add(label1, null);
+		this.add(choice1, null);
+		this.add(textArea1, null);
+		//this.add(panel1, null);
+		//this.add(button1, null);
+		//this.add(button2, null);
+		this.add(textField1, null);
+		this.add(board, null);
+
+		choice1.addItemListener(act);
+		button1.addActionListener(mal);
+		try {
+			theSocket = new BetterSocket(host,PORT);	
+		}
+		catch (IOException ex){}
+		//Pyapplet py = new Pyapplet();
+		//py.start();
+		Thread threadapplet = new Thread(this);
+		threadapplet.start ();
+	}
+
+	public synchronized void start () {
+		if (listener == null) {
+		//listener = new Thread (this);
+		//listener.start();
+		}
+	}
+
+	public synchronized void stop ()  {
+		if (listener != null) {
+			listener.interrupt();
+			listener = null;
+			try {
+				System.out.println("Applet Stop");
+				theSocket.close();	
+			}
+			catch (IOException ex){handleIOException (ex);}
+		}
+	}
+
+	public void run () {
+		try {
+			while (!Thread.interrupted ()) {
+			//System.out.println ("Accepted");
+			String line = theSocket.readLine();
+			//textArea1.append(line + "\n");
+			String linetmp = line;
+			//System.out.println (linetmp);
+			int cnum = 0;
+			while (linetmp.indexOf("#") != -1){
+				cnum++;
+				linetmp = linetmp.substring(linetmp.indexOf("#")+1);
+				System.out.println (linetmp);
+			}
+			linetmp = line;
+			String [] commd = new String[cnum];
+			for (int j=0;j<cnum;j++){
+				int m = linetmp.indexOf("#",1);
+				if (m != -1){
+					commd[j] = line.substring(0,m);
+				}else{commd[j] = linetmp.substring(0);}
+				if (m != -1){
+				linetmp = linetmp.substring(m);
+				}
+			}
+			for (int i=0;i<cnum;i++){
+				System.out.println ("line " + i + " = " + commd[i]);
+			}
+			//String [] cmd = new String[3];
+			// command = #addmethod(robot):Method&Method&Method&
+			for (int k=0;k<cnum;k++){
+			line = commd[k];
+			System.out.println ("line = "+line);
+			if (line.indexOf("#addmethod") != -1){
+				String robot = line.substring(10,11);
+				if (robot.equals("1")){
+					Method1 = line.substring(12);
+				}
+				if (robot.equals("2")){
+					Method2 = line.substring(12);
+				}
+				if (robot.equals("3")){
+					Method3 = line.substring(12);
+				}
+			}
+			// command = #addstatus(robot):Status
+			if (line.indexOf("#addstatus") != -1){
+				//String robot = line.substring(10,11);
+				textArea1.append(line.substring(11) + "\n");
+				/*if (robot.equals("1")){
+					//System.out.println ("Accepted");
+					textArea1.append("Robot_1 : " + line.substring(12) + "\n");
+				}
+				if (robot.equals("2")){
+					//System.out.println ("Accepted");
+					textArea1.append("Robot_2 : " + line.substring(12) + "\n");
+				}
+				if (robot.equals("3")){
+					//System.out.println ("Accepted");
+					textArea1.append("Robot_3 : " + line.substring(12) + "\n");
+				}*/
+			}
+			// command = #line:x1,y1,x2,y2
+			if (line.indexOf("#line") != -1){
+				int n;
+				int [] plist = new int[4];
+				System.out.println("on line");
+				String robot = line.substring(5,6);
+				System.out.println (robot);
+				String pict = line.substring(6);
+				for (int i=0;i<4;i++){
+					n = pict.indexOf(",");
+					if (n != -1){
+						plist[i] = Integer.parseInt(pict.substring(0,n));
+					}else{plist[i] = Integer.parseInt(pict.substring(0));}
+					pict = pict.substring(n+1);
+					System.out.println("pict : " + pict);
+				}
+				ig.setColor(pic_color);
+				System.out.println(plist[0]);
+				System.out.println(plist[1]);
+				System.out.println(plist[2]);
+				System.out.println(plist[3]);
+				ig.drawLine(plist[0],plist[1],plist[2],plist[3]);
+				board.drawpic();
+			}
+			if (line.indexOf("#color") != -1){
+				int n;
+				int [] clist = new int[3];
+				String color = line.substring(7);
+				for (int i=0;i<3;i++){
+					n = color.indexOf(",");
+					if (n != -1){
+						clist[i] = Integer.parseInt(color.substring(0,n));
+					}else{clist[i] = Integer.parseInt(color.substring(0));}
+					color = color.substring(n+1);
+					System.out.println("color : " + color);
+				}
+				pic_color = new Color(clist[0],clist[1],clist[2]);
+			}
+			}
+			}
+		} catch (IOException ex) {
+			handleIOException (ex);
+		}
+	}
+
+	protected synchronized void handleIOException (IOException ex) {
+		if (listener != null) {
+			System.out.println(ex);
+			if (listener != Thread.currentThread ())
+				listener.interrupt ();
+				listener = null;
+			try {
+				theSocket.close ();
+			} catch (IOException ignored) {}
+		}
+	}
+}
+//<applet code = "Pyapplet.java" width = 800 height = 600></applet>

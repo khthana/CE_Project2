@@ -1,0 +1,96 @@
+object PlaceForm: TPlaceForm
+  Left = 21
+  Top = 88
+  Width = 712
+  Height = 540
+  BorderIcons = [biSystemMenu]
+  Caption = 'Place Manager'
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object btnPlacePropertyManager: TButton
+    Left = 536
+    Top = 16
+    Width = 137
+    Height = 25
+    Caption = 'PlaceProperty Manager'
+    TabOrder = 0
+    OnClick = btnPlacePropertyManagerClick
+  end
+  object btnCreatePlace: TButton
+    Left = 16
+    Top = 16
+    Width = 113
+    Height = 25
+    Caption = 'Create Place'
+    TabOrder = 1
+    OnClick = btnCreatePlaceClick
+  end
+  object btnModifyPlace: TButton
+    Left = 136
+    Top = 16
+    Width = 113
+    Height = 25
+    Caption = 'Modify Place'
+    TabOrder = 2
+    OnClick = btnModifyPlaceClick
+  end
+  object btnDeletePlace: TButton
+    Left = 376
+    Top = 16
+    Width = 113
+    Height = 25
+    Caption = 'Delete Place'
+    TabOrder = 3
+    OnClick = btnDeletePlaceClick
+  end
+  object btnViewPlace: TButton
+    Left = 256
+    Top = 16
+    Width = 113
+    Height = 25
+    Caption = 'View Place'
+    TabOrder = 4
+    OnClick = btnViewPlaceClick
+  end
+  object StringGrid1: TStringGrid
+    Left = 16
+    Top = 72
+    Width = 665
+    Height = 385
+    FixedCols = 0
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goRowSelect]
+    TabOrder = 5
+    OnMouseUp = StringGrid1MouseUp
+    ColWidths = (
+      144
+      133
+      147
+      114
+      117)
+  end
+  object btnClose: TButton
+    Left = 624
+    Top = 464
+    Width = 75
+    Height = 25
+    Caption = 'Close'
+    TabOrder = 6
+    OnClick = btnCloseClick
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 494
+    Width = 704
+    Height = 19
+    Panels = <>
+    SimplePanel = False
+  end
+end

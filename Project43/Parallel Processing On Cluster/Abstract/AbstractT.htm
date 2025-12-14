@@ -1,0 +1,56 @@
+<HTML>
+<HEAD>
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>การพัฒนาการประมวลผลแบบขนานบนคลัสเตอร์</TITLE>
+</HEAD>
+<BODY>
+<B><FONT FACE="AngsanaUPC" SIZE=5>
+<P ALIGN="CENTER">การพัฒนาการประมวลผลแบบขนานบนคลัสเตอร์</P>
+</font></B><br><br>
+<blockquote> 
+  <blockquote> 
+    <blockquote> 
+      <blockquote> 
+        <blockquote> 
+          <p><FONT FACE="AngsanaUPC" SIZE=4><br>
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;นายสราวุธ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;อมราสิงห์<br> 
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;นายสรพงษ์&nbsp;&nbsp;&nbsp;&nbsp;จรัญญากรณ์<br> 
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;รศ.บรรจง&nbsp;&nbsp;&nbsp;&nbsp;ปิยธำรง&nbsp;&nbsp;อาจารย์ที่ปรึกษา<br> 
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ปีการศึกษา&nbsp;&nbsp;&nbsp;&nbsp;2543<br>
+            </font></p>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+<FONT FACE="AngsanaUPC" SIZE=5><B><FONT FACE="AngsanaUPC" SIZE=5> 
+<P ALIGN="JUSTIFY">บทคัดย่อ</P>
+</FONT></B><FONT SIZE=4> 
+<P ALIGN="JUSTIFY"><FONT FACE="AngsanaUPC" SIZE=4></FONT>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ในปัจจุบันเทคโนโลยีทางด้านคอมพิวเตอร์พัฒนาขึ้นอย่างรวดเร็ว 
+  ทำให้โปรแกรมต่าง ๆ มีความ ซับซ้อนมากขึ้น รวมไปถึงการประมวลผลข้อมูลที่มีขนาดใหญ่ก็มีใช้อย่างมากขึ้น 
+  ทำให้เกิดความต้องการ ในการใช้งานคอมพิวเตอร์ที่มีประสิทธิภาพสูง แต่เครื่องที่มีความสามารถดังกล่าวนั้นในทุกวันนี้มีราคา 
+  ค่อนข้างสูง การประมวลผลแบบขนานบนระบบคลัสเตอร์จึงเริ่มมีการนำมาใช้ขึ้น ระบบคลัสเตอร์เป็น 
+  ระบบที่ทำขึ้นมาเพื่อรองรับการประมวลผลแบบขนาน การประมวลผลแบบขนานนั้นได้สนับสนุนแนว 
+  คิดของการนำกลับมาใช้ใหม่ โดยสามารถนำเครื่องที่เก่าและไม่ได้ใช้ประโยชน์แล้วมาทำการใช้ประมวล 
+  ผลได้ แต่การจะเชื่อมต่อเครื่องเหล่านั้นให้มีประสิทธิภาพเท่าเครื่องที่มีความเร็วสูง 
+  ๆ นั้น ต้องใช้เครื่อง เป็นจำนวนมาก ซึ่งนี่ก็คือข้อเสียข้อหนึ่ง</P>
+</FONT><FONT FACE="AngsanaUPC" SIZE=4></FONT> 
+<P ALIGN="JUSTIFY"><FONT SIZE=4>&#9;</font><FONT FACE="AngsanaUPC" SIZE=4>&nbsp; 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;การประมวลผลแบบขนานเป็นการนำพีซี 
+  หลาย ๆ เครื่องมาเชื่อมต่อกันและช่วยกันประมวลผล งานแต่ละงานจะไม่ทำอยู่บนโพรเซสเซอร์เพียงตัวเดียว 
+  แต่จะทำการแบ่งไปประมวลผลในโพรเซสเซอร์ ตัวอื่นด้วย การประมวลผลแบบขนานส่วนสำคัญคือการแบ่งงาน 
+  ในส่วนการแบ่งงานบนคลัสเตอร์นั้น จะใช้ Message Parallel Interface ( MPI ) ซึ่งเป็นมาตรฐานการแบ่งงานชนิดหนึ่งเข้ามาช่วยกระจายงานไป 
+  ยังโพรเซสเซอร์อื่น ๆ ในหลายรูปแบบของการสื่อสาร เช่น Point-to-point communication, 
+  Collective communication MPI จะใช้หลักการการสื่อสารระหว่างโพรเซสเซอร์ในรูปแมสเซจ 
+  แต่การพัฒนา โปรแกรมเชิงขนานนั้นยังไม่แพร่หลายนัก เนื่องจากโปรแกรมเมอร์ส่วนใหญ่มักคุ้นเคยกับการเขียน 
+  โปรแกรมซีเควนเชียลมากกว่า ทำให้เข้าใจแนวคิดเชิงขนานได้ยาก</font></P>
+<P ALIGN="JUSTIFY"><FONT SIZE=4>&#9;</font><FONT FACE="AngsanaUPC" SIZE=4>&nbsp; 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ปริญญานิพนธ์ฉบับนี้ได้ทำการทดสอบเพื่อแสดงให้เห็นถึงประสิทธิภาพและเปรียบเทียบการ 
+  ทำงานระหว่างการทำงานบนเครื่องเดียวด้วยโปรแกรมแบบซีเควนเชียล กับการทำงานเชิงขนาน 
+  ซึ่งการ ทำงานแบบขนานจะช่วยให้การทำงานรวดเร็วขึ้น การประมวลผลแบบขนานนั้นประสิทธิภาพของการ 
+  ทำงานขึ้นอยู่กับ อัลกอริทึมในการแบ่งงานและสเปคของเครื่องที่ใช้ในการคำนวณเป็นอย่างมาก 
+  สเปค ของเครื่องในการประมวลผลควรมีขนาดที่ใกล้เคียงกันเพื่อลดปัญหาการรอกันของงาน 
+  และอัลกอริทึมก็ ควรจะสนับสนุนการแบ่งงานอย่างเหมาะสมด้วย </font></P>
+<FONT SIZE=4></FONT></font> 
+</BODY>
+</HTML>

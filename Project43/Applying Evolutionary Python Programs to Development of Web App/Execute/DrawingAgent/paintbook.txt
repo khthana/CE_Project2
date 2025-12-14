@@ -1,0 +1,439 @@
+from Tkinter import *
+from string import *
+from math import *
+from socket import *
+import Threading
+import tkMessageBox
+import tkColorChooser
+import time
+
+start_path = 'c:\ApacheGroup\Apache\htdocs\\applet\client00'
+global File1
+File1 = start_path + '\\robot1.py'
+global File2
+File2 = start_path + '\\robot2.py'
+global File3
+File3 = start_path + '\\robot3.py'
+global Version1
+global Version2
+global Version3
+global Methods1
+Methods1 = []
+global Methods2
+Methods2 = []
+global Methods3
+Methods3 = []
+global History1
+History1 = {}
+global History2
+History2 = {}
+global History3
+History3 = {}
+global Done1
+Done1 = 1
+global Done2
+Done2 = 1
+global Done3
+Done3 = 1
+
+global Server_Socket
+global Conn
+global Quit
+Quit = 0
+
+global BackgroundColor
+BackgroundColor = '#ffffff'
+global BgColor
+BgColor = '255,255,255'
+global Max_x
+Max_x = 500
+global Max_y
+Max_y = 350
+
+class client_handler(Threading.Thread):
+
+    Host = ''
+    Port = 10000
+
+    class recieve_handler(Threading.Thread):
+        def addobj(self, obj1, obj2):
+            self.client = obj1
+            self.connect = obj2
+
+        def run(self):
+            global Quit
+            while not Quit:
+                time.sleep(1)
+                __data_in = self.connect.recv(1024)
+                print __data_in
+                if not __data_in: break
+                __c = -1
+                __job_r1 = ''
+                __job_r2 = ''
+                __job_r3 = ''
+                __job_list = split(__data_in[:-3], ':')
+                print __job_list
+                for __job in __job_list:
+                    __c = __c + 1
+                    if __c % 3 == 0:
+                        __job_r1 = __job_r1 + ', ' + __job
+                    elif __c % 3 == 1:
+                        __job_r2 = __job_r2 + ', ' + __job
+                    else:
+                        __job_r3 = __job_r3 + ', ' + __job
+                print __job_r1
+                print __job_r2
+                print __job_r3
+                if __job_r1 != '':
+                    robot1.sendcmd(__job_r1[2:])
+                if __job_r2 != '':
+                    robot2.sendcmd(__job_r2[2:])
+                if __job_r3 != '':
+                    robot3.sendcmd(__job_r3[2:])
+            self.connect.close()
+            self.client.conn_list.remove(self.connect)
+            print 'Disconnected.'
+
+    def __send_methods(self):
+        __data_out = '#addmethod1:'
+        for __m in Methods1:
+            if __m[0:2] != '__':
+                __data_out = __data_out + __m + '&'
+        Conn.send(__data_out + '\r\n')
+        __data_out = '#addmethod2:'
+        for __m in Methods2:
+            if __m[0:2] != '__':
+                __data_out = __data_out + __m + '&'
+        Conn.send(__data_out + '\r\n')
+        __data_out = '#addmethod3:'
+        for __m in Methods3:
+            if __m[0:2] != '__':
+                __data_out = __data_out + __m + '&'
+        Conn.send(__data_out + '\r\n')
+
+    def run(self):
+        global Server_Socket
+        global Conn
+        global Quit
+        self.conn_list = []
+        Server_Socket = socket(AF_INET, SOCK_STREAM)
+        Server_Socket.bind(self.Host, self.Port)
+        Server_Socket.listen(1)
+        print 'Listening for Connection...'
+        Conn, addr = Server_Socket.accept()
+        print 'Connected by', addr
+        self.__send_methods()
+        while not Quit:
+            self.con, addr = Server_Socket.accept()
+            self.conn_list.append(self.con)
+            print 'Connected by', addr
+            reciever = self.recieve_handler()
+            reciever.start()
+            reciever.addobj(self, self.con)
+
+class create_paintbook:
+
+    pic_stat = 'line'
+    motion_id = 0
+    tri_step = 0
+    xtri = 0
+    ytri = 0
+
+    """ This is a test program for use
+  multi Agent to work together 
+  by change method between 
+  Agent
+
+  Create by Arm and Krai"""
+
+    def __init__(self, root,master):
+        title = 'paintbook'
+        color = self.__color = '#000000'
+        xstart = 0
+        ystart = 0
+        pic_list = self.__pic_list = []
+
+        ###### Toplevel ######
+        top = self.top = Toplevel(root, height = 500, width = 650)
+        top.title(title)
+        top.iconname(title)
+        top.bind('<Alt-q>',self.quit)
+        top.bind('<Alt-c>',self.quit)
+
+        ###### Menu Bar ######
+        menubar = self.__menubar = Menu(top)
+
+        filemenu = Menu(menubar,name='file',tearoff=0)
+        filemenu.add_command(label='Clear  Alt+C',command=self.do_clear,underline=0)
+        filemenu.add_command(label='Quit  Alt+Q',command=self.do_quit,underline=0)
+
+        helpmenu = Menu(menubar,name='help',tearoff=0)
+        helpmenu.add_command(label='About Paintbook..',command=self.__popup_about,underline=0)
+
+        menubar.add_cascade(label='File',menu=filemenu,underline=0)
+        menubar.add_cascade(label='Help',menu=helpmenu,underline=0)
+
+        top.configure(menu=menubar)
+
+        ###### Canvas Output ######
+        pic_frame = self.pic_frame = Frame(top, height = Max_y, width = Max_x, background = BackgroundColor)
+        pic_frame.pack(side=TOP, padx = 5)
+
+        board = self.board = Canvas(pic_frame, height = Max_y, width = Max_x, background = BackgroundColor)
+        board.pack(side = TOP)
+
+        ###### Command Input ######
+        command_frame = self.command_frame = Frame(top, height = 10, width = 100)
+        command_frame.pack(side = BOTTOM, pady = 10)
+
+        input_label = self.input_label = Label(command_frame, text = 'Command : ')
+        input_label.pack(side = LEFT)
+
+        input = self.input = Entry(command_frame, width = 40)
+        input.pack(side = LEFT)
+        input.focus()
+        input.bind('<Return>', self.submit)
+
+        submit = self.submit = Button(command_frame, width = 10, text = 'Submit', command = self.do_work)
+        submit.pack(side = LEFT, padx = 10)
+
+        sample = self.sample = Button(command_frame,width = 10,text = 'DrawPic',command = self.drawpic)
+	sample.pack(side=LEFT)
+
+        ##### Debug #####
+        output = self.output = Label(top, text = 'Start Program.')
+        output.pack(side = TOP)
+
+    def do_clear(self):
+        pass
+        
+    def do_changecolor(self):
+        color = tkColorChooser.askcolor(title = 'PenColor',initialcolor = 'white',parent = self.t_top)
+        color = color[1]
+        self.pencolor.configure(background = color)
+        self.__color = color
+    
+    def do_changecolor1(self):
+        color = tkColorChooser.askcolor(title = 'PenColor',initialcolor = BackgroundColor,parent = self.top)
+        color = color[1]
+        robot1.color(color)
+
+    def do_changecolor2(self):
+        color = tkColorChooser.askcolor(title = 'PenColor',initialcolor = BackgroundColor,parent = self.top)
+        color = color[1]
+        robot2.color(color)
+
+    def do_changecolor3(self):
+        color = tkColorChooser.askcolor(title = 'PenColor',initialcolor = BackgroundColor,parent = self.top)
+        color = color[1]
+        robot3.color(color)
+
+    def __popup_about(self, event = None):
+        tkMessageBox.showinfo('About', '%s' % self.__doc__)
+    
+    def submit(self,event):
+        self.do_submit()
+        self.input.selection_range(0, END)
+        
+    def do_submit(self):
+        cmd = str(self.input.get())
+        if cmd[0] == '$':
+            exec cmd
+        else:
+            Conn.send(cmd[1:] + '\r\n')
+            print 'Send:' + cmd[1:]
+    
+    def quit(self,event):
+        self.do_quit()
+
+    def do_quit(self):
+        global Quit
+        Quit = 1
+        print 'pause...'
+        time.sleep(5)
+        root.destroy()
+        master.destroy()
+        sys.exit()
+
+    def do_work(self):
+        self.work()
+        
+    def drawpic(self):
+        self.create_pic(master)
+        
+    def quit_sample(self):
+        self.t_top.destroy()
+        
+    def do_clear(self):
+        self.board.delete(ALL)
+        
+    def select_pic(self,event):
+        self.pic_stat = self.pic_list.get('active')
+        #self.output.configure(text = self.method)
+        #self.commd = '#robot.'+self.method+'()'
+        #clientsock.send(self.commd)
+        
+    def __onpress(self,event=None):
+        board1 = self.board1
+        x = board1.canvasx(event.x)
+        y = board1.canvasy(event.y)
+        self.xstart = x
+        self.ystart = y
+        #if self.pic_stat == 'line':
+        #    print self.xstart,self.ystart
+        #elif self.pic_stat == 'square':
+        #    print self.xstart,self.ystart
+        if self.pic_stat == 'triangle' and self.tri_step == 0:
+            self.tri_xstart = self.xstart
+            self.tri_ystart = self.ystart
+            self.tri_step = 1
+        if self.pic_stat == 'triangle' and self.tri_step == 2:
+            board1.create_line(self.xtri,self.ytri,x,y,fill = self.__color)
+            board1.create_line(x,y,self.tri_xstart,self.tri_ystart,fill = self.__color)
+            self.tri_step = 0
+            pic = ['triangle',self.__color,self.tri_xstart,self.tri_ystart,self.xtri,self.ytri,x,y]
+            self.__pic_list.append(pic)
+        
+    def __onpressmotion(self,event=None):
+        board1 = self.board1
+        x = board1.canvasx(event.x)
+    	y = board1.canvasy(event.y)
+    	#print x
+    	#print y
+        board1.delete(self.motion_id)            
+    	if self.pic_stat == 'line':
+    		self.motion_id = board1.create_line(self.xstart,self.ystart,x,y,fill = self.__color)
+    	if self.pic_stat == 'square':
+    		self.motion_id = board1.create_rectangle(self.xstart,self.ystart,x,y,outline = self.__color)
+    	if self.pic_stat == 'triangle' and self.tri_step == 1:
+    		self.motion_id = board1.create_line(self.tri_xstart,self.tri_ystart,x,y,fill = self.__color)
+    
+    def __onmotion(self,event=None):
+        board1 = self.board1
+        x = board1.canvasx(event.x)
+    	y = board1.canvasy(event.y)
+    	board1.delete(self.motion_id)
+    	board1.delete(self.motion_id - 1)
+    	#print x
+    	#print y
+    	if self.pic_stat == 'triangle' and self.tri_step == 2:
+    		self.motion_id = board1.create_line(self.xtri,self.ytri,x,y,fill = self.__color)
+    		self.motion_id = board1.create_line(x,y,self.tri_xstart,self.tri_ystart,fill = self.__color)
+    	#	if self.tri_end == 1:    	
+            
+    def __onrelease(self,event=None):
+        board1 = self.board1
+        x = board1.canvasx(event.x)
+        y = board1.canvasy(event.y)
+        #print x
+        #print y
+        if self.pic_stat == 'line':
+            board1.create_line(self.xstart,self.ystart,x,y,fill = self.__color)
+            pic = ['line',self.__color,self.xstart,self.ystart,x,y]
+            self.__pic_list.append(pic)
+        elif self.pic_stat == 'square':
+            board1.create_rectangle(self.xstart,self.ystart,x,y,outline = self.__color)
+            pic = ['square',self.__color,self.xstart,self.ystart,x,y]
+            self.__pic_list.append(pic)
+        elif self.pic_stat == 'triangle' and self.tri_step == 1:
+            board1.create_line(self.xstart,self.ystart,x,y,fill = self.__color)
+            self.xtri = x
+            self.ytri = y
+            self.tri_step = 2
+    
+    def create_pic(self,master):
+        self.__pic_list = []
+        self.tmp_master = master
+        title = 'samplepicture'
+        t_top = self.t_top = Toplevel(self.tmp_master,height = 500,width = 650)
+        t_top.title(title)
+        t_top.iconname(title)
+        
+        pic_frame = self.pic_frame = Frame(t_top,height = Max_y,width = Max_x,background = BackgroundColor)
+        pic_frame.pack(side=LEFT,padx=15,pady=25)
+        
+        board1 = self.board1 = Canvas(pic_frame,height = Max_y,width = Max_x,background = BackgroundColor)
+        board1.pack(side=TOP)
+        bboxes = self.__bboxes = []
+        
+        board1.bind('<ButtonPress>', self.__onpress)
+        board1.bind('<ButtonRelease>', self.__onrelease)
+        board1.bind('<B1-Motion>', self.__onpressmotion)
+        board1.bind('<Motion>', self.__onmotion)
+        
+        model_frame = self.model_frame = Frame(t_top,height = 400,width = 150)
+        model_frame.pack(side=LEFT,padx=15,pady=25)
+        
+        pic_list = self.pic_list = Listbox(model_frame,exportselection=0,height = 5)#,yscrollcommand=(self.met_scbar, 'set'))
+	pic_list.pack(side=TOP,expand=YES,fill=BOTH)
+	self.pic_list.bind('<Double-ButtonRelease-1>',self.select_pic)
+	pic_list.insert(END,'line')
+	pic_list.insert(END,'square')
+	pic_list.insert(END,'triangle')
+	
+	submit_sample = self.submit_sample = Button(model_frame,width = 10,text = 'OK',command = self.quit_sample)
+	submit_sample.pack(side=BOTTOM,padx = 10)
+	
+	pencolor = self.pencolor = Button(model_frame,width = 10,text = 'color',relief = 'groove',background = self.__color,command = self.do_changecolor)
+        pencolor.pack(side=TOP,padx = 10)
+
+    def work(self):
+        self.board.delete(ALL)
+        numwork = len(self.__pic_list)
+        numfor_r = round(numwork/3)
+        i = 0
+        workfor_r1 = []
+        workfor_r2 = []
+        workfor_r3 = []
+        while i < len(self.__pic_list):
+            workfor_r1.append(self.__pic_list[i])
+            i = i+1
+            if i < len(self.__pic_list):
+                workfor_r2.append(self.__pic_list[i])
+                i = i+1
+            if i < len(self.__pic_list):
+                workfor_r3.append(self.__pic_list[i])
+                i = i+1
+        msgto_r1 = repr(workfor_r1)
+        msgto_r1 = msgto_r1[1:-1]
+        if msgto_r1 != '':
+            robot1.sendcmd(msgto_r1)
+        msgto_r2 = repr(workfor_r2)
+        msgto_r2 = msgto_r2[1:-1]
+        if msgto_r2 != '':
+            robot2.sendcmd(msgto_r2)
+        msgto_r3 = repr(workfor_r3)
+        msgto_r3 = msgto_r3[1:-1]
+        if msgto_r3 != '':
+            robot3.sendcmd(msgto_r3)
+
+    def reload1(self):
+        execfile(File1)
+        robot1.start()
+
+    def reload2(self):
+        execfile(File2)
+        robot2.start()
+
+    def reload3(self):
+        execfile(File3)
+        robot3.start()
+
+if __name__ == '__main__':
+    execfile(File1)
+    execfile(File2)
+    execfile(File3)
+    root = Tk()
+    root.withdraw()
+    master = Tk()
+    master.withdraw()
+    wd = create_paintbook(root, master)
+    print Methods1
+    print Methods2
+    print Methods3
+    robot1.start()    
+    robot2.start()    
+    robot3.start()
+    socket_thread = client_handler()
+    socket_thread.start()
+    mainloop()

@@ -1,0 +1,112 @@
+<HTML>
+<HEAD>
+<TITLE>
+ViewFirstPage
+</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<%!
+    HttpSession session;
+    base.BaseAttribute baseAttribute;
+    blueprint.Blueprint blueprint;
+    customer.Customer customer;
+    quote.Quote quote;
+    buy.BuyHome buyHome;
+    product.ProductHome productHome;
+%>
+<body bgcolor="#FFFFFF" text="#000000">
+<table width="100%" border="0">
+  <tr bgcolor="#FFFFCC"> 
+    <td> 
+      <div align="center"><a href="http://161.246.6.111:8000/product/SearchProductJSP.jsp" target="_self"><font color="#0099FF" size="2" face="Comic Sans MS"><b>Search 
+        Product</b></font></a></div>
+    </td>
+    <td> 
+      <div align="center"><a href="http://161.246.6.111:8000/product/SearchCustomer.jsp" target="_self"><font color="#0099FF" size="2" face="Comic Sans MS"><b>Search 
+        Customer</b></font></a></div>
+    </td>
+    <td> 
+      <div align="center"><a href="http://161.246.6.111:8000/product/SearchBuyJSP.jsp"><font color="#0099FF" size="2" face="Comic Sans MS"><b>Search 
+        Buy</b></font></a></div>
+    </td>
+    <td bgcolor="#FFCCCC"> 
+      <div align="center"><a href="http://161.246.6.111:8000/product/ViewFirstPage.jsp" target="_self"><font color="#0099FF" size="2" face="Comic Sans MS"><b>View 
+        Buy Detail</b></font></a></div>
+    </td>
+    <td> 
+      <div align="center"><a href="http://161.246.6.111:8000/product/ViewCategory.jsp" target="_self"><font color="#0099FF" size="2" face="Comic Sans MS"><b>View 
+        Category</b></font></a></div>
+    </td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FFFFCC"> 
+      <div align="center"><a href="http://161.246.6.111:8000/product/AddProduct.jsp" target="_self"><font color="#0099FF" size="2" face="Comic Sans MS"><b>Add 
+        Product</b></font></a></div>
+    </td>
+    <td bgcolor="#FFFFCC"> 
+      <div align="center"><a href="http://161.246.6.111:8000/product/AddCategory.jsp" target="_self"><font color="#0099FF" size="2" face="Comic Sans MS"><b>Add 
+        Category</b></font></a></div>
+    </td>
+    <td bgcolor="#FFFFCC"> 
+      <div align="center"><a href="http://161.246.6.111:8000/product/ViewProfit.jsp" target="_self"><b><font color="#0099FF" size="2" face="Comic Sans MS">View 
+        Profit </font></b></a></div>
+    </td>
+    <td> 
+      <div align="center"><b><font color="#0099FF"><font color="#0099FF"><font size="2"><font size="2"><font face="Comic Sans MS"></font></font></font></font></font></b></div>
+    </td>
+    <td> 
+      <div align="center"><b><font color="#0099FF"><font color="#0099FF"><font size="2"><font size="2"><font face="Comic Sans MS"></font></font></font></font></font></b></div>
+    </td>
+  </tr>
+</table>
+<form name="form1" method="post" action="">
+<%
+    try {
+      javax.naming.Context ic = new javax.naming.InitialContext();
+      java.lang.Object objref = ic.lookup("MyBuy");
+      buyHome = (buy.BuyHome) javax.rmi.PortableRemoteObject.narrow(objref,
+                 buy.BuyHome.class);
+      objref = ic.lookup("MyProduct");
+      productHome = (product.ProductHome) javax.rmi.PortableRemoteObject.narrow(objref,
+                 product.ProductHome.class);
+      System.out.println("obtained buyHome object");
+    } catch (Exception re) {
+      System.err.println ("Couldn't locate attribHome");
+      re.printStackTrace();
+    }
+    session = request.getSession(true);
+    quote = (quote.Quote)session.getValue("quote");
+    if (quote!=null) {
+      String userType = quote.getUserType();
+      if (userType.equals("Administrator") || userType.equals("Manager")) {
+
+      buy.Buy buy = null;
+      try {
+	buy = buyHome.findMaxReceiptNo();
+      } catch (Exception ex) {System.out.println("no user buy");}
+	
+      java.util.Collection c = productHome.findAll();
+      product.Product product = (product.Product)c.iterator().next();
+      int newSellQuantity = 0;
+      int quantityProduct = 0;
+      try {
+      if (buy!=null) newSellQuantity = buy.getNumberOfUnverify();
+      if (product!=null) quantityProduct = product.getQuantityProductZero();
+      } catch (Exception ex) {ex.printStackTrace();}
+    %>
+      
+  <p><a href="<% out.print(response.encodeURL("/product/ViewNewSell.jsp")); %>"> 
+    <b><font size="4" face="Comic Sans MS">New Sell of Product ( <%= newSellQuantity %> 
+    )</font></b></a></P>
+      <br>
+      
+  <p><a href="<% out.print(response.encodeURL("/product/ViewProductLowerZero.jsp")); %>"> 
+    <font face="Comic Sans MS"><b><font size="4">Quantity of Product lower than 
+    zero ( <%= quantityProduct %> )</font></b></font></a></P>
+    <%
+      }
+    }
+%>
+</FORM>
+</BODY>
+</HTML>

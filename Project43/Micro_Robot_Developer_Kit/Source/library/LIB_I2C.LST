@@ -1,0 +1,218 @@
+C51 COMPILER V3.20,  SN-50203013  LIB_I2C                                                  05/20/01  01:43:20  PAGE 1   
+
+
+DOS C51 COMPILER V3.20, COMPILATION OF MODULE LIB_I2C
+OBJECT MODULE PLACED IN LIB_I2C.OBJ
+COMPILER INVOKED BY: C:\C51\BIN\C51.EXE LIB_I2C.C
+
+stmt level    source
+
+   1          #include "c:\c51\inc\reg51.h"
+   2          #define		L_ADDRESS			0x55
+   3          #define		L_I2CEEPROM			0xA0
+   4          
+   5          #define		L_TIMEOUT			0xFF
+   6          
+   7          #ifndef READ
+   8              #define	READ	1
+   9          #endif
+  10          
+  11          #ifndef WRITE
+  12              #define	WRITE	0
+  13          #endif
+  14          
+  15          #define		MEM_SIZE		0x8000
+  16          #define		MEMORY			0x8000
+  17          
+  18          //define port//////////////////////////////////////// 
+  19          sbit	SCL_PIN = P1^0;
+  20          sbit	SDA_PIN = P1^1;
+  21          sbit	LED = P1^2;
+  22          
+  23          sbit	INT_0 = P1^2;
+  24          sbit	INT_1 = P1^3;
+  25          sbit	INT_2 = P1^4;
+  26          sbit	INT_3 = P1^5;
+  27          sbit	INT_4 = P1^6;
+  28          sbit	INT_5 = P1^7;
+  29          sbit	INT_6 = P3^5;
+  30          sbit	INT_7 = P3^4;
+  31          
+  32          sbit	IN_INT = P3^2;
+  33          sbit	ACK    = P3^3;
+  34          /////////////////////////////////////////////////////
+  35          unsigned char	countdown;
+  36          //define i2c/////////////////////////////////////////
+  37          unsigned char	TempDelay;
+  38          unsigned	char _i2c_error = 0;      // bit array of error types
+  39          
+  40          //define external memory 
+  41          idata	unsigned char	xdata	*memory;
+  42          
+  43          //define general routine
+  44          void delay(unsigned char count1,unsigned char count2)
+  45          {
+  46   1      	unsigned char	xx,yy;
+  47   1      	for (xx=0;xx<count1;xx++)
+  48   1      	{
+  49   2      		for (yy=0;yy<count2;yy++)
+  50   2      		{
+  51   3      		}
+  52   2      	}
+  53   1      }
+  54          
+  55          void write(unsigned int address, unsigned char mem_data)
+C51 COMPILER V3.20,  SN-50203013  LIB_I2C                                                  05/20/01  01:43:20  PAGE 2   
+
+  56          {
+  57   1      	memory = address;
+  58   1      	*memory = mem_data;
+  59   1      }
+  60          
+  61          unsigned char read(unsigned int address)
+  62          {
+  63   1      	memory = address;
+  64   1      	return *memory;
+  65   1      }
+  66          
+  67          //----------------- I2C Routine ------------------------
+  68          
+  69          void _I2CBitDly(void)         // wait 4.7uS, or thereabouts
+  70          {                             // tune to xtal. This works at 11.0592MHz
+  71   1      	TempDelay = 0;	//1
+  72   1      	TempDelay = 0;	//2
+  73   1      	TempDelay = 0;	//3
+  74   1      	TempDelay = 0;	//4
+  75   1      	return;
+  76   1      }
+  77          
+  78          void _I2CSCLHigh(void)        // set SCL_PIN high, and wait for it to go high
+  79          {
+  80   1        register int err;
+  81   1        SCL_PIN = 1;
+  82   1        while (! SCL_PIN)
+  83   1        {
+  84   2          err++;
+  85   2          if (!err)
+  86   2          {
+  87   3            _i2c_error &= 0x02;     // SCL_PIN stuck, something's holding it down
+  88   3            return;
+  89   3          }
+  90   2        }
+  91   1      }
+  92          
+  93          void _I2CSlaveStop(void)
+  94          {
+  95   1      	while (SDA_PIN) {}
+  96   1      	while (!SCL_PIN) {}
+  97   1      	while (!SDA_PIN) {}
+  98   1      }
+  99          
+ 100          unsigned char _I2CReceiveByte(void) // lastone == 1 for last unsigned char
+ 101          {
+ 102   1      	register unsigned char i, res;
+ 103   1      	res = 0;
+ 104   1      	SCL_PIN = 1;
+ 105   1      	for (i=0;i<8;i++)         // each bit at a time, MSB first
+ 106   1      	{
+ 107   2      		while (!SCL_PIN) {}
+ 108   2      		res *= 2;
+ 109   2       		if (SDA_PIN)
+ 110   2      		{
+ 111   3      			res++;
+ 112   3      		}
+ 113   2      		while (SCL_PIN) {}
+ 114   2      	}
+ 115   1      	SDA_PIN = 0;         // send ACK according to 'lastone'
+ 116   1      	while (!SCL_PIN) {}
+ 117   1      	while (SCL_PIN) {}
+C51 COMPILER V3.20,  SN-50203013  LIB_I2C                                                  05/20/01  01:43:20  PAGE 3   
+
+ 118   1      	SDA_PIN = 1;
+ 119   1      	SCL_PIN = 1;
+ 120   1      	return res;
+ 121   1      }
+ 122          
+ 123          void I2CSendByte(unsigned char bt)
+ 124          {
+ 125   1        register unsigned char i;
+ 126   1        for (i=0; i<8; i++)
+ 127   1        {
+ 128   2          if (bt & 0x80) SDA_PIN = 1;      // send each bit, MSB first
+ 129   2          else SDA_PIN = 0;
+ 130   2          _I2CSCLHigh();
+ 131   2          _I2CBitDly();
+ 132   2          SCL_PIN = 0;
+ 133   2          _I2CBitDly();
+ 134   2          bt = bt << 1;
+ 135   2        }
+ 136   1        SDA_PIN = 1;							// listen for ACK
+ 137   1        _I2CSCLHigh();
+ 138   1        _I2CBitDly();
+ 139   1        if (SDA_PIN)
+ 140   1          _i2c_error += 0x01;					// ack didn't happen, may be nothing out there
+ 141   1        SCL_PIN = 0;
+ 142   1        _I2CBitDly();
+ 143   1      }
+ 144          
+ 145          void I2CSendAddr(unsigned char addr, unsigned char rd)
+ 146          {
+ 147   1        SCL_PIN = 1;
+ 148   1        _I2CBitDly();  
+ 149   1        SDA_PIN = 0;				// generate start
+ 150   1        _I2CBitDly();
+ 151   1        SCL_PIN = 0;
+ 152   1        _I2CBitDly();
+ 153   1        I2CSendByte(addr+rd);		// send L_ADDRESS byte
+ 154   1      }
+ 155          
+ 156          void I2CSendStop(void)
+ 157          {
+ 158   1      	SDA_PIN = 0;
+ 159   1      	_I2CBitDly();
+ 160   1      	_I2CSCLHigh();
+ 161   1      	_I2CBitDly();
+ 162   1      	SDA_PIN = 1;
+ 163   1      	_I2CBitDly();
+ 164   1      }
+ 165          
+ 166          unsigned char I2CReceiveDataByte(void)
+ 167          {
+ 168   1      	unsigned char address,ret;
+ 169   1      
+ 170   1      	while ((SDA_PIN)&&(SCL_PIN)) {}
+ 171   1      	if ((!SDA_PIN) && (SCL_PIN))
+ 172   1      	{
+ 173   2      		while (SCL_PIN) {}
+ 174   2      		address = _I2CReceiveByte();
+ 175   2      		if (address == L_ADDRESS)
+ 176   2      		{
+ 177   3      			ret = _I2CReceiveByte();
+ 178   3      			_I2CSlaveStop();																    
+ 179   3      		}
+C51 COMPILER V3.20,  SN-50203013  LIB_I2C                                                  05/20/01  01:43:20  PAGE 4   
+
+ 180   2      	}
+ 181   1      	return ret;
+ 182   1      }
+ 183          
+ 184          void WriteI2C(unsigned char Addr, unsigned char Data)
+ 185          {
+ 186   1      	I2CSendAddr(Addr, WRITE);
+ 187   1      	I2CSendByte(Data);
+ 188   1      	I2CSendStop();
+ 189   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    276    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3       2
+   IDATA SIZE       =      2    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

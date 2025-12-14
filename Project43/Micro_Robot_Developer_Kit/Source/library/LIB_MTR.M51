@@ -1,0 +1,57 @@
+MCS-51 LINKER / LOCATER  L51 V2.8                                                             DATE  05/20/01   PAGE    1
+
+
+MS-DOS MCS-51 LINKER / LOCATER  L51 V2.8, INVOKED BY:
+L51 LIB_MTR.OBJ, C:\C51\BIN\C51S.LIB CODE (?C_C51STARTUP (0040H), 080H) XDATA (8000H) NOOVERLAY
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  LIB_MTR.OBJ (LIB_MTR)
+
+
+LINK MAP OF MODULE:  LIB_MTR (LIB_MTR)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         ?DT?_I2CSCLHIGH?LIB_MTR
+            DATA    000AH     0003H     UNIT         ?DT?LIB_MTR
+            IDATA   000DH     0002H     UNIT         ?ID?LIB_MTR
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+                    0000H     0080H                  *** GAP ***
+            CODE    0080H     0015H     UNIT         ?PR?_DELAY?LIB_MTR
+            CODE    0095H     000EH     UNIT         ?PR?_WRITE?LIB_MTR
+            CODE    00A3H     000EH     UNIT         ?PR?_READ?LIB_MTR
+            CODE    00B1H     000AH     UNIT         ?PR?_I2CBITDLY?LIB_MTR
+            CODE    00BBH     0017H     UNIT         ?PR?_I2CSCLHIGH?LIB_MTR
+            CODE    00D2H     000AH     UNIT         ?PR?_I2CSLAVESTOP?LIB_MTR
+            CODE    00DCH     0029H     UNIT         ?PR?_I2CRECEIVEBYTE?LIB_MTR
+            CODE    0105H     0037H     UNIT         ?PR?_I2CSENDBYTE?LIB_MTR
+            CODE    013CH     0016H     UNIT         ?PR?_I2CSENDADDR?LIB_MTR
+            CODE    0152H     0011H     UNIT         ?PR?I2CSENDSTOP?LIB_MTR
+            CODE    0163H     0021H     UNIT         ?PR?I2CRECEIVEDATABYTE?LIB_MTR
+            CODE    0184H     0010H     UNIT         ?PR?_WRITEI2C?LIB_MTR
+            CODE    0194H     0030H     UNIT         ?PR?MT_GO_FORWARD?LIB_MTR
+            CODE    01C4H     0030H     UNIT         ?PR?MT_GO_BACKWARD?LIB_MTR
+            CODE    01F4H     0030H     UNIT         ?PR?MT_TURN_LEFT?LIB_MTR
+            CODE    0224H     0030H     UNIT         ?PR?MT_TURN_RIGHT?LIB_MTR
+            CODE    0254H     0030H     UNIT         ?PR?MT_STOP_MOVE?LIB_MTR
+            CODE    0284H     0048H     UNIT         ?PR?_MT_SET_SPEED?LIB_MTR
+            CODE    02CCH     0068H     UNIT         ?PR?_MT_SET_RUN_TIME?LIB_MTR
+            CODE    0334H     003EH     UNIT         ?PR?STEPPING_SET_SINGLE_PHASE_MODE?LIB_M
+            CODE    0372H     003EH     UNIT         ?PR?STEPPING_SET_DOUBLE_PHASE_MODE?LIB_M
+            CODE    03B0H     0003H     UNIT         ?C_INITSEG
+
+
+
+IGNORED SEGMENTS:
+  ?C_C51STARTUP
+
+*** ERROR 110: CANNOT FIND SEGMENT
+    SEGMENT: ?C_C51STARTUP

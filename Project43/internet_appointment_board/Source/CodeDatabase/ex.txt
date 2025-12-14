@@ -1,0 +1,29 @@
+CREATE TABLE emp (
+   empno      NUMBER(5) PRIMARY KEY,
+   ename      VARCHAR2(15) NOT NULL,
+   job        VARCHAR2(10),
+   mgr        NUMBER(5),
+   hiredate   DATE DEFAULT (sysdate),
+   sal        NUMBER(7,2),
+   comm       NUMBER(7,2),
+   deptno     NUMBER(3) NOT NULL
+              CONSTRAINT dept_fkey REFERENCES dept)
+   PCTFREE 10
+   PCTUSED 40
+   TABLESPACE users
+   STORAGE (  INITIAL 50K
+              NEXT 50K
+              MAXEXTENTS 10
+              PCTINCREASE 25 );
+
+>  ALTER TABLE NEW_BILLS
+  2   ADD COMMENTS CHAR(80);
+
+
+
+
+
+
+  
+
+

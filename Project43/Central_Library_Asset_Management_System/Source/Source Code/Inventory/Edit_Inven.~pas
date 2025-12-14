@@ -1,0 +1,121 @@
+unit Edit_Inven;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, Buttons;
+
+type
+  TFr_Edit_Inven = class(TForm)
+    BitBtn2: TBitBtn;
+    BitBtn1: TBitBtn;
+    Label1: TLabel;
+    Ed_Type_Name: TEdit;
+    DBL_Cat: TComboBox;
+    Label2: TLabel;
+    Label4: TLabel;
+    Ed_No: TEdit;
+    Ed_Enum: TEdit;
+    Label5: TLabel;
+    Label6: TLabel;
+    Ed_MinNo: TEdit;
+    Ed_Ppe: TEdit;
+    Label7: TLabel;
+    Label3: TLabel;
+    SiZe: TEdit;
+    Place: TEdit;
+    Label8: TLabel;
+    Label9: TLabel;
+    Code: TEdit;
+    procedure BitBtn1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Fr_Edit_Inven: TFr_Edit_Inven;
+
+implementation
+
+uses Main, DataModule, EditVoucher;
+
+{$R *.DFM}
+
+procedure TFr_Edit_Inven.BitBtn1Click(Sender: TObject);
+begin
+       if Ed_Type_Name.Text = ''
+       then begin
+            Showmessage ('กรุณาใส่ชื่อวัสดุที่ต้องการแก้ไข');
+            exit;
+            end;
+       if DBL_Cat.Text = ''
+       then begin
+            Showmessage ('กรุณาใส่หรือเลือกประเภทวัสดุที่ต้องการแก้ไข');
+            exit;
+            end;
+       if Ed_No.Text = ''
+       then begin
+            Ed_No.Text := '0';
+            end;
+       if Ed_Enum.Text = ''
+       then begin
+            Showmessage ('กรุณาใส่หน่วยของวัสดุ');
+            exit;
+            end;
+       if Ed_No.Text = ''
+       then begin
+            Ed_MinNo.Text := '0';
+            end;
+       if Ed_No.Text = ''
+       then begin
+            Ed_Ppe.Text := '0';
+            end;
+       if Fr_Main.Insert2 = False then
+       DM.Database1.StartTransaction;
+       try
+       with DM.Qr_Transaction do
+            if Fr_Main.Update then
+            begin
+                    with DM.Qr_Transaction do
+                    begin
+                         close;
+                         Params.Clear;
+                         SQL.Clear;
+                         SQL.Add('Update Inventory');
+                         SQL.Add('Set Inventory_Name = :IN');
+                         SQL.Add(', Category = :Cat');
+                         SQL.Add(', Numerative = :NMR');
+                         SQL.Add(', Min_Have = :MH');
+                         SQL.Add('Where Inventory_Name = :IN');
+                         ParamByName('IN').AsString := Fr_Main.Old_Name;
+                         ParamByName('Cat').AsString := DBL_Cat.Text;
+                         ParamByName('NMR').AsString := Ed_Enum.text;
+                         ParamByName('MH').AsInteger := StrToInt(Ed_MinNo.text);
+                         execSQL;
+                    end; {with}
+                    DM.Database1.Commit;
+                    showmessage('แก้ไขชนิดเรียบร้อย');
+                    Fr_Main.Update := False;
+            end; {if}
+       Except
+          Showmessage('!!!มีข้อผิดพลาดเกิดขึ้น!!!');
+          DM.Database1.Rollback;
+          Raise;
+          Close;
+       end; {Try}
+       close;
+       DM.Qr_Inventory_Detail.close;
+       DM.Qr_Inventory_Detail.Open;
+       Fr_Main.Inven_Change := True;
+       Fr_Main.TabSheet14.OnShow(Sender);
+       Fr_EditVoucher.Inven_Change := True;
+       Fr_EditVoucher.TabSheet14.OnShow(Sender);
+       Fr_Main.Inven_Change := True;
+       Fr_Main.Inven_Change2 := True;
+       Fr_Main.Inven_Change3 := True;
+end;
+
+end.

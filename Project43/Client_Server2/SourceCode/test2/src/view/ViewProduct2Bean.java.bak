@@ -1,0 +1,184 @@
+package view;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.rmi.PortableRemoteObject;
+import java.rmi.RemoteException;
+import java.util.*;
+import javax.servlet.*;
+import javax.ejb.*;
+import javax.servlet.http.*;
+import java.io.*;
+import javax.naming.*;
+
+import product.*;
+import personalcom.*;
+import notebook.*;
+import buy.*;
+import blueprint.*;
+import picture.*;
+import base.*;
+
+public class ViewProduct2Bean {
+   String productId;
+   String category = null;
+  private final String rootPath = "c:/project/pic";
+
+   ProductHome productHome;
+   PersonalcomHome personalcomHome;
+   NotebookHome notebookHome;
+   BuyHome buyHome;
+   BlueprintHome blueprintHome;
+   PictureHome pictureHome;
+   Blueprint blueprint;
+   boolean firstAccess=true;
+   boolean showDetail = true;
+   boolean havePic = false;
+   String message;
+   Product product;
+   Notebook notebook;
+   Picture picture;
+   Personalcom personalcom;
+   String filePic1;
+   String filePic2;
+   String advertise;
+   String head=null;
+   String abstracts=null;
+   String textfield=null;
+
+  public ViewProduct2Bean() {
+    try {
+      Context ic = new InitialContext();
+      java.lang.Object objref = ic.lookup("MyProduct");
+      productHome = (ProductHome) PortableRemoteObject.narrow(objref,
+                           ProductHome.class);
+      objref =  ic.lookup("MyPersonalcom");
+      personalcomHome = (PersonalcomHome) PortableRemoteObject.narrow(objref,
+                           PersonalcomHome.class);
+      objref =  ic.lookup("MyNotebook");
+      notebookHome = (NotebookHome) PortableRemoteObject.narrow(objref,
+                           NotebookHome.class);
+      objref =  ic.lookup("MyBuy");
+      buyHome = (BuyHome) PortableRemoteObject.narrow(objref,
+                 BuyHome.class);
+      objref =  ic.lookup("MyBlueprint");
+      blueprintHome = (BlueprintHome) PortableRemoteObject.narrow(objref,
+                       BlueprintHome.class);
+      objref =  ic.lookup("MyPicture");
+      pictureHome = (PictureHome) PortableRemoteObject.narrow(objref,
+                     PictureHome.class);
+      System.out.println("obtained entity Home object");
+    } catch (Exception re) {
+      System.err.println ("Couldn't locate entity Home");
+      re.printStackTrace();
+    }
+  }
+  public Blueprint getBlueprint(String productId) {
+  try {
+    blueprint = blueprintHome.create(productId);
+    return blueprint;
+  } catch (Exception ex) {
+    ex.printStackTrace();
+  }
+  return null;
+  }
+
+  public boolean findProductId(String productId) {
+      try {
+        product = productHome.findByPrimaryKey(productId);
+      } catch (Exception ex) {
+        return false;
+      }
+      return true;
+  }
+  public boolean checkDeleteProductId(String s) {
+    try {
+      Buy buy = buyHome.findByProductId(s);
+      return false;
+    } catch (Exception ex) {
+      return true;
+    }
+  }
+  public void deleteAdvertise(String productId) {
+    try {
+      Picture picture = pictureHome.findByPrimaryKey(productId);
+      picture.deleteProductId(productId);
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+  public void loadFilePic(String productId) {
+  System.out.println("in loadfilePic");
+  head = "";
+  abstracts = "";
+  textfield = "";
+      try {
+        picture = pictureHome.findByPrimaryKey(productId);
+        havePic = true;
+        filePic1 = picture.getFilePic1();
+        if (filePic1!=null && !filePic1.equals(""))
+            filePic1=rootPath+"/"+productId+"/"+filePic1;
+        filePic2 = picture.getFilePic2();
+        if (filePic2!=null && !filePic2.equals(""))
+            filePic2=rootPath+"/"+productId+"/"+filePic2;
+        advertise = picture.getShow();
+        File f = new File(rootPath+"/"+productId+"/"+productId+".txt");
+        FileReader fr = new FileReader(f);
+        BufferedReader br = new BufferedReader(fr);
+        String s;
+        while (!(s=br.readLine()).equals("<abstract>") && s!=null) {
+          if (head == null) head = convertMoreToTag(s); else
+          head = head+"\n"+convertMoreToTag(s);
+        }
+        while (!(s=br.readLine()).equals("<textfield>") && s!=null) {
+          if (abstracts==null) abstracts = convertMoreToTag(s); else
+          abstracts = abstracts+"\n"+convertMoreToTag(s);
+        }
+        while ((s=br.readLine())!=null) {
+          if (textfield==null) textfield = convertMoreToTag(s); else
+          textfield = textfield+"\n"+convertMoreToTag(s);
+        }
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
+  }
+  public String convertMoreToTag(String s) {
+    int b = 0;
+    while (s.indexOf("$lt;",0)!=-1) {
+      int a = s.indexOf("$lt;",b);
+      b = a;
+      s = s.substring(0,a)+"<"+s.substring(a+4);
+    }
+     b = 0;
+    while (s.indexOf("$gt;",0)!=-1) {
+      int a = s.indexOf("$gt;",b);
+      b = a;
+      s = s.substring(0,a)+">"+s.substring(a+4);
+    }
+    return s;
+  }
+
+  public boolean getFirstAccess() {    return firstAccess;  }
+  public void setFirstAccess(boolean firstAccess) {    this.firstAccess = firstAccess;  }
+  public boolean getShowDetail() { return showDetail; }
+  public void setShowDetail(boolean showDetail) { this.showDetail = showDetail; }
+  public boolean getHavePic() { return havePic; }
+  public void setHavePic(boolean havePic) { this.havePic = havePic; }
+///////////////////   GET & SET  Method  /////////////////////////
+  public String getProductId() {    return productId;  }
+  public void setProductId(String productId) {    this.productId = productId;  }
+  public String getCategory() {    return category;  }
+  public void setCategory(String category) {    this.category = category;  }
+  public String getFilePic1() { return filePic1; }
+  public void setFilePic1(String filePic1 ) { this.filePic1 = filePic1; }
+  public String getFilePic2() { return filePic2; }
+  public void setFilePic2(String filePic2 ) { this.filePic2 = filePic2; }
+  public String getAdvertise() { return advertise; }
+  public void setAdvertise(String advertise ) { this.advertise = advertise; }
+  public String getHead() { return head; }
+  public void setHead(String head ) { this.head = head; }
+  public String getAbstracts() { return abstracts; }
+  public void setAbstracts(String abstracts ) { this.abstracts = abstracts; }
+  public String getTextfield() { return textfield; }
+  public void setTextfield(String textfield ) { this.textfield = textfield; }
+
+}

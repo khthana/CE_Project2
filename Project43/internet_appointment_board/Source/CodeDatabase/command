@@ -1,0 +1,53 @@
+drop table  tablename cascade constraints;
+
+DD-MON-YY. For example: 
+
+'13-NOV-92'
+
+TO_DATE ('November 13, 1992', 'MONTH DD, YYYY')
+
+insert into test
+values('kate',to_date('13/09/97','dd/mm/yy'));
+
+ insert into test
+ values('kate',to_date('28-09-1981','dd-mm-yyyy'))
+ 
+ INSERT INTO Birthdays_tab (bname, bday) VALUES
+     
+('ANNIE',TO_DATE('13-NOV-92 10:56 A.M.','DD-MON-YY HH:MI A.M.'));//ต้องมี a.m p.m เสมอ
+
+CREATE SEQUENCE Order_seq
+     
+START WITH 1
+INCREMENT BY 1
+NOMAXVALUE
+NOCYCLE
+CACHE 20;
+
+
+INSERT INTO Orders_tab (Orderno, Custno)
+     
+VALUES (Order_seq.NEXTVAL, 1032);
+
+
+INSERT INTO Line_items_tab (Orderno, Partno, Quantity)
+     
+VALUES (Order_seq.CURRVAL, 20321, 3);
+
+create table bank_acct
+(bank_acct_no  varchar2(40),
+empid                  number(10),
+constraint           pk_bank_acct_01
+primary key      (bank_acct_no),
+constraint          fk_bank_acct_01
+foreign key (empid)  references  employee (empid)
+on delete cascade);
+
+constraint  uk_test_01
+unique (Orderno));
+
+DELETE FROM Emp_tab WHERE Empno = 7499;
+
+
+
+

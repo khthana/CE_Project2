@@ -1,0 +1,728 @@
+<HTML>
+<HEAD>
+<jsp:useBean id="SearchProductJSPBeanId" scope="session" class="search.SearchProductJSPBean" />
+<% SearchProductJSPBeanId.init(); %>
+<jsp:setProperty name="SearchProductJSPBeanId" property="*" />
+<TITLE>
+SearchProductJSP
+</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<%!
+    HttpSession session;
+    quote.Quote quote;
+    customer.Customer customer;
+    String username;
+    String attributeRef[][];
+    String tmp="";
+    String s;
+    String message = "";
+    String userType;
+
+  public boolean checkAttribute(HttpServletRequest request) {
+  System.out.println("in checkAttribute");
+    String b1Value;
+    String b2Value;
+    String textValue;
+    String quantity = request.getParameter("quantity");
+  System.out.println("quantityy  = "+quantity);
+  if (quantity==null) {return false;}
+    if (quantity!=null) {
+    if (quantity.equals("all")) {
+    } else {
+    if (quantity.equals("between")) {
+      b1Value = request.getParameter("quantityB1");
+      b2Value = request.getParameter("quantityB2");
+      try {
+        Integer.valueOf(b1Value.trim()).intValue();
+        Integer.valueOf(b2Value.trim()).intValue();
+      } catch (Exception e) {
+        message = "quantity for search must be whole number";
+        return false;
+      }
+    } else {
+    if (quantity.equals("equal")||quantity.equals("more")||quantity.equals("lower")) {
+      textValue = request.getParameter("quantityText");
+      try {
+        Integer.valueOf(textValue.trim()).intValue();
+      } catch (Exception e) {
+        message = "quantity for search must be whole number";
+        return false;
+      }
+    }}}
+    }
+
+    String importPrice = request.getParameter("importPrice");
+    if (importPrice!=null) {
+    if (importPrice.equals("all")) {
+    } else {
+    if (importPrice.equals("between")) {
+      b1Value = request.getParameter("importPriceB1");
+      b2Value = request.getParameter("importPriceB2");
+      try {
+        Double.valueOf(b1Value.trim()).doubleValue();
+        Double.valueOf(b2Value.trim()).doubleValue();
+      } catch (Exception e) {
+        message = "Import Price for search must be number";
+        return false;
+      }
+    } else {
+    if (importPrice.equals("equal")||importPrice.equals("more")||importPrice.equals("lower")) {
+      textValue = request.getParameter("importPriceText");
+      try {
+        Double.valueOf(textValue.trim()).doubleValue();
+      } catch (Exception e) {
+        message = "Import Price for search must be number";
+        return false;
+      }
+    }}}
+    }
+
+    String sellPrice = request.getParameter("sellPrice");
+    if (sellPrice!=null) {
+    if (sellPrice.equals("all")) {
+    } else {
+    if (sellPrice.equals("between")) {
+      b1Value = request.getParameter("sellPriceB1");
+      b2Value = request.getParameter("sellPriceB2");
+      try {
+        Double.valueOf(b1Value.trim()).doubleValue();
+        Double.valueOf(b2Value.trim()).doubleValue();
+      } catch (Exception e) {
+        message = "Sell Price for search must be number";
+        return false;
+      }
+    } else {
+    if (sellPrice.equals("equal")||sellPrice.equals("more")||sellPrice.equals("lower")) {
+      textValue = request.getParameter("sellPriceText");
+      try {
+        Double.valueOf(textValue.trim()).doubleValue();
+      } catch (Exception e) {
+        message = "Sell Price for search must be number";
+        return false;
+      }
+    }}}
+    }
+
+    String lowSellQuantity = request.getParameter("lowSellQuantity");
+    if (lowSellQuantity!=null) {
+    if (lowSellQuantity.equals("all")) {
+    } else {
+    if (lowSellQuantity.equals("between")) {
+      b1Value = request.getParameter("lowSellQuantityB1");
+      b2Value = request.getParameter("lowSellQuantityB2");
+      try {
+        int lowQuan1 = Integer.valueOf(b1Value).intValue();
+        int lowQuan2 = Integer.valueOf(b2Value).intValue();
+        if (lowQuan1>0 || lowQuan2>0) {
+          message = "Low Sell Quantity for search must lower or equal zero";
+          return false;
+        }
+      } catch (Exception ex) {
+        message = "Low Sell quantity for search must be whole number";
+        return false;
+      }
+    } else {
+    if (lowSellQuantity.equals("equal")||lowSellQuantity.equals("more")||lowSellQuantity.equals("lower")) {
+      textValue = request.getParameter("lowSellQuantityText");
+      try {
+        int lowQuan = Integer.valueOf(textValue).intValue();
+        if (lowQuan>0) {
+          message = "Low Sell Quantity for search must lower or equal zero";
+          return false;
+        }
+      } catch (Exception ex) {
+        message = "Low Sell Quantity for search must be whole number";
+        return false;
+      }
+    }}}
+    }
+
+    String lastReceiveDate = request.getParameter("lastReceiveDate");
+    if (lastReceiveDate!=null) {
+    if (lastReceiveDate.equals("all")) {
+    } else {
+    if (lastReceiveDate.equals("between")) {
+      b1Value = request.getParameter("lastReceiveDateB1");
+      String s = b1Value;
+      int a = s.indexOf('/',0);
+      int b = s.indexOf('/',a+1);
+      try {
+        int d = Integer.valueOf(s.substring(0,a)).intValue();
+        if (d>31) {
+          message = "Date for search must lower or equal 31";
+          return false;
+        }
+      } catch (Exception ex) {
+        message = "Date for search must be whole number";
+        return false;
+      }
+      try {
+        int m = Integer.valueOf(s.substring(a+1,b)).intValue();
+        if (m>12) {
+          message = "Month for search must lower or equal 12";
+          return false;
+        }
+      } catch (Exception ex) {
+        message = "Month for search must be whole number";
+        return false;
+      }
+      try {
+        int y = Integer.valueOf(s.substring(b+1)).intValue();
+        if (y<1900) {
+          message = "Year for search must larger 1900";
+          return false;
+        }
+      } catch (Exception ex) {
+        message = "Year for search must be whole number";
+        return false;
+      }
+      b2Value = request.getParameter("lastReceiveDateB2");
+      s = b2Value;
+      a = s.indexOf('/',0);
+      b = s.indexOf('/',a+1);
+      try {
+        int d = Integer.valueOf(s.substring(0,a)).intValue();
+        if (d>31) {
+          message = "Date for search must lower or equal 31";
+          return false;
+        }
+      } catch (Exception ex) {
+        message = "Date for search must be whole number";
+        return false;
+      }
+      try {
+        int m = Integer.valueOf(s.substring(a+1,b)).intValue();
+        if (m>12) {
+          message = "Month for search must lower or equal 12";
+          return false;
+        }
+      } catch (Exception ex) {
+        message = "Month for search must be whole number";
+        return false;
+      }
+      try {
+        int y = Integer.valueOf(s.substring(b+1)).intValue();
+        if (y<1900) {
+          message = "Year for search must larger 1900";
+          return false;
+        }
+      } catch (Exception ex) {
+        message = "Year for search must be whole number";
+        return false;
+      }
+
+    } else {
+    if (lastReceiveDate.equals("equal")||lastReceiveDate.equals("more")||lastReceiveDate.equals("lower")) {
+      textValue = request.getParameter("lastReceiveDateText");
+      String s = textValue;
+      int a = s.indexOf('/',0);
+      int b = s.indexOf('/',a+1);
+      try {
+        int d = Integer.valueOf(s.substring(0,a)).intValue();
+        if (d>31) {
+          message = "Date for search must lower or equal 31";
+          return false;
+        }
+      } catch (Exception ex) {
+        message = "Date for search must be whole number";
+        return false;
+      }
+      try {
+        int m = Integer.valueOf(s.substring(a+1,b)).intValue();
+        if (m>12) {
+          message = "Month for search must lower or equal 12";
+          return false;
+        }
+      } catch (Exception ex) {
+        message = "Month for search must be whole number";
+        return false;
+      }
+      try {
+        int y = Integer.valueOf(s.substring(b+1)).intValue();
+        if (y<1900) {
+          message = "Year for search must larger 1900";
+          return false;
+        }
+      } catch (Exception ex) {
+        message = "Year for search must be whole number";
+        return false;
+      }
+    }}}
+    }
+  return true;
+  }
+
+%>
+<%
+  session = request.getSession(true);
+  quote = (quote.Quote) session.getValue("quote");
+  if (quote!=null) {
+    customer = (customer.Customer)quote.getCustomer();
+    username = (String)customer.getPrimaryKey();
+    userType = quote.getUserType();
+  }
+  String category = SearchProductJSPBeanId.getCategory();
+  session = request.getSession(true);
+  if (checkAttribute(request)) {
+    getServletConfig().getServletContext().getRequestDispatcher("/SearchProductServletAlias").forward(request,response);
+  } else {
+    out.println(message);
+  }
+  if (!category.equals("Anything")) {
+    out.println(" Category is "+category);
+  }
+%>
+<%
+  session = request.getSession(true);
+  quote = (quote.Quote) session.getValue("quote");
+  if (quote!=null) {
+  String userType = quote.getUserType();
+  if (userType.equals("Administrator") || userType.equals("Manager")) {
+%>
+<table width="100%" border="0">
+  <tr bgcolor="#FFFFCC"> 
+    <td bgcolor="#FFCCCC"> 
+      <div align="center"><a href="http://161.246.6.111:8000/product/SearchProductJSP.jsp" target="_self"><font color="#0099FF" size="2" face="Comic Sans MS"><b>Search 
+        Product</b></font></a></div>
+    </td>
+    <td> 
+      <div align="center"><a href="http://161.246.6.111:8000/product/SearchCustomer.jsp" target="_self"><font color="#0099FF" size="2" face="Comic Sans MS"><b>Search 
+        Customer</b></font></a></div>
+    </td>
+    <td> 
+      <div align="center"><a href="http://161.246.6.111:8000/product/SearchBuyJSP.jsp"><font color="#0099FF" size="2" face="Comic Sans MS"><b>Search 
+        Buy</b></font></a></div>
+    </td>
+    <td> 
+      <div align="center"><a href="http://161.246.6.111:8000/product/ViewFirstPage.jsp" target="_self"><font color="#0099FF" size="2" face="Comic Sans MS"><b>View 
+        Buy Detail</b></font></a></div>
+    </td>
+    <td> 
+      <div align="center"><a href="http://161.246.6.111:8000/product/ViewCategory.jsp" target="_self"><font color="#0099FF" size="2" face="Comic Sans MS"><b>View 
+        Category</b></font></a></div>
+    </td>
+  </tr>
+  <tr> 
+    <td bgcolor="#FFFFCC"> 
+      <div align="center"><a href="http://161.246.6.111:8000/product/AddProduct.jsp" target="_self"><font color="#0099FF" size="2" face="Comic Sans MS"><b>Add 
+        Product</b></font></a></div>
+    </td>
+    <td bgcolor="#FFFFCC"> 
+      <div align="center"><a href="http://161.246.6.111:8000/product/AddCategory.jsp" target="_self"><font color="#0099FF" size="2" face="Comic Sans MS"><b>Add 
+        Category</b></font></a></div>
+    </td>
+    <td bgcolor="#FFFFCC"> 
+      <div align="center"><a href="http://161.246.6.111:8000/product/ViewProfit.jsp" target="_self"><b><font color="#0099FF" size="2" face="Comic Sans MS">View 
+        Profit </font></b></a></div>
+    </td>
+    <td> 
+      <div align="center"><b><font color="#0099FF"><font color="#0099FF"><font size="2"><font size="2"><font face="Comic Sans MS"></font></font></font></font></font></b></div>
+    </td>
+    <td> 
+      <div align="center"><b><font color="#0099FF"><font color="#0099FF"><font size="2"><font size="2"><font face="Comic Sans MS"></font></font></font></font></font></b></div>
+    </td>
+  </tr>
+</table>
+<%
+  }
+  }
+%>
+<form name="form1" action="<% out.print(response.encodeURL("SearchProductJSP.jsp?username="+username+"&firstAccess=true")); %>" method="post">
+  <p><font size="6" color="#0099FF"><b><font face="Comic Sans MS">Search Product</font></b></font></p>
+  <table width="100%" border="0">
+    <tr> 
+      <td width="20%"> 
+        <div align="right"><b>Product ID :</b></div>
+      </td>
+      <td width="10%"> 
+        <input type="radio" name="productId" value="all" checked>
+        All </td>
+      <td width="10%"> 
+        <input type="radio" name="productId" value="equal">
+        Equal </td>
+      <td width="11%" align="center"> 
+        <input type="radio" name="productId" value="more">
+        More </td>
+      <td width="11%"> 
+        <input type="radio" name="productId" value="lower">
+        Lower </td>
+      <td width="25%"> 
+        <input type="text" name="productIdText" maxlength="10" size="11">
+      </td>
+    </tr>
+    <tr> 
+      <td width="20%" align="center">&nbsp;</td>
+      <td colspan="2"> 
+        <input type="radio" name="productId" value="between">
+        Between </td>
+      <td width="11%"> 
+        <input type="text" name="productIdB1" size="11">
+      </td>
+      <td align="center" width="11%">to</td>
+      <td width="25%"> 
+        <input type="text" name="productIdB2" size="11">
+      </td>
+    </tr>
+  </table>
+  <br>
+  <%
+  base.BaseAttribute baseAttribute = base.BaseAttribute.getBaseAttribute();
+  attributeRef = baseAttribute.getAttributeRef();
+  if (category.equals("Anything")) {
+%>
+  <input type="hidden" name="category" value="Anything">
+  <p>&nbsp;</p><table width="100%" border="0">
+    <tr>
+      <td width="19%">&nbsp;</td>
+      
+    <td width="81%"><font size="2"><b><font color="#FF0000">click name's category 
+      to search individual category</font></b></font></td>
+    </tr>
+  </table>
+  <%
+    Vector categoryRecord = baseAttribute.getCategory();
+    out.println("<table width=\"100%\" border=\"0\">");
+    for(int i=0;i < categoryRecord.size();i++){
+      if (i%4==0) { out.println("<tr>");
+        if (i==0) {
+          out.println("<td width=\"20%\">"+"<font size=\"4\" color=\"#0099FF\">"+"<b>"+"Category"+"</b>"+"</font>"+"</td>");
+        } else out.println("<td width=\"20%\"></td>");
+      }
+      String s = (String)categoryRecord.elementAt(i);
+      out.println("<td width=\"20%\">");
+      out.println("<input type=\"checkbox\" name=\"category"+
+                  (new Integer(i+1)).toString()+"\" value=\""+
+                  s+"\" checked>");
+      out.println("<a href=\""+"SearchProductJSP.jsp?category="+s+"\">"+s+"</a></td>");
+      if (i%4==3) out.println("</tr>");
+    } out.println("</table>");
+  }
+%>
+  
+  <table width="100%" border="0" bgcolor="#FFCCFF">
+    <tr> 
+      <td width="20%"> 
+        <div align="right"><b>Brand :</b></div>
+    </td>
+    <td width="10%"> 
+      <input type="radio" name="brand" value="all" checked>
+      All </td>
+    <td width="10%"> 
+      <input type="radio" name="brand" value="equal">
+      Equal </td>
+    <td width="11%" align="center"> 
+      <input type="radio" name="brand" value="more">
+      More </td>
+    <td width="11%"> 
+      <input type="radio" name="brand" value="lower">
+      Lower </td>
+      <td width="25%"> 
+        <input type="text" name="brandText" maxlength="10" size="11">
+    </td>
+  </tr>
+  <tr> 
+      <td width="20%" align="center">&nbsp;</td>
+    <td colspan="2"> 
+      <input type="radio" name="brand" value="between">
+      Between </td>
+    <td width="11%"> 
+      <input type="text" name="brandB1" size="11">
+    </td>
+    <td align="center" width="11%">to</td>
+      <td width="25%"> 
+        <input type="text" name="brandB2" size="11">
+    </td>
+  </tr>
+</table>
+  <br>
+  <%
+if (!category.equals("Anything")) {
+%>
+  <input type="hidden" name="category"
+  value="<%out.print(SearchProductJSPBeanId.getCategory());%>">
+<%
+  Vector attribute = baseAttribute.getAttribOfProduct(category);
+  for (int i=0; i<attribute.size(); i++) {
+    s = (String)attribute.elementAt(i);
+    for (int j=0; j<attributeRef.length; j++) {
+      if (attributeRef[j][2].equals(s)) {
+        tmp=attributeRef[j][0]; break;
+      }
+    }
+%>
+
+  
+  <table width="100%" border="0" bgcolor="#FFCCCC">
+    <tr> 
+      <td width="20%"> 
+        <div align="right"><b> 
+        <% out.print(s); %>
+        :</b></div>
+    </td>
+    <td width="10%"> 
+      <input type="radio" name="<% out.print(tmp); %>" value="all" checked>
+      All </td>
+    <td width="10%"> 
+      <input type="radio" name="<% out.print(tmp); %>" value="equal">
+      Equal </td>
+    <td width="11%" align="center"> 
+      <input type="radio" name="<% out.print(tmp); %>" value="more">
+      More </td>
+    <td width="11%"> 
+      <input type="radio" name="<% out.print(tmp); %>" value="lower">
+      Lower </td>
+      <td width="25%"> 
+        <input type="text" name="<% out.print(tmp+"Text"); %>" maxlength="10" size="11">
+    </td>
+  </tr>
+  <tr> 
+      <td width="20%" align="center">&nbsp;</td>
+    <td colspan="2"> 
+      <input type="radio" name="<% out.print(tmp); %>" value="between">
+      Between </td>
+    <td width="11%"> 
+      <input type="text" name="<% out.print(tmp+"B1"); %>" size="11">
+    </td>
+    <td align="center" width="11%">to</td>
+      <td width="25%"> 
+        <input type="text" name="<% out.print(tmp+"B2"); %>" size="11">
+    </td>
+  </tr>
+</table>
+  <br>
+<%
+  }
+}
+%>
+
+<%
+System.out.println("quoteeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee  ");
+   if (quote!=null) {
+   System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj userType = "+userType);
+   if (userType!=null && ( userType.equals("Administrator") || userType.equals("Manager") )) {
+%>
+  <div align="right">
+    
+    <table width="100%" border="0" bgcolor="#FFFFCC">
+      <tr> 
+        <td width="20%"> 
+          <div align="right"><b>Quantity :</b></div>
+      </td>
+      <td width="10%"> 
+        <input type="radio" name="quantity" value="all" checked>
+        All </td>
+      <td width="10%"> 
+        <input type="radio" name="quantity" value="equal">
+        Equal </td>
+      <td width="11%" align="center"> 
+        <input type="radio" name="quantity" value="more">
+        More </td>
+      <td width="11%"> 
+        <input type="radio" name="quantity" value="lower">
+        Lower </td>
+        <td width="25%"> 
+          <input type="text" name="quantityText" maxlength="10" size="11">
+      </td>
+    </tr>
+    <tr> 
+        <td width="20%" align="center">&nbsp;</td>
+      <td colspan="2"> 
+        <input type="radio" name="quantity" value="between">
+        Between </td>
+      <td width="11%"> 
+        <input type="text" name="quantityB1" size="11">
+      </td>
+      <td align="center" width="11%">to</td>
+        <td width="25%"> 
+          <input type="text" name="quantityB2" size="11">
+      </td>
+    </tr>
+  </table>
+	<br>
+    
+    <table width="100%" border="0" bgcolor="#FFCCFF">
+      <tr> 
+        <td width="20%"> 
+          <div align="right"><b>Import price :</b></div>
+      </td>
+      <td width="10%"> 
+        <input type="radio" name="importPrice" value="all" checked>
+        All </td>
+      <td width="10%"> 
+        <input type="radio" name="importPrice" value="equal">
+        Equal </td>
+      <td width="11%" align="center"> 
+        <input type="radio" name="importPrice" value="more">
+        More </td>
+      <td width="11%"> 
+        <input type="radio" name="importPrice" value="lower">
+        Lower </td>
+        <td width="25%"> 
+          <input type="text" name="importPriceText" maxlength="10" size="11">
+        </td>
+    </tr>
+    <tr> 
+        <td width="20%" align="center">&nbsp;</td>
+      <td colspan="2"> 
+        <input type="radio" name="importPrice" value="between">
+        Between </td>
+      <td width="11%"> 
+        <input type="text" name="importPriceB1" size="11">
+      </td>
+      <td align="center" width="11%">to</td>
+        <td width="25%"> 
+          <input type="text" name="importPriceB2" size="11">
+      </td>
+    </tr>
+  </table>
+    <br>
+    
+    <table width="100%" border="0" bgcolor="#FFCCCC">
+      <tr> 
+        <td width="20%"> 
+          <div align="right"><b>Sell price:</b></div>
+      </td>
+      <td width="10%"> 
+        <input type="radio" name="sellPrice" value="all" checked>
+        All </td>
+      <td width="10%"> 
+        <input type="radio" name="sellPrice" value="equal">
+        Equal </td>
+      <td width="11%" align="center"> 
+        <input type="radio" name="sellPrice" value="more">
+        More </td>
+      <td width="11%"> 
+        <input type="radio" name="sellPrice" value="lower">
+        Lower </td>
+        <td width="25%"> 
+          <input type="text" name="sellPriceText" maxlength="10" size="11">
+      </td>
+    </tr>
+    <tr> 
+        <td width="20%" align="center">&nbsp;</td>
+      <td colspan="2"> 
+        <input type="radio" name="sellPrice" value="between">
+        Between </td>
+      <td width="11%"> 
+        <input type="text" name="sellPriceB1" size="11">
+      </td>
+      <td align="center" width="11%">to</td>
+        <td width="25%"> 
+          <input type="text" name="sellPriceB2" size="11">
+      </td>
+    </tr>
+  </table>
+    <br>
+    
+    <table width="100%" border="0" bgcolor="#FFFFCC">
+      <tr> 
+        <td width="20%"> 
+          <div align="right"><b>Low sell quantity :</b></div>
+      </td>
+      <td width="10%"> 
+        <input type="radio" name="lowSellQuantity" value="all" checked>
+        All </td>
+      <td width="10%"> 
+        <input type="radio" name="lowSellQuantity" value="equal">
+        Equal </td>
+      <td width="11%" align="center"> 
+        <input type="radio" name="lowSellQuantity" value="more">
+        More </td>
+      <td width="11%"> 
+        <input type="radio" name="lowSellQuantity" value="lower">
+        Lower </td>
+        <td width="25%"> 
+          <input type="text" name="lowSellQuantityText" maxlength="10" size="11">
+        </td>
+    </tr>
+    <tr> 
+        <td width="20%" align="center">&nbsp;</td>
+      <td colspan="2"> 
+        <input type="radio" name="lowSellQuantity" value="between">
+        Between </td>
+      <td width="11%"> 
+        <input type="text" name="lowSellQuantityB1" size="11">
+      </td>
+      <td align="center" width="11%">to</td>
+        <td width="25%"> 
+          <input type="text" name="lowSellQuantityB2" size="11">
+      </td>
+    </tr>
+  </table>
+    <br>
+  </div>
+  <div align="right"> </div>
+  <div align="left">
+    
+    <table width="100%" border="0" bgcolor="#FFCCFF">
+      <tr> 
+        <td width="20%"> 
+          <div align="right"><b>last receive date :</b></div>
+      </td>
+      <td width="10%"> 
+        <input type="radio" name="lastReceiveDate" value="all" checked>
+        All </td>
+      <td width="10%"> 
+        <input type="radio" name="lastReceiveDate" value="equal">
+        Equal </td>
+      <td width="11%" align="center"> 
+        <input type="radio" name="lastReceiveDate" value="more">
+        More </td>
+      <td width="11%"> 
+        <input type="radio" name="lastReceiveDate" value="lower">
+        Lower </td>
+        <td width="25%"> 
+          <input type="text" name="lastReceiveDateText" maxlength="10" size="11">
+      </td>
+    </tr>
+    <tr> 
+        <td width="20%" align="center"><font size="-2">(Ex. 31/12/2001)</font></td>
+      <td colspan="2"> 
+        <input type="radio" name="lastReceiveDate" value="between">
+        Between </td>
+      <td width="11%"> 
+        <input type="text" name="lastReceiveDateB1" maxlength="10" size="11">
+      </td>
+      <td align="center" width="11%">to</td>
+        <td width="25%"> 
+          <input type="text" name="lastReceiveDateB2" maxlength="10" size="11">
+      </td>
+    </tr>
+  </table>
+  </div>
+  <br>
+  
+<table width="75%" border="0">
+  <tr> 
+    <td width="21%"> 
+      <div align="right"><b>sell now :</b></div>
+    </td>
+    <td width="79%"> 
+      <select name="sellNow" size="1">
+        <option value="all" selected>All</option>
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+    </td>
+  </tr>
+</table>
+<% }} %>
+  <p>&nbsp; </p>
+  <table width="75%" border="0">
+    <tr>
+      <td align="right">
+        <input type="submit" name="Submit" value="Submit">
+      </td>
+      <td>&nbsp;</td>
+      <td>
+        <input type="reset" name="Submit2" value="Reset">
+      </td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+</form>
+</body>
+</html>

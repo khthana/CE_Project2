@@ -1,0 +1,81 @@
+MCS-51 LINKER / LOCATER  L51 V2.8                                                             DATE  05/20/01   PAGE    1
+
+
+MS-DOS MCS-51 LINKER / LOCATER  L51 V2.8, INVOKED BY:
+L51 LIB_ITF.OBJ, C:\C51\BIN\C51S.LIB CODE (?C_C51STARTUP (0040H), 080H) XDATA (8000H) NOOVERLAY
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  LIB_ITF.OBJ (LIB_ITF)
+  C:\C51\BIN\C51S.LIB (?C_CLDPTR)
+  C:\C51\BIN\C51S.LIB (?C_UIDIV)
+
+
+LINK MAP OF MODULE:  LIB_ITF (LIB_ITF)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         ?DT?_I2CSCLHIGH?LIB_ITF
+            DATA    000AH     0002H     UNIT         ?DT?_LCD_WRITE_INT?LIB_ITF
+            DATA    000CH     0003H     UNIT         ?DT?_LCD_WRITE_STRING?LIB_ITF
+            DATA    000FH     0003H     UNIT         ?DT?LIB_ITF
+            IDATA   0012H     0002H     UNIT         ?ID?LIB_ITF
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+                    0000H     0080H                  *** GAP ***
+            CODE    0080H     0015H     UNIT         ?PR?_DELAY?LIB_ITF
+            CODE    0095H     000EH     UNIT         ?PR?_WRITE?LIB_ITF
+            CODE    00A3H     000EH     UNIT         ?PR?_READ?LIB_ITF
+            CODE    00B1H     000AH     UNIT         ?PR?_I2CBITDLY?LIB_ITF
+            CODE    00BBH     0017H     UNIT         ?PR?_I2CSCLHIGH?LIB_ITF
+            CODE    00D2H     000AH     UNIT         ?PR?_I2CSLAVESTOP?LIB_ITF
+            CODE    00DCH     0029H     UNIT         ?PR?_I2CRECEIVEBYTE?LIB_ITF
+            CODE    0105H     0037H     UNIT         ?PR?_I2CSENDBYTE?LIB_ITF
+            CODE    013CH     0016H     UNIT         ?PR?_I2CSENDADDR?LIB_ITF
+            CODE    0152H     0011H     UNIT         ?PR?I2CSENDSTOP?LIB_ITF
+            CODE    0163H     0021H     UNIT         ?PR?I2CRECEIVEDATABYTE?LIB_ITF
+            CODE    0184H     0010H     UNIT         ?PR?_WRITEI2C?LIB_ITF
+            CODE    0194H     0040H     UNIT         ?PR?_LCD_WRITE_CHAR?LIB_ITF
+            CODE    01D4H     004DH     UNIT         ?PR?_LCD_WRITE_BYTE?LIB_ITF
+            CODE    0221H     00DAH     UNIT         ?PR?_LCD_WRITE_INT?LIB_ITF
+            CODE    02FBH     0023H     UNIT         ?PR?_LCD_WRITE_STRING?LIB_ITF
+            CODE    031EH     0052H     UNIT         ?PR?_LCD_GOTOXY?LIB_ITF
+            CODE    0370H     0030H     UNIT         ?PR?LCD_CLEAR?LIB_ITF
+            CODE    03A0H     003FH     UNIT         ?PR?KBD_GET_KEY?LIB_ITF
+            CODE    03DFH     0039H     UNIT         ?PR?KBD_SCAN_KEY?LIB_ITF
+            CODE    0418H     0059H     UNIT         ?PR?_SND_GEN_FREQ?LIB_ITF
+            CODE    0471H     0030H     UNIT         ?PR?SND_STOP_FREQ?LIB_ITF
+            CODE    04A1H     0003H     UNIT         ?C_INITSEG
+            CODE    04A4H     0070H     UNIT         ?C_LIB_CODE
+
+
+
+IGNORED SEGMENTS:
+  ?C_C51STARTUP
+
+
+
+SYMBOL TABLE OF MODULE:  LIB_ITF (LIB_ITF)
+
+MCS-51 LINKER / LOCATER  L51 V2.8                                                           DATE  05/20/01   PAGE    2
+
+
+VALUE           TYPE          NAME
+----------------------------------
+
+-------         MODULE        ?C_CLDPTR
+C:04A4H         PUBLIC        ?C_CLDPTR
+-------         ENDMOD        ?C_CLDPTR
+
+-------         MODULE        ?C_UIDIV
+C:04BFH         PUBLIC        ?C_UIDIV
+-------         ENDMOD        ?C_UIDIV
+
+*** ERROR 110: CANNOT FIND SEGMENT
+    SEGMENT: ?C_C51STARTUP

@@ -1,0 +1,448 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.applet.*;
+import java.net.*;
+import java.io.*;
+
+class BetterSocket
+{
+	Socket			theSocket;
+	BufferedReader	theReader;
+	PrintWriter		theWriter;
+
+	public BetterSocket (String host,int port)
+		throws UnknownHostException,IOException
+	{
+			this(new Socket(host,port));
+	}
+
+	public BetterSocket(Socket s)
+		throws UnknownHostException,IOException
+	{
+		theSocket = s;
+		theReader = new BufferedReader(
+			new InputStreamReader(
+				theSocket.getInputStream()));
+		theWriter = new PrintWriter(
+			theSocket.getOutputStream(),true);
+	}
+
+	public Socket getSocket()
+		{
+			return theSocket;
+		}
+
+	public void close()
+		throws IOException
+		{
+			theSocket.close();
+		}
+				
+	public String readLine()
+		throws IOException
+		{
+			return theReader.readLine();
+		}
+
+	public void println(String s)
+		throws IOException
+		{
+			theWriter.println(s);
+		}
+}
+
+class Mycanvas extends Canvas implements Runnable{
+	public void init(){
+		setBackground(Color.white);
+	}
+
+	/*public void paint(Graphics g){
+		Dimension d = getSize();
+		g.fillOval(100,100,500,500);
+		//Draw Here
+		//ig.setColor(Color.white);
+		//ig.fillRect(0,0,getSize().width,getSize().height);
+		ig.setColor(Color.red);
+		ig.fillOval(100,100,500,500);
+		g.drawImage(i,0,0,null);
+		//g.fillOval(10,10,50,50);
+	}*/
+	
+	public void update(Graphics g){
+		Genpic ap = new Genpic();
+		//System.out.println("draw pic");
+		ap.ig.setColor(ap.pic_color);
+		ap.igtmp.setColor(ap.pic_color);
+		if (ap.refresh == 0){
+		if (ap.status == "real"){
+			//setBackground(Color.white);
+			g.drawImage(ap.i,0,0,null);
+			if (ap.model == "Line"){
+				ap.pic = ap.pic + "['line'" + "," + " '#ff0000'" + ", " + Integer.toString(ap.x_init) +", "+ Integer.toString(ap.y_init) +", "+ Integer.toString(ap.x_end) +", "+ Integer.toString(ap.y_end)+"]:";
+				//System.out.println(pic);
+			}
+			if (ap.model == "Square"){
+				ap.pic = ap.pic + "['square'" + "," + " '#ff0000'" + ", " + Integer.toString(ap.x_init) +", "+ Integer.toString(ap.y_init) +", "+ Integer.toString(ap.x_end) +", "+ Integer.toString(ap.y_end)+"]:";
+			}
+			if (ap.model == "Triangle" && ap.tri_state == 1){
+				ap.pic = ap.pic + "['triangle'" + "," + " '#ff0000'" + ", " + Integer.toString(ap.x_init) +", "+ Integer.toString(ap.y_init) +", "+ Integer.toString(ap.x_bet) +", "+ Integer.toString(ap.y_bet) +", "+ Integer.toString(ap.x_end) +", "+ Integer.toString(ap.y_end)+"]:";
+				ap.tri_state = 0;
+			}
+		ap.refresh = 1;
+		}
+		else{
+			//System.out.println("pic tmp");
+			//setBackground(Color.white);
+			g.drawImage(ap.itmp,0,0,null);
+			ap.status = "real";
+		}
+		}
+		else{g.drawImage(ap.i,0,0,null);}
+		//ap.ig.setColor(Color.white);
+		//ap.ig.fillRect(0,0,getSize().width,getSize().height);
+		//ap.ig.setColor(Color.red);
+		//ap.ig.fillOval(0,0,90,90);
+	}
+
+	public void drawpic(){
+		repaint();
+		//if (type == "Line"){
+			//System.out.println("repaint");
+			
+			//System.out.println("repaint");
+		//}
+		//if (pt == 'Triangle'){}
+	}
+
+	public void start(){
+		repaint();
+	}
+
+	public void run(){
+		while (true){
+			Genpic ap = new Genpic();
+			if (ap.refresh == 1){
+				repaint();
+			}
+		}
+	}
+
+	public Dimension getPreferredSize(){
+		return new Dimension(200,300);
+	}
+}
+
+class MyItemListener implements ItemListener{
+		public void itemStateChanged(ItemEvent e){
+				Genpic ap = new Genpic();
+				Object ev = e.getItem();
+				if (ev.toString() == "Line")
+					{
+						ap.model = "Line";
+						ap.state = 0;
+					}
+				if (ev.toString() == "Square")
+					{
+						ap.model = "Square";
+						ap.state = 0;
+					}
+				if (ev.toString() == "Triangle")
+					{
+						ap.model = "Triangle";
+						ap.state = 0;
+					}				
+		}
+}
+
+class MyMouseListener implements MouseListener{
+		Genpic ap = new Genpic();
+		public void mousePressed(MouseEvent e){
+			//System.out.println("mouse pressed");
+			//if (ap.model == "Line"){	
+			if (ap.state == 0){
+				ap.refresh = 0;
+				ap.state = 1;
+				ap.x_init = e.getX();
+				ap.y_init = e.getY();
+			}
+			if (ap.state == 2){
+				ap.tri_state = 1;
+				int [] x = {ap.x_init,ap.x_bet,ap.x_end,ap.x_init};
+				int [] y = {ap.y_init,ap.y_bet,ap.y_end,ap.y_init};
+				ap.ig.drawPolyline(x,y,4);
+				ap.board.drawpic();
+				ap.state = 0;
+			}
+			//}
+			//pr("pressed",e);
+		}
+		public void mouseReleased(MouseEvent e){
+			int startx;
+			int starty;
+			int endx;
+			int endy;
+			//System.out.println("mouse release");
+			if (ap.state == 1){
+					ap.x_end = e.getX();
+					ap.y_end = e.getY();
+			}
+			if (ap.model == "Line"){
+				if (ap.state == 1){
+					ap.ig.drawLine(ap.x_init,ap.y_init,ap.x_end,ap.y_end);
+					ap.board.drawpic();
+					ap.state = 0;
+				}
+			}
+			if (ap.model == "Square"){
+				if (ap.state == 1){
+					if (ap.x_init < ap.x_end)
+						{
+						startx = ap.x_init;
+						endx = ap.x_end;
+						}else 
+							{
+							startx = ap.x_end;
+							endx = ap.x_init;
+							}
+					if (ap.y_init < ap.y_end)
+						{
+						starty = ap.y_init;
+						endy = ap.y_end;
+						}else 
+							{
+							starty = ap.y_end;
+							endy = ap.y_init;
+							}
+					int width = Math.abs(startx - endx);
+					int height = Math.abs(starty - endy);
+					ap.ig.drawRect(startx,starty,width,height);
+					ap.board.drawpic();
+					ap.state = 0;
+				}
+			}
+			if (ap.model == "Triangle"){
+				if (ap.state == 1){
+					ap.ig.drawLine(ap.x_init,ap.y_init,ap.x_end,ap.y_end);
+					ap.board.drawpic();
+					ap.x_bet = ap.x_end;
+					ap.y_bet = ap.y_end;
+					ap.state = 2;
+				}
+			}
+			//pr("released",e);
+			//System.out.println("x1 = " + ap.x_init + " y1 = " + ap.y_init + " x2 = " + ap.x_end + " y2 = " + ap.y_end);
+		}
+		public void mouseExited(MouseEvent e){
+			//System.out.println("mouse exit");
+			//pr("exited",e);
+		}
+		public void mouseEntered(MouseEvent e){
+			//System.out.println("mouse enter");
+			//pr("entered",e);
+		}
+		public void mouseClicked(MouseEvent e){
+			/*if (ap.model == "Triangle"){
+				if (ap.state == 2){
+					int [] x = {ap.x_init,ap.x_bet,ap.x_end,ap.x_init};
+					int [] y = {ap.y_init,ap.y_bet,ap.y_end,ap.y_init};
+					ap.ig.drawPolyline(x,y,4);
+					ap.board.drawpic();
+					ap.state = 0;
+				}
+			}*/
+			//Genpic p = new Genpic();
+			//pr("clicked",e);
+			//p.board.drawpic("Line");
+		}
+		void pr(String s,MouseEvent e){
+				System.out.println(s +" : "+e.getX()+","+e.getY());
+		}
+}
+
+class MyMouseMotionListener implements MouseMotionListener{
+		Genpic ap = new Genpic();
+		int startx;
+		int starty;
+		int endx;
+		int endy;
+		public void mouseDragged(MouseEvent e){
+			if (ap.state == 1){
+					ap.x_end = e.getX();
+					ap.y_end = e.getY();
+			}
+			if (ap.model == "Line"){
+				//System.out.println("Mouse move");
+				if (ap.state == 1){
+					ap.igtmp.drawImage(ap.i,0,0,null);
+					//ap.igtmp.setColor(Color.white);
+					//ap.igtmp.fillRect(0,0,500,350);
+					ap.igtmp.setColor(Color.red);
+					ap.igtmp.drawLine(ap.x_init,ap.y_init,ap.x_end,ap.y_end);
+					ap.status = "tmp";
+					ap.board.drawpic();	
+				}	
+			}
+			if (ap.model == "Square"){
+				if (ap.state == 1){
+					if (ap.x_init < ap.x_end)
+						{
+						startx = ap.x_init;
+						endx = ap.x_end;
+						}else 
+							{
+							startx = ap.x_end;
+							endx = ap.x_init;
+							}
+					if (ap.y_init < ap.y_end)
+						{
+						starty = ap.y_init;
+						endy = ap.y_end;
+						}else 
+							{
+							starty = ap.y_end;
+							endy = ap.y_init;
+							}
+					int width = Math.abs(startx - endx);
+					int height = Math.abs(starty - endy);
+
+					ap.igtmp.drawImage(ap.i,0,0,null);
+					//ap.igtmp.setColor(Color.white);
+					//ap.igtmp.fillRect(0,0,500,350);
+					ap.igtmp.setColor(Color.red);
+					ap.igtmp.drawRect(startx,starty,width,height);
+					ap.status = "tmp";
+					ap.board.drawpic();	
+				}
+			}
+			if (ap.model == "Triangle"){
+				//System.out.println("Mouse move");
+				if (ap.state == 1){
+					ap.igtmp.drawImage(ap.i,0,0,null);
+					//ap.igtmp.setColor(Color.white);
+					//ap.igtmp.fillRect(0,0,500,350);
+					ap.igtmp.setColor(Color.red);
+					ap.igtmp.drawLine(ap.x_init,ap.y_init,ap.x_end,ap.y_end);
+					ap.status = "tmp";
+					ap.board.drawpic();	
+				}
+				/*if (ap.state == 2){
+					int [] x = {ap.x_init,ap.x_bet,ap.x_end,ap.x_init};
+					int [] y = {ap.y_init,ap.y_bet,ap.y_end,ap.y_init};
+					ap.igtmp.drawImage(ap.i,0,0,null);
+					ap.igtmp.setColor(Color.red);
+					ap.igtmp.drawPolyline(x,y,4);
+					ap.status = "tmp";
+					ap.board.drawpic();
+				}*/
+			}
+			//pr("dragged",e);
+		}
+		public void mouseMoved(MouseEvent e){
+			if (ap.model == "Triangle"){
+				if (ap.state == 2){
+					ap.x_end = e.getX();
+					ap.y_end = e.getY();
+				}
+				if (ap.state == 2){
+					int [] x = {ap.x_init,ap.x_bet,ap.x_end,ap.x_init};
+					int [] y = {ap.y_init,ap.y_bet,ap.y_end,ap.y_init};
+					ap.igtmp.drawImage(ap.i,0,0,null);
+					ap.igtmp.setColor(Color.red);
+					ap.igtmp.drawPolyline(x,y,4);
+					ap.status = "tmp";
+					ap.board.drawpic();
+				}
+			}
+			//pr("moved",e);
+		}
+		void pr(String s,MouseEvent e){
+				System.out.println(s +" : "+e.getX()+","+e.getY());
+		}
+}
+
+class MyactionListener implements ActionListener{
+	public void actionPerformed(ActionEvent e){
+		Genpic ap = new Genpic();
+		System.out.println(ap.pic);
+		//System.out.println(e.getActionCommand());
+		if (e.getActionCommand() == "SavePicture"){
+			try{
+			ap.theSocket.println(ap.pic);
+			}
+			catch(Exception ex){}
+		}
+	}
+}
+
+public class Genpic extends Applet{
+
+Choice choice1 = new Choice();
+Label label1 = new Label();
+Button button1 = new Button();
+static Mycanvas board = new Mycanvas();
+static Image i;
+static Image itmp;
+static Graphics ig;
+static Graphics igtmp;
+static int state = 0;
+static int tri_state;
+static String status = "real";
+static String model = "Line";
+static int x_init;
+static int y_init;
+static int x_bet;
+static int y_bet;
+static int x_end;
+static int y_end;
+static Color pic_color = Color.blue;
+static String pic = "";
+static int refresh = 0;
+MyItemListener act = new MyItemListener();
+MyactionListener al = new MyactionListener();
+static BetterSocket theSocket;
+int PORT = 10000;
+String host;
+
+	public void init() {
+		host = "161.246.5.100";//getCodeBase().getHost();
+		this.setBackground(Color.gray);
+		this.setSize(new Dimension(800,500));
+		this.setLayout(null);
+		i = createImage(getSize().width,getSize().height);
+		ig = i.getGraphics();
+		itmp = createImage(getSize().width,getSize().height);
+		igtmp = itmp.getGraphics();
+		ig.setColor(Color.white);
+		ig.fillRect(0,0,500,350);
+		choice1.setBackground(Color.white);
+	    choice1.setBounds(new Rectangle(629, 34, 124, 21));
+	    choice1.setFont(new java.awt.Font("Dialog", 0, 14));
+		choice1.addItem("Line");
+	    choice1.addItem("Square");
+		choice1.addItem("Triangle");
+		label1.setBackground(Color.gray);
+		label1.setBounds(new Rectangle(581, 36, 45, 23));
+		label1.setFont(new java.awt.Font("Dialog", 0, 16));
+		label1.setText("Method");
+		button1.setLabel("SavePicture");
+		button1.setBounds(new Rectangle(304, 418, 105, 32));
+		button1.setFont(new java.awt.Font("Dialog", 0, 14));
+		button1.addActionListener(al);
+		board.setBounds(new Rectangle(26, 35, 500, 350));
+		board.setBackground(Color.white);
+		board.addMouseListener(new MyMouseListener());
+		board.addMouseMotionListener(new MyMouseMotionListener());
+		//Thread th = new Thread(board);
+		//th.start();
+		this.add(label1, null);
+		this.add(choice1, null);
+		this.add(button1, null);
+		this.add(board, null);
+		choice1.addItemListener(act);
+		try{
+			theSocket = new BetterSocket(host,PORT);
+		}
+		catch (Exception ex){System.out.println(ex);}
+	}
+}
+//<applet code = "Genpic.java" width = 800 height = 600></applet>

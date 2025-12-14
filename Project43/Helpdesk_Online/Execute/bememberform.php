@@ -1,0 +1,3022 @@
+<?
+session_start( );
+include('dbconnect.inc');
+
+if ($flag01 =="")
+{
+	$flag01 = 'F';
+}; 
+
+if ($Submit)
+{
+	$LoginName = trim($LoginName);
+	$Password = trim($Password );
+	$Pwd = trim($Pwd );
+	$FirstName = trim($FirstName);
+	$LastName = trim($LastName);
+	$Email = trim($Email);
+	$LoginName=strtolower($LoginName);
+	$sql = "select LoginName from 	MEMBER where LoginName = '$LoginName' ";
+	$result = mysql_db_query($dbname,$sql);
+	$nrow = mysql_num_rows($result);
+	if ($LoginName == "")
+	{
+		$flag01 = 'T0';
+	}elseif ($nrow != 0 )
+	{ 
+		$flag01 = 'T1';
+	} elseif ($Password != $Pwd)
+	{
+		$flag01 = 'T2';
+	} elseif (strlen($Password) < 6)
+	{
+		$flag01 = 'T5';
+	} elseif ($Email == "")
+	{
+		$flag01 = 'T4';
+	}else
+	{
+			$bansql = "select * from BANWORD";
+			$banresult = mysql_db_query($dbname,$bansql);
+			$bannum = mysql_num_rows($banresult);
+			if ($bannum != 0)
+			{
+				$ban_i = 0;
+				$place = "";
+				$LoginName = " $LoginName";
+				$detail = " $detail";
+				while ($banarry = mysql_fetch_array($banresult))
+				{
+					$found1 = strpos($LoginName,$banarry['Word'],0);
+					if ($found1)
+					{
+						$ban[$ban_i] = $banarry['Word'];
+						$ban_i = $ban_i +1;
+						$Flag03 = "F3";
+						if ($place=="")
+						{
+							$place = "Login Name";
+						}
+					}
+				} // end while ban
+				$LoginName = trim($LoginName);
+				$flag01 = 'T';
+			} //end if ban num !=0
+			if($Flag03 != "F3")
+			{
+		$sql = "select LoginName from MEMBER where Email = '$Email' ";
+		$result = mysql_db_query($dbname,$sql);
+		$nrow = mysql_num_rows($result);
+		if ($nrow != 0 )
+		{ 
+			$flag01 = 'T3';
+		} else
+		{
+			$result = mysql_db_query($dbname," insert into MEMBER (LoginName,Password,FirstName,LastName,Email,MemberStatus,SubDate)
+			values('$LoginName',password('$Password'),'$FirstName','$LastName','$Email','U','$subdate')");
+			session_register("loginname");
+			$loginname=$LoginName;
+			$mto = $Email;
+			$msub ="Welcome to CE- Helpdesk";
+			$mmesg = "Welcome $loginname\n";
+			$mmesg .=  "Thanks that  you have registered to be a member at helpdesk online. \n";
+			$mmesg .= "You will receive E- mail from helpdesk system when you get new questions or answers  \n\n";
+			$mmesg .= "Thanks \n";
+			$mmesg .= "Helpdesk System \n";
+			$mheader = "From: helpdesk@ce.kmitl.ac.th\n";
+			mail($mto,$msub,$mmesg,$mheader);
+
+			header("Location:afterbemember.php"); 
+			exit;
+		}
+		}
+	}
+}
+?>
+
+
+
+
+
+
+
+<html>
+
+
+
+
+
+
+
+<head>
+
+
+
+
+
+
+
+<title>Become Our Member !</title>
+
+
+
+
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+
+
+
+
+
+
+
+<style type="text/css">
+
+
+
+
+
+
+
+<!--
+
+
+
+
+
+
+
+body {  margin: 0px  0px; padding: 0px  0px}
+
+
+
+
+
+
+
+a:link { color: #005CA2; text-decoration: none}
+
+
+
+
+
+
+
+a:visited { color: #005CA2; text-decoration: none}
+
+
+
+
+
+
+
+a:active { color: #0099FF; text-decoration: underline}
+
+
+
+
+
+
+
+a:hover { color: #0099FF; text-decoration: underline}
+
+
+
+
+
+
+
+-->
+
+
+
+
+
+
+
+</style>
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body background="image/2color2.jpg">
+
+
+
+
+
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" height="80">
+
+
+
+
+
+
+
+  <tr>
+
+
+
+
+
+
+
+    <td width="29%" bgcolor="#FFFFFF" height="77"><img src="image/logo3.gif" width="228" height="77"></td>
+
+
+
+
+
+
+
+    <td width="71%" background="image/2color2.jpg" height="77">&nbsp;</td>
+
+
+
+
+
+
+
+  </tr>
+
+
+
+
+
+
+
+</table>
+
+
+
+
+
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" height="22">
+  <tr bgcolor="#999999"> 
+    <td width="29%"> 
+      <div align="center"><font face="MS Sans Serif, Microsoft Sans Serif" size="2"><b><font color="#FFFFFF"><font color="#999999">.</font> 
+        </font></b></font></div>
+    </td>
+    <td width="1%"> 
+      <div align="center"><font face="MS Sans Serif, Microsoft Sans Serif" size="2"><b><font color="#FFFFFF">|</font></b></font></div>
+    </td>
+    <td width="9%"> 
+      <div align="center"><a href="login.php"><font face="MS Sans Serif, Microsoft Sans Serif" size="2"><b><font color="#FFFFFF">ล็อกอิน</font></b></font></a></div>
+    </td>
+    <td width="2%"> 
+      <div align="center"><font face="MS Sans Serif, Microsoft Sans Serif" size="2"><b><font color="#FFFFFF">|</font></b></font></div>
+    </td>
+    <td width="9%"> 
+      <div align="center"><a href="index.php"><font face="MS Sans Serif, Microsoft Sans Serif" size="2"><b><font color="#FFFFFF">หน้าแรก</font></b></font></a></div>
+    </td>
+    <td width="2%"> 
+      <div align="center"><font face="MS Sans Serif, Microsoft Sans Serif" size="2"><b><font color="#FFFFFF">|</font></b></font></div>
+    </td>
+    <td width="13%"> 
+      <div align="center"><a href="bememberform.php"><font face="MS Sans Serif, Microsoft Sans Serif" size="2"><b><font color="#FFFFFF">สมัครสมาชิก</font></b></font></a></div>
+    </td>
+    <td width="2%"> 
+      <div align="center"><font face="MS Sans Serif, Microsoft Sans Serif" size="2"><b><font color="#FFFFFF">|</font></b></font></div>
+    </td>
+    <td width="17%"> 
+      <div align="center"><a href="beexpertform.php"><font face="MS Sans Serif, Microsoft Sans Serif" size="2"><b><font color="#FFFFFF">สมัครผู้เชี่ยวชาญ</font></b></font></a></div>
+    </td>
+    <td width="2%"> 
+      <div align="center"><font face="MS Sans Serif, Microsoft Sans Serif" size="2"><b><font color="#FFFFFF">|</font></b></font></div>
+    </td>
+    <td width="12%"> 
+      <div align="center"><a href="about.php"><font face="MS Sans Serif, Microsoft Sans Serif" size="2"><b><font color="#FFFFFF"><font color="#FFFFFF">เกี่ยวกับเรา</font> 
+        </font></b></font></a></div>
+    </td>
+    <td width="2%">
+      <div align="center"><font face="MS Sans Serif, Microsoft Sans Serif" size="2"><b><font color="#FFFFFF"><font color="#FFFFFF">|</font> 
+        </font></b></font></div>
+    </td>
+  </tr>
+</table>
+
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" height="476">
+
+
+
+
+
+
+
+  <tr>
+
+
+
+
+
+
+
+    <td width="30%" valign="top" align="center" height="494"> 
+
+
+
+
+
+
+
+      <form method="post" action="search.php">
+
+        <table width="90%" border="0" cellspacing="0" cellpadding="0">
+
+
+
+
+
+
+
+          <tr>
+
+
+
+
+
+
+
+            <td height="12" width="22%">&nbsp;</td>
+
+
+
+
+
+
+
+            <td height="12" width="57%">&nbsp;</td>
+
+
+
+
+
+
+
+            <td height="12" width="21%">&nbsp;</td>
+
+
+
+
+
+
+
+          </tr>
+
+
+
+
+
+
+
+          <tr bgcolor="#FFFFCC"> 
+
+
+
+
+
+
+
+            <td height="37" width="22%" align="center" valign="middle"><font size="2" face="MS Sans Serif, Microsoft Sans Serif"><b><font color="#CC3300">ค้นหา</font></b></font></td>
+
+
+
+
+
+
+
+            <td height="37" width="57%" align="center" valign="middle"> 
+
+
+
+
+
+
+
+              <input type="text" name="keyword" size="15" maxlength="100">
+
+
+
+
+
+
+
+            </td>
+
+
+
+
+
+
+
+            <td height="37" width="21%" align="center" valign="middle"> 
+
+
+
+
+
+
+
+              <input type="image" border="0" src="image/butt-go-red.gif" width="22" height="22" name="submit">
+
+
+
+
+
+
+
+            </td>
+
+
+
+
+
+
+
+          </tr>
+
+
+
+
+
+
+
+          <tr bgcolor="#FFFFCC"> 
+
+
+
+
+
+
+
+            <td colspan="3" height="33"> 
+
+
+
+
+
+
+
+              <div align="center"><a href="advan_search.php"><font face="MS Sans Serif, Microsoft Sans Serif" size="1" color="#6666FF">Advance 
+
+
+
+
+
+
+
+                SEARCH</font></a></div>
+
+
+
+
+
+
+
+            </td>
+
+
+
+
+
+
+
+          </tr>
+
+
+
+
+
+
+
+          <tr>
+
+
+
+
+
+
+
+            <td width="22%">&nbsp;</td>
+
+
+
+
+
+
+
+            <td width="57%">&nbsp;</td>
+
+
+
+
+
+
+
+            <td width="21%">&nbsp;</td>
+
+
+
+
+
+
+
+          </tr>
+
+
+
+
+
+
+
+        </table>
+
+
+
+
+
+
+
+      </form>
+
+
+
+
+
+
+
+		<?	
+
+
+
+
+
+
+
+			if (session_is_registered("loginname"))
+
+
+
+
+
+
+
+			{
+
+
+
+
+
+
+
+				$sql = "select MemberStatus,SubDate from MEMBER where LoginName= '$loginname'";
+
+
+
+
+
+
+
+				$memresult = mysql_db_query($dbname,$sql);
+
+
+
+
+
+
+
+	            $memarry = mysql_fetch_array($memresult)
+
+
+
+
+
+
+
+		?>
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+      <table width="90%" border="0" cellspacing="0" cellpadding="0">
+
+
+
+
+
+
+
+        <tr bgcolor="#FFFFCC"> 
+
+
+
+
+
+
+
+          <td width="60%"><font face="MS Sans Serif, Microsoft Sans Serif" size="2" color="#CC3300"><b>&nbsp;&nbsp;ยินดีต้อนรับ</b></font></td>
+
+
+
+
+
+
+
+          <td width="40%"><font face="MS Sans Serif, Microsoft Sans Serif" size="2" color="#CC3300"><b>&nbsp;คุณ<?echo $loginname;?></b></font></td>
+
+
+
+
+
+
+
+        </tr>
+
+
+
+
+
+
+
+        <tr> 
+
+
+
+
+
+
+
+          <td bgcolor="#FFFFCC" width="60%"><font face="MS Sans Serif, Microsoft Sans Serif" size="2">&nbsp;&nbsp;เป็นสมาชิกเมื่อ</font></td>
+
+
+
+
+
+
+
+          <td bgcolor="#FFFFCC" width="40%"> 
+
+
+
+
+
+
+
+            <div align="center"><font face="MS Sans Serif, Microsoft Sans Serif" size="2"><?echo $memarry['SubDate'];?></font></div>
+
+
+
+
+
+
+
+          </td>
+
+
+
+
+
+
+
+        </tr>
+
+
+
+
+
+
+
+        <tr> 
+
+          <td bgcolor="#FFFFCC" width="60%"><font face="MS Sans Serif, Microsoft Sans Serif" size="2">&nbsp;&nbsp;ตั้งถาม/คำตอบ</font></td>
+
+          <?
+
+				$memasksql = "select count(*) from ASK where LoginName = '$loginname'";
+
+				$memaskresult = mysql_db_query($dbname,$memasksql);
+
+	            $memaskarry = mysql_fetch_array($memaskresult);
+
+
+
+				$memanssql = "select count(*) from ASK where LoginName = '$loginname' and AnsStatus = 'Y'";
+
+				$memansresult = mysql_db_query($dbname,$memanssql);
+
+	            $memansarry = mysql_fetch_array($memansresult);
+
+			?> 
+
+          <td bgcolor="#FFFFCC" width="40%"> 
+
+            <div align="center"><font face="MS Sans Serif, Microsoft Sans Serif" size="2"><?echo $memaskarry[0]." / ".$memansarry[0];?></font></div>
+
+          </td>
+
+        </tr>
+
+        <? if ($memarry["MemberStatus"]=="E")
+
+
+
+				{
+
+
+
+			?> 
+
+        <tr> 
+
+          <td bgcolor="#FFFFCC" width="60%"><font face="MS Sans Serif, Microsoft Sans Serif" size="2">&nbsp;&nbsp;คำถาม/ตอบ</font></td>
+
+          <?
+
+				$memasksql = "select count(*) from ASK where ExpertName = '$loginname'";
+
+				$memaskresult = mysql_db_query($dbname,$memasksql);
+
+	            $memaskarry = mysql_fetch_array($memaskresult);
+
+
+
+				$memanssql = "select count(*) from ASK where ExpertName = '$loginname' and AnsStatus = 'Y'";
+
+				$memansresult = mysql_db_query($dbname,$memanssql);
+
+	            $memansarry = mysql_fetch_array($memansresult);
+
+			?> 
+
+          <td bgcolor="#FFFFCC" width="40%"> 
+
+            <div align="center"><font face="MS Sans Serif, Microsoft Sans Serif" size="2"><?echo $memaskarry[0]." / ".$memansarry[0];?></font></div>
+
+          </td>
+
+        </tr>
+
+        <tr> 
+
+          <td bgcolor="#FFFFCC" width="60%"><font face="MS Sans Serif, Microsoft Sans Serif" size="2">&nbsp;&nbsp;</font></td>
+
+          <td bgcolor="#FFFFCC" width="40%">&nbsp;</td>
+
+        </tr>
+
+        <tr>
+
+          <td bgcolor="#FFFFCC" colspan="2">
+
+            <div align="center">&nbsp;&nbsp;<font color="#9999FF"><a href="personal.php?expert=<?echo $loginname;?>"><font face="MS Sans Serif, Microsoft Sans Serif" size="2" color="#6666FF">ดูข้อมูลส่วนตัว</font></a></font></div>
+
+          </td>
+
+       </tr>
+
+        <? } 
+
+
+
+			?>         
+
+        <tr> 
+
+
+
+
+
+
+
+          <td bgcolor="#FFFFCC" colspan="2"> 
+
+
+
+
+
+
+
+            <div align="center">&nbsp;&nbsp;<font color="#9999FF"><a href="editprofile.php"><font face="MS Sans Serif, Microsoft Sans Serif" size="2" color="#6666FF">แก้ไขข้อมูลส่วนตัว</font></a></font></div>
+
+
+
+
+
+
+
+          </td>
+
+
+
+
+
+
+
+        </tr>
+
+
+
+
+
+
+
+        <tr> 
+
+
+
+
+
+
+
+          <td bgcolor="#FFFFCC" colspan="2"> 
+
+
+
+
+
+
+
+            <div align="center">&nbsp;&nbsp;<a href="new.php"><font face="MS Sans Serif, Microsoft Sans Serif" size="2" color="#6666FF">ดูคำตอบใหม่</font></a></div>
+
+
+
+
+
+
+
+          </td>
+
+
+
+
+
+
+
+        </tr>
+
+
+
+
+
+
+
+        <? if ($memarry["MemberStatus"]=="E")
+
+
+
+
+
+
+
+				{
+
+
+
+
+
+
+
+			?> 
+
+
+
+
+
+
+
+        <tr> 
+
+
+
+
+
+
+
+          <td bgcolor="#FFFFCC" colspan="2"> 
+
+
+
+
+
+
+
+            <div align="center">&nbsp;&nbsp;<a href="newq.php"><font face="MS Sans Serif, Microsoft Sans Serif" size="2" color="#6666FF">ดูคำถามใหม่</font></a> 
+
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+          </td>
+
+
+
+
+
+
+
+        </tr>
+
+
+
+
+
+
+
+        <?}  ?> 
+
+
+
+        <tr>
+
+
+
+          <td bgcolor="#FFFFCC" colspan="2">
+
+
+
+            <div align="center"><a href="logout.php"><font face="MS Sans Serif, Microsoft Sans Serif" size="2" color="#6666FF">Log 
+
+
+
+              Out</font></a></div>
+
+
+
+          </td>
+
+
+
+        </tr>
+
+
+
+        <tr> 
+
+
+
+
+
+
+
+          <td>&nbsp;</td>
+
+
+
+
+
+
+
+          <td>&nbsp;</td>
+
+
+
+
+
+
+
+        </tr>
+
+
+
+
+
+
+
+      </table>
+
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+      <? } //end session loginname registered
+
+
+
+
+
+
+
+		?> </td>
+
+
+
+
+
+
+
+    <td width="72%" valign="top" height="494"> 
+
+
+
+
+
+
+
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+
+
+
+
+
+
+        <tr>
+
+
+
+
+
+
+
+          <td background="image/2color2.jpg" align="left" valign="top" width="7" height="6"><img src="image/2color2_6pix.jpg" width="1" height="6"></td>
+
+
+
+
+
+
+
+          <td background="image/2color2.jpg" width="579"><img src="image/2color2_6pix.jpg" width="1" height="6"></td>
+
+
+
+
+
+
+
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+
+
+
+
+
+
+
+          <td width="7" background="image/shadow-topleft.gif" height="5" align="left" valign="top"><img src="image/transparent.gif" width="5" height="1"></td>
+
+
+
+
+
+
+
+          <td width="579" height="5" background="image/shadow-top.gif" valign="top" align="left"><img src="image/blackdot.jpg" width="1" height="1"></td>
+
+
+
+
+
+
+
+        </tr>
+
+
+
+
+
+
+
+        <tr>
+
+
+
+
+
+
+
+          <td height="485" background="image/shadow-left.gif" align="left" valign="top"><img src="image/blackdot.jpg" width="1" height="1"></td>
+
+
+
+
+
+
+
+          <td height="485" bgcolor="#FFFFFF" align="left" valign="top"><img src="image/whitedot.jpg" width="1" height="1">
+
+
+
+
+
+
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" height="484">
+
+
+
+
+
+
+
+              <?
+
+
+
+
+
+
+
+				if ($flag01 == "F"){
+
+
+
+
+
+
+
+					echo '
+
+
+
+
+
+
+
+				 <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td colspan="2"> 
+
+
+
+
+
+
+
+                  <div align="center"><font size="2"><b><font face="MS Sans Serif, Microsoft Sans Serif">สมัครสมาชิก</font></b></font></div>
+
+
+
+
+
+
+
+                </td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>
+
+
+
+
+
+
+
+              <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td colspan="2">
+
+
+
+
+
+
+
+                  <div align="center"><b><font size="2" face="MS Sans Serif, Microsoft Sans Serif">กรุณากรอกแบบฟอร์ม</font></b></div>
+
+
+
+
+
+
+
+                </td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>';
+				} elseif ($flag01 == "T0") {
+
+
+
+
+
+
+
+				 	echo '
+
+
+
+
+
+
+
+				 <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td colspan="2"> 
+
+
+
+
+
+
+
+                  <div align="center"><b><font size="1" face="MS Sans Serif, Microsoft Sans Serif" color="#FF3333">กรุณาใส่ Login Name ด้วย</font></b></font></div>
+
+
+
+
+
+
+
+                </td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>
+
+
+
+
+
+
+
+              <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td colspan="2">
+
+
+
+
+
+
+
+                  <div align="center"><b><font size="1" face="MS Sans Serif, Microsoft Sans Serif" color="#FF3333">&nbsp;</font></b></div>
+
+
+
+
+
+
+
+                </td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>';
+
+
+
+
+
+
+
+				$flag01 = "F"; 
+
+
+
+
+
+
+
+				} elseif ($flag01 == "T4") {
+
+
+
+
+
+
+
+				 	echo '
+
+
+
+
+
+
+
+				 <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td colspan="2"> 
+
+
+
+
+
+
+
+                  <div align="center"><b><font size="1" face="MS Sans Serif, Microsoft Sans Serif" color="#FF3333">กรุณาใส่ E-mail ด้วย</font></b></font></div>
+
+
+
+
+
+
+
+                </td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>
+
+
+
+
+
+
+
+              <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td colspan="2">
+
+
+
+
+
+
+
+                  <div align="center"><b><font size="1" face="MS Sans Serif, Microsoft Sans Serif" color="#FF3333">&nbsp;</font></b></div>
+
+
+
+
+
+
+
+                </td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>';
+
+
+
+
+
+
+
+				$flag01 = "F"; 
+
+
+
+
+
+
+
+				} elseif ($flag01 == "T5") {
+
+
+
+
+
+
+
+				 	echo '
+
+
+
+
+
+
+
+				 <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td colspan="2"> 
+
+
+
+
+
+
+
+                  <div align="center"><b><font size="1" face="MS Sans Serif, Microsoft Sans Serif" color="#FF3333">Password สั้นเกินไป</font></b></font></div>
+
+
+
+
+
+
+
+                </td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>
+
+
+
+
+
+
+
+              <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td colspan="2">
+
+
+
+
+
+
+
+                  <div align="center"><b><font size="1" face="MS Sans Serif, Microsoft Sans Serif" color="#FF3333">&nbsp;</font></b></div>
+
+
+
+
+
+
+
+                </td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>';
+
+
+
+
+
+
+
+				$flag01 = "F"; 
+
+
+
+
+
+
+
+				} elseif ($flag01 == "T1") {
+
+
+
+
+
+
+
+				 	echo '
+
+
+
+
+
+
+
+				 <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td colspan="2"> 
+
+
+
+
+
+
+
+                  <div align="center"><b><font size="1" face="MS Sans Serif, Microsoft Sans Serif" color="#FF3333">มีผู้ใช้ Login Name นี้แล้ว</font></b></font></div>
+
+
+
+
+
+
+
+                </td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>
+
+
+
+
+
+
+
+              <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td colspan="2">
+
+
+
+
+
+
+
+                  <div align="center"><b><font size="1" face="MS Sans Serif, Microsoft Sans Serif" color="#FF3333">กรุณาเปลี่ยน Login Name ใหม่</font></b></div>
+
+
+
+
+
+
+
+                </td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>';
+
+
+
+
+
+
+
+				$flag01 = "0"; 
+
+
+
+
+
+
+
+				} elseif ($flag01 == "T3") {
+
+
+
+
+
+
+
+				 	echo '
+
+
+
+
+
+
+
+				 <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td colspan="2"> 
+
+
+
+
+
+
+
+                  <div align="center"><b><font size="1" face="MS Sans Serif, Microsoft Sans Serif" color="#FF3333">มีผู้ใช้ Email นี้แล้ว</font></b></font></div>
+
+
+
+
+
+
+
+                </td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>
+
+
+
+
+
+
+
+              <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td colspan="2">
+
+
+
+
+
+
+
+                  <div align="center"><b><font size="1" face="MS Sans Serif, Microsoft Sans Serif" color="#FF3333">กรุณาเปลี่ยน Email ใหม่หรือตรวจสอบอีกครั้ง</font></b></div>
+
+
+
+
+
+
+
+                </td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>';
+
+
+
+
+
+
+
+				$flag01 = "0"; 
+
+
+
+
+
+
+
+				}	elseif ($flag01 == "T2") {
+
+
+
+
+
+
+
+					echo '
+
+
+
+
+
+
+
+				 <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td colspan="2"> 
+
+
+
+
+
+
+
+                  <div align="center"><b><font size="1" face="MS Sans Serif, Microsoft Sans Serif" color="#FF3333">Password ไม่ตรงกัน</font></b></font></div>
+
+
+
+
+
+
+
+                </td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>
+
+
+
+
+
+
+
+              <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td colspan="2">
+
+
+
+
+
+
+
+                  <div align="center"><b><font size="1" face="MS Sans Serif, Microsoft Sans Serif" color="#FF3333">กรุณาใส่ Password ใหม่อีกครั้ง</font></b></div>
+
+
+
+
+
+
+
+                </td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>';
+
+
+
+
+
+
+
+				$flag01 = "0";}
+
+
+
+
+
+
+
+				?> 
+
+
+
+
+
+
+
+				<tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td colspan="2" rowspan="6" bgcolor="#FFFFCC"> 
+
+ <?
+				if ($Flag03 == "F3")
+				{
+					$flag01 = "F"; 
+			?>
+                <div align="center"><font size="1" face="MS Sans Serif, Microsoft Sans Serif"><b><font color="#CC3300">พบคำหยาบใน Login Nameของคุณ</font></b></font></div>
+                 <div align="center"><font size="1" face="MS Sans Serif, Microsoft Sans Serif"><b><font color="#CC3300">คำหยาบที่พบคือ :
+			<?	for ($i=0;$i<$ban_i;$i++)
+						{
+							echo " $ban[$i]";
+						}
+			?>
+				  </font></b></font></div>
+<? }
+?>
+
+
+
+
+
+                  <form method="post" action="bememberform.php" name="bemember">
+
+
+
+
+
+
+
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" height="325">
+
+
+
+
+
+
+
+                      <tr> 
+
+
+
+
+
+
+
+                        <td width="43%" height="42" valign="middle" align="center"> 
+
+
+
+
+
+
+
+                          <div align="center"> 
+                            <p><b><font face="MS Sans Serif, Microsoft Sans Serif" size="1">Login 
+                              Name</font></b><font face="MS Sans Serif, Microsoft Sans Serif" size="1" color="#CC3300"><br>
+                              </font><font face="MS Sans Serif, Microsoft Sans Serif" size="1">(Max. 
+                              10 Characters)</font></p>
+
+
+
+
+
+
+
+                          </div>
+
+
+
+
+
+
+
+                        </td>
+
+
+
+
+
+
+
+                        <td width="57%" height="42"> <?
+
+
+
+
+
+
+
+									echo '<input type="text" name="LoginName" maxlength="10"  value="'.$LoginName.'">';
+
+
+
+
+
+
+
+						  ?> <font face="MS Sans Serif, Microsoft Sans Serif" size="1" color="#CC3300">**</font></td>
+
+
+
+
+
+
+
+                      </tr>
+
+
+
+
+
+
+
+                      <tr> 
+
+
+
+
+
+
+
+                        <td width="43%"> 
+
+
+
+
+
+
+
+                          <div align="center"><b><font face="MS Sans Serif, Microsoft Sans Serif" size="1">Password</font></b><font face="MS Sans Serif, Microsoft Sans Serif" size="1"> 
+
+
+
+
+
+
+
+                            (6-10 Characters)</font></div>
+
+
+
+
+
+
+
+                        </td>
+
+
+
+
+
+
+
+                        <td width="57%"> 
+
+
+
+
+
+
+
+                          <input type="password" name="Password" maxlength="10">
+							<font face="MS Sans Serif, Microsoft Sans Serif" size="1" color="#CC3300">**</font>
+                          </td>
+
+
+
+
+
+
+
+                      </tr>
+
+
+
+
+
+
+
+                      <tr> 
+
+
+
+
+
+
+
+                        <td width="43%"> 
+
+
+
+
+
+
+
+                          <div align="center"><font face="MS Sans Serif, Microsoft Sans Serif" size="1"><b>Confirm 
+
+
+
+
+
+
+
+                            Password </b></font></div>
+
+
+
+
+
+
+
+                        </td>
+
+
+
+
+
+
+
+                        <td width="57%"> 
+
+
+
+
+
+
+
+                          <input type="password" name="Pwd" maxlength="10" >
+                          <font face="MS Sans Serif, Microsoft Sans Serif" size="1" color="#CC3300">**</font>
+						 </td>
+
+
+
+
+
+
+
+                      </tr>
+
+
+
+
+
+
+
+                      <tr> 
+
+
+
+
+
+
+
+                        <td width="43%"> 
+
+
+
+
+
+
+
+                          <div align="center"><b><font face="MS Sans Serif, Microsoft Sans Serif" size="2">ชื่อ 
+
+
+
+
+
+
+
+                            </font></b></div>
+
+
+
+
+
+
+
+                        </td>
+
+
+
+
+
+
+
+                        <td width="57%"> <?
+
+
+
+
+
+
+
+									echo '<input type="text" name="FirstName" maxlength="20" value="'.$FirstName.'">';
+
+
+
+
+
+
+
+						  ?> </td>
+
+
+
+
+
+
+
+                      </tr>
+
+
+
+
+
+
+
+                      <tr> 
+
+
+
+
+
+
+
+                        <td width="43%"> 
+
+
+
+
+
+
+
+                          <div align="center"><font size="+1"><b><font face="MS Sans Serif, Microsoft Sans Serif" size="2">นามสกุล 
+
+
+
+
+
+
+
+                            </font></b></font></div>
+
+
+
+
+
+
+
+                        </td>
+
+
+
+
+
+
+
+                        <td width="57%"> <?
+
+
+
+
+
+
+
+									echo '<input type="text" name="LastName" maxlength="20"  value="'.$LastName.'">';
+
+
+
+
+
+
+
+						  ?> </td>
+
+
+
+
+
+
+
+                      </tr>
+
+
+
+
+
+
+
+                      <tr> 
+
+
+
+
+
+
+
+                        <td width="43%"> 
+
+
+
+
+
+
+
+                          <div align="center"><font size="+1"><b><font face="MS Sans Serif, Microsoft Sans Serif" size="1">E-mail</font></b></font></div>
+
+
+
+
+
+
+
+                        </td>
+
+
+
+
+
+
+
+                        <td width="57%"> <?
+
+
+
+
+
+
+
+									echo '<input type="text" name="Email" maxlength="30" size="30"  value="'.$Email.'">';
+
+
+
+
+
+
+
+						  ?> 
+
+
+
+
+
+
+
+                          <input type="hidden" name="subdate" value="<? echo date("Y-m-d"); ?>">
+                          <font face="MS Sans Serif, Microsoft Sans Serif" size="1" color="#CC3300">**</font> 
+                        </td>
+
+
+
+
+
+
+
+                      </tr>
+
+
+
+
+
+
+
+                      <tr> 
+
+
+
+
+
+
+
+                        <td width="43%" height="45"> 
+
+
+
+
+
+
+
+                          <div align="center">
+                            <input type="submit" name="Submit" value="Submit">
+                          </div>
+
+
+
+
+
+
+
+                        </td>
+
+
+
+
+
+
+
+                        <td width="57%" height="45"> 
+                          <input type="reset" name="Reset" value="Reset">
+                        </td>
+
+
+
+
+
+
+
+                      </tr>
+
+
+
+
+
+
+
+                      <tr> 
+
+
+
+
+
+
+
+                        <td colspan="2" height="45"> 
+
+
+
+
+
+
+
+                          <div align="center"><font face="MS Sans Serif, Microsoft Sans Serif" size="1" color="#CC3300">** 
+                            ต้องกรอกให้ครบ</font></div>
+
+
+
+
+
+
+
+                          </td>
+
+
+
+
+
+
+
+                      </tr>
+
+
+
+
+
+
+
+                    </table>
+
+
+
+
+
+
+
+                  </form>
+
+
+
+
+
+
+
+                </td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>
+
+
+
+
+
+
+
+              <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>
+
+
+
+
+
+
+
+              <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>
+
+
+
+
+
+
+
+              <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>
+
+
+
+
+
+
+
+              <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>
+
+
+
+
+
+
+
+              <tr> 
+
+
+
+
+
+
+
+                <td width="7%" height="156">&nbsp;</td>
+
+
+
+
+
+
+
+                <td width="7%" height="156">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>
+
+
+
+
+
+
+
+              <tr> 
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td width="43%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td width="43%">&nbsp;</td>
+
+
+
+
+
+
+
+                <td width="7%">&nbsp;</td>
+
+
+
+
+
+
+
+              </tr>
+
+
+
+
+
+
+
+            </table>
+
+
+
+
+
+
+
+          </td>
+
+
+
+
+
+
+
+        </tr>
+
+
+
+
+
+
+
+      </table>
+
+
+
+
+
+
+
+    </td>
+
+
+
+
+
+
+
+  </tr>
+
+
+
+
+
+
+
+</table>
+
+
+
+
+
+
+
+</body>
+
+
+
+
+
+
+
+</html>
+
+
+
+
+
+
+

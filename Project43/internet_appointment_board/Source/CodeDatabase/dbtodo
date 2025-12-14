@@ -1,0 +1,15 @@
+create table todo(
+no_todo integer primary key,
+timeout date,
+priority integer,
+title varchar2(30) default ('No Title') ,
+note varchar2(50) ,
+ id varchar(20) NOT NULL
+REFERENCES userdata on delete cascade);
+
+CREATE SEQUENCE no_todo
+ START WITH 1
+ INCREMENT BY 1
+ NOMAXVALUE
+ NOCYCLE
+ CACHE 20;

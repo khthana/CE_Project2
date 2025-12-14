@@ -1,0 +1,4091 @@
+unit Main_Durable;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ComCtrls, StdCtrls, Mask, DBCtrls, Grids, Buttons, Db, DBTables, ADODB,
+  DBGrids, CheckLst, AutoTools, ComObj;
+
+type
+  TFr_Durable = class(TForm)
+    PageSelect: TPageControl;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    TabSheet4: TTabSheet;
+    TabSheet5: TTabSheet;
+    TabSheet6: TTabSheet;
+    TabSheet7: TTabSheet;
+    TabSheet8: TTabSheet;
+    TabSheet13: TTabSheet;
+    PageControl1: TPageControl;
+    TabSheet9: TTabSheet;
+    GroupBox3: TGroupBox;
+    Label17: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
+    Ed_Officer_Name: TDBEdit;
+    Cb_Department_Name: TDBLookupComboBox;
+    Bt_Insert_Department: TButton;
+    Bt_Update_Department: TButton;
+    Bt_Delete_Department: TButton;
+    Gr_Room_Name: TDBGrid;
+    GroupBox5: TGroupBox;
+    Gr_Room_Detail: TDBGrid;
+    Bt_Insert_Room: TButton;
+    Bt_Update_Room: TButton;
+    Bt_Delete_Room: TButton;
+    TabSheet10: TTabSheet;
+    GroupBox6: TGroupBox;
+    Gr_Officer_Detail: TDBGrid;
+    Bt_Insert_Officer: TButton;
+    Bt_Update_Officer: TButton;
+    Bt_Delete_Officer: TButton;
+    TabSheet11: TTabSheet;
+    GroupBox4: TGroupBox;
+    Label20: TLabel;
+    Label21: TLabel;
+    Label22: TLabel;
+    Label23: TLabel;
+    Mm_Address: TDBMemo;
+    Dbe_Phone1: TDBEdit;
+    Dbe_Phone2: TDBEdit;
+    Dbe_Phone3: TDBEdit;
+    Dbe_Fax: TDBEdit;
+    Cb_Company_Name: TDBLookupComboBox;
+    Bt_Insert: TButton;
+    Bt_Update: TButton;
+    Bt_Delete: TButton;
+    TabSheet12: TTabSheet;
+    GroupBox7: TGroupBox;
+    Gr_Type_Detail: TDBGrid;
+    Bt_Insert_Type: TButton;
+    Bt_Update_Type: TButton;
+    Bt_Delete_Type: TButton;
+    GroupBox1: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    Label14: TLabel;
+    Ed_Durable_ID: TEdit;
+    Button1: TButton;
+    Ed_Price: TEdit;
+    Ed_Length_Guarantee: TEdit;
+    Cb_TypeGuarantee: TComboBox;
+    Cb_Status: TComboBox;
+    Mm_Detail: TMemo;
+    Bt_Computer_Detail: TButton;
+    Ed_Length_Maintain: TEdit;
+    Cb_TypeMaintain: TComboBox;
+    GroupBox2: TGroupBox;
+    Label15: TLabel;
+    Label16: TLabel;
+    Bt_Insert_Company: TButton;
+    Ed_Contact_Name: TEdit;
+    BitBtn2: TBitBtn;
+    BitBtn3: TBitBtn;
+    Ed_Date_Expire1: TEdit;
+    Ed_Date_Expire2: TEdit;
+    Lv_Durable_Detail: TListView;
+    Ed_Durable_ID2: TEdit;
+    Label10: TLabel;
+    Cb_Type2: TDBLookupComboBox;
+    Cb_Room2: TDBLookupComboBox;
+    Cb_Status2: TComboBox;
+    Label24: TLabel;
+    Label25: TLabel;
+    Label26: TLabel;
+    Label27: TLabel;
+    Cb_Category: TComboBox;
+    Bt_Show_Durable: TButton;
+    Cb_Department_Name2: TDBLookupComboBox;
+    Label28: TLabel;
+    GroupBox8: TGroupBox;
+    Label30: TLabel;
+    Label31: TLabel;
+    Label35: TLabel;
+    Label36: TLabel;
+    Label37: TLabel;
+    Label38: TLabel;
+    Label39: TLabel;
+    Ed_Date_Expire12: TEdit;
+    Ed_Date_Expire22: TEdit;
+    Ed_Type_Name: TEdit;
+    Ed_Category2: TEdit;
+    Ed_Status: TEdit;
+    Ed_Respond_Name: TEdit;
+    Ed_Room_Name: TEdit;
+    GroupBox9: TGroupBox;
+    Label32: TLabel;
+    Label34: TLabel;
+    Label40: TLabel;
+    Label41: TLabel;
+    Ed_Repair_ID: TEdit;
+    Label29: TLabel;
+    Label42: TLabel;
+    GroupBox10: TGroupBox;
+    Label43: TLabel;
+    Label44: TLabel;
+    Label45: TLabel;
+    Label46: TLabel;
+    Mm_Condition: TMemo;
+    Label47: TLabel;
+    Mm_Attach_Item: TMemo;
+    BitBtn1: TBitBtn;
+    BitBtn4: TBitBtn;
+    Ed_Company_Name: TEdit;
+    Label33: TLabel;
+    Button2: TButton;
+    Ed_Contact_Name2: TEdit;
+    Lv_Repair: TListView;
+    Label48: TLabel;
+    Ed_Repair_ID2: TEdit;
+    Label49: TLabel;
+    Cb_Diff: TComboBox;
+    Ed_Date_Take2: TEdit;
+    Label50: TLabel;
+    Ed_Date_Repair2: TEdit;
+    Button3: TButton;
+    Label51: TLabel;
+    Cb_Repair_Company: TDBLookupComboBox;
+    Label52: TLabel;
+    Cb_Repair_Officer: TDBLookupComboBox;
+    Button4: TButton;
+    Label53: TLabel;
+    Ed_Over_ID: TEdit;
+    GroupBox11: TGroupBox;
+    Label54: TLabel;
+    Label55: TLabel;
+    Label56: TLabel;
+    Label57: TLabel;
+    Label58: TLabel;
+    Label59: TLabel;
+    Label60: TLabel;
+    Label61: TLabel;
+    Ed_Over_Expire1: TEdit;
+    Ed_Over_Expire2: TEdit;
+    Ed_Over_Type: TEdit;
+    Ed_Over_Category: TEdit;
+    Ed_Over_Status: TEdit;
+    Ed_Over_Officer: TEdit;
+    Ed_Over_Room: TEdit;
+    Ed_Over_Company: TEdit;
+    GroupBox12: TGroupBox;
+    Label62: TLabel;
+    Label63: TLabel;
+    Ed_Document_ID: TEdit;
+    Label64: TLabel;
+    Label65: TLabel;
+    Label66: TLabel;
+    Ed_Name1: TEdit;
+    Ed_Name2: TEdit;
+    Ed_Name3: TEdit;
+    Label67: TLabel;
+    Mm_Reason: TMemo;
+    BitBtn5: TBitBtn;
+    BitBtn6: TBitBtn;
+    Label68: TLabel;
+    Ed_Give_ID: TEdit;
+    GroupBox13: TGroupBox;
+    Label69: TLabel;
+    Label70: TLabel;
+    Label71: TLabel;
+    Label72: TLabel;
+    Label73: TLabel;
+    Label74: TLabel;
+    Label75: TLabel;
+    Label76: TLabel;
+    Ed_Give_Expire1: TEdit;
+    Ed_Give_Expire2: TEdit;
+    Ed_Give_Type: TEdit;
+    Ed_Give_Category: TEdit;
+    Ed_Give_Status: TEdit;
+    Ed_Give_Officer: TEdit;
+    Ed_Give_Room: TEdit;
+    Ed_Give_Company: TEdit;
+    GroupBox14: TGroupBox;
+    Ed_Date_Give50: TEdit;
+    Label77: TLabel;
+    BitBtn7: TBitBtn;
+    BitBtn8: TBitBtn;
+    Label78: TLabel;
+    Ed_Give_Document: TEdit;
+    Label79: TLabel;
+    Mm_Receiver: TMemo;
+    Label80: TLabel;
+    Mm_Give_Reason: TMemo;
+    Bt_Print2: TPageControl;
+    TabSheet14: TTabSheet;
+    GroupBox15: TGroupBox;
+    Ck_Good: TCheckBox;
+    Ck_Repair: TCheckBox;
+    Ck_Over: TCheckBox;
+    Ck_Bad: TCheckBox;
+    Ck_Give: TCheckBox;
+    GroupBox16: TGroupBox;
+    Ck_Building: TCheckBox;
+    Ck_Computer: TCheckBox;
+    Ck_Office: TCheckBox;
+    GroupBox17: TGroupBox;
+    CkL_Department: TCheckListBox;
+    GroupBox18: TGroupBox;
+    CkL_Room: TCheckListBox;
+    Bt_Print1: TButton;
+    Ck_AllDepartment: TCheckBox;
+    Ck_AllRoom: TCheckBox;
+    TabSheet15: TTabSheet;
+    GroupBox19: TGroupBox;
+    Ck_Good2: TCheckBox;
+    Ck_Bad2: TCheckBox;
+    GroupBox20: TGroupBox;
+    Ck_Building2: TCheckBox;
+    Ck_Computer2: TCheckBox;
+    Ck_Office2: TCheckBox;
+    GroupBox21: TGroupBox;
+    CkL_Department2: TCheckListBox;
+    Ck_AllDepartment2: TCheckBox;
+    GroupBox22: TGroupBox;
+    CkL_Room2: TCheckListBox;
+    Ck_AllRoom2: TCheckBox;
+    Button5: TButton;
+    Ck_Repair2: TCheckBox;
+    TabSheet16: TTabSheet;
+    GroupBox23: TGroupBox;
+    Ck_Good3: TCheckBox;
+    Ck_Bad3: TCheckBox;
+    Ck_Repair3: TCheckBox;
+    GroupBox24: TGroupBox;
+    Ck_Building3: TCheckBox;
+    Ck_Computer3: TCheckBox;
+    Ck_Office3: TCheckBox;
+    GroupBox25: TGroupBox;
+    Label81: TLabel;
+    Ed_Expire: TEdit;
+    Button6: TButton;
+    Ck_Many: TCheckBox;
+    Ed_Number: TEdit;
+    Label82: TLabel;
+    Ck_NoneDepartment: TCheckBox;
+    Ck_NoneRoom: TCheckBox;
+    Ck_NoneDepartment2: TCheckBox;
+    Ck_NoneRoom2: TCheckBox;
+    Cb_Respond_Name: TComboBox;
+    Ed_Respond_Name2: TEdit;
+    Cb_Room: TComboBox;
+    Ed_Room: TEdit;
+    Cb_Type: TComboBox;
+    Ed_Type: TEdit;
+    Ed_Category: TEdit;
+    Cb_Select_Company: TComboBox;
+    Ed_Select_Company: TEdit;
+    Cb_Repair_ID: TComboBox;
+    Cb_Company_Name2: TComboBox;
+    Ed_Company_Name2: TEdit;
+    Mm_Company_Address: TMemo;
+    Ed_Company_Phone1: TEdit;
+    Ed_Company_Phone2: TEdit;
+    Ed_Company_Phone3: TEdit;
+    Ed_Company_Fax: TEdit;
+    Cb_Officer_Name: TComboBox;
+    Ed_Officer_Name2: TEdit;
+    Cb_Repair_ID2: TComboBox;
+    Cb_Over_ID: TComboBox;
+    Cb_Give_ID: TComboBox;
+    TabSheet3: TTabSheet;
+    Lv_Maintainant: TListView;
+    Label84: TLabel;
+    Cb_Department_Name3: TDBLookupComboBox;
+    Label85: TLabel;
+    Label86: TLabel;
+    Cb_Type3: TDBLookupComboBox;
+    Cb_Room3: TDBLookupComboBox;
+    Cb_Status3: TComboBox;
+    Label87: TLabel;
+    Label88: TLabel;
+    Cb_Category2: TComboBox;
+    Button7: TButton;
+    Label83: TLabel;
+    BitBtn9: TBitBtn;
+    CheckBox1: TCheckBox;
+    CheckBox2: TCheckBox;
+    Label89: TLabel;
+    Ed_Durable_ID3: TEdit;
+    TabSheet17: TTabSheet;
+    GroupBox26: TGroupBox;
+    Ck_Good4: TCheckBox;
+    Ck_Bad4: TCheckBox;
+    Ck_Repair4: TCheckBox;
+    GroupBox27: TGroupBox;
+    Ck_Building4: TCheckBox;
+    Ck_Computer4: TCheckBox;
+    Ck_Office4: TCheckBox;
+    GroupBox28: TGroupBox;
+    Ckl_Department3: TCheckListBox;
+    Ck_AllDepartment3: TCheckBox;
+    Ck_NoneDepartment3: TCheckBox;
+    GroupBox29: TGroupBox;
+    Ckl_Room3: TCheckListBox;
+    Ck_AllRoom3: TCheckBox;
+    Ck_NoneRoom3: TCheckBox;
+    Button8: TButton;
+    Label90: TLabel;
+    Label91: TLabel;
+    Label92: TLabel;
+    Ed_Date_Buy: TDateTimePicker;
+    Ed_Date_Repair: TDateTimePicker;
+    Ed_Date_Take: TDateTimePicker;
+    Ed_Date_Over: TDateTimePicker;
+    Ed_Date_Give: TDateTimePicker;
+    procedure Bt_Computer_DetailClick(Sender: TObject);
+    procedure Bt_InsertClick(Sender: TObject);
+    procedure Bt_UpdateClick(Sender: TObject);
+    procedure Bt_DeleteClick(Sender: TObject);
+    procedure Bt_Insert_CompanyClick(Sender: TObject);
+    procedure Bt_Insert_DepartmentClick(Sender: TObject);
+    procedure Bt_Delete_DepartmentClick(Sender: TObject);
+    procedure Bt_Update_DepartmentClick(Sender: TObject);
+    procedure Bt_Insert_RoomClick(Sender: TObject);
+    procedure Bt_Delete_RoomClick(Sender: TObject);
+    procedure Bt_Update_RoomClick(Sender: TObject);
+    procedure Bt_Insert_TypeClick(Sender: TObject);
+    procedure Bt_Update_TypeClick(Sender: TObject);
+    procedure Bt_Delete_TypeClick(Sender: TObject);
+    procedure Bt_Insert_OfficerClick(Sender: TObject);
+    procedure Bt_Update_OfficerClick(Sender: TObject);
+    procedure Bt_Delete_OfficerClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure Ed_CategoryChange(Sender: TObject);
+    procedure Ed_Length_GuaranteeExit(Sender: TObject);
+    procedure Cb_TypeGuaranteeChange(Sender: TObject);
+    procedure Ed_Date_ExpireExit(Sender: TObject);
+    procedure TabSheet1Show(Sender: TObject);
+    procedure Cb_Type2MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure Cb_Room2MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure TabSheet2Show(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
+    procedure Lv_Durable_DetailDblClick(Sender: TObject);
+    procedure Bt_Show_DurableClick(Sender: TObject);
+    procedure Cb_Department_Name2MouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure Ed_Repair_IDExit(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure BitBtn4Click(Sender: TObject);
+    procedure TabSheet4Show(Sender: TObject);
+    procedure TabSheet5Show(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Lv_RepairDblClick(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure Ed_Date_Buy2Exit(Sender: TObject);
+    procedure Ed_Date_Expire2Exit(Sender: TObject);
+    procedure Ed_Length_MaintainExit(Sender: TObject);
+    procedure Ed_Date_Repair50Exit(Sender: TObject);
+    procedure Ed_Date_Take50Exit(Sender: TObject);
+    procedure Ed_Date_Repair2Exit(Sender: TObject);
+    procedure Ed_Date_Take2Exit(Sender: TObject);
+    procedure TabSheet9Show(Sender: TObject);
+    procedure TabSheet11Show(Sender: TObject);
+    procedure Ed_Over_IDExit(Sender: TObject);
+    procedure TabSheet6Show(Sender: TObject);
+    procedure BitBtn5Click(Sender: TObject);
+    procedure BitBtn6Click(Sender: TObject);
+    procedure Ed_Give_IDExit(Sender: TObject);
+    procedure TabSheet7Show(Sender: TObject);
+    procedure BitBtn8Click(Sender: TObject);
+    procedure BitBtn7Click(Sender: TObject);
+    procedure Cb_Repair_OfficerMouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure Cb_Repair_CompanyMouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure TabSheet8Show(Sender: TObject);
+    procedure Ck_AllDepartmentClick(Sender: TObject);
+    procedure Ck_AllRoomClick(Sender: TObject);
+    procedure Bt_Print1Click(Sender: TObject);
+    procedure CkL_DepartmentClickCheck(Sender: TObject);
+    procedure CkL_RoomClickCheck(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
+    procedure CkL_Department2ClickCheck(Sender: TObject);
+    procedure CkL_Room2ClickCheck(Sender: TObject);
+    procedure Ck_AllDepartment2Click(Sender: TObject);
+    procedure Ck_AllRoom2Click(Sender: TObject);
+    procedure Lv_Durable_DetailKeyPress(Sender: TObject; var Key: Char);
+    procedure Button6Click(Sender: TObject);
+    procedure Ed_ExpireExit(Sender: TObject);
+    procedure Ck_ManyClick(Sender: TObject);
+    procedure Ed_NumberExit(Sender: TObject);
+    procedure Cb_Department_NameClick(Sender: TObject);
+    procedure Ck_NoneDepartmentClick(Sender: TObject);
+    procedure Ck_NoneRoomClick(Sender: TObject);
+    procedure Ck_NoneDepartment2Click(Sender: TObject);
+    procedure Ck_NoneRoom2Click(Sender: TObject);
+    procedure Cb_Respond_NameChange(Sender: TObject);
+    procedure Cb_RoomChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure Cb_TypeChange(Sender: TObject);
+    procedure Ed_TypeExit(Sender: TObject);
+    procedure Cb_Select_CompanyChange(Sender: TObject);
+    procedure Cb_Repair_IDChange(Sender: TObject);
+    procedure Ed_Repair_IDKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Ed_TypeKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Cb_Company_Name2Change(Sender: TObject);
+    procedure Ed_Company_Name2KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Ed_Company_Name2Exit(Sender: TObject);
+    procedure Cb_Officer_NameChange(Sender: TObject);
+    procedure Cb_Repair_ID2Change(Sender: TObject);
+    procedure Cb_Over_IDChange(Sender: TObject);
+    procedure Ed_Over_IDKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Cb_Give_IDChange(Sender: TObject);
+    procedure Ed_Give_IDKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Lv_Durable_DetailKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure TabSheet3Show(Sender: TObject);
+    procedure Cb_Room3MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure Cb_Department_Name3MouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure Cb_Type3MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure Button7Click(Sender: TObject);
+    procedure Lv_MaintainantDblClick(Sender: TObject);
+    procedure BitBtn9Click(Sender: TObject);
+    procedure CheckBox1Click(Sender: TObject);
+    procedure CheckBox2Click(Sender: TObject);
+    procedure Ckl_Department3ClickCheck(Sender: TObject);
+    procedure Ck_AllDepartment3Click(Sender: TObject);
+    procedure Ck_NoneDepartment3Click(Sender: TObject);
+    procedure Ckl_Room3ClickCheck(Sender: TObject);
+    procedure Ck_AllRoom3Click(Sender: TObject);
+    procedure Ck_NoneRoom3Click(Sender: TObject);
+    procedure Button8Click(Sender: TObject);
+    procedure Cb_CategoryDropDown(Sender: TObject);
+    procedure Cb_Status2DropDown(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure Cb_Category2DropDown(Sender: TObject);
+    procedure Cb_Status3DropDown(Sender: TObject);
+    procedure Lv_MaintainantKeyPress(Sender: TObject; var Key: Char);
+    procedure Lv_RepairKeyPress(Sender: TObject; var Key: Char);
+  private
+    AutoComplete2 : IAutoComplete2;
+    Strs : IUnknown;
+    Durable_Update2 :Boolean;
+    Durable_Update3 : Boolean;
+    Durable_Update4 : Boolean;
+    Repair_Update : Boolean;
+    { Private declarations }
+  public
+     Department_ID:Integer;
+     New_Temp : String;
+     Durable_Update :Boolean;
+   { Public declarations }
+  end;
+
+var
+  Fr_Durable: TFr_Durable;
+  procedure insert_room_to_edit ();
+  procedure Clear_Fr_Com_Detail();
+  procedure ShowDurableDetail(Durable_ID : String);
+  procedure Refresh_Lv_Durable_Detail ();
+  procedure Refresh_Lv_Maintain ();
+  procedure Refresh_Lv_Repair();
+  procedure Refresh_Lv_History();
+  procedure Refresh_Lv_History_DuFr(Durable_ID : String);
+  procedure Refresh_Lv_History_ReFr(Durable_ID : String);
+  procedure Clear_Repair();
+  procedure Clear_Over();
+  procedure Clear_Give();
+  procedure Clear_Durable();
+
+
+implementation
+
+uses Com_Detail, Department, Company, DataModule, Room, TypeUnit,
+  Officer, Durable, Receive, History, Print_Status,
+  Print_Check, Print_Expire, Print_Maintian;
+
+{$R *.DFM}
+
+procedure Clear_Durable();
+begin
+     with Fr_Durable_Detail do
+     begin
+          Ed_Durable_ID.Text := '';
+          Ed_Type.Text := '';
+          Ed_Price.Text := '';
+          Ed_Length_Maintain.Text := '';
+          Ed_Respond_Name2.text := '';
+          Ed_Room.Text := '';
+          Ed_Date_Buy.Text := DateToStr(Date);
+          Ed_Date_Expire1.Text := '';
+          Ed_Date_Expire2.Text := '';
+          Mm_Detail.Text := '';
+          Ed_Select_Company.Text := '';
+          Ed_Contact_Name.Text := '';
+          Ed_CPU.Text := '';
+          Ed_Monitor.Text := '';
+          Ed_Harddisk.Text := '';
+          Ed_Ram.Text := '';
+          Ed_Mouse.Text := '';
+          Ed_Keyboard.Text := '';
+          Ed_Lancard.Text := '';
+          Ed_CDROM.Text := '';
+          Ed_Soundcard.Text := '';
+          Ed_Speaker.Text := '';
+     end;
+end;
+
+procedure TFr_Durable.Bt_Computer_DetailClick(Sender: TObject);
+begin
+        Fr_Com_Detail.ShowModal;
+end;
+
+
+
+procedure TFr_Durable.Bt_InsertClick(Sender: TObject);
+begin
+     Fr_Company.Ed_Company_Name.Text:='';
+     Fr_Company.Mm_Address.Text:='';
+     Fr_Company.Ed_Phone1.Text:='';
+     Fr_Company.Ed_Phone2.Text:='';
+     Fr_Company.Ed_Phone3.Text:='';
+     Fr_Company.Ed_Fax.Text:='';
+     Fr_Company.Update_Flag := False;
+     Fr_Company.ShowModal;
+end;
+
+procedure TFr_Durable.Bt_UpdateClick(Sender: TObject);
+begin
+     if Cb_Company_Name.Text = '' then
+     begin
+          Showmessage('กรุณาเลือกบริษัทที่จะแก้ไข');
+          exit;
+     end;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Clear;
+          SQL.Add('Select * From Company');
+          SQL.Add('Where Company_Name = '+Char(39) +Cb_Company_Name.Text+Char(39));
+          Open;
+          Fr_Company.Ed_Company_Name.Text:= FieldValues['Company_Name'];
+          Fr_Company.Mm_Address.Text:=FieldValues['Address'];
+          Fr_Company.Ed_Phone1.Text:=FieldValues['Phone1'];
+          Fr_Company.Ed_Phone2.Text:=FieldValues['Phone2'];
+          Fr_Company.Ed_Phone3.Text:=FieldValues['Phone3'];
+          Fr_Company.Ed_Fax.Text:=FieldValues['Fax'];
+          Fr_Company.Company_ID:=FieldValues['Company_ID'];
+          Fr_Company.Update_Flag := True;
+          Fr_Company.ShowModal;
+     end;
+end;
+
+procedure TFr_Durable.Bt_DeleteClick(Sender: TObject);
+var Temp : String;
+begin
+     if Cb_Company_Name.Text = '' then
+     begin
+          Showmessage('กรุณาเลือกบริษัทที่จะลบ');
+          exit;
+     end;
+     Temp := 'คุณแน่ใจหรือไม่ที่จะลบ ' + Cb_Company_Name.Text;
+     if MessageDlg(Temp,mtConfirmation,[mbYes,mbNo],0) = mrNo then exit;
+     with DataModule1.Qr_Transaction do
+     begin
+          // Find Durable That Link With This Company
+          Close;
+          SQL.Clear;
+          SQL.Add('Select Durable_ID From Durable');
+          SQL.Add('Where Company_ID = ' + IntToStr(Cb_Company_Name.KeyValue));
+          Open;
+          if FieldValues['Durable_ID'] <> Null then
+          begin
+               Showmessage('ไม่สามารถลบบริษัทได้เนื่องจากยังมีครุภัณฑ์อ้างถึง');
+               Exit;
+          end;
+          Close;
+          SQL.Clear;
+          SQL.Add('Select Durable_ID From Repair');
+          SQL.Add('Where Company_ID = ' + IntToStr(Cb_Company_Name.KeyValue));
+          Open;
+          if FieldValues['Durable_ID'] <> Null then
+          begin
+               Showmessage('ไม่สามารถลบบริษัทได้เนื่องจากยังมีครุภัณฑ์อ้างถึง');
+               Exit;
+          end;
+          Close;
+          SQL.Clear;
+          SQL.Add('Select Durable_ID From Repair_History');
+          SQL.Add('Where Company_ID = ' + IntToStr(Cb_Company_Name.KeyValue));
+          Open;
+          if FieldValues['Durable_ID'] <> Null then
+          begin
+               Showmessage('ไม่สามารถลบบริษัทได้เนื่องจากยังมีครุภัณฑ์อ้างถึง');
+               Exit;
+          end;
+     end;
+     DataModule1.Database1.StartTransaction;
+     try
+         with DataModule1.Qr_Transaction do
+         begin
+              close;
+              Params.Clear;
+              SQL.Clear;
+              SQL.Add('Delete From Company');
+              SQL.Add('Where Company_Name = :Name');
+              ParamByName('Name').AsString := Cb_Company_Name.Text;
+              execSQL;
+         end;
+         DataModule1.Database1.Commit;
+         showmessage('ลบบริษัทเรียบร้อย');
+     except
+         showmessage('!!!มีข้อผิดพลาดเกิดขึ้น!!!');
+         DataModule1.Database1.Rollback;
+     raise;
+     end;
+     DataModule1.Qr_Company_Detail.Close;
+     DataModule1.Qr_Company_Detail.Open;
+end;
+
+procedure TFr_Durable.Bt_Insert_CompanyClick(Sender: TObject);
+begin
+     Fr_Company.Ed_Company_Name.Text:='';
+     Fr_Company.Mm_Address.Text:='';
+     Fr_Company.Ed_Phone1.Text:='';
+     Fr_Company.Ed_Phone2.Text:='';
+     Fr_Company.Ed_Phone3.Text:='';
+     Fr_Company.Ed_Fax.Text:='';
+     Fr_Company.Update_Flag := False;
+     Fr_Company.ShowModal;
+     //Company AutoComplete
+     if DataModule1.Qr_Company_Detail.FieldCount <=0 then exit;
+     Cb_Select_Company.Items.Clear;
+     DataModule1.Qr_Company_Detail.First;
+     while not(DataModule1.Qr_Company_Detail.Eof) do
+     begin
+          Cb_Select_Company.Items.Add(DataModule1.Qr_Company_Detail.FieldByName('Company_Name').AsString);
+          DataModule1.Qr_Company_Detail.Next;
+     end;
+     Try
+          Strs := TEnumString.Create(Cb_Select_Company.Items) as IUnknown;
+          AutoComplete2 := CreateComObject(CLSID_AutoComplete) as IAutoComplete2;
+          OleCheck(AutoComplete2.SetOptions(ACO_AUTOSUGGEST or ACO_UPDOWNKEYDROPSLIST));
+          OleCheck(AutoComplete2.Init(Ed_Select_Company.Handle,Strs,nil,nil));
+     Except
+     End;
+     Ed_Select_Company.Text := New_Temp;
+     Ed_Select_Company.SetFocus;
+end;
+
+procedure Clear_Edit ();
+begin
+     Fr_Department.Ed_Department_Name.Text := '';
+     Fr_Department.Ed_Officer_Name.Text := '';
+     Fr_Department.Room1.Text := '';
+     Fr_Department.Room2.Text := '';
+     Fr_Department.Room3.Text := '';
+     Fr_Department.Room4.Text := '';
+     Fr_Department.Room5.Text := '';
+     Fr_Department.Room6.Text := '';
+     Fr_Department.Room7.Text := '';
+     Fr_Department.Room8.Text := '';
+     Fr_Department.Room9.Text := '';
+     Fr_Department.Room10.Text := '';
+     Fr_Department.Room11.Text := '';
+     Fr_Department.Room12.Text := '';
+     Fr_Department.Room13.Text := '';
+     Fr_Department.Room14.Text := '';
+     Fr_Department.Room15.Text := '';
+     Fr_Department.Room16.Text := '';
+     Fr_Department.Room17.Text := '';
+     Fr_Department.Room18.Text := '';
+     Fr_Department.Room19.Text := '';
+     Fr_Department.Room20.Text := '';
+     Fr_Department.Room21.Text := '';
+     Fr_Department.Room22.Text := '';
+     Fr_Department.Room23.Text := '';
+     Fr_Department.Room24.Text := '';
+     Fr_Department.Room25.Text := '';
+     Fr_Department.Room26.Text := '';
+     Fr_Department.Room27.Text := '';
+end;
+
+procedure TFr_Durable.Bt_Insert_DepartmentClick(Sender: TObject);
+begin
+     Fr_Department.Update_Flag := False;
+     Fr_Department.Cb_Officer_Name.Text := '';
+     Clear_Edit;
+     Fr_Department.ShowModal;
+end;
+
+procedure TFr_Durable.Bt_Delete_DepartmentClick(Sender: TObject);
+var  Temp:String;
+begin
+     // Check Department Name Exist?
+     if Cb_Department_Name.Text = '' then
+     begin
+          Showmessage('กรุณาเลือกฝ่ายที่จะลบ');
+          exit;
+     end;
+     // Ask For sure.
+     Temp := 'คุณแน่ใจหรือไม่ที่จะลบ ' + Cb_Department_Name.Text+'และห้องที่อยู่ภายในฝ่ายทั้งหมด';
+     if MessageDlg(Temp,mtConfirmation,[mbYes,mbNo],0) = mrNo then exit;
+     with DataModule1.Qr_Transaction do
+     begin
+          // Find Durable In This Department
+          Close;
+          SQL.Clear;
+          SQL.Add('Select Durable_ID From Department D1,Durable D2,Room R');
+          SQL.Add('Where Department_Name = ' +char(39) +Cb_Department_Name.Text +char(39));
+          SQL.Add('And D2.Room_ID = R.Room_ID And R.Department_ID = D1.Department_ID');
+          Open;
+          if FieldValues['Durable_ID'] <> Null then
+          begin
+               Showmessage('ไม่สามารถลบฝ่ายได้เนื่องจากยังมีครุภัณฑ์อยู่ในฝ่ายนี้');
+               Exit;
+          end;
+          Close;
+          SQL.Clear;
+          SQL.Add('Select Officer_ID From Department D,Officer O');
+          SQL.Add('Where Department_Name = ' +char(39) +Cb_Department_Name.Text +char(39));
+          SQL.Add('And O.Department_ID = D.Department_ID');
+          Open;
+          if FieldValues['Officer_ID'] <> Null then
+          begin
+               Showmessage('ไม่สามารถลบฝ่ายได้เนื่องจากยังมีเจ้าหน้าที่อยู่ในฝ่ายนี้');
+               Exit;
+          end;
+     end;
+     //Start Transaction
+     DataModule1.Database1.StartTransaction;
+     try
+         with DataModule1.Qr_Transaction do
+         begin
+              // Find Departmenr ID
+              Close;
+              SQL.Clear;
+              SQL.Add('Select Department_ID From Department');
+              SQL.Add('Where Department_Name = ' +char(39) +Cb_Department_Name.Text +char(39));
+              Open;
+              Department_ID := FieldValues['Department_ID'];
+              // Delete Department
+              close;
+              Params.Clear;
+              SQL.Clear;
+              SQL.Add('Delete From Department');
+              SQL.Add('Where Department_ID = :ID');
+              ParamByName('ID').AsInteger := Department_ID;
+              execSQL;
+              DataModule1.Tb_Department_Detail.Refresh;
+              //Manage Officer
+              //Fr_Move_Department.ShowModal;
+              // Delete Room
+              close;
+              Params.Clear;
+              SQL.Clear;
+              SQL.Add('Delete From Room');
+              SQL.Add('Where Department_ID = :ID');
+              ParamByName('ID').AsInteger := Department_ID;
+              execSQL;
+         end;
+         DataModule1.Database1.Commit;
+         showmessage('ลบฝ่ายเรียบร้อย');
+     except
+         showmessage('!!!มีข้อผิดพลาดเกิดขึ้น!!!');
+         DataModule1.Database1.Rollback;
+     raise;
+     end;
+     DataModule1.Tb_Department_Detail.Close;
+     DataModule1.Tb_Department_Detail.Open;
+     DataModule1.Qr_Room_Detail.Close;
+     DataModule1.Qr_Room_Detail.Open;
+     DataModule1.Qr_Officer_Detail.Close;
+     DataModule1.Qr_Officer_Detail.Open;
+
+end;
+
+procedure insert_room_to_edit ();
+begin
+     if DataModule1.Tb_Room.FieldCount <=0 then exit;
+     DataModule1.Tb_Room.First;
+     Fr_Department.Room1.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room2.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room3.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room4.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room5.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room6.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room7.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room8.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room9.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room10.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room11.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room12.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room13.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room14.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room15.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room16.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room17.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room18.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room19.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room20.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room21.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room22.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room23.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room24.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room25.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room26.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+     DataModule1.Tb_Room.Next;
+     if DataModule1.Tb_Room.Eof then exit;
+     Fr_Department.Room27.Text := Fr_Durable.Gr_Room_Name.SelectedField.AsString;
+end;
+
+procedure TFr_Durable.Bt_Update_DepartmentClick(Sender: TObject);
+begin
+     // Is User Select Department?
+     if Cb_Department_Name.Text = '' then
+     begin
+          showmessage('กรุณาเลือกฝ่ายที่ต้องการแก้ไข');
+          exit;
+     end;
+     Clear_Edit;
+     // Insert Room List To Edit
+     insert_room_to_edit;
+     with DataModule1.Qr_Transaction do
+     begin
+          // Write Department ID To Update Form
+          Close;
+          SQL.Clear;
+          SQL.Add('Select * From Department');
+          SQL.Add('Where Department_Name = '+Char(39) +Cb_Department_Name.Text+Char(39));
+          Open;
+          Fr_Department.Department_ID:= FieldValues['Department_ID'];
+     end;
+     // Show Officer Name In Update Form
+     //Fr_Department.Cb_Officer_Name.Text :=  Ed_Officer_Name.Text;
+     Fr_Department.Ed_Officer_Name.Text := Ed_Officer_Name.Text;
+     // Show Department Name In Update Form
+     Fr_Department.Ed_Department_Name.Text := Cb_Department_Name.Text;
+     // Set Update Flag to True
+     Fr_Department.Update_Flag := True;
+     // Show Update Form
+     Fr_Department.ShowModal;
+end;
+
+procedure TFr_Durable.Bt_Insert_RoomClick(Sender: TObject);
+begin
+     Fr_Room.Ed_Room_Name.Text := '';
+     Fr_Room.Cb_Department_Name.KeyValue := 0;
+     Fr_Room.Update_Flag := False;
+     Fr_Room.ShowModal;
+end;
+
+procedure TFr_Durable.Bt_Delete_RoomClick(Sender: TObject);
+var Room_Name,Temp :String;
+begin
+     Room_Name := Gr_Room_Detail.Fields[0].Text;
+     if Room_Name = '' then
+     begin
+          showmessage('กรุณาเลือกห้องที่จะลบ');
+          exit;
+     end;
+     Temp := 'คุณแน่ใจหรือไม่ที่จะลบ ' + Room_Name;
+     if MessageDlg(Temp,mtConfirmation,[mbYes,mbNo],0) = mrNo then exit;
+     with DataModule1.Qr_Transaction do
+     begin
+          // Find Durable In This Room
+          Close;
+          SQL.Clear;
+          SQL.Add('Select Durable_ID From Durable D,Room R');
+          SQL.Add('Where Room_Name = ' +char(39) + Room_Name +char(39));
+          SQL.Add('And R.Room_ID = D.Room_ID');
+          Open;
+          if FieldValues['Durable_ID'] <> Null then
+          begin
+               Showmessage('ไม่สามารถลบห้องได้เนื่องจากยังมีครุภัณฑ์อยู่ในห้องนี้');
+               Exit;
+          end;
+     end;
+     DataModule1.Database1.StartTransaction;
+     try
+         with DataModule1.Qr_Transaction do
+         begin
+              close;
+              Params.Clear;
+              SQL.Clear;
+              SQL.Add('Delete From Room');
+              SQL.Add('Where Room_Name = '+char(39)+Room_Name+char(39));
+              execSQL;
+         end;
+         DataModule1.Database1.Commit;
+         showmessage('ลบห้องเรียบร้อย');
+     except
+         showmessage('!!!มีข้อผิดพลาดเกิดขึ้น!!!');
+         DataModule1.Database1.Rollback;
+     raise;
+     end;
+     DataModule1.Tb_Department_Detail.Close;
+     DataModule1.Tb_Department_Detail.Open;
+     DataModule1.Qr_Room_Detail.Close;
+     DataModule1.Qr_Room_Detail.Open;
+end;
+
+procedure TFr_Durable.Bt_Update_RoomClick(Sender: TObject);
+var Room_Name,Department_Name : String;
+    Department_ID : Integer;
+begin
+     Department_Name := Gr_Room_Detail.Fields[1].Text;
+     Room_Name :=Gr_Room_Detail.Fields[0].Text;
+     if Room_Name = '' then
+     begin
+          Showmessage('กรุณาเลือกห้องที่จะแก้ไข');
+          exit;
+     end;
+     with DataModule1.Qr_Transaction do
+     begin
+          if Gr_Room_Detail.Fields[1].Text <> '' then
+          begin
+               close;
+               SQL.Clear;
+               SQL.Add('Select Department_ID');
+               SQL.Add('From Department ');
+               SQL.Add('Where Department_Name = '+char(39)+Department_Name+char(39));
+               Open;
+               Department_ID := FieldValues['Department_ID'];
+               Fr_Room.Cb_Department_Name.KeyValue :=  Department_ID;
+          end;
+          Close;
+          SQL.Clear;
+          SQL.Add('Select * From Room');
+          SQL.Add('Where Room_Name = '+Char(39) +Room_Name+Char(39));
+          Open;
+          Fr_Room.Room_ID:= FieldValues['Room_ID'];
+     end;
+     Fr_Room.Ed_Room_Name.Text := Room_Name;
+     Fr_Room.Update_Flag := True;
+     Fr_Room.ShowModal;
+end;
+
+procedure TFr_Durable.Bt_Insert_TypeClick(Sender: TObject);
+begin
+     Fr_Type.Ed_Type_Name.Text := '';
+     Fr_Type.Cb_Category.Text := '';
+     Fr_Type.Update_Flag := False;
+     Fr_Type.ShowModal;
+end;
+
+procedure TFr_Durable.Bt_Update_TypeClick(Sender: TObject);
+var Type_Name:String;
+    Category : Integer;
+begin
+     if Gr_Type_Detail.Fields[1].Text = 'สำนักงาน' then
+          Category := 0
+     else if Gr_Type_Detail.Fields[1].Text = 'อาคาร' then
+          Category := 1
+     else Category := 2;
+     Type_Name :=Gr_Type_Detail.Fields[0].Text;
+     if Type_Name = '' then
+     begin
+          Showmessage('กรุณาเลือกชนิดที่จะแก้ไข');
+          exit;
+     end;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Clear;
+          SQL.Add('Select * From Type');
+          SQL.Add('Where Type_Name = '+Char(39) +Type_Name+Char(39));
+          Open;
+          Fr_Type.Type_ID:= FieldValues['Type_ID'];
+     end;
+     Fr_Type.Ed_Type_Name.Text := Type_Name;
+     Fr_Type.Cb_Category.ItemIndex :=  Category;
+     Fr_Type.Update_Flag := True;
+     Fr_Type.ShowModal;
+end;
+
+procedure TFr_Durable.Bt_Delete_TypeClick(Sender: TObject);
+var Type_Name,Temp : String;
+begin
+     Type_Name := Trim(Gr_Type_Detail.Fields[0].Text);
+     if Type_Name = '' then
+     begin
+          showmessage('กรุณาเลือกชนิดที่จะลบ');
+          exit;
+     end;
+     Temp := 'คุณแน่ใจหรือไม่ที่จะลบ ' + Type_Name;
+     if MessageDlg(Temp,mtConfirmation,[mbYes,mbNo],0) = mrNo then exit;
+     with DataModule1.Qr_Transaction do
+     begin
+          // Find Durable That Link With This Type
+          Close;
+          SQL.Clear;
+          SQL.Add('Select Durable_ID From Durable D,Type T');
+          SQL.Add('Where Type_Name = ' + Char(39) + Type_Name + Char(39));
+          SQL.Add('And D.Type_ID = T.Type_ID');
+          Open;
+          if FieldValues['Durable_ID'] <> Null then
+          begin
+               Showmessage('ไม่สามารถลบชนิดนี้ได้เนื่องจากยังมีครุภัณฑ์อ้างถึงอยู่');
+               Exit;
+          end;
+     end;
+     DataModule1.Database1.StartTransaction;
+     try
+         with DataModule1.Qr_Transaction do
+         begin
+              close;
+              Params.Clear;
+              SQL.Clear;
+              SQL.Add('Delete From Type');
+              SQL.Add('Where Type_Name = '+char(39)+Type_Name+char(39));
+              execSQL;
+         end;
+         DataModule1.Database1.Commit;
+         showmessage('ลบชนิดเรียบร้อย');
+     except
+         showmessage('!!!มีข้อผิดพลาดเกิดขึ้น!!!');
+         DataModule1.Database1.Rollback;
+     raise;
+     end;
+     DataModule1.Qr_Type.Close;
+     DataModule1.Qr_Type.Open;
+end;
+
+procedure TFr_Durable.Bt_Insert_OfficerClick(Sender: TObject);
+begin
+     Fr_Officer.Ed_Officer_Name.Text := '';
+     Fr_Officer.Cb_Department_Name.KeyValue := 0;
+     Fr_Officer.Update_Flag := False;
+     Fr_Officer.ShowModal;
+end;
+
+procedure TFr_Durable.Bt_Update_OfficerClick(Sender: TObject);
+var Department_Name : String;
+    Officer_Name : String;
+    Department_ID : Integer;
+begin
+     Department_Name := Gr_Officer_Detail.Fields[1].Text;
+     Officer_Name := Gr_Officer_Detail.Fields[0].Text;
+     if Officer_Name = '' then
+     begin
+          Showmessage('กรุณาเลือกเจ้าหน้าที่ที่จะแก้ไข');
+          exit;
+     end;
+     with DataModule1.Qr_Transaction do
+     begin
+          //Find Department ID From Department Name
+          close;
+          SQL.Clear;
+          SQL.Add('Select Department_ID');
+          SQL.Add('From Department ');
+          SQL.Add('Where Department_Name = '+char(39)+Department_Name+char(39));
+          Open;
+          Department_ID := FieldValues['Department_ID'];
+          Fr_Officer.Cb_Department_Name.KeyValue :=  Department_ID;
+          //Find Officer ID
+          Close;
+          SQL.Clear;
+          SQL.Add('Select Officer_ID From Officer');
+          SQL.Add('Where Officer_Name = '+Char(39) +Officer_Name+Char(39));
+          Open;
+          Fr_Officer.Officer_ID:= FieldValues['Officer_ID'];
+     end;
+     Fr_Officer.Ed_Officer_Name.Text := Officer_Name;
+     Fr_Officer.Update_Flag := True;
+     Fr_Officer.ShowModal;
+end;
+
+procedure TFr_Durable.Bt_Delete_OfficerClick(Sender: TObject);
+var Officer_Name, Temp, Other_Depart : String;
+    Officer_ID : Integer;
+begin
+     Officer_Name := Gr_Officer_Detail.Fields[0].Text;
+     if Officer_Name = '' then
+     begin
+          showmessage('กรุณาเลือกเจ้าหน้าที่ที่จะลบ');
+          exit;
+     end;
+     Temp := 'คุณแน่ใจหรือไม่ที่จะลบ ' + Officer_Name;
+     if MessageDlg(Temp,mtConfirmation,[mbYes,mbNo],0) = mrNo then exit;
+     
+     with DataModule1.Qr_Transaction do
+     begin
+          // Find Durable That Officer Repond
+          Close;
+          SQL.Clear;
+          SQL.Add('Select Durable_ID From Officer O,Durable D');
+          SQL.Add('Where Officer_Name = ' +char(39) +Officer_Name +char(39));
+          SQL.Add('And D.Respond_ID = O.Officer_ID');
+          Open;
+          if FieldValues['Durable_ID'] <> Null then
+          begin
+               Showmessage('ไม่สามารถลบเจ้าหน้าที่ได้เนื่องจากยังมีครุภัณฑ์อยู่ในความรับผิดชอบ');
+               Exit;
+          end;
+          Close;
+          SQL.Clear;
+          SQL.Add('Select Durable_ID From Officer O,Repair R');
+          SQL.Add('Where Officer_Name = ' +char(39) +Officer_Name +char(39));
+          SQL.Add('And R.Officer_ID = O.Officer_ID');
+          Open;
+          if FieldValues['Durable_ID'] <> Null then
+          begin
+               Showmessage('ไม่สามารถลบเจ้าหน้าที่ได้เนื่องจากยังมีครุภัณฑ์อยู่ในความรับผิดชอบ');
+               Exit;
+          end;
+          Close;
+          SQL.Clear;
+          SQL.Add('Select Durable_ID From Officer O,Repair_History R');
+          SQL.Add('Where Officer_Name = ' +char(39) +Officer_Name +char(39));
+          SQL.Add('And R.Officer_ID = O.Officer_ID');
+          Open;
+          if FieldValues['Durable_ID'] <> Null then
+          begin
+               Showmessage('ไม่สามารถลบเจ้าหน้าที่ได้เนื่องจากยังมีครุภัณฑ์อยู่ในความรับผิดชอบ');
+               Exit;
+          end;
+     end;
+     DataModule1.Database1.StartTransaction;
+     try
+          with DataModule1.Qr_Transaction do
+          begin
+               Close;
+               SQL.Clear;
+               SQL.Add('Select Officer_ID From Officer');
+               SQL.Add('Where Officer_Name = '+Char(39) +Officer_Name+Char(39));
+               Open;
+               Officer_ID:= FieldValues['Officer_ID'];
+               Close;
+               SQL.Clear;
+               SQL.Add('Select Department_ID,Department_Name From Department');
+               SQL.Add('Where Chief_ID = ' +IntToStr(Officer_ID));
+               Open;
+               if (FieldValues['Department_ID'] <> Null) then
+               begin
+                    Other_Depart := FieldValues['Department_Name'];
+                    close;
+                    Params.Clear;
+                    SQL.Add('Update Department');
+                    SQL.Add('Set Chief_ID = Null');
+                    SQL.Add('Where Department_Name = '+char(39)+Other_Depart+char(39));
+               end;
+               close;
+               Params.Clear;
+               SQL.Clear;
+               SQL.Add('Delete From Officer');
+               SQL.Add('Where Officer_Name = '+char(39)+Officer_Name+char(39));
+               execSQL;
+          end;
+          DataModule1.Database1.Commit;
+          showmessage('ลบเจ้าหน้าที่เรียบร้อย');
+     except
+          showmessage('!!!มีข้อผิดพลาดเกิดขึ้น!!!');
+          DataModule1.Database1.Rollback;
+     raise;
+     end;
+     DataModule1.Tb_Department_Detail.Close;
+     DataModule1.Tb_Department_Detail.Open;
+     DataModule1.Qr_Officer_Detail.Close;
+     DataModule1.Qr_Officer_Detail.Open;
+end;
+
+procedure TFr_Durable.Button1Click(Sender: TObject);
+begin
+     Fr_Type.Ed_Type_Name.Text := '';
+     Fr_Type.Cb_Category.Text := '';
+     Fr_Type.Update_Flag := False;
+     Fr_Type.ShowModal;
+     //Type AutoComplete
+     if DataModule1.Qr_Type.FieldCount <=0 then exit;
+     Cb_Type.Items.Clear;
+     DataModule1.Qr_Type.First;
+     while not(DataModule1.Qr_Type.Eof) do
+     begin
+          Cb_Type.Items.Add(DataModule1.Qr_Type.FieldByName('Type_Name').AsString);
+          DataModule1.Qr_Type.Next;
+     end;
+     Try
+          Strs := TEnumString.Create(Cb_Type.Items) as IUnknown;
+          AutoComplete2 := CreateComObject(CLSID_AutoComplete) as IAutoComplete2;
+          OleCheck(AutoComplete2.SetOptions(ACO_AUTOSUGGEST or ACO_UPDOWNKEYDROPSLIST));
+          OleCheck(AutoComplete2.Init(Ed_Type.Handle,Strs,nil,nil));
+     Except
+     End;
+     Ed_Type.Text := New_Temp;
+     Ed_Type.OnExit(Sender);
+     Ed_Type.SetFocus;
+end;
+
+procedure TFr_Durable.BitBtn2Click(Sender: TObject);
+var Length_Maintain,n,i,j,Inc_Phase,Officer_ID,Room_ID,Type_ID,Company_ID,Long_Phase : Integer;
+    Durable_ID,Temp,Static_Phase:String;
+    Year1,Month1,Day1 : Word;
+begin
+     if Trim(Ed_Durable_ID.Text) = '' then
+     begin
+        showmessage('กรุณาใส่เลขครุภัณฑ์');
+        exit;
+     end;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select Durable_ID from durable where Durable_ID = ' +char(39) +Trim(Ed_Durable_ID.Text) +char(39);
+          Open;
+          if FieldValues['Durable_ID'] <> null then
+          begin
+               showmessage('มีเลขครุภัณฑ์นี้ในฐานข้อมูลแล้ว');
+               exit;
+          end;
+     end;
+     if Trim(Ed_Type.Text) = '' then
+     begin
+        showmessage('กรุณาเลือกชนิดครุภัณฑ์');
+        exit;
+     end;
+     if Trim(Cb_Status.Text) = '' then
+     begin
+        showmessage('กรุณาเลือกสถานะของครุภัณฑ์');
+        exit;
+     end;
+     if Trim(Ed_Room.Text) = '' then
+     begin
+        showmessage('กรุณาเลือกห้องที่เก็บครุภัณฑ์');
+        exit;
+     end;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select Type_ID from Type where Type_Name = ' +char(39) +Trim(Ed_Type.Text) +char(39);
+          Open;
+          if FieldValues['Type_ID'] = null then
+          begin
+               showmessage('กรุณาเลือกชนิดจากรายการ');
+               exit;
+          end
+          else
+                Type_ID := FieldValues['Type_ID'];
+          if Trim(Ed_Respond_Name2.Text) <> '' then
+          begin
+               Close;
+               SQL.Text := 'select Officer_ID from Officer where Officer_Name = ' +char(39) +Trim(Ed_Respond_Name2.Text) +char(39);
+               Open;
+               if FieldValues['Officer_ID'] = null then
+               begin
+                    showmessage('กรุณาเลือกชื่อเจ้าหน้าที่จากรายการ');
+                    exit;
+               end
+               else
+                    Officer_ID := FieldValues['Officer_ID'];
+          end
+          else Officer_ID := -1;
+          Close;
+          SQL.Text := 'select Room_ID from Room where Room_Name = ' +char(39) +Trim(Ed_Room.Text) +char(39);
+          Open;
+          if FieldValues['Room_ID'] = null then
+          begin
+               showmessage('กรุณาเลือกห้องจากรายการ');
+               exit;
+          end
+          else
+                Room_ID := FieldValues['Room_ID'];
+          if Trim(Ed_Select_Company.Text) <> '' then
+          begin
+               Close;
+               SQL.Text := 'select Company_ID from Company where Company_Name = ' +char(39) +Trim(Ed_Select_Company.Text) +char(39);
+               Open;
+               if FieldValues['Company_ID'] = null then
+               begin
+                    showmessage('กรุณาเลือกบริษัทจากรายการ');
+                    exit;
+               end
+               else
+                     Company_ID := FieldValues['Company_ID'];
+          end
+          else Company_ID := -1;
+     end;
+     if Cb_TypeMaintain.Text = 'ปี' then
+          Length_Maintain := StrToIntDef(Ed_Length_Maintain.Text,0) * 12
+     else
+          Length_Maintain := StrToIntDef(Ed_Length_Maintain.Text,0);
+     if Ck_Many.Checked then  n:= StrToInt(Ed_Number.Text)
+     else n:=1;
+     Durable_ID := Trim(Ed_Durable_ID.Text);
+     Inc_Phase := 0;
+     Long_Phase := 0;
+     if n>1 then
+     begin
+          //Cut ID
+          j:=length(Durable_ID);
+          Temp := '';
+          Static_Phase := '';
+          while ((j>0) and (Durable_ID[j] in ['0','1','2','3','4','5','6','7','8','9'])) do
+          begin
+               Temp := Durable_ID[j] +Temp;
+               j:=j-1;
+          end;
+          try
+               Long_Phase := length(Temp);
+               Inc_Phase := StrToInt(Temp);
+          except
+               Showmessage('เลขครุภัณฑ์ไม่เหมาะสม');
+               exit
+          end;
+          for i:=1 to j do
+          begin
+               Static_Phase := Static_Phase+Durable_ID[i];
+          end;
+     end;
+     i := 1;
+     DataModule1.Database1.StartTransaction;
+     try
+          repeat
+          //if i >1 then Inc ID
+          if i>1 then
+          begin
+               Inc_Phase := Inc_Phase+1;
+               Temp := IntToStr(Inc_Phase);
+               While length(Temp) < Long_Phase Do Temp:= '0'+Temp;
+               Durable_ID := Static_Phase+ Temp;
+          end;
+          with DataModule1.Qr_Transaction do
+          begin
+               Close;
+               SQL.Clear;
+               Params.Clear;
+               SQL.Add(' Insert Into Durable (Durable_ID,Type_ID,Price,Respond_ID,Room_ID,Status,Length_Maintain,Company_ID,Contact_Name,Detail,Date_Buy,Date_Change');
+               if Ed_Date_Expire1.Text <> '' then SQL.Add(',Date_Expire1');
+               if Ed_Date_Expire2.Text <> '' then SQL.Add(',Date_Expire2');
+               SQL.Add(')');
+               SQL.Add(' values(:Durable_ID,:Type_ID,:Price,:Respond_ID,:Room_ID,:Status,:Length_Maintain,:Company_ID,:Contact_Name,:Detail,:Date_Buy,:Date_Change');
+               if Ed_Date_Expire1.Text <> '' then
+               begin
+                    SQL.Add(',:Date_Expire1');
+                    DecodeDate(StrToDate(Ed_Date_Expire1.Text),Year1,Month1,Day1);
+                    Parambyname('Date_Expire1').AsDateTime := EncodeDate(Year1-543,Month1,Day1);
+               end;
+               if Ed_Date_Expire2.Text <> '' then
+               begin
+                    SQL.Add(',:Date_Expire2');
+                    DecodeDate(StrToDate(Ed_Date_Expire2.Text),Year1,Month1,Day1);
+                    Parambyname('Date_Expire2').AsDateTime := EncodeDate(Year1-543,Month1,Day1);
+               end;
+               SQL.Add(')');
+               Parambyname('Durable_ID').AsString := Durable_ID;
+               Parambyname('Type_ID').AsInteger := Type_ID;
+               Parambyname('Price').AsInteger := StrToIntDef(Ed_Price.Text,0);
+               Parambyname('Respond_ID').AsInteger := Officer_ID;
+               Parambyname('Room_ID').AsInteger := Room_ID;
+               Parambyname('Status').AsString := Trim(Cb_Status.Text);
+               Parambyname('Length_Maintain').AsInteger := Length_Maintain;
+               Parambyname('Company_ID').AsInteger := Company_ID;
+               Parambyname('Contact_Name').AsString := Trim(Ed_Contact_Name.Text);
+               Parambyname('Detail').AsString := Trim(Mm_Detail.Text);
+               Parambyname('Date_Buy').AsDateTime := Ed_Date_Buy.Date;
+               Parambyname('Date_Change').AsDateTime := Date;
+               execSQL;
+{               Close;
+               SQL.Clear;
+               Params.Clear;
+               SQL.Add('Update Durable ');
+//               SQL.Add('Set Company_ID = :Company_ID');
+ //              Parambyname('Company_ID').AsInteger := Company_ID;
+//               SQL.Add('Set Date_Buy = :Date_Buy');
+ //              SQL.Add(',Date_Change = :Date_Change');
+  //             Parambyname('Date_Buy').AsDateTime := Ed_Date_Buy.DateTime;
+    //           Parambyname('Date_Change').AsDateTime := Date;
+               if Ed_Date_Expire1.Text <> '' then
+               begin
+                    SQL.Add(',Date_Expire1 = :Date_Expire1');
+                    DecodeDate(StrToDate(Ed_Date_Expire1.Text),Year1,Month1,Day1);
+                    Parambyname('Date_Expire1').Value := EncodeDate(Year1-543,Month1,Day1);
+               end;
+               if Ed_Date_Expire2.Text <> '' then
+               begin
+                    SQL.Add(',Date_Expire2 = :Date_Expire2');
+                    DecodeDate(StrToDate(Ed_Date_Expire2.Text),Year1,Month1,Day1);
+                    Parambyname('Date_Expire2').Value := EncodeDate(Year1-543,Month1,Day1);
+               end;
+               SQL.Add('Where Durable_ID = '+char(39)+Durable_ID+char(39));
+               ExecSQL;}
+               if Ed_Category.Text = 'คอมพิวเตอร์' then
+               begin
+                    Close;
+                    SQL.Clear;
+                    Params.Clear;
+                    SQL.Add(' Insert Into Computer_Detail (Durable_ID,CPU,Monitor,Harddisk,Ram,Mouse,Keyboard,LanCard,CD_ROM,SoundCard,Speaker)');
+                    SQL.Add(' values(:Durable_ID,:CPU,:Monitor,:Harddisk,:Ram,:Mouse,:Keyboard,:LanCard,:CD_ROM,:SoundCard,:Speaker)');
+                    Parambyname('Durable_ID').AsString := Durable_ID;
+                    Parambyname('CPU').AsString := Trim(Fr_Com_Detail.Ed_CPU.Text);
+                    Parambyname('Monitor').AsString := Trim(Fr_Com_Detail.Ed_Monitor.Text);
+                    Parambyname('Harddisk').AsString := Trim(Fr_Com_Detail.Ed_Harddisk.Text);
+                    Parambyname('Ram').AsString := Trim(Fr_Com_Detail.Ed_RAM.Text);
+                    Parambyname('Mouse').AsString := Trim(Fr_Com_Detail.Ed_Mouse.Text);
+                    Parambyname('Keyboard').AsString := Trim(Fr_Com_Detail.Ed_Keyboard.Text);
+                    Parambyname('LanCard').AsString := Trim(Fr_Com_Detail.Ed_Lancard.Text);
+                    Parambyname('CD_ROM').AsString := Trim(Fr_Com_Detail.Ed_CDROM.Text);
+                    Parambyname('SoundCard').AsString := Trim(Fr_Com_Detail.Ed_Soundcard.Text);
+                    Parambyname('Speaker').AsString := Trim(Fr_Com_Detail.Ed_Speaker.Text);
+                    execSQL;
+               end;
+          end;
+          i:=i+1;
+          until i>n;
+          DataModule1.Database1.Commit;
+          showmessage('เพิ่มครุภัณฑ์เรียบร้อย');
+          Durable_Update := True;
+          Durable_Update2 := True;
+          Durable_Update3 := True;
+          Durable_Update4 := True;
+     except
+          showmessage('!!!มีข้อผิดพลาดเกิดขึ้น!!!');
+          DataModule1.Database1.Rollback;
+     raise;
+     end;
+end;
+
+procedure TFr_Durable.Ed_CategoryChange(Sender: TObject);
+begin
+     if Ed_Category.Text = 'คอมพิวเตอร์' then
+          Bt_Computer_Detail.Enabled := True
+     else Bt_Computer_Detail.Enabled := False;
+end;
+
+procedure TFr_Durable.Ed_Length_GuaranteeExit(Sender: TObject);
+var Date_Buy,Month_Buy,Year_Buy : word;
+     m,y : Word;
+begin
+     if (Ed_Length_Guarantee.Text = '') or (Ed_Length_Guarantee.Text='0') then exit;
+     try
+          StrToInt(Ed_Length_Guarantee.Text);
+     except
+          showmessage('กรุณาใส่ระยะเวลารับประกันเป็นตัวเลข');
+          exit;
+     end;
+     DecodeDate(Ed_Date_Buy.Date,Year_Buy,Month_Buy,Date_Buy);
+     if Cb_TypeGuarantee.Text = 'เดือน' then
+     begin
+          m := (Month_Buy+StrToInt(Ed_Length_Guarantee.Text)) mod 12;
+          if m = 0 then m:= 12;
+          y := 543 + Year_Buy + ((Month_Buy+StrToInt(Ed_Length_Guarantee.Text)) div 12);
+     end
+     else
+     begin
+          m := Month_Buy ;
+          y := 543 + Year_Buy + StrToInt(Ed_Length_Guarantee.Text);
+     end;
+     Ed_Date_Expire1.Text := IntToStr(Date_Buy-1)+'/'+IntToStr(m)+'/'+IntToStr(y);
+end;
+
+procedure TFr_Durable.Cb_TypeGuaranteeChange(Sender: TObject);
+var Date_Buy,Month_Buy,Year_Buy : Word;
+     m,y : Word;
+begin
+     if Ed_Length_Guarantee.Text = '' then exit;
+     try
+          StrToInt(Ed_Length_Guarantee.Text);
+     except
+          showmessage('กรุณาใส่ระยะเวลารับประกันเป็นตัวเลข');
+          exit;
+     end;
+     DecodeDate(Ed_Date_Buy.Date,Year_Buy,Month_Buy,Date_Buy);
+     if Cb_TypeGuarantee.ItemIndex = 1 then
+     begin
+          m := (Month_Buy+StrToInt(Ed_Length_Guarantee.Text)) mod 12;
+          if m = 0 then m := 12;
+          y := 543 + Year_Buy + ((Month_Buy+StrToInt(Ed_Length_Guarantee.Text)) div 12);
+     end
+     else
+     begin
+          m := Month_Buy;
+          y := 543 + Year_Buy + StrToInt(Ed_Length_Guarantee.Text);
+     end;
+     Ed_Date_Expire1.Text := IntToStr(Date_Buy-1)+'/'+IntToStr(m)+'/'+IntToStr(y);
+end;
+
+procedure TFr_Durable.Ed_Date_ExpireExit(Sender: TObject);
+var  Month_Buy,Year_Buy,Month_Expire,Year_Expire : Integer;
+     Year1,Month1,Day1 : Word;
+     Date1 : TDateTime;
+     Temp : Integer;
+begin
+
+     if Ed_Date_Expire1.Text = '' then
+     begin
+          Ed_Length_GuaranteeExit(Sender);
+          exit;
+     end;
+     try
+          StrToDate(Ed_Date_Expire1.Text);
+     except
+          showmessage('ระบุวันที่ในรูปแบบ วว/ดด/25ปป');
+          Ed_Length_GuaranteeExit(Sender);
+          exit;
+     end;
+     DecodeDate(StrToDate(Ed_Date_Expire1.Text),Year1,Month1,Day1);
+     Date1 := EncodeDate(Year1-543,Month1,Day1);
+     if (Ed_Date_Buy.Date) > (EncodeDate(Year1-543,Month1,Day1)) then
+     begin
+          showmessage('วันหมดประกันต้องไม่ก่อนวันซื้อ');
+          Ed_Length_GuaranteeExit(Sender);
+          exit;
+     end;
+     Month_Expire := StrToInt(FormatDateTime('mm',Date1));
+     Year_Expire := StrToInt(FormatDateTime('yyyy',Date1));
+     Month_Buy := StrToInt(FormatDateTime('mm',Ed_Date_Buy.Date));
+     Year_Buy := StrToInt(FormatDateTime('yyyy',Ed_Date_Buy.Date));
+     if Month_Buy = Month_Expire then
+     begin
+          Cb_TypeGuarantee.ItemIndex := 0;
+          Ed_Length_Guarantee.Text := IntToStr(Year_Expire-Year_Buy);
+     end
+     else
+     begin
+          Temp := (Year_Expire-Year_Buy) * 12;
+          if Month_Expire >= Month_Buy then
+               Temp:= Temp + Month_Expire - Month_Buy
+          else Temp:= Temp - (Month_Buy - Month_Expire);
+          Cb_TypeGuarantee.ItemIndex := 1;
+          Ed_Length_Guarantee.Text := IntToStr(Temp);
+     end;
+end;
+
+procedure Refresh_Lv_Durable_Detail ();
+begin
+     Fr_Durable.Lv_Durable_Detail.Items.Clear;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Clear;
+          SQL.Add('Select Durable_ID,Type_Name,Category,Room_Name,Department_Name,Status ');
+          SQL.Add('From Durable A,Type B,Department C,Room D');
+          SQL.Add('Where (A.Type_ID = B.Type_ID) and (D.Department_ID = C.Department_ID)');
+          SQL.Add('and (Durable_ID Like :Durable_ID + ''%'') ');
+          SQL.Add('and (A.Room_ID = D.Room_ID)');
+          if Fr_Durable.Cb_Type2.Text <> '' then SQL.Add('and (Type_Name = :Type_Name )');
+          SQL.Add('and (Category Like :Category + ''%'')');
+          if Fr_Durable.Cb_Department_Name2.Text <> '' then SQL.Add('and (Department_Name = :Department_Name  )');
+          if Fr_Durable.Cb_Room2.Text <> '' then SQL.Add('and (Room_Name = :Room_Name )');
+          SQL.Add('and (Status Like :Status + ''%'')');
+          SQL.Add('Order By Durable_ID');
+          ParamByName('Durable_ID').AsString := Fr_Durable.Ed_Durable_ID2.Text;
+          if Fr_Durable.Cb_Type2.Text <> '' then ParamByName('Type_Name').AsString := Fr_Durable.Cb_Type2.Text;
+          ParamByName('Category').AsString := Fr_Durable.Cb_Category.Text;
+          if Fr_Durable.Cb_Department_Name2.Text <> '' then ParamByName('Department_Name').AsString := Fr_Durable.Cb_Department_Name2.Text;
+          if Fr_Durable.Cb_Room2.Text <> '' then ParamByName('Room_Name').AsString := Fr_Durable.Cb_Room2.Text;
+          ParamByName('Status').AsString := Fr_Durable.Cb_Status2.Text;
+//          try
+               ExecSQL;
+//          except
+//               Fr_Durable.Close;
+//          end;
+          Open;
+          First;
+     end;
+     while not DataModule1.Qr_Transaction.Eof do
+     begin
+          with Fr_Durable.Lv_Durable_Detail.Items.Add  do
+          begin
+               Caption := DataModule1.Qr_Transaction.FieldValues['Durable_ID'];
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Type_Name']);
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Category']);
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Room_Name']);
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Department_Name']);
+               SubItems.add(DataModule1.Qr_Transaction.FieldValues['Status']);
+               DataModule1.Qr_Transaction.Next;
+          end;
+     end;
+     Fr_Durable.Label90.Caption := 'จำนวนทั้งหมด = '+ IntToStr(Fr_Durable.Lv_Durable_Detail.Items.Count);
+end;
+
+procedure TFr_Durable.TabSheet1Show(Sender: TObject);
+begin
+     if not(Durable_Update) then exit;
+     Durable_Update := False;
+     Ed_Durable_ID2.Text := '';
+     Cb_Type2.KeyValue := 0;
+     Cb_Category.Text := '';
+     Cb_Room2.KeyValue := 0;
+     Cb_Department_Name2.KeyValue := 0;
+     Cb_Status2.Text := '';
+     Refresh_Lv_Durable_Detail;
+end;
+
+procedure TFr_Durable.Cb_Type2MouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+     Cb_Type2.KeyValue := 0;
+end;
+
+procedure TFr_Durable.Cb_Room2MouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+     Cb_Room2.KeyValue := 0;
+end;
+
+procedure TFr_Durable.TabSheet2Show(Sender: TObject);
+begin
+     Ed_Date_Buy.Date := Date;
+     //Type AutoComplete
+     if DataModule1.Qr_Type.FieldCount >0 then
+     Begin
+          Cb_Type.Items.Clear;
+          DataModule1.Qr_Type.First;
+          while not(DataModule1.Qr_Type.Eof) do
+          begin
+               Cb_Type.Items.Add(DataModule1.Qr_Type.FieldByName('Type_Name').AsString);
+               DataModule1.Qr_Type.Next;
+          end;
+          Try
+               Strs := TEnumString.Create(Cb_Type.Items) as IUnknown;
+               AutoComplete2 := CreateComObject(CLSID_AutoComplete) as IAutoComplete2;
+               OleCheck(AutoComplete2.SetOptions(ACO_AUTOSUGGEST or ACO_UPDOWNKEYDROPSLIST));
+               OleCheck(AutoComplete2.Init(Ed_Type.Handle,Strs,nil,nil));
+          Except
+          End;
+     end;
+     //Officer Name AutoComplete
+     if DataModule1.Qr_Officer_Detail.FieldCount >0 then
+     Begin
+          Cb_Respond_Name.Items.Clear;
+          DataModule1.Qr_Officer_Detail.First;
+          while not(DataModule1.Qr_Officer_Detail.Eof) do
+          begin
+               Cb_Respond_Name.Items.Add(DataModule1.Qr_Officer_Detail.FieldByName('Officer_Name').AsString);
+               DataModule1.Qr_Officer_Detail.Next;
+          end;
+          Try
+               Strs := TEnumString.Create(Cb_Respond_Name.Items) as IUnknown;
+               AutoComplete2 := CreateComObject(CLSID_AutoComplete) as IAutoComplete2;
+               OleCheck(AutoComplete2.SetOptions(ACO_AUTOSUGGEST or ACO_UPDOWNKEYDROPSLIST));
+               OleCheck(AutoComplete2.Init(Ed_Respond_Name2.Handle,Strs,nil,nil));
+          Except
+          End;
+     end;
+     //Room AutoComplete
+     if DataModule1.Qr_Room_Detail.FieldCount >0 then
+     Begin
+          Cb_Room.Items.Clear;
+          DataModule1.Qr_Room_Detail.First;
+          while not(DataModule1.Qr_Room_Detail.Eof) do
+          begin
+               Cb_Room.Items.Add(DataModule1.Qr_Room_Detail.FieldByName('Room_Name').AsString);
+               DataModule1.Qr_Room_Detail.Next;
+          end;
+          Try
+               Strs := TEnumString.Create(Cb_Room.Items) as IUnknown;
+               AutoComplete2 := CreateComObject(CLSID_AutoComplete) as IAutoComplete2;
+               OleCheck(AutoComplete2.SetOptions(ACO_AUTOSUGGEST or ACO_UPDOWNKEYDROPSLIST));
+               OleCheck(AutoComplete2.Init(Ed_Room.Handle,Strs,nil,nil));
+          Except
+          End;
+     end;
+     //Company AutoComplete
+     if DataModule1.Qr_Company_Detail.FieldCount > 0 then
+     Begin
+          Cb_Select_Company.Items.Clear;
+          DataModule1.Qr_Company_Detail.First;
+          while not(DataModule1.Qr_Company_Detail.Eof) do
+          begin
+               Cb_Select_Company.Items.Add(DataModule1.Qr_Company_Detail.FieldByName('Company_Name').AsString);
+               DataModule1.Qr_Company_Detail.Next;
+          end;
+          Try
+               Strs := TEnumString.Create(Cb_Select_Company.Items) as IUnknown;
+               AutoComplete2 := CreateComObject(CLSID_AutoComplete) as IAutoComplete2;
+               OleCheck(AutoComplete2.SetOptions(ACO_AUTOSUGGEST or ACO_UPDOWNKEYDROPSLIST));
+               OleCheck(AutoComplete2.Init(Ed_Select_Company.Handle,Strs,nil,nil));
+          Except
+          End;
+     end;
+end;
+
+procedure Clear_Fr_Com_Detail();
+begin
+     Fr_Com_Detail.Ed_CPU.Text := '';
+     Fr_Com_Detail.Ed_Monitor.Text := '';
+     Fr_Com_Detail.Ed_Harddisk.Text := '';
+     Fr_Com_Detail.Ed_Ram.Text := '';
+     Fr_Com_Detail.Ed_Mouse.Text := '';
+     Fr_Com_Detail.Ed_Keyboard.Text := '';
+     Fr_Com_Detail.Ed_Lancard.Text := '';
+     Fr_Com_Detail.Ed_CDROM.Text := '';
+     Fr_Com_Detail.Ed_Soundcard.Text := '';
+     Fr_Com_Detail.Ed_Speaker.Text := '';
+end;
+
+procedure TFr_Durable.BitBtn3Click(Sender: TObject);
+begin
+     Ed_Durable_ID.Text := '';
+     Ed_Type.Text := '';
+     Cb_Status.ItemIndex := 0;
+     Ed_Price.Text := '';
+     Ed_Length_Maintain.Text := '';
+     Cb_TypeMaintain.ItemIndex := 1;
+     Ed_Respond_Name2.text := '';
+     Ed_Room.Text := '';
+     Ed_Date_Buy.Date := Date;
+     Ed_Length_Guarantee.Text := '';
+     Cb_TypeGuarantee.ItemIndex := 0;
+     Ed_Date_Expire1.Text := '';
+     Ed_Date_Expire2.Text := '';
+     Mm_Detail.Text := '';
+     Ed_Select_Company.Text := '';
+     Ed_Contact_Name.Text := '';
+     Ck_Many.Checked := False;
+     Clear_Fr_Com_Detail;
+end;
+
+procedure TFr_Durable.Lv_Durable_DetailDblClick(Sender: TObject);
+begin
+     // check click right or not
+     if Lv_Durable_Detail.SelCount = 0 then
+     begin
+          exit;
+     end;
+     Clear_Durable;
+     ShowDurableDetail(Lv_Durable_Detail.Selected.Caption);
+end;
+
+procedure ShowDurableDetail(Durable_ID : String);
+var Length_Maintain : Integer;
+    Year1,Month1,Day1 : Word;
+begin
+     with DataModule1.Qr_Transaction do
+     begin
+          close;
+          SQL.Clear;
+          SQL.Add('Select * From Durable D,Room R,Officer O,Company C,Type T Where Durable_ID = '+char(39)+Durable_ID+char(39));
+          SQL.Add('And D.Room_ID = R.Room_ID And D.Respond_ID *= O.Officer_ID And D.Company_ID *= C.Company_ID And  D.Type_ID = T.Type_ID');    //
+          Open;
+          if FieldValues['Durable_ID'] = Null then
+          begin
+               showmessage('ไม่มีครุถัณฑ์นี้ในฐานข้อมูล');
+               exit
+          end;
+          if (FieldValues['Length_Maintain'] mod 12) = 0 then
+          begin
+               Fr_Durable_Detail.Cb_TypeMaintain.ItemIndex := Fr_Durable_Detail.Cb_TypeMaintain.Items.IndexOf('ปี');
+               Length_Maintain := (FieldValues['Length_Maintain'] div 12);
+          end
+          else
+          begin
+               Fr_Durable_Detail.Cb_TypeMaintain.ItemIndex := Fr_Durable_Detail.Cb_TypeMaintain.Items.IndexOf('เดือน');
+               Length_Maintain := FieldValues['Length_Maintain'];
+          end;
+          Fr_Durable_Detail.Cb_Status.Items.Clear;
+          Fr_Durable_Detail.Ed_Durable_ID.Text := FieldValues['Durable_ID'];
+          Fr_Durable_Detail.Durable_ID := FieldValues['Durable_ID'];
+          Fr_Durable_Detail.Ed_Type.Text := FieldValues['Type_Name'];
+          Fr_Durable_Detail.Ed_Category.Text := FieldValues['Category'];
+          Fr_Durable_Detail.Category := FieldValues['Category'];
+          //Fr_Durable_Detail.Cb_Status.Text := FieldValues['Status'];
+          Fr_Durable_Detail.Ed_Price.Text := IntToStr(FieldValues['Price']);
+          Fr_Durable_Detail.Ed_Length_Maintain.Text := IntToStr(Length_Maintain);
+          if FieldValues['Officer_Name']<> null then
+                Fr_Durable_Detail.Ed_Respond_Name2.Text := FieldValues['Officer_Name']
+          else
+                Fr_Durable_Detail.Ed_Respond_Name2.Text := '';
+          Fr_Durable_Detail.Ed_Room.Text := FieldValues['Room_Name'];
+          if FieldValues['Date_Buy'] <> Null then
+          begin
+               DecodeDate(FieldValues['Date_Buy'],Year1,Month1,Day1);
+               Fr_Durable_Detail.Ed_Date_Buy.Text := DateToStr(EncodeDate(Year1+543,Month1,Day1));
+          end
+          else Fr_Durable_Detail.Ed_Date_Buy.Text := '';
+          if FieldValues['Date_Expire1'] <> Null then
+          begin
+               DecodeDate(FieldValues['Date_Expire1'],Year1,Month1,Day1);
+               Fr_Durable_Detail.Ed_Date_Expire1.Text := DateToStr(EncodeDate(Year1+543,Month1,Day1));
+          end
+          else Fr_Durable_Detail.Ed_Date_Expire1.Text := '';
+          if FieldValues['Date_Expire2'] <> Null then
+          begin
+               DecodeDate(FieldValues['Date_Expire2'],Year1,Month1,Day1);
+               Fr_Durable_Detail.Ed_Date_Expire2.Text := DateToStr(EncodeDate(Year1+543,Month1,Day1));
+          end
+          else Fr_Durable_Detail.Ed_Date_Expire2.Text := '';
+          Fr_Durable_Detail.Mm_Detail.Text := FieldValues['Detail'];
+          if FieldValues['Company_Name'] <> null then
+               Fr_Durable_Detail.Ed_Select_Company.Text := FieldValues['Company_Name']
+          Else
+               Fr_Durable_Detail.Ed_Select_Company.Text := '';
+          Fr_Durable_Detail.Ed_Contact_Name.Text := FieldValues['Contact_Name'];
+          if (FieldValues['Status'] = 'ดี') or (FieldValues['Status'] = 'เสีย') then
+          begin
+               Fr_Durable_Detail.Cb_Status.Items.Add('ดี');
+               Fr_Durable_Detail.Cb_Status.Items.Add('เสีย');
+               if FieldValues['Status'] = 'ดี' then Fr_Durable_Detail.Cb_Status.ItemIndex := 0
+               else Fr_Durable_Detail.Cb_Status.ItemIndex := 1;
+               Fr_Durable_Detail.TabSheet3.TabVisible := False;
+               Fr_Durable_Detail.TabSheet4.TabVisible := False;
+               Fr_Durable_Detail.TabSheet5.TabVisible := False;
+          end
+          else
+          begin
+               Fr_Durable_Detail.Cb_Status.Items.Add(FieldValues['Status']);
+               Fr_Durable_Detail.Cb_Status.ItemIndex := 0;
+               if (FieldValues['Status'] = 'ส่งซ่อม') then
+               begin
+                    Fr_Durable_Detail.TabSheet3.TabVisible := True;
+                    Fr_Durable_Detail.TabSheet4.TabVisible := False;
+                    Fr_Durable_Detail.TabSheet5.TabVisible := False;
+                    Close;
+                    SQL.Clear;
+                    Params.Clear;
+                    SQL.Add('Select * From Repair A, Company B, Officer C');
+                    SQL.Add('Where (Durable_ID = '+char(39)+Durable_ID+char(39)+')');
+                    SQL.Add('and (A.Company_ID = B.Company_ID) and (A.Officer_ID = C.Officer_ID)');;
+                    Open;
+                    With Fr_Durable_Detail do
+                    begin
+                         DecodeDate(FieldValues['Date_Repair'],Year1,Month1,Day1);
+                         Ed_Date_Repair.Text := DateToStr(EncodeDate(Year1+543,Month1,Day1));
+                         DecodeDate(FieldValues['Date_Take'],Year1,Month1,Day1);
+                         Ed_Date_Take.Text := DateToStr(EncodeDate(Year1+543,Month1,Day1));
+                         Ed_Contact_Name2.Text := FieldValues['Contact_Name'];
+                         Mm_Condition.Text := FieldValues['Condition'];
+                         Mm_Attach_Item.Text := FieldValues['Attach_Item'];
+                         Ed_Officer_Name.Text := FieldValues['Officer_Name'];
+                         Ed_Company_Name.Text := FieldValues['Company_Name'];
+                         Ed_Company_Phone1.Text := FieldValues['Phone1'];
+                         Ed_Company_Phone2.Text := FieldValues['Phone2'];
+                         Ed_Company_Phone3.Text := FieldValues['Phone3'];
+                         Mm_Company_Address.Text := FieldValues['Address'];
+                         Ed_Company_Fax.Text := FieldValues['Fax'];
+                    end;
+               end
+               else if (FieldValues['Status'] = 'จำหน่าย') then
+               begin
+                    Fr_Durable_Detail.TabSheet3.TabVisible := False;
+                    Fr_Durable_Detail.TabSheet4.TabVisible := True;
+                    Fr_Durable_Detail.TabSheet5.TabVisible := False;
+                    Close;
+                    SQL.Clear;
+                    Params.Clear;
+                    SQL.Text := 'Select * From Over1 Where Durable_ID = '+char(39)+Durable_ID+char(39);
+                    Open;
+                    With Fr_Durable_Detail do
+                    begin
+                         DecodeDate(FieldValues['Date_Over'],Year1,Month1,Day1);
+                         Ed_Date_Over.Text := DateToStr(EncodeDate(Year1+543,Month1,Day1));
+                         Ed_Document_ID.Text := FieldValues['Document_ID'];
+                         Ed_Name1.Text := FieldValues['Name1'];
+                         Ed_Name2.Text := FieldValues['Name2'];
+                         Ed_Name3.Text := FieldValues['Name3'];
+                         Mm_Reason.Text := FieldValues['Reason'];
+                    end;
+               end
+               else if (FieldValues['Status'] = 'บริจาค') then
+               begin
+                    Fr_Durable_Detail.TabSheet3.TabVisible := False;
+                    Fr_Durable_Detail.TabSheet4.TabVisible := False;
+                    Fr_Durable_Detail.TabSheet5.TabVisible := True;
+                    Close;
+                    SQL.Clear;
+                    Params.Clear;
+                    SQL.Text := 'Select * From Give Where Durable_ID = '+char(39)+Durable_ID+char(39);
+                    Open;
+                    With Fr_Durable_Detail do
+                    begin
+                         DecodeDate(FieldValues['Date_Give'],Year1,Month1,Day1);
+                         Ed_Date_Give.Text := DateToStr(EncodeDate(Year1+543,Month1,Day1));
+                         Ed_Give_Document.Text := FieldValues['Document_ID'];
+                         Mm_Receiver.Text := FieldValues['Give_Name'];
+                         Mm_Give_Reason.Text := FieldValues['Reason'];
+                    end;
+               end;
+          end;
+          if Fr_Durable_Detail.Ed_Category.Text = 'คอมพิวเตอร์' then
+          begin
+               close;
+               SQL.Clear;
+               SQL.Add('Select * From Computer_Detail Where Durable_ID = '+char(39)+Durable_ID+char(39));
+               Open;
+               Fr_Durable_Detail.TabSheet2.TabVisible := True;
+               Fr_Durable_Detail.Ed_CPU.Text := FieldValues['CPU'];
+               Fr_Durable_Detail.Ed_Monitor.Text := FieldValues['Monitor'];
+               Fr_Durable_Detail.Ed_Harddisk.Text := FieldValues['Harddisk'];
+               Fr_Durable_Detail.Ed_RAM.Text := FieldValues['RAM'];
+               Fr_Durable_Detail.Ed_Mouse.Text := FieldValues['Mouse'];
+               Fr_Durable_Detail.Ed_Keyboard.Text := FieldValues['Keyboard'];
+               Fr_Durable_Detail.Ed_LanCard.Text := FieldValues['LanCard'];
+               Fr_Durable_Detail.Ed_CDROM.Text := FieldValues['CD_ROM'];
+               Fr_Durable_Detail.Ed_SoundCard.Text := FieldValues['SoundCard'];
+               Fr_Durable_Detail.Ed_Speaker.Text := FieldValues['Speaker'];
+          end
+          else Fr_Durable_Detail.TabSheet2.TabVisible := False;
+     end;
+     Fr_Durable_Detail.Old_Status := Fr_Durable_Detail.Cb_Status.Text;
+     Fr_Durable_Detail.Change2 := False;
+     if Fr_Durable_Detail.Maintain then
+     begin
+          Fr_Durable_Detail.Change := True;
+          Fr_Durable_Detail.BitBtn1.Caption := 'แก้ไข';
+          Fr_Durable_Detail.Maintain := false;
+     end
+     else
+     begin
+          Fr_Durable_Detail.Change := False;
+          Fr_Durable_Detail.BitBtn1.Caption := 'ตกลง';
+     end;
+     Fr_Durable_Detail.PageControl1.ActivePageIndex := 0;
+     Refresh_Lv_History_DuFr(Durable_ID);
+     Fr_Durable_Detail.ShowModal;
+end;
+
+procedure Refresh_Lv_History_DuFr(Durable_ID : String);
+var Year1,Month1,Day1 : Word;
+begin
+     Fr_Durable_Detail.Lv_History.Items.Clear;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Clear;
+          Params.Clear;
+          SQL.Add('Select * From Repair_History A, Officer B, Company C ');
+          SQL.Add('Where (Durable_ID = '+char(39)+Durable_ID+char(39)+')');
+          SQL.Add('and (A.Company_ID = C.Company_ID)');
+          SQL.Add('and (A.Officer_ID = B.Officer_ID)');
+          SQL.Add('Order By Date_Repair');
+          Open;
+          First;
+     end;
+     while not DataModule1.Qr_Transaction.Eof do
+     begin
+          with Fr_Durable_Detail.Lv_History.Items.Add  do
+          begin
+               Caption := DataModule1.Qr_Transaction.FieldValues['Condition'];
+               SubItems.Add(IntToStr(DataModule1.Qr_Transaction.FieldValues['Repair_Price']));
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Repair_Result']);
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Detail']);
+               DecodeDate(DataModule1.Qr_Transaction.FieldValues['Date_Repair'],Year1,Month1,Day1);
+               SubItems.Add(DateToStr(EncodeDate(Year1+543,Month1,Day1)));
+               DecodeDate(DataModule1.Qr_Transaction.FieldValues['Date_Take'],Year1,Month1,Day1);
+               SubItems.Add(DateToStr(EncodeDate(Year1+543,Month1,Day1)));
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Company_Name']);
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Officer_Name']);
+               DataModule1.Qr_Transaction.Next;
+          end;
+     end;
+end;
+
+procedure Refresh_Lv_History_ReFr(Durable_ID : String);
+var Year1,Month1,Day1 : Word;
+begin
+     Fr_Receive.Lv_History.Items.Clear;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Clear;
+          Params.Clear;
+          SQL.Add('Select * From Repair_History A, Officer B, Company C ');
+          SQL.Add('Where (Durable_ID = '+char(39)+Durable_ID+char(39)+')');
+          SQL.Add('and (A.Company_ID = C.Company_ID)');
+          SQL.Add('and (A.Officer_ID = B.Officer_ID)');
+          SQL.Add('Order By Date_Repair');
+          Open;
+          First;
+     end;
+     while not DataModule1.Qr_Transaction.Eof do
+     begin
+          with Fr_Receive.Lv_History.Items.Add  do
+          begin
+               Caption := DataModule1.Qr_Transaction.FieldValues['Condition'];
+               SubItems.Add(IntToStr(DataModule1.Qr_Transaction.FieldValues['Repair_Price']));
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Repair_Result']);
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Detail']);
+               DecodeDate(DataModule1.Qr_Transaction.FieldValues['Date_Repair'],Year1,Month1,Day1);
+               SubItems.Add(DateToStr(EncodeDate(Year1+543,Month1,Day1)));
+               DecodeDate(DataModule1.Qr_Transaction.FieldValues['Date_Take'],Year1,Month1,Day1);
+               SubItems.Add(DateToStr(EncodeDate(Year1+543,Month1,Day1)));
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Company_Name']);
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Officer_Name']);
+               DataModule1.Qr_Transaction.Next;
+          end;
+     end;
+end;
+
+procedure TFr_Durable.Bt_Show_DurableClick(Sender: TObject);
+begin
+     Refresh_Lv_Durable_Detail;
+end;
+
+procedure TFr_Durable.Cb_Department_Name2MouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+     Cb_Department_Name2.KeyValue := 0;
+end;
+
+procedure TFr_Durable.Ed_Repair_IDExit(Sender: TObject);
+var Type_ID,Room_ID,Company_ID,Respond_ID : String;
+    Year1,Month1,Day1 : Word;
+begin
+     if Ed_Repair_ID.Text <> '' then
+     begin
+          with DataModule1.Qr_Transaction do
+          begin
+               Close;
+               SQL.Text := 'select * from durable where Durable_ID = ' +char(39) +Ed_Repair_ID.Text +char(39);
+               Open;
+               if FieldValues['Durable_ID'] = Null then
+               begin
+                    showmessage('ไม่มีเลขครุภัณฑ์นี้ในฐานข้อมูล');
+                    Button4.Enabled := False;
+                    Clear_Repair;
+                    exit;
+               end
+               else
+               begin
+                    Type_ID := IntToStr(FieldValues['Type_ID']);
+                    Respond_ID := IntToStr(FieldValues['Respond_ID']);
+                    Room_ID := IntToStr(FieldValues['Room_ID']);
+                    Company_ID := IntToStr(FieldValues['Company_ID']);
+                    Ed_Status.Text := FieldValues['Status'];
+                    if FieldValues['Date_Expire1'] <> Null then
+                    begin
+                         DecodeDate(FieldValues['Date_Expire1'],Year1,Month1,Day1);
+                         Ed_Date_Expire12.Text := DateToStr(EncodeDate(Year1+543,Month1,Day1));
+                    end
+                    else Ed_Date_Expire12.Text := '';
+                    if FieldValues['Date_Expire2'] <> Null then
+                    begin
+                         DecodeDate(FieldValues['Date_Expire2'],Year1,Month1,Day1);
+                         Ed_Date_Expire22.Text := DateToStr(EncodeDate(Year1+543,Month1,Day1));
+                    end
+                    else Ed_Date_Expire22.Text := '';
+                    Close;
+                    SQL.Text := 'select * from Type where Type_ID = '+Type_ID;
+                    Open;
+                    Ed_Type_Name.Text := FieldValues['Type_Name'];
+                    Ed_Category2.Text := FieldValues['Category'];
+                    Close;
+                    SQL.Text := 'select Officer_Name from Officer where Officer_ID = '+Respond_ID;
+                    Open;
+                    if FieldValues['Officer_Name'] <> Null then Ed_Respond_Name.Text := FieldValues['Officer_Name']
+                    else Ed_Respond_Name.Text := '';
+                    Close;
+                    SQL.Text := 'select Room_Name from Room where Room_ID = '+Room_ID;
+                    Open;
+                    Ed_Room_Name.Text := FieldValues['Room_Name'];
+                    Close;
+                    SQL.Text := 'select * from Company where Company_ID = '+Company_ID;
+                    Open;
+                    if FieldValues['Company_Name'] <> Null then Ed_Company_Name.Text := FieldValues['Company_Name']
+                    else Ed_Company_Name.Text := '';
+                    Button4.Enabled := True;
+                    Ed_Company_Name2.SetFocus;
+               end;
+          end;
+     end
+     else
+     begin
+          Button4.Enabled := False;
+          Clear_Repair;
+     end;
+end;
+
+procedure TFr_Durable.BitBtn1Click(Sender: TObject);
+var Company_ID,Officer_ID : integer;
+     Temp : String;
+begin
+     if Trim(Ed_Repair_ID.Text) = '' then
+     begin
+        showmessage('กรุณาใส่เลขครุภัณฑ์');
+        exit;
+     end;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select Durable_ID from Repair where Durable_ID = ' +char(39)+Trim(Ed_Repair_ID.Text) +char(39);
+          Open;
+          if FieldValues['Durable_ID'] <> Null then
+          begin
+               showmessage('ครุภัณฑ์ชิ้นนี้กำลังส่งซ่อมอยู่');
+               exit;
+          end;
+     end;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select Durable_ID from Over1 where Durable_ID = ' +char(39)+Trim(Ed_Repair_ID.Text) +char(39);
+          Open;
+          if FieldValues['Durable_ID'] <> Null then
+          begin
+               showmessage('ครุภัณฑ์ชิ้นนี้จำหน่ายไปแล้ว');
+               exit;
+          end;
+     end;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select Durable_ID from Give where Durable_ID = ' +char(39)+Trim(Ed_Repair_ID.Text) +char(39);
+          Open;
+          if FieldValues['Durable_ID'] <> Null then
+          begin
+               showmessage('ครุภัณฑ์ชิ้นนี้บริจาคไปแล้ว');
+               exit;
+          end;
+     end;
+     if Trim(Ed_Company_Name2.Text) = '' then
+     begin
+          showmessage('กรุณาเลือกบริษัทที่ส่งซ่อม');
+          exit;
+     end;
+     if Ed_Date_Repair.Date > Ed_Date_Take.Date then
+     begin
+        showmessage('วันที่คาดว่าจะได้รับต้องไม่ก่อนวันที่ส่งซ่อม');
+        exit;
+     end;
+     if Trim(Ed_Officer_Name2.Text) = '' then
+     begin
+        showmessage('กรุณาเลือกผู้ส่งซ่อม');
+        exit;
+     end;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select Company_ID from Company where Company_Name = ' +char(39) +Trim(Ed_Company_Name2.Text) +char(39);
+          Open;
+          if FieldValues['Company_ID'] = null then
+          begin
+               showmessage('กรุณาเลือกบริษัทจากรายการ');
+               exit;
+          end
+          else
+                Company_ID := FieldValues['Company_ID'];
+          Close;
+          SQL.Text := 'select Officer_ID from Officer where Officer_Name = ' +char(39) +Trim(Ed_Officer_Name2.Text) +char(39);
+          Open;
+          if FieldValues['Officer_ID'] = null then
+          begin
+               showmessage('กรุณาเลือกชื่อเจ้าหน้าที่จากรายการ');
+               exit;
+          end
+          else
+                Officer_ID := FieldValues['Officer_ID'];
+     end;
+     Temp := 'คุณแน่ใจหรือไม่ที่จะส่งซ่อมครุภัณฑ์เลขที่ ' + Trim(Ed_Repair_ID.Text);
+     if MessageDlg(Temp,mtConfirmation,[mbYes,mbNo],0) = mrNo then exit;
+     DataModule1.Database1.StartTransaction;
+     try
+          with DataModule1.Qr_Transaction do
+          begin
+               Close;
+               SQL.Clear;
+               Params.Clear;
+               SQL.Add(' Insert Into Repair (Durable_ID,Date_Repair,Company_ID,Date_Take,Officer_ID,Contact_Name,Condition,Attach_Item)');
+               SQL.Add(' values(:Durable_ID,:Date_Repair,:Company_ID,:Date_Take,:Officer_ID,:Contact_Name,:Condition,:Attach_Item)');
+               Parambyname('Durable_ID').AsString := Trim(Ed_Repair_ID.Text);
+               Parambyname('Date_Repair').AsDateTime := Ed_Date_Repair.Date;
+               Parambyname('Company_ID').AsInteger := Company_ID;
+               Parambyname('Date_Take').AsDateTime := Ed_Date_Take.Date;
+               Parambyname('Officer_ID').AsInteger := Officer_ID;
+               Parambyname('Contact_Name').AsString := Trim(Ed_Contact_Name2.Text);
+               Parambyname('Condition').AsString := Trim(Mm_Condition.Text);
+               Parambyname('Attach_Item').AsString := Trim(Mm_Attach_Item.Text);
+               execSQL;
+               Close;
+               SQL.Clear;
+               Params.Clear;
+               SQL.Add(' Update Durable Set Status = ''ส่งซ่อม'',Date_Change = :Date_Change where Durable_ID = '+char(39)+Trim(Ed_Repair_ID.Text)+Char(39));
+               ParamByName('Date_Change').AsDateTime := Ed_Date_Repair.Date;
+               ExecSQL;
+          end;
+          DataModule1.Database1.Commit;
+          showmessage('เพิ่มข้อมูลการส่งซ่อมเรียบร้อย');
+          Repair_Update := True;
+          Durable_Update := True;
+     except
+          showmessage('!!!มีข้อผิดพลาดเกิดขึ้น!!!');
+          DataModule1.Database1.Rollback;
+     raise;
+     end;
+     Clear_Repair;
+end;
+
+procedure Clear_Repair();
+begin
+     with Fr_Durable do
+     begin
+          Ed_Repair_ID.Text := '';
+          Button4.Enabled := False;
+          Ed_Type_Name.Text := '';
+          Ed_Category2.Text := '';
+          Ed_Status.Text := '';
+          Ed_Respond_Name.Text := '';
+          Ed_Room_Name.Text := '';
+          Ed_Company_Name.Text := '';
+          Ed_Date_Expire12.Text := '';
+          Ed_Date_Expire22.Text := '';
+          Ed_Company_Name2.Text := '';
+          Mm_Company_Address.Clear;
+          Ed_Company_Phone1.Clear;
+          Ed_Company_Phone2.Clear;
+          Ed_Company_Phone3.Clear;
+          Ed_Company_Fax.Clear;
+          Ed_Contact_Name2.Text := '';
+          Ed_Date_Repair.Date := Date;
+          Ed_Date_Take.Date := Date+7;
+          Ed_Officer_Name.Text := '';
+          Mm_Condition.Text := '';
+          Mm_Attach_Item.Text := '';
+     end;
+end;
+
+procedure TFr_Durable.Button2Click(Sender: TObject);
+begin
+     Fr_Company.Ed_Company_Name.Text:='';
+     Fr_Company.Mm_Address.Text:='';
+     Fr_Company.Ed_Phone1.Text:='';
+     Fr_Company.Ed_Phone2.Text:='';
+     Fr_Company.Ed_Phone3.Text:='';
+     Fr_Company.Ed_Fax.Text:='';
+     Fr_Company.Update_Flag := False;
+     Fr_Company.ShowModal;
+     //Company AutoComplete
+     if DataModule1.Qr_Company_Detail.FieldCount <=0 then exit;
+     Cb_Company_Name2.Items.Clear;
+     DataModule1.Qr_Company_Detail.First;
+     while not(DataModule1.Qr_Company_Detail.Eof) do
+     begin
+          Cb_Company_Name2.Items.Add(DataModule1.Qr_Company_Detail.FieldByName('Company_Name').AsString);
+          DataModule1.Qr_Company_Detail.Next;
+     end;
+     Try
+          Strs := TEnumString.Create(Cb_Company_Name2.Items) as IUnknown;
+          AutoComplete2 := CreateComObject(CLSID_AutoComplete) as IAutoComplete2;
+          OleCheck(AutoComplete2.SetOptions(ACO_AUTOSUGGEST or ACO_UPDOWNKEYDROPSLIST));
+          OleCheck(AutoComplete2.Init(Ed_Company_Name2.Handle,Strs,nil,nil));
+     Except
+     End;
+     Ed_Company_Name2.Text := New_Temp;
+     Ed_Company_Name2.OnExit(Sender);
+     Ed_Company_Name2.SetFocus;
+end;
+
+procedure TFr_Durable.BitBtn4Click(Sender: TObject);
+begin
+     Clear_Repair;
+end;
+
+procedure TFr_Durable.TabSheet4Show(Sender: TObject);
+begin
+     Clear_Repair;
+     //Durable ID AutoComplete
+     if Durable_Update2 then
+     begin
+          Durable_Update2 := False;
+          with DataModule1.Qr_Transaction do
+          begin
+               Close;
+               SQL.Text := 'select Durable_ID from durable';
+               Open;
+               if FieldValues['Durable_ID'] <> Null then
+               Begin
+                    Cb_Repair_ID.Items.Clear;
+                    First;
+                    while not(Eof) do
+                    begin
+                         Cb_Repair_ID.Items.Add(FieldByName('Durable_ID').AsString);
+                         Next;
+                    end;
+                    Try
+                         Strs := TEnumString.Create(Cb_Repair_ID.Items) as IUnknown;
+                         AutoComplete2 := CreateComObject(CLSID_AutoComplete) as IAutoComplete2;
+                         OleCheck(AutoComplete2.SetOptions(ACO_AUTOSUGGEST or ACO_UPDOWNKEYDROPSLIST));
+                         OleCheck(AutoComplete2.Init(Ed_Repair_ID.Handle,Strs,nil,nil));
+                    Except
+                    End;
+               end;
+          end;
+     end;
+     //Company AutoComplete
+     if DataModule1.Qr_Company_Detail.FieldCount >0 then
+     Begin
+          Cb_Company_Name2.Items.Clear;
+          DataModule1.Qr_Company_Detail.First;
+          while not(DataModule1.Qr_Company_Detail.Eof) do
+          begin
+               Cb_Company_Name2.Items.Add(DataModule1.Qr_Company_Detail.FieldByName('Company_Name').AsString);
+               DataModule1.Qr_Company_Detail.Next;
+          end;
+          Try
+               Strs := TEnumString.Create(Cb_Company_Name2.Items) as IUnknown;
+               AutoComplete2 := CreateComObject(CLSID_AutoComplete) as IAutoComplete2;
+               OleCheck(AutoComplete2.SetOptions(ACO_AUTOSUGGEST or ACO_UPDOWNKEYDROPSLIST));
+               OleCheck(AutoComplete2.Init(Ed_Company_Name2.Handle,Strs,nil,nil));
+          Except
+          End;
+     end;
+     //Officer Name AutoComplete
+     if DataModule1.Qr_Officer_Detail.FieldCount >0 then
+     begin
+          Cb_Officer_Name.Items.Clear;
+          DataModule1.Qr_Officer_Detail.First;
+          while not(DataModule1.Qr_Officer_DEtail.Eof) do
+          begin
+               Cb_Officer_Name.Items.Add(DataModule1.Qr_Officer_Detail.FieldByName('Officer_Name').AsString);
+               DataModule1.Qr_Officer_Detail.Next;
+          end;
+          Try
+               Strs := TEnumString.Create(Cb_Officer_Name.Items) as IUnknown;
+               AutoComplete2 := CreateComObject(CLSID_AutoComplete) as IAutoComplete2;
+               OleCheck(AutoComplete2.SetOptions(ACO_AUTOSUGGEST or ACO_UPDOWNKEYDROPSLIST));
+               OleCheck(AutoComplete2.Init(Ed_Officer_Name2.Handle,Strs,nil,nil));
+          Except
+          End;
+     end;
+end;
+
+procedure Refresh_Lv_Repair();
+var Year1,Month1,Day1 : Word;
+begin
+     Fr_Durable.Lv_Repair.Items.Clear;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Clear;
+          Params.Clear;
+          SQL.Add('Select * From Repair A, Company B, Officer C');
+          SQL.Add('Where (Durable_ID Like :Durable_ID + ''%'')');
+          SQL.Add('and (A.Company_ID = B.Company_ID) and (A.Officer_ID = C.Officer_ID)');
+          if Fr_Durable.Cb_Repair_Company.Text <>'' then
+          begin
+               SQL.Add('and (Company_Name = :Company_Name)');
+               ParamByName('Company_Name').AsString := Fr_Durable.Cb_Repair_Company.Text;
+          end;
+          if Fr_Durable.Cb_Repair_Officer.Text <> '' then
+          begin
+               SQL.Add('and (Officer_Name = :Officer_Name)');
+               ParamByName('Officer_Name').AsString := Fr_Durable.Cb_Repair_Officer.Text;
+          end;
+          if Fr_Durable.Ed_Date_Repair2.Text <> '' then
+          begin
+               SQL.Add('and (Date_Repair = :Date_Repair) ');
+               DecodeDate(StrToDate(Fr_Durable.Ed_Date_Repair2.Text),Year1,Month1,Day1);
+               ParamByName('Date_Repair').AsDateTime := EncodeDate(Year1-543,Month1,Day1);
+          end;
+          if Fr_Durable.Ed_Date_Take2.Text <> '' then
+          begin
+               SQL.Add('and (Date_Take '+Fr_Durable.Cb_Diff.Text+' :Date_Take)');
+               DecodeDate(StrToDate(Fr_Durable.Ed_Date_Take2.Text),Year1,Month1,Day1);
+               ParamByName('Date_Take').AsDateTime := EncodeDate(Year1-543,Month1,Day1);
+          end;
+          SQL.Add('Order By Durable_ID');
+          ParamByName('Durable_ID').AsString := Fr_Durable.Ed_Repair_ID2.Text;
+
+          ExecSQL;
+          Open;
+          First;
+     end;
+     while not DataModule1.Qr_Transaction.Eof do
+     begin
+          with Fr_Durable.Lv_Repair.Items.Add  do
+          begin
+               with DataModule1.Qr_Transaction do
+               begin
+                    Caption := FieldValues['Durable_ID'];
+                    DecodeDate(FieldValues['Date_Repair'],Year1,Month1,Day1);
+                    SubItems.Add(DateToStr(EncodeDate(Year1+543,Month1,Day1)));
+                    DecodeDate(FieldValues['Date_Take'],Year1,Month1,Day1);
+                    SubItems.Add(DateToStr(EncodeDate(Year1+543,Month1,Day1)));
+                    SubItems.Add(FieldValues['Condition']);
+                    SubItems.Add(FieldValues['Company_Name']);
+                    SubItems.Add(FieldValues['Officer_Name']);
+                    SubItems.Add(FieldValues['Contact_Name']);
+                    SubItems.Add(FieldValues['Attach_Item']);
+                    Next;
+               end;
+          end;
+     end;
+          Fr_Durable.Label91.Caption := 'จำนวนทั้งหมด = '+ IntToStr(Fr_Durable.Lv_Repair.Items.Count);
+end;
+
+procedure TFr_Durable.TabSheet5Show(Sender: TObject);
+begin
+     if not(Repair_Update) then exit;
+     Repair_Update := False;
+     Ed_Repair_ID2.Text := '';
+     Ed_Date_Repair2.Text := '';
+     Cb_Diff.ItemIndex := Cb_Diff.Items.IndexOf('=');
+     Ed_Date_Take2.Text := '';
+     Cb_Repair_Company.KeyValue := 0;
+     Cb_Repair_Officer.KeyValue := 0;
+     Refresh_Lv_Repair;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select Durable_ID from Repair';
+          Open;
+          if FieldValues['Durable_ID'] = Null then exit;
+          Cb_Repair_ID2.Items.Clear;
+          First;
+          while not(Eof) do
+          begin
+               Cb_Repair_ID2.Items.Add(FieldByName('Durable_ID').AsString);
+               Next;
+          end;
+          Try
+               Strs := TEnumString.Create(Cb_Repair_ID2.Items) as IUnknown;
+               AutoComplete2 := CreateComObject(CLSID_AutoComplete) as IAutoComplete2;
+               OleCheck(AutoComplete2.SetOptions(ACO_AUTOSUGGEST or ACO_UPDOWNKEYDROPSLIST));
+               OleCheck(AutoComplete2.Init(Ed_Repair_ID2.Handle,Strs,nil,nil));
+          Except
+          End;
+     end;
+end;
+
+procedure TFr_Durable.Button3Click(Sender: TObject);
+begin
+     Refresh_Lv_Repair;
+end;
+
+procedure TFr_Durable.Lv_RepairDblClick(Sender: TObject);
+var Year1,Month1,Day1 : Word;
+begin
+     if Lv_Repair.SelCount = 0 then
+     begin
+          exit;
+     end;
+     Fr_Receive.Durable_ID := Fr_Durable.Lv_Repair.Selected.Caption;
+     DecodeDate(StrToDate(Fr_Durable.Lv_Repair.Selected.SubItems.Strings[0]),Year1,Month1,Day1);
+     Fr_Receive.Date_Repair := DateToStr(EncodeDate(Year1-543,Month1,Day1));
+     Fr_Receive.Company_Name := Fr_Durable.Lv_Repair.Selected.SubItems.Strings[3];
+     Fr_Receive.Condition := Fr_Durable.Lv_Repair.Selected.SubItems.Strings[2];
+     Fr_Receive.Ed_Date_Take.Date := Date;
+     Fr_Receive.Cb_Officer_Name.KeyValue := 0;
+     Fr_Receive.Rb_Fix.Checked := True;
+     Fr_Receive.Ed_Repair_Price.Text := '';
+     Fr_Receive.Mm_Detail.Text := '';
+     With DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Clear;
+          Params.Clear;
+          SQL.Add('Select * From Repair A, Company B,Officer C ');
+          SQL.Add('Where (A.Company_ID = B.Company_ID) and ( A.Officer_ID = C.Officer_ID)');
+          SQl.Add('and (Durable_ID = '''+Fr_Receive.Durable_ID+''')');;
+          Open;
+          With Fr_Receive do
+          begin
+               DecodeDate(FieldValues['Date_Repair'],Year1,Month1,Day1);
+               Ed_Date_Repair.Text := DateToStr(EncodeDate(Year1+543,Month1,Day1));
+               DecodeDate(FieldValues['Date_Take'],Year1,Month1,Day1);
+               Ed_Date_Take2.Text := DateToStr(EncodeDate(Year1+543,Month1,Day1));
+               Ed_Contact_Name2.Text := FieldValues['Contact_Name'];
+               Ed_Officer_Name.Text := FieldValues['Officer_Name'];
+               Mm_Condition.Text := FieldValues['Condition'];
+               Mm_Attach_Item.Text := FieldValues['Attach_Item'];
+               Ed_Company_Name.Text := FieldValues['Company_Name'];
+               Ed_Company_Phone1.Text := FieldValues['Phone1'];
+               Ed_Company_Phone2.Text := FieldValues['Phone2'];
+               Ed_Company_Phone3.Text := FieldValues['Phone3'];
+               Mm_Company_Address.Text := FieldValues['Address'];
+               Ed_Company_Fax.Text := FieldValues['Fax'];
+          end;
+     end;
+     Refresh_Lv_History_ReFr(Fr_Durable.Lv_Repair.Selected.Caption);
+     Fr_Receive.PageControl1.ActivePageIndex := 0;
+     Fr_Receive.ShowModal;
+end;
+
+procedure TFr_Durable.Button4Click(Sender: TObject);
+begin
+     Refresh_Lv_History;
+     Fr_History.ShowModal;
+end;
+
+procedure Refresh_Lv_History();
+begin
+     Fr_History.Lv_History.Items.Clear;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Clear;
+          Params.Clear;
+          SQL.Add('Select * From Repair_History A, Company B, Officer C');
+          SQL.Add('Where (Durable_ID = '+ char(39)+Fr_Durable.Ed_Repair_ID.Text+char(39)+')');
+          SQL.Add('and (A.Company_ID = B.Company_ID) and (A.Officer_ID = C.Officer_ID)');
+          SQL.Add(' Order By Date_Repair');
+          Open;
+          First;
+     end;
+     while not DataModule1.Qr_Transaction.Eof do
+     begin
+          with Fr_History.Lv_History.Items.Add  do
+          begin
+               Caption := DataModule1.Qr_Transaction.FieldValues['Condition'];
+               SubItems.Add(IntToStr(DataModule1.Qr_Transaction.FieldValues['Repair_Price']));
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Repair_Result']);
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Detail']);
+               SubItems.Add(DateToStr(DataModule1.Qr_Transaction.FieldValues['Date_Repair']));
+               SubItems.Add(DateToStr(DataModule1.Qr_Transaction.FieldValues['Date_Take']));
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Company_Name']);
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Officer_Name']);
+               DataModule1.Qr_Transaction.Next;
+          end;
+     end;
+end;
+
+procedure TFr_Durable.Ed_Date_Buy2Exit(Sender: TObject);
+begin
+{     if Ed_Date_Buy.Text = '' then exit;
+     try
+          StrToDate(Ed_Date_Buy.Text);
+     except
+          showmessage('ระบุวันที่ในรูปแบบ วว/ดด/25ปป');
+          Ed_Date_Buy.Text := '';
+     end;}
+end;
+
+procedure TFr_Durable.Ed_Date_Expire2Exit(Sender: TObject);
+var  Year1,Month1,Day1 : Word;
+begin
+     if Ed_Date_Expire2.Text = '' then exit;
+     try
+          StrToDate(Ed_Date_Expire2.Text);
+     except
+          showmessage('ระบุวันที่ในรูปแบบ วว/ดด/25ปป');
+          Ed_Date_Expire2.Text := '';
+          exit;
+     end;
+     DecodeDate(StrToDate(Ed_Date_Expire2.Text),Year1,Month1,Day1);
+     if (Ed_Date_Buy.Date) > (EncodeDate(Year1-543,Month1,Day1)) then
+     begin
+          showmessage('วันหมดประกันต้องไม่ก่อนวันซื้อ');
+          Ed_Date_Expire2.Text := '';
+     end;
+end;
+
+procedure TFr_Durable.Ed_Length_MaintainExit(Sender: TObject);
+begin
+     if Ed_Length_Maintain.Text = '' then exit;
+     try
+          StrToInt(Ed_Length_Maintain.Text);
+     except
+          Showmessage('กรุณาใส่ระยะเวลาซ่อมบำรุงเป็นตัวเลข');
+          Ed_Length_Maintain.Text := '';
+     end;
+end;
+
+procedure TFr_Durable.Ed_Date_Repair50Exit(Sender: TObject);
+begin
+{     if Ed_Date_Repair.Text = '' then exit;
+     try
+          StrToDate(Ed_Date_Repair.Text);
+     except
+          showmessage('ระบุวันที่ในรูปแบบ วว/ดด/25ปป');
+          Ed_Date_Repair.Text := '';
+     end;}
+end;
+
+procedure TFr_Durable.Ed_Date_Take50Exit(Sender: TObject);
+begin
+{     if Ed_Date_Take.Text = '' then exit;
+     try
+          StrToDate(Ed_Date_Take.Text);
+     except
+          showmessage('ระบุวันที่ในรูปแบบ วว/ดด/25ปป');
+          Ed_Date_Take.Text := '';
+     end;}
+end;
+
+procedure TFr_Durable.Ed_Date_Repair2Exit(Sender: TObject);
+begin
+     if Ed_Date_Repair2.Text = '' then exit;
+     try
+          StrToDate(Ed_Date_Repair2.Text);
+     except
+          showmessage('ระบุวันที่ในรูปแบบ วว/ดด/25ปป');
+          Ed_Date_Repair2.Text := '';
+     end;
+end;
+
+procedure TFr_Durable.Ed_Date_Take2Exit(Sender: TObject);
+begin
+     if Ed_Date_Take2.Text = '' then exit;
+     try
+          StrToDate(Ed_Date_Take2.Text);
+     except
+          showmessage('ระบุวันที่ในรูปแบบ วว/ดด/25ปป');
+          Ed_Date_Take2.Text := '';
+     end;
+end;
+
+procedure TFr_Durable.TabSheet9Show(Sender: TObject);
+begin
+     Cb_Department_Name.KeyValue := 0;
+     Ed_Officer_Name.Clear;
+end;
+
+procedure TFr_Durable.TabSheet11Show(Sender: TObject);
+begin
+     Cb_Company_Name.KeyValue := 0;
+     Mm_Address.Clear;
+     Dbe_Phone1.Clear;
+     Dbe_Phone2.Clear;
+     Dbe_Phone3.Clear;
+     Dbe_Fax.Clear;
+end;
+
+procedure TFr_Durable.Ed_Over_IDExit(Sender: TObject);
+var Type_ID,Room_ID,Company_ID,Respond_ID : String;
+begin
+     if Ed_Over_ID.Text <> '' then
+     begin
+          with DataModule1.Qr_Transaction do
+          begin
+               Close;
+               SQL.Text := 'select * from durable where Durable_ID = ' +char(39) +Ed_Over_ID.Text +char(39);
+               Open;
+               if FieldValues['Durable_ID'] = Null then
+               begin
+                    showmessage('ไม่มีเลขครุภัณฑ์นี้ในฐานข้อมูล');
+                    Clear_Over;
+                    exit;
+               end
+               else
+               begin
+                    Type_ID := IntToStr(FieldValues['Type_ID']);
+                    Respond_ID := IntToStr(FieldValues['Respond_ID']);
+                    Room_ID := IntToStr(FieldValues['Room_ID']);
+                    Company_ID := IntToStr(FieldValues['Company_ID']);
+                    Ed_Over_Status.Text := FieldValues['Status'];
+                    if FieldValues['Date_Expire1'] <> Null then Ed_Over_Expire1.Text := DateToStr(FieldValues['Date_Expire1'])
+                    else Ed_Over_Expire1.Text := '';
+                    if FieldValues['Date_Expire2'] <> Null then Ed_Over_Expire2.Text := DateToStr(FieldValues['Date_Expire2'])
+                    else Ed_Over_Expire2.Text := '';
+                    Close;
+                    SQL.Text := 'select * from Type where Type_ID = '+Type_ID;
+                    Open;
+                    Ed_Over_Type.Text := FieldValues['Type_Name'];
+                    Ed_Over_Category.Text := FieldValues['Category'];
+                    Close;
+                    SQL.Text := 'select Officer_Name from Officer where Officer_ID = '+Respond_ID;
+                    Open;
+                    if FieldValues['Officer_Name'] <> Null then Ed_Over_Officer.Text := FieldValues['Officer_Name']
+                    else Ed_Over_Officer.Text := '';
+                    Close;
+                    SQL.Text := 'select Room_Name from Room where Room_ID = '+Room_ID;
+                    Open;
+                    Ed_Over_Room.Text := FieldValues['Room_Name'];
+                    Close;
+                    SQL.Text := 'select * from Company where Company_ID = '+Company_ID;
+                    Open;
+                    if FieldValues['Company_Name'] <> Null then Ed_Over_Company.Text := FieldValues['Company_Name']
+                    else Ed_Over_Company.Text := '';
+               end;
+          end;
+     end
+     else
+     begin
+          Clear_Over;
+     end;
+end;
+
+procedure TFr_Durable.TabSheet6Show(Sender: TObject);
+begin
+     Clear_Over;
+     //Durable ID AutoComplete
+     if Durable_Update3 then
+     begin
+          Durable_Update3 := False;
+          with DataModule1.Qr_Transaction do
+          begin
+               Close;
+               SQL.Text := 'select Durable_ID from durable';
+               Open;
+               if FieldValues['Durable_ID'] = Null then exit;
+               Cb_Over_ID.Items.Clear;
+               First;
+               while not(Eof) do
+               begin
+                    Cb_Over_ID.Items.Add(FieldByName('Durable_ID').AsString);
+                    Next;
+               end;
+               Try
+                    Strs := TEnumString.Create(Cb_Over_ID.Items) as IUnknown;
+                    AutoComplete2 := CreateComObject(CLSID_AutoComplete) as IAutoComplete2;
+                    OleCheck(AutoComplete2.SetOptions(ACO_AUTOSUGGEST or ACO_UPDOWNKEYDROPSLIST));
+                    OleCheck(AutoComplete2.Init(Ed_Over_ID.Handle,Strs,nil,nil));
+               Except
+               End;
+          end;
+     end;
+end;
+
+procedure Clear_Over();
+begin
+     with Fr_Durable do
+     begin
+          Ed_Over_ID.Text := '';
+          Ed_Over_Type.Text := '';
+          Ed_Over_Category.Text := '';
+          Ed_Over_Status.Text := '';
+          Ed_Over_Officer.Text := '';
+          Ed_Over_Room.Text := '';
+          Ed_Over_Company.Text := '';
+          Ed_Over_Expire1.Text := '';
+          Ed_Over_Expire2.Text := '';
+          Ed_Date_Over.Date := Date;
+          Ed_Document_ID.Text := '';
+          Ed_Name1.Text := '';
+          Ed_Name2.Text := '';
+          Ed_Name3.Text := '';
+          Mm_Reason.Text := '';
+     end;
+end;
+procedure TFr_Durable.BitBtn5Click(Sender: TObject);
+var Temp : String;
+begin
+     if Trim(Ed_Over_ID.Text) = '' then
+     begin
+        showmessage('กรุณาใส่เลขครุภัณฑ์');
+        exit;
+     end;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select Durable_ID from Over1 where Durable_ID = ' +char(39)+Trim(Ed_Over_ID.Text) +char(39);
+          Open;
+          if FieldValues['Durable_ID'] <> Null then
+          begin
+               showmessage('ครุภัณฑ์ชิ้นนี้จำหน่ายไปแล้ว');
+               exit;
+          end;
+     end;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select Durable_ID from Repair where Durable_ID = ' +char(39)+Trim(Ed_Over_ID.Text) +char(39);
+          Open;
+          if FieldValues['Durable_ID'] <> Null then
+          begin
+               showmessage('ครุภัณฑ์ชิ้นนี้กำลังส่งซ่อม');
+               exit;
+          end;
+     end;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select Durable_ID from Give where Durable_ID = ' +char(39)+Trim(Ed_Over_ID.Text) +char(39);
+          Open;
+          if FieldValues['Durable_ID'] <> Null then
+          begin
+               showmessage('ครุภัณฑ์ชิ้นนี้บริจาคไปแล้ว');
+               exit;
+          end;
+     end;
+     if Trim(Ed_Document_ID.Text) = '' then
+     begin
+          showmessage('กรุณาใส่เลขที่เอกสาร');
+          exit;
+     end;
+     if Trim(Ed_Name1.Text) = '' then
+     begin
+        showmessage('กรุณาใส่ชื่อกรรมการ');
+        exit;
+     end;
+     Temp := 'คุณแน่ใจหรือไม่ที่จะจำหน่ายครุภัณฑ์เลขที่ ' + Trim(Ed_Over_ID.Text);
+     if MessageDlg(Temp,mtConfirmation,[mbYes,mbNo],0) = mrNo then exit;
+     DataModule1.Database1.StartTransaction;
+     try
+          with DataModule1.Qr_Transaction do
+          begin
+               Close;
+               SQL.Clear;
+               Params.Clear;
+               SQL.Add(' Insert Into Over1 (Durable_ID,Date_Over,Document_ID,Name1,Name2,Name3,Reason)');
+               SQL.Add(' values(:Durable_ID,:Date_Over,:Document_ID,:Name1,:Name2,:Name3,:Reason)');
+               Parambyname('Durable_ID').AsString := Trim(Ed_Over_ID.Text);
+               Parambyname('Date_Over').AsDateTime := Ed_Date_Over.Date;
+               Parambyname('Document_ID').AsString := Trim(Ed_Document_ID.Text);
+               Parambyname('Name1').AsString := Trim(Ed_Name1.Text);
+               Parambyname('Name2').AsString := Trim(Ed_Name2.Text);
+               Parambyname('Name3').AsString := Trim(Ed_Name3.Text);
+               Parambyname('Reason').AsString := Trim(Mm_Reason.Text);
+               execSQL;
+               Close;
+               SQL.Clear;
+               Params.Clear;
+               SQL.Add(' Update Durable Set Status = ''จำหน่าย'',Date_Change = :Date_Change where Durable_ID = '+char(39)+Trim(Ed_Over_ID.Text)+Char(39));
+               ParamByName('Date_Change').AsDateTime := Ed_Date_Over.Date;
+               ExecSQL;
+          end;
+          DataModule1.Database1.Commit;
+          showmessage('การจำหน่ายเรียบร้อยเรียบร้อย');
+          Durable_Update := True;
+     except
+          showmessage('!!!มีข้อผิดพลาดเกิดขึ้น!!!');
+          DataModule1.Database1.Rollback;
+     raise;
+     end;
+     Clear_Over;
+end;
+
+procedure TFr_Durable.BitBtn6Click(Sender: TObject);
+begin
+     Clear_Over;
+end;
+
+procedure TFr_Durable.Ed_Give_IDExit(Sender: TObject);
+var Type_ID,Room_ID,Company_ID,Respond_ID : String;
+begin
+     if Ed_Give_ID.Text <> '' then
+     begin
+          with DataModule1.Qr_Transaction do
+          begin
+               Close;
+               SQL.Text := 'select * from durable where Durable_ID = ' +char(39) +Ed_Give_ID.Text +char(39);
+               Open;
+               if FieldValues['Durable_ID'] = Null then
+               begin
+                    showmessage('ไม่มีเลขครุภัณฑ์นี้ในฐานข้อมูล');
+                    Clear_Give;
+                    exit;
+               end
+               else
+               begin
+                    Type_ID := IntToStr(FieldValues['Type_ID']);
+                    Respond_ID := IntToStr(FieldValues['Respond_ID']);
+                    Room_ID := IntToStr(FieldValues['Room_ID']);
+                    Company_ID := IntToStr(FieldValues['Company_ID']);
+                    Ed_Give_Status.Text := FieldValues['Status'];
+                    if FieldValues['Date_Expire1'] <> Null then Ed_Give_Expire1.Text := DateToStr(FieldValues['Date_Expire1'])
+                    else Ed_Give_Expire1.Text := '';
+                    if FieldValues['Date_Expire2'] <> Null then Ed_Give_Expire2.Text := DateToStr(FieldValues['Date_Expire2'])
+                    else Ed_Give_Expire2.Text := '';
+                    Close;
+                    SQL.Text := 'select * from Type where Type_ID = '+Type_ID;
+                    Open;
+                    Ed_Give_Type.Text := FieldValues['Type_Name'];
+                    Ed_Give_Category.Text := FieldValues['Category'];
+                    Close;
+                    SQL.Text := 'select Officer_Name from Officer where Officer_ID = '+Respond_ID;
+                    Open;
+                    if FieldValues['Officer_Name'] <> Null then Ed_Give_Officer.Text := FieldValues['Officer_Name']
+                    else Ed_Give_Officer.Text := '';
+                    Close;
+                    SQL.Text := 'select Room_Name from Room where Room_ID = '+Room_ID;
+                    Open;
+                    Ed_Give_Room.Text := FieldValues['Room_Name'];
+                    Close;
+                    SQL.Text := 'select * from Company where Company_ID = '+Company_ID;
+                    Open;
+                    if FieldValues['Company_Name'] <> Null then Ed_Give_Company.Text := FieldValues['Company_Name']
+                    else Ed_Give_Company.Text := '';
+               end;
+          end;
+     end
+     else
+     begin
+          Clear_Give;
+     end;
+end;
+
+procedure TFr_Durable.TabSheet7Show(Sender: TObject);
+begin
+     Clear_Give;
+     //Durable ID AutoComplete
+     if Durable_Update4 then
+     begin
+          Durable_Update4 := False;
+          with DataModule1.Qr_Transaction do
+          begin
+               Close;
+               SQL.Text := 'select Durable_ID from durable';
+               Open;
+               if FieldValues['Durable_ID'] = Null then exit;
+               Cb_Give_ID.Items.Clear;
+               First;
+               while not(Eof) do
+               begin
+                    Cb_Give_ID.Items.Add(FieldByName('Durable_ID').AsString);
+                    Next;
+               end;
+               Try
+                    Strs := TEnumString.Create(Cb_Give_ID.Items) as IUnknown;
+                    AutoComplete2 := CreateComObject(CLSID_AutoComplete) as IAutoComplete2;
+                    OleCheck(AutoComplete2.SetOptions(ACO_AUTOSUGGEST or ACO_UPDOWNKEYDROPSLIST));
+                    OleCheck(AutoComplete2.Init(Ed_Give_ID.Handle,Strs,nil,nil));
+               Except
+               End;
+          end;
+     end;
+end;
+
+procedure Clear_Give();
+begin
+     with Fr_Durable do
+     begin
+          Ed_Give_ID.Text := '';
+          Ed_Give_Type.Text := '';
+          Ed_Give_Category.Text := '';
+          Ed_Give_Status.Text := '';
+          Ed_Give_Officer.Text := '';
+          Ed_Give_Room.Text := '';
+          Ed_Give_Company.Text := '';
+          Ed_Give_Expire1.Text := '';
+          Ed_Give_Expire2.Text := '';
+          Ed_Date_Give.Date := Date;
+          Ed_Give_Document.Text := '';
+          Mm_Receiver.Text := '';
+          Mm_Give_Reason.Text := '';
+     end;
+end;
+
+procedure TFr_Durable.BitBtn8Click(Sender: TObject);
+begin
+     Clear_Give;
+end;
+
+procedure TFr_Durable.BitBtn7Click(Sender: TObject);
+var Temp : String;
+begin
+     if Trim(Ed_Give_ID.Text) = '' then
+     begin
+        showmessage('กรุณาใส่เลขครุภัณฑ์');
+        exit;
+     end;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select Durable_ID from Over1 where Durable_ID = ' +char(39)+Trim(Ed_Give_ID.Text) +char(39);
+          Open;
+          if FieldValues['Durable_ID'] <> Null then
+          begin
+               showmessage('ครุภัณฑ์ชิ้นนี้จำหน่ายไปแล้ว');
+               exit;
+          end;
+     end;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select Durable_ID from Repair where Durable_ID = ' +char(39)+Trim(Ed_Give_ID.Text) +char(39);
+          Open;
+          if FieldValues['Durable_ID'] <> Null then
+          begin
+               showmessage('ครุภัณฑ์ชิ้นนี้กำลังส่งซ่อม');
+               exit;
+          end;
+     end;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select Durable_ID from Give where Durable_ID = ' +char(39)+Trim(Ed_Give_ID.Text) +char(39);
+          Open;
+          if FieldValues['Durable_ID'] <> Null then
+          begin
+               showmessage('ครุภัณฑ์ชิ้นนี้บริจาคไปแล้ว');
+               exit;
+          end;
+     end;
+     if Trim(Ed_Give_Document.Text) = '' then
+     begin
+          showmessage('กรุณาใส่เลขที่เอกสาร');
+          exit;
+     end;
+     if Trim(Mm_Receiver.Text) = '' then
+     begin
+        showmessage('กรุณาใส่ผู้รับบริจาค');
+        exit;
+     end;
+     Temp := 'คุณแน่ใจหรือไม่ที่จะบริจาคครุภัณฑ์เลขที่ ' + Trim(Ed_Give_ID.Text);
+     if MessageDlg(Temp,mtConfirmation,[mbYes,mbNo],0) = mrNo then exit;
+     DataModule1.Database1.StartTransaction;
+     try
+          with DataModule1.Qr_Transaction do
+          begin
+               Close;
+               SQL.Clear;
+               Params.Clear;
+               SQL.Add(' Insert Into Give (Durable_ID,Date_Give,Document_ID,Give_Name,Reason)');
+               SQL.Add(' values(:Durable_ID,:Date_Give,:Document_ID,:Give_Name,:Reason)');
+               Parambyname('Durable_ID').AsString := Trim(Ed_Give_ID.Text);
+               Parambyname('Date_Give').AsDateTime := Ed_Date_Give.Date;
+               Parambyname('Document_ID').AsString := Trim(Ed_Give_Document.Text);
+               Parambyname('Give_Name').AsString := Trim(Mm_Receiver.Text);
+               Parambyname('Reason').AsString := Trim(Mm_Give_Reason.Text);
+               execSQL;
+               Close;
+               SQL.Clear;
+               Params.Clear;
+               SQL.Add(' Update Durable Set Status = ''บริจาค'',Date_Change = :Date_Change where Durable_ID = '+char(39)+Trim(Ed_Give_ID.Text)+Char(39));
+               ParamByName('Date_Change').AsDateTime := Ed_Date_Give.Date;
+               ExecSQL;
+          end;
+          DataModule1.Database1.Commit;
+          showmessage('การบริจาคเรียบร้อยเรียบร้อย');
+          Durable_Update := True;
+     except
+          showmessage('!!!มีข้อผิดพลาดเกิดขึ้น!!!');
+          DataModule1.Database1.Rollback;
+     raise;
+     end;
+     Clear_Give;
+end;
+
+procedure TFr_Durable.Cb_Repair_OfficerMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+     Cb_Repair_Officer.KeyValue := 0;
+end;
+
+procedure TFr_Durable.Cb_Repair_CompanyMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+     Cb_Repair_Company.KeyValue := 0;
+end;
+
+procedure TFr_Durable.TabSheet8Show(Sender: TObject);
+var i : Integer;
+begin
+     CkL_Department.Clear;
+     DataModule1.Tb_Department_Detail.Refresh;
+     DataModule1.Tb_Department_Detail.First;
+     While not DataModule1.Tb_Department_Detail.Eof do
+     begin
+          CkL_Department.Items.Add(DataModule1.Tb_Department_Detail.FieldValues['Department_Name']);
+          DataModule1.Tb_Department_Detail.Next;
+     end;
+     CkL_Room.Clear;
+     DataModule1.Qr_Room_Detail.First;
+     While not DataModule1.Qr_Room_Detail.Eof do
+     begin
+          CkL_Room.Items.Add(DataModule1.Qr_Room_Detail.FieldValues['Room_Name']);
+          DataModule1.Qr_Room_Detail.Next;
+     end;
+     CkL_Department2.Items := CkL_Department.Items;
+     CkL_Room2.Items := CkL_Room.Items;
+     CkL_Department3.Items := CkL_Department.Items;
+     CkL_Room3.Items := CkL_Room.Items;
+     for i:=0 to CkL_Room.Items.Count-1 do
+     begin
+          CkL_Room.Checked[i] := True;
+          CkL_Room2.Checked[i] := True;
+          CkL_Room3.Checked[i] := True;
+     end;
+     for i:=0 to CkL_Department.Items.Count-1 do
+     begin
+          CkL_Department.Checked[i] := True;
+          CkL_Department2.Checked[i] := True;
+          CkL_Department3.Checked[i] := True;
+     end;
+end;
+
+procedure TFr_Durable.Ck_AllDepartmentClick(Sender: TObject);
+var i:integer;
+begin
+     if Ck_AllDepartment.Checked then
+     begin
+          for i:=0 to CkL_Department.Items.Count-1 do
+               CkL_Department.Checked[i] := True;
+          Ck_NoneDepartment.Checked := False;
+     end;
+end;
+
+procedure TFr_Durable.Ck_AllRoomClick(Sender: TObject);
+var i:integer;
+begin
+     if Ck_AllRoom.Checked then
+     begin
+          for i:=0 to CkL_Room.Items.Count-1 do
+               CkL_Room.Checked[i] := True;
+          Ck_NoneRoom.Checked := False;
+     end;
+end;
+
+procedure TFr_Durable.Bt_Print1Click(Sender: TObject);
+var i : Integer;
+begin
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Clear;
+          Params.Clear;
+          SQL.Add('Select Durable_ID,Type_Name,Category,Department_Name,Room_Name,Status');
+          SQL.Add('From Durable A,Type B,Room C,Department D');
+          SQL.Add('where A.Type_ID = B.Type_ID and A.Room_ID = C.Room_ID and C.Department_ID = D.Department_ID and');
+          SQL.Add('status in ( :Good,:Bad,:Repair,:Over,:Give ) and');
+          SQL.Add('Category in ( :Office,:Building,:Computer )');
+          if not(Ck_AllDepartment.Checked) then
+          begin
+               for i:=0 to CkL_Department.Items.Count-1 do
+               begin
+                    if CkL_Department.Checked[i] = False then
+                         SQL.Add('and Department_Name <> '+ char(39)+CkL_Department.Items.Strings[i]+char(39));
+               end;
+          end;
+          if not(Ck_AllRoom.Checked) then
+          begin
+               for i:=0 to CkL_Room.Items.Count-1 do
+               begin
+                    if CkL_Room.Checked[i] = False then
+                         SQL.Add('and Room_Name <> '+ char(39)+CkL_Room.Items.Strings[i]+char(39));
+               end;
+          end;
+          SQL.Add('Order By Status,Durable_ID');
+          if Ck_Good.Checked then Parambyname('Good').AsString := 'ดี'
+          else Parambyname('Good').AsString := '';
+          if Ck_Bad.Checked then Parambyname('Bad').AsString := 'เสีย'
+          else Parambyname('Bad').AsString := '';
+          if Ck_Repair.Checked then Parambyname('Repair').AsString := 'ส่งซ่อม'
+          else Parambyname('Repair').AsString := '';
+          if Ck_Over.Checked then Parambyname('Over').AsString := 'จำหน่าย'
+          else Parambyname('Over').AsString := '';
+          if Ck_Give.Checked then Parambyname('Give').AsString := 'บริจาค'
+          else Parambyname('Give').AsString := '';
+          if Ck_Office.Checked then Parambyname('office').AsString := 'สำนักงาน'
+          else Parambyname('office').AsString := '';
+          if Ck_Building.Checked then Parambyname('Building').AsString := 'อาคาร'
+          else Parambyname('Building').AsString := '';
+          if Ck_Computer.Checked then Parambyname('Computer').AsString := 'คอมพิวเตอร์'
+          else Parambyname('Computer').AsString := '';
+          Open;
+     end;
+     Fr_Print_Status.QuickRep1.Preview;
+end;
+
+procedure TFr_Durable.CkL_DepartmentClickCheck(Sender: TObject);
+begin
+     Ck_AllDepartment.Checked:= False;
+     Ck_NoneDepartment.Checked := False;
+end;
+
+procedure TFr_Durable.CkL_RoomClickCheck(Sender: TObject);
+begin
+     Ck_AllRoom.Checked := False;
+     Ck_NoneRoom.Checked := False;
+end;
+
+procedure TFr_Durable.Button5Click(Sender: TObject);
+var i : Integer;
+begin
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Clear;
+          Params.Clear;
+          SQL.Add('Select Durable_ID,Type_Name,Category,Department_Name,Room_Name,Status');
+          SQL.Add('From Durable A,Type B,Room C,Department D');
+          SQL.Add('where A.Type_ID = B.Type_ID and A.Room_ID = C.Room_ID and C.Department_ID = D.Department_ID and');
+          SQL.Add('status in ( :Good,:Bad,:Repair ) and');
+          SQL.Add('Category in ( :Office,:Building,:Computer )');
+          if not(Ck_AllDepartment2.Checked) then
+          begin
+               for i:=0 to CkL_Department2.Items.Count-1 do
+               begin
+                    if CkL_Department2.Checked[i] = False then
+                         SQL.Add('and Department_Name <> '+ char(39)+CkL_Department2.Items.Strings[i]+char(39));
+               end;
+          end;
+          if not(Ck_AllRoom2.Checked) then
+          begin
+               for i:=0 to CkL_Room2.Items.Count-1 do
+               begin
+                    if CkL_Room2.Checked[i] = False then
+                         SQL.Add('and Room_Name <> '+ char(39)+CkL_Room2.Items.Strings[i]+char(39));
+               end;
+          end;
+          SQL.Add('Order By Department_Name,Room_Name,Durable_ID');
+          if Ck_Good2.Checked then Parambyname('Good').AsString := 'ดี'
+          else Parambyname('Good').AsString := '';
+          if Ck_Bad2.Checked then Parambyname('Bad').AsString := 'เสีย'
+          else Parambyname('Bad').AsString := '';
+          if Ck_Repair2.Checked then Parambyname('Repair').AsString := 'ส่งซ่อม'
+          else Parambyname('Repair').AsString := '';
+          if Ck_Office2.Checked then Parambyname('office').AsString := 'สำนักงาน'
+          else Parambyname('office').AsString := '';
+          if Ck_Building2.Checked then Parambyname('Building').AsString := 'อาคาร'
+          else Parambyname('Building').AsString := '';
+          if Ck_Computer2.Checked then Parambyname('Computer').AsString := 'คอมพิวเตอร์'
+          else Parambyname('Computer').AsString := '';
+          Open;
+     end;
+     Fr_Print_Check.QuickRep1.Preview;
+end;
+
+
+procedure TFr_Durable.CkL_Department2ClickCheck(Sender: TObject);
+begin
+     Ck_AllDepartment2.Checked:= False;
+     Ck_NoneDepartment2.Checked := False;
+end;
+
+procedure TFr_Durable.CkL_Room2ClickCheck(Sender: TObject);
+begin
+     Ck_AllRoom2.Checked:= False;
+     Ck_NoneRoom2.Checked := False;
+end;
+
+procedure TFr_Durable.Ck_AllDepartment2Click(Sender: TObject);
+var i:integer;
+begin
+     if Ck_AllDepartment2.Checked then
+     begin
+          for i:=0 to CkL_Department2.Items.Count-1 do
+               CkL_Department2.Checked[i] := True;
+          Ck_NoneDepartment2.Checked := False;
+     end;
+end;
+
+procedure TFr_Durable.Ck_AllRoom2Click(Sender: TObject);
+var i:integer;
+begin
+     if Ck_AllRoom2.Checked then
+     begin
+          for i:=0 to CkL_Room2.Items.Count-1 do
+               CkL_Room2.Checked[i] := True;
+          Ck_NoneRoom2.Checked := False;
+     end;
+end;
+
+procedure TFr_Durable.Lv_Durable_DetailKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if Lv_Durable_Detail.SelCount = 0 then
+     begin
+          exit;
+     end;
+     if key = #13 then
+     begin
+          Clear_Durable;
+          ShowDurableDetail(Lv_Durable_Detail.Selected.Caption);
+     end;
+end;
+
+procedure TFr_Durable.Button6Click(Sender: TObject);
+begin
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Clear;
+          Params.Clear;
+          SQL.Add('Select Durable_ID,Type_Name,Room_Name,Status,DATEADD(year,543,Date_Expire1)[DE1],DATEADD(year,543,Date_Expire2)[DE2]');
+          SQL.Add('From Durable A,Type B,Room C');
+          SQL.Add('where A.Type_ID = B.Type_ID and A.Room_ID = C.Room_ID and ');
+          SQL.Add('status in ( :Good,:Bad,:Repair ) and');
+          SQL.Add('Category in ( :Office,:Building,:Computer ) ');
+          //SQL.Add('and ((Date_Expire1 > DATEADD(year, 543, GetDate()) and Date_Expire1 < DATEADD(month, :Expire,DateAdd(year, 543, GetDate()))) or');
+          SQL.Add('and ((Date_Expire1 > GetDate() and Date_Expire1 < DATEADD(month, :Expire,GetDate())) or');
+          SQL.Add('(Date_Expire2 > GetDate() and Date_Expire2 < DATEADD(month, :Expire,GetDate())))');
+          SQL.Add('Order By Date_Expire1,Date_Expire2');
+          if Ck_Good3.Checked then Parambyname('Good').AsString := 'ดี'
+          else Parambyname('Good').AsString := '';
+          if Ck_Bad3.Checked then Parambyname('Bad').AsString := 'เสีย'
+          else Parambyname('Bad').AsString := '';
+          if Ck_Repair3.Checked then Parambyname('Repair').AsString := 'ส่งซ่อม'
+          else Parambyname('Repair').AsString := '';
+          if Ck_Office3.Checked then Parambyname('office').AsString := 'สำนักงาน'
+          else Parambyname('office').AsString := '';
+          if Ck_Building3.Checked then Parambyname('Building').AsString := 'อาคาร'
+          else Parambyname('Building').AsString := '';
+          if Ck_Computer3.Checked then Parambyname('Computer').AsString := 'คอมพิวเตอร์'
+          else Parambyname('Computer').AsString := '';
+          Parambyname('Expire').Value := StrToInt(Ed_Expire.Text);
+          Open;
+     end;
+     Fr_Print_Expire.QuickRep1.Preview;
+end;
+
+procedure TFr_Durable.Ed_ExpireExit(Sender: TObject);
+begin
+     if Ed_Expire.Text = '' then
+     begin
+          Ed_Expire.Text := '3';
+          exit;
+     end;
+     try
+          StrToInt(Ed_Expire.Text);
+     except
+          Showmessage('กรุณาใส่ระยะเวลาเป็นตัวเลข');
+          Ed_Expire.Text := '3';
+     end;
+end;
+
+procedure TFr_Durable.Ck_ManyClick(Sender: TObject);
+begin
+     if Ck_Many.Checked = true then
+     begin
+          Ed_Number.Enabled := True;
+          Ed_Number.Color := clWindow;
+          Ed_Number.ReadOnly := False;          
+          Ed_Number.Text := '1';
+     end
+     else
+     begin
+          Ed_Number.Enabled := False;
+          Ed_Number.Color := clMenu;
+          Ed_Number.ReadOnly := True;
+     end;
+end;
+
+procedure TFr_Durable.Ed_NumberExit(Sender: TObject);
+begin
+     if Ed_Number.Text = '' then
+     begin
+          Ed_Number.Text := '1';
+          exit;
+     end;
+     try
+          StrToInt(Ed_Number.Text);
+     except
+          Showmessage('กรุณาใส่จำนวนเป็นตัวเลข');
+          Ed_Number.Text := '1';
+     end;
+end;
+
+procedure TFr_Durable.Cb_Department_NameClick(Sender: TObject);
+begin
+        Datamodule1.Tb_Chief.Refresh;
+end;
+
+procedure TFr_Durable.Ck_NoneDepartmentClick(Sender: TObject);
+var i : integer;
+begin
+     if Ck_NoneDepartment.Checked then
+     begin
+          for i:=0 to CkL_Department.Items.Count-1 do
+               CkL_Department.Checked[i] := False;
+          Ck_AllDepartment.Checked := False;
+     end;
+end;
+
+procedure TFr_Durable.Ck_NoneRoomClick(Sender: TObject);
+var i : integer;
+begin
+     if Ck_NoneRoom.Checked then
+     begin
+          for i:=0 to CkL_Room.Items.Count-1 do
+               CkL_Room.Checked[i] := False;
+          Ck_AllRoom.Checked := False;
+     end;
+end;
+
+procedure TFr_Durable.Ck_NoneDepartment2Click(Sender: TObject);
+var i : integer;
+begin
+     if Ck_NoneDepartment2.Checked then
+     begin
+          for i:=0 to CkL_Department2.Items.Count-1 do
+               CkL_Department2.Checked[i] := False;
+          Ck_AllDepartment2.Checked := False;
+     end;
+end;
+
+procedure TFr_Durable.Ck_NoneRoom2Click(Sender: TObject);
+var i:integer;
+begin
+     if Ck_NoneRoom2.Checked then
+     begin
+          for i:=0 to CkL_Room2.Items.Count-1 do
+               CkL_Room2.Checked[i] := False;
+          Ck_AllRoom2.Checked := False;
+     end;
+end;
+
+procedure TFr_Durable.Cb_Respond_NameChange(Sender: TObject);
+begin
+        Ed_Respond_Name2.Text := Cb_Respond_Name.Text;
+end;
+
+procedure TFr_Durable.Cb_RoomChange(Sender: TObject);
+begin
+        Ed_Room.Text := Cb_Room.Text;
+end;
+
+procedure TFr_Durable.FormCreate(Sender: TObject);
+begin
+     Try
+          DataModule1.Database1.Connected := True;
+          DataModule1.Tb_Department_Detail.Active := True;
+          DataModule1.Tb_Chief.Active := True;
+          DataModule1.Tb_Room.Active := True;
+          DataModule1.Qr_Room_Detail.Active := True;
+          DataModule1.Qr_Company_Detail.Active := True;
+          DataModule1.Qr_Type.Active := True;
+          DataModule1.Qr_Officer_Detail.Active := True;
+          Durable_Update := True;
+          Durable_Update2 := True;
+          Durable_Update3 := True;
+          Durable_Update4 := True;
+          Repair_Update := True;
+     Except
+          ShowMessage('ไม่สามารถเปิคโปรแกรมได้เนื่องจากไม่พบฐานข้อมูล');
+          Application.Terminate;
+     end;
+end;
+
+procedure TFr_Durable.Cb_TypeChange(Sender: TObject);
+begin
+     Ed_Type.Text := Cb_Type.Text;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select Type_ID,Category from Type where Type_Name = ' +char(39) +Trim(Ed_Type.Text) +char(39);
+          Open;
+          if FieldValues['Type_ID'] = null then
+          begin
+               showmessage('กรุณาเลือกชนิดจากรายการ');
+               exit;
+          end
+          else
+                Ed_Category.Text := FieldValues['Category'];
+     end;
+end;
+
+procedure TFr_Durable.Ed_TypeExit(Sender: TObject);
+begin
+     if Trim(Ed_Type.Text) = '' Then Exit;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select Type_ID,Category from Type where Type_Name = ' +char(39) +Trim(Ed_Type.Text) +char(39);
+          Open;
+          if FieldValues['Type_ID'] = null then
+          begin
+               showmessage('กรุณาเลือกชนิดจากรายการ');
+               exit;
+          end
+          else
+                Ed_Category.Text := FieldValues['Category'];
+     end;
+end;
+
+procedure TFr_Durable.Cb_Select_CompanyChange(Sender: TObject);
+begin
+     Ed_Select_Company.Text := Cb_Select_Company.Text;
+end;
+
+procedure TFr_Durable.Cb_Repair_IDChange(Sender: TObject);
+begin
+     Ed_Repair_ID.Text := Cb_Repair_ID.Text;
+     Ed_Repair_ID.OnExit(Sender);
+end;
+
+procedure TFr_Durable.Ed_Repair_IDKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if key = 13 then Ed_Repair_ID.OnExit(Sender);
+end;
+
+procedure TFr_Durable.Ed_TypeKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if Key <> 13 then exit;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select Type_ID,Category from Type where Type_Name = ' +char(39) +Trim(Ed_Type.Text) +char(39);
+          Open;
+          if FieldValues['Type_ID'] = null then
+          begin
+               showmessage('กรุณาเลือกชนิดจากรายการ');
+               exit;
+          end
+          else
+                Ed_Category.Text := FieldValues['Category'];
+     end;
+     Cb_Status.SetFocus;
+
+end;
+
+procedure TFr_Durable.Cb_Company_Name2Change(Sender: TObject);
+begin
+     Ed_Company_Name2.Text := Cb_Company_Name2.Text;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select * from Company where Company_Name = ' +char(39) +Trim(Ed_Company_Name2.Text) +char(39);
+          Open;
+          if FieldValues['Company_ID'] = null then
+          begin
+               showmessage('กรุณาเลือกบริษัทจากรายการ');
+               exit;
+          end
+          else
+                Mm_Company_Address.Text := FieldValues['Address'];
+                Ed_Company_Phone1.Text := FieldValues['Phone1'];
+                Ed_Company_Phone2.Text := FieldValues['Phone2'];
+                Ed_Company_Phone3.Text := FieldValues['Phone3'];
+                Ed_Company_Fax.Text := FieldValues['Fax'];
+     end;
+end;
+
+procedure TFr_Durable.Ed_Company_Name2KeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     if key <> 13 then exit;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select * from Company where Company_Name = ' +char(39) +Trim(Ed_Company_Name2.Text) +char(39);
+          Open;
+          if FieldValues['Company_ID'] = null then
+          begin
+               showmessage('กรุณาเลือกบริษัทจากรายการ');
+               exit;
+          end
+          else
+                Mm_Company_Address.Text := FieldValues['Address'];
+                Ed_Company_Phone1.Text := FieldValues['Phone1'];
+                Ed_Company_Phone2.Text := FieldValues['Phone2'];
+                Ed_Company_Phone3.Text := FieldValues['Phone3'];
+                Ed_Company_Fax.Text := FieldValues['Fax'];
+     end;
+     Ed_Contact_Name2.SetFocus;
+end;
+
+procedure TFr_Durable.Ed_Company_Name2Exit(Sender: TObject);
+begin
+     if Trim(Ed_Company_Name2.Text) = '' then exit;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Text := 'select * from Company where Company_Name = ' +char(39) +Trim(Ed_Company_Name2.Text) +char(39);
+          Open;
+          if FieldValues['Company_ID'] = null then
+          begin
+               showmessage('กรุณาเลือกบริษัทจากรายการ');
+               exit;
+          end
+          else
+                Mm_Company_Address.Text := FieldValues['Address'];
+                Ed_Company_Phone1.Text := FieldValues['Phone1'];
+                Ed_Company_Phone2.Text := FieldValues['Phone2'];
+                Ed_Company_Phone3.Text := FieldValues['Phone3'];
+                Ed_Company_Fax.Text := FieldValues['Fax'];
+     end;
+end;
+
+procedure TFr_Durable.Cb_Officer_NameChange(Sender: TObject);
+begin
+     Ed_Officer_Name2.Text := Cb_Officer_Name.Text;
+end;
+
+procedure TFr_Durable.Cb_Repair_ID2Change(Sender: TObject);
+begin
+     Ed_Repair_ID2.Text := Cb_Repair_ID2.Text;
+end;
+
+procedure TFr_Durable.Cb_Over_IDChange(Sender: TObject);
+begin
+     Ed_Over_ID.Text := Cb_Over_ID.Text;
+     Ed_Over_ID.OnExit(Sender);
+end;
+
+procedure TFr_Durable.Ed_Over_IDKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if key = 13 then Ed_Over_ID.OnExit(Sender);
+end;
+
+procedure TFr_Durable.Cb_Give_IDChange(Sender: TObject);
+begin
+     Ed_Give_ID.Text := Cb_Give_ID.Text ;
+     Ed_Give_ID.OnExit(Sender);
+end;
+
+procedure TFr_Durable.Ed_Give_IDKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     if key = 13 then Ed_Give_ID.OnExit(Sender);
+
+end;
+
+procedure TFr_Durable.Lv_Durable_DetailKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+var Durable_ID,Temp : String;
+begin
+     if Key <> 46  then exit;
+     if Lv_Durable_Detail.SelCount = 0 then exit;
+     Durable_ID := Lv_Durable_Detail.Selected.Caption;
+     Temp := 'คุณแน่ใจหรือไม่ที่จะลบครุภัณฑ์เลขที่ ' + Durable_ID;
+     if MessageDlg(Temp,mtConfirmation,[mbYes,mbNo],0) = mrNo then exit;
+     DataModule1.Database1.StartTransaction;
+     try
+         with DataModule1.Qr_Transaction do
+         begin
+              close;
+              Params.Clear;
+              SQL.Clear;
+              SQL.Add('Delete From Durable');
+              SQL.Add('Where Durable_ID = '+char(39)+Durable_ID+char(39));
+              execSQL;
+              close;
+              Params.Clear;
+              SQL.Clear;
+              SQL.Add('Delete From Computer_Detail');
+              SQL.Add('Where Durable_ID = '+char(39)+Durable_ID+char(39));
+              execSQL;
+              close;
+              Params.Clear;
+              SQL.Clear;
+              SQL.Add('Delete From Repair');
+              SQL.Add('Where Durable_ID = '+char(39)+Durable_ID+char(39));
+              execSQL;
+              close;
+              Params.Clear;
+              SQL.Clear;
+              SQL.Add('Delete From Repair_History');
+              SQL.Add('Where Durable_ID = '+char(39)+Durable_ID+char(39));
+              execSQL;
+              close;
+              Params.Clear;
+              SQL.Clear;
+              SQL.Add('Delete From Over1');
+              SQL.Add('Where Durable_ID = '+char(39)+Durable_ID+char(39));
+              execSQL;
+              close;
+              Params.Clear;
+              SQL.Clear;
+              SQL.Add('Delete From Give');
+              SQL.Add('Where Durable_ID = '+char(39)+Durable_ID+char(39));
+              execSQL;
+         end;
+         DataModule1.Database1.Commit;
+         showmessage('ลบครุภัณฑ์เรียบร้อย');
+     except
+         showmessage('!!!มีข้อผิดพลาดเกิดขึ้น!!!');
+         DataModule1.Database1.Rollback;
+     raise;
+     end;
+     Refresh_Lv_Durable_Detail;
+end;
+
+procedure TFr_Durable.TabSheet3Show(Sender: TObject);
+begin
+     //if not(Durable_Update) then exit;
+     //Durable_Update := False;
+     Cb_Type3.KeyValue := 0;
+     Cb_Category2.Text := '';
+     Cb_Room3.KeyValue := 0;
+     Cb_Department_Name3.KeyValue := 0;
+     Cb_Status3.Text := '';
+     Refresh_Lv_Maintain;
+end;
+
+procedure Refresh_Lv_Maintain ();
+var  Temp_Type,Temp_Room,Temp_Depart : String;
+begin
+     with Fr_Durable do
+     begin
+          if Cb_Type3.Text = '' then Temp_Type := ''
+          else Temp_Type := IntToStr(Cb_Type3.KeyValue);
+          if Cb_Department_Name3.Text = '' then Temp_Depart := ''
+          else Temp_Depart := IntToStr(Cb_Department_Name3.KeyValue);
+          if Cb_Room3.Text = '' then Temp_Room := ''
+          else Temp_Room := IntToStr(Cb_Room3.KeyValue);
+          Lv_Maintainant.Items.Clear;
+     end;
+     with DataModule1.Qr_Transaction do
+     begin
+          Close;
+          SQL.Clear;
+          SQL.Add('Select Durable_ID,Type_Name,Category,Room_Name,Department_Name,Status ');
+          SQL.Add('From Durable A,Type B,Department C,Room D');
+          SQL.Add('Where (A.Type_ID = B.Type_ID) and (D.Department_ID = C.Department_ID)');
+          SQL.Add('and (Durable_ID Like :Durable_ID + ''%'') ');
+          SQL.Add('and (A.Room_ID = D.Room_ID)');
+          SQL.Add('and (A.Type_ID Like :Type_ID + ''%'')');
+          SQL.Add('and (Category Like :Category + ''%'')');
+          SQL.Add('and (D.Department_ID Like :Department_ID + ''%'')');
+          SQL.Add('and (A.Room_ID Like :Room_ID + ''%'')');
+          SQL.Add('and (Status Like :Status + ''%'')');
+          SQL.Add('and (Status = ''ดี'' or Status = ''เสีย'' or Status = ''ส่งซ่อม'')');
+          SQL.Add('and (Length_Maintain <> 0 )');
+          SQL.Add('and (DATEADD(month,Length_Maintain,Date_Change) < GetDate()) ');
+          SQL.Add('Order By Durable_ID');
+          ParamByName('Durable_ID').AsString := Fr_Durable.Ed_Durable_ID3.Text;
+          ParamByName('Type_ID').AsString := Temp_Type;
+          ParamByName('Category').AsString := Fr_Durable.Cb_Category2.Text;
+          ParamByName('Department_ID').AsString := Temp_Depart;
+          ParamByName('Room_ID').AsString := Temp_Room;
+          ParamByName('Status').AsString := Fr_Durable.Cb_Status3.Text;
+          ExecSQL;
+          Open;
+          First;
+     end;
+     while not DataModule1.Qr_Transaction.Eof do
+     begin
+          with Fr_Durable.Lv_Maintainant.Items.Add  do
+          begin
+               Caption := DataModule1.Qr_Transaction.FieldValues['Durable_ID'];
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Type_Name']);
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Category']);
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Room_Name']);
+               SubItems.Add(DataModule1.Qr_Transaction.FieldValues['Department_Name']);
+               SubItems.add(DataModule1.Qr_Transaction.FieldValues['Status']);
+               DataModule1.Qr_Transaction.Next;
+          end;
+     end;
+          Fr_Durable.Label92.Caption := 'จำนวนทั้งหมด = '+ IntToStr(Fr_Durable.Lv_Maintainant.Items.Count);
+end;
+
+procedure TFr_Durable.Cb_Room3MouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+    Cb_Room3.KeyValue := 0;
+end;
+
+procedure TFr_Durable.Cb_Department_Name3MouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+     Cb_Department_Name3.KeyValue := 0;
+end;
+
+procedure TFr_Durable.Cb_Type3MouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+     Cb_Type3.KeyValue := 0;
+end;
+
+procedure TFr_Durable.Button7Click(Sender: TObject);
+begin
+     Refresh_Lv_Maintain;
+end;
+
+procedure TFr_Durable.Lv_MaintainantDblClick(Sender: TObject);
+begin
+     // check click right or not
+     if Lv_Maintainant.SelCount = 0 then
+     begin
+          exit;
+     end;
+     Clear_Durable;
+     Fr_Durable_Detail.Maintain := True;
+     ShowDurableDetail(Lv_Maintainant.Selected.Caption);
+end;
+
+
+procedure TFr_Durable.BitBtn9Click(Sender: TObject);
+var i : Integer;
+     ChangeM : boolean;
+begin
+     i := 0;
+     changeM := False;
+     DataModule1.Database1.StartTransaction;
+     try
+          while i <= Lv_Maintainant.Items.Count-1  do
+          begin
+               if Lv_Maintainant.items.item[i].checked  then
+               begin
+                    with DataModule1.Qr_Transaction do
+                    begin
+                         close;
+                         SQL.Add('Update Durable Set Date_Change = :Date_Change');
+                         SQL.Add('Where Durable_ID = :Durable_ID');
+                         Parambyname('Durable_ID').AsString := Lv_Maintainant.Items.Item[i].Caption;
+                         Parambyname('Date_Change').AsDateTime := Date;
+                         ExecSQL;
+                         changeM := true;
+                    end;
+               end;
+               i := i+1;
+          end;
+          if changeM then Showmessage('แก้ไขข้อมูลเรียบร้อย');
+          DataModule1.Database1.Commit;
+          Refresh_Lv_Maintain;
+     except
+          showmessage('มีข้อผิดพลาดเกืดขึ้น');
+          DataModule1.Database1.Rollback;
+          raise;
+     end;
+end;
+
+procedure TFr_Durable.CheckBox1Click(Sender: TObject);
+var i : Integer;
+begin
+     if checkbox1.Checked then
+     begin
+          checkbox2.Checked := false;
+          i := 0;
+          while i <= Lv_Maintainant.Items.Count-1  do
+          begin
+               Lv_Maintainant.Items.Item[i].Checked := true;
+               i := i+1;
+          end;
+     end;
+end;
+
+procedure TFr_Durable.CheckBox2Click(Sender: TObject);
+var i : Integer;
+begin
+     if checkbox2.Checked then
+     begin
+          checkbox1.Checked := false;
+          i := 0;
+          while i <= Lv_Maintainant.Items.Count-1  do
+          begin
+               Lv_Maintainant.Items.Item[i].Checked := false;
+               i := i+1;
+          end;
+     end;
+end;
+
+
+procedure TFr_Durable.Ckl_Department3ClickCheck(Sender: TObject);
+begin
+     Ck_AllDepartment3.Checked:= False;
+     Ck_NoneDepartment3.Checked := False;
+end;
+
+procedure TFr_Durable.Ck_AllDepartment3Click(Sender: TObject);
+var i:integer;
+begin
+     if Ck_AllDepartment3.Checked then
+     begin
+          for i:=0 to CkL_Department3.Items.Count-1 do
+               CkL_Department3.Checked[i] := True;
+          Ck_NoneDepartment3.Checked := False;
+     end;
+end;
+
+procedure TFr_Durable.Ck_NoneDepartment3Click(Sender: TObject);
+var i : integer;
+begin
+     if Ck_NoneDepartment3.Checked then
+     begin
+          for i:=0 to CkL_Department3.Items.Count-1 do
+               CkL_Department3.Checked[i] := False;
+          Ck_AllDepartment3.Checked := False;
+     end;
+end;
+
+procedure TFr_Durable.Ckl_Room3ClickCheck(Sender: TObject);
+begin
+     Ck_AllRoom3.Checked:= False;
+     Ck_NoneRoom3.Checked := False;
+end;
+
+procedure TFr_Durable.Ck_AllRoom3Click(Sender: TObject);
+var i:integer;
+begin
+     if Ck_AllRoom3.Checked then
+     begin
+          for i:=0 to CkL_Room3.Items.Count-1 do
+               CkL_Room3.Checked[i] := True;
+          Ck_NoneRoom3.Checked := False;
+     end;
+end;
+
+procedure TFr_Durable.Ck_NoneRoom3Click(Sender: TObject);
+var i:integer;
+begin
+     if Ck_NoneRoom3.Checked then
+     begin
+          for i:=0 to CkL_Room3.Items.Count-1 do
+               CkL_Room3.Checked[i] := False;
+          Ck_AllRoom3.Checked := False;
+     end;
+end;
+
+procedure TFr_Durable.Button8Click(Sender: TObject);
+var i : Integer;
+begin
+     with DataModule1.Qr_Transaction do
+     begin
+          SQL.Clear;
+          SQL.Add('Select Durable_ID,Type_Name,Category,Room_Name,Department_Name,Status ');
+          SQL.Add('From Durable A,Type B,Department C,Room D');
+          SQL.Add('Where (A.Type_ID = B.Type_ID) and (D.Department_ID = C.Department_ID)');
+          SQL.Add('and (A.Room_ID = D.Room_ID)');
+          SQL.Add('and status in ( :Good,:Bad,:Repair ) ');
+          SQL.Add('and Category in ( :Office,:Building,:Computer )');
+          if not(Ck_AllDepartment3.Checked) then
+          begin
+               for i:=0 to CkL_Department3.Items.Count-1 do
+               begin
+                    if CkL_Department3.Checked[i] = False then
+                         SQL.Add('and Department_Name <> '+ char(39)+CkL_Department3.Items.Strings[i]+char(39));
+               end;
+          end;
+          if not(Ck_AllRoom3.Checked) then
+          begin
+               for i:=0 to CkL_Room3.Items.Count-1 do
+               begin
+                    if CkL_Room3.Checked[i] = False then
+                         SQL.Add('and Room_Name <> '+ char(39)+CkL_Room3.Items.Strings[i]+char(39));
+               end;
+          end;
+          SQL.Add('and (Length_Maintain <> 0 )');
+          SQL.Add('and (DATEADD(month,Length_Maintain,Date_Change) < GetDate()) ');
+          SQL.Add('Order By Department_Name,Room_Name,Durable_ID');
+          if Ck_Good4.Checked then Parambyname('Good').AsString := 'ดี'
+          else Parambyname('Good').AsString := '';
+          if Ck_Bad4.Checked then Parambyname('Bad').AsString := 'เสีย'
+          else Parambyname('Bad').AsString := '';
+          if Ck_Repair4.Checked then Parambyname('Repair').AsString := 'ส่งซ่อม'
+          else Parambyname('Repair').AsString := '';
+          if Ck_Office4.Checked then Parambyname('office').AsString := 'สำนักงาน'
+          else Parambyname('office').AsString := '';
+          if Ck_Building4.Checked then Parambyname('Building').AsString := 'อาคาร'
+          else Parambyname('Building').AsString := '';
+          if Ck_Computer4.Checked then Parambyname('Computer').AsString := 'คอมพิวเตอร์'
+          else Parambyname('Computer').AsString := '';
+          Open;
+     end;
+     Fr_Print_Maintain.QuickRep1.PrinterSettings.Orientation := Fr_Print_Maintain.QuickRep1.Page.Orientation;
+     Fr_Print_Maintain.QuickRep1.Preview;
+end;
+
+procedure TFr_Durable.Cb_CategoryDropDown(Sender: TObject);
+begin
+     Cb_Category.ItemIndex := -1;
+end;
+
+procedure TFr_Durable.Cb_Status2DropDown(Sender: TObject);
+begin
+     Cb_Status2.ItemIndex := -1;
+end;
+
+procedure TFr_Durable.FormShow(Sender: TObject);
+begin
+     Cb_Status.ItemIndex := 0;
+     Cb_TypeMaintain.ItemIndex := 1;
+     Cb_TypeGuarantee.ItemIndex := 0;
+end;
+
+procedure TFr_Durable.Cb_Category2DropDown(Sender: TObject);
+begin
+     Cb_Category2.ItemIndex := -1;
+end;
+
+procedure TFr_Durable.Cb_Status3DropDown(Sender: TObject);
+begin
+     Cb_Status3.ItemIndex := -1;
+end;
+
+procedure TFr_Durable.Lv_MaintainantKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if Lv_Maintainant.SelCount = 0 then
+     begin
+          exit;
+     end;
+     if key = #13 then
+     begin
+          Clear_Durable;
+          Fr_Durable_Detail.Maintain := True;
+          ShowDurableDetail(Lv_Maintainant.Selected.Caption);
+     end;
+end;
+
+procedure TFr_Durable.Lv_RepairKeyPress(Sender: TObject; var Key: Char);
+var Year1,Month1,Day1 : word;
+begin
+     if Lv_Repair.SelCount = 0 then
+     begin
+          exit;
+     end;
+     if key = #13 then
+     begin
+          Fr_Receive.Durable_ID := Fr_Durable.Lv_Repair.Selected.Caption;
+          DecodeDate(StrToDate(Fr_Durable.Lv_Repair.Selected.SubItems.Strings[0]),Year1,Month1,Day1);
+          Fr_Receive.Date_Repair := DateToStr(EncodeDate(Year1-543,Month1,Day1));
+          Fr_Receive.Company_Name := Fr_Durable.Lv_Repair.Selected.SubItems.Strings[3];
+          Fr_Receive.Condition := Fr_Durable.Lv_Repair.Selected.SubItems.Strings[2];
+          Fr_Receive.Ed_Date_Take.Date := Date;
+          Fr_Receive.Cb_Officer_Name.KeyValue := 0;
+          Fr_Receive.Rb_Fix.Checked := True;
+          Fr_Receive.Ed_Repair_Price.Text := '';
+          Fr_Receive.Mm_Detail.Text := '';
+          With DataModule1.Qr_Transaction do
+          begin
+               Close;
+               SQL.Clear;
+               Params.Clear;
+               SQL.Add('Select * From Repair A, Company B,Officer C ');
+               SQL.Add('Where (A.Company_ID = B.Company_ID) and ( A.Officer_ID = C.Officer_ID)');
+               SQl.Add('and (Durable_ID = '''+Fr_Receive.Durable_ID+''')');;
+               Open;
+               With Fr_Receive do
+               begin
+                    DecodeDate(FieldValues['Date_Repair'],Year1,Month1,Day1);
+                    Ed_Date_Repair.Text := DateToStr(EncodeDate(Year1+543,Month1,Day1));
+                    DecodeDate(FieldValues['Date_Take'],Year1,Month1,Day1);
+                    Ed_Date_Take2.Text := DateToStr(EncodeDate(Year1+543,Month1,Day1));
+                    Ed_Contact_Name2.Text := FieldValues['Contact_Name'];
+                    Ed_Officer_Name.Text := FieldValues['Officer_Name'];
+                    Mm_Condition.Text := FieldValues['Condition'];
+                    Mm_Attach_Item.Text := FieldValues['Attach_Item'];
+                    Ed_Company_Name.Text := FieldValues['Company_Name'];
+                    Ed_Company_Phone1.Text := FieldValues['Phone1'];
+                    Ed_Company_Phone2.Text := FieldValues['Phone2'];
+                    Ed_Company_Phone3.Text := FieldValues['Phone3'];
+                    Mm_Company_Address.Text := FieldValues['Address'];
+                    Ed_Company_Fax.Text := FieldValues['Fax'];
+               end;
+          end;
+          Refresh_Lv_History_ReFr(Fr_Durable.Lv_Repair.Selected.Caption);
+          Fr_Receive.PageControl1.ActivePageIndex := 0;
+          Fr_Receive.ShowModal;
+     end;
+end;
+
+end.

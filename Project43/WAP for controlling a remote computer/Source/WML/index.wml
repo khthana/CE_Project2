@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "C:\Program Files\Zylog Systems\WAPPage\wml_1.1.xml">
+
+<wml>
+	<head>
+		<meta http-equiv="Cache-Control" content="no-cache"/>
+	</head>
+
+	<card title="Welcome to RPA" id="Welcome" newcontext="false" ordered="true">
+		<onevent type="onenterforward">
+			<refresh>
+				<setvar name="login" value=""/>
+				<setvar name="passwd" value=""/>
+			</refresh>
+		</onevent>
+		<p align="left">Please choose
+			<br/>
+			<select multiple="false">
+				<option onpick="#register">Register
+				</option>
+				<option onpick="#login">Login
+				</option>
+			</select>
+		</p>
+	</card>
+
+	<card title="Register" id="register" newcontext="false" ordered="true">
+		<do type="accept" label="submit" optional="false">
+			<go href="http://161.246.5.105:8080/servlet/WAPRegis" method="post" sendreferer="false">
+				<postfield name="login" value="$login"/>
+				<postfield name="passwd" value="$passwd"/>
+			</go>
+		</do>
+		<p align="left">Fill in all blank.
+			<br/>Login name
+			<br/>
+			<input name="login" maxlength="15" type="text" emptyok="false"/>Password
+			<br/>
+			<input name="passwd" maxlength="15" type="password" emptyok="false"/>
+		</p>
+	</card>
+
+	<card title="Login" id="login" newcontext="false" ordered="true">
+		<do type="accept" label="submit" optional="false">
+			<go href="http://161.246.5.105:8080/servlet/WAPLogin" method="post" sendreferer="false">
+				<postfield name="login" value="$login"/>
+				<postfield name="passwd" value="$passwd"/>
+			</go>
+		</do>
+		<p align="left">Login
+			<input name="login" maxlength="15" type="text" emptyok="false"/>Password
+			<br/>
+			<input name="passwd" maxlength="15" type="password" emptyok="false"/>
+		</p>
+	</card>
+
+</wml>

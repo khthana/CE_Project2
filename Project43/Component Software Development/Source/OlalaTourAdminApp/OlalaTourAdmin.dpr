@@ -1,0 +1,51 @@
+program OlalaTourAdmin;
+
+uses
+  Forms,
+  MainForm_Source in 'MainForm_Source.pas' {MainForm},
+  LoginForm_Source in 'LoginForm_Source.pas' {LoginForm},
+  UserSystem_TLB in 'C:\Program Files\Borland\Delphi5\Imports\UserSystem_TLB.pas',
+  LogForm_Source in 'LogForm_Source.pas' {LogForm},
+  PlacePropertyForm_Source in 'PlacePropertyForm_Source.pas' {PlacePropertyForm},
+  PlaceForm_Source in 'PlaceForm_Source.pas' {PlaceForm},
+  PlaceSystem_TLB in 'C:\Program Files\Borland\Delphi5\Imports\PlaceSystem_TLB.pas',
+  CreatePlaceForm_Source in 'CreatePlaceForm_Source.pas' {CreatePlaceForm},
+  ModifyPlaceForm_Source in 'ModifyPlaceForm_Source.pas' {ModifyPlaceForm},
+  UserManagerForm_Source in 'UserManagerForm_Source.pas' {UserManagerForm},
+  PackageManagerForm_Source in 'PackageManagerForm_Source.pas' {PackageManagerForm},
+  CreatePackageFrom_Source in 'CreatePackageFrom_Source.pas' {frmCreatePackage},
+  AddHotelToPackageFrom_Source in 'AddHotelToPackageFrom_Source.pas' {frmAddHotelToPackage},
+  ViewPackageFrom_Source in 'ViewPackageFrom_Source.pas' {frmViewPackage},
+  AddRestaurantToPackageFrom_Source in 'AddRestaurantToPackageFrom_Source.pas' {frmAddRestaurantToPackage},
+  AddPlaceToPackageFrom_Source in 'AddPlaceToPackageFrom_Source.pas' {frmAddPlaceToPackage},
+  PackageSystem_TLB in 'C:\Program Files\Borland\Delphi5\Imports\PackageSystem_TLB.pas',
+  OlalaAgency_TLB in 'C:\Program Files\Borland\Delphi5\Imports\OlalaAgency_TLB.pas',
+  AddAircraftToPackageForm_Source in 'AddAircraftToPackageForm_Source.pas' {frmAddAircraftToPackage},
+  ViewPackageIDForm_Source in 'ViewPackageIDForm_Source.pas' {frmViewPackageID},
+  ConfirmCancelForm_Source in 'ConfirmCancelForm_Source.pas' {frmConfirmCancel},
+  AddBusToPackageForm_Source in 'AddBusToPackageForm_Source.pas' {frmAddBusToPackage};
+
+{$R *.RES}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TMainForm, MainForm);
+  Application.CreateForm(TLoginForm, LoginForm);
+  Application.CreateForm(TLogForm, LogForm);
+  Application.CreateForm(TPlacePropertyForm, PlacePropertyForm);
+  Application.CreateForm(TPlaceForm, PlaceForm);
+  Application.CreateForm(TCreatePlaceForm, CreatePlaceForm);
+  Application.CreateForm(TModifyPlaceForm, ModifyPlaceForm);
+  Application.CreateForm(TUserManagerForm, UserManagerForm);
+  Application.CreateForm(TPackageManagerForm, PackageManagerForm);
+  Application.CreateForm(TfrmCreatePackage, frmCreatePackage);
+  Application.CreateForm(TfrmAddHotelToPackage, frmAddHotelToPackage);
+  Application.CreateForm(TfrmViewPackage, frmViewPackage);
+  Application.CreateForm(TfrmAddRestaurantToPackage, frmAddRestaurantToPackage);
+  Application.CreateForm(TfrmAddPlaceToPackage, frmAddPlaceToPackage);
+  Application.CreateForm(TfrmAddAircraftToPackage, frmAddAircraftToPackage);
+  Application.CreateForm(TfrmViewPackageID, frmViewPackageID);
+  Application.CreateForm(TfrmConfirmCancel, frmConfirmCancel);
+  Application.CreateForm(TfrmAddBusToPackage, frmAddBusToPackage);
+  Application.Run;
+end.

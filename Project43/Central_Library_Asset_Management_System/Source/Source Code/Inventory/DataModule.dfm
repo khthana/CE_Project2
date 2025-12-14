@@ -1,0 +1,216 @@
+object DM: TDM
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  Left = 203
+  Top = 226
+  Height = 480
+  Width = 696
+  object Ds_Company: TDataSource
+    DataSet = Qr_Company
+    Left = 40
+    Top = 16
+  end
+  object Database1: TDatabase
+    AliasName = 'Inventory'
+    Connected = True
+    DatabaseName = 'Inventory'
+    LoginPrompt = False
+    Params.Strings = (
+      'USER NAME=Library'
+      'PASSWORD=123')
+    SessionName = 'Default'
+    Left = 416
+    Top = 16
+  end
+  object Qr_Transaction: TQuery
+    AutoRefresh = True
+    DatabaseName = 'Inventory'
+    SQL.Strings = (
+      '')
+    Left = 416
+    Top = 208
+  end
+  object Qr_Company: TQuery
+    Active = True
+    AutoRefresh = True
+    DatabaseName = 'Inventory'
+    SQL.Strings = (
+      'Select *'
+      'From Company'
+      'order by company_name')
+    Left = 136
+    Top = 13
+  end
+  object Ds_Inventory_Detail: TDataSource
+    DataSet = Qr_Inventory_Detail
+    Left = 40
+    Top = 136
+  end
+  object Qr_Inventory_Detail: TQuery
+    Active = True
+    AutoRefresh = True
+    DatabaseName = 'Inventory'
+    SQL.Strings = (
+      
+        'Select Inventory_Name,Category,Sum(Have_No)[Have_No],Numerative,' +
+        'Min_Have,AVG(PPE)[PPE]'
+      'From Inventory I,Lot L'
+      'Where I.Inventory_ID = L.Inventory_ID'
+      'Group By I.Inventory_Name,I.Category,I.Numerative,Min_Have'
+      'Order By Inventory_Name')
+    Left = 136
+    Top = 136
+  end
+  object Ds_Depart: TDataSource
+    DataSet = Qr_Depart
+    Left = 40
+    Top = 80
+  end
+  object Qr_Depart: TQuery
+    Active = True
+    AutoRefresh = True
+    DatabaseName = 'Inventory'
+    SQL.Strings = (
+      'select *'
+      'From department')
+    Left = 136
+    Top = 80
+  end
+  object Ds_Show_Inven: TDataSource
+    DataSet = Qr_Show_Inven
+    Left = 40
+    Top = 192
+  end
+  object Qr_Show_Inven: TQuery
+    Active = True
+    CachedUpdates = True
+    AutoRefresh = True
+    DatabaseName = 'Inventory'
+    SQL.Strings = (
+      
+        'Select Inventory_Name,Category,Sum(Have_No)[Have_No],Numerative,' +
+        'Min_Have,AVG(PPE)[PPE]'
+      'From Inventory I,Lot L'
+      'Where I.Inventory_ID = L.Inventory_ID and Have_No <> 0'
+      'Group By I.Category,I.Inventory_Name,Numerative,Min_Have'
+      'Order By I.Category,I.Inventory_Name'
+      '')
+    Left = 137
+    Top = 194
+  end
+  object Ds_Show_Bring: TDataSource
+    DataSet = Qr_Show_Bring
+    Left = 40
+    Top = 256
+  end
+  object Qr_Show_Bring: TQuery
+    Active = True
+    CachedUpdates = True
+    AutoRefresh = True
+    DatabaseName = 'Inventory'
+    SQL.Strings = (
+      'Select  Department_Name,Category,Inventory_Name,Sum(Bring_No)'
+      'From Transaction_ T,Inventory I,DepartMent DP'
+      
+        'Where (T.Inventory_ID =  I.Inventory_ID)and (T.Department_ID =  ' +
+        'DP.Department_ID) and Bring_No is not Null'
+      'Group By Department_Name,Category,Inventory_Name'
+      'Order By 1,3,2')
+    Left = 136
+    Top = 256
+  end
+  object Tb_Type: TTable
+    Active = True
+    DatabaseName = 'Inventory'
+    TableName = 'dbo.Inventory'
+    Left = 416
+    Top = 136
+  end
+  object Qr_Voucher: TQuery
+    Active = True
+    AutoRefresh = True
+    DatabaseName = 'Inventory'
+    SQL.Strings = (
+      
+        'select *,Day(Date_Buy)[db],Month(Date_Buy)[mb],Year(Date_Buy)+54' +
+        '3[yb] from Voucher V')
+    Left = 135
+    Top = 358
+  end
+  object Ds_Voucher: TDataSource
+    DataSet = Qr_Voucher
+    Left = 41
+    Top = 356
+  end
+  object Ds_Buy_Detail: TDataSource
+    DataSet = Qr_Buy_Detail
+    Left = 41
+    Top = 319
+  end
+  object Qr_Buy_Detail: TQuery
+    Active = True
+    AutoRefresh = True
+    DatabaseName = 'Inventory'
+    SQL.Strings = (
+      
+        'select * from Buy_Detail B,Inventory I where B.Inventory_ID=I.In' +
+        'ventory_ID')
+    Left = 138
+    Top = 316
+  end
+  object Ds_Year: TDataSource
+    DataSet = Qr_Year
+    Left = 231
+    Top = 23
+  end
+  object Qr_Year: TQuery
+    Active = True
+    DatabaseName = 'Inventory'
+    SQL.Strings = (
+      
+        'Select  Category,Inventory_Name,Sum(Bring_No)[B],Sum(Recieve_No)' +
+        '[R],Sum(L.Have_No)[H],AVG(T.PPE)'
+      'From Transaction_ T,Inventory I,Lot L'
+      
+        'Where (T.Inventory_ID =  I.Inventory_ID) and L.Have_No <> 0 and ' +
+        'L.Inventory_ID =  I.Inventory_ID'
+      'Group By Inventory_Name,I.Category'
+      'Order By 2')
+    Left = 309
+    Top = 25
+  end
+  object DataSource1: TDataSource
+    DataSet = Query1
+    Left = 263
+    Top = 160
+  end
+  object Query1: TQuery
+    Active = True
+    DatabaseName = 'Inventory'
+    SQL.Strings = (
+      
+        'Select  Category,Inventory_Name,Sum(Bring_No)[B],Sum(Recieve_No)' +
+        '[R],L.Have_No,L.PPE'
+      'From Transaction_ T,Inventory I,Lot L'
+      
+        'Where (T.Inventory_ID =  I.Inventory_ID) and L.Have_No <> 0 and ' +
+        'L.Inventory_ID =  I.Inventory_ID'
+      'Group By Inventory_Name,L.Have_No,Category,L.PPE'
+      'Order By 2')
+    Left = 277
+    Top = 217
+  end
+  object Ds_Off: TDataSource
+    DataSet = Qr_Off
+    Left = 248
+    Top = 96
+  end
+  object Qr_Off: TQuery
+    Active = True
+    DatabaseName = 'Inventory'
+    SQL.Strings = (
+      'select * From Officer')
+    Left = 312
+    Top = 96
+  end
+end

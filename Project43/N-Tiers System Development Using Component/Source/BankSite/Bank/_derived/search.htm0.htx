@@ -1,0 +1,112 @@
+<HTML> 
+ 
+<HEAD>
+<base href="http://161.246.5.239:3000/Bank/search.htm">
+ 
+<TITLE>Text Search</TITLE> 
+<META NAME='FORMATTER' CONTENT='Microsoft Visual InterDev 1.0'> 
+</HEAD> 
+ 
+<BODY> 
+ 
+<H1><A NAME='top'>Text Search</A></H1> 
+ 
+<HR> 
+ 
+<P>Use the form below to search for documents in this web 
+containing specific words or combinations of words. The text 
+search engine will display a weighted list of matching documents, 
+with better matches shown first. Each list item is a link to a
+matching document; if the document has a title it will be shown, 
+otherwise only the document's file name is displayed. A brief <A 
+HREF='#querylang'>explanation</A> of the query language is 
+available, along with examples.</P> 
+<!--webbot bot='Search' s-link s-fields='TimeStamp,DocumentK,' 
+s-index='All' s-dsn='default' tag='FORM' s-text='Search for:' 
+i-size='20' s-submit='Start Search' s-clear='Clear' startspan U-DOC-URL="search.htm" b-useindexserver="1" --><form action="_vti_script/search.htm0.idq" method="POST"><P><b>Search for: </b><input type="text" name="UserRestriction" size="20" value="<%if UserRestriction NE VT_EMPTY%><%if UserRestriction NE "UserRestriction"%><%UserRestriction%><%endif%><%endif%>"></P><P><input type="submit" value="Start Search"><input type="reset" value="Clear"></P></form><!--webbot bot='Search' endspan i-checksum='7660' -->
+<table BORDER="0">
+  <tr>
+    <td><%if CiContainsFirstRecord EQ 0%>
+      <form ACTION="_vti_script/search.htm0.idq" METHOD="POST">
+        <input TYPE="HIDDEN" NAME="CiBookmark" VALUE="<%CiBookmark%>"><input TYPE="HIDDEN" NAME="CiBookmarkSkipCount" VALUE="-<%EscapeRAW CiMaxRecordsPerPage%>"><input TYPE="HIDDEN" NAME="CiMaxRecordsPerPage" VALUE="<%EscapeRAW CiMaxRecordsPerPage%>"><input TYPE="HIDDEN" NAME="UserRestriction" VALUE="<%UserRestriction%>"><input TYPE="HIDDEN" NAME="CiScope" VALUE="<%CiScope%>"><%if CiMaxRecordsPerPage EQ 1%><input TYPE="SUBMIT" VALUE="Previous hit"><%else%><input TYPE="SUBMIT" VALUE="Previous <%CiMaxRecordsPerPage%> Hits"><%endif%>
+      </form>
+      <%endif%></td>
+    <td><%if CiContainsLastRecord EQ 0%>
+      <form ACTION="_vti_script/search.htm0.idq" METHOD="POST">
+        <input TYPE="HIDDEN" NAME="CiBookmark" VALUE="<%CiBookmark%>"><input TYPE="HIDDEN" NAME="CiBookmarkSkipCount" VALUE="<%EscapeRAW CiMaxRecordsPerPage%>"><input TYPE="HIDDEN" NAME="CiMaxRecordsPerPage" VALUE="<%EscapeRAW CiMaxRecordsPerPage%>"><input TYPE="HIDDEN" NAME="UserRestriction" VALUE="<%UserRestriction%>"><input TYPE="HIDDEN" NAME="CiScope" VALUE="<%CiScope%>"><%if CiRecordsNextPage EQ 1%><input TYPE="SUBMIT" VALUE="Next hit"><%else%><input TYPE="SUBMIT" VALUE="Next <%CiRecordsNextPage%> Hits"><%endif%>
+      </form>
+      <%endif%></td>
+  </tr>
+</table>
+<%if CiMatchedRecordCount EQ 0%>
+<p><b>No documents found. Please try again.</b></p>
+<%else%>
+<p><b>Number of documents found: <%CiMatchedRecordCount%>. Click on a document
+to view it, or submit another search.</b></p>
+<table BORDER>
+  <caption><b>Search Results</b></caption>
+  <tr>
+    <td><b>Document</b></td>
+    <td><b>Date</b></td>
+    <td align="right"><b>Size</b></td>
+  </tr>
+  <%endif%><%begindetail%>
+  <tr>
+    <td><a href="<%EscapeURL vpath%>"><%if DocTitle ISEMPTY%><%Filename%><%else%><%DocTitle%><%endif%></a></td>
+    <td><%if write NE ""%><%write%> GMT<%else%>&nbsp<%endif%></td>
+    <td align="right"><%if size NE ""%><%size%><%else%>&nbsp<%endif%></td>
+  </tr>
+  <%enddetail%><%if CiMatchedRecordCount GT 0%>
+</table>
+<%endif%> 
+ 
+<HR> 
+ 
+<H2><A NAME='querylang'>Query Language</A></H2> 
+ 
+<P>The text search engine allows queries to be formed from 
+arbitrary Boolean expressions containing the keywords AND, OR,
+and NOT, and grouped with parentheses. For example:</P> 
+ 
+<BLOCKQUOTE> 
+    <DL> 
+        <DT><STRONG><TT>information retrieval</TT></STRONG></DT> 
+        <DD>finds documents containing 'information' or 
+            'retrieval'<BR> 
+            <BR> 
+        </DD> 
+        <DT><STRONG><TT>information or retrieval</TT></STRONG></DT> 
+        <DD>same as above<BR> 
+            <BR> 
+        </DD> 
+        <DT><STRONG><TT>information and retrieval</TT></STRONG></DT>
+        <DD>finds documents containing both 'information' and 
+            'retrieval'<BR> 
+            <BR> 
+        </DD> 
+        <DT><STRONG><TT>information not retrieval</TT></STRONG></DT> 
+        <DD>finds documents containing 'information' but not 
+            'retrieval'<BR> 
+            <BR> 
+        </DD> 
+        <DT><STRONG><TT>(information not retrieval) and WAIS</TT></STRONG></DT> 
+        <dd>finds documents containing 'WAIS', plus 'information'
+            but not 'retrieval'<BR> 
+            <BR> 
+        </DD> 
+        <DT><STRONG><TT>web*</TT></STRONG></DT> 
+        <DD>finds documents containing words starting with 'web'<BR> 
+            <BR> 
+        </DD> 
+    </DL> 
+</BLOCKQUOTE> 
+ 
+<H5><A HREF='#top'>Back to Top</A></H5> 
+ 
+<HR> 
+ 
+<H5>Author information goes here.<BR> 
+Copyright ? 1995 Your Company Name. All rights reserved.<BR> 
+</H5> 
+</BODY> 
+</HTML>

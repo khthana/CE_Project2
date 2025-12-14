@@ -1,0 +1,36 @@
+					<table width="100%" border="0" bgcolor="#FF9999">
+				        <tr>
+				        <td height="33"> 
+				        <table width="98%" border="0" align="center" height="98%" bgcolor="#FFFFFF">
+					<tr>
+			                <td>
+			                  <div align="center">
+					  <%if(sessionBeanHP.getUserStatus().equals("dba")){%>
+				  					  <img src="/www/picture/dbaicon.JPG" width="43" height="43">
+						<%} else{%>
+						 		          <img src="/www/picture/useritem.JPG" width="43" height="43">
+						<%}
+					%>
+				
+					<br>
+		                       </div>
+		                       <form  action="" method="post">
+		                      <div align="center"> <font face="MS Sans Serif" size="1"  color="#0000FF">สวัสดีครับคุณ 
+		                      </font> <font face="MS Sans Serif" size="1"  color="#0000FF"> 
+		                      <%rset=sessionBeanHP.setRset("select","SELECT first_name ,last_name FROM home_user WHERE username='"+sessionBeanHP.getUsername()+"'");%> 
+		                      <%rset.next();	first_name=rset.getString(1);	last_name=rset.getString(2); %> 
+		                      <%=first_name+"  "+last_name%> </font> <br>
+		                      <input type="submit" name="Submit" value="LoGoUt">
+		                      <input type="hidden" name="action" value="logout">
+				    </div>
+		                  </form>
+				  <div align="center"> <font face="MS Sans Serif" size="1"  color="#0000FF"><a href="HPcheckhome.jsp">ตรวจสอบการจองบ้าน</a><br>
+		                    <a href="HPaddhome.jsp">ลงประกาศขายบ้าน</a><br>
+		                    <a href="HPaddproject.jsp">เพิ่มโครงการบ้าน</a><br>
+		                    <a href="HPedithome.jsp">แก้ไขข้อมูลบ้านของท่าน</a></font></div>
+		                </td>
+		              </tr>
+		            </table>
+		          </td>
+		        </tr>
+		      </table>

@@ -1,0 +1,61 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: server - Win32 Debug--------------------
+</h3>
+
+
+Microsoft (R) Program Maintenance Utility   Version 6.00.8168.0
+Copyright (C) Microsoft Corp 1988-1998. All rights reserved.
+
+ cl -Zi -Od -c -DCRTAPI1=_cdecl -DCRTAPI2=_cdecl -nologo -D_X86_=1  -DWIN32 -D_WIN32 -W3 -D_WINNT -D_WIN32_WINNT=0x0500 -D_WIN32_IE=0x0500 -DWINVER=0x0500 -GX  -MLd incoming.cpp
+incoming.cpp
+
+NOTE: WINVER has been defined as 0x0500 or greater which enables
+Windows 2000 features.
+
+Caution: When building applications with WINVER set to 0x0500
+or greater, the resulting binary may not run as expected
+on earlier platforms, such Windows NT 4.0 or Windows 95 & Windows 98
+
+See the Platform SDK release notes for more information.
+
+d:\pon\temp\server\msado15.tlh(403) : warning C4146: unary minus operator applied to unsigned type, result still unsigned
+incoming.cpp(602) : warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+incoming.cpp(3297) : warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+ cl -Zi -Od -c -DCRTAPI1=_cdecl -DCRTAPI2=_cdecl -nologo -D_X86_=1  -DWIN32 -D_WIN32 -W3 -D_WINNT -D_WIN32_WINNT=0x0500 -D_WIN32_IE=0x0500 -DWINVER=0x0500 -GX  -MLd callnot.cpp
+callnot.cpp
+
+NOTE: WINVER has been defined as 0x0500 or greater which enables
+Windows 2000 features.
+
+Caution: When building applications with WINVER set to 0x0500
+or greater, the resulting binary may not run as expected
+on earlier platforms, such Windows NT 4.0 or Windows 95 & Windows 98
+
+See the Platform SDK release notes for more information.
+
+ cl -Zi -Od -c -DCRTAPI1=_cdecl -DCRTAPI2=_cdecl -nologo -D_X86_=1  -DWIN32 -D_WIN32 -W3 -D_WINNT -D_WIN32_WINNT=0x0500 -D_WIN32_IE=0x0500 -DWINVER=0x0500 -GX  -MLd term.cpp
+term.cpp
+
+NOTE: WINVER has been defined as 0x0500 or greater which enables
+Windows 2000 features.
+
+Caution: When building applications with WINVER set to 0x0500
+or greater, the resulting binary may not run as expected
+on earlier platforms, such Windows NT 4.0 or Windows 95 & Windows 98
+
+See the Platform SDK release notes for more information.
+
+ Rc /r -DWIN32 -D_WIN32 -DWINVER=0x0500  /fo SERVER.res SERVER.rc
+ link /DEBUG:full /DEBUGTYPE:cv  /INCREMENTAL:NO /NOLOGO -subsystem:windows,5.0   incoming.obj callnot.obj term.obj SERVER.res kernel32.lib  ws2_32.lib mswsock.lib advapi32.lib user32.lib gdi32.lib comdlg32.lib winspool.lib version.lib ole32.lib oleaut32.lib t3iid.lib uuid.lib strmiids.lib amstrmid.lib  -out:SERVER.exe 
+
+
+
+<h3>Results</h3>
+server.exe - 0 error(s), 3 warning(s)
+</pre>
+</body>
+</html>

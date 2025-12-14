@@ -1,0 +1,126 @@
+Beowulf Installation and Administration HOWTO: firewall scriptNext Previous 
+Contents 
+
+
+17. firewall script 
+# /etc/rc.d/init.d/firewall
+#
+# This file sets up the firewall rulz
+# for topcat.eng.usq.edu.au Beowulf class supercomputer
+# version 1.0.0
+# 18/08/1998
+#
+# author : Jacek Radajewski jacek@usq.edu.au
+#
+# this is our third line of defence
+# 1. most of the services are disabled in inted
+# 2. secondly we use tcpd
+# 3. we filter packets at the kernel level (this rc script)
+#
+
+# the ipfwadm program
+IPFWADM="/sbin/ipfwadm"
+
+case "$1" in
+start)
+echo -n "Inserting firewall rules ... "
+export MODE="-i"
+# default policies
+export IN_POLICY="accept"
+export OUT_POLICY="accept"
+# if you have machines outside the cluster connected to
+# the main system via IP tunnel as described at
+# http://www.sci.usq.edu.ay/staff/jacek/topcat then you will
+# have to allow forwarding
+export FORWARD_POLICY="deny"
+        ;;
+stop)
+echo -n "Deleting firewall rules ... "
+export MODE="-d"
+# default policies
+export IN_POLICY="accept"
+export OUT_POLICY="accept"
+export FORWARD_POLICY="accept"
+        ;;
+  *)
+echo "Usage: firewall {start|stop}"
+exit 1
+esac
+
+# source eth0 configuration
+# we assume that eth0 is our interface to the outside world
+# most firewall rules will be based on this
+
+. /etc/sysconfig/network-scripts/ifcfg-eth0
+
+# this must be set to the host's IP address
+export MYIP=$IPADDR
+
+# we want to allow administrator to telnet in
+export ADMINIP=139.x.x.x
+
+#-----------------------------------------------------------------------
+# we first set default policies
+#-----------------------------------------------------------------------
+
+$IPFWADM -I -p $IN_POLICY
+$IPFWADM -O -p $OUT_POLICY
+$IPFWADM -F -p $FORWARD_POLICY
+
+#-----------------------------------------------------------------------
+# forwarding rules
+# deny all TCP and UDP
+#-----------------------------------------------------------------------
+
+$IPFWADM -F $MODE deny -S 0.0.0.0/0 -D 0.0.0.0/0 -P tcp
+$IPFWADM -F $MODE deny -S 0.0.0.0/0 -D 0.0.0.0/0 -P udp
+
+#-----------------------------------------------------------------------
+# We go through the normal services and deny everything we don't need
+# from outside.
+#-----------------------------------------------------------------------
+
+# ftp
+#$IPFWADM -I $MODE deny -D $MYIP/32 ftp -S 0.0.0.0/0 -P tcp
+#$IPFWADM -I $MODE accept -D $MYIP/32 ftp -S $ADMINIP/32 -P tcp
+
+# telnet
+#$IPFWADM -I $MODE deny  -D $MYIP/32 telnet -S 0.0.0.0/0 -P tcp
+#$IPFWADM -I $MODE accept -D $MYIP/32 telnet -S $ADMINIP/32 -P tcp
+
+# we block other known services ... well most of them
+
+$IPFWADM -I $MODE deny -D $MYIP/32 echo -S 0.0.0.0/0 -P tcp
+$IPFWADM -I $MODE deny -D $MYIP/32 echo -S 0.0.0.0/0 -P udp
+$IPFWADM -I $MODE deny -D $MYIP/32 discard -S 0.0.0.0/0 -P tcp
+$IPFWADM -I $MODE deny -D $MYIP/32 discard -S 0.0.0.0/0 -P udp
+$IPFWADM -I $MODE deny -D $MYIP/32 systat -S 0.0.0.0/0 -P tcp
+$IPFWADM -I $MODE deny -D $MYIP/32 daytime -S 0.0.0.0/0 -P tcp
+$IPFWADM -I $MODE deny -D $MYIP/32 daytime -S 0.0.0.0/0 -P udp
+$IPFWADM -I $MODE deny -D $MYIP/32 netstat -S 0.0.0.0/0 -P tcp
+$IPFWADM -I $MODE deny -D $MYIP/32 finger -S 0.0.0.0/0 -P tcp
+#$IPFWADM -I $MODE deny -D $MYIP/32 http -S 0.0.0.0/0 -P tcp
+$IPFWADM -I $MODE deny -D $MYIP/32 pop -S 0.0.0.0/0 -P tcp
+$IPFWADM -I $MODE deny -D $MYIP/32 pop-3 -S 0.0.0.0/0 -P tcp
+$IPFWADM -I $MODE deny -D $MYIP/32 imap -S 0.0.0.0/0 -P tcp
+$IPFWADM -I $MODE deny -D $MYIP/32 exec -S 0.0.0.0/0 -P tcp
+$IPFWADM -I $MODE deny -D $MYIP/32 login -S 0.0.0.0/0 -P tcp
+$IPFWADM -I $MODE deny -D $MYIP/32 syslog -S 0.0.0.0/0 -P udp
+$IPFWADM -I $MODE deny -D $MYIP/32 shell -S 0.0.0.0/0 -P tcp
+$IPFWADM -I $MODE deny -D $MYIP/32 talk -S 0.0.0.0/0 -P udp
+$IPFWADM -I $MODE deny -D $MYIP/32 ntalk -S 0.0.0.0/0 -P udp
+$IPFWADM -I $MODE deny -D $MYIP/32 cfinger -S 0.0.0.0/0 -P tcp
+$IPFWADM -I $MODE deny -D $MYIP/32 nfs -S 0.0.0.0/0 -P udp
+
+# we stop all connections to our X server (if running)
+# comment out the line below if you require X access
+
+#$IPFWADM -I $MODE deny -D $MYIP/32 6000 -S 0.0.0.0/0 -P tcp
+
+echo "firewall"
+
+Note that the latest version of the DNS HOWTO covers bind version 8 but many 
+distributions are stil shipped with version 4 of bind. 
+
+
+Next Previous Contents 

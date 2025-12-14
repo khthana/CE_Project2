@@ -1,0 +1,134 @@
+unit AddPlaceToPackageFrom_Source;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, Grids, PlaceSystem_TLB;
+
+type
+  TfrmAddPlaceToPackage = class(TForm)
+    grbSearchPlace: TGroupBox;
+    stgSearch: TStringGrid;
+    edtName: TEdit;
+    edtCountry: TEdit;
+    btnSearch: TButton;
+    labName: TLabel;
+    labCountry: TLabel;
+    grbAddPlaceToPackge: TGroupBox;
+    edtPlaceID: TEdit;
+    labPlaceID: TLabel;
+    btnAddToPackage: TButton;
+    btnClose: TButton;
+    edtArriveTime: TEdit;
+    edtDepartTime: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    edtState: TEdit;
+    edtProvince: TEdit;
+    labState: TLabel;
+    labProvince: TLabel;
+    procedure btnCloseClick(Sender: TObject);
+    procedure btnSearchClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure UpdateGrid(StringGrid : TStringGrid);
+    procedure stgSearchMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure btnAddToPackageClick(Sender: TObject);
+  private
+    { Private declarations }
+    OleVar : OleVariant;
+    PlaceManager : IPlaceManager;
+    strResult : WideString;
+    TotalRow : Integer;
+  public
+    { Public declarations }
+    PackageID : WideString;
+  end;
+
+var
+  frmAddPlaceToPackage: TfrmAddPlaceToPackage;
+
+implementation
+
+uses CreatePackageFrom_Source;
+
+{$R *.DFM}
+
+procedure TfrmAddPlaceToPackage.btnCloseClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmAddPlaceToPackage.btnSearchClick(Sender: TObject);
+begin
+  OleVar := PlaceManager.QueryData(edtName.Text, edtCountry.Text,
+    edtState.Text, edtProvince.Text, '', '', '');
+  UpdateGrid(stgSearch);
+  OleVar.Close;
+end;
+
+procedure TfrmAddPlaceToPackage.FormCreate(Sender: TObject);
+begin
+  PlaceManager := CoPlaceManager.Create;
+end;
+
+procedure TfrmAddPlaceToPackage.UpdateGrid(StringGrid: TStringGrid);
+var
+  Row, Col : Integer;
+begin
+  if OleVar.EOF and OleVar.BOF then
+    strResult := 'Log is Empty!!'
+  else begin
+    OleVar.MoveFirst;
+
+    // Get Total Row of RecordSet
+    TotalRow := 0;
+    while not OleVar.EOF do
+    begin
+      INC(TotalRow);
+      OleVar.MoveNext;
+    end;
+
+    StringGrid.ColCount := OleVar.Fields.Count;
+    StringGrid.RowCount := TotalRow + 1;
+
+    strResult := 'Total Result :' + IntToStr(TotalRow) + ' Rows.';
+
+    for Col := 0 to OleVar.Fields.Count - 1 do
+      StringGrid.Cells[Col, 0] := OleVar.Fields.Item[Col].Name;
+
+    OleVar.MoveFirst;
+    Row := 1;
+    while not OleVar.EOF do
+    begin
+      for Col := 0 to OleVar.Fields.Count - 1 do
+        StringGrid.Cells[Col, Row] := VarToStr(OleVar.Fields.Item[Col].Value);
+      INC(Row);
+      OleVar.MoveNext;
+    end;
+  end;end;
+
+procedure TfrmAddPlaceToPackage.stgSearchMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  Column, Row: Longint;
+begin
+  stgSearch.MouseToCell(X, Y, Column, Row);
+  if (Row > 0) and (Row <= TotalRow) then
+  begin
+    stgSearch.MouseToCell(X, Y, Column, Row);
+    edtPlaceID.Text :=  stgSearch.Cells[0, Row];
+  end;
+end;
+
+procedure TfrmAddPlaceToPackage.btnAddToPackageClick(Sender: TObject);
+begin
+  frmCreatePackage.PlaceID:= edtPlaceID.Text;
+  frmCreatePackage.PlaceArriveTime:= edtArriveTime.Text;
+  frmCreatePackage.PlaceDepartTime:= edtDepartTime.Text;
+
+  frmCreatePackage.UpdatePlaceGrid(frmCreatePackage.stgPlace);
+end;
+
+end.

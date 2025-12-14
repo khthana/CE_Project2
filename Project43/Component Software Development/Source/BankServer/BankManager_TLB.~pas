@@ -1,0 +1,806 @@
+unit BankManager_TLB;
+
+// ************************************************************************ //
+// WARNING                                                                    
+// -------                                                                    
+// The types declared in this file were generated from data read from a       
+// Type Library. If this type library is explicitly or indirectly (via        
+// another type library referring to this type library) re-imported, or the   
+// 'Refresh' command of the Type Library Editor activated while editing the   
+// Type Library, the contents of this file will be regenerated and all        
+// manual modifications will be lost.                                         
+// ************************************************************************ //
+
+// PASTLWTR : $Revision:   1.88  $
+// File generated on 16/4/01 20:05:39 from Type Library described below.
+
+// *************************************************************************//
+// NOTE:                                                                      
+// Items guarded by $IFDEF_LIVE_SERVER_AT_DESIGN_TIME are used by properties  
+// which return objects that may need to be explicitly created via a function 
+// call prior to any access via the property. These items have been disabled  
+// in order to prevent accidental use from within the object inspector. You   
+// may enable them by defining LIVE_SERVER_AT_DESIGN_TIME or by selectively   
+// removing them from the $IFDEF blocks. However, such items must still be    
+// programmatically created via a method of the appropriate CoClass before    
+// they can be used.                                                          
+// ************************************************************************ //
+// Type Lib: C:\projectProgram\OlalaProject\BankProject\BankManager\Server\BankManager.tlb (1)
+// IID\LCID: {B15B1400-327B-11D5-8C7C-B49BE349D911}\0
+// Helpfile: 
+// DepndLst: 
+//   (1) v2.0 stdole, (C:\WINDOWS\SYSTEM\STDOLE2.TLB)
+//   (2) v4.0 StdVCL, (C:\WINDOWS\SYSTEM\STDVCL40.DLL)
+// ************************************************************************ //
+{$TYPEDADDRESS OFF} // Unit must be compiled without type-checked pointers. 
+interface
+
+uses Windows, ActiveX, Classes, Graphics, OleServer, OleCtrls, StdVCL;
+
+// *********************************************************************//
+// GUIDS declared in the TypeLibrary. Following prefixes are used:        
+//   Type Libraries     : LIBID_xxxx                                      
+//   CoClasses          : CLASS_xxxx                                      
+//   DISPInterfaces     : DIID_xxxx                                       
+//   Non-DISP interfaces: IID_xxxx                                        
+// *********************************************************************//
+const
+  // TypeLibrary Major and minor versions
+  BankManagerMajorVersion = 1;
+  BankManagerMinorVersion = 0;
+
+  LIBID_BankManager: TGUID = '{B15B1400-327B-11D5-8C7C-B49BE349D911}';
+
+  IID_IAccount: TGUID = '{B15B1401-327B-11D5-8C7C-B49BE349D911}';
+  CLASS_Account: TGUID = '{B15B1403-327B-11D5-8C7C-B49BE349D911}';
+  IID_IBankTransaction: TGUID = '{DCC7EE60-328F-11D5-8C7C-8C92464BF820}';
+  CLASS_BankTransaction: TGUID = '{DCC7EE62-328F-11D5-8C7C-8C92464BF820}';
+  IID_IBankController: TGUID = '{F60E9920-3297-11D5-8C7C-8C92464BF820}';
+  CLASS_BankController: TGUID = '{F60E9922-3297-11D5-8C7C-8C92464BF820}';
+type
+
+// *********************************************************************//
+// Forward declaration of types defined in TypeLibrary                    
+// *********************************************************************//
+  IAccount = interface;
+  IAccountDisp = dispinterface;
+  IBankTransaction = interface;
+  IBankTransactionDisp = dispinterface;
+  IBankController = interface;
+  IBankControllerDisp = dispinterface;
+
+// *********************************************************************//
+// Declaration of CoClasses defined in Type Library                       
+// (NOTE: Here we map each CoClass to its Default Interface)              
+// *********************************************************************//
+  Account = IAccount;
+  BankTransaction = IBankTransaction;
+  BankController = IBankController;
+
+
+// *********************************************************************//
+// Declaration of structures, unions and aliases.                         
+// *********************************************************************//
+  PWideString1 = ^WideString; {*}
+
+
+// *********************************************************************//
+// Interface: IAccount
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {B15B1401-327B-11D5-8C7C-B49BE349D911}
+// *********************************************************************//
+  IAccount = interface(IDispatch)
+    ['{B15B1401-327B-11D5-8C7C-B49BE349D911}']
+    function  getBalance(const AccountID: WideString): Currency; safecall;
+    function  getAccountName(const AccountID: WideString): WideString; safecall;
+    function  getCredit(const CreditCardID: WideString): Currency; safecall;
+    procedure setAccountName(const AccountID: WideString; const newAccountName: WideString); safecall;
+    procedure setPassword(const AccountID: WideString; const oldPassword: WideString; 
+                          const newPassword: WideString); safecall;
+    function  deposit(const AccountID: WideString; Amount: Currency): WideString; safecall;
+    function  withdraw(const ID: WideString; IDType: SYSINT; Amount: Currency; 
+                       const Password: WideString): WideString; safecall;
+  end;
+
+// *********************************************************************//
+// DispIntf:  IAccountDisp
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {B15B1401-327B-11D5-8C7C-B49BE349D911}
+// *********************************************************************//
+  IAccountDisp = dispinterface
+    ['{B15B1401-327B-11D5-8C7C-B49BE349D911}']
+    function  getBalance(const AccountID: WideString): Currency; dispid 1;
+    function  getAccountName(const AccountID: WideString): WideString; dispid 2;
+    function  getCredit(const CreditCardID: WideString): Currency; dispid 3;
+    procedure setAccountName(const AccountID: WideString; const newAccountName: WideString); dispid 4;
+    procedure setPassword(const AccountID: WideString; const oldPassword: WideString; 
+                          const newPassword: WideString); dispid 5;
+    function  deposit(const AccountID: WideString; Amount: Currency): WideString; dispid 6;
+    function  withdraw(const ID: WideString; IDType: SYSINT; Amount: Currency; 
+                       const Password: WideString): WideString; dispid 7;
+  end;
+
+// *********************************************************************//
+// Interface: IBankTransaction
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {DCC7EE60-328F-11D5-8C7C-8C92464BF820}
+// *********************************************************************//
+  IBankTransaction = interface(IDispatch)
+    ['{DCC7EE60-328F-11D5-8C7C-8C92464BF820}']
+    function  getTransactionType(const TransactionID: WideString): SYSINT; safecall;
+    procedure getAccount(const TransactionID: WideString; var Return: WideString); safecall;
+    function  getRelateAccount(const TransactionID: WideString): WideString; safecall;
+    function  getAmount(const TransactionID: WideString): Currency; safecall;
+    function  getTime(const TransactionID: WideString): TDateTime; safecall;
+    function  create(TransactionType: SYSINT; const Account: WideString; 
+                     const RelateAccount: WideString; Amount: Currency; Time: TDateTime): WideString; safecall;
+    function  findByTransactionID(const TransactionID: WideString): OleVariant; safecall;
+  end;
+
+// *********************************************************************//
+// DispIntf:  IBankTransactionDisp
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {DCC7EE60-328F-11D5-8C7C-8C92464BF820}
+// *********************************************************************//
+  IBankTransactionDisp = dispinterface
+    ['{DCC7EE60-328F-11D5-8C7C-8C92464BF820}']
+    function  getTransactionType(const TransactionID: WideString): SYSINT; dispid 1;
+    procedure getAccount(const TransactionID: WideString; var Return: WideString); dispid 2;
+    function  getRelateAccount(const TransactionID: WideString): WideString; dispid 3;
+    function  getAmount(const TransactionID: WideString): Currency; dispid 4;
+    function  getTime(const TransactionID: WideString): TDateTime; dispid 5;
+    function  create(TransactionType: SYSINT; const Account: WideString; 
+                     const RelateAccount: WideString; Amount: Currency; Time: TDateTime): WideString; dispid 6;
+    function  findByTransactionID(const TransactionID: WideString): OleVariant; dispid 7;
+  end;
+
+// *********************************************************************//
+// Interface: IBankController
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {F60E9920-3297-11D5-8C7C-8C92464BF820}
+// *********************************************************************//
+  IBankController = interface(IDispatch)
+    ['{F60E9920-3297-11D5-8C7C-8C92464BF820}']
+    function  payByDebitCard(const DebitCardID: WideString; const DestinationAccountID: WideString; 
+                             Amount: Currency): WideString; safecall;
+    function  payByCreditCard(const CreditCardID: WideString; 
+                              const DestinationAccountID: WideString; Amount: Currency): WideString; safecall;
+    function  transfer(const SourceID: WideString; const DestinationAccountID: WideString; 
+                       Amount: Currency; const Password: WideString): WideString; safecall;
+    function  checkTransfer(const DestinationAccountID: WideString; 
+                            const TransactionID: WideString; Amount: Currency): WordBool; safecall;
+  end;
+
+// *********************************************************************//
+// DispIntf:  IBankControllerDisp
+// Flags:     (4416) Dual OleAutomation Dispatchable
+// GUID:      {F60E9920-3297-11D5-8C7C-8C92464BF820}
+// *********************************************************************//
+  IBankControllerDisp = dispinterface
+    ['{F60E9920-3297-11D5-8C7C-8C92464BF820}']
+    function  payByDebitCard(const DebitCardID: WideString; const DestinationAccountID: WideString; 
+                             Amount: Currency): WideString; dispid 1;
+    function  payByCreditCard(const CreditCardID: WideString; 
+                              const DestinationAccountID: WideString; Amount: Currency): WideString; dispid 2;
+    function  transfer(const SourceID: WideString; const DestinationAccountID: WideString; 
+                       Amount: Currency; const Password: WideString): WideString; dispid 3;
+    function  checkTransfer(const DestinationAccountID: WideString; 
+                            const TransactionID: WideString; Amount: Currency): WordBool; dispid 4;
+  end;
+
+// *********************************************************************//
+// The Class CoAccount provides a Create and CreateRemote method to          
+// create instances of the default interface IAccount exposed by              
+// the CoClass Account. The functions are intended to be used by             
+// clients wishing to automate the CoClass objects exposed by the         
+// server of this typelibrary.                                            
+// *********************************************************************//
+  CoAccount = class
+    class function Create: IAccount;
+    class function CreateRemote(const MachineName: string): IAccount;
+  end;
+
+
+// *********************************************************************//
+// OLE Server Proxy class declaration
+// Server Object    : TAccount
+// Help String      : Account Object
+// Default Interface: IAccount
+// Def. Intf. DISP? : No
+// Event   Interface: 
+// TypeFlags        : (2) CanCreate
+// *********************************************************************//
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  TAccountProperties= class;
+{$ENDIF}
+  TAccount = class(TOleServer)
+  private
+    FIntf:        IAccount;
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+    FProps:       TAccountProperties;
+    function      GetServerProperties: TAccountProperties;
+{$ENDIF}
+    function      GetDefaultInterface: IAccount;
+  protected
+    procedure InitServerData; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor  Destroy; override;
+    procedure Connect; override;
+    procedure ConnectTo(svrIntf: IAccount);
+    procedure Disconnect; override;
+    function  getBalance(const AccountID: WideString): Currency;
+    function  getAccountName(const AccountID: WideString): WideString;
+    function  getCredit(const CreditCardID: WideString): Currency;
+    procedure setAccountName(const AccountID: WideString; const newAccountName: WideString);
+    procedure setPassword(const AccountID: WideString; const oldPassword: WideString; 
+                          const newPassword: WideString);
+    function  deposit(const AccountID: WideString; Amount: Currency): WideString;
+    function  withdraw(const ID: WideString; IDType: SYSINT; Amount: Currency; 
+                       const Password: WideString): WideString;
+    property  DefaultInterface: IAccount read GetDefaultInterface;
+  published
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+    property Server: TAccountProperties read GetServerProperties;
+{$ENDIF}
+  end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+// *********************************************************************//
+// OLE Server Properties Proxy Class
+// Server Object    : TAccount
+// (This object is used by the IDE's Property Inspector to allow editing
+//  of the properties of this server)
+// *********************************************************************//
+ TAccountProperties = class(TPersistent)
+  private
+    FServer:    TAccount;
+    function    GetDefaultInterface: IAccount;
+    constructor Create(AServer: TAccount);
+  protected
+  public
+    property DefaultInterface: IAccount read GetDefaultInterface;
+  published
+  end;
+{$ENDIF}
+
+
+// *********************************************************************//
+// The Class CoBankTransaction provides a Create and CreateRemote method to          
+// create instances of the default interface IBankTransaction exposed by              
+// the CoClass BankTransaction. The functions are intended to be used by             
+// clients wishing to automate the CoClass objects exposed by the         
+// server of this typelibrary.                                            
+// *********************************************************************//
+  CoBankTransaction = class
+    class function Create: IBankTransaction;
+    class function CreateRemote(const MachineName: string): IBankTransaction;
+  end;
+
+
+// *********************************************************************//
+// OLE Server Proxy class declaration
+// Server Object    : TBankTransaction
+// Help String      : BankTransaction Object
+// Default Interface: IBankTransaction
+// Def. Intf. DISP? : No
+// Event   Interface: 
+// TypeFlags        : (2) CanCreate
+// *********************************************************************//
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  TBankTransactionProperties= class;
+{$ENDIF}
+  TBankTransaction = class(TOleServer)
+  private
+    FIntf:        IBankTransaction;
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+    FProps:       TBankTransactionProperties;
+    function      GetServerProperties: TBankTransactionProperties;
+{$ENDIF}
+    function      GetDefaultInterface: IBankTransaction;
+  protected
+    procedure InitServerData; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor  Destroy; override;
+    procedure Connect; override;
+    procedure ConnectTo(svrIntf: IBankTransaction);
+    procedure Disconnect; override;
+    function  getTransactionType(const TransactionID: WideString): SYSINT;
+    procedure getAccount(const TransactionID: WideString; var Return: WideString);
+    function  getRelateAccount(const TransactionID: WideString): WideString;
+    function  getAmount(const TransactionID: WideString): Currency;
+    function  getTime(const TransactionID: WideString): TDateTime;
+    function  create1(TransactionType: SYSINT; const Account: WideString; 
+                      const RelateAccount: WideString; Amount: Currency; Time: TDateTime): WideString;
+    function  findByTransactionID(const TransactionID: WideString): OleVariant;
+    property  DefaultInterface: IBankTransaction read GetDefaultInterface;
+  published
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+    property Server: TBankTransactionProperties read GetServerProperties;
+{$ENDIF}
+  end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+// *********************************************************************//
+// OLE Server Properties Proxy Class
+// Server Object    : TBankTransaction
+// (This object is used by the IDE's Property Inspector to allow editing
+//  of the properties of this server)
+// *********************************************************************//
+ TBankTransactionProperties = class(TPersistent)
+  private
+    FServer:    TBankTransaction;
+    function    GetDefaultInterface: IBankTransaction;
+    constructor Create(AServer: TBankTransaction);
+  protected
+  public
+    property DefaultInterface: IBankTransaction read GetDefaultInterface;
+  published
+  end;
+{$ENDIF}
+
+
+// *********************************************************************//
+// The Class CoBankController provides a Create and CreateRemote method to          
+// create instances of the default interface IBankController exposed by              
+// the CoClass BankController. The functions are intended to be used by             
+// clients wishing to automate the CoClass objects exposed by the         
+// server of this typelibrary.                                            
+// *********************************************************************//
+  CoBankController = class
+    class function Create: IBankController;
+    class function CreateRemote(const MachineName: string): IBankController;
+  end;
+
+
+// *********************************************************************//
+// OLE Server Proxy class declaration
+// Server Object    : TBankController
+// Help String      : BankController Object
+// Default Interface: IBankController
+// Def. Intf. DISP? : No
+// Event   Interface: 
+// TypeFlags        : (2) CanCreate
+// *********************************************************************//
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  TBankControllerProperties= class;
+{$ENDIF}
+  TBankController = class(TOleServer)
+  private
+    FIntf:        IBankController;
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+    FProps:       TBankControllerProperties;
+    function      GetServerProperties: TBankControllerProperties;
+{$ENDIF}
+    function      GetDefaultInterface: IBankController;
+  protected
+    procedure InitServerData; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor  Destroy; override;
+    procedure Connect; override;
+    procedure ConnectTo(svrIntf: IBankController);
+    procedure Disconnect; override;
+    function  payByDebitCard(const DebitCardID: WideString; const DestinationAccountID: WideString; 
+                             Amount: Currency): WideString;
+    function  payByCreditCard(const CreditCardID: WideString; 
+                              const DestinationAccountID: WideString; Amount: Currency): WideString;
+    function  transfer(const SourceID: WideString; const DestinationAccountID: WideString; 
+                       Amount: Currency; const Password: WideString): WideString;
+    function  checkTransfer(const DestinationAccountID: WideString; 
+                            const TransactionID: WideString; Amount: Currency): WordBool;
+    property  DefaultInterface: IBankController read GetDefaultInterface;
+  published
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+    property Server: TBankControllerProperties read GetServerProperties;
+{$ENDIF}
+  end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+// *********************************************************************//
+// OLE Server Properties Proxy Class
+// Server Object    : TBankController
+// (This object is used by the IDE's Property Inspector to allow editing
+//  of the properties of this server)
+// *********************************************************************//
+ TBankControllerProperties = class(TPersistent)
+  private
+    FServer:    TBankController;
+    function    GetDefaultInterface: IBankController;
+    constructor Create(AServer: TBankController);
+  protected
+  public
+    property DefaultInterface: IBankController read GetDefaultInterface;
+  published
+  end;
+{$ENDIF}
+
+
+procedure Register;
+
+implementation
+
+uses ComObj;
+
+class function CoAccount.Create: IAccount;
+begin
+  Result := CreateComObject(CLASS_Account) as IAccount;
+end;
+
+class function CoAccount.CreateRemote(const MachineName: string): IAccount;
+begin
+  Result := CreateRemoteComObject(MachineName, CLASS_Account) as IAccount;
+end;
+
+procedure TAccount.InitServerData;
+const
+  CServerData: TServerData = (
+    ClassID:   '{B15B1403-327B-11D5-8C7C-B49BE349D911}';
+    IntfIID:   '{B15B1401-327B-11D5-8C7C-B49BE349D911}';
+    EventIID:  '';
+    LicenseKey: nil;
+    Version: 500);
+begin
+  ServerData := @CServerData;
+end;
+
+procedure TAccount.Connect;
+var
+  punk: IUnknown;
+begin
+  if FIntf = nil then
+  begin
+    punk := GetServer;
+    Fintf:= punk as IAccount;
+  end;
+end;
+
+procedure TAccount.ConnectTo(svrIntf: IAccount);
+begin
+  Disconnect;
+  FIntf := svrIntf;
+end;
+
+procedure TAccount.DisConnect;
+begin
+  if Fintf <> nil then
+  begin
+    FIntf := nil;
+  end;
+end;
+
+function TAccount.GetDefaultInterface: IAccount;
+begin
+  if FIntf = nil then
+    Connect;
+  Assert(FIntf <> nil, 'DefaultInterface is NULL. Component is not connected to Server. You must call ''Connect'' or ''ConnectTo'' before this operation');
+  Result := FIntf;
+end;
+
+constructor TAccount.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  FProps := TAccountProperties.Create(Self);
+{$ENDIF}
+end;
+
+destructor TAccount.Destroy;
+begin
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  FProps.Free;
+{$ENDIF}
+  inherited Destroy;
+end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+function TAccount.GetServerProperties: TAccountProperties;
+begin
+  Result := FProps;
+end;
+{$ENDIF}
+
+function  TAccount.getBalance(const AccountID: WideString): Currency;
+begin
+  Result := DefaultInterface.getBalance(AccountID);
+end;
+
+function  TAccount.getAccountName(const AccountID: WideString): WideString;
+begin
+  Result := DefaultInterface.getAccountName(AccountID);
+end;
+
+function  TAccount.getCredit(const CreditCardID: WideString): Currency;
+begin
+  Result := DefaultInterface.getCredit(CreditCardID);
+end;
+
+procedure TAccount.setAccountName(const AccountID: WideString; const newAccountName: WideString);
+begin
+  DefaultInterface.setAccountName(AccountID, newAccountName);
+end;
+
+procedure TAccount.setPassword(const AccountID: WideString; const oldPassword: WideString; 
+                               const newPassword: WideString);
+begin
+  DefaultInterface.setPassword(AccountID, oldPassword, newPassword);
+end;
+
+function  TAccount.deposit(const AccountID: WideString; Amount: Currency): WideString;
+begin
+  Result := DefaultInterface.deposit(AccountID, Amount);
+end;
+
+function  TAccount.withdraw(const ID: WideString; IDType: SYSINT; Amount: Currency; 
+                            const Password: WideString): WideString;
+begin
+  Result := DefaultInterface.withdraw(ID, IDType, Amount, Password);
+end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+constructor TAccountProperties.Create(AServer: TAccount);
+begin
+  inherited Create;
+  FServer := AServer;
+end;
+
+function TAccountProperties.GetDefaultInterface: IAccount;
+begin
+  Result := FServer.DefaultInterface;
+end;
+
+{$ENDIF}
+
+class function CoBankTransaction.Create: IBankTransaction;
+begin
+  Result := CreateComObject(CLASS_BankTransaction) as IBankTransaction;
+end;
+
+class function CoBankTransaction.CreateRemote(const MachineName: string): IBankTransaction;
+begin
+  Result := CreateRemoteComObject(MachineName, CLASS_BankTransaction) as IBankTransaction;
+end;
+
+procedure TBankTransaction.InitServerData;
+const
+  CServerData: TServerData = (
+    ClassID:   '{DCC7EE62-328F-11D5-8C7C-8C92464BF820}';
+    IntfIID:   '{DCC7EE60-328F-11D5-8C7C-8C92464BF820}';
+    EventIID:  '';
+    LicenseKey: nil;
+    Version: 500);
+begin
+  ServerData := @CServerData;
+end;
+
+procedure TBankTransaction.Connect;
+var
+  punk: IUnknown;
+begin
+  if FIntf = nil then
+  begin
+    punk := GetServer;
+    Fintf:= punk as IBankTransaction;
+  end;
+end;
+
+procedure TBankTransaction.ConnectTo(svrIntf: IBankTransaction);
+begin
+  Disconnect;
+  FIntf := svrIntf;
+end;
+
+procedure TBankTransaction.DisConnect;
+begin
+  if Fintf <> nil then
+  begin
+    FIntf := nil;
+  end;
+end;
+
+function TBankTransaction.GetDefaultInterface: IBankTransaction;
+begin
+  if FIntf = nil then
+    Connect;
+  Assert(FIntf <> nil, 'DefaultInterface is NULL. Component is not connected to Server. You must call ''Connect'' or ''ConnectTo'' before this operation');
+  Result := FIntf;
+end;
+
+constructor TBankTransaction.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  FProps := TBankTransactionProperties.Create(Self);
+{$ENDIF}
+end;
+
+destructor TBankTransaction.Destroy;
+begin
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  FProps.Free;
+{$ENDIF}
+  inherited Destroy;
+end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+function TBankTransaction.GetServerProperties: TBankTransactionProperties;
+begin
+  Result := FProps;
+end;
+{$ENDIF}
+
+function  TBankTransaction.getTransactionType(const TransactionID: WideString): SYSINT;
+begin
+  Result := DefaultInterface.getTransactionType(TransactionID);
+end;
+
+procedure TBankTransaction.getAccount(const TransactionID: WideString; var Return: WideString);
+begin
+  DefaultInterface.getAccount(TransactionID, Return);
+end;
+
+function  TBankTransaction.getRelateAccount(const TransactionID: WideString): WideString;
+begin
+  Result := DefaultInterface.getRelateAccount(TransactionID);
+end;
+
+function  TBankTransaction.getAmount(const TransactionID: WideString): Currency;
+begin
+  Result := DefaultInterface.getAmount(TransactionID);
+end;
+
+function  TBankTransaction.getTime(const TransactionID: WideString): TDateTime;
+begin
+  Result := DefaultInterface.getTime(TransactionID);
+end;
+
+function  TBankTransaction.create1(TransactionType: SYSINT; const Account: WideString; 
+                                   const RelateAccount: WideString; Amount: Currency; 
+                                   Time: TDateTime): WideString;
+begin
+  Result := DefaultInterface.create(TransactionType, Account, RelateAccount, Amount, Time);
+end;
+
+function  TBankTransaction.findByTransactionID(const TransactionID: WideString): OleVariant;
+begin
+  Result := DefaultInterface.findByTransactionID(TransactionID);
+end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+constructor TBankTransactionProperties.Create(AServer: TBankTransaction);
+begin
+  inherited Create;
+  FServer := AServer;
+end;
+
+function TBankTransactionProperties.GetDefaultInterface: IBankTransaction;
+begin
+  Result := FServer.DefaultInterface;
+end;
+
+{$ENDIF}
+
+class function CoBankController.Create: IBankController;
+begin
+  Result := CreateComObject(CLASS_BankController) as IBankController;
+end;
+
+class function CoBankController.CreateRemote(const MachineName: string): IBankController;
+begin
+  Result := CreateRemoteComObject(MachineName, CLASS_BankController) as IBankController;
+end;
+
+procedure TBankController.InitServerData;
+const
+  CServerData: TServerData = (
+    ClassID:   '{F60E9922-3297-11D5-8C7C-8C92464BF820}';
+    IntfIID:   '{F60E9920-3297-11D5-8C7C-8C92464BF820}';
+    EventIID:  '';
+    LicenseKey: nil;
+    Version: 500);
+begin
+  ServerData := @CServerData;
+end;
+
+procedure TBankController.Connect;
+var
+  punk: IUnknown;
+begin
+  if FIntf = nil then
+  begin
+    punk := GetServer;
+    Fintf:= punk as IBankController;
+  end;
+end;
+
+procedure TBankController.ConnectTo(svrIntf: IBankController);
+begin
+  Disconnect;
+  FIntf := svrIntf;
+end;
+
+procedure TBankController.DisConnect;
+begin
+  if Fintf <> nil then
+  begin
+    FIntf := nil;
+  end;
+end;
+
+function TBankController.GetDefaultInterface: IBankController;
+begin
+  if FIntf = nil then
+    Connect;
+  Assert(FIntf <> nil, 'DefaultInterface is NULL. Component is not connected to Server. You must call ''Connect'' or ''ConnectTo'' before this operation');
+  Result := FIntf;
+end;
+
+constructor TBankController.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  FProps := TBankControllerProperties.Create(Self);
+{$ENDIF}
+end;
+
+destructor TBankController.Destroy;
+begin
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+  FProps.Free;
+{$ENDIF}
+  inherited Destroy;
+end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+function TBankController.GetServerProperties: TBankControllerProperties;
+begin
+  Result := FProps;
+end;
+{$ENDIF}
+
+function  TBankController.payByDebitCard(const DebitCardID: WideString; 
+                                         const DestinationAccountID: WideString; Amount: Currency): WideString;
+begin
+  Result := DefaultInterface.payByDebitCard(DebitCardID, DestinationAccountID, Amount);
+end;
+
+function  TBankController.payByCreditCard(const CreditCardID: WideString; 
+                                          const DestinationAccountID: WideString; Amount: Currency): WideString;
+begin
+  Result := DefaultInterface.payByCreditCard(CreditCardID, DestinationAccountID, Amount);
+end;
+
+function  TBankController.transfer(const SourceID: WideString; 
+                                   const DestinationAccountID: WideString; Amount: Currency; 
+                                   const Password: WideString): WideString;
+begin
+  Result := DefaultInterface.transfer(SourceID, DestinationAccountID, Amount, Password);
+end;
+
+function  TBankController.checkTransfer(const DestinationAccountID: WideString; 
+                                        const TransactionID: WideString; Amount: Currency): WordBool;
+begin
+  Result := DefaultInterface.checkTransfer(DestinationAccountID, TransactionID, Amount);
+end;
+
+{$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
+constructor TBankControllerProperties.Create(AServer: TBankController);
+begin
+  inherited Create;
+  FServer := AServer;
+end;
+
+function TBankControllerProperties.GetDefaultInterface: IBankController;
+begin
+  Result := FServer.DefaultInterface;
+end;
+
+{$ENDIF}
+
+procedure Register;
+begin
+  RegisterComponents('Servers',[TAccount, TBankTransaction, TBankController]);
+end;
+
+end.

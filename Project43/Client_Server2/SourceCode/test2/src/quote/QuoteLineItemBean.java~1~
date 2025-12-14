@@ -1,0 +1,44 @@
+package quote;
+
+import java.rmi.*;
+import javax.ejb.*;
+import product.*;
+
+/**
+ * Title:
+ * Description:
+ * Copyright:    Copyright (c) 2001
+ * Company:
+ * @author
+ * @version 1.0
+ */
+
+public class QuoteLineItemBean implements SessionBean {
+  private SessionContext sessionContext;
+  private Product product;
+  private int quantity;
+  public void ejbCreate(Product product) {
+    this.product = product;
+    this.quantity = 0;
+  }
+  public void ejbRemove() {
+  }
+  public void ejbActivate() {
+  }
+  public void ejbPassivate() {
+  }
+  public void setSessionContext(SessionContext context) {
+    sessionContext = context;
+  }
+  ///////////////////////////////////////////////////////////
+  public Product getProduct() {
+    return product;
+  }
+  public void setBuyQuantity(int quantity) {
+    this.quantity = quantity;
+  }
+  public int getBuyQuantity() {
+    return quantity;
+  }
+
+}

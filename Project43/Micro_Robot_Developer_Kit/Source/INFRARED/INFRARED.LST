@@ -1,0 +1,1144 @@
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 1   
+
+
+DOS C51 COMPILER V3.20, COMPILATION OF MODULE INFRARED
+OBJECT MODULE PLACED IN INFRARED.OBJ
+COMPILER INVOKED BY: C:\C51\BIN\C51.EXE INFRARED.C
+
+stmt level    source
+
+   1          #pragma	SMALL
+   2          #pragma	CODE DEBUG
+   3          
+   4          #include	"c:\c51\inc\reg51.h"
+   5          
+   6          
+   7          //////////////////////////////////////////////////////////////////
+   8          //define I2C operation
+   9          //////////////////////////////////////////////////////////////////
+  10          #ifndef READ
+  11              #define	READ	1
+  12          #endif
+  13          
+  14          #ifndef WRITE
+  15              #define	WRITE	0
+  16          #endif
+  17          //#define	I2CGetByte()		_I2CGetByte(0)
+  18          //#define	I2CGetLastByte()	_I2CGetByte(1)
+  19          
+  20          #define	TIMEOUT		0XFF
+  21          #define ADDRESS		0x04
+  22          #define I2CEEPROM	0xA0
+  23          #define CONTROLLER	0x55
+  24          
+  25          #define GET_IR01	0x01
+  26          #define GET_IR02	0x02
+  27          #define GET_IR03	0x03
+  28          #define GET_IR04	0x04
+  29          #define GET_IR05	0x05
+  30          #define GET_IR06	0x06
+  31          #define GET_IR07	0x07
+  32          #define GET_IR08	0x08
+  33          #define GET_IR09	0x09
+  34          #define GET_IR10	0x0A
+  35          #define GET_IR11	0x0B
+  36          #define GET_IR12	0x0C
+  37          #define GET_STATUS	0x0F
+  38          #define ENA_INT		0x11
+  39          #define DIS_INT		0x12
+  40          #define TEST_DATA	0x55
+  41          
+  42          // dc motor module	/////////////////////////////////
+  43          sbit	IN01 = P2^0;
+  44          sbit	IN02 = P2^3;
+  45          sbit	IN03 = P0^4;
+  46          sbit	IN04 = P0^7;
+  47          sbit	IN05 = P0^0;
+  48          sbit	IN06 = P0^2;
+  49          sbit	IN07 = P2^1;
+  50          sbit	IN08 = P2^2;
+  51          sbit	IN09 = P0^5;
+  52          sbit	IN10 = P0^6;
+  53          sbit	IN11 = P0^1;
+  54          sbit	IN12 = P0^3;
+  55          
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 2   
+
+  56          //////////////////////////////////////////////////////////////////
+  57          //define port 
+  58          //////////////////////////////////////////////////////////////////
+  59          sbit	SCL_PIN = P1^0;
+  60          sbit	SDA_PIN = P1^1;
+  61          
+  62          sbit	IN_INT = P1^2;
+  63          
+  64          sbit	INT = P3^2;
+  65          sbit	ACK = P3^3;
+  66          
+  67          //////////////////////////////////////////////////////////////////
+  68          //define general variable
+  69          //////////////////////////////////////////////////////////////////
+  70          unsigned char	command;
+  71          unsigned char	i = 48;
+  72          unsigned char	enable_interrupt;
+  73          //////////////////////////////////////////////////////////////////
+  74          
+  75          bdata	unsigned char output_hi;
+  76          bdata	unsigned char output_lo;
+  77          
+  78          sbit	out_11 = output_hi^3;
+  79          sbit	out_10 = output_hi^2;
+  80          sbit	out_09 = output_hi^1;
+  81          sbit	out_08 = output_hi^0;
+  82          sbit	out_07 = output_lo^7;
+  83          sbit	out_06 = output_lo^6;
+  84          sbit	out_05 = output_lo^5;
+  85          sbit	out_04 = output_lo^4;
+  86          sbit	out_03 = output_lo^3;
+  87          sbit	out_02 = output_lo^2;
+  88          sbit	out_01 = output_lo^1;
+  89          sbit	out_00 = output_lo^0;
+  90          
+  91          //////////////////////////////////////////////////////////////////
+  92          //define i2c
+  93          //////////////////////////////////////////////////////////////////
+  94          unsigned char	TempDelay;
+  95          unsigned	char _i2c_error = 0;      // bit array of error types
+  96          //void	_I2CBitDly(void);
+  97          //void	_I2CSCLHigh(void);
+  98          //void	I2CSendAddr(unsigned char addr, unsigned char rd);
+  99          //void	I2CSendByte(unsigned char bt);
+ 100          //unsigned char	_I2CGetByte(unsigned char lastone);
+ 101          //void	I2CSendStop(void);
+ 102          //unsigned char	ReadI2C(unsigned char Addr);
+ 103          //void	WriteI2C(unsigned char Addr, unsigned char Data);
+ 104          //#define	I2CGetByte()		_I2CGetByte(0)
+ 105          //#define	I2CGetLastByte()	_I2CGetByte(1)
+ 106          #define I2CReceiveCode()	I2CReceiveDataByte()
+ 107          
+ 108          //////////////////////////////////////////////////////////////////
+ 109          //define general routine
+ 110          //////////////////////////////////////////////////////////////////
+ 111          void delay(unsigned char count1,unsigned char count2)
+ 112          {
+ 113   1      	unsigned char	xx,yy;
+ 114   1      	for (xx=0;xx<count1;xx++)
+ 115   1      	{
+ 116   2      		for (yy=0;yy<count2;yy++)
+ 117   2      		{
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 3   
+
+ 118   3      		}
+ 119   2      	}
+ 120   1      }
+ 121          //////////////////////////////////////////////////////////////////
+ 122          
+ 123          //////////////////////////////////////////////////////////////////
+ 124          //----------------- I2C Routine ------------------------
+ 125          //////////////////////////////////////////////////////////////////
+ 126          void _I2CBitDelay(void)         // wait 4.7uS, or thereabouts
+ 127          {                             // tune to xtal. This works at 11.0592MHz
+ 128   1      	TempDelay = 0;
+ 129   1      	TempDelay = 0;
+ 130   1      	TempDelay = 0;
+ 131   1      	TempDelay = 0;
+ 132   1      	return;
+ 133   1      }
+ 134          
+ 135          void _I2CSCLHigh(void)        // set SCL high, and wait for it to go high
+ 136          {
+ 137   1      	register int err;
+ 138   1      	SCL_PIN = 1;
+ 139   1      	while (!SCL_PIN)
+ 140   1      	{
+ 141   2      		err++;
+ 142   2      		if (!err)
+ 143   2      		{
+ 144   3      			_i2c_error &= 0x02;     // SCL stuck, something's holding it down
+ 145   3      			return;
+ 146   3      		}
+ 147   2      	}
+ 148   1      }
+ 149          
+ 150          void _I2CSlaveStop(void)
+ 151          {
+ 152   1      	while (SDA_PIN) {}
+ 153   1      	while (!SCL_PIN) {}
+ 154   1      	while (!SDA_PIN) {}
+ 155   1      }
+ 156          
+ 157          unsigned char _I2CReceiveByte(void) // lastone == 1 for last unsigned char
+ 158          {
+ 159   1      	register unsigned char i, res;
+ 160   1      	res = 0;
+ 161   1      	SCL_PIN = 1;
+ 162   1      	for (i=0;i<8;i++)         // each bit at a time, MSB first
+ 163   1      	{
+ 164   2      		while (!SCL_PIN) {}
+ 165   2      		res *= 2;
+ 166   2       		if (SDA_PIN)
+ 167   2      		{
+ 168   3      			res++;
+ 169   3      		}
+ 170   2      		while (SCL_PIN) {}
+ 171   2      	}
+ 172   1      	SDA_PIN = 0;         // send ACK according to 'lastone'
+ 173   1      	while (!SCL_PIN) {}
+ 174   1      	while (SCL_PIN) {}
+ 175   1      	SDA_PIN = 1;
+ 176   1      	SCL_PIN = 1;
+ 177   1      	return res;
+ 178   1      }
+ 179          
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 4   
+
+ 180          void I2CSendByte(unsigned char bt)
+ 181          {
+ 182   1        register unsigned char i;
+ 183   1        for (i=0; i<8; i++)
+ 184   1        {
+ 185   2          if (bt & 0x80) SDA_PIN = 1;      // send each bit, MSB first
+ 186   2          else SDA_PIN = 0;
+ 187   2          _I2CSCLHigh();
+ 188   2          _I2CBitDelay();
+ 189   2          SCL_PIN = 0;
+ 190   2          _I2CBitDelay();
+ 191   2      	bt = bt << 1;
+ 192   2        }
+ 193   1        SDA_PIN = 1;                       // listen for ACK
+ 194   1        _I2CSCLHigh();
+ 195   1        _I2CBitDelay();
+ 196   1        if (SDA_PIN)
+ 197   1          _i2c_error += 0x01;          // ack didn't happen, may be nothing out there
+ 198   1        SCL_PIN = 0;
+ 199   1        _I2CBitDelay();
+ 200   1      }
+ 201          
+ 202          void I2CSendAddr(unsigned char addr, unsigned char rd)
+ 203          {
+ 204   1        SCL_PIN = 1;
+ 205   1        _I2CBitDelay();
+ 206   1        SDA_PIN = 0;               // generate start
+ 207   1        _I2CBitDelay();
+ 208   1        SCL_PIN = 0;
+ 209   1        _I2CBitDelay();
+ 210   1        I2CSendByte(addr+rd);  // send address byte
+ 211   1      }
+ 212          
+ 213          void I2CSendStop(void)
+ 214          {
+ 215   1      	SDA_PIN = 0;
+ 216   1      	_I2CBitDelay();
+ 217   1      	_I2CSCLHigh();
+ 218   1      	_I2CBitDelay();
+ 219   1      	SDA_PIN = 1;
+ 220   1      	_I2CBitDelay();
+ 221   1      }
+ 222          
+ 223          unsigned char I2CReceiveDataByte(void)
+ 224          {
+ 225   1      	unsigned char address,ret;
+ 226   1      
+ 227   1      	while ((SDA_PIN)&&(SCL_PIN)) {}
+ 228   1      	if ((!SDA_PIN) && (SCL_PIN))
+ 229   1      	{
+ 230   2      		while (SCL_PIN) {}
+ 231   2      		address = _I2CReceiveByte();
+ 232   2      		if (address == ADDRESS)
+ 233   2      		{
+ 234   3      			ret = _I2CReceiveByte();
+ 235   3      			_I2CSlaveStop();
+ 236   3      		}
+ 237   2      	}
+ 238   1      	return ret;
+ 239   1      }
+ 240          
+ 241          void WriteI2C(unsigned char Addr, unsigned char Data)
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 5   
+
+ 242          {
+ 243   1      	I2CSendAddr(Addr, WRITE);
+ 244   1      	I2CSendByte(Data);
+ 245   1      	I2CSendStop();
+ 246   1      }
+ 247          
+ 248          void int0_int(void) interrupt 0
+ 249          {
+ 250   1      	ACK = 0;
+ 251   1      	command = I2CReceiveCode();
+ 252   1      //	WriteI2C(0x55,i);
+ 253   1      //	i++;
+ 254   1      	switch (command)
+ 255   1      	{
+ 256   2      	case GET_IR01 : WriteI2C(CONTROLLER,(unsigned char)IN01); break;
+ 257   2      	case GET_IR02 : WriteI2C(CONTROLLER,(unsigned char)IN02); break;
+ 258   2      	case GET_IR03 : WriteI2C(CONTROLLER,(unsigned char)IN03); break;
+ 259   2      	case GET_IR04 : WriteI2C(CONTROLLER,(unsigned char)IN04); break;
+ 260   2      	case GET_IR05 : WriteI2C(CONTROLLER,(unsigned char)IN05); break;
+ 261   2      	case GET_IR06 : WriteI2C(CONTROLLER,(unsigned char)IN06); break;
+ 262   2      	case GET_IR07 : WriteI2C(CONTROLLER,(unsigned char)IN07); break;
+ 263   2      	case GET_IR08 : WriteI2C(CONTROLLER,(unsigned char)IN08); break;
+ 264   2      	case GET_IR09 : WriteI2C(CONTROLLER,(unsigned char)IN09); break;
+ 265   2      	case GET_IR10 : WriteI2C(CONTROLLER,(unsigned char)IN10); break;
+ 266   2      	case GET_IR11 : WriteI2C(CONTROLLER,(unsigned char)IN11); break;
+ 267   2      	case GET_IR12 : WriteI2C(CONTROLLER,(unsigned char)IN12); break;
+ 268   2      	case GET_STATUS :
+ 269   2      					output_hi = 0x00;
+ 270   2      					output_lo = 0x00;
+ 271   2      					out_00 = IN01;	out_01 = IN02;
+ 272   2      					out_02 = IN03;	out_03 = IN04;
+ 273   2      					out_04 = IN05;	out_05 = IN06;
+ 274   2      					out_06 = IN07;	out_07 = IN08;
+ 275   2      					out_08 = IN09;	out_09 = IN10;
+ 276   2      					out_10 = IN11;	out_11 = IN12;
+ 277   2      
+ 278   2      					WriteI2C(CONTROLLER,output_hi);
+ 279   2      					delay(10,10);
+ 280   2      					WriteI2C(CONTROLLER,output_lo);
+ 281   2      					break;
+ 282   2      	case TEST_DATA :
+ 283   2      					WriteI2C(CONTROLLER,107);	//ascii = 107	hex = 6B	char = 'k'
+ 284   2      					delay(10,10);
+ 285   2      					WriteI2C(CONTROLLER,111);	//ascii = 111	hex = 6F	char = 'o'
+ 286   2      					break;
+ 287   2      	case ENA_INT :	enable_interrupt = 1;
+ 288   2      					break;
+ 289   2      	case DIS_INT :	enable_interrupt = 0;
+ 290   2      					break;
+ 291   2      	}
+ 292   1      	delay(10,50);
+ 293   1      	while (!INT) {}
+ 294   1      	ACK = 1;
+ 295   1      }
+ 296          
+ 297          //////////////////////////////////////////////////////////////////
+ 298          //////////////////////////////////////////////////////////////////
+ 299          //////////////////////////////////////////////////////////////////
+ 300          void main()
+ 301          {
+ 302   1      	unsigned char countdown = 0;
+ 303   1      	// initial data
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 6   
+
+ 304   1      	P0 = 0xff;
+ 305   1      	P1 = 0xff;
+ 306   1      	P2 = 0xff;
+ 307   1      	P3 = 0xff;
+ 308   1      
+ 309   1      	IT0  = 1;		//level interrupt type
+ 310   1      	IE   = 0x81;	//1000 0001 enable int0
+ 311   1      	enable_interrupt = 0;
+ 312   1      
+ 313   1      	while (1)
+ 314   1      	{
+ 315   2      		if (enable_interrupt && ACK && IN_INT)
+ 316   2      		{
+ 317   3      			if ((P0 != 0xFF) || (!IN01) || (!IN02) || (!IN07) || (!IN08))
+ 318   3      			{
+ 319   4      				ACK = 0;
+ 320   4      				output_hi = 0x00;
+ 321   4      				output_lo = 0x00;
+ 322   4      				out_00 = IN01;	out_01 = IN02;
+ 323   4      				out_02 = IN03;	out_03 = IN04;
+ 324   4      				out_04 = IN05;	out_05 = IN06;
+ 325   4      				out_06 = IN07;	out_07 = IN08;
+ 326   4      				out_08 = IN09;	out_09 = IN10;
+ 327   4      				out_10 = IN11;	out_11 = IN12;
+ 328   4      
+ 329   4      				I2CSendAddr(I2CEEPROM,WRITE);
+ 330   4      				I2CSendByte(ADDRESS);		//address of infrared module on at24c01
+ 331   4      				I2CSendByte(output_hi);
+ 332   4      				I2CSendStop();
+ 333   4      				I2CSendAddr(I2CEEPROM,WRITE);
+ 334   4      				I2CSendByte(ADDRESS+1);	//address of infrared module on at24c01
+ 335   4      				I2CSendByte(output_lo);
+ 336   4      				I2CSendStop();
+ 337   4      
+ 338   4      				ACK = 1;
+ 339   4      				IE = 0x00;
+ 340   4      				IN_INT = 0;
+ 341   4      				while (ACK && (countdown < TIMEOUT)) {countdown++;}
+ 342   4      				if (countdown < TIMEOUT)
+ 343   4      				{
+ 344   5      					while (!ACK) {}
+ 345   5      				}
+ 346   4      				else IN_INT = 1;
+ 347   4      			}
+ 348   3      		}
+ 349   2      	}
+ 350   1      }
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 7   
+
+ASSEMBLY LISTING OF GENERATED OBJECT CODE
+
+
+             ; FUNCTION _delay (BEGIN)
+;---- Variable 'count1' assigned to Register 'R7' ----
+;---- Variable 'count2' assigned to Register 'R5' ----
+                                           ; SOURCE LINE # 111
+                                           ; SOURCE LINE # 112
+                                           ; SOURCE LINE # 114
+;---- Variable 'xx' assigned to Register 'R6' ----
+0000 E4            CLR     A
+0001 FE            MOV     R6,A
+0002         ?C0001:
+0002 EE            MOV     A,R6
+0003 C3            CLR     C
+0004 9F            SUBB    A,R7
+0005 500D          JNC     ?C0007
+                                           ; SOURCE LINE # 115
+                                           ; SOURCE LINE # 116
+;---- Variable 'yy' assigned to Register 'R4' ----
+0007 E4            CLR     A
+0008 FC            MOV     R4,A
+0009         ?C0004:
+0009 EC            MOV     A,R4
+000A C3            CLR     C
+000B 9D            SUBB    A,R5
+000C 5003          JNC     ?C0003
+                                           ; SOURCE LINE # 117
+                                           ; SOURCE LINE # 118
+000E 0C            INC     R4
+000F 80F8          SJMP    ?C0004
+                                           ; SOURCE LINE # 119
+0011         ?C0003:
+0011 0E            INC     R6
+0012 80EE          SJMP    ?C0001
+                                           ; SOURCE LINE # 120
+0014         ?C0007:
+0014 22            RET     
+             ; FUNCTION _delay (END)
+
+             ; FUNCTION _I2CBitDelay (BEGIN)
+                                           ; SOURCE LINE # 126
+                                           ; SOURCE LINE # 127
+                                           ; SOURCE LINE # 128
+0000 E4            CLR     A
+0001 F500    R     MOV     TempDelay,A
+                                           ; SOURCE LINE # 129
+0003 F500    R     MOV     TempDelay,A
+                                           ; SOURCE LINE # 130
+0005 F500    R     MOV     TempDelay,A
+                                           ; SOURCE LINE # 131
+0007 F500    R     MOV     TempDelay,A
+                                           ; SOURCE LINE # 133
+0009         ?C0008:
+0009 22            RET     
+             ; FUNCTION _I2CBitDelay (END)
+
+             ; FUNCTION _I2CSCLHigh (BEGIN)
+                                           ; SOURCE LINE # 135
+                                           ; SOURCE LINE # 136
+                                           ; SOURCE LINE # 138
+0000 D290          SETB    SCL_PIN
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 8   
+
+0002         ?C0009:
+                                           ; SOURCE LINE # 139
+0002 209011        JB      SCL_PIN,?C0012
+                                           ; SOURCE LINE # 140
+                                           ; SOURCE LINE # 141
+0005 0500    R     INC     err+01H
+0007 E500    R     MOV     A,err+01H
+0009 7002          JNZ     ?C0082
+000B 0500    R     INC     err
+000D         ?C0082:
+                                           ; SOURCE LINE # 142
+000D E500    R     MOV     A,err+01H
+000F 4500    R     ORL     A,err
+0011 70EF          JNZ     ?C0009
+                                           ; SOURCE LINE # 143
+                                           ; SOURCE LINE # 144
+0013 530002  R     ANL     _i2c_error,#02H
+                                           ; SOURCE LINE # 146
+                                           ; SOURCE LINE # 147
+                                           ; SOURCE LINE # 148
+0016         ?C0012:
+0016 22            RET     
+             ; FUNCTION _I2CSCLHigh (END)
+
+             ; FUNCTION _I2CSlaveStop (BEGIN)
+                                           ; SOURCE LINE # 150
+                                           ; SOURCE LINE # 151
+0000         ?C0013:
+                                           ; SOURCE LINE # 152
+0000 2091FD        JB      SDA_PIN,?C0013
+0003         ?C0015:
+                                           ; SOURCE LINE # 153
+0003 3090FD        JNB     SCL_PIN,?C0015
+0006         ?C0017:
+                                           ; SOURCE LINE # 154
+0006 3091FD        JNB     SDA_PIN,?C0017
+                                           ; SOURCE LINE # 155
+0009         ?C0019:
+0009 22            RET     
+             ; FUNCTION _I2CSlaveStop (END)
+
+             ; FUNCTION _I2CReceiveByte (BEGIN)
+                                           ; SOURCE LINE # 157
+                                           ; SOURCE LINE # 158
+                                           ; SOURCE LINE # 160
+;---- Variable 'res' assigned to Register 'R7' ----
+0000 E4            CLR     A
+0001 FF            MOV     R7,A
+                                           ; SOURCE LINE # 161
+0002 D290          SETB    SCL_PIN
+                                           ; SOURCE LINE # 162
+;---- Variable 'i' assigned to Register 'R6' ----
+0004 FE            MOV     R6,A
+0005         ?C0020:
+0005 EE            MOV     A,R6
+0006 C3            CLR     C
+0007 9408          SUBB    A,#08H
+0009 5011          JNC     ?C0021
+                                           ; SOURCE LINE # 163
+000B         ?C0023:
+                                           ; SOURCE LINE # 164
+000B 3090FD        JNB     SCL_PIN,?C0023
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 9   
+
+000E         ?C0024:
+                                           ; SOURCE LINE # 165
+000E EF            MOV     A,R7
+000F 25E0          ADD     A,ACC
+0011 FF            MOV     R7,A
+                                           ; SOURCE LINE # 166
+0012 309101        JNB     SDA_PIN,?C0026
+                                           ; SOURCE LINE # 167
+                                           ; SOURCE LINE # 168
+0015 0F            INC     R7
+                                           ; SOURCE LINE # 169
+0016         ?C0026:
+                                           ; SOURCE LINE # 170
+0016 2090FD        JB      SCL_PIN,?C0026
+                                           ; SOURCE LINE # 171
+0019         ?C0022:
+0019 0E            INC     R6
+001A 80E9          SJMP    ?C0020
+001C         ?C0021:
+                                           ; SOURCE LINE # 172
+001C C291          CLR     SDA_PIN
+001E         ?C0028:
+                                           ; SOURCE LINE # 173
+001E 3090FD        JNB     SCL_PIN,?C0028
+0021         ?C0030:
+                                           ; SOURCE LINE # 174
+0021 2090FD        JB      SCL_PIN,?C0030
+0024         ?C0031:
+                                           ; SOURCE LINE # 175
+0024 D291          SETB    SDA_PIN
+                                           ; SOURCE LINE # 176
+0026 D290          SETB    SCL_PIN
+                                           ; SOURCE LINE # 177
+                                           ; SOURCE LINE # 178
+0028         ?C0032:
+0028 22            RET     
+             ; FUNCTION _I2CReceiveByte (END)
+
+             ; FUNCTION _I2CSendByte (BEGIN)
+;---- Variable 'bt' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 180
+                                           ; SOURCE LINE # 181
+                                           ; SOURCE LINE # 183
+;---- Variable 'i' assigned to Register 'R6' ----
+0000 E4            CLR     A
+0001 FE            MOV     R6,A
+0002         ?C0033:
+0002 EE            MOV     A,R6
+0003 C3            CLR     C
+0004 9408          SUBB    A,#08H
+0006 501C          JNC     ?C0034
+                                           ; SOURCE LINE # 184
+                                           ; SOURCE LINE # 185
+0008 EF            MOV     A,R7
+0009 30E704        JNB     ACC.7,?C0036
+000C D291          SETB    SDA_PIN
+000E 8002          SJMP    ?C0037
+0010         ?C0036:
+                                           ; SOURCE LINE # 186
+0010 C291          CLR     SDA_PIN
+0012         ?C0037:
+                                           ; SOURCE LINE # 187
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 10  
+
+0012 120000  R     LCALL   _I2CSCLHigh
+                                           ; SOURCE LINE # 188
+0015 120000  R     LCALL   _I2CBitDelay
+                                           ; SOURCE LINE # 189
+0018 C290          CLR     SCL_PIN
+                                           ; SOURCE LINE # 190
+001A 120000  R     LCALL   _I2CBitDelay
+                                           ; SOURCE LINE # 191
+001D EF            MOV     A,R7
+001E 25E0          ADD     A,ACC
+0020 FF            MOV     R7,A
+                                           ; SOURCE LINE # 192
+0021 0E            INC     R6
+0022 80DE          SJMP    ?C0033
+0024         ?C0034:
+                                           ; SOURCE LINE # 193
+0024 D291          SETB    SDA_PIN
+                                           ; SOURCE LINE # 194
+0026 120000  R     LCALL   _I2CSCLHigh
+                                           ; SOURCE LINE # 195
+0029 120000  R     LCALL   _I2CBitDelay
+                                           ; SOURCE LINE # 196
+002C 309102        JNB     SDA_PIN,?C0038
+                                           ; SOURCE LINE # 197
+002F 0500    R     INC     _i2c_error
+0031         ?C0038:
+                                           ; SOURCE LINE # 198
+0031 C290          CLR     SCL_PIN
+                                           ; SOURCE LINE # 199
+0033 120000  R     LCALL   _I2CBitDelay
+                                           ; SOURCE LINE # 200
+0036 22            RET     
+             ; FUNCTION _I2CSendByte (END)
+
+             ; FUNCTION _I2CSendAddr (BEGIN)
+;---- Variable 'addr' assigned to Register 'R7' ----
+;---- Variable 'rd' assigned to Register 'R5' ----
+                                           ; SOURCE LINE # 202
+                                           ; SOURCE LINE # 203
+                                           ; SOURCE LINE # 204
+0000 D290          SETB    SCL_PIN
+                                           ; SOURCE LINE # 205
+0002 120000  R     LCALL   _I2CBitDelay
+                                           ; SOURCE LINE # 206
+0005 C291          CLR     SDA_PIN
+                                           ; SOURCE LINE # 207
+0007 120000  R     LCALL   _I2CBitDelay
+                                           ; SOURCE LINE # 208
+000A C290          CLR     SCL_PIN
+                                           ; SOURCE LINE # 209
+000C 120000  R     LCALL   _I2CBitDelay
+                                           ; SOURCE LINE # 210
+000F EF            MOV     A,R7
+0010 2D            ADD     A,R5
+0011 FF            MOV     R7,A
+0012 120000  R     LCALL   _I2CSendByte
+                                           ; SOURCE LINE # 211
+0015 22            RET     
+             ; FUNCTION _I2CSendAddr (END)
+
+             ; FUNCTION I2CSendStop (BEGIN)
+                                           ; SOURCE LINE # 213
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 11  
+
+                                           ; SOURCE LINE # 214
+                                           ; SOURCE LINE # 215
+0000 C291          CLR     SDA_PIN
+                                           ; SOURCE LINE # 216
+0002 120000  R     LCALL   _I2CBitDelay
+                                           ; SOURCE LINE # 217
+0005 120000  R     LCALL   _I2CSCLHigh
+                                           ; SOURCE LINE # 218
+0008 120000  R     LCALL   _I2CBitDelay
+                                           ; SOURCE LINE # 219
+000B D291          SETB    SDA_PIN
+                                           ; SOURCE LINE # 220
+000D 120000  R     LCALL   _I2CBitDelay
+                                           ; SOURCE LINE # 221
+0010 22            RET     
+             ; FUNCTION I2CSendStop (END)
+
+             ; FUNCTION I2CReceiveDataByte (BEGIN)
+;---- Variable 'ret' assigned to Register 'R5' ----
+                                           ; SOURCE LINE # 223
+                                           ; SOURCE LINE # 224
+0000         ?C0042:
+                                           ; SOURCE LINE # 227
+0000 309103        JNB     SDA_PIN,?C0043
+0003 2090FA        JB      SCL_PIN,?C0042
+0006         ?C0043:
+                                           ; SOURCE LINE # 228
+0006 209115        JB      SDA_PIN,?C0044
+0009 309012        JNB     SCL_PIN,?C0044
+                                           ; SOURCE LINE # 229
+000C         ?C0045:
+                                           ; SOURCE LINE # 230
+000C 2090FD        JB      SCL_PIN,?C0045
+000F         ?C0046:
+                                           ; SOURCE LINE # 231
+000F 120000  R     LCALL   _I2CReceiveByte
+;---- Variable 'address' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 232
+0012 EF            MOV     A,R7
+0013 B40408        CJNE    A,#04H,?C0044
+                                           ; SOURCE LINE # 233
+                                           ; SOURCE LINE # 234
+0016 120000  R     LCALL   _I2CReceiveByte
+0019 AD07          MOV     R5,AR7
+                                           ; SOURCE LINE # 235
+001B 120000  R     LCALL   _I2CSlaveStop
+                                           ; SOURCE LINE # 236
+                                           ; SOURCE LINE # 237
+001E         ?C0044:
+                                           ; SOURCE LINE # 238
+001E AF05          MOV     R7,AR5
+                                           ; SOURCE LINE # 239
+0020         ?C0048:
+0020 22            RET     
+             ; FUNCTION I2CReceiveDataByte (END)
+
+             ; FUNCTION _WriteI2C (BEGIN)
+;---- Variable 'Addr' assigned to Register 'R6' ----
+;---- Variable 'Data' assigned to Register 'R4' ----
+0000 AC05          MOV     R4,AR5
+                                           ; SOURCE LINE # 241
+                                           ; SOURCE LINE # 242
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 12  
+
+                                           ; SOURCE LINE # 243
+0002 E4            CLR     A
+0003 FD            MOV     R5,A
+0004 120000  R     LCALL   _I2CSendAddr
+                                           ; SOURCE LINE # 244
+0007 AF04          MOV     R7,AR4
+0009 120000  R     LCALL   _I2CSendByte
+                                           ; SOURCE LINE # 245
+000C 120000  R     LCALL   I2CSendStop
+                                           ; SOURCE LINE # 246
+000F 22            RET     
+             ; FUNCTION _WriteI2C (END)
+
+             ; FUNCTION int0_int (BEGIN)
+0000 C0E0          PUSH    ACC
+0002 C0F0          PUSH    B
+0004 C083          PUSH    DPH
+0006 C082          PUSH    DPL
+0008 C0D0          PUSH    PSW
+000A C000          PUSH    AR0
+000C C001          PUSH    AR1
+000E C002          PUSH    AR2
+0010 C003          PUSH    AR3
+0012 C004          PUSH    AR4
+0014 C005          PUSH    AR5
+0016 C006          PUSH    AR6
+0018 C007          PUSH    AR7
+                                           ; SOURCE LINE # 248
+                                           ; SOURCE LINE # 250
+001A C2B3          CLR     ACK
+                                           ; SOURCE LINE # 251
+001C 120000  R     LCALL   I2CReceiveDataByte
+001F 8F00    R     MOV     command,R7
+                                           ; SOURCE LINE # 254
+0021 EF            MOV     A,R7
+0022 120000  E     LCALL   ?C_CCASE
+0025 0000    R     DW      ?C0051
+0027 01            DB      01H
+0028 0000    R     DW      ?C0052
+002A 02            DB      02H
+002B 0000    R     DW      ?C0053
+002D 03            DB      03H
+002E 0000    R     DW      ?C0054
+0030 04            DB      04H
+0031 0000    R     DW      ?C0055
+0033 05            DB      05H
+0034 0000    R     DW      ?C0056
+0036 06            DB      06H
+0037 0000    R     DW      ?C0057
+0039 07            DB      07H
+003A 0000    R     DW      ?C0058
+003C 08            DB      08H
+003D 0000    R     DW      ?C0059
+003F 09            DB      09H
+0040 0000    R     DW      ?C0060
+0042 0A            DB      0AH
+0043 0000    R     DW      ?C0061
+0045 0B            DB      0BH
+0046 0000    R     DW      ?C0062
+0048 0C            DB      0CH
+0049 0000    R     DW      ?C0063
+004B 0F            DB      0FH
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 13  
+
+004C 0000    R     DW      ?C0065
+004E 11            DB      011H
+004F 0000    R     DW      ?C0066
+0051 12            DB      012H
+0052 0000    R     DW      ?C0064
+0054 55            DB      055H
+0055 0000          DW      00H
+0057 0000    R     DW      ?C0050
+                                           ; SOURCE LINE # 255
+                                           ; SOURCE LINE # 256
+0059         ?C0051:
+0059 7F55          MOV     R7,#055H
+005B A2A0          MOV     C,IN01
+005D E4            CLR     A
+005E 33            RLC     A
+005F FD            MOV     R5,A
+0060 120000  R     LCALL   _WriteI2C
+0063 020000  R     LJMP    ?C0050
+                                           ; SOURCE LINE # 257
+0066         ?C0052:
+0066 7F55          MOV     R7,#055H
+0068 A2A3          MOV     C,IN02
+006A E4            CLR     A
+006B 33            RLC     A
+006C FD            MOV     R5,A
+006D 120000  R     LCALL   _WriteI2C
+0070 020000  R     LJMP    ?C0050
+                                           ; SOURCE LINE # 258
+0073         ?C0053:
+0073 7F55          MOV     R7,#055H
+0075 A284          MOV     C,IN03
+0077 E4            CLR     A
+0078 33            RLC     A
+0079 FD            MOV     R5,A
+007A 120000  R     LCALL   _WriteI2C
+007D 020000  R     LJMP    ?C0050
+                                           ; SOURCE LINE # 259
+0080         ?C0054:
+0080 7F55          MOV     R7,#055H
+0082 A287          MOV     C,IN04
+0084 E4            CLR     A
+0085 33            RLC     A
+0086 FD            MOV     R5,A
+0087 120000  R     LCALL   _WriteI2C
+008A 020000  R     LJMP    ?C0050
+                                           ; SOURCE LINE # 260
+008D         ?C0055:
+008D 7F55          MOV     R7,#055H
+008F A280          MOV     C,IN05
+0091 E4            CLR     A
+0092 33            RLC     A
+0093 FD            MOV     R5,A
+0094 120000  R     LCALL   _WriteI2C
+0097 020000  R     LJMP    ?C0050
+                                           ; SOURCE LINE # 261
+009A         ?C0056:
+009A 7F55          MOV     R7,#055H
+009C A282          MOV     C,IN06
+009E E4            CLR     A
+009F 33            RLC     A
+00A0 FD            MOV     R5,A
+00A1 120000  R     LCALL   _WriteI2C
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 14  
+
+00A4 020000  R     LJMP    ?C0050
+                                           ; SOURCE LINE # 262
+00A7         ?C0057:
+00A7 7F55          MOV     R7,#055H
+00A9 A2A1          MOV     C,IN07
+00AB E4            CLR     A
+00AC 33            RLC     A
+00AD FD            MOV     R5,A
+00AE 120000  R     LCALL   _WriteI2C
+00B1 020000  R     LJMP    ?C0050
+                                           ; SOURCE LINE # 263
+00B4         ?C0058:
+00B4 7F55          MOV     R7,#055H
+00B6 A2A2          MOV     C,IN08
+00B8 E4            CLR     A
+00B9 33            RLC     A
+00BA FD            MOV     R5,A
+00BB 120000  R     LCALL   _WriteI2C
+00BE 020000  R     LJMP    ?C0050
+                                           ; SOURCE LINE # 264
+00C1         ?C0059:
+00C1 7F55          MOV     R7,#055H
+00C3 A285          MOV     C,IN09
+00C5 E4            CLR     A
+00C6 33            RLC     A
+00C7 FD            MOV     R5,A
+00C8 120000  R     LCALL   _WriteI2C
+00CB 020000  R     LJMP    ?C0050
+                                           ; SOURCE LINE # 265
+00CE         ?C0060:
+00CE 7F55          MOV     R7,#055H
+00D0 A286          MOV     C,IN10
+00D2 E4            CLR     A
+00D3 33            RLC     A
+00D4 FD            MOV     R5,A
+00D5 120000  R     LCALL   _WriteI2C
+00D8 020000  R     LJMP    ?C0050
+                                           ; SOURCE LINE # 266
+00DB         ?C0061:
+00DB 7F55          MOV     R7,#055H
+00DD A281          MOV     C,IN11
+00DF E4            CLR     A
+00E0 33            RLC     A
+00E1 FD            MOV     R5,A
+00E2 120000  R     LCALL   _WriteI2C
+00E5 8077          SJMP    ?C0050
+                                           ; SOURCE LINE # 267
+00E7         ?C0062:
+00E7 7F55          MOV     R7,#055H
+00E9 A283          MOV     C,IN12
+00EB E4            CLR     A
+00EC 33            RLC     A
+00ED FD            MOV     R5,A
+00EE 120000  R     LCALL   _WriteI2C
+00F1 806B          SJMP    ?C0050
+                                           ; SOURCE LINE # 268
+00F3         ?C0063:
+                                           ; SOURCE LINE # 269
+00F3 E4            CLR     A
+00F4 F500    R     MOV     output_hi,A
+                                           ; SOURCE LINE # 270
+00F6 F500    R     MOV     output_lo,A
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 15  
+
+                                           ; SOURCE LINE # 271
+00F8 A2A0          MOV     C,IN01
+00FA 9200    R     MOV     out_00,C
+00FC A2A3          MOV     C,IN02
+00FE 9200    R     MOV     out_01,C
+                                           ; SOURCE LINE # 272
+0100 A284          MOV     C,IN03
+0102 9200    R     MOV     out_02,C
+0104 A287          MOV     C,IN04
+0106 9200    R     MOV     out_03,C
+                                           ; SOURCE LINE # 273
+0108 A280          MOV     C,IN05
+010A 9200    R     MOV     out_04,C
+010C A282          MOV     C,IN06
+010E 9200    R     MOV     out_05,C
+                                           ; SOURCE LINE # 274
+0110 A2A1          MOV     C,IN07
+0112 9200    R     MOV     out_06,C
+0114 A2A2          MOV     C,IN08
+0116 9200    R     MOV     out_07,C
+                                           ; SOURCE LINE # 275
+0118 A285          MOV     C,IN09
+011A 9200    R     MOV     out_08,C
+011C A286          MOV     C,IN10
+011E 9200    R     MOV     out_09,C
+                                           ; SOURCE LINE # 276
+0120 A281          MOV     C,IN11
+0122 9200    R     MOV     out_10,C
+0124 A283          MOV     C,IN12
+0126 9200    R     MOV     out_11,C
+                                           ; SOURCE LINE # 278
+0128 7F55          MOV     R7,#055H
+012A AD00    R     MOV     R5,output_hi
+012C 120000  R     LCALL   _WriteI2C
+                                           ; SOURCE LINE # 279
+012F 7F0A          MOV     R7,#0AH
+0131 7D0A          MOV     R5,#0AH
+0133 120000  R     LCALL   _delay
+                                           ; SOURCE LINE # 280
+0136 7F55          MOV     R7,#055H
+0138 AD00    R     MOV     R5,output_lo
+013A 120000  R     LCALL   _WriteI2C
+                                           ; SOURCE LINE # 281
+013D 801F          SJMP    ?C0050
+                                           ; SOURCE LINE # 282
+013F         ?C0064:
+                                           ; SOURCE LINE # 283
+013F 7F55          MOV     R7,#055H
+0141 7D6B          MOV     R5,#06BH
+0143 120000  R     LCALL   _WriteI2C
+                                           ; SOURCE LINE # 284
+0146 7F0A          MOV     R7,#0AH
+0148 7D0A          MOV     R5,#0AH
+014A 120000  R     LCALL   _delay
+                                           ; SOURCE LINE # 285
+014D 7F55          MOV     R7,#055H
+014F 7D6F          MOV     R5,#06FH
+0151 120000  R     LCALL   _WriteI2C
+                                           ; SOURCE LINE # 286
+0154 8008          SJMP    ?C0050
+                                           ; SOURCE LINE # 287
+0156         ?C0065:
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 16  
+
+0156 750001  R     MOV     enable_interrupt,#01H
+                                           ; SOURCE LINE # 288
+0159 8003          SJMP    ?C0050
+                                           ; SOURCE LINE # 289
+015B         ?C0066:
+015B E4            CLR     A
+015C F500    R     MOV     enable_interrupt,A
+                                           ; SOURCE LINE # 290
+                                           ; SOURCE LINE # 291
+015E         ?C0050:
+                                           ; SOURCE LINE # 292
+015E 7F0A          MOV     R7,#0AH
+0160 7D32          MOV     R5,#032H
+0162 120000  R     LCALL   _delay
+0165         ?C0067:
+                                           ; SOURCE LINE # 293
+0165 30B2FD        JNB     INT,?C0067
+0168         ?C0068:
+                                           ; SOURCE LINE # 294
+0168 D2B3          SETB    ACK
+                                           ; SOURCE LINE # 295
+016A D007          POP     AR7
+016C D006          POP     AR6
+016E D005          POP     AR5
+0170 D004          POP     AR4
+0172 D003          POP     AR3
+0174 D002          POP     AR2
+0176 D001          POP     AR1
+0178 D000          POP     AR0
+017A D0D0          POP     PSW
+017C D082          POP     DPL
+017E D083          POP     DPH
+0180 D0F0          POP     B
+0182 D0E0          POP     ACC
+0184 32            RETI    
+             ; FUNCTION int0_int (END)
+
+             ; FUNCTION main (BEGIN)
+                                           ; SOURCE LINE # 300
+                                           ; SOURCE LINE # 301
+                                           ; SOURCE LINE # 302
+;---- Variable 'countdown' assigned to Register 'R4' ----
+0000 E4            CLR     A
+0001 FC            MOV     R4,A
+                                           ; SOURCE LINE # 304
+0002 7580FF        MOV     P0,#0FFH
+                                           ; SOURCE LINE # 305
+0005 7590FF        MOV     P1,#0FFH
+                                           ; SOURCE LINE # 306
+0008 75A0FF        MOV     P2,#0FFH
+                                           ; SOURCE LINE # 307
+000B 75B0FF        MOV     P3,#0FFH
+                                           ; SOURCE LINE # 309
+000E D288          SETB    IT0
+                                           ; SOURCE LINE # 310
+0010 75A881        MOV     IE,#081H
+                                           ; SOURCE LINE # 311
+0013 F500    R     MOV     enable_interrupt,A
+0015         ?C0070:
+                                           ; SOURCE LINE # 313
+                                           ; SOURCE LINE # 314
+                                           ; SOURCE LINE # 315
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 17  
+
+0015 E500    R     MOV     A,enable_interrupt
+0017 60FC          JZ      ?C0070
+0019 30B3F9        JNB     ACK,?C0070
+001C 3092F6        JNB     IN_INT,?C0070
+                                           ; SOURCE LINE # 316
+                                           ; SOURCE LINE # 317
+001F E580          MOV     A,P0
+0021 B4FF0C        CJNE    A,#0FFH,?C0074
+0024 30A009        JNB     IN01,?C0074
+0027 30A306        JNB     IN02,?C0074
+002A 30A103        JNB     IN07,?C0074
+002D 20A2E5        JB      IN08,?C0070
+0030         ?C0074:
+                                           ; SOURCE LINE # 318
+                                           ; SOURCE LINE # 319
+0030 C2B3          CLR     ACK
+                                           ; SOURCE LINE # 320
+0032 E4            CLR     A
+0033 F500    R     MOV     output_hi,A
+                                           ; SOURCE LINE # 321
+0035 F500    R     MOV     output_lo,A
+                                           ; SOURCE LINE # 322
+0037 A2A0          MOV     C,IN01
+0039 9200    R     MOV     out_00,C
+003B A2A3          MOV     C,IN02
+003D 9200    R     MOV     out_01,C
+                                           ; SOURCE LINE # 323
+003F A284          MOV     C,IN03
+0041 9200    R     MOV     out_02,C
+0043 A287          MOV     C,IN04
+0045 9200    R     MOV     out_03,C
+                                           ; SOURCE LINE # 324
+0047 A280          MOV     C,IN05
+0049 9200    R     MOV     out_04,C
+004B A282          MOV     C,IN06
+004D 9200    R     MOV     out_05,C
+                                           ; SOURCE LINE # 325
+004F A2A1          MOV     C,IN07
+0051 9200    R     MOV     out_06,C
+0053 A2A2          MOV     C,IN08
+0055 9200    R     MOV     out_07,C
+                                           ; SOURCE LINE # 326
+0057 A285          MOV     C,IN09
+0059 9200    R     MOV     out_08,C
+005B A286          MOV     C,IN10
+005D 9200    R     MOV     out_09,C
+                                           ; SOURCE LINE # 327
+005F A281          MOV     C,IN11
+0061 9200    R     MOV     out_10,C
+0063 A283          MOV     C,IN12
+0065 9200    R     MOV     out_11,C
+                                           ; SOURCE LINE # 329
+0067 7FA0          MOV     R7,#0A0H
+0069 FD            MOV     R5,A
+006A 120000  R     LCALL   _I2CSendAddr
+                                           ; SOURCE LINE # 330
+006D 7F04          MOV     R7,#04H
+006F 120000  R     LCALL   _I2CSendByte
+                                           ; SOURCE LINE # 331
+0072 AF00    R     MOV     R7,output_hi
+0074 120000  R     LCALL   _I2CSendByte
+                                           ; SOURCE LINE # 332
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 18  
+
+0077 120000  R     LCALL   I2CSendStop
+                                           ; SOURCE LINE # 333
+007A 7FA0          MOV     R7,#0A0H
+007C E4            CLR     A
+007D 120000  R     LCALL   _I2CSendAddr
+                                           ; SOURCE LINE # 334
+0080 7F05          MOV     R7,#05H
+0082 120000  R     LCALL   _I2CSendByte
+                                           ; SOURCE LINE # 335
+0085 AF00    R     MOV     R7,output_lo
+0087 120000  R     LCALL   _I2CSendByte
+                                           ; SOURCE LINE # 336
+008A 120000  R     LCALL   I2CSendStop
+                                           ; SOURCE LINE # 338
+008D D2B3          SETB    ACK
+                                           ; SOURCE LINE # 339
+008F E4            CLR     A
+0090 F5A8          MOV     IE,A
+                                           ; SOURCE LINE # 340
+0092 C292          CLR     IN_INT
+0094         ?C0075:
+                                           ; SOURCE LINE # 341
+0094 30B309        JNB     ACK,?C0076
+0097 EC            MOV     A,R4
+0098 C3            CLR     C
+0099 94FF          SUBB    A,#0FFH
+009B 5003          JNC     ?C0076
+009D 0C            INC     R4
+009E 80F4          SJMP    ?C0075
+00A0         ?C0076:
+                                           ; SOURCE LINE # 342
+00A0 EC            MOV     A,R4
+00A1 C3            CLR     C
+00A2 94FF          SUBB    A,#0FFH
+00A4 5008          JNC     ?C0077
+                                           ; SOURCE LINE # 343
+00A6         ?C0078:
+                                           ; SOURCE LINE # 344
+00A6 30B303        JNB     ACK,$ + 6H
+00A9 020000  R     LJMP    ?C0070
+00AC 80F8          SJMP    ?C0078
+                                           ; SOURCE LINE # 345
+00AE         ?C0077:
+                                           ; SOURCE LINE # 346
+00AE D292          SETB    IN_INT
+                                           ; SOURCE LINE # 347
+                                           ; SOURCE LINE # 348
+                                           ; SOURCE LINE # 349
+00B0 020000  R     LJMP    ?C0070
+                                           ; SOURCE LINE # 350
+00B3 22            RET     
+             ; FUNCTION main (END)
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    820    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      7       2
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V3.20,  SN-50203013  INFRARED                                                 05/16/01  09:57:27  PAGE 19  
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,859 @@
+<?php
+
+include("checkauth.inc");
+
+$link=mysql_connect($host,$user,$pass) or die("ไม่สามารถติดต่อฐานข้อมูลได้");
+
+if (!isset($page)){$page=1;}
+
+
+
+$sql='select count(*) ,count(*)/25 from member t1  where mem_id <>1 ';
+
+if ($username_ent <> ''){$sql=$sql."&&mem_username like '$username_ent%'";}
+
+if ($firstname_ent<>''){$sql=$sql."&&mem_fname like '$firstname_ent%'";}
+
+if ($lastname_ent<>''){$sql=$sql."&&mem_lname like '$lastname_ent%'";}
+
+if ($nickname_ent<>''){$sql=$sql."&&mem_nickname like '$nickname_ent%'";}
+
+$result=mysql_db_query($db,$sql);
+
+$data=mysql_fetch_array($result);
+
+$num_of_row=$data[0];
+
+$num_of_page=$data[1];
+
+$num_of_page=ceil($num_of_page);
+
+if($num_of_page==0)$num_of_page=1;
+
+//if($num_of_page<$page){header("Location: ./readmessage.php"); }
+
+$frag=$data[0]%25;
+
+$start=($page-1)*25;
+
+$sql_tail=' limit '.$start.',25';
+
+$sql='select mem_id,mem_username,mem_fname,mem_lname,mem_nickname,mem_show_status  from member t1  where mem_id <>1 ';
+
+if ($username_ent <> ''){$sql=$sql."&&mem_username like '$username_ent%'";}
+
+if ($firstname_ent<>''){$sql=$sql."&&mem_fname like '$firstname_ent%'";}
+
+if ($lastname_ent<>''){$sql=$sql."&&mem_lname like '$lastname_ent%'";}
+
+if ($nickname_ent<>''){$sql=$sql."&&mem_nickname like '$nickname_ent%'";}
+
+$sql30=$sql.' order by mem_id '.$sql_tail;
+mysql_close($link);
+?>
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+
+
+<!-- saved from url=(0062)http://olala05.ce.kmitl.ac.th/magazines/testphp/tempwhite.html -->
+
+
+
+<HTML><HEAD><TITLE>Calendar</TITLE>
+
+
+
+<style type="text/css">
+
+
+
+
+
+
+
+<!--
+
+
+
+
+
+
+
+body {  margin: 0px  0px; padding: 0px  0px}
+
+
+
+
+
+
+
+a:link { color: #ccffcc; text-decoration: none}
+
+
+
+
+
+
+
+a:visited { color: #CCFFCC; text-decoration: none}
+
+
+
+
+
+
+
+a:active { color: #CCFFCC; text-decoration: underline}
+
+
+
+
+
+
+
+a:hover { color: #CCFFCC; text-decoration: underline}
+
+
+
+
+
+
+
+-->
+
+
+
+
+
+
+
+</style>
+
+
+
+<META http-equiv=Content-Type content="text/html; charset=Windows-874">
+
+
+
+<SCRIPT language=JavaScript>
+
+
+
+<!--
+
+
+
+function MM_swapImgRestore() { //v3.0
+
+
+
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+
+
+
+}
+
+
+
+
+
+
+
+function MM_preloadImages() { //v3.0
+
+
+
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+
+
+
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+
+
+
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+
+
+
+}
+
+
+
+
+
+
+
+function MM_findObj(n, d) { //v3.0
+
+
+
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+
+
+
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+
+
+
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+
+
+
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document); return x;
+
+
+
+}
+
+
+
+
+
+
+
+function MM_swapImage() { //v3.0
+
+
+
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+
+
+
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+
+
+
+}
+
+
+
+//-->
+
+
+
+</SCRIPT>
+
+
+
+
+
+
+
+<META content="MSHTML 5.50.4134.600" name=GENERATOR></HEAD>
+
+
+
+<BODY bgColor=#ffffff 
+
+
+
+onload="MM_preloadImages('file:///E|/project/magazine/redpoint.gif','file:///E|/project/magazine/carblue.gif','file:///E|/project/magazine/sendpink.gif','file:///E|/project/magazine/detailblue.gif','file:///E|/project/magazine/logoutorg.gif','file:///E|/project/magazine/docyellow.gif','file:///E|/project/magazine/addresspink.gif','../images/homered.gif','../images/docyellow.gif','../images/carblue.gif','../images/messagegreen.gif','../images/addresspink.gif','../images/detailblue.gif','../images/logoutorg.gif')" link="#666666">
+<TABLE height=10 width="100%" border=0 cellpadding="0" cellspacing="0">
+
+
+
+  <TBODY> 
+
+
+
+  <TR>
+
+
+
+    <TD height=39>&nbsp;</TD></TR>
+
+
+
+  <TR>
+
+
+
+    <TD height=8> <img src="../images/label1.gif" width="126" height="54" border="0"> 
+      <a href="../welcome.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image1','','../images/homered.gif',1)"><IMG 
+
+
+
+      height=33 src="../images/home.gif" width=90 border=0 
+
+
+
+      name=Image1></a><a href="../../reader.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image15','','../images/docyellow.gif',1)"><img name="Image15" border="0" src="../images/document.gif" width="90" height="33"></a><a href="../schedule/sch_add.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image2','','../images/carblue.gif',1)"><IMG 
+
+
+
+      height=33 src="../images/carlendar.gif" width=90 border=0 
+
+
+
+      name=Image2></a><a href="../message/readmessage.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image4','','../images/messagegreen.gif',1)"><IMG 
+
+
+
+      height=33 src="../images/message.gif" width=90 border=0 
+
+
+
+      name=Image4></a><a href="../address/addressbook.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image14','','../images/addresspink.gif',1)"><img name="Image14" border="0" src="../images/address.gif" width="90" height="33"></a><a href="../member/edit_profile.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image5','','../images/detailblue.gif',1)"><IMG 
+
+
+
+      height=33 src="../images/detail.gif" width=90 border=0 
+
+
+
+      name=Image5></a><a href="../member/logout.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image6','','../images/logoutorg.gif',1)"><IMG 
+
+
+
+      height=33 src="../images/logout.gif" width=90 border=0 
+
+
+
+      name=Image6></a></TD>
+
+
+
+  </TR>
+
+
+
+  <TR> 
+
+
+
+    <TD height="18"><img src="../images/bolder2.gif" width="130" height="18"><img src="../images/bolder1.gif" width="630" height="18"></TD>
+
+
+
+  </TR>
+
+
+
+
+
+
+
+  <TR vAlign=top align=left>
+
+
+
+    <TD>
+
+
+
+      <TABLE height=464 width="100%" border=0>
+
+        <TBODY> 
+
+        <TR align="left" bgcolor="#FFFFFF"> 
+
+          <TD vAlign=top width="163" height="497"> 
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr> 
+                <td height="100"> 
+                  <table width="100%" border="1" cellspacing="0" cellpadding="0" bordercolor="#FF9933" align="center" height="96">
+                    <tr align="center" bgcolor="#FF9900"> 
+                      <td height="20" valign="top"><font size="3" face="MS Sans Serif" color="#000000">เมนู</font></td>
+                    </tr>
+                    <tr> 
+                      <td height="75" valign="top"> 
+                        <table width="100%" border="1">
+                          <tr> 
+                            <td align="center"><font size="2"><a href="./addressbook.php"><font face="MS Sans Serif" color="#666666" size="1">รายชื่อเพื่อน</font></a></font></td>
+                          </tr>
+                          <tr> 
+                            <td align="center"><font size="2"><a href="./findfriend.php"><font face="MS Sans Serif" color="#FF6600" size="1">ค้นหา/เพิ่มชื่อเพื่อน</font></a></font></td>
+                          </tr>
+                          <tr> 
+                            <td align="center" height="21"><a href="./adddelgroup.php"><font face="MS Sans Serif" size="1" color="#666666">เพิ่ม/ลบ/แก้ไขชื่อกลุ่ม</font></a></td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+<? //-----ปุ่มจัดตารางรวดเร็ว และ นัดหมายรวดเร็ว-------- ?>
+
+<table width="180" border="0" cellpadding="0" cellspacing="0">
+
+                      <tr align="left" valign="top"> 
+
+                        <td nowrap colspan="2" height="25"> 
+
+                          <div align="right"><a href="../schedule/sch_add2.php"><img src="../images/sch_quick.gif" width="150" height="20" border="0"></a></div>
+
+                        </td>
+
+                      </tr>
+
+                      <tr align="left" valign="top"> 
+
+                        <td nowrap colspan="2" height="26"> 
+
+                          <div align="right"><a href="app_add1.php?quick_butt=Y"><img src="../images/app_quick.gif" width="150" height="20" border="0"></a></div>
+
+                        </td>
+
+                      </tr>
+
+                      <?
+
+if($user_calendar=="A" || $user_calendar=="W")
+
+{
+
+?> 
+
+                      <tr align="left" valign="top"> 
+
+                        <td nowrap colspan="2" height="26"> 
+
+                          <div align="right"><a href="../../document/edit_article/page_edit.php"><img src="../images/write_column.gif" width="148" height="20" border="0"></a></div>
+
+                        </td>
+
+                      </tr>
+
+                      <?
+
+} //เช็คสิทธ์เขียน
+
+?> <?
+
+if($user_calendar=="A")
+
+{
+
+?> 
+
+                      <tr align="left" valign="top"> 
+
+                        <td nowrap colspan="2" height="2"> 
+
+                          <div align="right"><a href="../admin/adminpage.php"><img src="../images/admin.gif" width="149" height="22" border="0"></a></div>
+
+                        </td>
+
+                      </tr>
+
+                      <tr align="left" valign="top"> 
+
+                        <td nowrap colspan="2" height="2"> 
+
+                          <div align="right">&nbsp;</div>
+
+                        </td>
+
+                      </tr>
+
+
+
+                      <?
+
+} //เช็คผู้ดูแลระบบ
+
+?> 
+
+                    </table>
+
+            <? //-------------หมดquickbutton------- ?>
+            <table width="120" border="0" cellpadding="0" cellspacing="0">
+              <tr align="left" valign="top"> 
+                <td nowrap colspan="2"> 
+                  <div align="center"><img src="../images/mess_remindhead.gif" width="188" height="21"></div>
+                </td>
+              </tr>
+              <tr align="left" valign="top"> 
+                <td colspan="2" bgcolor="#FFFFFF" height="133"> 
+                  <div align="center"> 
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr> 
+                        <td height="72"> 
+                          <table width="100%" border="1" cellspacing="0" cellpadding="0" bordercolor="#FAAB34" height="91">
+                            <tr> 
+                              <td height="97"> 
+                                <table width="100%" border="0" cellspacing="0" cellpadding="3">
+                                  <tr> 
+                                    <td height="34" colspan="2"><font size="2"><font color="#0066FF" face="AngsanaUPC, Angsana New, MS Serif">
+                                      <?php include("../checkmessage.inc"); ?>
+                                      </font></font></td>
+                                  </tr>
+                                  <tr> 
+                                    <td height="31" colspan="2">&nbsp;</td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </table>
+                          <? //----------หมด เตือนข้อความ ---------- ?>
+                        </td>
+                      </tr>
+                    </table>
+                    <font face="MS Sans Serif, Microsoft Sans Serif" size="2"></font></div>
+                </td>
+              </tr>
+              <tr align="left" valign="top"> 
+                <td colspan="2" height="16"><img src="../images/sch_remindhead.gif" width="188" height="20"></td>
+              </tr>
+              <tr align="left" valign="top"> 
+                <td colspan="2" height="101"> 
+                  <table width="100%" border="1" cellspacing="0" cellpadding="0" bordercolor="#FFB038">
+                    <tr> 
+                      <td height="83"> 
+                        <table width="100%" border="0" cellspacing="0" cellpadding="3">
+                          <tr> 
+                            <td height="34" colspan="2"><font size="1"><font color="#0066FF" face="MS Sans Serif, Microsoft Sans Serif">
+                              <?php include("../remind/sch_remindside.inc"); ?>
+                              </font></font></td>
+                          </tr>
+                          <tr> 
+                            <td height="31" colspan="2">&nbsp;</td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr align="left" valign="top"> 
+                <td colspan="2" height="16">&nbsp;</td>
+              </tr>
+              <? //------------หมด เตือน ตาราง------------ ?>
+              <tr align="left" valign="top"> 
+                <td colspan="2" height="9"><img src="../images/app_remindhead.gif" width="188" height="20"></td>
+              </tr>
+              <tr align="left" valign="top"> 
+                <td colspan="2" height="108"> 
+                  <div align="center"> 
+                    <table width="100%" border="1" cellspacing="0" cellpadding="0" bordercolor="#FF9933">
+                      <tr> 
+                        <td height="127"> 
+                          <table width="100%" border="0" cellspacing="0" cellpadding="3">
+                            <tr> 
+                              <td height="34" colspan="2"><font size="1"><font color="#0066FF" face="MS Sans Serif, Microsoft Sans Serif">
+                                <?php include("../remind/app_messbeside.inc"); ?>
+                                </font></font></td>
+                            </tr>
+                            <tr> 
+                              <td height="31" colspan="2"><font size="1"><font color="#0066FF" face="MS Sans Serif, Microsoft Sans Serif">
+                                <?php include("../remind/app_mess_tosenderbeside.inc"); ?>
+                                </font></font></td>
+                            </tr>
+                            <tr> 
+                              <td colspan="2">&nbsp;</td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <? //---------------- หมด เตือน นัดหมาย -------------- ?>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </TD>
+
+          <TD vAlign=top width="727" height="497">
+
+            <form name="form1" method="get" action="./findfriend.php">
+
+              <font color="#FFFFFF"> </font> 
+
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+                <tr> 
+
+                  <td width="20">&nbsp;</td>
+
+                  <td width="87"><font face="MS Sans Serif" size="2"><b>ชื่อผู้ใช้</b></font></td>
+
+                  <td width="482"> 
+
+                    <input type="text" name="username_ent" size="20" maxlength="30" value="<?php echo $username_ent; ?>">
+
+                  </td>
+
+                </tr>
+
+                <tr> 
+
+                  <td width="20">&nbsp;</td>
+
+                  <td width="87"><font face="MS Sans Serif" size="2"><b>ชื่อ</b></font></td>
+
+                  <td width="482"> 
+
+                    <input type="text" name="firstname_ent" size="20" value="<?php echo $firstname_ent; ?>" maxlength="30" >
+
+                  </td>
+
+                </tr>
+
+                <tr> 
+
+                  <td width="20">&nbsp;</td>
+
+                  <td width="87"><font face="MS Sans Serif" size="2"><b>นามสกุล</b></font></td>
+
+                  <td width="482"> 
+
+                    <input type="text" name="lastname_ent" size="20" maxlength="30" value="<?php echo $lastname_ent; ?>" >
+
+                  </td>
+
+                </tr>
+
+                <tr> 
+
+                  <td width="20">&nbsp;</td>
+
+                  <td width="87"><font face="MS Sans Serif" size="2"><b>ชื่อเล่น</b></font></td>
+
+                  <td width="482"><font color="#FFFFFF"> 
+
+                    <input type="text" name="nickname_ent" size="20" maxlength="20" value="<?php echo $nickname_ent; ?>" >
+
+                    <input type="submit" name="search" value="ค้นหารายชื่อ">
+
+                    </font></td>
+
+                </tr>
+
+              </table>
+
+            </form>
+
+            <form method="post" action="./addfriend.php">
+
+              <table width="100%" border="0">
+
+                <tr align="center"> 
+
+                  <td width="5%" height="18">&nbsp;</td>
+
+                  <td width="18%" height="18">&nbsp;</td>
+
+                  <td width="66%" height="18" align="left">&nbsp;</td>
+
+                  <td width="11%" height="18">&nbsp;</td>
+
+                </tr>
+
+                <tr align="center"> 
+
+                  <td width="5%" rowspan="2"><font size="2" face="MS Sans Serif"></font></td>
+
+                  <td width="18%" rowspan="2"><font size="2" face="MS Sans Serif"> 
+                    <input type="submit" name="button2" value="เพิ่มรายชื่อเพื่อน">
+
+                    </font></td>
+
+                  <td width="66%" align="left"><font face="MS Sans Serif" size="2" color="#000000"> 
+                    <input type="radio" name="grouptype" value="old" checked>
+
+                          กลุ่มที่มีอยู่แล้ว ชื่อ </font><font size="2" face="MS Sans Serif"> 
+
+                          <select name="oldgroupname">
+
+<? 
+$link=mysql_connect($host,$user,$pass) or die("ไม่สามารถติดต่อฐานข้อมูลได้");
+		$sql1="select grp_name from group_name where mem_id=".$user_id.' order by grp_id';
+
+		$result1=mysql_db_query($db,$sql1);
+
+		$row=mysql_num_rows($result1);
+
+
+
+		for($i=0;$i<$row;$i++){
+
+					$data=mysql_fetch_array($result1);
+
+                            echo'<option value="'.$data[0].'"><font face="MS Sans Serif" size="2" color="#000000">'.$data[0].'</font></option>';
+
+		}
+
+?>
+
+						  </select>
+
+                          </font></td>
+
+                  <td width="11%" rowspan="2">&nbsp; </td>
+
+                </tr>
+
+                <tr align="center">
+
+                  <td width="66%" align="left"><font face="MS Sans Serif" size="2" color="#000000"> 
+                    <input type="radio" name="grouptype" value="new">
+
+                          สร้างกลุ่มใหม่ ชื่อ</font><font size="2" face="MS Sans Serif"></font><font face="MS Sans Serif" size="2" color="#000000"> 
+
+                          
+                    <input type="text" name="newgroupname" size="20" maxlength="40">
+
+                          </font></td>
+
+                </tr>
+
+              </table>
+
+              <table width="100%" border="1">
+
+                <tr bgcolor="#3366FF" align="center"> 
+
+                  <td width="5%"><font face="MS Sans Serif"></font> </td>
+
+                  <td width="15%"><font size="2"><b><font color="#FFFFFF" face="MS Sans Serif">ชื่อผู้ใช้</font></b></font><font color="#FFFFFF" face="MS Sans Serif"></font></td>
+
+                  <td width="30%"><font size="2"><b><font color="#FFFFFF" face="MS Sans Serif">ชื่อ</font></b></font></td>
+
+                  <td width="30%"><font size="2"><b><font color="#FFFFFF" face="MS Sans Serif">นามสกุล</font></b></font></td>
+
+                  <td width="20%"><font color="#FFFFFF" face="MS Sans Serif" size="2"><b>ชื่อเล่น</b></font></td>
+
+                </tr>
+
+                <font face="MS Sans Serif" size="2"> 
+
+				<?
+
+if(isset($username_ent)||isset($firstname_ent)||isset($lastname_ent)||isset($nickname_ent)){				
+
+					$result3=mysql_db_query($db,$sql30);
+
+					$row=mysql_num_rows($result3);
+
+					$count=$row;
+
+					$begin=($page-1)*25;
+
+					$row=$begin+$row;
+
+					for($i=$begin;$i<$row;$i++)
+
+					{$data3=mysql_fetch_array($result3);
+
+					echo '<tr align="center">';
+
+					echo '<td width="5%">';
+					if($data3[0]<>$user_id)
+					{echo'<input type="checkbox" name="checkbox['.$i.']" value="'.$data3[0].'">';}
+					else{echo'&nbsp;';}
+					echo '</td>';
+
+					if (($data3[5]=='Y')&&($data3[0]<>$user_id)) {echo '<td width="15%"><a href="./viewdetail.php?view_mem_id='.$data3[0].'&nbsp;"><font color="#910000" size="2" face="MS Sans Serif"><b>'.$data3[1].'</b></font></a></td>';}
+
+					else {echo '<td width="15%">&nbsp;<font color="#000000" size="2" face="MS Sans Serif"><b>'.$data3[1].'</b></font></td>';}
+
+					echo '<td width="30%"><font color="#000000" size="2" face="MS Sans Serif"><b>'.$data3[2].'&nbsp;</b></font></a></td>';
+
+					echo '<td width="30%"><font color="#000000" size="2" face="MS Sans Serif"><b>'.$data3[3].'&nbsp;</b></font></a></td>';
+
+					echo '<td width="20%"><b><font face="MS Sans Serif" size="2">'.$data3[4].'&nbsp;</font></b></td>';
+
+					echo '</tr>';
+
+					}}
+
+				?> </font> 
+
+                <tr align="right"> 
+
+                    <?php 
+
+if(isset($username_ent)||isset($firstname_ent)||isset($lastname_ent)||isset($nickname_ent)){
+
+				  echo'<td colspan="5" height="24"> <font color="#333333" size="2" face="MS Sans Serif">แสดงรายชื่อที่ ';
+
+
+
+				  $start=($page-1)*25+1;
+
+				  if (($frag!=0)&&($page==$num_of_page)){$end=$num_of_row;}
+
+				  else{$end=$page*25;}
+
+				  if($end>$num_of_row)$end=$num_of_row;
+				  echo ' '.$start.' ถึง '.$end.' จากรายชื่อทั้งหมด '.$num_of_row.' รายชื่อ<br>';
+
+				  echo' | <a href="./findfriend.php?page=1'.'&username_ent='.$username_ent.'&firstname_ent='.$firstname_ent.'&lastname_ent='.$lastname_ent.'&nickname_ent='.$nickname_ent.'"><font color="#666666" size="2" face="MS Sans Serif">ไปที่หน้าแรก</font></a>';
+
+				  $prepage=$page-1;
+
+				  if($page!=1){echo' | <a href="./findfriend.php?page='.$prepage.'&username_ent='.$username_ent.'&firstname_ent='.$firstname_ent.'&lastname_ent='.$lastname_ent.'&nickname_ent='.$nickname_ent.'"><font color="#666666" size="2" face="MS Sans Serif">ไปที่หน้าที่แล้ว</font></a>';}
+
+					$nextpage=$page+1;
+
+				  if($nextpage<=$num_of_page){echo ' | <a href="./findfriend.php?page='.$nextpage.'&username_ent='.$username_ent.'&firstname_ent='.$firstname_ent.'&lastname_ent='.$lastname_ent.'&nickname_ent='.$nickname_ent.'"><font color="#666666" size="2" face="MS Sans Serif">ไปที่หน้าต่อไป</font></a>';}
+
+					echo' | <a href="./findfriend.php?page='.$num_of_page.'&username_ent='.$username_ent.'&firstname_ent='.$firstname_ent.'&lastname_ent='.$lastname_ent.'&nickname_ent='.$nickname_ent.'"><font color="#666666" size="2" face="MS Sans Serif">ไปที่หน้าสุดท้าย</font></a>';
+
+				   echo'</font> </td>';}
+mysql_close($link);
+				   ?>
+
+                </tr>
+
+              </table>
+
+              <table width="100%" border="0">
+
+                <tr align="center"> 
+
+                  <td width="4%" height="18">&nbsp;</td>
+
+                  <td width="16%" height="18"><font size="2" face="MS Sans Serif"> 
+                    </font></td>
+
+                  <td width="22%" height="18">&nbsp;</td>
+
+                  <td width="58%" height="18">&nbsp;</td>
+
+                </tr>
+
+                <tr align="center"> 
+
+                  <td width="4%"><font size="2" face="MS Sans Serif"></font></td>
+
+                  <td width="16%"><font size="2" face="MS Sans Serif"> </font></td>
+
+                  <td width="22%"><font size="2" face="MS Sans Serif"> </font></td>
+
+                  <td width="58%">&nbsp; </td>
+
+                </tr>
+
+              </table>
+
+            </form>
+
+            <font color="#FFFFFF"> </font></TD>
+
+        </TR>
+
+        </TBODY> 
+
+      </TABLE>
+
+    </TD></TR></TBODY></TABLE>
+
+
+
+</BODY>
+
+
+
+</HTML>
+
+
+

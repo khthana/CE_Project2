@@ -1,0 +1,71 @@
+unit PlaceProperty_Source;
+
+interface
+
+uses
+  MtsObj, ComObj, PlaceSystem_TLB, StdVcl;
+
+type
+  TPlaceProperty = class(TMtsAutoObject, IPlaceProperty)
+  protected
+    function Create(const Name, Description: WideString): WideString; safecall;
+    function QueryData(const NameKeyword,
+      DescriptionKeyword: WideString): OleVariant; safecall;
+    function View(const PlacePropertyID: WideString): OleVariant; safecall;
+    procedure Add(const PlaceID, PlacePropertyID: WideString); safecall;
+    procedure Delete(const PlacePropertyID: WideString); safecall;
+    procedure Remove(const PlaceID, PlacePropertyID: WideString); safecall;
+    procedure Modify(const PlacePropertyID, Name, Description: WideString);
+      safecall;
+    { Protected declarations }
+
+  end;
+
+implementation
+
+uses ComServ;
+
+function TPlaceProperty.Create(const Name,
+  Description: WideString): WideString;
+begin
+
+end;
+
+function TPlaceProperty.QueryData(const NameKeyword,
+  DescriptionKeyword: WideString): OleVariant;
+begin
+
+end;
+
+function TPlaceProperty.View(
+  const PlacePropertyID: WideString): OleVariant;
+begin
+
+end;
+
+procedure TPlaceProperty.Add(const PlaceID, PlacePropertyID: WideString);
+begin
+
+end;
+
+procedure TPlaceProperty.Delete(const PlacePropertyID: WideString);
+begin
+
+end;
+
+procedure TPlaceProperty.Remove(const PlaceID,
+  PlacePropertyID: WideString);
+begin
+
+end;
+
+procedure TPlaceProperty.Modify(const PlacePropertyID, Name,
+  Description: WideString);
+begin
+
+end;
+
+initialization
+  TAutoObjectFactory.Create(ComServer, TPlaceProperty, Class_PlaceProperty,
+    ciMultiInstance, tmBoth);
+end.

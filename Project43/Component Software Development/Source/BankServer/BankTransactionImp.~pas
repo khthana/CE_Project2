@@ -1,0 +1,227 @@
+unit BankTransactionImp;
+
+interface
+
+uses
+  ActiveX, MtsObj, ComObj, BankManager_TLB, StdVcl, SysUtils,
+  ADODB_TLB, COMSVCSLib_TLB, Dialogs, Windows, MSSQL2K_BankPrj_TLB;
+
+type
+  TBankTransaction = class(TMtsAutoObject, IBankTransaction, IObjectControl)
+  protected
+    function create(TransactionType: SYSINT; const Account,
+      RelateAccount: WideString; Amount: Currency;
+      Time: TDateTime): WideString; safecall;
+    function findByTransactionID(const TransactionID: WideString): OleVariant;
+      safecall;
+    function getAmount(const TransactionID: WideString): Currency; safecall;
+    function getRelateAccount(const TransactionID: WideString): WideString;
+      safecall;
+    function getTime(const TransactionID: WideString): TDateTime; safecall;
+    function getTransactionType(const TransactionID: WideString): SYSINT;
+      safecall;
+    function getAccount(const TransactionID: WideString): WideString; safecall;
+    { Protected declarations }
+    
+    // IObjectControl Methods Definition
+    function Activate: HRESULT; stdcall;
+    function CanBePooled: Longint; stdcall;
+    procedure Deactivate; stdcall;
+
+    private
+      objctx : ObjectContext;
+      
+  end;
+
+implementation
+
+uses ComServ;
+
+////////////////// IObjectControl Methods Implementation ///////////////////////
+
+function TBankTransaction.Activate: HRESULT;
+var
+  imtx : IMTxAS;
+begin
+  try
+    imtx := CoAppServer.Create;
+    objctx := imtx.GetObjectContext;
+    if objctx = nil then
+    begin
+      Result := 0;
+    end
+    else
+      Result := S_OK;
+  except
+    Result := 0;
+  end;
+end;
+
+function TBankTransaction.CanBePooled: Longint;
+begin
+  Result := 1;
+end;
+
+procedure TBankTransaction.Deactivate;
+begin
+  objctx := nil;
+end;
+
+///////////// TBankTransaction Methods Implementation //////////////////////////
+
+function TBankTransaction.create(TransactionType: SYSINT; const Account,
+  RelateAccount: WideString; Amount: Currency;
+  Time: TDateTime): WideString;
+var
+  mssql: IMSSQL2K_Bank;
+  sSQL,transactionID: WideString;
+  Guid: TGUID;
+begin
+    mssql:= CoMSSQL2K_Bank.Create;
+    CoCreateGuid(Guid);
+    transactionID:=GUIDToString(Guid);
+
+    sSQL:= 'insert into BANK_TRANSACTION '+
+           '(TRANSACTIONID,ACCOUNTID,RELATEACCOUNTID,TRANSACTIONTYPE,MONEY,DATE)'+
+           ' values ('''+transactionID+''','''+Account+''','''+RelateAccount+''','+
+           IntToStr(TransactionType)+','+CurrToStr(Amount)+','''+DateTimeToStr(Time)+''')';
+    try
+      mssql.ExecSQL(sSQL);
+      Result:=transactionID;
+      objctx.SetComplete;
+    except
+      Result:= 'Error';
+      objctx.SetAbort;
+    end;
+end;
+
+function TBankTransaction.findByTransactionID(
+  const TransactionID: WideString): OleVariant;
+var
+  mssql: IMSSQL2K_Bank;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Bank.Create;
+
+  sSQL:= 'Select ACCOUNTID,RELATEACCOUNTID,TRANSACTIONTYPE,MONEY,DATE From BANK_TRANSACTION Where'+
+         ' TRANSACTIONID = '''+TransactionID+'''';
+
+  try
+    v:= mssql.Query(sSQL);
+    Result:= v;
+  except
+
+  end;
+end;
+
+function TBankTransaction.getAmount(
+  const TransactionID: WideString): Currency;
+var
+  mssql: IMSSQL2K_Bank;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Bank.Create;
+  sSQL:= 'Select MONEY From BANK_TRANSACTION Where TRANSACTIONID = '''+ TransactionID+'''';
+  try
+    v:= mssql.Query(sSQL);
+    v.MoveFirst;
+    Result:= v.fields.item[0].value;
+    v.Close;
+    objctx.SetComplete;
+  except
+    Result:= 0;
+    objctx.SetAbort;
+  end;
+end;
+
+function TBankTransaction.getRelateAccount(
+  const TransactionID: WideString): WideString;
+var
+  mssql: IMSSQL2K_Bank;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Bank.Create;
+  sSQL:= 'Select RELATEACCOUNTID From BANK_TRANSACTION Where TRANSACTIONID = '''+ TransactionID+'''';
+  try
+    v:= mssql.Query(sSQL);
+    v.MoveFirst;
+    Result:= v.fields.item[0].value;
+    v.Close;
+    objctx.SetComplete;
+  except
+    Result:= 'Not Found';
+    objctx.SetAbort;
+  end;
+end;
+
+
+function TBankTransaction.getTime(
+  const TransactionID: WideString): TDateTime;
+var
+  mssql: IMSSQL2K_Bank;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Bank.Create;
+  sSQL:= 'Select DATE From BANK_TRANSACTION Where TRANSACTIONID = '''+ TransactionID+'''';
+  try
+    v:= mssql.Query(sSQL);
+    v.MoveFirst;
+    Result:= v.fields.item[0].value;
+    v.Close;
+    objctx.SetComplete;
+  except
+    Result:= 0;
+    objctx.SetAbort;
+  end;
+end;
+
+function TBankTransaction.getTransactionType(
+  const TransactionID: WideString): SYSINT;
+var
+  mssql: IMSSQL2K_Bank;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Bank.Create;
+  sSQL:= 'Select TRANSACTIONTYPE From BANK_TRANSACTION Where TRANSACTIONID = '''+ TransactionID+'''';
+  try
+    v:= mssql.Query(sSQL);
+    v.MoveFirst;
+    Result:= v.fields.item[0].value;
+    v.Close;
+    objctx.SetComplete;
+  except
+    Result:=-1;
+    objctx.SetAbort;
+  end;
+end;
+
+function TBankTransaction.getAccount(
+  const TransactionID: WideString): WideString;
+var
+  mssql: IMSSQL2K_Bank;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Bank.Create;
+  sSQL:= 'Select ACCOUNTID From BANK_TRANSACTION Where TRANSACTIONID = '''+ TransactionID+'''';
+  try
+    v:= mssql.Query(sSQL);
+    v.MoveFirst;
+    Result:= v.fields.item[0].value;
+    v.Close;
+    objctx.SetComplete;
+  except
+    Result:= 'Not Found';
+    objctx.SetAbort;
+  end;
+end;
+
+initialization
+  TAutoObjectFactory.Create(ComServer, TBankTransaction, Class_BankTransaction,
+    ciMultiInstance, tmBoth);
+end.

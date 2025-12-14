@@ -1,0 +1,152 @@
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+
+<SCRIPT LANGUAGE="JavaScript">
+
+
+<!-- Original:  Fredrik Fridsten (fredrik.fridsten@home.se) -->
+<!-- Web Site:  http://hem.passagen.se/dred -->
+
+<!-- This script and many more are available free online at -->
+<!-- The JavaScript Source!! http://javascript.internet.com -->
+
+<!-- Begin
+
+// ADDITIONAL NOTES
+// The input variables to the toggle function are the number of the submenu to open/close,
+// starting with 0, and the number of pixels to move the objects below.
+// For example toggle(1,60) opens/closes the second submenu and moves the objects below 60 pixels.
+
+var nom = 4; // Number of menus
+var usePictures = 1; // use pictures?  1 = yes, 0 = no
+
+var ttls = new Array(); // An array for the title objects
+var subs = new Array(); // An array for the submenu objects
+var lastn;
+var lastmove;
+
+if (document.layers) {
+	visible = 'show';
+	hidden = 'hide';
+}
+else if (document.all) {
+	visible = 'visible';
+	hidden = 'hidden';
+}
+for (var i = 1; i <= nom; i++) {
+	ttls[i] = ('title' + i);
+	subs[i] = ('submenu' +i);
+}
+function picopen(n) {
+	title = ('title' + n);
+	pic = ('pic' + n);
+	if (document.layers) {
+	document.layers[title].document.images[pic].src = "http://javascript.internet.com/img/category-menus/opened.gif";
+}else if (document.all) {
+	document.all(pic).src = "http://javascript.internet.com/img/category-menus/opened.gif";
+   }
+}
+function picclose(n) {
+	title = ('title' + n);
+	pic = ('pic' + n);
+	if (document.layers) {
+	document.layers[title].document.images[pic].src = "http://javascript.internet.com/img/category-menus/closed.gif";
+}else if (document.all) {
+	document.all(pic).src = "http://javascript.internet.com/img/category-menus/closed.gif";
+   }
+}
+lastn = (nom + 1);
+lastmove = 0;
+
+function lasttoggle(n,move) {
+	if (n <= nom) {
+	menu = ('submenu' + n);
+	if (document.layers) {
+	submenu = document.layers[menu];
+}else if (document.all) {
+	submenu = document.all(menu).style;
+}
+if (submenu.visibility == visible) {
+	submenu.visibility = hidden;
+	picclose(n); // Remove this if you don't use pictures
+	for (var i = (n+1); i <= nom; i++) {
+	if (document.layers) {
+		document.layers[ttls[i]].top -= move;
+		document.layers[subs[i]].top -= move;
+}else if (document.all) {
+	document.all(ttls[i]).style.pixelTop -= move;
+	document.all(subs[i]).style.pixelTop -= move;
+    }
+   }
+  }
+ }
+}
+function toggle(n,move) {
+	menu = ('submenu' + n);
+	if (document.layers) {
+	submenu = document.layers[menu];
+}else if (document.all) {
+	submenu = document.all(menu).style;
+}
+if (submenu.visibility == visible) {
+	submenu.visibility = hidden;
+	if (usePictures) picclose(n);
+	for (var i = (n+1); i <= nom; i++) {
+		if (document.layers) {
+		document.layers[ttls[i]].top -= move;
+		document.layers[subs[i]].top -= move;
+	}else if (document.all) {
+		document.all(ttls[i]).style.pixelTop -= move;
+		document.all(subs[i]).style.pixelTop -= move;
+     }
+   }
+}
+else {
+	submenu.visibility = visible;
+	if (usePictures) picopen(n);
+	if (lastn != n) {
+	lasttoggle(lastn,lastmove);
+}
+for (var i = (n+1); i <= nom; i++) {
+	if (document.layers) {
+	document.layers[ttls[i]].top += move;
+	document.layers[subs[i]].top += move;
+}
+if (document.all) {
+	document.all(ttls[i]).style.pixelTop += move;
+	document.all(subs[i]).style.pixelTop += move;
+    }
+  }
+}
+lastn = n;
+lastmove = move;
+}
+function tellDemo() {
+	alert('This link would open in the right frame, but this is just a demo!');
+	return false;
+}
+//  End -->
+</script>
+
+
+</head>
+
+<body bgcolor="#CCFFFF">
+<font face="MS Sans Serif" size="4"><b><a href="type.html" target="_blank">About 
+us</a></b><br>
+<a href="mailto:jvichet@hotmail.com"><b>Contract us</b></a> <br>
+<b><a href="type.html" target="_blank">Member</a></b><br>
+<b><a href="type.html" target="_blank">Administrator</a></b> <br>
+</font> 
+<hr>
+<font face="MS Sans Serif" size="4"><b>Cartoon List</b><br>
+&nbsp;&nbsp;+&nbsp;Action<br>
+&nbsp;&nbsp;-&nbsp;Joke<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ชินจัง<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;โดราเอมอน<br>
+&nbsp;&nbsp;+&nbsp;Drama <br>
+</font> 
+</body>
+</html>

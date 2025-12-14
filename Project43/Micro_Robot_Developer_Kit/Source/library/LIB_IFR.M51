@@ -1,0 +1,55 @@
+MCS-51 LINKER / LOCATER  L51 V2.8                                                             DATE  05/20/01   PAGE    1
+
+
+MS-DOS MCS-51 LINKER / LOCATER  L51 V2.8, INVOKED BY:
+L51 LIB_IFR.OBJ, C:\C51\BIN\C51S.LIB CODE (?C_C51STARTUP (0040H), 080H) XDATA (8000H) NOOVERLAY
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  LIB_IFR.OBJ (LIB_IFR)
+
+
+LINK MAP OF MODULE:  LIB_IFR (LIB_IFR)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         ?DT?_I2CSCLHIGH?LIB_IFR
+            DATA    000AH     0003H     UNIT         ?DT?LIB_IFR
+            IDATA   000DH     0002H     UNIT         ?ID?LIB_IFR
+                    000FH     0011H                  *** GAP ***
+            DATA    0020H     0002H     BIT_ADDR     ?BA?LIB_IFR
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+                    0000H     0080H                  *** GAP ***
+            CODE    0080H     0015H     UNIT         ?PR?_DELAY?LIB_IFR
+            CODE    0095H     000EH     UNIT         ?PR?_WRITE?LIB_IFR
+            CODE    00A3H     000EH     UNIT         ?PR?_READ?LIB_IFR
+            CODE    00B1H     000AH     UNIT         ?PR?_I2CBITDLY?LIB_IFR
+            CODE    00BBH     0017H     UNIT         ?PR?_I2CSCLHIGH?LIB_IFR
+            CODE    00D2H     000AH     UNIT         ?PR?_I2CSLAVESTOP?LIB_IFR
+            CODE    00DCH     0029H     UNIT         ?PR?_I2CRECEIVEBYTE?LIB_IFR
+            CODE    0105H     0037H     UNIT         ?PR?_I2CSENDBYTE?LIB_IFR
+            CODE    013CH     0016H     UNIT         ?PR?_I2CSENDADDR?LIB_IFR
+            CODE    0152H     0011H     UNIT         ?PR?I2CSENDSTOP?LIB_IFR
+            CODE    0163H     0021H     UNIT         ?PR?I2CRECEIVEDATABYTE?LIB_IFR
+            CODE    0184H     0010H     UNIT         ?PR?_WRITEI2C?LIB_IFR
+            CODE    0194H     0042H     UNIT         ?PR?_IR_GET_DATA_NO?LIB_IFR
+            CODE    01D6H     003AH     UNIT         ?PR?IR_GET_DATA?LIB_IFR
+            CODE    0210H     003AH     UNIT         ?PR?IR_GET_SAMPLE?LIB_IFR
+            CODE    024AH     0030H     UNIT         ?PR?IR_ENABLE_INTERRUPT?LIB_IFR
+            CODE    027AH     0030H     UNIT         ?PR?IR_DISABLE_INTERRUPT?LIB_IFR
+            CODE    02AAH     0009H     UNIT         ?C_INITSEG
+
+
+
+IGNORED SEGMENTS:
+  ?C_C51STARTUP
+
+*** ERROR 110: CANNOT FIND SEGMENT
+    SEGMENT: ?C_C51STARTUP

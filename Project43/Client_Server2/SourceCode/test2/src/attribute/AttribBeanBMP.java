@@ -1,0 +1,480 @@
+package attribute;
+
+import java.sql.*;
+import javax.ejb.*;
+import javax.sql.DataSource;
+import java.util.*;
+
+/**
+ * Title:
+ * Description:
+ * Copyright:    Copyright (c) 2001
+ * Company:
+ * @author
+ * @version 1.0
+ */
+
+public class AttribBeanBMP extends AttribBean {
+  DataSource dataSource;
+  public AttribPK ejbCreate(String category, String attribute, String use, String no) throws CreateException {
+    super.ejbCreate(category, attribute, use, no);
+    try {
+      //First see if the object already exists
+      ejbFindByPrimaryKey(new attribute.AttribPK(category, attribute));
+      //If so, then we have to throw an exception
+      throw new DuplicateKeyException("Primary key already exists");
+    }
+    catch(ObjectNotFoundException e) {
+      //Otherwise we can go ahead and create it...
+    }
+    Connection connection = null;
+    PreparedStatement statement = null;
+    try {
+      connection = dataSource.getConnection();
+      statement = connection.prepareStatement("INSERT INTO ATTRIB (CATEGORY, ATTRIBUTE, USE, NO) VALUES (?, ?, ?, ?)");
+      statement.setString(1, category);
+      statement.setString(2, attribute);
+      statement.setString(3, use);
+      statement.setString(4, no);
+      if (statement.executeUpdate() != 1) {
+        throw new CreateException("Error adding row");
+      }
+      statement.close();
+      statement = null;
+      connection.close();
+      connection = null;
+      return new AttribPK(category, attribute);
+    }
+    catch(SQLException e) {
+      throw new EJBException("Error executing SQL INSERT INTO ATTRIB (CATEGORY, ATTRIBUTE, USE, NO) VALUES (?, ?, ?, ?): " + e.toString());
+    }
+    finally {
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+    }
+  }
+  public AttribPK ejbCreate(String category, String attribute) throws CreateException {
+    return ejbCreate(category, attribute, null, null);
+  }
+  public void ejbRemove() throws RemoveException {
+    super.ejbRemove();
+    Connection connection = null;
+    PreparedStatement statement = null;
+    try {
+      connection = dataSource.getConnection();
+      statement = connection.prepareStatement("DELETE FROM ATTRIB WHERE CATEGORY = ? AND ATTRIBUTE = ?");
+      statement.setString(1, category);
+      statement.setString(2, attribute);
+      if (statement.executeUpdate() < 1) {
+        throw new RemoveException("Error deleting row");
+      }
+      statement.close();
+      statement = null;
+      connection.close();
+      connection = null;
+    }
+    catch(SQLException e) {
+      throw new EJBException("Error executing SQL DELETE FROM ATTRIB WHERE CATEGORY = ? AND ATTRIBUTE = ?: " + e.toString());
+    }
+    finally {
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+    }
+  }
+  public void ejbLoad() {
+    AttribPK key = (AttribPK) entityContext.getPrimaryKey();
+    category = key.category;
+    attribute = key.attribute;
+    Connection connection = null;
+    PreparedStatement statement = null;
+    try {
+      connection = dataSource.getConnection();
+      statement = connection.prepareStatement("SELECT USE, NO FROM ATTRIB WHERE CATEGORY = ? AND ATTRIBUTE = ?");
+      statement.setString(1, category);
+      statement.setString(2, attribute);
+      ResultSet resultSet = statement.executeQuery();
+      if (!resultSet.next()) {
+        throw new NoSuchEntityException("Row does not exist");
+      }
+      use = resultSet.getString(1);
+      no = resultSet.getString(2);
+      statement.close();
+      statement = null;
+      connection.close();
+      connection = null;
+    }
+    catch(SQLException e) {
+      throw new EJBException("Error executing SQL SELECT USE, NO FROM ATTRIB WHERE CATEGORY = ? AND ATTRIBUTE = ?: " + e.toString());
+    }
+    finally {
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+    }
+    super.ejbLoad();
+  }
+  public void ejbStore() {
+    super.ejbStore();
+    Connection connection = null;
+    PreparedStatement statement = null;
+    try {
+      connection = dataSource.getConnection();
+      statement = connection.prepareStatement("UPDATE ATTRIB SET USE = ?, NO = ? WHERE CATEGORY = ? AND ATTRIBUTE = ?");
+      statement.setString(1, use);
+      statement.setString(2, no);
+      statement.setString(3, category);
+      statement.setString(4, attribute);
+      if (statement.executeUpdate() < 1) {
+        throw new NoSuchEntityException("Row does not exist");
+      }
+      statement.close();
+      statement = null;
+      connection.close();
+      connection = null;
+    }
+    catch(SQLException e) {
+      throw new EJBException("Error executing SQL UPDATE ATTRIB SET USE = ?, NO = ? WHERE CATEGORY = ? AND ATTRIBUTE = ?: " + e.toString());
+    }
+    finally {
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+    }
+  }
+  public AttribPK ejbFindByPrimaryKey(AttribPK key) throws ObjectNotFoundException {
+    Connection connection = null;
+    PreparedStatement statement = null;
+    try {
+      connection = dataSource.getConnection();
+      statement = connection.prepareStatement("SELECT CATEGORY FROM ATTRIB WHERE CATEGORY = ? AND ATTRIBUTE = ?");
+      statement.setString(1, key.category);
+      statement.setString(2, key.attribute);
+      ResultSet resultSet = statement.executeQuery();
+      if (!resultSet.next()) {
+        throw new ObjectNotFoundException("Primary key does not exist");
+      }
+      statement.close();
+      statement = null;
+      connection.close();
+      connection = null;
+      return key;
+    }
+    catch(SQLException e) {
+      throw new EJBException("Error executing SQL SELECT CATEGORY FROM ATTRIB WHERE CATEGORY = ? AND ATTRIBUTE = ?: " + e.toString());
+    }
+    finally {
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+    }
+  }
+  public Collection ejbFindAll() {
+    Connection connection = null;
+    PreparedStatement statement = null;
+    try {
+      connection = dataSource.getConnection();
+      statement = connection.prepareStatement("SELECT CATEGORY, ATTRIBUTE FROM ATTRIB");
+      ResultSet resultSet = statement.executeQuery();
+      Vector keys = new Vector();
+      while (resultSet.next()) {
+        String category = resultSet.getString(1);
+        String attribute = resultSet.getString(2);
+        keys.addElement(new AttribPK(category, attribute));
+      }
+      statement.close();
+      statement = null;
+      connection.close();
+      connection = null;
+      return keys;
+    }
+    catch(SQLException e) {
+      throw new EJBException("Error executing SQL SELECT CATEGORY, ATTRIBUTE FROM ATTRIB: " + e.toString());
+    }
+    finally {
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+    }
+  }
+  public Collection ejbFindByCategory() {
+    System.out.println("in findCategory");
+    Connection connection = null;
+    PreparedStatement statement = null;
+    try {
+      connection = dataSource.getConnection();
+      statement = connection.prepareStatement("select category,min(attribute) from attrib group by category");
+      ResultSet resultSet = statement.executeQuery();
+      Vector keys = new Vector();
+      while (resultSet.next()) {
+        String category = resultSet.getString(1);
+        String attribute = resultSet.getString(2);
+        keys.addElement(new AttribPK(category,attribute));
+        System.out.println(category+" : "+attribute);
+      }
+      statement.close();
+      statement = null;
+      connection.close();
+      connection = null;
+      System.out.println("out findCategory");
+      return keys;
+    }
+    catch(SQLException e) {
+      throw new EJBException("Error executing SQL SELECT CATEGORY, ATTRIBUTE FROM ATTRIB: " + e.toString());
+    }
+    finally {
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+    }
+  }
+  public Collection ejbFindByCategory(String cat,String orderBy) {
+    System.out.println("in findCategory(cat)");
+    Connection connection = null;
+    PreparedStatement statement = null;
+    String order;
+    if (orderBy!=null && !orderBy.equals("")) {
+      order = " order by "+orderBy;
+    } else order = "";
+    try {
+      connection = dataSource.getConnection();
+      System.out.println("select category,attribute from attrib where category = '"+cat+"'"+order);
+      statement = connection.prepareStatement("select category,attribute from attrib where category = '"+cat+"'"+order);
+      ResultSet resultSet = statement.executeQuery();
+      Vector keys = new Vector();
+      while (resultSet.next()) {
+        String category = resultSet.getString(1);
+        String attribute = resultSet.getString(2);
+        keys.addElement(new AttribPK(category,attribute));
+        System.out.println(category+" : "+attribute);
+      }
+      statement.close();
+      statement = null;
+      connection.close();
+      connection = null;
+      System.out.println("out findCategory");
+      return keys;
+    }
+    catch(SQLException e) {
+      throw new EJBException("Error executing SQL SELECT CATEGORY, ATTRIBUTE FROM ATTRIB: " + e.toString());
+    }
+    finally {
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+    }
+  }
+  public AttribPK ejbFindByForm(String category) {
+    System.out.println("in findByForm");
+    Connection connection = null;
+    PreparedStatement statement = null;
+    try {
+      connection = dataSource.getConnection();
+      System.out.println("cattttt"+category);
+      statement = connection.prepareStatement("select min(category),min(attribute) from attrib where category = ?");
+      statement.setString(1, category);
+      ResultSet resultSet = statement.executeQuery();
+      if (resultSet.next()) {
+        String cat = resultSet.getString(1);
+        String attribute = resultSet.getString(2);
+        System.out.println(cat+" : "+attribute);
+        statement.close();
+        statement = null;
+        connection.close();
+        connection = null;
+        System.out.println("out findCategory");
+        return new AttribPK(cat,attribute);
+      } return null;
+    }
+    catch(SQLException e) {
+      throw new EJBException("Error executing SQL SELECT CATEGORY, ATTRIBUTE FROM ATTRIB: " + e.toString());
+    }
+    finally {
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+    }
+  }
+  public void deleteCategory(String category) {
+    Connection connection = null;
+    PreparedStatement statement = null;
+    try {
+      connection = dataSource.getConnection();
+      statement = connection.prepareStatement("DELETE FROM ATTRIB WHERE CATEGORY = ? ");
+      statement.setString(1, category);
+      statement.executeUpdate();
+      statement.close();
+      statement = null;
+      connection.close();
+      connection = null;
+    }
+    catch(SQLException e) {
+      throw new EJBException("Error executing SQL DELETE FROM ATTRIB WHERE CATEGORY = ? AND ATTRIBUTE = ?: " + e.toString());
+    }
+    finally {
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+    }
+  }
+  public Collection ejbFindByCondition(String condition) {
+    Connection connection = null;
+    PreparedStatement statement = null;
+    try {
+      connection = dataSource.getConnection();
+      statement = connection.prepareStatement("SELECT CATEGORY, ATTRIBUTE FROM ATTRIB "+condition);
+      ResultSet resultSet = statement.executeQuery();
+      Vector keys = new Vector();
+      while (resultSet.next()) {
+        String category = resultSet.getString(1);
+        String attribute = resultSet.getString(2);
+        keys.addElement(new AttribPK(category, attribute));
+      }
+      statement.close();
+      statement = null;
+      connection.close();
+      connection = null;
+      return keys;
+    }
+    catch(SQLException e) {
+      throw new EJBException("Error executing SQL SELECT CATEGORY, ATTRIBUTE FROM ATTRIB: " + e.toString());
+    }
+    finally {
+      try {
+        if (statement != null) {
+          statement.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+      try {
+        if (connection != null) {
+          connection.close();
+        }
+      }
+      catch(SQLException e) {
+      }
+    }
+  }
+  public void setEntityContext(EntityContext entityContext) {
+    super.setEntityContext(entityContext);
+    try {
+      javax.naming.Context context = new javax.naming.InitialContext();
+      dataSource = (DataSource) context.lookup("java:comp/env/jdbc/DataSource");
+    }
+    catch(Exception e) {
+      throw new EJBException("Error looking up dataSource:" + e.toString());
+    }
+  }
+}

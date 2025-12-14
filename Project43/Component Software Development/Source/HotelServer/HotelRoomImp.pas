@@ -1,0 +1,330 @@
+unit HotelRoomImp;
+
+interface
+
+uses
+  ActiveX, MtsObj, ComObj, HotelManager_TLB, StdVcl, SysUtils,
+  ADODB_TLB, COMSVCSLib_TLB, Dialogs, Windows, MSSQL2K_HotelPrj_TLB;
+
+type
+  THotelRoom = class(TMtsAutoObject, IHotelRoom, IObjectControl)
+  protected
+    function findByHotelIDPricePerDayDescriptionNumberOfSingleBedNumberOfCoupleBedRoomClassFloor(
+      const hotelID: WideString; PricePerDay: Currency;
+      const description: WideString; NumberOfsingleBed, NumberOfCoupleBed,
+      RoomClass, Floor: SYSINT): OleVariant; safecall;
+    { Protected declarations }
+    
+    // IObjectControl Methods Definition
+    function Activate: HRESULT; stdcall;
+    function CanBePooled: Longint; stdcall;
+    procedure Deactivate; stdcall;
+
+    function getPricePerDay(const RoomNo, hotelID: WideString): Currency;
+      safecall;
+    function getDescription(const RoomNo, hotelID: WideString): WideString;
+      safecall;
+    function getFloor(const RoomNo, hotelID: WideString): SYSINT; safecall;
+    function getNumberOfCoupleBed(const RoomNo, hotelID: WideString): SYSINT;
+      safecall;
+    function getNumberOfMaximumGuest(const RoomNo,
+      hotelID: WideString): SYSINT; safecall;
+    function getNumberOfSingleBed(const RoomNo, hotelID: WideString): SYSINT;
+      safecall;
+    function getRoomClass(const RoomNo, hotelID: WideString): SYSINT; safecall;
+    function getTelephoneNo(const RoomNo, hotelID: WideString): WideString;
+      safecall;
+    function findRoomProperty(const hotelID: WideString): OleVariant; safecall;
+
+    private
+      objctx : ObjectContext;
+      
+  end;
+
+implementation
+
+uses ComServ;
+
+////////////////// IObjectControl Methods Implementation ///////////////////////
+
+function THotelRoom.Activate: HRESULT;
+var
+  imtx : IMTxAS;
+begin
+  try
+    imtx := CoAppServer.Create;
+    objctx := imtx.GetObjectContext;
+    if objctx = nil then
+    begin
+      Result := 0;
+    end
+    else
+      Result := S_OK;
+  except
+    Result := 0;
+  end;
+end;
+
+function THotelRoom.CanBePooled: Longint;
+begin
+  Result := 1;
+end;
+
+procedure THotelRoom.Deactivate;
+begin
+  objctx := nil;
+end;
+
+///////////// TRoom Methods Implementation ////////////////////////////////////
+
+function THotelRoom.findByHotelIDPricePerDayDescriptionNumberOfSingleBedNumberOfCoupleBedRoomClassFloor(
+  const hotelID: WideString; PricePerDay: Currency;
+  const description: WideString; NumberOfsingleBed, NumberOfCoupleBed,
+  RoomClass, Floor: SYSINT): OleVariant;
+var
+  mssql: IMSSQL2K_Hotel;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Hotel.Create;
+
+  sSQL:= 'Select ROOMNO,HOTELID,TELEPHONENO,PRICEPERDAY,DESCRIPTION,NUMBEROFSINGLEBED,'+
+         'NUMBEROFCOUPLEBED,NUMBEROFMAXIMUMGUEST,ROOMCLASS,FLOOR From ROOM Where ';
+
+  sSQL:= sSQL+ ' HOTELID = '''+HotelID+'''';
+
+  if PricePerDay<>0 then
+  begin
+    sSQL:= sSQL+' and PRICEPERDAY<='+CurrToStr(PricePerDay);
+  end;
+
+  sSQL:= sSQL+ ' and DESCRIPTION like ''%'+Description+'%''';
+
+  if NumberOfSingleBed>-1 then
+  begin
+    sSQL:= sSQL+' and NUMBEROFSINGLEBED='+IntToStr(NumberOfSingleBed);
+  end;
+
+  if NumberOfCoupleBed>-1 then
+  begin
+    sSQL:= sSQL+' and NUMBEROFCOUPLEBED='+IntToStr(NumberOfCoupleBed);
+  end;
+
+  if RoomClass<>0 then
+  begin
+    sSQL:= sSQL+' and ROOMCLASS='+IntToStr(RoomClass);
+  end;
+
+  if Floor<>0 then
+  begin
+    sSQL:= sSQL+' and FLOOR='+IntToStr(Floor);
+  end;
+
+  sSQL:= sSQL+' order by PRICEPERDAY DESC';
+
+  try
+    v:= mssql.Query(sSQL);
+    Result:= v;
+  except
+  
+  end;
+end;
+
+function THotelRoom.getPricePerDay(const RoomNo,
+  hotelID: WideString): Currency;
+var
+  mssql: IMSSQL2K_Hotel;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Hotel.Create;
+  sSQL:= 'Select PRICEPERDAY From ROOM Where HOTELID = '''+ HotelID+''''+
+         ' and ROOMNO = '''+ RoomNo + '''';
+  try
+    v:= mssql.Query(sSQL);
+    v.MoveFirst;
+    Result:= v.fields.item[0].value;
+    v.Close;
+    objctx.SetComplete;
+  except
+    Result:= 0;
+    objctx.SetAbort;
+  end;
+end;
+
+function THotelRoom.getDescription(const RoomNo,
+  hotelID: WideString): WideString;
+var
+  mssql: IMSSQL2K_Hotel;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Hotel.Create;
+  sSQL:= 'Select DESCRIPTION From ROOM Where HOTELID = '''+ HotelID+''''+
+         ' and ROOMNO = '''+ RoomNo + '''';
+  try
+    v:= mssql.Query(sSQL);
+    v.MoveFirst;
+    Result:= v.fields.item[0].value;
+    v.Close;
+    objctx.SetComplete;
+  except
+    Result:= 'Not Found';
+    objctx.SetAbort;
+  end;
+end;
+
+function THotelRoom.getFloor(const RoomNo, hotelID: WideString): SYSINT;
+var
+  mssql: IMSSQL2K_Hotel;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Hotel.Create;
+  sSQL:= 'Select FLOOR From ROOM Where HOTELID = '''+ HotelID+''''+
+         ' and ROOMNO = '''+ RoomNo + '''';
+  try
+    v:= mssql.Query(sSQL);
+    v.MoveFirst;
+    Result:= v.fields.item[0].value;
+    v.Close;
+    objctx.SetComplete;
+  except
+    Result:= 0;
+    objctx.SetAbort;
+  end;
+end;
+
+function THotelRoom.getNumberOfCoupleBed(const RoomNo,
+  hotelID: WideString): SYSINT;
+var
+  mssql: IMSSQL2K_Hotel;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Hotel.Create;
+  sSQL:= 'Select NUMBEROFCOUPLEBED From ROOM Where HOTELID = '''+ HotelID+''''+
+         ' and ROOMNO = '''+ RoomNo + '''';
+  try
+    v:= mssql.Query(sSQL);
+    v.MoveFirst;
+    Result:= v.fields.item[0].value;
+    v.Close;
+    objctx.SetComplete;
+  except
+    Result:= 0;
+    objctx.SetAbort;
+  end;
+end;
+
+function THotelRoom.getNumberOfMaximumGuest(const RoomNo,
+  hotelID: WideString): SYSINT;
+var
+  mssql: IMSSQL2K_Hotel;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Hotel.Create;
+  sSQL:= 'Select NUMBEROFMAXIMUMGUEST From ROOM Where HOTELID = '''+ HotelID+''''+
+         ' and ROOMNO = '''+ RoomNo + '''';
+  try
+    v:= mssql.Query(sSQL);
+    v.MoveFirst;
+    Result:= v.fields.item[0].value;
+    v.Close;
+    objctx.SetComplete;
+  except
+    Result:= 0;
+    objctx.SetAbort;
+  end;
+end;
+
+function THotelRoom.getNumberOfSingleBed(const RoomNo,
+  hotelID: WideString): SYSINT;
+var
+  mssql: IMSSQL2K_Hotel;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Hotel.Create;
+  sSQL:= 'Select NUMBEROFSINGLEBED From ROOM Where HOTELID = '''+ HotelID+''''+
+         ' and ROOMNO = '''+ RoomNo + '''';
+  try
+    v:= mssql.Query(sSQL);
+    v.MoveFirst;
+    Result:= v.fields.item[0].value;
+    v.Close;
+    objctx.SetComplete;
+  except
+    Result:= 0;
+    objctx.SetAbort;
+  end;
+end;
+
+function THotelRoom.getRoomClass(const RoomNo,
+  hotelID: WideString): SYSINT;
+var
+  mssql: IMSSQL2K_Hotel;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Hotel.Create;
+  sSQL:= 'Select ROOMCLASS From ROOM Where HOTELID = '''+ HotelID+''''+
+         ' and ROOMNO = '''+ RoomNo + '''';
+  try
+    v:= mssql.Query(sSQL);
+    v.MoveFirst;
+    Result:= v.fields.item[0].value;
+    v.Close;
+    objctx.SetComplete;
+  except
+    Result:= 0;
+    objctx.SetAbort;
+  end;
+end;
+
+function THotelRoom.getTelephoneNo(const RoomNo,
+  hotelID: WideString): WideString;
+var
+  mssql: IMSSQL2K_Hotel;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Hotel.Create;
+  sSQL:= 'Select TELEPHONENO From ROOM Where HOTELID = '''+ HotelID+''''+
+         ' and ROOMNO = '''+ RoomNo + '''';
+  try
+    v:= mssql.Query(sSQL);
+    v.MoveFirst;
+    Result:= v.fields.item[0].value;
+    v.Close;
+    objctx.SetComplete;
+  except
+    Result:= 'Not Found';
+    objctx.SetAbort;
+  end;
+end;
+
+function THotelRoom.findRoomProperty(
+  const hotelID: WideString): OleVariant;
+var
+  mssql: IMSSQL2K_Hotel;
+  v: OleVariant;
+  sSQL: WideString;
+begin
+  mssql:= CoMSSQL2K_Hotel.Create;
+  sSQL:= 'select distinct PRICEPERDAY,DESCRIPTION,NUMBEROFSINGLEBED,'+
+         'NUMBEROFCOUPLEBED,NUMBEROFMAXIMUMGUEST,ROOMCLASS from ROOM where '+
+         ' HOTELID = '''+HotelID+''' order by PRICEPERDAY ';
+  try
+    v:= mssql.Query(sSQL);
+    Result:= v;
+  except
+
+  end;
+end;
+
+initialization
+  TAutoObjectFactory.Create(ComServer, THotelRoom, Class_HotelRoom,
+    ciMultiInstance, tmBoth);
+end.

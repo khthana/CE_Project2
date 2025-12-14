@@ -1,0 +1,120 @@
+
+//Title:        TextEditor
+//Version:      
+//Copyright:    Copyright (c) 1999
+//Author:       T.KOMSANT
+//Company:      ICL
+//Description:  TextEditor
+
+package Texteditor;
+
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+import java.util.*;
+import java.io.*;
+
+public class Home extends JFrame {
+  JTextField HomePage = new JTextField();
+  JLabel jLabel1 = new JLabel();
+  JLabel jLabel2 = new JLabel();
+  JButton UseCurr = new JButton();
+  JButton OK = new JButton();
+  JButton Cancel = new JButton();
+  String Curr,setH;
+  FileWriter Home_file;
+
+  public Home(String Url) {
+    try  {
+    Curr=Url;
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void jbInit() throws Exception {
+    HomePage.setText(Curr);
+    HomePage.setBounds(new Rectangle(92, 79, 445, 39));
+    this.setResizable(false);
+    this.setTitle("Set Default Page");
+    this.getContentPane().setLayout(null);
+    jLabel1.setFont(new java.awt.Font("Dialog", 0, 14));
+    jLabel1.setText("You can change which page to use for your Home page ");
+    jLabel1.setBounds(new Rectangle(99, 15, 427, 31));
+    jLabel2.setText("Address :");
+    jLabel2.setBounds(new Rectangle(23, 78, 74, 40));
+    UseCurr.setText("Use Current");
+    UseCurr.setBounds(new Rectangle(207, 145, 159, 35));
+    UseCurr.addActionListener(new Home_UseCurr_actionAdapter(this));
+    OK.setText("OK");
+    OK.setBounds(new Rectangle(159, 219, 113, 35));
+    OK.addActionListener(new Home_OK_actionAdapter(this));
+    Cancel.setText("Cancel");
+    Cancel.setBounds(new Rectangle(304, 220, 117, 35));
+    Cancel.addActionListener(new Home_Cancel_actionAdapter(this));
+    this.getContentPane().add(jLabel2, null);
+    this.getContentPane().add(HomePage, null);
+    this.getContentPane().add(jLabel1, null);
+    this.getContentPane().add(UseCurr, null);
+    this.getContentPane().add(OK, null);
+    this.getContentPane().add(Cancel, null);
+  }
+
+  void UseCurr_actionPerformed(ActionEvent e) {
+    HomePage.setText(Curr);
+  }
+
+  void OK_actionPerformed(ActionEvent e)  {
+     setH=HomePage.getText();
+     try{
+
+      Home_file= new FileWriter("Home.txt");
+      Home_file.write(setH);
+      Home_file.close();
+     }catch(IOException ef){System.out.println("File Error");}
+     this.dispose();
+  }
+
+  void Cancel_actionPerformed(ActionEvent e) {
+      setH=Curr;
+     this.dispose();
+  }
+}
+
+class Home_UseCurr_actionAdapter implements java.awt.event.ActionListener {
+  Home adaptee;
+
+  Home_UseCurr_actionAdapter(Home adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.UseCurr_actionPerformed(e);
+  }
+}
+
+class Home_OK_actionAdapter implements java.awt.event.ActionListener {
+  Home adaptee;
+
+  Home_OK_actionAdapter(Home adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.OK_actionPerformed(e);
+  }
+}
+
+class Home_Cancel_actionAdapter implements java.awt.event.ActionListener {
+  Home adaptee;
+
+  Home_Cancel_actionAdapter(Home adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.Cancel_actionPerformed(e);
+  }
+}

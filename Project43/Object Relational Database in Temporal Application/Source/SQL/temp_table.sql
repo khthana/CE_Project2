@@ -1,0 +1,14 @@
+create table result_rowchar (a int);
+create table lab_list (a int);
+create table cost_list (a int);
+create table single_int (a int);
+create table tmp_patience (a int);
+create table result (a int);
+create table usedtosleep (a int);
+create table bill (a int);
+create table pat_name (a int);
+create table set_table (a int);
+create table hisroom (a int);
+create table matchRoom (a int);
+create table roomlist (a int);
+create table distinctroom (a int);

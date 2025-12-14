@@ -1,0 +1,142 @@
+#!/bin/sh
+
+check_retrieve_result()
+{
+
+# returns:
+#   0 -- all OK
+#   1 -- file there, but 0 or otherwise wrong size
+#   2 -- retrieve command "succeeded" but no file
+#   3 -- retrieve command failed explicitly
+
+if [ $? -ne 0 ]; then
+   return 3
+fi
+
+if [ ! -f $LOCAL_FN ]; then
+  echo "file $LOCAL_FN not found"
+  return 2
+fi
+
+FILE_BYTE_COUNT=`wc -c $LOCAL_FN | awk '{print $1}'`
+
+if [ $FILE_BYTE_COUNT = 0 ]; then
+  echo "file $LOCAL_FN contains 0 bytes"
+  return 1
+fi
+
+if [ "$EXPECTED_BYTE_COUNT" != "" ]; then
+ if [ "$EXPECTED_BYTE_COUNT" != "$FILE_BYTE_COUNT" ]; then
+  echo "file $FN was expected to have $EXPECTED_BYTE_COUNT bytes, not $FILE_BYTE_COUNT"
+  return 1
+ fi
+fi
+
+return 0
+}
+
+
+found_one=0
+URL=$1
+PROXY=$2
+LOCAL_FN=$3
+USER=$4
+PW=$5
+EXPECTED_BYTE_COUNT=$6
+FN=`basename $URL`
+
+if [ -f $CAIGLBL0000/ino/bin/wget ]; then
+  wlog=/tmp/ftpdownload.log
+  found_one=1
+  i=0
+  if [ "$PROXY" = "NOPROXY" ]; then
+     unset ftp_proxy
+  else
+     export ftp_proxy=$PROXY
+  fi
+  while [ true ]
+  do
+    $CAIGLBL0000/ino/bin/wget $URL -O $LOCAL_FN > $wlog 2>&1
+    check_retrieve_result
+    rc=$?
+    if [ $rc = 0 ]; then
+       rm -f $wlog
+       exit 0
+    else if [ $rc = 1 ]; then
+       echo "Unexpected byte count retrieving $FN using wget, trying lynx..."
+       break
+    else if [ $rc = 2 ]; then
+       echo "Could not retrieve $FN using wget, trying lynx..."
+       break
+    else 
+       egrep "ERROR 502: Proxy Error|ERROR 504: Proxy Error" $wlog > /dev/null
+       if [ $? = 0 ]; then
+          i=`expr $i + 1`
+          if [ $i -le 5 ]; then
+             echo "Could not retrieve $FN using wget, retrying..."
+             sleep 1
+             continue
+          fi
+          echo "Could not retrieve $FN using wget, trying lynx..."
+          break
+       fi
+       break
+    fi
+    fi
+    fi
+  done
+fi
+rm -f $wlog
+rm -f ./$LOCAL_FN
+
+if [ -f /usr/bin/lynx ]; then
+  found_one=1
+  lynx -dump $URL > ./$LOCAL_FN
+  check_retrieve_result
+  rc=$?
+  if [ $rc = 0 ]; then
+     exit 0
+  else if [ $rc = 1 ]; then
+     echo "Unexpected byte count retrieving $FN using lynx, trying ftp..."
+  else
+     echo "Could not retrieve $FN using lynx, trying ftp..."
+  fi
+  rm -f ./$LOCAL_FN
+  fi
+fi
+
+
+if [ -f /usr/bin/ftp ]; then
+  found_one=1
+
+  SITE=`echo "$URL" | cut -f3 -d/`
+  DIR=`echo "$URL" | cut -f4- -d/`
+  DIR=`dirname $DIR`
+
+  ftp -n $SITE << EOF
+  user $USER $PW 
+  binary
+  cd $DIR
+  get $FN $LOCAL_FN
+  quit
+EOF
+
+  check_retrieve_result
+  rc=$?
+  if [ $rc = 0 ]; then
+     exit 0
+  else if [ $rc = 1 ]; then
+     echo "Unexpected byte count retrieving $FN using ftp"
+  else
+     echo "Could not retrieve $FN using ftp"
+  fi
+  rm -f ./$LOCAL_FN
+  fi
+  exit 1
+fi
+
+if [ found_one -eq 0 ]; then
+   echo "Could not find any program for downloading $FN"
+fi
+
+exit 1

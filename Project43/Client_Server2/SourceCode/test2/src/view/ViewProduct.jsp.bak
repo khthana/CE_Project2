@@ -1,0 +1,154 @@
+<html>
+<head>
+<jsp:useBean id="ViewProductBeanId" scope="session" class="view.ViewProductBean" />
+<jsp:setProperty name="ViewProductBeanId" property="*" />
+<title>view product</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000">
+<form name="form1" action="PurchaseServletAlias" method="get">
+  <p><b><font color="#0099FF" size="6" face="Comic Sans MS">View</font></b></p>
+<%!
+    Vector[][] result;
+    HttpSession session;
+    base.BaseAttribute baseAttribute;
+    blueprint.Blueprint blueprint;
+    Vector blueprintOfCategory;
+    String category;
+    Vector attributeOfProduct;
+    String[][] sortResult;
+    quote.Quote quote;
+    String userType;
+%>
+<%
+    baseAttribute = base.BaseAttribute.getBaseAttribute();
+    session = request.getSession(true);
+    result = (Vector[][])session.getValue("result");
+    quote = (quote.Quote)session.getValue("quote");
+    if (quote!=null) {
+      userType = quote.getUserType();
+    }
+
+    for (int i=0; i<result.length; i++) {
+      System.out.println("result of "+(String)result[i][0].elementAt(0)+" have size "+result[i][1].size());
+      if (result[i][1].size()!=0) {
+        category = (String)result[i][0].elementAt(0);
+        attributeOfProduct = baseAttribute.getAttribOfProduct(category);
+        blueprintOfCategory = result[i][1];
+        Object obj = result[i][1].elementAt(0);
+        blueprint = (blueprint.Blueprint)obj;
+        sortResult = blueprint.sortAttribute(attributeOfProduct);
+        boolean printHead=true;
+
+        for (int count=0; count<blueprintOfCategory.size(); count++) {
+          blueprint = (blueprint.Blueprint)result[i][1].elementAt(count);
+          sortResult = blueprint.sortAttribute(attributeOfProduct);
+          if (sortResult[23][1].equals("no")){
+            if (quote==null || (userType!=null && userType.equals("Customer"))) {
+                continue;
+            }
+          }
+          if (printHead) {
+            printHead = false;
+            out.println("<br>"+"<b>"+"<font color=\"#0099FF\" size=\"4\" face=\"Comic Sans MS\">"+category+"</font>"+"</b>");
+            out.println("<table width=\"75%\" border=\"1\">");
+            out.println("<tr bgcolor=\"#FFFFCC\">");
+            if (quote!=null) {
+              ViewProductBeanId.setQuote(quote);
+              out.println("<td><b><font color=\"#0099FF\" size=\"2\" face=\"Comic Sans MS\"></font></b></td>");
+            out.println("<td><b><font color=\"#0099FF\" size=\"2\" face=\"Comic Sans MS\">buy quantity</font></b></td>");
+            }
+            for (int a=0; a<sortResult.length; a++) {
+              if (sortResult[a][2].equals("true")) {
+                if (quote==null || (userType!=null && userType.equals("Customer"))) {
+                  if (a>17 && a!=20) continue;
+                }
+                out.println("<td><b><font color=\"#0099FF\" size=\"2\" face=\"Comic Sans MS\">"+sortResult[a][0]+"</font></b></td>");
+              }
+            }
+	    out.println("<td><b><font color=\"#0099FF\" size=\"2\" face=\"Comic Sans MS\">"+"Available"+"</font></b></td>");
+            out.println("</tr>");
+          }
+          out.println("<tr>");
+          if (quote!=null) {
+          if (sortResult[23][1].equals("yes")) {
+          System.out.println("sortResult[0][1]"+sortResult[0][1]);
+            out.print("<td><font size=\"2\">"+
+                "<input type=\"checkbox\" name=\"checkbox"+
+                sortResult[0][1]+"\" value=\""+
+                sortResult[0][1]+"\" ");
+                boolean check = quote.findProduct(sortResult[0][1]);
+                if (check) out.print("checked");
+                out.println("> "+"</font></td>");
+            out.print("<td><font size=\"2\">"+
+                "<input type=\"text\" name=\"quantity"+
+                sortResult[0][1]+"\" size=\"3\" value=\"");
+                if (check) out.print(quote.getQuantityOfProduct(sortResult[0][1]));
+                out.print("\" > "+"</font>");
+                out.print("<input type=\"hidden\" name=\"category"+sortResult[0][1]+"\" value=\""+sortResult[1][1]+"\">   ");
+                out.println("</td>");
+          } else { out.println("<td></td><td></td>"); }
+          }
+	  int q = 0;
+	  int l = 0;
+          for (int a=0; a<sortResult.length; a++) {
+            if (sortResult[a][2].equals("true")) {
+              if (a==18) {q=Integer.valueOf(sortResult[18][1]).intValue();}
+	      if (a==22) {l=Integer.valueOf(sortResult[22][1]).intValue();}
+	      if (quote==null || (userType!=null && userType.equals("Customer"))) {
+                if (a>17 && a!=20) continue;
+              }
+              if (a==0) {
+                out.print("<td><font size=\"2\"><a href=\"http://161.246.6.111:8000/product/ViewProduct2.jsp?productId="+
+                          sortResult[a][1]+"&firstAccess=true\">"+sortResult[a][1]+"</a></font>");
+              } else {
+	        out.print("<td><font size=\"2\">"+sortResult[a][1]);
+	      }
+              out.println("</font></td>");
+            }
+          }
+	  out.print("<td><font size=\"2\">"+(q-l)+"</font></td>");
+          out.println("</tr>");
+        } out.println("</table>");
+      }
+    }
+%>
+  <input type="hidden" name="action" value="Update Basket">
+  <p>&nbsp;</p>
+  <table width="75%" border="0">
+<%  if (quote != null ) { %>
+    <tr>
+      <td align="right">
+        <input type="submit" name="Submit" value="Update Basket">
+      </td>
+      <td>&nbsp;</td>
+      <td>
+        <input type="reset" name="Submit2" value="Reset">
+      </td>
+      <td>
+        <input type="submit" name="Submit" value="Buy">
+      </td>
+    </tr>
+<% } %>
+  </table>
+  <p>&nbsp;</p>
+</form>
+<%  if (quote == null ) { %>
+  <table width="75%" border="0">
+    <tr>
+      <td align="right">
+      <form name="form3" method="post" action="SearchProductJSP.jsp">
+        <input type="submit" name="Submit" value="Search Again">
+      </form>
+      </td>
+      <td>&nbsp;</td>
+      <td>
+      <form name="form3" method="post" action="Login.jsp">
+        <input type="submit" name="Submit" value="Login">
+      </form>
+      </td>
+    </tr>
+  </table>
+<% } %>
+</body>
+</html>

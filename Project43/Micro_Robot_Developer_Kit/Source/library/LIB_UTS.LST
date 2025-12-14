@@ -1,0 +1,158 @@
+C51 COMPILER V3.20,  SN-50203013  LIB_UTS                                                  05/20/01  01:43:52  PAGE 1   
+
+
+DOS C51 COMPILER V3.20, COMPILATION OF MODULE LIB_UTS
+OBJECT MODULE PLACED IN LIB_UTS.OBJ
+COMPILER INVOKED BY: C:\C51\BIN\C51.EXE LIB_UTS.C
+
+stmt level    source
+
+   1          #ifndef	_INCLUDED
+   2          #define _INCLUDED 1
+   3          #include "c:\c51\bin\library\lib_i2c.c"
+   4          #endif
+   5          
+   6          #define		L_ULTRASONIC		0x06
+   7          //interrupt 2
+   8          
+   9          unsigned char	ultrasonic_01 = 0;
+  10          unsigned char	ultrasonic_02 = 0;
+  11          
+  12          void US_get_data(void)
+  13          {
+  14   1      	if (ACK)
+  15   1      	{
+  16   2      		countdown = 0;
+  17   2      		INT_2 = 0;
+  18   2      		ACK = 1;
+  19   2      		while (ACK && (countdown < L_TIMEOUT)) {countdown++;}
+  20   2      		if (countdown < L_TIMEOUT)
+  21   2      		{
+  22   3      			WriteI2C(L_ULTRASONIC,0x01);
+  23   3      			ultrasonic_01 = I2CReceiveDataByte();
+  24   3      			ultrasonic_02 = I2CReceiveDataByte();
+  25   3      			INT_2 = 1;
+  26   3      			while (!ACK) {}
+  27   3      		}
+  28   2      		else INT_2 = 1;
+  29   2      	}
+  30   1      }
+  31          
+  32          unsigned char US_get_data01(void)
+  33          {
+  34   1      	unsigned char left = 0;
+  35   1      	if (ACK)
+  36   1      	{
+  37   2      		countdown = 0;
+  38   2      		INT_2 = 0;
+  39   2      		ACK = 1;
+  40   2      		while (ACK && (countdown < L_TIMEOUT)) {countdown++;}
+  41   2      		if (countdown < L_TIMEOUT)
+  42   2      		{
+  43   3      			WriteI2C(L_ULTRASONIC,0x02);
+  44   3      			left = I2CReceiveDataByte();
+  45   3      			INT_2 = 1;
+  46   3      			while (!ACK) {}
+  47   3      		}
+  48   2      		else INT_2 = 1;
+  49   2      	}
+  50   1      	return left;
+  51   1      }
+  52          
+  53          unsigned char US_get_data02(void)
+  54          {
+  55   1      	unsigned char right = 0;
+C51 COMPILER V3.20,  SN-50203013  LIB_UTS                                                  05/20/01  01:43:52  PAGE 2   
+
+  56   1      	if (ACK)
+  57   1      	{
+  58   2      		countdown = 0;
+  59   2      		INT_2 = 0;
+  60   2      		ACK = 1;
+  61   2      		while (ACK && (countdown < L_TIMEOUT)) {countdown++;}
+  62   2      		if (countdown < L_TIMEOUT)
+  63   2      		{
+  64   3      			WriteI2C(L_ULTRASONIC,0x03);
+  65   3      			right = I2CReceiveDataByte();
+  66   3      			INT_2 = 1;
+  67   3      			while (!ACK) {}
+  68   3      		}
+  69   2      		else INT_2 = 1;
+  70   2      	}
+  71   1      	return right;
+  72   1      }
+  73          
+  74          void US_get_sample(void)
+  75          {
+  76   1      	unsigned char temp = 0;
+  77   1      	if (ACK)
+  78   1      	{
+  79   2      		countdown = 0;
+  80   2      		INT_2 = 0;
+  81   2      		ACK = 1;
+  82   2      		while (ACK && (countdown < L_TIMEOUT)) {countdown++;}
+  83   2      		if (countdown < L_TIMEOUT)
+  84   2      		{
+  85   3      			WriteI2C(L_ULTRASONIC,L_ADDRESS);
+  86   3      			ultrasonic_01 = I2CReceiveDataByte();
+  87   3      			ultrasonic_02 = I2CReceiveDataByte();
+  88   3      			
+  89   3      			INT_2 = 1;
+  90   3      			while (!ACK) {}
+  91   3      		}
+  92   2      		else INT_2 = 1;
+  93   2      	}
+  94   1      }
+  95          
+  96          void US_enable_interrupt(void)
+  97          {
+  98   1      	if (ACK)
+  99   1      	{
+ 100   2      		countdown = 0;
+ 101   2      		INT_2 = 0;
+ 102   2      		ACK = 1;
+ 103   2      		while (ACK && (countdown < L_TIMEOUT)) {countdown++;}
+ 104   2      		if (countdown < L_TIMEOUT)
+ 105   2      		{
+ 106   3      			WriteI2C(L_ULTRASONIC,0x11);
+ 107   3      			//delay(10,10);
+ 108   3      			INT_2 = 1;
+ 109   3      			while (!ACK) {}
+ 110   3      		}
+ 111   2      		else INT_2 = 1;
+ 112   2      	}
+ 113   1      }
+ 114          
+ 115          void US_disable_interrupt(void)
+ 116          {
+ 117   1      	if (ACK)
+C51 COMPILER V3.20,  SN-50203013  LIB_UTS                                                  05/20/01  01:43:52  PAGE 3   
+
+ 118   1      	{
+ 119   2      		countdown = 0;
+ 120   2      		INT_2 = 0;
+ 121   2      		ACK = 1;
+ 122   2      		while (ACK && (countdown < L_TIMEOUT)) {countdown++;}
+ 123   2      		if (countdown < L_TIMEOUT)
+ 124   2      		{
+ 125   3      			WriteI2C(L_ULTRASONIC,0x12);
+ 126   3      			INT_2 = 1;
+ 127   3      			while (!ACK) {}
+ 128   3      		}
+ 129   2      		else INT_2 = 1;
+ 130   2      	}
+ 131   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    602    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      5       3
+   IDATA SIZE       =      2    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

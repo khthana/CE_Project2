@@ -1,0 +1,112 @@
+CREATE USER CHIT IDENTIFIED BY CHIT941;
+GRANT DBA TO CHIT;
+
+CREATE TABLE userTB ( 
+	username VARCHAR(10) PRIMARY KEY,
+	password VARCHAR(10),
+	COUNT INT NOT NULL,
+	constraint pk_TABLE primary key (username,password),
+	primary key (username,password),
+	foreign key (productID) references productTB(productID)
+);
+
+INSERT INTO USERTB (USERNAME,PASSWORD) VALUES ('MR.A','AAA');
+INSERT INTO USERTB (USERNAME,PASSWORD) VALUES ('MR.B','BBB');
+
+DROP TABLE USERTB;
+
+
+
+create table customerTB (
+	customerID varchar(20) primary key,
+	name varchar(20),
+	no varchar(20),
+	soi varchar(20),
+	street varchar(20),
+	district varchar(20),
+	provice varchar(20),
+	country varchar(20),
+	area_code varchar(20),
+	tel varchar(20),
+	fax varchar(20),
+	email varchar(20),
+	id_credit varchar(20),
+	user_type varchar(20)
+);
+
+create table loginTB (
+	username varchar(20) primary key,
+	password varchar(20) not null,
+	foreign key (customerID) references customerTB(customerID)
+);
+
+//*****************************************************************//
+drop table attributeOfcat;
+drop table buytb;
+drop table notebooktb;
+drop table producttb;
+drop table customertb;
+create table customerTB (
+	username varchar(20) primary key,
+	password varchar(20) not null,
+	name varchar(20) not null,
+	no varchar(20) not null,
+	soi varchar(20),
+	street varchar(20) not null,
+	district varchar(20),
+	province varchar(20) not null,
+	country varchar(20) not null,
+	area_code varchar(20) not null,
+	tel varchar(20),
+	fax varchar(20),
+	email varchar(20),
+	credit_ID varchar(20) not null,
+	user_type varchar(20)
+);
+create table productTB (
+	product_id varchar(20) primary key,
+	category varchar(20) not null,
+	brand varchar(20),
+	type varchar(20),
+	model varchar(20),
+	bus varchar(20),
+	interface varchar(20),
+	chipset varchar(20),
+	speed varchar(20),
+	capacity varchar(20),
+	more varchar(255),
+	quantity number,
+	last_receive_date varchar(20),
+	price varchar(20),
+	sell_now varchar(20)
+);
+create table buyTB (
+	username varchar(20),
+	product_id varchar(20),
+	sell_quantity number,
+	total_price number,
+	sell_date varchar(20),
+	receipt_no varchar(20),
+	foreign key (username) references customerTB (username),
+	foreign key (product_id) references productTB (product_id),
+	primary key (username,product_id)
+);
+create table notebookTB (
+	product_id varchar(20),
+	cpu varchar(20),
+	ram varchar(20),
+	hdd varchar(20),
+	cd_rom varchar(20),
+	fdd varchar(20),
+	display varchar(20),
+	fax_modem varchar(20),
+	foreign key (product_id) references productTB (product_id),
+	primary key (product_id)
+);
+create table attributeOfCat (
+	category varchar(20),
+	attribute varchar(20),
+	use varchar(20),
+	primary key (category,attribute)
+);
+

@@ -1,0 +1,336 @@
+unit AdminManager_Source;
+
+interface
+
+uses
+  ActiveX, MtsObj, ComObj, UserSystem_TLB, OlalaTourDBConnector_TLB,
+    StdVcl, COMSVCSLib_TLB, ADODB_TLB, Dialogs, Windows, SysUtils;
+type
+  TAdminManager = class(TMtsAutoObject, IAdminManager, IObjectControl)
+  protected
+    function Authenticate(const LoginName, Password: WideString): WideString;
+      safecall;
+    function Create(const LoginName, FirstName, LastName, Address, TelephoneNo,
+      EmailAddress: WideString; Gender: Smallint; const BirthDate,
+      Religion, Password: WideString): WideString; safecall;
+    function QueryData(const LoginNameKeyword, FirstNameKeyword,
+      LastNameKeyword, AddressKeyword, TelephoneNoKeyword,
+      EmailAddressKeyword, GenderKeyword, BirthDateKeyword,
+      ReligionKeyword: WideString): OleVariant; safecall;
+    function ViewProfile(const AdminID: WideString): OleVariant; safecall;
+    procedure Modify(const AdminID, LoginName, FirstName, LastName, Address,
+      TelephoneNo, EmailAddress: WideString; Gender: Smallint;
+      const BirthDate, Religion, Password: WideString); safecall;
+    function GetLoginName(const AdminID: WideString): WideString; safecall;
+    procedure Remove(const AdminID: WideString); safecall;
+    { Protected declarations }
+
+    // IObjectControl Methods Definition
+    function Activate: HRESULT; stdcall;
+    function CanBePooled: Longint; stdcall;
+    procedure Deactivate; stdcall;
+
+
+  private
+    // Private Fields
+    objctx : ObjectContext;
+
+    // Private Methods
+    function IsExist(LoginName : WideString): BOOL;
+  end;
+
+implementation
+
+uses ComServ;
+
+////////////////// IObjectControl Methods Implementation ///////////////////////
+function TAdminManager.Activate: HRESULT;
+var
+  imtx : IMTxAS;
+begin
+  try
+    imtx := CoAppServer.Create;
+    objctx := imtx.GetObjectContext;
+    if objctx = nil then
+    begin
+      ShowMessage('objctx = nil');
+      Result := 0;
+    end
+    else
+      Result := S_OK;
+  except
+    ShowMessage('Error on TMSSQL2K_OlalaTour_Connect.Activate');
+    Result := 0;
+  end;
+end;
+
+function TAdminManager.CanBePooled: Longint;
+begin
+  Result := 1;
+end;
+
+procedure TAdminManager.Deactivate;
+begin
+  objctx := nil;
+end;
+
+//////////////////// TAdminManager Methods Implementation /////////////////////
+
+function TAdminManager.Authenticate(const LoginName,
+  Password: WideString): WideString;
+var
+  dbConnection : IOlalaTourDBConnector;
+  OleVar : OleVariant;
+  SQLCmd : WideString;
+begin
+  dbConnection := CoOlalaTourDBConnector_.Create;
+
+  SQLCmd := 'SELECT AdminID FROM Admin WHERE LoginName = ''' + LoginName +
+    ''' AND Password = ''' + Password + '''';
+
+  OleVar := dbConnection.QueryCmd(SQLCmd);
+  if OleVar.EOF then
+    Result := 'Not Found'
+  else
+    Result := VarToStr(OleVar.Fields.Item[0].Value);
+  OleVar.Close;
+end;
+
+function TAdminManager.Create(const LoginName, FirstName, LastName,
+  Address, TelephoneNo, EmailAddress: WideString; Gender: Smallint;
+  const BirthDate, Religion, Password: WideString): WideString;
+var
+  dbConnection : IOlalaTourDBConnector;
+  SQLCmd, StrGuid : WideString;
+  Guid : TGuid;
+begin
+  if Not IsExist(LoginName) then
+  begin
+    try
+    CoCreateGuid(Guid);
+    StrGuid := GUIDToString(Guid);
+    dbConnection := CoOlalaTourDBConnector_.Create;
+    SQLCmd := 'INSERT INTO Admin ' +
+              'VALUES (''' + StrGuid + ''',''' +
+              LoginName + ''', ''' +
+              FirstName + ''', ''' +
+              LastName + ''', ''' +
+              Address + ''', ''' +
+              TelephoneNo + ''', ''' +
+              EmailAddress + ''', ' +
+              IntToStr(Gender) + ', ''' +
+              BirthDate + ''', ''' +
+              Religion + ''', ''' +
+              Password + ''')';
+    //ShowMessage(SQLCmd);
+    dbConnection.ExecSQLCmd(SQLCmd);
+    Result := StrGuid;
+    objctx.SetComplete;
+    //ShowMessage('SetComplete');
+    except
+      Result := '';
+      objctx.SetAbort;
+      //ShowMessage('SetAbort');
+    end;
+  end
+  else
+    Result := '';
+end;
+
+function TAdminManager.QueryData(const LoginNameKeyword, FirstNameKeyword,
+  LastNameKeyword, AddressKeyword, TelephoneNoKeyword, EmailAddressKeyword,
+  GenderKeyword, BirthDateKeyword,
+  ReligionKeyword: WideString): OleVariant;
+var
+  dbConnection : IOlalaTourDBConnector;
+  SQLCmd, StrCond : WideString;
+begin
+  dbConnection := CoOlalaTourDBConnector_.Create;
+  StrCond := '';
+  if LoginNameKeyword <> '' then StrCond := StrCond + ' LoginName LIKE ''%'
+    + LoginNameKeyword + '%''';
+  if FirstNameKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' FirstName LIKE ''%' + FirstNameKeyword + '%''';
+  end;
+  if LastNameKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' LastName LIKE ''%' + LastNameKeyword + '%''';
+  end;
+  if AddressKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' Address LIKE ''%' + AddressKeyword + '%''';
+  end;
+  if TelephoneNoKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' TelephoneNo LIKE ''%' + TelephoneNoKeyword + '%''';
+  end;
+  if EmailAddressKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' EmailAddress LIKE ''%' + EmailAddressKeyword + '%''';
+  end;
+  if GenderKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' Gender = ' + GenderKeyword + ' ';
+  end;
+  if BirthDateKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' BirthDate LLKE ''%' + BirthDateKeyword + '%''';
+  end;
+  if ReligionKeyword <> '' then
+  begin
+    if StrCond <> '' then StrCond := StrCond + ' AND ';
+    StrCond := StrCond + ' Religion LIKE ''%' + ReligionKeyword + '%''';
+  end;
+
+  if StrCond <> '' then StrCond := ' WHERE ' + StrCond ;
+
+  SQLCmd := 'SELECT AdminID FROM Admin ' + StrCond;
+  //ShowMessage(SQLCmd);
+  Result := dbConnection.QueryCmd(SQLCmd);
+end;
+
+function TAdminManager.ViewProfile(const AdminID: WideString): OleVariant;
+var
+  dbConnection : IOlalaTourDBConnector;
+  SQLCmd : WideString;
+begin
+  dbConnection := CoOlalaTourDBConnector_.Create;
+  SQLCmd := 'SELECT * FROM Admin WHERE AdminID = ''' + AdminID + '''';
+  Result := dbConnection.QueryCmd(SQLCmd);
+end;
+
+procedure TAdminManager.Modify(const AdminID, LoginName, FirstName,
+  LastName, Address, TelephoneNo, EmailAddress: WideString;
+  Gender: Smallint; const BirthDate, Religion, Password: WideString);
+var
+  dbConnection : IOlalaTourDBConnector;
+  SQLCmd, StrUpdate : WideString;
+begin
+  dbConnection := CoOlalaTourDBConnector_.Create;
+  StrUpdate := '';
+  if LoginName <> '' then StrUpdate := StrUpdate + ' LoginName = ''' + LoginName + '''';
+  if FirstName <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' FirstName = ''' + FirstName + '''';
+  end;
+  if LastName <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' LastName = ''' + LastName + '''';
+  end;
+  if Address <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' Address = ''' + Address + '''';
+  end;
+  if TelephoneNo <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' TelephoneNo = ''' + TelephoneNo + '''';
+  end;
+  if EmailAddress <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+   StrUpdate := StrUpdate + ' EmailAddress = ''' + EmailAddress + '''';
+  end;
+  if Gender <> 0  then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' Gender = ' + IntToStr(Gender) + ' ';
+  end;
+  if BirthDate <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' BirthDate = ''' + BirthDate + '''';
+  end;
+  if Religion <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' Religion = ''' + Religion + '''';
+  end;
+  if Password <> '' then
+  begin
+    if StrUpdate <> '' then StrUpdate := StrUpdate + ',';
+    StrUpdate := StrUpdate + ' Password = ''' + Password + '''';
+  end;
+
+  if StrUpdate <> '' then
+  begin
+    StrUpdate := ' Set ' + StrUpdate;
+    SQLCmd := 'UPDATE Admin' + StrUpdate +
+      ' WHERE AdminID = ''' + AdminID + '''' ;
+    try
+      //ShowMessage(SQLCmd);
+      dbConnection.ExecSQLCmd(SQLCmd);
+      objctx.SetComplete;
+    except
+      objctx.SetAbort;
+    end;
+  end;
+end;
+
+function TAdminManager.IsExist(LoginName: WideString): BOOL;
+var
+  dbConnection : IOlalaTourDBConnector;
+  SQLCmd : WideString;
+  OleVar : OleVariant;
+begin
+  dbConnection := CoOlalaTourDBConnector_.Create;
+  SQLCmd := 'SELECT * FROM Admin WHERE LoginName = ''' + LoginName + '''';
+  OleVar := dbConnection.QueryCmd(SQLCmd);
+  if OleVar.EOF then
+    Result := False
+  else
+    Result := True;
+end;
+
+function TAdminManager.GetLoginName(const AdminID: WideString): WideString;
+var
+  dbConnection : IOlalaTourDBConnector;
+  SQLCmd : WideString;
+  Olevar : OleVariant;
+begin
+  if AdminID <> '' then
+  begin
+    dbConnection := CoOlalaTourDBConnector_.Create;
+    SQLCmd := 'SELECT LoginName FROM Admin WHERE AdminID = ''' +
+      AdminID + '''';
+    Olevar := dbConnection.QueryCmd(SQLCmd);
+    if not Olevar.EOF then
+      Result := Olevar.Fields.Item[0].Value
+    else
+      Result := '';
+    Olevar.Close;
+  end
+  else
+    Result := '';
+end;
+
+procedure TAdminManager.Remove(const AdminID: WideString);
+var
+  dbConnection : IOlalaTourDBConnector;
+  SQLCmd : WideString;
+begin
+  dbConnection := CoOlalaTourDBConnector_.Create;
+  SQLCmd := 'DELETE FROM Admin WHERE AdminID = ''' + AdminID + '''';
+  try
+    dbConnection.ExecSQLCmd(SQLCmd);
+    objctx.SetComplete;
+  except
+    objctx.SetAbort;
+  end;
+end;
+
+initialization
+  TAutoObjectFactory.Create(ComServer, TAdminManager, Class_AdminManager,
+    ciMultiInstance, tmBoth);
+end.

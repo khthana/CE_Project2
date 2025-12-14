@@ -1,0 +1,233 @@
+C51 COMPILER V3.20,  SN-50203013  LIB_MTR                                                  05/20/01  01:43:19  PAGE 1   
+
+
+DOS C51 COMPILER V3.20, COMPILATION OF MODULE LIB_MTR
+OBJECT MODULE PLACED IN LIB_MTR.OBJ
+COMPILER INVOKED BY: C:\C51\BIN\C51.EXE LIB_MTR.C
+
+stmt level    source
+
+   1          #ifndef	_INCLUDED
+   2          #define _INCLUDED 1
+   3          #include "c:\c51\bin\library\lib_i2c.c"
+   4          #endif
+   5          
+   6          #define		L_GEN_MOTOR			0x02
+   7          //interrupt 0
+   8          #define		L_DC_MOTOR			0x02
+   9          //interrupt 0
+  10          #define		L_STEPPING_MOTOR	0x02
+  11          //interrupt 0
+  12          #define		L_SERVO				0x02
+  13          //interrupt 0
+  14          ////////////////////////////////////////////////////////////////////
+  15          //		General Routine for every module
+  16          ////////////////////////////////////////////////////////////////////
+  17          void MT_go_forward()
+  18          {
+  19   1      	if (ACK)
+  20   1      	{
+  21   2      		countdown = 0;
+  22   2      		INT_0 = 0;
+  23   2      		ACK = 1;
+  24   2      		while (ACK && (countdown < L_TIMEOUT)) {countdown++;}
+  25   2      		if (countdown < L_TIMEOUT)
+  26   2      		{
+  27   3      			WriteI2C(L_GEN_MOTOR,0x01);
+  28   3      			//delay(10,10);
+  29   3      			INT_0 = 1;
+  30   3      			while (!ACK) {}
+  31   3      		}
+  32   2      		else INT_0 = 1;
+  33   2      	}
+  34   1      }
+  35          
+  36          void MT_go_backward()
+  37          {
+  38   1      	if (ACK)
+  39   1      	{
+  40   2      		countdown = 0;
+  41   2      		INT_0 = 0;
+  42   2      		ACK = 1;
+  43   2      		while (ACK && (countdown < L_TIMEOUT)) {countdown++;}
+  44   2      		if (countdown < L_TIMEOUT)
+  45   2      		{
+  46   3      			WriteI2C(L_GEN_MOTOR,0x02);
+  47   3      			//delay(10,10);
+  48   3      			INT_0 = 1;
+  49   3      			while (!ACK) {}
+  50   3      		}
+  51   2      		else INT_0 = 1;
+  52   2      	}
+  53   1      }
+  54          
+  55          void MT_turn_left()
+C51 COMPILER V3.20,  SN-50203013  LIB_MTR                                                  05/20/01  01:43:19  PAGE 2   
+
+  56          {
+  57   1      	if (ACK)
+  58   1      	{
+  59   2      		countdown = 0;
+  60   2      		INT_0 = 0;
+  61   2      		ACK = 1;
+  62   2      		while (ACK && (countdown < L_TIMEOUT)) {countdown++;}
+  63   2      		if (countdown < L_TIMEOUT)
+  64   2      		{
+  65   3      			WriteI2C(L_GEN_MOTOR,0x03);
+  66   3      			//delay(10,10);
+  67   3      			INT_0 = 1;
+  68   3      			while (!ACK) {}
+  69   3      		}
+  70   2      		else INT_0 = 1;
+  71   2      	}
+  72   1      }
+  73          
+  74          void MT_turn_right()
+  75          {
+  76   1      	if (ACK)
+  77   1      	{
+  78   2      		countdown = 0;
+  79   2      		INT_0 = 0;
+  80   2      		ACK = 1;
+  81   2      		while (ACK && (countdown < L_TIMEOUT)) {countdown++;}
+  82   2      		if (countdown < L_TIMEOUT)
+  83   2      		{
+  84   3      			WriteI2C(L_GEN_MOTOR,0x04);
+  85   3      			//delay(10,10);
+  86   3      			INT_0 = 1;
+  87   3      			while (!ACK) {}
+  88   3      		}
+  89   2      		else INT_0 = 1;
+  90   2      	}
+  91   1      }
+  92          
+  93          void MT_stop_move()
+  94          {
+  95   1      	if (ACK)
+  96   1      	{
+  97   2      		countdown = 0;
+  98   2      		INT_0 = 0;
+  99   2      		ACK = 1;
+ 100   2      		while (ACK && (countdown < L_TIMEOUT)) {countdown++;}
+ 101   2      		if (countdown < L_TIMEOUT)
+ 102   2      		{
+ 103   3      			WriteI2C(L_GEN_MOTOR,0x05);
+ 104   3      			//delay(10,10);
+ 105   3      			INT_0 = 1;
+ 106   3      			while (!ACK) {}
+ 107   3      		}
+ 108   2      		else INT_0 = 1;
+ 109   2      	}
+ 110   1      }
+ 111          
+ 112          void MT_set_speed(unsigned char speed)
+ 113          {
+ 114   1      	if (ACK)
+ 115   1      	{
+ 116   2      		if (speed > 3)
+ 117   2      		{
+C51 COMPILER V3.20,  SN-50203013  LIB_MTR                                                  05/20/01  01:43:19  PAGE 3   
+
+ 118   3      			speed = 3;
+ 119   3      		}
+ 120   2      		countdown = 0;
+ 121   2      		INT_0 = 0;
+ 122   2      		ACK = 1;
+ 123   2      		while (ACK && (countdown < L_TIMEOUT)) {countdown++;}
+ 124   2      		if (countdown < L_TIMEOUT)
+ 125   2      		{
+ 126   3      			WriteI2C(L_GEN_MOTOR,0x06);
+ 127   3      			delay(10,10);
+ 128   3      			WriteI2C(L_GEN_MOTOR,speed);
+ 129   3      			//delay(10,10);
+ 130   3      			INT_0 = 1;
+ 131   3      			while (!ACK) {}
+ 132   3      		}
+ 133   2      		else INT_0 = 1;
+ 134   2      	}
+ 135   1      }
+ 136          
+ 137          void MT_set_run_time(unsigned int time)
+ 138          {
+ 139   1      	unsigned char time_hi,time_lo;
+ 140   1      	if (ACK)
+ 141   1      	{
+ 142   2      		countdown = 0;
+ 143   2      		INT_0 = 0;
+ 144   2      		ACK = 1;
+ 145   2      		while (ACK && (countdown < L_TIMEOUT)) {countdown++;}
+ 146   2      		if (countdown < L_TIMEOUT)
+ 147   2      		{
+ 148   3      			time_hi = (unsigned char)(time >> 8);
+ 149   3      			time <<= 8;
+ 150   3      			time_lo = (unsigned char)(time >>= 8);
+ 151   3      			WriteI2C(L_GEN_MOTOR,0x07);
+ 152   3      			delay(10,10);
+ 153   3      			WriteI2C(L_GEN_MOTOR,time_hi);
+ 154   3      			delay(10,10);
+ 155   3      			WriteI2C(L_GEN_MOTOR,time_lo);
+ 156   3      			//delay(10,10);
+ 157   3      			INT_0 = 1;
+ 158   3      			while (!ACK) {}
+ 159   3      		}
+ 160   2      		else INT_0 = 1;
+ 161   2      	}
+ 162   1      }
+ 163          
+ 164          void STEPPING_set_single_phase_mode()
+ 165          {
+ 166   1      	if (ACK)
+ 167   1      	{
+ 168   2      		countdown = 0;
+ 169   2      		INT_0 = 0;
+ 170   2      		ACK = 1;
+ 171   2      		while (ACK && (countdown < L_TIMEOUT)) {countdown++;}
+ 172   2      		if (countdown < L_TIMEOUT)
+ 173   2      		{
+ 174   3      			WriteI2C(L_STEPPING_MOTOR,0x08);
+ 175   3      			delay(10,10);
+ 176   3      			WriteI2C(L_STEPPING_MOTOR,1);
+ 177   3      			//delay(10,10);
+ 178   3      			INT_0 = 1;
+ 179   3      			while (!ACK) {};
+C51 COMPILER V3.20,  SN-50203013  LIB_MTR                                                  05/20/01  01:43:19  PAGE 4   
+
+ 180   3      		}
+ 181   2      		else INT_0 = 1;
+ 182   2      	}
+ 183   1      }
+ 184          
+ 185          void STEPPING_set_double_phase_mode()
+ 186          {
+ 187   1      	if (ACK)
+ 188   1      	{
+ 189   2      		countdown = 0;
+ 190   2      		INT_0 = 0;
+ 191   2      		ACK = 1;
+ 192   2      		while (ACK && (countdown < L_TIMEOUT)) {countdown++;}
+ 193   2      		if (countdown < L_TIMEOUT)
+ 194   2      		{
+ 195   3      			WriteI2C(L_STEPPING_MOTOR,0x08);
+ 196   3      			delay(10,10);
+ 197   3      			WriteI2C(L_STEPPING_MOTOR,2);
+ 198   3      			//delay(10,10);
+ 199   3      			INT_0 = 1;
+ 200   3      			while (!ACK) {};
+ 201   3      		}
+ 202   2      		else INT_0 = 1;
+ 203   2      	}
+ 204   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    816    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3       2
+   IDATA SIZE       =      2    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

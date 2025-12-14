@@ -1,0 +1,410 @@
+<HTML>
+<HEAD>
+<jsp:useBean id="editCustomerBeanId" scope="session" class="edit.EditCustomerBean" />
+<% editCustomerBeanId.reset(); %>
+<jsp:setProperty name="editCustomerBeanId" property="*" />
+<TITLE>
+EditCustomer
+</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<%!
+  javax.servlet.http.HttpSession session;
+  quote.Quote quote;
+  String userType;
+  String username;
+  String submit;
+  String error;
+%>
+<%
+  session = request.getSession(true);
+  quote = (quote.Quote)session.getValue("quote");
+  if (quote!=null ) {
+  editCustomerBeanId.putToDB();
+  if (editCustomerBeanId.getFirstAccess()) {
+    customer.Customer customer = quote.getCustomer();
+    userType = quote.getUserType();
+    if (userType.equals("Customer")) {
+      try {
+      username = (String)customer.getPrimaryKey();
+      } catch (Exception ex) {ex.printStackTrace();}
+    } else {
+      username = request.getParameter("username");
+      if (username == null) {
+        username = (String)customer.getPrimaryKey();
+      }
+    }
+    if (username != null)
+    editCustomerBeanId.init(username);
+  }
+    submit = request.getParameter("Submit");
+System.out.println("submit : "+submit);
+    if (submit !=null) {
+      if (submit.equals("Delete")) {
+        response.sendRedirect(response.encodeURL("/product/ViewCustomer2.jsp?username="+username+"&firstAccess=true&Submit=Delete"));
+      } else
+      if (submit.equals("Search")) {
+        String s = request.getParameter("searchUsername");
+        if (editCustomerBeanId.findUsername(s)) {
+System.out.println("meet username in db");
+        response.sendRedirect(response.encodeURL("/product/EditCustomer.jsp?username="+s+"&firstAccess=true"));
+        } else error = "username is not exist";
+      }
+    }
+  String tmpType = editCustomerBeanId.getUserType();
+  System.out.println("userType : "+userType);
+  System.out.println("tmpType : "+tmpType);
+%>
+<form name="changeFrom" method="get" action="EditCustomer.jsp">
+  <p>&nbsp;</p>
+  <p align="left"><font size="+3"><b><font size="6" color="#0099FF" face="Comic Sans MS">Detail</font></b></font></p>
+<% if (!userType.equals("Customer")) { %>
+  <table width="100%" border="0">
+    <tr>
+      <td align="right" width="5%">&nbsp;</td>
+      <td align="right" width="22%"><b>Product ID :</b></td>
+      <td width="75%">
+        <input type="text" name="searchUsername">
+        <input type="submit" name="Submit" value="Search">
+      </td>
+    </tr>
+    <% if (error!=null && !error.equals("")) { %>
+    <tr>
+      <td align="right" width="5%"></td>
+      <td align="right" width="22%"></td>
+      <td width="75%"> <%= error %> </td>
+    </tr>
+    <% error = null;
+   }
+   }
+%>
+  </table>
+  <br>
+  <table width="100%" border="0">
+    <tr>
+      <td width="5%">&nbsp;</td>
+      <td width="22%" bgcolor="#FFCCFF">
+        <div align="right"><b>Username :</b></div>
+      </td>
+      <td width="75%" bgcolor="#FFCCCC">
+        <jsp:getProperty name="editCustomerBeanId" property="username" />
+      </td>
+    </tr>
+    <tr>
+      <% if ((!editCustomerBeanId.getFirstAccess())&&editCustomerBeanId.passwordNull()) {%>
+    <tr>
+      <td width="5%"></td>
+      <td width="22%">
+        <div align="right"><b></b></div>
+      </td>
+      <td width="75%"><b><font color="#FF0000" size="2">Password is empty Please
+        put your Password</font></b></td>
+    </tr>
+    <%}%>
+    <% if ((!editCustomerBeanId.getFirstAccess())&&editCustomerBeanId.matchPassword()) {%>
+    <tr>
+      <td width="5%"></td>
+      <td width="22%">
+        <div align="right"><b></b></div>
+      </td>
+      <td width="75%"><b><font color="#FF0000" size="2">Password and Confirm Password
+        is not match</font></b></td>
+    </tr>
+    <%}%>
+    <tr>
+      <td width="5%">&nbsp;</td>
+      <td width="22%" bgcolor="#FFCCFF">
+        <div align="right"><b>Password :</b></div>
+      </td>
+      <td width="75%" bgcolor="#FFCCCC">
+        <% if ( (tmpType.equals("Manager")&&userType.equals("Manager")) ||
+        (!tmpType.equals("Manager")) ) {
+%>
+        <input type="password" name="password"
+        value = "<jsp:getProperty name="editCustomerBeanId" property="password" />" >
+        <%
+  } else out.println("No authorization");
+%>
+      </td>
+    </tr>
+    <tr>
+      <td width="5%">&nbsp;</td>
+      <td width="22%" bgcolor="#FFCCFF">
+        <div align="right"><b>Confirm Password :</b></div>
+      </td>
+      <td width="75%" bgcolor="#FFCCCC">
+        <% if ( (tmpType.equals("Manager")&&userType.equals("Manager")) ||
+        (!tmpType.equals("Manager")) ) {
+%>
+        <input type="password" name="confirmPassword"
+        value = "<jsp:getProperty name="editCustomerBeanId" property="confirmPassword" />" >
+        <%
+  } else out.println("No authorization");
+%>
+      </td>
+    </tr>
+    <tr>
+      <td width="5%">&nbsp;</td>
+      <td width="22%">
+        <div align="right"><b></b></div>
+      </td>
+      <td width="75%">&nbsp;</td>
+    </tr>
+    <% if ((!editCustomerBeanId.getFirstAccess())&&editCustomerBeanId.nameNull()) {%>
+    <tr>
+      <td width="5%"></td>
+      <td width="22%">
+        <div align="right"><b></b></div>
+      </td>
+      <td width="75%"><b><font color="#FF0000" size="2">Name is empty Please put
+        your Name</font></b></td>
+    </tr>
+    <%}%>
+    <tr>
+      <td width="5%">&nbsp;</td>
+      <td width="22%" bgcolor="#FFCCFF">
+        <div align="right"><b>Name :</b></div>
+      </td>
+      <td width="75%" bgcolor="#FFCCCC">
+        <input type="text" name="name" size="50"
+        value = "<jsp:getProperty name="editCustomerBeanId" property="name" />" >
+      </td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+  <p><font size="6"><b><font face="Comic Sans MS" color="#0099FF">Address</font></b></font></p>
+  <div align="left">
+    <table width="100%" border="0">
+      <% if ((!editCustomerBeanId.getFirstAccess())&&editCustomerBeanId.noNull()) {%>
+      <tr>
+        <td width="5%"></td>
+        <td width="22%">
+          <div align="right"><b></b></div>
+        </td>
+        <td width="75%"><b><font color="#FF0000" size="2">No is empty Please put
+          your No</font></b></td>
+      </tr>
+      <%}%>
+      <tr>
+        <td width="5%">&nbsp;</td>
+        <td width="22%" bgcolor="#FFCCFF">
+          <div align="right"><b>No :</b></div>
+        </td>
+        <td width="75%" bgcolor="#FFCCCC">
+          <input type="text" name="no" size="40"
+        value = "<jsp:getProperty name="editCustomerBeanId" property="no" />" >
+        </td>
+      </tr>
+      <tr>
+        <td width="5%">&nbsp;</td>
+        <td width="22%" bgcolor="#FFCCFF">
+          <div align="right"><b>Soi :</b></div>
+        </td>
+        <td width="75%" bgcolor="#FFCCCC">
+          <input type="text" name="soi" size="40"
+        value = "<jsp:getProperty name="editCustomerBeanId" property="soi" />" >
+        </td>
+      </tr>
+      <% if ((!editCustomerBeanId.getFirstAccess())&&editCustomerBeanId.streetNull()) {%>
+      <tr>
+        <td width="5%">&nbsp;</td>
+        <td width="22%">
+          <div align="right"><b></b></div>
+        </td>
+        <td width="75%"><b><font color="#FF0000" size="2">Street is empty Please
+          put your Street</font></b></td>
+      </tr>
+      <%}%>
+      <tr>
+        <td width="5%">&nbsp;</td>
+        <td width="22%" bgcolor="#FFCCFF">
+          <div align="right"><b>Street :</b></div>
+        </td>
+        <td width="75%" bgcolor="#FFCCCC">
+          <input type="text" name="street" size="40"
+        value = "<jsp:getProperty name="editCustomerBeanId" property="street" />" >
+        </td>
+      </tr>
+      <tr>
+        <td width="5%">&nbsp;</td>
+        <td width="22%" bgcolor="#FFCCFF">
+          <div align="right"><b>District :</b></div>
+        </td>
+        <td width="75%" bgcolor="#FFCCCC">
+          <input type="text" name="district" size="40"
+        value = "<jsp:getProperty name="editCustomerBeanId" property="district" />" >
+        </td>
+      </tr>
+      <% if ((!editCustomerBeanId.getFirstAccess())&&editCustomerBeanId.provinceNull()) {%>
+      <tr>
+        <td width="5%">&nbsp;</td>
+        <td width="22%">
+          <div align="right"><b></b></div>
+        </td>
+        <td width="75%"><b><font color="#FF0000" size="2">Province is empty Please
+          put your Province</font></b></td>
+      </tr>
+      <%}%>
+      <tr>
+        <td width="5%" height="22">&nbsp;</td>
+        <td width="22%" bgcolor="#FFCCFF">
+          <div align="right"><b>Province :</b></div>
+        </td>
+        <td width="75%" bgcolor="#FFCCCC">
+          <input type="text" name="province" size="40"
+        value = "<jsp:getProperty name="editCustomerBeanId" property="province" />" >
+        </td>
+      </tr>
+      <% if ((!editCustomerBeanId.getFirstAccess())&&editCustomerBeanId.countryNull()) {%>
+      <tr>
+        <td width="5%">&nbsp;</td>
+        <td width="22%">
+          <div align="right"><b></b></div>
+        </td>
+        <td width="75%"><b><font color="#FF0000" size="2">Country is empty Please
+          put your Country</font></b></td>
+      </tr>
+      <%}%>
+      <tr>
+        <td width="5%">&nbsp;</td>
+        <td width="22%" bgcolor="#FFCCFF">
+          <div align="right"><b>Country :</b></div>
+        </td>
+        <td width="75%" bgcolor="#FFCCCC">
+          <input type="text" name="country" size="40"
+        value = "<jsp:getProperty name="editCustomerBeanId" property="country" />" >
+        </td>
+      </tr>
+      <% if ((!editCustomerBeanId.getFirstAccess())&&editCustomerBeanId.areaCodeNull()) {%>
+      <tr>
+        <td width="5%">&nbsp;</td>
+        <td width="22%">
+          <div align="right"><b></b></div>
+        </td>
+        <td width="75%"><b><font color="#FF0000" size="2">Area Code is empty Please
+          put your Area Code</font></b></td>
+      </tr>
+      <%}%>
+      <tr>
+        <td width="5%">&nbsp;</td>
+        <td width="22%" bgcolor="#FFCCFF">
+          <div align="right"><b>Area code :</b></div>
+        </td>
+        <td width="75%" bgcolor="#FFCCCC">
+          <input type="text" name="areaCode" size="40"
+        value = "<jsp:getProperty name="editCustomerBeanId" property="areaCode" />" >
+        </td>
+      </tr>
+      <tr>
+        <td width="5%">&nbsp;</td>
+        <td width="22%" bgcolor="#FFCCFF">
+          <div align="right"><b>email :</b></div>
+        </td>
+        <td width="75%" bgcolor="#FFCCCC">
+          <input type="text" name="email" size="40"
+        value = "<jsp:getProperty name="editCustomerBeanId" property="email" />" >
+        </td>
+      </tr>
+      <tr>
+        <td width="5%">&nbsp;</td>
+        <td width="22%" bgcolor="#FFCCFF">
+          <div align="right"><b>tel. </b></div>
+        </td>
+        <td width="75%" bgcolor="#FFCCCC">
+          <input type="text" name="tel" size="40"
+        value = "<jsp:getProperty name="editCustomerBeanId" property="tel" />" >
+        </td>
+      </tr>
+      <tr>
+        <td width="5%">&nbsp;</td>
+        <td width="22%" bgcolor="#FFCCFF">
+          <div align="right"><b>FAX.</b></div>
+        </td>
+        <td width="75%" bgcolor="#FFCCCC">
+          <input type="text" name="fax" size="40"
+        value = "<jsp:getProperty name="editCustomerBeanId" property="fax" />" >
+        </td>
+      </tr>
+      <% if ((!editCustomerBeanId.getFirstAccess())&&editCustomerBeanId.creditIdNull()) {%>
+      <tr>
+        <td width="5%"></td>
+        <td width="22%">
+          <div align="right"><b></b></div>
+        </td>
+        <td width="75%"><b><font color="#FF0000" size="2">ID Credit is empty Please
+          put your Credit</font></b></td>
+      </tr>
+      <%}%>
+      <tr>
+        <td width="5%">&nbsp;</td>
+        <td width="22%" bgcolor="#FFCCFF">
+          <div align="right"><b>ID Credit :</b></div>
+        </td>
+        <td width="75%" bgcolor="#FFCCCC">
+          <% if ( (tmpType.equals("Manager")&&userType.equals("Manager")) ||
+        (!tmpType.equals("Manager")) ) {
+%>
+          <input type="text" name="creditId" size="40"
+        value = "<jsp:getProperty name="editCustomerBeanId" property="creditId" />" >
+          <%
+  } else out.println(editCustomerBeanId.getCreditId());
+%>
+        </td>
+      </tr>
+      <%
+  if (userType.equals("Administrator") || userType.equals("Manager")) {
+  if (!tmpType.equals("Manager")) {
+%>
+      <tr>
+        <td width="5%">&nbsp;</td>
+        <td width="22%" bgcolor="#FFCCFF">
+          <div align="right"><b>User Type :</b></div>
+        </td>
+        <td width="75%" bgcolor="#FFCCCC">
+          <input type="radio" name="userType" value="Customer"
+        <% if (tmpType.equals("Customer")) {out.print("checked");} %> >
+          Customer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="radio" name="userType" value="Administrator"
+        <% if (tmpType.equals("Administrator")) {out.print("checked");} %> >
+          Administrator </td>
+      </tr>
+      <% } else {
+%>
+      <tr>
+        <td width="5%">&nbsp;</td>
+        <td width="22%" bgcolor="#FFCCFF">
+          <div align="right"><b>User Type :</b></div>
+        </td>
+        <td width="75%" bgcolor="#FFCCCC">Manager</td>
+      </tr>
+      <%
+   }
+   }
+%>
+    </table>
+  </div>
+  <p>&nbsp;</p>
+  <table width="75%" border="0">
+    <tr>
+      <td width="22%">&nbsp;</td>
+      <td width="20%">
+        <input type="submit" name="Submit" value="Update">
+      </td>
+      <td width="12%">&nbsp;</td>
+      <td width="46%">
+        <input type="reset" name="reset" value="Reset">
+      </td>
+<% if (!userType.equals("Customer")) { %>
+      <td width="20%">
+        <input type="submit" name="Submit" value="Delete">
+      </td>
+<% } %>
+    </tr>
+  </table>
+</form>
+<% } %>
+<% editCustomerBeanId.setFirstAccess(false); %>
+</body>
+</html>

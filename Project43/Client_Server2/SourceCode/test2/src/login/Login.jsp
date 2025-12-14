@@ -1,0 +1,76 @@
+<HTML>
+<HEAD>
+<jsp:useBean id="LoginBeanId" scope="session" class="login.LoginBean" />
+<jsp:setProperty name="LoginBeanId" property="*" />
+<TITLE>
+Login
+</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<%!
+    HttpSession session;
+    quote.Quote quote;
+%>
+<%
+System.out.println("in login jsp");
+System.out.println("username="+LoginBeanId.getUsername());
+System.out.println("password="+LoginBeanId.getPassword());
+if (LoginBeanId.getFirstAccess()) {
+    LoginBeanId.setUsername("");
+    LoginBeanId.setPassword("");
+}
+    if (LoginBeanId.verifyPassword()) {
+System.out.println("verify password ok");
+      session = request.getSession(true);
+      quote = LoginBeanId.getNewQuote();
+      if (quote!=null) System.out.println("create quote ok");
+      session.putValue("quote",quote);
+      response.sendRedirect(response.encodeURL("/product/program/logDetail/log.htm"));
+    }
+%>
+<body bgcolor="#FFFFFF" text="#000000">
+<form name="loginForm" method="post" action="Login.jsp">
+  <input type="hidden" name="firstAccess" value="false">
+  <p><font size="+2"><b><font size="6" color="#0099FF">Login</font></b></font></p>
+  <table width="75%" border="0">
+    <tr> 
+      <td width="30%"> 
+        <div align="right"><font size="3"><b><font color="#0099FF">username</font></b></font></div>
+      </td>
+      <td width="70%"> 
+        <input type="text" name="username">
+      </td>
+    </tr>
+    <tr> 
+      <td width="30%"> 
+        <div align="right"><font size="3" color="#0099FF"><b>password</b></font></div>
+      </td>
+      <td width="70%"> 
+        <input type="password" name="password">
+      </td>
+    </tr>
+    <tr> 
+      <td width="30%">&nbsp;</td>
+      <td width="70%"> 
+        <input type="submit" name="login" value="Login">
+        If you are new user, Please <font color="#0099FF" face="Comic Sans MS"><b><font size="4"><a href="registerJSP.jsp?firstAccess=true" target="_self">Register</a></font></b></font></td>
+    </tr>
+    <%
+    String error = LoginBeanId.getError();
+    if ((error!=null && !error.equals("")) && !LoginBeanId.getFirstAccess()) {
+%>
+    <tr> 
+      <td width="30%"> 
+        <div align="right"></div>
+      </td>
+      <td width="70%"> <font size="2"><b><font color="#FF0000"> 
+        <jsp:getProperty name="LoginBeanId" property="error" />
+        </font></b></font></td>
+    </tr>
+    <%  }
+%>
+  </table>
+<p>&nbsp;</p></form>
+</body>
+<% LoginBeanId.setFirstAccess(false); %>
+</html>

@@ -1,0 +1,104 @@
+#!/bin/sh
+
+set -x
+
+# make sure we are in the directory we were installed in.
+install_dir=`dirname $0`
+cd $install_dir
+ 
+SYSTYPE=`uname -s`
+
+case $SYSTYPE in
+	Linux)
+		platform=linux
+		;;
+	SunOS)
+		platform=solaris
+		;;
+	AIX)
+		platform=aix
+		;;
+	*)
+		platform=unknown_os
+		;;
+esac
+
+id_file=$platform.txt
+URL=ftp://ftp.ca.com/pub/getbbs/$platform.eng/$id_file
+rm -f $id_file
+
+USER=ftp
+PW=ca_ino@ca.com
+
+# load down current txt file which describes package
+./ftpdownload $URL "NOPROXY" $id_file $USER $PW
+
+
+if [ ! -f $id_file ]; then
+	echo "Unable to download $URL, exiting."
+	exit 4
+fi
+
+if [ -f ./$id_file.prev ]; then
+	# load down current txt file and compare to previous
+
+	diff $id_file $id_file.prev > /dev/null
+	if [ $? = 0 ]; then
+		# no differences -- up to date
+		echo "You already have the most current package, exiting..."
+		exit 0
+	fi
+fi
+
+PKG_BYTE_COUNT=`awk '{print $1}' $id_file`
+
+
+PLATFORM=`echo $platform | tr [a-z] [A-Z]`
+tarz=inoctar.$PLATFORM.Z
+URL=ftp://ftp.ca.com/pub/getbbs/$platform.eng/$tarz
+
+rm -f ./$tarz
+
+./ftpdownload $URL "NOPROXY" $tarz $USER $PW $PKG_BYTE_COUNT
+
+if [ ! -f ./$tarz ]; then
+	echo "Unable to download $URL, exiting."
+	exit 4
+fi
+
+
+uncompress < ./$tarz > ./$platform.tar
+if [ $? != 0 ]; then
+	echo "Error $? uncompressing ./$tarz"
+	echo "Download may be incomplete...retry later"
+	exit 8
+fi
+
+# ensure that we can read the tar file
+tar -tvf ./$platform.tar > /dev/null 2>&1
+if [ $? != 0 ]; then
+	echo "Error $? reading tar file ./$platform.tar"
+	echo "Download may be incomplete...retry later"
+	exit 12 
+fi
+
+for i in inocucmd virsig.dat README.txt update_signature ftpdownload $id_file
+do
+	if [ -f ./$i ]; then
+	rm -f   ./$i.prev
+	mv ./$i ./$i.prev
+	fi
+done
+
+tar -xvf $platform.tar
+if [ $? = 0 ]; then
+	echo "Signature update successful"
+	rm -f ./$tarz ./$platform.tar
+else
+	echo "Error $? during tar extract"
+	exit 16
+fi
+
+	exit 0
+
+

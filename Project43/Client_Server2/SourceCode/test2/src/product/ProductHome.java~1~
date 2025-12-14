@@ -1,0 +1,23 @@
+package product;
+
+import java.rmi.*;
+import javax.ejb.*;
+import java.util.*;
+import java.math.*;
+
+/**
+ * Title:
+ * Description:
+ * Copyright:    Copyright (c) 2001
+ * Company:
+ * @author
+ * @version 1.0
+ */
+
+public interface ProductHome extends EJBHome {
+  public Product create(String productId, String category, String brand, int quantity, String lastReceiveDate, double importPrice, double sellPrice, String sellNow) throws RemoteException, CreateException;
+  public Product create(String productId) throws RemoteException, CreateException;
+  public Product findByPrimaryKey(String primaryKey) throws RemoteException, FinderException;
+  public Collection findByCondition(String condition) throws RemoteException, FinderException;
+  public Collection findAll() throws RemoteException, FinderException;
+}

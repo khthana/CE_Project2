@@ -1,0 +1,80 @@
+object frmConfirmCancel: TfrmConfirmCancel
+  Left = 205
+  Top = 141
+  Width = 696
+  Height = 469
+  Caption = 'Confirm or cancel'
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object grbView: TGroupBox
+    Left = 32
+    Top = 16
+    Width = 633
+    Height = 225
+    Caption = 'View'
+    TabOrder = 0
+  end
+  object grbConfirmCancel: TGroupBox
+    Left = 32
+    Top = 256
+    Width = 633
+    Height = 137
+    Caption = 'Confirm or cancel'
+    TabOrder = 1
+    object labPackageID: TLabel
+      Left = 24
+      Top = 80
+      Width = 57
+      Height = 13
+      Caption = 'Package ID'
+    end
+    object edtPackageID: TEdit
+      Left = 112
+      Top = 72
+      Width = 233
+      Height = 21
+      TabOrder = 0
+    end
+    object btnConfirm: TButton
+      Left = 368
+      Top = 72
+      Width = 75
+      Height = 25
+      Caption = 'Confirm'
+      TabOrder = 1
+    end
+    object btnCancel: TButton
+      Left = 472
+      Top = 72
+      Width = 75
+      Height = 25
+      Caption = 'Cancel'
+      TabOrder = 2
+    end
+  end
+  object stgView: TStringGrid
+    Left = 48
+    Top = 40
+    Width = 601
+    Height = 185
+    TabOrder = 2
+    OnMouseUp = stgViewMouseUp
+  end
+  object btnClose: TButton
+    Left = 592
+    Top = 408
+    Width = 75
+    Height = 25
+    Caption = 'Close'
+    TabOrder = 3
+    OnClick = btnCloseClick
+  end
+end

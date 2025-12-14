@@ -1,0 +1,43 @@
+<?xml version="1.0"?> 
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml"> 
+ 
+<!-- If WML 1.2 features are required, then use the following DOCTYPE instead: 
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN" "http://www.wapforum.org/DTD/wml12.dtd"> 
+  --> 
+ 
+<wml> 
+<template> 
+	   <do type="prev" label="About"><go href="#About"/></do>  
+	</template>    
+  <card id="card1" title="index"> 
+  
+ 	<do type="accept" label="Submit"> 
+		<go href="http://161.246.5.113:8080/test/servlet/Handlerwap" method="get">
+			<postfield name="url" value="$(url)"/>
+		</go>
+	</do> 
+
+	<p align="center"> 
+		<small>Welcome to</small> <br/>
+		[HT->W]ML Converter
+		<fieldset title="url">
+		Enter URL.<input type="text" name="url" value="http://"/>
+		</fieldset>
+	
+	</p> 
+    
+  </card> 
+   
+       <card id="About" title="about">
+		<onevent type="ontimer"><go href="#index"/></onevent>
+		<timer value="40"/> 
+		<p align="center">
+			[HT->W]ML Converter
+		<small>
+			Copyright 2001<br/>
+			ICL Foundation.<br/>
+			All rights reserved.
+		</small>
+		</p>
+	</card> 
+</wml> 

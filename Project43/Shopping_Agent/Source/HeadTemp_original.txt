@@ -1,0 +1,146 @@
+<html>
+<head>
+<title>Free Real Estate Broker</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+<script language="JavaScript">
+bkk=["คลองเตย", "คลองสาน", "คลองสามวา","คันนายาว","จตุจักร","จอมทอง","ดอนเมือง","ดินแดง","ดุสิต","ตลิ่งชัน","ทวีวิฒนา","ทุ่งครุ","ธนบุรี","บางกอกน้อย","บางกอกใหญ่","บางกะปิ","บางขุนเทียน","บางเขน","บางคอแหลม","บางแค","บางซื่อ","บางนา","บางบอน","บางพลัด","บางรัก","บึงกุ่ม","ปทุมวัน","ประเวศ","ป้อมปราบศัตรูพ่าย","พญาไท","พระโขนง","พระนคร","ภาษีเจริญ","มีนบุรี","ยานาวา","ราชเทวี","ราชบูรณะ","ลาดระบัง","ลาดพร้าว","วังทองหลาง","วัฒนา","สวนหลวง","สะพานสูง","สัมพันธวงศ์","สาธร","สายไหม","หนองแขม","หนองจอก","หลักสี่","ห้วยขวาง"];
+samutprakan=["บางบ่อ","บางพลี","พระปะแดง","เมือง"];
+sizelabel=["Any size","less than 49 sqm","50-99 sqm","100-149 sqm","150-199 sqm","200+ sqm"];
+bedroom=["Any","1","2","3+"];
+bathroom=["Any","1","2+"];
+anyyesno=["Any","Yes"];
+temparray=[];
+priceArray=["Any price","less than 7999","8000 - 14999","15000 - 49999","50000 - 99999","100000 - 499999","500000 - 999999","1000000 - 4999999","500000 - 9999999","10000000 - 49999999"];
+areaArray=[bkk,samutprakan];
+provinceArray=["กรุงเทพ","สมุทรปราการ"];
+function getArray(a){
+	switch (a.name)
+	{
+		case "size":
+			temparray=sizelabel;
+			break;
+		case "bedroom":
+			temparray=bedroom;
+			break;
+		case "bathroom":
+			temparray=bathroom;
+			break;
+		case "kitchen":
+			temparray=anyyesno;
+			break;
+		case "laundry":
+			temparray=anyyesno;
+			break;
+		case "furnished":
+			temparray=anyyesno;
+			break;
+		case "swimming_pool":
+			temparray=anyyesno;
+			break;
+		case "fitness":
+			temparray=anyyesno;
+			break;
+		case "price":
+			temparray=priceArray;
+			break;
+	}
+}
+function writeOptions(a){		
+	if (a.options.length==1)
+	{
+		getArray(a);		
+		for (var i=0;i<temparray.length;i++)
+		{
+			var option0 = new Option(temparray[i],i);
+			a.options[i]= option0;		
+		}
+	}
+}
+function writeCity(){
+	if (document.form1.province.length==1)
+	{
+		var bangkok= new Option("กรุงเทพ",0);
+		var samutp= new Option("สมุทรปราการ",1);
+		document.form1.province.options[0]=bangkok;
+		document.form1.province.options[1]=samutp;
+	}
+}
+function click(e){
+	if (event.button==2||event.button==3)
+	{
+		alert("right click is disabled");
+	}
+}
+function cityChange(a){
+	switch  (a.document.form1.province.value)
+	{
+		case "0":
+			a.document.form1.area.options.length=0;
+			for (var  i=0;i<bkk.length;i++)
+				{
+					var option0 = new Option(bkk[i],i);
+					a.document.form1.area.options[i]=option0;
+				}
+				break;
+		case "1":
+			a.document.form1.area.options.length=0;			
+			for (var  i=0;i<samutprakan.length;i++)
+			{
+				var option0 = new Option(samutprakan[i],i);
+				a.document.form1.area.options[i]=option0;
+			}
+			break;
+		case "null":
+			a.document.form1.area.options.length=0;			
+			break;
+	}	
+}
+function isNull(a){
+		tempstring=new String(a.value);
+		if (tempstring.length==0) return true
+		else return false;
+	}
+function isInteger(a){
+		inttemp=new String(a.value);
+		for (var i=0;i<inttemp.length;i++){
+			if ((inttemp.charAt(i)<"0")||(inttemp.charAt(i)>"9")){			
+				return false;
+			}
+			else{
+				return true;
+			}
+		}
+	}
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+function validate(){
+	//maxstring=new String(document.form1.max_price.value);
+	//minstring=new String(document.form1.min_price.value);	
+	var nullfield=false;
+	var valid=true;	
+	/*if ((minstring.length==0)||(maxstring.length==0))
+	{
+		alert("Please enter both minimum price and maximum price");
+		valid=false;
+	}
+	if((isInteger(document.form1.min_price))&&(isInteger(document.form1.max_price)))
+	{
+		minint=parseInt(document.form1.min_price.value);
+		maxint=parseInt(document.form1.max_price.value);
+	}else
+	{
+		 valid=false;
+		alert("Please enter only number");
+	}
+	if (maxint<=minint){
+		alert("Error: Maximum price cannot be less than or equal to minimum price");
+		valid=false;
+	}
+	if (isNull(document.form1.min_price)||isNull(document.form1.min_price))
+	{	
+		nullfield=true;
+	} else nullfield=false;*/
+	if ((!nullfield)&&(valid)){document.form1.submit()}
+}
+document.onmousedown=click;
+</script>
+</head>

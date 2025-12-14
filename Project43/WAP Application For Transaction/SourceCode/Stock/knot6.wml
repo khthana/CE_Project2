@@ -1,0 +1,39 @@
+<?xml version="1.0"?> 
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml"> 
+
+ 
+<wml> 
+<template> 
+        <do type="prev"><prev/></do> 
+  </template>
+ <card id="CardTransaction" title="Transaction"> 
+   <do type="accept" label="Next">
+	<go href="http://localhost:8080/servlet/aml3">
+   <postfield name="Transaction" value="$Transaction" />
+   <postfield name="Amount" value="$Amount" />
+   <postfield name="Spec1" value="$Spec1" />
+   <postfield name="Dyna1" value="$Dyna1" />
+   <postfield name="Dyna2" value="$Dyna2" />
+   
+			</go>
+			</do> 
+
+    <p align="center"> 
+
+      Transaction<select name ="Transaction" title = "Transaction" multiple="false">
+   	   <option  value="In"> In</option> 
+   	   <option value="Out"> Out </option> 
+   	   <option value="View"> View </option>
+        </select>
+     Amount    
+		 <input name="Amount" /> 
+     TSpec1
+		 <input name="Spec1" /> 
+		TDyna1 
+      <input name="Dyna1" /> 
+     TDyna2
+		 <input name="Dyna2" /> 
+ 
+   </p> 
+  </card> 
+ </wml> 

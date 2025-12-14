@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml">
+<wml>
+	<head>
+		<meta http-equiv="Cache-Control" content="no-cache"/>
+	</head>
+	<card id="sendpager" newcontext="false" ordered="true">
+		<do type="accept" label="submit" optional="false">
+			<go href="http://161.246.5.105:8080/servlet/WAPSendPager" method="post" sendreferer="false">
+				<postfield name="service" value="$service"/>
+				<postfield name="no" value="$no"/>
+				<postfield name="passwd" value="$passwd"/>
+				<postfield name="body" value="$body"/>
+				<postfield name="from" value="$from"/>
+			</go>
+		</do>
+		<p align="left">
+			Select pager
+			<select name="service" multiple="false">
+				<option value="0">142 Worldpage</option>
+				<option value="1">152 Phonelink</option>
+				<option value="2">162 Hutchison</option>
+				<option value="3">1144 Paclink</option>
+				<option value="4">1188 Postel</option>
+				<option value="5">1500 Easycall</option>
+				<option value="6">ICQ Message</option>
+				<option value="7">GSM900</option>
+				<option value="8">WP1800</option>
+			</select>
+			Pager number<br/>
+			<input name="no" maxlength="10" type="text" emptyok="false"/>
+			Password (Only <i>162</i> and <i>GSM</i>)<br/>
+			<input name="passwd" maxlength="10" type="password" emptyok="true"/>
+			Messgae<br/>
+			<input name="body" type="text" emptyok="true"/>
+			From<br/>
+			<input name="from" maxlength="10" type="text" emptyok="true"/>
+		</p>
+	</card>
+</wml>
