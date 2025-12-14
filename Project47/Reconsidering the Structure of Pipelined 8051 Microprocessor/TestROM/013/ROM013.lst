@@ -1,0 +1,34 @@
+   0000                 	ORG		0
+                        ;Basic Data for Test
+   0000   78 01         	MOV     R0,#00000001B
+   0002   75 35 01      	MOV		35H,#00000001B
+   0005   79 01         	MOV		R1,#00000001B
+                        ;Test SUBB Operation - SUBB A,??? - with carry flag
+   0007   74 80         	MOV		A,#10000000B				;set carry flag for test
+   0009   33            	RLC		A
+   000a   74 08         	MOV		A,#00001000B
+   000c   98            	SUBB	A,R0						
+                        
+   000d   74 80         	MOV		A,#10000000B				;set carry flag for test
+   000f   33            	RLC		A
+   0010   74 08         	MOV		A,#00001000B
+   0012   95 35         	SUBB	A,35H                       
+                        	
+   0014   74 80         	MOV		A,#10000000B				;set carry flag for test
+   0016   33            	RLC		A
+   0017   74 08         	MOV     A,#00001000B
+   0019   96            	SUBB	A,@R0                       
+                        	
+   001a   74 80         	MOV		A,#10000000B				;set carry flag for test
+   001c   33            	RLC		A
+   001d   74 08         	MOV		A,#00001000B
+   001f   94 01         	SUBB	A,#00000001B                
+   0021                 MAIN:
+   0021   01 21         	AJMP	MAIN                							;worked
+   0023   00                NOP
+   0024   00                NOP
+   0025   00                NOP
+   0026   00                NOP
+   0027   00                NOP
+                        	
+0021  MAIN      

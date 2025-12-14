@@ -1,0 +1,188 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>icmpTypeForm</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>icmpTypeForm</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>308</width>
+            <height>312</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>ICMP TYPE</string>
+    </property>
+    <property name="icon">
+        <pixmap>designer_project.png</pixmap>
+    </property>
+    <widget class="QLayoutWidget">
+        <property name="name">
+            <cstring>layout226</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>30</x>
+                <y>41</y>
+                <width>256</width>
+                <height>230</height>
+            </rect>
+        </property>
+        <vbox>
+            <property name="name">
+                <cstring>unnamed</cstring>
+            </property>
+            <widget class="QButtonGroup">
+                <property name="name">
+                    <cstring>icmpbuttonGroup</cstring>
+                </property>
+                <property name="title">
+                    <string>ICMP Type</string>
+                </property>
+                <vbox>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <widget class="QLayoutWidget">
+                        <property name="name">
+                            <cstring>layout190</cstring>
+                        </property>
+                        <vbox>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QRadioButton">
+                                <property name="name">
+                                    <cstring>echoreqRadioButton</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>echo request</string>
+                                </property>
+                                <property name="checked">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
+                            <widget class="QRadioButton">
+                                <property name="name">
+                                    <cstring>redirectRadioButton</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Redirect</string>
+                                </property>
+                            </widget>
+                            <widget class="QRadioButton">
+                                <property name="name">
+                                    <cstring>timeExceedRadioButton</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Time exceed</string>
+                                </property>
+                            </widget>
+                            <widget class="QRadioButton">
+                                <property name="name">
+                                    <cstring>timeStampRadioButton</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Time stamp</string>
+                                </property>
+                            </widget>
+                            <widget class="QRadioButton">
+                                <property name="name">
+                                    <cstring>unreachRadioButton</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Unreach</string>
+                                </property>
+                            </widget>
+                        </vbox>
+                    </widget>
+                </vbox>
+            </widget>
+            <spacer>
+                <property name="name">
+                    <cstring>spacer205</cstring>
+                </property>
+                <property name="orientation">
+                    <enum>Vertical</enum>
+                </property>
+                <property name="sizeType">
+                    <enum>Expanding</enum>
+                </property>
+                <property name="sizeHint">
+                    <size>
+                        <width>20</width>
+                        <height>31</height>
+                    </size>
+                </property>
+            </spacer>
+            <widget class="QLayoutWidget">
+                <property name="name">
+                    <cstring>layout191</cstring>
+                </property>
+                <hbox>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <spacer>
+                        <property name="name">
+                            <cstring>spacer188</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Horizontal</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>80</width>
+                                <height>20</height>
+                            </size>
+                        </property>
+                    </spacer>
+                    <widget class="QPushButton">
+                        <property name="name">
+                            <cstring>NextPushButton</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Next</string>
+                        </property>
+                    </widget>
+                    <widget class="QPushButton">
+                        <property name="name">
+                            <cstring>cancelPushButton</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Cancel</string>
+                        </property>
+                    </widget>
+                </hbox>
+            </widget>
+        </vbox>
+    </widget>
+</widget>
+<connections>
+    <connection>
+        <sender>cancelPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>icmpTypeForm</receiver>
+        <slot>reject()</slot>
+    </connection>
+    <connection>
+        <sender>NextPushButton</sender>
+        <signal>clicked()</signal>
+        <receiver>icmpTypeForm</receiver>
+        <slot>selecteIcmpType()</slot>
+    </connection>
+</connections>
+<includes>
+    <include location="local" impldecl="in implementation">icmptypeform.ui.h</include>
+</includes>
+<slots>
+    <slot>selecteIcmpType()</slot>
+</slots>
+<pixmapinproject/>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

@@ -1,0 +1,22 @@
+   0000                 	ORG		0
+                        ;Basic Data for Test
+   0000   74 30             MOV		A,#00110000B
+   0002   78 03             MOV		R0,#00000011B
+   0004   75 36 30          MOV		36H,#00110000B
+   0007   79 02             MOV		R1,#00000010B
+   0009   7a 0c             MOV		R2,#00001100B
+                        ;Test XCH Operation - XCH A,???    
+   000b   c8            	XCH		A,R0						
+   000c   c5 36         	XCH		A,36H                       
+   000e   c7            	XCH		A,@R1                       
+                        ;Test XCHD Operation
+   000f   d7            	XCHD	A,@R1                       
+   0010                 MAIN:
+   0010   01 10         	AJMP	MAIN                							
+   0012   00                NOP
+   0013   00                NOP
+   0014   00                NOP
+   0015   00                NOP
+   0016   00                NOP
+                        	
+0010  MAIN      

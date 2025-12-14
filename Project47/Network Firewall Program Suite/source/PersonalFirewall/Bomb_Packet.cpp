@@ -1,0 +1,27 @@
+// Bomb_Packet.cpp: implementation of the Bomb_Packet class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+//#include "FirewallSuite.h"
+#include "Bomb_Packet.h"
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+Bomb_Packet::Bomb_Packet()
+{
+
+}
+
+Bomb_Packet::~Bomb_Packet()
+{
+
+}

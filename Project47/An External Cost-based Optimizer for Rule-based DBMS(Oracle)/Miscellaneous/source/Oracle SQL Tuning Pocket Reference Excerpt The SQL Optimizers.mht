@@ -1,0 +1,1221 @@
+From: <Saved by Microsoft Internet Explorer 5>
+Subject: Oracle SQL Tuning Pocket Reference: Excerpt: The SQL Optimizers
+Date: Sun, 15 Aug 2004 19:40:36 +0700
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----=_NextPart_000_0065_01C482FF.BCB311E0"
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0065_01C482FF.BCB311E0
+Content-Type: text/html;
+	charset="windows-874"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://www.oreilly.de/catalog/orsqltunpr/chapter/
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Oracle SQL Tuning Pocket Reference: Excerpt: The SQL =
+Optimizers</TITLE>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dwindows-874">
+<META content=3D"MSHTML 6.00.2900.2180" name=3DGENERATOR></HEAD>
+<BODY text=3D#000000 vLink=3D#0000cc link=3D#990000 bgColor=3D#ffffff>
+<TABLE cellSpacing=3D0 cellPadding=3D0 width=3D"90%" border=3D0>
+  <TBODY>
+  <TR>
+    <TD colSpan=3D2><IMG height=3D37 alt=3D"Search the Catalog" isMap=20
+      =
+src=3D"http://www.oreilly.de/graphics_new/catalog_header_buttons.gif"=20
+      width=3D515 align=3Dbottom useMap=3D#catalog_header_buttons =
+border=3D0> <MAP=20
+      name=3Dcatalog_header_buttons><AREA shape=3DRECT =
+coords=3D407,17,512,32=20
+        href=3D"http://www.oreilly.de/catalog/search.html"><AREA =
+shape=3DRECT=20
+        coords=3D431,3,512,18=20
+      =
+href=3D"http://www.oreilly.de/catalog/prdindex.html"></MAP></TD></TR>
+  <TR>
+    <TD vAlign=3Dtop width=3D"25%"><A=20
+      href=3D"http://www.oreilly.de/catalog/orsqltunpr/"><IMG=20
+      alt=3D"Oracle SQL Tuning Pocket Reference" hspace=3D10=20
+      src=3D"http://www.oreilly.de/catalog/covers/orsqltunpr.s.gif" =
+align=3Dleft=20
+      vspace=3D10 border=3D0 valign=3D"top"> </A></TD>
+    <TD vAlign=3Dtop height=3D105><BR>
+      <H2>Oracle SQL Tuning Pocket Reference</H2><FONT size=3D-1>Mark=20
+      Gurry<BR>January 2002<BR>ISBN 0-596-00268-8<BR>108 pages=20
+  </FONT></TD></TR></TBODY></TABLE>
+<HR noShade SIZE=3D1>
+<!--sample chapter begins -->
+<BLOCKQUOTE>
+  <H2 class=3DHeadA>Excerpt: <BR>The SQL Optimizers</H2>
+  <P class=3DBody>Whenever you execute a SQL statement, a component of =
+the=20
+  database known as the <EM class=3DEmphasis>optimizer</EM> must decide =
+how best=20
+  to access the data operated on by that statement. Oracle supports two=20
+  optimizers: the rule-base optimizer (which was the original), and the=20
+  cost-based optimizer. </P>
+  <P class=3DBody>To figure out the optimal execution path for a =
+statement, the=20
+  optimizers consider the following:</P>
+  <UL>
+    <LI class=3DListBullet>The syntax you've specified for the statement =
+
+    <P></P>
+    <LI class=3DListBullet>Any conditions that the data must satisfy =
+(the WHERE=20
+    clauses)=20
+    <P></P>
+    <LI class=3DListBullet>The database tables your statement will need =
+to access=20
+    <P></P>
+    <LI class=3DListBullet>All possible indexes that can be used in =
+retrieving=20
+    data from the table=20
+    <P></P>
+    <LI class=3DListBullet>The Oracle RDBMS version=20
+    <P></P>
+    <LI class=3DListBullet>The current optimizer mode=20
+    <P></P>
+    <LI class=3DListBullet>SQL statement hints=20
+    <P></P>
+    <LI class=3DListBullet>All available object statistics (generated =
+via the=20
+    ANALYZE command)=20
+    <P></P>
+    <LI class=3DListBullet>The physical table location (distributed SQL) =
+
+    <P></P>
+    <LI class=3DListBullet>INIT.ORA settings (parallel query, async I/O, =
+etc.)=20
+    <P></P></LI></UL>
+  <P class=3DBody>Oracle gives you a choice of two optimizing =
+alternatives: the=20
+  predictable rule-based optimizer and the more intelligent cost-based=20
+  optimizer. </P>
+  <H3 class=3DHeadB>Understanding the Rule-Based Optimizer</H3>
+  <P class=3DBody>The rule-based optimizer (RBO) uses a predefined set =
+of=20
+  precedence rules to figure out which path it will use to access the =
+database.=20
+  The RDBMS kernel defaults to the rule-based optimizer under a number =
+of=20
+  conditions, including:</P>
+  <UL>
+    <LI class=3DListBullet>OPTIMIZER_MODE =3D RULE is specified in your =
+INIT.ORA=20
+    file=20
+    <P></P>
+    <LI class=3DListBullet>OPTIMIZER_MODE =3D CHOOSE is specified in =
+your INIT.ORA=20
+    file, and<B class=3DEmphasisBold> </B>no statistics exist for <EM=20
+    class=3DEmphasis>any</EM> table involved in the statement=20
+    <P></P>
+    <LI class=3DListBullet>An ALTER SESSION SET OPTIMIZER_MODE =3D RULE =
+command has=20
+    been issued=20
+    <P></P>
+    <LI class=3DListBullet>An ALTER SESSION SET OPTIMIZER_MODE =3D =
+CHOOSE<B=20
+    class=3DEmphasisBold> </B>command has been issued, and no statistics =
+exist for=20
+    <EM class=3DEmphasis>any</EM> table involved in the statement=20
+    <P></P>
+    <LI class=3DListBullet>The rule hint (e.g., SELECT /*+ RULE */. . .) =
+has been=20
+    used in the statement=20
+    <P></P></LI></UL>
+  <P class=3DBody>The rule-based optimizer is driven primarily by 20 =
+condition=20
+  rankings, or "golden rules." These rules instruct the optimizer how to =
+
+  determine the execution path for a statement, when to choose one index =
+over=20
+  another, and when to perform a full table scan. These rules, shown in =
+<A=20
+  class=3DXRef=20
+  href=3D"http://www.oreilly.de/catalog/orsqltunpr/chapter/#73356">Table =
+1</A>,=20
+  are fixed, predetermined, and, in contrast with the cost-based =
+optimizer, not=20
+  influenced by outside sources (table volumes, index distributions, =
+etc.). </P>
+  <P>
+  <TABLE border=3D1>
+    <CAPTION><B class=3DTableLabel><A name=3D73356>Table 1:</A></B> <B=20
+    class=3DTableTitle>Rule-based optimizer condition rankings =
+</B></CAPTION>
+    <TBODY>
+    <TR>
+      <TH>
+        <P class=3DCellHeading>Rank</P></TH>
+      <TH>
+        <P class=3DCellHeading>Condition</P></TH></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>1</P></TD>
+      <TD>
+        <P class=3DCellBody>ROWID =3D constant</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>2</P></TD>
+      <TD>
+        <P class=3DCellBody>Cluster join with unique or primary key =3D=20
+      constant</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>3</P></TD>
+      <TD>
+        <P class=3DCellBody>Hash cluster key with unique or primary key =
+=3D=20
+        constant</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>4</P></TD>
+      <TD>
+        <P class=3DCellBody>Entire Unique concatenated index =3D =
+constant</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>5</P></TD>
+      <TD>
+        <P class=3DCellBody>Unique indexed column =3D =
+constant</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>6</P></TD>
+      <TD>
+        <P class=3DCellBody>Entire cluster key =3D corresponding cluster =
+key of=20
+        another table in the same cluster</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>7</P></TD>
+      <TD>
+        <P class=3DCellBody>Hash cluster key =3D constant</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>8</P></TD>
+      <TD>
+        <P class=3DCellBody>Entire cluster key =3D =
+constant</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>9</P></TD>
+      <TD>
+        <P class=3DCellBody>Entire non-UNIQUE CONCATENATED index =3D=20
+    constant</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>10</P></TD>
+      <TD>
+        <P class=3DCellBody>Non-UNIQUE index merge</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>11</P></TD>
+      <TD>
+        <P class=3DCellBody>Entire concatenated index =3D lower =
+bound</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>12</P></TD>
+      <TD>
+        <P class=3DCellBody>Most leading column(s) of concatenated index =
+=3D=20
+        constant</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>13</P></TD>
+      <TD>
+        <P class=3DCellBody>Indexed column between low value and high =
+value or=20
+        indexed column LIKE "ABC%" (bounded range)</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>14</P></TD>
+      <TD>
+        <P class=3DCellBody>Non-UNIQUE indexed column between low value =
+and high=20
+        value or indexed column like `ABC%' (bounded =
+range)</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>15</P></TD>
+      <TD>
+        <P class=3DCellBody>UNIQUE indexed column or constant (unbounded =
+
+      range)</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>16</P></TD>
+      <TD>
+        <P class=3DCellBody>Non-UNIQUE indexed column or constant =
+(unbounded=20
+        range)</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>17</P></TD>
+      <TD>
+        <P class=3DCellBody>Equality on non-indexed =3D column or =
+constant=20
+        (sort/merge join)</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>18</P></TD>
+      <TD>
+        <P class=3DCellBody>MAX or MIN of single indexed =
+columns</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>19</P></TD>
+      <TD>
+        <P class=3DCellBody>ORDER BY entire index</P></TD></TR>
+    <TR>
+      <TD>
+        <P class=3DCellBody>20</P></TD>
+      <TD>
+        <P class=3DCellBody>Full table =
+scans</P></TD></TR></TBODY></TABLE>
+  <P class=3DBody>While knowing the rules is helpful, they alone do not =
+tell you=20
+  enough about how to tune for the rule-based optimizer. To overcome =
+this=20
+  deficiency, the following sections provide some information that the =
+rules=20
+  don't tell you.</P>
+  <H4 class=3DHeadC><A name=3D_Toc523636806></A>What the RBO rules don't =
+tell you=20
+  #1</H4>
+  <P class=3DBody>Only single column indexes are ever merged. Consider =
+the=20
+  following SQL and indexes:</P><PRE><CODE class=3DCode>SELECT col1, =
+...</CODE>
+<CODE class=3DCode>  FROM emp</CODE>
+<CODE class=3DCode> WHERE emp_name =3D 'GURRY'</CODE>
+<CODE class=3DCode>   AND emp_no   =3D 127</CODE>
+<CODE class=3DCode>   AND dept_no  =3D 12</CODE>
+<CODE class=3DCode>&nbsp;</CODE>
+<CODE class=3DCode>Index1 (dept_no)</CODE>
+<CODE class=3DCode>Index2 (emp_no, emp_name) </CODE>
+</PRE>
+  <P class=3DBody>The SELECT statement looks at all three indexed =
+columns. Many=20
+  people believe that Oracle will merge the two indexes, which involve =
+those=20
+  three columns, to return the requested data. In fact, only the =
+two-column=20
+  index is used; the single-column index is not used. While Oracle <EM=20
+  class=3DEmphasis>will</EM> merge two single-column indexes, it <EM=20
+  class=3DEmphasis>will not</EM> merge a multi-column index with another =
+index.=20
+  </P>
+  <P class=3DBody>There is one thing to be aware of with respect to this =
+scenario.=20
+  If the single-column index is a unique or primary key index, that =
+would cause=20
+  the single-column index to take precedence over the multi-column =
+index.=20
+  Compare rank 4 with rank 9 in <A class=3DXRef=20
+  href=3D"http://www.oreilly.de/catalog/orsqltunpr/chapter/#73356">Table =
+
+1</A>.</P>
+  <BLOCKQUOTE>
+    <P class=3DNote><B>NOTE:</B> Oracle8<EM class=3DEmphasis>i</EM> =
+introduced a new=20
+    hint, INDEX_JOIN, that allows you to join multi-column=20
+  indexes.</P></BLOCKQUOTE>
+  <H4 class=3DHeadC><A name=3D_Toc523636807></A>What the RBO rules don't =
+tell you=20
+  #2</H4>
+  <P class=3DBody>If all columns in an index are specified in the WHERE =
+clause,=20
+  that index will be used in preference to other indexes for which <EM=20
+  class=3DEmphasis>some</EM> columns are referenced. For =
+example:</P><PRE><CODE class=3DCode>SELECT col1, ...</CODE>
+<CODE class=3DCode>  FROM emp</CODE>
+<CODE class=3DCode> WHERE emp_name =3D 'GURRY'</CODE>
+<CODE class=3DCode>   AND emp_no   =3D 127</CODE>
+<CODE class=3DCode>   AND dept_no  =3D 12</CODE>
+<CODE class=3DCode>&nbsp;</CODE>
+<CODE class=3DCode>Index1 (emp_name)</CODE>
+<CODE class=3DCode>Index2 (emp_no, dept_no, cost_center) </CODE>
+</PRE>
+  <P class=3DBody>In this example, only Index1 is used, because the =
+WHERE clause=20
+  includes all columns for that index, but does not include all columns =
+for=20
+  Index2. </P>
+  <H4 class=3DHeadC><A name=3D_Toc523636808></A>What the RBO rules don't =
+tell you=20
+  #3</H4>
+  <P class=3DBody>If multiple indexes can be applied to a WHERE clause, =
+and they=20
+  all have an equal number of columns specified, only the index created =
+last=20
+  will be used. For example:</P><PRE><CODE class=3DCode>SELECT col1, =
+...</CODE>
+<CODE class=3DCode>  FROM emp</CODE>
+<CODE class=3DCode> WHERE emp_name =3D 'GURRY'</CODE>
+<CODE class=3DCode>   AND emp_no   =3D 127</CODE>
+<CODE class=3DCode>   AND dept_no  =3D 12</CODE>
+<CODE class=3DCode>   AND emp_category =3D 'CLERK'</CODE>
+<CODE class=3DCode>&nbsp;</CODE>
+<CODE class=3DCode>Index1 (emp_name, emp_category)  Created 4pm Feb =
+11<EM class=3DSuperscript>th</EM> 2002</CODE>
+<CODE class=3DCode>Index2 (emp_no, dept_no) Created 5pm Feb 11<EM =
+class=3DSuperscript>th</EM> 2002</CODE>
+</PRE>
+  <P class=3DBody>In this example, only Index2 is used, because it was =
+created at=20
+  5 p.m. and the other index was created at 4 p.m. This behavior can =
+pose a=20
+  problem, because if you rebuild indexes in a different order than they =
+were=20
+  first created, a different index may suddenly be used for your =
+queries. To=20
+  deal with this problem, many sites have a naming standard requiring =
+that=20
+  indexes are named in alphabetical order as they are created. Then, if =
+a table=20
+  is rebuilt, the indexes can be rebuilt in alphabetical order, =
+preserving the=20
+  correct creation order. You could, for example, number your indexes. =
+Each new=20
+  index added to a table would then be given the next number.</P>
+  <H4 class=3DHeadC><A name=3D_Toc523636809></A>What the RBO rules don't =
+tell you=20
+  #4</H4>
+  <P class=3DBody>If multiple columns of an index are being accessed =
+with an =3D=20
+  operator, that will override other operators such as LIKE or BETWEEN. =
+Two =3D's=20
+  will override two =3D's and a LIKE. For example:</P><PRE><CODE =
+class=3DCode>SELECT col1, ...</CODE>
+<CODE class=3DCode>  FROM emp</CODE>
+<CODE class=3DCode> WHERE emp_name  LIKE 'GUR%'</CODE>
+<CODE class=3DCode>   AND emp_no       =3D 127</CODE>
+<CODE class=3DCode>   AND dept_no      =3D 12</CODE>
+<CODE class=3DCode>   AND emp_category =3D 'CLERK'</CODE>
+<CODE class=3DCode>   AND emp_class    =3D 'C1'</CODE>
+<CODE class=3DCode>&nbsp;</CODE>
+<CODE class=3DCode>Index1 (emp_category, emp_class, emp_name)  </CODE>
+<CODE class=3DCode>Index2 (emp_no, dept_no) </CODE>
+</PRE>
+  <P class=3DBody>In this example, only Index2 is utilized despite =
+Index1 having=20
+  three columns accessed and Index2 having only two column accessed. =
+</P>
+  <H4 class=3DHeadC><A name=3D_Toc523636810></A>What the RBO rules don't =
+tell you=20
+  #5</H4>
+  <P class=3DBody>A higher percentage of columns accessed will override =
+a lower=20
+  percentage of columns accessed. So generally, the optimizer will =
+choose to use=20
+  the index from which you specify the highest percentage of columns. =
+However,=20
+  as stated previously, all columns specified in a unique or primary key =
+index=20
+  will override the use of all other indexes. For example:</P><PRE><CODE =
+class=3DCode>SELECT col1, ...</CODE>
+<CODE class=3DCode>  FROM emp</CODE>
+<CODE class=3DCode> WHERE emp_name     =3D 'GURRY'</CODE>
+<CODE class=3DCode>   AND emp_no       =3D 127</CODE>
+<CODE class=3DCode>   AND emp_class    =3D 'C1'</CODE>
+<CODE class=3DCode>&nbsp;</CODE>
+<CODE class=3DCode>Index1 (emp_name, emp_class, emp_category)  </CODE>
+<CODE class=3DCode>Index2 (emp_no, dept_no) </CODE>
+</PRE>
+  <P class=3DBody>In this example, only Index1 is utilized, because 66% =
+of the=20
+  columns are accessed. Index2 is not used because a lesser 50% of the =
+indexed=20
+  columns are used.</P>
+  <H4 class=3DHeadC><A name=3D_Toc523636811></A>What the RBO rules don't =
+tell you=20
+  #6</H4>
+  <P class=3DBody>If you join two tables, the rule-based optimizer needs =
+to select=20
+  a driving table. The table selected can have a significant impact on=20
+  performance, particularly when the optimizer decides to use nested =
+loops. A=20
+  row will be returned from the driving table, and then the matching =
+rows=20
+  selected from the other table. It is important that as few rows as =
+possible=20
+  are selected from the driving table. </P>
+  <P class=3DBody>The rule-based optimizer uses the following rules to =
+select the=20
+  driving table:</P>
+  <UL>
+    <LI class=3DListBullet>A unique or primary key index will always =
+cause the=20
+    associated table to be selected as the driving table in front of a=20
+    non-unique or non-primary key index.=20
+    <P></P>
+    <LI class=3DListBullet>An index for which you apply the equality =
+operator (=3D)=20
+    to all columns will take precedence over indexes from which you use =
+only=20
+    some columns, and will result in the underlying table being chosen =
+as the=20
+    driving table for the query.=20
+    <P></P>
+    <LI class=3DListBullet>The table that has a higher percentage of =
+columns in an=20
+    index will override the table that has a lesser percentage of =
+columns=20
+    indexed.=20
+    <P></P>
+    <LI class=3DListBullet>A table that satisfies one two-column index =
+in the=20
+    WHERE clause of a query will be chosen as the driving table in front =
+of a=20
+    table that satisfies two single-column indexes.=20
+    <P></P>
+    <LI class=3DListBullet>If two tables have the same number of index =
+columns=20
+    satisfied, the table that is listed last in the FROM clause will be =
+the=20
+    driving table. In the SQL below, the EMP table will be the driving =
+table=20
+    because it is listed last in the FROM clause.=20
+    <P><PRE><CLASS=3D"FM-CODE">SELECT ....
+<CLASS=3D"FM-CODE">  FROM DEPT d, EMP e
+<CLASS=3D"FM-CODE"> WHERE e.emp_name    =3D 'GURRY'
+<CLASS=3D"FM-CODE">   AND d.dept_name   =3D 'FINANCE'
+<CLASS=3D"FM-CODE">   AND d.dept_no     =3D e.dept_no
+</PRE></LI></UL>
+  <H4 class=3DHeadC><A name=3D_Toc523636812></A>What the RBO rules don't =
+tell you=20
+  #7</H4>
+  <P class=3DBody>If a WHERE clause has a column that is the leading =
+column on any=20
+  index, the rule-based optimizer will use that index. The exception is =
+if a=20
+  function is placed on the leading index column in the WHERE clause. =
+For=20
+  example:</P><PRE><CODE class=3DCode>SELECT col1, ...</CODE>
+<CODE class=3DCode>  FROM emp</CODE>
+<CODE class=3DCode> WHERE emp_name     =3D 'GURRY'</CODE>
+<CODE class=3DCode>&nbsp;</CODE>
+<CODE class=3DCode>Index1 (emp_name, emp_class, emp_category) </CODE>
+<CODE class=3DCode>Index2 (emp_class, emp_name, emp_category) </CODE>
+</PRE>
+  <P class=3DBody>Index1 will be used, because emp_name (used in the =
+WHERE clause)=20
+  is the leading column. Index2 will not be used, because emp_name is =
+not the=20
+  leading column. </P>
+  <P class=3DBody>The following example illustrates what happens when a =
+function=20
+  is applied to an indexed column:</P><PRE><CODE class=3DCode>SELECT =
+col1, ...</CODE>
+<CODE class=3DCode>  FROM emp</CODE>
+<CODE class=3DCode> WHERE LTRIM(emp_name) =3D 'GURRY' </CODE>
+</PRE>
+  <P class=3DBody>In this case, because the LTRIM function has been =
+applied to the=20
+  column, <EM class=3DEmphasis>no</EM> index will be used.</P>
+  <H3 class=3DHeadB>Understanding the Cost-Based Optimizer</H3>
+  <P class=3DBody>The<B class=3DEmphasisBold> </B>cost-based optimizer =
+is a more=20
+  sophisticated facility than the rule-based optimizer. To determine the =
+best=20
+  execution path for a statement, it uses database information such as =
+table=20
+  size, number of rows, key spread, and so forth, rather than rigid =
+rules. </P>
+  <P class=3DBody>The information required by the cost-based optimizer =
+is=20
+  available once a table has been analyzed via the ANALYZE command, or =
+via the=20
+  DBMS_STATS facility. If a table has not been analyzed, the cost-based=20
+  optimizer can use only rule-based logic to select the best access =
+path. It is=20
+  possible to run a schema with a combination of cost-based and =
+rule-based=20
+  behavior by having some tables analyzed and others not analyzed.</P>
+  <BLOCKQUOTE>
+    <P class=3DNote><B>NOTE:</B> The ANALYZE command and the DBMS_STATS =
+functions=20
+    collect statistics about tables, clusters, and indexes, and store =
+those=20
+    statistics in the data dictionary. </P></BLOCKQUOTE>
+  <P class=3DBody>A SQL statement will default to the cost-based =
+optimizer if any=20
+  one of the tables involved in the statement has been analyzed. The =
+cost-based=20
+  optimizer then makes an educated guess as to the best access path for =
+the=20
+  other tables based on information in the data dictionary. </P>
+  <P class=3DBody>The RDBMS kernel defaults to using the cost-based =
+optimizer=20
+  under a number of situations, including the following:</P>
+  <UL>
+    <LI class=3DListBullet>OPTIMIZER_MODE =3D CHOOSE has been specified =
+in the=20
+    INIT.ORA file, and statistics exist for at least one table involved =
+in the=20
+    statement=20
+    <P></P>
+    <LI class=3DListBullet>An ALTER SESSION SET OPTIMIZER_MODE =3D =
+CHOOSE command=20
+    has been executed, and statistics exist for at least one table =
+involved in=20
+    the statement=20
+    <P></P>
+    <LI class=3DListBullet>An ALTER SESSION SET OPTIMIZER_MODE =3D =
+FIRST_ROWS (or=20
+    ALL_ROWS) command has been executed, and statistics exist for at =
+least one=20
+    table involved in the statement=20
+    <P></P>
+    <LI class=3DListBullet>A statement uses the FIRST_ROWS or ALL_ROWS =
+hint (e.g.,=20
+    SELECT /*+ FIRST_ROWS */. . .)=20
+    <P></P></LI></UL>
+  <H4 class=3DHeadC><A name=3D_Toc523636814></A>ANALYZE command</H4>
+  <P class=3DBody>The way that you analyze your tables can have a =
+dramatic effect=20
+  on your SQL performance. If your DBA forgets to analyze tables or =
+indexes=20
+  after a table re-build, the impact on performance can be devastating. =
+If your=20
+  DBA analyzes each weekend, a new threshold may be reached and Oracle =
+may=20
+  change its execution plan. The new plan will more often than not be an =
+
+  improvement, but will occasionally be worse.</P>
+  <P class=3DBody>I cannot stress enough that if every SQL statement has =
+been=20
+  tuned, do <EM class=3DEmphasis>not</EM> analyze just for the sake of =
+it. One=20
+  site that I tuned had a critical SQL statement that returned data in =
+less than=20
+  a second. The DBA analyzed each weekend believing that the execution =
+path=20
+  would continue to improve. One Monday, morning I got a phone call =
+telling me=20
+  that the response time had risen to 310 seconds. </P>
+  <P class=3DBody>If you do want to analyze frequently, use=20
+  DBMS_STATS.EXPORT_SCHEMA_STATS to back up the existing statistics =
+prior to=20
+  re-analyzing. This gives you the ability to revert back to the =
+previous=20
+  statistics if things screw up. </P>
+  <P class=3DBody>When you analyze, you can have Oracle look at all rows =
+in a=20
+  table (ANALYZE COMPUTE) or at a sampling of rows (ANALYZE ESTIMATE).=20
+  Typically, I use ANALYZE ESTIMATE for very large tables (1,000,000 =
+rows or=20
+  more), and ANALYZE COMPUTE for small to medium tables. </P>
+  <P class=3DBody>I strongly recommend that you analyze FOR ALL INDEXED =
+COLUMNS=20
+  for any table that can have severe data skewness. For example, if a =
+large=20
+  percentage of rows in a table has the same value in a given column, =
+that=20
+  represents skewness. The FOR ALL INDEXED COLUMNS option makes the =
+cost-based=20
+  optimizer aware of the skewness of a column's data in addition to the=20
+  cardinality (number-distinct values) of that data. </P>
+  <P class=3DBody>When a table is analyzed using ANALYZE, all associated =
+indexes=20
+  are analyzed as well. If an index is subsequently dropped and =
+recreated, it=20
+  must be re-analyzed. Be aware that the procedures=20
+  DBMS_STATS.GATHER_SCHEMA_STATS and GATHER_TABLE_STATS analyze only =
+tables by=20
+  default, not their indexes. When using those procedures, you must =
+specify the=20
+  CASCADE=3D&gt;TRUE option for indexes to be analyzed as well.</P>
+  <P class=3DBody>Following are some sample ANALYZE =
+statements:</P><PRE><CODE class=3DCode>ANALYZE TABLE EMP ESTIMATE =
+STATISTICS SAMPLE 5 PERCENT FOR ALL INDEXED COLUMNS;</CODE>
+<CODE class=3DCode>&nbsp;</CODE>
+<CODE class=3DCode>ANALYZE INDEX EMP_NDX1 ESTIMATE STATISTICS SAMPLE 5 =
+PERCENT FOR ALL INDEXED COLUMNS;</CODE>
+<CODE class=3DCode>&nbsp;</CODE>
+<CODE class=3DCode>ANALYZE TABLE EMP COMPUTE STATISTICS FOR ALL INDEXED =
+COLUMNS;</CODE>
+</PRE>
+  <P class=3DBody>If you analyze a table by mistake, you can delete the=20
+  statistics. For example:</P><PRE><CODE class=3DCode>ANALYZE TABLE EMP =
+DELETE STATISTICS;</CODE>
+</PRE>
+  <P class=3DBody>Analyzing can take an excessive amount of time if you =
+use the=20
+  COMPUTE option on large objects. We find that on almost every =
+occasion,=20
+  ANALYZE ESTIMATE 5 PERCENT on a large table forces the optimizer make =
+the same=20
+  decision as ANALYZE COMPUTE.</P>
+  <H4 class=3DHeadC><A name=3D_Toc523636815></A>Tuning prior to =
+releasing to=20
+  production</H4>
+  <P class=3DBody>A major dilemma that exists with respect to the =
+cost-based=20
+  optimizer (CBO) is how to tune the SQL for production prior to it =
+being=20
+  released. Most development and test databases will contain =
+substantially fewer=20
+  rows than a production database. It is therefore highly likely that =
+the CBO=20
+  will make different decisions on execution plans. Many sites can't =
+afford the=20
+  cost and inconvenience of copying the production database into a=20
+  pre-production database. </P>
+  <P class=3DBody>Oracle8<EM class=3DEmphasis>i</EM> and later provides =
+various=20
+  features to overcome this problem, including DBMS_STATS and the =
+outline=20
+  facility. Each is explained in more detail later in this book. </P>
+  <H4 class=3DHeadC><A name=3D_Toc523636817></A>Inner workings of the =
+cost-based=20
+  optimizer</H4>
+  <P class=3DBody>Unlike the rule-based optimizer, the cost-based =
+optimizer does=20
+  not have hard and fast path evaluation rules. The cost-based optimizer =
+is=20
+  flexible and can adapt to its environment. This adaptation is possible =
+only=20
+  once the necessary underlying object statistics have been refreshed=20
+  (re-analyzed). What is constant is the method by which the cost-based=20
+  optimizer calculates each possible execution plan and evaluates its =
+cost=20
+  (efficiency).</P>
+  <P class=3DBody>The cost-based optimizer's functionality can be =
+(loosely) broken=20
+  into the following steps:</P>
+  <OL>
+    <LI class=3DListNumber>Parse the SQL (check syntax, object =
+privileges, etc.).=20
+    <P></P>
+    <LI class=3DListNumber>Generate a list of <EM =
+class=3DEmphasis>all</EM>=20
+    potential execution plans.=20
+    <P></P>
+    <LI class=3DListNumber>Calculate (estimate) the cost of each =
+execution plan=20
+    using all available object statistics.=20
+    <P></P>
+    <LI class=3DListNumber>Select the execution plan with the<EM =
+class=3DEmphasis>=20
+    </EM>lowest cost<EM class=3DEmphasis>.</EM>=20
+    <P></P></LI></OL>
+  <P class=3DBody>The cost-based optimizer will be used only if at least =
+one table=20
+  within a SQL statement has statistics (table statistics for unanalyzed =
+tables=20
+  are estimated). If no statistics are available for any table involved =
+in the=20
+  SQL, the RDBMS will resort to the rule-based optimizer, unless the =
+cost-based=20
+  optimizer is forced via statement-level HINTS or by an optimizer goal =
+of=20
+  ALL_ROWS or FIRST_ROWS.</P>
+  <P class=3DBody>To understand how the cost-based optimizer works and,=20
+  ultimately, how to exploit it, we need to understand how it thinks. =
+</P>
+  <DL>
+    <DT class=3DListVariableTerm>Primary key and/or UNIQUE index =
+equality=20
+    <DD class=3DListVariable>A UNIQUE index's selectivity is recognized =
+as 100%.=20
+    No other indexed access method is more precise. For this reason, a =
+unique=20
+    index is always used when available.=20
+    <P></P>
+    <DT class=3DListVariableTerm>Non-UNIQUE index equality=20
+    <DD class=3DListVariable>For non-UNIQUE indexes, index selectivity =
+is=20
+    calculated. The cost-based optimizer makes the assumption that the =
+table=20
+    (and subsequent indexes) have uniform data spread unless you use the =
+FOR ALL=20
+    INDEXED COLUMNS option of the ANALYZE. That option will make the =
+cost-based=20
+    optimizer aware of how the data in the indexed columns is skewed.=20
+    <P></P>
+    <DT class=3DListVariableTerm>Range evaluation=20
+    <DD class=3DListVariable>For index range execution plans, =
+selectivity is=20
+    evaluated. This evaluation is based on a column's most recent =
+high-value and=20
+    low-value statistics. Again, the cost-based optimizer makes the =
+assumption=20
+    that the table (and subsequent indexes) have uniform data spread =
+unless you=20
+    use the FOR ALL INDEXED COLUMNS option when analyzing the table.=20
+    <P></P>
+    <DT class=3DListVariableTerm>Range evaluation over bind variables=20
+    <DD class=3DListVariable>For index range execution plans, =
+selectivity is=20
+    guessed. Prior to Oracle9<EM class=3DEmphasis>i</EM>, because bind =
+variable=20
+    values are not available at parse time (values are passed to the =
+cursor=20
+    after the execution plan has been decided), the optimizer cannot =
+make=20
+    decisions based on bind variable values. The optimizer assumes a =
+rule of=20
+    thumb of 25% selectivity for unbounded bind variable ranges (e.g., =
+WHERE=20
+    dept_no =3D :b1) and 50% selectivity for bounded ranges (WHERE =
+dept_no &gt;=20
+    :b1 AND dept_no &lt; :b2). Beginning with Oracle9<EM =
+class=3DEmphasis>i</EM>,=20
+    the cost-based optimizer obtains bind variable values prior to =
+determining=20
+    an execution plan.=20
+    <P></P>
+    <DT class=3DListVariableTerm>Histograms=20
+    <DD class=3DListVariable>Prior to the introduction of histograms in =
+Oracle=20
+    7.3, The cost-based optimizer could not distinguish grossly uneven =
+key data=20
+    spreads<EM class=3DEmphasis>.</EM>=20
+    <P></P>
+    <DT class=3DListVariableTerm>System resource usage=20
+    <DD class=3DListVariable>By default, the cost-based optimizer =
+assumes that you=20
+    are the only person accessing the database. Oracle9<EM =
+class=3DEmphasis>i</EM>=20
+    gives you the ability to store information about system resource =
+usage, and=20
+    can make much better informed decisions based on workload (read up =
+on the=20
+    DBMS_STATS.GATHER_SYSTEM_STATS package).=20
+    <P></P>
+    <DT class=3DListVariableTerm>Current statistics are important=20
+    <DD class=3DListVariable>The cost-based optimizer can make poor =
+execution plan=20
+    choices when a table has been analyzed but its indexes have not =
+been, or=20
+    when indexes have been analyzed but not the tables.=20
+    <P></P>
+    <DD class=3DListVariable->You should not force the database to use =
+the=20
+    cost-based optimizer via inline hints when no statistics are =
+available for=20
+    any table involved in the SQL.=20
+    <P></P>
+    <DD class=3DListVariable->Using old <EM =
+class=3DEmphasis>(</EM>obsolete<EM=20
+    class=3DEmphasis>)</EM> statistics can be more dangerous than =
+estimating the=20
+    statistics at runtime, but keep in mind that changing statistics =
+frequently=20
+    can also blow up in your face, particularly on a mission-critical =
+system=20
+    with lots of online users. Always back up your statistics before you =
+
+    re-analyze by using DBMS_STATS.EXPORT_SCHEMA_STATS.=20
+    <P></P>
+    <DD class=3DListVariable->Analyzing large tables and their =
+associated indexes=20
+    with the COMPUTE option will take a long, long time, requiring lots =
+of CPU,=20
+    I/O, and temporary tablespace resources. It is often overkill. =
+Analyzing=20
+    with a consistent value, for example, estimate 3%, will usually =
+allow the=20
+    cost-based optimizer to make optimal decisions=20
+    <P></P></DD></DL>
+  <P class=3DBody>Combining the information provided by the selectivity =
+rules with=20
+  other database I/O information allows the cost-based optimizer to =
+calculate=20
+  the cost of an execution plan. </P>
+  <H4 class=3DHeadC><A name=3D_Toc523636818></A>EXPLAIN PLAN for the =
+cost-based=20
+  optimizer</H4>
+  <P class=3DBody>Oracle provides information on the cost of query =
+execution via=20
+  the EXPLAIN PLAN facility. EXPLAIN PLAN can be used to display the =
+calculated=20
+  execution cost(s) via some extensions to the utility. In particular, =
+the plan=20
+  table's COST column returns a value that increases or decreases to =
+show the=20
+  relative cost of a query. For example:</P><PRE><CODE class=3DCode><EM =
+class=3DCodeUserInput>EXPLAIN PLAN FOR </EM></CODE>
+<CODE class=3DCode><EM class=3DCodeUserInput>  SELECT count(*) =
+</EM></CODE>
+<CODE class=3DCode><EM class=3DCodeUserInput>    FROM winners, =
+horses</EM></CODE>
+<CODE class=3DCode><EM class=3DCodeUserInput>   WHERE =
+winners.owner=3Dhorses.owner</EM></CODE>
+<CODE class=3DCode><EM class=3DCodeUserInput>     AND winners.horse_name =
+LIKE 'Mr %'</EM></CODE>
+<CODE class=3DCode><EM class=3DCodeUserInput>    </EM></CODE>
+<CODE class=3DCode><EM class=3DCodeUserInput>COLUMN "SQL" FORMAT =
+a56</EM></CODE>
+<CODE class=3DCode><EM class=3DCodeUserInput>        </EM></CODE>
+<CODE class=3DCode><EM class=3DCodeUserInput>SELECT lpad(' =
+',2*level)||operation||''  </EM></CODE>
+<CODE class=3DCode><EM class=3DCodeUserInput>        ||options ||' =
+'||object_name||</EM></CODE>
+<CODE class=3DCode><EM class=3DCodeUserInput>       decode(OBJECT_TYPE, =
+'', '', </EM></CODE>
+<CODE class=3DCode><EM class=3DCodeUserInput>           =
+'('||object_type||')') "SQL",</EM></CODE>
+<CODE class=3DCode><EM class=3DCodeUserInput>       cost "Cost", =
+cardinality "Num Rows"</EM></CODE>
+<CODE class=3DCode><EM class=3DCodeUserInput>  FROM   =
+plan_table</EM></CODE>
+<CODE class=3DCode><EM class=3DCodeUserInput>CONNECT BY prior id =3D =
+parent_id</EM></CODE>
+<CODE class=3DCode><EM class=3DCodeUserInput>  START WITH id =3D =
+0;</EM></CODE>
+<CODE class=3DCode>&nbsp;</CODE>
+<CODE class=3DCode>SQL                            Cost   Num Rows</CODE>
+<CODE =
+class=3DCode>-----------------------------------------------</CODE>
+<CODE class=3DCode>SELECT STATEMENT                 44          1</CODE>
+<CODE class=3DCode>    SORT AGGREGATE                                    =
+                   </CODE>
+<CODE class=3DCode>      HASH JOIN                  44     100469</CODE>
+<CODE class=3DCode>        INDEX RANGE SCAN MG1(NON-UNIQUE)              =
+        </CODE>
+<CODE class=3DCode>                                  2       1471</CODE>
+<CODE class=3DCode>        INDEX FAST FULL SCAN OWNER_PK(UNIQUE)         =
+           </CODE>
+<CODE class=3DCode>                                  4       6830</CODE>
+</PRE>
+  <P class=3DBody>By manipulating the cost-based optimizer (i.e., via =
+inline=20
+  hints, by creating/removing indexes, or by adjusting the way that =
+indexes or=20
+  tables are analyzed), we can see the differences in the execution cost =
+as=20
+  calculated by the optimizer. Use EXPLAIN PLAN to look at different =
+variations=20
+  on a query, and choose the variation with the lowest relative =
+cost.</P>
+  <P class=3DBody>For absolute optimal performance, many sites have the =
+majority=20
+  of the tables and indexes analyzed but a small number of tables that =
+are used=20
+  in isolation are not analyzed. This is usually to force rule-based =
+behavior on=20
+  the tables that are not analyzed. However, it is important that tables =
+that=20
+  have not been analyzed are not joined with tables that have been =
+analyzed.=20
+</P>
+  <H3 class=3DHeadB>Some Common Optimizer Misconceptions</H3>
+  <P class=3DBody>Let's clear up some common misconceptions regarding =
+the=20
+  optimizers:</P>
+  <DL>
+    <DT class=3DListVariableTerm>Oracle8i and Oracle9i don't support the =
+
+    rule-based optimizer=20
+    <DD class=3DListVariable>This is totally false. Certain publications =
+mentioned=20
+    this some time ago, but Oracle now assures us that this is =
+definitely <EM=20
+    class=3DEmphasis>not</EM> true.=20
+    <P></P>
+    <DT class=3DListVariableTerm>Hints can't be used with the rule-based =
+optimizer=20
+
+    <DD class=3DListVariable>The large majority of hints can indeed be =
+applied to=20
+    SQL statements using the rule-based optimizer.=20
+    <P></P>
+    <DT class=3DListVariableTerm>SQL tuned for rule will run well in =
+cost=20
+    <DD class=3DListVariable>If you are very lucky it may, but when you =
+transfer=20
+    to cost, expect a handful of SQL statements that require tuning. =
+However,=20
+    there is not a single site that I have transferred and been unable =
+to tune.=20
+    <P></P>
+    <DT class=3DListVariableTerm>SQL tuned for cost will run well in =
+rule=20
+    <DD class=3DListVariable>This is highly unlikely, unless the code =
+was written=20
+    with knowledge of the rule-based optimizer.=20
+    <P></P>
+    <DT class=3DListVariableTerm>You can't run rule and cost together=20
+    <DD class=3DListVariable>You can run both together by setting the =
+INIT.ORA=20
+    parameter OPTIMIZER_MODE to CHOOSE, and having some tables analyzed =
+and=20
+    others not. Be careful that you don't join tables that <EM=20
+    class=3DEmphasis>are</EM> analyzed with tables that are <EM=20
+    class=3DEmphasis>not</EM> analyzed.=20
+    <P></P></DD></DL>
+  <H3 class=3DHeadB>Which Optimizer to Use?</H3>
+  <P class=3DBody>If you are currently using the rule-based optimizer, I =
+strongly=20
+  recommend that you transfer to the cost-based optimizer. Here is a =
+list of the=20
+  reasons why:</P>
+  <UL>
+    <LI class=3DListBullet>The time spent coding is reduced.=20
+    <P></P>
+    <LI class=3DListBullet>Coders do not need to be aware of the rules.=20
+    <P></P>
+    <LI class=3DListBullet>There are more features, and far more tuning =
+tools,=20
+    available for the cost-based optimizer.=20
+    <P></P>
+    <LI class=3DListBullet>The chances of third-party packages =
+performing well has=20
+    been improved considerably. Many third-party packages are written to =
+run on=20
+    DB2, Informix, and SQL*Server, as well as on Oracle. The code has =
+<EM=20
+    class=3DEmphasis>not</EM> been written to suit the rule-based =
+optimizer; it=20
+    has been written in a generic fashion.=20
+    <P></P>
+    <LI class=3DListBullet>End users can develop tuned code without =
+having to=20
+    learn a large set of optimizer rules.=20
+    <P></P>
+    <LI class=3DListBullet>The cost-based optimizer has improved =
+dramatically from=20
+    one version of Oracle to the next. Development of the rule-based =
+optimizer=20
+    is stalled.=20
+    <P></P>
+    <LI class=3DListBullet>There is less risk from adding new indexes.=20
+    <P></P>
+    <LI class=3DListBullet>There are many features that are available =
+only with=20
+    the cost-based optimizer. These features include recognition of =
+materialized=20
+    views, star transformation, the use of function indexes, and so on. =
+The=20
+    number of such features is huge, and as time goes on, the gap =
+between cost=20
+    and rule will widen.=20
+    <P></P>
+    <LI class=3DListBullet>Oracle has introduced features such as the =
+DBMS_STATS=20
+    package and outlines to get around known problems with the =
+inconsistency of=20
+    the cost-based optimizer across environments.=20
+    <P></P></LI></UL></BLOCKQUOTE><!-- End of sample chapter -->
+<P><B>Back to: <A =
+href=3D"http://www.oreilly.de/catalog/orsqltunpr/">Oracle SQL=20
+Tuning Pocket Reference</A></B></P><!-- O'Reilly Footer Begins Here -->
+<CENTER>
+<HR noShade SIZE=3D1>
+<FONT face=3D"Verdana, Arial, Helvetica" size=3D1><A=20
+href=3D"http://www.oreilly.de/"><B>oreilly.com&nbsp;Home</B></A> <B>| =
+</B><A=20
+href=3D"http://www.oreilly.de/sales/bookstores"><B>O'Reilly-Partnerbuchha=
+ndlungen</B></A>=20
+<B>| </B><A=20
+href=3D"http://www.oreilly.de/order_new/"><B>Bestellinformationen</B></A>=
+ <B>|=20
+</B><A=20
+href=3D"http://www.oreilly.de/oreilly/contact.html"><B>Kontakt<BR></B></A=
+><A=20
+href=3D"http://www.oreilly.de/international/"><B>International</B></A> =
+<B>| </B><A=20
+href=3D"http://www.oreilly.de/oreilly/about.html"><B>&Uuml;ber =
+O'Reilly</B></A> <B>|=20
+</B><A=20
+href=3D"http://www.oreilly.de/affiliates.html"><B>Affiliated&nbsp;Compani=
+es</B></A>=20
+<B>| </B><A=20
+href=3D"http://www.oreilly.de/privacy_policy.html"><B>Privacy&nbsp;Policy=
+</B></A>
+<P><EM>&copy; 2001, O'Reilly &amp; Associates, Inc.</EM><BR><A=20
+href=3D"mailto:webmaster@oreilly.de"><I>webmaster@oreilly.de</I></A></P><=
+/FONT></CENTER><!-- O'Reilly Footer Ends Here --></BODY></HTML>
+
+------=_NextPart_000_0065_01C482FF.BCB311E0
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.oreilly.de/graphics_new/catalog_header_buttons.gif
+
+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
+
+------=_NextPart_000_0065_01C482FF.BCB311E0
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.oreilly.de/catalog/covers/orsqltunpr.s.gif
+
+R0lGODlhcwC+APcAAAAAAP/////7/f/9/gAABScnKH19frq7vgIJGGxzfXN1ePj6/SIvQYGUrUNL
+VhQdKKm3yNHh9JefqbzEzmRtd83a6JGXnsDHzz1NXoSTon6IkqKstqiyvMLM1uTv+svR19TZ3sTI
+zFBdZ+Hk5gMHCev5//3///7///b398TIxgICAFhYV/7+/a2sp//31/79+v/puP+uE29JB3FjSnBJ
+B3lPCJCLg/+aCZleCv+fEuKkSP/IdP+bGYVZHUEtEc2mceuAAOp/AOJ6AHQ/AP+NAeqAAfOFAuyC
+AuuBA+qCBM90BOuDBeyDBveKB+yFB+uEB+yGCeyFCeyFC+yGC+uEC+WCC/6QDeyFDOyIDOyGDPWL
+DvGJDu2IDuyHDuuHDsh1DOyID+yHEP+XEuyKEeyJEfOME+2KE3xIC+2MFveTHPqWIS0dCZdjJbZ6
+Mv+0W8ePSPS2bfS6dlE/KJ6Lc+98AO1+AOp5AOp9AOp7AOl8AOl6AOl5AOB0AOp+Aet9A+p7A+1+
+BLllBOt/B+yCCOuAChQLAeuCDeyDDuyFD+yIFOuDFOyIF+2KHP+VH+6OId+JJe6SKe6XM2RAFu+a
+PPCdRPCiSfClUfGpWm1NKfKtYPKwZ+mqY/26cPS1cfS2c/q9efW6evW/hPbJl/fQo9m4lPjWsfvj
+x9vMvKuhlv3w4f327vl/AO13AOp0AOp3AOl2AOl0AOd1AOp2Bep6COp9C1QsBO2LJPOybvS2dvXC
+jpN1VsrBuP3z6Z6aluhxAOZxAPKucvOydfO0e/rdwvrfxvrjzvzo1bivp+hsAPS6iOZiAP349MC8
+uv/7+f7+/v39/fr6+vLy8u7u7urq6ubm5uPj4+Hh4d7e3tnZ2dXV1dLS0s7OzsrKysbGxsPDw8HB
+wb6+vry8vLu7u7m5ubOzs6urq6SkpJ2dnZiYmJOTk4yMjISEhHh4eHR0dHJycnBwcG1tbWlpaWRk
+ZF5eXk5OTkVFRTs7OzQ0NC0tLR8fHxgYGBEREQ0NDQgICAMDAwEBASwAAAAAcwC+AAAI/wABCBxI
+sKDBgwgTKlzIsKHDhQEiSoyY40aOixgzatzIsaPHjx1jfHmIIwbIHERgsJgYUSBLibF+xZpJs6bN
+mzhz6tyZ0xcRJQ/P3GAlM6eyUC8DuEza6Vanp1CjSp1KtSpVT1itat3xg0TCfQQljfpkNdOwpEuT
+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
+
+------=_NextPart_000_0065_01C482FF.BCB311E0--

@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>โครงการพัฒนาระบบสร้างและตรวจจับสัญญาณโทรศัพท์ บน TMS320C6713</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+</head>
+
+<body>
+<h3><font color="#990000">โครงการพัฒนาระบบสร้างและตรวจจับสัญญาณโทรศัพท์ บน TMS320C6713</font> 
+</h3>
+<p>&nbsp;</p>
+<table width="800" border="0">
+  <tr> 
+    <td width="400"><strong>นายภาณุพงศ์ อ่องสุวรรณ</strong></td>
+    <td width="150"><strong>44010363</strong></td>
+<td width="250"><a href=mailto:phanupong_14@hotmail.com>phanupong_14@hotmail.com</a></td>
+  </tr>
+  <tr> 
+    <td><strong>นายมาโนช ปัญญาวชิราภรณ์ </strong></td>
+    <td><strong>44010379</strong></td>
+<td><a href=mailto:xoazy@hotmail.com>xoazy@hotmail.com</a></td>
+  </tr>
+  <tr> 
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr> 
+    <td><strong>ผศ.ดร.อรฉัตร จิตต์โสภักตร์</strong></td>
+    <td><strong>อาจารย์ที่ปรึกษา</strong></td>
+<td></td>
+  </tr>
+  <tr> 
+    <td colspan="3"><br>
+      ภาควิชาวิศวกรรมคอมพิวเตอร์<br>
+      คณะวิศวกรรมศาสตร์<br>
+      สถาบันเทคโนโลยีพระจอมเกล้า เจ้าคุณทหารลาดกระบัง<br> <br>
+      ปีการศึกษา 2547</td>
+  </tr>
+</table>
+<p>&nbsp; </p>
+<table width="800" border="0">
+  <tr>
+    <td><strong>บทคัดย่อ</strong><br>
+      &nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td><div align="justify">โครงงานนี้เป็นการพัฒนา Library ระบบสร้างและตรวจจับสัญญาณโทรศัพท์ 
+        บน TMS320C6713 ซึ่งเป็น DSP Chip ของบริษัท Texas Instrument Inc. โดยจะทำการปรับ 
+        Code ให้อยู่ในรูปแบบของ TMS320 DSP Algorithm Standard ซึ่งประเภทของสัญญาณโทรศัพท์ที่จะต้องสามารถทำการสร้าง 
+        และตรวจจับให้ได้ ประกอบด้วย [1] สัญญาณ DTMF, [2] สัญญาณ R2 MF, และ [3] 
+        สัญญาณ CPT ซึ่งระบบที่สร้างขึ้นนั้นได้รับการออกแบบมาเพื่อทำงานที่ Sampling 
+        Rate เท่ากับ 8000 Hz ในการสร้างสัญญาณนั้นจะใช้ค่าคงที่ตารางค่าไซน์ขนาด 
+        512 ตัว มาทำการสร้างสัญญาณไซน์ส่วนประกอบ เพื่อนำไปใช้ในการสร้างสัญญาณทางโทรศัพท์ที่ต้องการ 
+        ซึ่งค่าจังหวะและความถี่ส่วนประกอบ ของสัญญาณที่ต้องการสร้างนั้น สามารถทำการกำหนดได้โดยผู้ใช้งาน 
+        Library ส่วนในการตรวจจับสัญญาณนั้น จะประกอบด้วย การตรวจสอบจังหวะของสัญญาณ, 
+        การตรวจสอบระดับค่าพลังงานของสัญญาณ, และการตรวจสอบความถี่ของสัญญาณไซน์ส่วนประกอบ 
+        โดยข้อกำหนดในการตรวจสอบต่างๆนั้น สามารถกำหนดได้โดยผู้ใช้งาน Library เช่นกัน 
+        สำหรับการตรวจสอบความถี่ของสัญญาณไซน์ส่วนประกอบนั้น จะใช้ Goertzel Algorithm 
+        ซึ่งได้รับการปรับปรุงมาจากการทำ Discrete Fourier Transform (DFT) โดยจะทำการแปลงสัญญาณให้อยู่ในรูปของ 
+        Frequency Domainเพื่อให้ในการหาว่ามีความถี่ของสัญญาณไซน์ส่วนประกอบใดที่เข้ามากับสัญญาณบ้าง 
+        จากการทดสอบ Library ของระบบสร้างและตรวจจับสัญญาณโทรศัพท์ พบว่า ส่วนสร้างสัญญาณสามารถทำงานได้ถูกต้องตามที่ออกแบบไว้ 
+        แต่ในส่วนของการตรวจจับสัญญาณนั้น พบว่า ยังมีปัญหาเล็กน้อยในส่วนของการเบี่ยงเบนความถี่ 
+        และปัญหาในกรณีที่จังหวะของสัญญาณก้ำกึ่งกับค่าที่ผู้ใช้กำหนด</div></td>
+  </tr>
+</table>
+<p>&nbsp;</p><hr>
+<h3><font color="#990000">THE DEVELOPMENT OF TELEPHONE SIGNAL GENERATOR AND DETECTOR 
+  ON TMS320C6713</font></h3>
+<p>&nbsp;</p>
+<table width="800" border="0">
+  <tr> 
+    <td width="400"><strong>Mr. Phanupong Ongsuwan</strong></td>
+    <td width="150"><strong>44010363</strong></td>
+<td width="250"><a href=mailto:phanupong_14@hotmail.com>phanupong_14@hotmail.com</a></td>
+  </tr>
+  <tr> 
+    <td><strong>Mr. Manoch Panyavachiraporn</strong></td>
+    <td><strong>44010379</strong></td>
+<td><a href=mailto:xoazy@hotmail.com>xoazy@hotmail.com</a></td>
+  </tr>
+  <tr> 
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr> 
+    <td><strong>Asst. Prof. Dr. Orachat Chitsobhuk</strong></td>
+    <td><strong>Advisor</strong></td>
+<td></td>
+  </tr>
+  <tr> 
+    <td colspan="3"><p><br>
+        Department of Computer Engineering,<br>
+        Faculty of Engineering,<br>
+        King Mongkut's Institute of Technology, Ladkrabang.<br>
+        Bangkok, Thailand.<br>
+        <br>
+        Academic Year 2004</p></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<table width="800" border="0">
+  <tr> 
+    <td><strong>Abstract</strong><br>
+      &nbsp;
+    </td>
+  </tr>
+  <tr> 
+    <td><div align="justify">This thesis is to develop the telephone signal generator 
+        and detector library on
+        TMS320 DSP Algorithm Standard approach on TMS320C6713, DSP Chip from Texas 
+        Instrument
+        Inc. The type of telephone signal that the library must able to generate 
+        and detect
+        are [1] DTMF, [2] R2 MF, and [3] CPT. The library is designed to work 
+        at 8000 Hz
+        sampling rate. The 512-element sine table is used in signal generation 
+        to produces
+        the composite sinusoid signal, and then the desired telephone signal is 
+        made of these
+        composite signals. The signal timing and the frequency of the composite 
+        sinusoid
+        signal can be chosen in signal generation. The signal detection consists 
+        of 3 sub
+        operations such as signal timing checking, signal power level checking, 
+        and composite
+        sinusoids’ frequency checking. The specification of signal detection can 
+        be defined
+        by the user, also. In composite sinusoids’ frequency checking operation, 
+        Goertzel
+        Algorithm, which has been developed from Discrete Fourier Transform (DFT), 
+        is used.
+        The Goertzel Algorithm transforms the input signal into frequency domain 
+        form. So it
+        can be used to find that the input signal contains the composite frequency 
+        of the
+        specific telephone signal or not. 
+        In the library testing phase, it shows that the generation library is 
+        work properly
+        as it has been designed. However, the detection library has some problems 
+        in
+        frequency deviation and in case of input signal timing is near the accept/reject 
+        edge
+        in signal detection specification.</div></td>
+  </tr>
+</table>
+<p>&nbsp;</p><hr>
+<center>[<a href=#top>TOP</a>]</center>
+<p>&nbsp;</p>
+</body>
+</html>

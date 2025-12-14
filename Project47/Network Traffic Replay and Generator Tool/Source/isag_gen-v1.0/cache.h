@@ -1,0 +1,71 @@
+#ifndef __CACHE_H__
+#define __CACHE_H__
+
+#define CACHEMAGIC "tcpprep"
+#define CACHEVERSION "04"
+#define CACHEDATASIZE 255
+#define CACHE_PACKETS_PER_BYTE 4    /* number of packets / byte */
+#define CACHE_BITS_PER_PACKET 2     /* number of bits / packet */
+
+/* 
+ * CACHEVERSION History:
+ * 01 - Inital release.  1 bit of data/packet (primary or secondary nic)
+ * 02 - 2 bits of data/packet (drop/send & primary or secondary nic)
+ * 03 - Write integers in network-byte order
+ * 04 - Increase num_packets from 32 to 64 bit integer
+ */
+
+struct cache_type {
+    char data[CACHEDATASIZE];
+    unsigned int packets;       /* number of packets tracked in data */
+    struct cache_type *next;
+};
+
+
+/*
+ * Each byte in cache_type.data represents CACHE_PACKETS_PER_BYTE (4) number of packets
+ * Each packet has CACHE_BITS_PER_PACKETS (2) bits of data.
+ * High Bit: 1 = send, 0 = don't send
+ * Low Bit: 1 = primary interface, 0 = secondary interface
+*/
+
+/*
+ * cache_file_header Data structure defining a file as a tcpprep cache file
+ * and it's version
+ * 
+ * If you need to enhance this struct, do so AFTER the version field and be sure
+ * to increment  CACHEVERSION
+ */
+struct cache_file_header {
+    char magic[8];
+    char version[4];
+    /* begin version 2 features */
+    /* version 3 puts everything in network-byte order */
+    /* version 4 makes num_packets a 64 bit int */
+    u_int64_t num_packets;      /* total # of packets in file */
+    u_int16_t packets_per_byte;
+    u_int16_t comment_len;      /* how long is the user comment? */
+};
+
+typedef struct cache_type CACHE;
+typedef struct cache_file_header CACHE_HEADER;
+
+u_int64_t write_cache(CACHE *, const int, u_int64_t);
+void add_cache(CACHE **, const int, const int);
+u_int64_t read_cache(char **, char *);
+int check_cache(char *, unsigned long);
+
+/* return values for check_cache */
+#define CACHE_ERROR -1
+#define CACHE_NOSEND 0
+#define CACHE_PRIMARY 1
+#define CACHE_SECONDARY 2
+
+/* macro to change a bitstring to 8 bits */
+#define BIT_STR(x) x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7]
+
+/* string of 8 zeros */
+#define EIGHT_ZEROS "\060\060\060\060\060\060\060\060"
+
+#endif
+

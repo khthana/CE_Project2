@@ -1,0 +1,2830 @@
+From: <Saved by Microsoft Internet Explorer 5>
+Subject: Gathering Optimizer Statistics
+Date: Sun, 15 Aug 2004 17:38:43 +0700
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----=_NextPart_000_0000_01C482EE.B5E2E630"
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0000_01C482EE.B5E2E630
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a96533/stats.htm
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML lang=3Den-US><HEAD><TITLE>Gathering Optimizer Statistics</TITLE>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<META http-equiv=3DContent-Language content=3Den-US>
+<META http-equiv=3DContent-Style-Type content=3Dtext/css>
+<META http-equiv=3DContent-Script-Type content=3Dtext/javascript>
+<META scheme=3Dhttp://www.robotstxt.org/ content=3Dall name=3Drobots>
+<META=20
+content=3D"Oracle9i Database Performance Tuning Guide and Reference =
+Release 2 (9.2)"=20
+name=3Ddoctitle>
+<META content=3DA96533-02 name=3Dpartno><LINK title=3DHome =
+href=3D"../../index.htm"=20
+type=3Dtext/html rel=3DStart><LINK title=3DCopyright=20
+href=3D"../../dcommon/html/cpyr.htm" type=3Dtext/html =
+rel=3DCopyright><LINK=20
+title=3DContents href=3D"toc.htm" type=3Dtext/html rel=3DContents><LINK =
+title=3DIndex=20
+href=3D"index.htm" type=3Dtext/html rel=3DIndex><LINK title=3DPrevious=20
+href=3D"opt_ops.htm" type=3Dtext/html rel=3DPrev><LINK title=3DNext =
+href=3D"data_acc.htm"=20
+type=3Dtext/html rel=3DNext><!-- link =
+href=3D"../../dcommon/css/doccd.css" rel=3D"Stylesheet"=0A=
+ title=3D"Default" type=3D"text/css" --><LINK=20
+title=3D"PDF version" href=3D"../a96533.pdf" type=3Dapplication/pdf>
+<META content=3D"MSHTML 6.00.2900.2180" name=3DGENERATOR></HEAD>
+<BODY>
+<DIV class=3Dheader>
+<P><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#BEGIN"=20
+name=3Dtop>Skip Headers</A></P>
+<TABLE cellSpacing=3D0 cellPadding=3D0 width=3D"100%" summary=3D"layout =
+table">
+  <TBODY>
+  <TR>
+    <TD vAlign=3Dtop align=3Dleft><FONT face=3D"Helvetica, Arial, =
+sans-serif"=20
+      color=3D#330099><STRONG>Oracle9<I>i</I> Database Performance =
+Tuning Guide=20
+      and Reference<BR>Release 2 (9.2)</STRONG><BR>Part Number=20
+    A96533-02</FONT></TD>
+    <TD vAlign=3Dbottom align=3Dright>
+      <TABLE cellSpacing=3D0 cellPadding=3D0 width=3D270 =
+summary=3D"layout table">
+        <TBODY>
+        <TR>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/index.htm"><IMG=
+=20
+            alt=3D"Go to Documentation Home"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/pro=
+dicon.gif"=20
+            border=3D0><BR><FONT size=3D-2>Home</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/nav/docindex.ht=
+m"><IMG=20
+            alt=3D"Go to Book List"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/boo=
+kicon.gif"=20
+            border=3D0><BR><FONT size=3D-2>Book List</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/toc.htm"><IMG=20
+            alt=3D"Go to Table of Contents"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/con=
+ticon.gif"=20
+            border=3D0><BR><FONT size=3D-2>Contents</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/index.htm"><IMG=20
+            alt=3D"Go to Index"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/ind=
+xicon.gif"=20
+            border=3D0><BR><FONT size=3D-2>Index</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/mix.920/a96625/=
+toc.htm"><IMG=20
+            alt=3D"Go to Master Index"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/mix=
+.gif"=20
+            border=3D0><BR><FONT =
+size=3D-2>Master&nbsp;Index</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/html/fe=
+edback.htm"><IMG=20
+            alt=3D"Go to Feedback page"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/fee=
+dback.gif"=20
+            border=3D0><BR><FONT=20
+  =
+size=3D-2>Feedback</FONT></A></TD></TR></TBODY></TABLE></TD></TR></TBODY>=
+</TABLE>
+<HR>
+
+<TABLE cellSpacing=3D0 cellPadding=3D0 width=3D"100%" summary=3D"layout =
+table">
+  <TBODY>
+  <TR>
+    <TD vAlign=3Dtop align=3Dleft>
+      <TABLE cellSpacing=3D0 cellPadding=3D0 width=3D90 align=3Dleft=20
+      summary=3D"layout table">
+        <TBODY>
+        <TR>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/opt_ops.htm"><IMG=20
+            alt=3D"Go to previous page"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/lar=
+row.gif"=20
+            border=3D0></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/data_acc.htm"><IMG=20
+            alt=3D"Go to next page"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/rar=
+row.gif"=20
+            border=3D0></A></TD></TR></TBODY></TABLE></TD>
+    <TD vAlign=3Dtop align=3Dright><A=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33.pdf"><FONT=20
+      size=3D-2>View PDF</FONT></A></TD></TR></TBODY></TABLE><A =
+name=3DBEGIN></A></DIV>
+<DIV class=3DIND><!-- End Header --><A =
+name=3D13547></A><!--TOC=3DTitle-"13547"-->
+<H1 class=3DTitle><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>3<BR><A=20
+name=3DPFGRF003>Gathering Optimizer =
+Statistics</A></FONT></H1><!--/TOC=3DTitle--><A=20
+name=3D13548></A>
+<P class=3DBP>This chapter explains why statistics are important for the =
+
+cost-based optimizer and how to gather and use statistics.</P><A =
+name=3D23330></A>
+<P class=3DBP>The chapter contains the following sections:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D14956></A><A=20
+  =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#25018">Understanding=20
+  Statistics</A>=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D25289></A><A=20
+  =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#26713">Generating=20
+  Statistics</A>=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D25805></A><A=20
+  =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#31058">Using=20
+  Statistics</A>=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D27237></A><A=20
+  =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#27027">Using=20
+  Histograms</A> </LI></UL><A name=3D25018></A><!--TOC=3Dh1-"25018"-->
+<H2 class=3DH1><FONT face=3D"Arial, Helvetica, sans-serif"=20
+color=3D#330099>Understanding Statistics</FONT></H2><!--/TOC=3Dh1--><A=20
+name=3D26163></A>
+<P class=3DBP>As database administrator, you can generate statistics =
+that quantify=20
+the data distribution and storage characteristics of tables, columns, =
+indexes,=20
+and partitions. The cost-based optimization approach uses these =
+statistics to=20
+calculate the selectivity of predicates and to estimate the cost of each =
+
+execution plan. <STRONG class=3DGlossaryTerm>Selectivity</STRONG> is the =
+fraction=20
+of rows in a table that the SQL statement's predicate chooses. The =
+optimizer=20
+uses the selectivity of a predicate to estimate the cost of a particular =
+access=20
+method and to determine the optimal join order and join method.</P><A=20
+name=3D27856></A>
+<P class=3DBP>The statistics are stored in the data dictionary and can =
+be exported=20
+from one database and imported into another. For example, you might want =
+to=20
+transfer your statistics to a test system to simulate your production=20
+environment.</P><A name=3D29293></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNote dir=3Dltr title=3D"This is a layout table to format =
+a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNote>
+    <TD class=3DNote>
+      <HR>
+      <A name=3D29296></A><FONT face=3D"Arial, Helvetica, =
+sans-serif"><STRONG=20
+      class=3DNH>Note:</STRONG></FONT> <A name=3D29297></A>
+      <P class=3DNB>The statistics mentioned in this section are CBO =
+statistics,=20
+      not instance performance statistics visible through =
+<CODE>V$</CODE>=20
+      views.</P>
+      <HR>
+    </TD></TR></TBODY></TABLE></DIV><A name=3D30297></A>
+<P class=3DBP>You should gather statistics periodically for objects =
+where the=20
+statistics become stale over time because of changing data volumes or =
+changes in=20
+column values. New statistics should be gathered after a schema object's =
+data or=20
+structure are modified in ways that make the previous statistics =
+inaccurate. For=20
+example, after loading a significant number of rows into a table, =
+collect new=20
+statistics on the number of rows. After updating data in a table, you do =
+not=20
+need to collect new statistics on the number of rows, but you might need =
+new=20
+statistics on the average row length.</P><A name=3D25341></A>
+<P class=3DBP>Use the <CODE>DBMS_STATS</CODE> package to generate=20
+statistics.</P><A name=3D27890></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNoteAlso>
+    <TD class=3DNoteAlso><A name=3D27894></A><FONT=20
+      face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH>See=20
+      Also:</STRONG></FONT> <A name=3D27895></A>
+      <P class=3DNB><EM class=3DItalic><A class=3D"xlinkSRC ARPLS059"=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/appdev.920/a966=
+12/d_stats.htm#ARPLS059">Oracle9i=20
+      Supplied PL/SQL Packages and Types=20
+Reference</A></EM></P></TD></TR></TBODY></TABLE></DIV><A =
+name=3D25296></A>
+<P class=3DBP>Statistics generated include the following:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D25274></A>Table statistics=20
+  <UL class=3DLD2>
+    <LI class=3DLD2 type=3DCIRCLE><A name=3D25275></A>Number of rows=20
+    <LI class=3DLD2 type=3DCIRCLE><A name=3D25276></A>Number of blocks=20
+    <LI class=3DLD2 type=3DCIRCLE><A name=3D25278></A>Average row length =
+</LI></UL>
+  <LI class=3DLB1 type=3Ddisc><A name=3D25279></A>Column statistics=20
+  <UL class=3DLD2>
+    <LI class=3DLD2 type=3DCIRCLE><A name=3D25280></A>Number of distinct =
+values (NDV)=20
+    in column=20
+    <LI class=3DLD2 type=3DCIRCLE><A name=3D30430></A>Number of nulls in =
+column=20
+    <LI class=3DLD2 type=3DCIRCLE><A name=3D30431></A>Data distribution =
+(histogram)=20
+    </LI></UL>
+  <LI class=3DLB1 type=3Ddisc><A name=3D30437></A>Index statistics=20
+  <UL class=3DLD2>
+    <LI class=3DLD2 type=3DCIRCLE><A name=3D25284></A>Number of leaf =
+blocks=20
+    <LI class=3DLD2 type=3DCIRCLE><A name=3D25285></A>Levels=20
+    <LI class=3DLD2 type=3DCIRCLE><A name=3D25019></A>Clustering factor =
+</LI></UL>
+  <LI class=3DLB1 type=3Ddisc><A name=3D28287></A>System statistics=20
+  <UL class=3DLD2>
+    <LI class=3DLD2 type=3DCIRCLE><A name=3D28735></A>I/O performance =
+and utilization=20
+    <LI class=3DLD2 type=3DCIRCLE><A name=3D28736></A>CPU performance =
+and utilization=20
+    </LI></UL></LI></UL><A name=3D26713></A><!--TOC=3Dh1-"26713"-->
+<H2 class=3DH1><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Generating=20
+Statistics</FONT></H2><!--/TOC=3Dh1--><A name=3D25599></A>
+<P class=3DBP>Because the cost-based approach relies on statistics, you =
+should=20
+generate statistics for all tables and clusters and all indexes accessed =
+by your=20
+SQL statements before using the cost-based approach. If the size and =
+data=20
+distribution of the tables change frequently, then regenerate these =
+statistics=20
+regularly to ensure the statistics accurately represent the data in the=20
+tables.</P><A name=3D25600></A>
+<P class=3DBP>Oracle generates statistics using the following =
+techniques:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D25601></A>Estimation based on =
+random data=20
+  sampling=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D25602></A>Exact computation=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D25603></A>User-defined =
+statistics collection=20
+  methods </LI></UL><A name=3D29308></A>
+<P class=3DBP>To perform an exact computation, Oracle requires enough =
+space to=20
+perform a scan and sort of the table. If there is not enough space in =
+memory,=20
+then temporary space might be required. For estimations, Oracle requires =
+enough=20
+space to perform a scan and sort of only the rows in the requested =
+sample of the=20
+table. For indexes, computation does not take up as much time or =
+space.</P><A=20
+name=3D26693></A>
+<P class=3DBP>Some statistics are computed exactly, such as the number =
+of data=20
+blocks currently containing data in a table or the depth of an index =
+from its=20
+root block to its leaf blocks.</P><A name=3D31603></A>
+<P class=3DBP>Oracle Corporation recommends setting the=20
+<CODE>ESTIMATE_PERCENT</CODE> parameter of the <CODE>DBMS_STATS</CODE> =
+gathering=20
+procedures to <CODE>DBMS_STATS</CODE>.<CODE>AUTO_SAMPLE_SIZE</CODE> to =
+maximize=20
+performance gains while achieving necessary statistical accuracy.=20
+<CODE>AUTO_SAMPLE_SIZE</CODE> lets Oracle determine the best sample size =
+for=20
+good statistics. For example, to collect table and column statistics for =
+all=20
+tables in the <CODE>OE</CODE> schema with auto-sampling:</P><PRE =
+class=3DCE><A name=3D29843></A>EXECUTE =
+DBMS_STATS.GATHER_SCHEMA_STATS('OE',DBMS_STATS.AUTO_SAMPLE_SIZE);
+<A name=3D29867></A>
+</PRE><A name=3D27917></A>
+<P class=3DBP>To estimate statistics, Oracle selects a random sample of =
+data. You=20
+can specify the sampling percentage and whether sampling should be based =
+on rows=20
+or blocks. Oracle Corporation recommends using=20
+<CODE>DBMS_STATS</CODE>.<CODE>AUTO_SAMPLE_SIZE</CODE> for the sampling=20
+percentage. When in doubt, choose row sampling.</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D26649></A><STRONG =
+class=3DGlossaryTerm>Row=20
+  sampling</STRONG> reads rows without regard to their physical =
+placement on=20
+  disk. This provides the most random data for estimates, but it can =
+result in=20
+  reading more data than necessary. For example, in the worst case a row =
+sample=20
+  might select one row from each block, requiring a full scan of the =
+table or=20
+  index.=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D26652></A><STRONG =
+class=3DGlossaryTerm>Block=20
+  sampling</STRONG> reads a random sample of blocks and uses all of the =
+rows in=20
+  those blocks for estimates. This reduces the amount of I/O activity =
+for a=20
+  given sample size, but it can reduce the randomness of the sample if =
+rows are=20
+  not randomly distributed on disk. Block sampling is not available for =
+index=20
+  statistics. </LI></UL><A name=3D25606></A>
+<P class=3DBP>When you generate statistics for a table, column, or =
+index, if the=20
+data dictionary already contains statistics for the object, then Oracle =
+updates=20
+the existing statistics. Oracle also invalidates any currently parsed =
+SQL=20
+statements that access the object.</P><A name=3D25607></A>
+<P class=3DBP>The next time such a statement executes, the optimizer =
+automatically=20
+chooses a new execution plan based on the new statistics. Distributed =
+statements=20
+issued on remote databases that access the analyzed objects use the new=20
+statistics the next time Oracle parses them.</P><A name=3D26301></A>
+<P class=3DBP>When you associate a statistics type with a column or =
+domain index,=20
+Oracle calls the statistics collection method in the statistics type, if =
+you=20
+analyze the column or domain index.</P><A =
+name=3D26451></A><!--TOC=3Dh2-"26451"-->
+<H3 class=3DH2><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Getting=20
+Statistics for Partitioned Schema Objects</FONT></H3><!--/TOC=3Dh2--><A=20
+name=3D26452></A>
+<P class=3DBP>Partitioned schema objects can contain multiple sets of =
+statistics.=20
+They can have statistics that refer to any of the following:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D32367></A>The entire schema =
+object as a whole=20
+  (global statistics)=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D32371></A>An individual =
+partition=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D32372></A>An individual =
+subpartition of a=20
+  composite partitioned object </LI></UL><A name=3D33840></A>
+<P class=3DBP>Unless the query predicate narrows the query to a single =
+partition,=20
+the optimizer uses the global statistics. Because most queries are not =
+likely to=20
+be this restrictive, it is most important to have accurate global =
+statistics.=20
+Intuitively, it can seem that generating global statistics from =
+partition-level=20
+statistics is straightforward; however, this is true only for some of =
+the=20
+statistics. For example, it is very difficult to figure out the number =
+of=20
+distinct values for a column from the number of distinct values found in =
+each=20
+partition, because of the possible overlap in values. Therefore, =
+actually=20
+gathering global statistics with the <CODE>DBMS_STATS</CODE> package is =
+highly=20
+recommended, rather than calculating them with the <CODE>ANALYZE</CODE>=20
+statement.</P><A name=3D36113></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNote dir=3Dltr title=3D"This is a layout table to format =
+a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNote>
+    <TD class=3DNote>
+      <HR>
+      <A name=3D36103></A><FONT face=3D"Arial, Helvetica, =
+sans-serif"><STRONG=20
+      class=3DNH>Note:</STRONG></FONT> <A name=3D36104></A>
+      <P class=3DNB>Oracle Corporation strongly recommends that you use =
+the=20
+      <CODE>DBMS_STATS</CODE> package rather than <CODE>ANALYZE</CODE> =
+to=20
+      collect optimizer statistics. That package lets you collect =
+statistics in=20
+      parallel, collect global statistics for partitioned objects, and =
+fine tune=20
+      your statistics collection in other ways. Further, the cost-based=20
+      optimizer will eventually use only statistics that have been =
+collected by=20
+      <CODE>DBMS_STATS</CODE>. See <EM class=3DItalic><A =
+class=3D"olinkSRC ARPLS"=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/appdev.920/a966=
+12/toc.htm">Oracle9i=20
+      Supplied PL/SQL Packages and Types Reference</A></EM> for more =
+information=20
+      on this package. <A name=3D36110></A></P>
+      <P class=3DNB>However, you must use the <CODE>ANALYZE</CODE> =
+statement=20
+      rather than <CODE>DBMS_STATS</CODE> for statistics collection not =
+related=20
+      to the cost-based optimizer, such as:</P>
+      <UL class=3DNL>
+        <LI class=3DNL type=3Ddisc><A name=3D36111></A>To use the=20
+        <CODE>VALIDATE</CODE> or <CODE>LIST CHAINED ROWS</CODE> clauses=20
+        <LI class=3DNL type=3Ddisc><A name=3D36112></A>To collect =
+information on=20
+        freelist blocks </LI></UL>
+      <HR>
+    </TD></TR></TBODY></TABLE></DIV><A =
+name=3D33861></A><!--TOC=3Dh2-"33861"-->
+<H3 class=3DH2><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Using the=20
+DBMS_STATS Package</FONT></H3><!--/TOC=3Dh2--><A name=3D33864></A>
+<P class=3DBP>The PL/SQL package <CODE>DBMS_STATS</CODE> lets you =
+generate and=20
+manage statistics for cost-based optimization. You can use this package =
+to=20
+gather, modify, view, export, import, and delete statistics. You can =
+also use=20
+this package to identify or name statistics gathered.</P><A =
+name=3D26479></A>
+<P class=3DBP>The <CODE>DBMS_STATS</CODE> package can gather statistics =
+on=20
+indexes, tables, columns, and partitions, as well as statistics on all =
+schema=20
+objects in a schema or database. It does not gather cluster =
+statistics--you can=20
+use <CODE>DBMS_STATS</CODE> to gather statistics on the individual =
+tables=20
+instead of the whole cluster.</P><A name=3D26480></A>
+<P class=3DBP>The statistics-gathering operations can run either =
+serially or in=20
+parallel. Index statistics are not gathered in parallel.</P><A =
+name=3D26488></A>
+<P class=3DBP>For partitioned tables and indexes, =
+<CODE>DBMS_STATS</CODE> can=20
+gather separate statistics for each partition, as well as global =
+statistics for=20
+the entire table or index. Similarly, for composite partitioning,=20
+<CODE>DBMS_STATS</CODE> can gather separate statistics for =
+subpartitions,=20
+partitions, and the entire table or index. Depending on the SQL =
+statement being=20
+optimized, the optimizer can choose to use either the partition (or=20
+subpartition) statistics or the global statistics.</P><A =
+name=3D25828></A>
+<P class=3DBP><CODE>DBMS_STATS</CODE> gathers only statistics needed for =
+
+cost-based optimization; it does not gather other statistics. For =
+example, the=20
+table statistics gathered by <CODE>DBMS_STATS</CODE> include the number =
+of rows,=20
+number of blocks currently containing data, and average row length, but =
+not the=20
+number of chained rows, average free space, or number of unused data=20
+blocks.</P><A name=3D26517></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNoteAlso>
+    <TD class=3DNoteAlso><A name=3D26505></A><FONT=20
+      face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH><STRONG=20
+      class=3DBold>See Also</STRONG>:</STRONG></FONT> <A =
+name=3D26506></A>
+      <UL class=3DNL>
+        <LI class=3DNL type=3Ddisc><A name=3D27694></A><EM =
+class=3DItalic><A=20
+        class=3D"xlinkSRC ARPLS059"=20
+        =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/appdev.920/a966=
+12/d_stats.htm#ARPLS059">Oracle9i=20
+        Supplied PL/SQL Packages and Types Reference</A></EM> for more=20
+        information about the <CODE>DBMS_STATS</CODE> package=20
+        <LI class=3DNL type=3Ddisc><A name=3D27693></A><EM =
+class=3DItalic><A=20
+        class=3D"xlinkSRC ADDCI008"=20
+        =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/appdev.920/a965=
+95/dci08opt.htm#ADDCI008">Oracle9i=20
+        Data Cartridge Developer's Guide</A></EM> for more information =
+about=20
+        user-defined statistics =
+</LI></UL></TD></TR></TBODY></TABLE></DIV><A=20
+name=3D32385></A><A name=3D32381></A><!--TOC=3Dh3-"32381"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Gathering=20
+Statistics with the DBMS_STATS Package</FONT></H4><!--/TOC=3Dh3--><A=20
+name=3D25643></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#25647">Table&nbsp;3-1</A>=20
+lists the procedures in the <CODE>DBMS_STATS</CODE> package for =
+gathering=20
+statistics:</P>
+<H5 class=3DTT><A name=3D28885></A><A name=3D25647></A><STRONG><FONT=20
+face=3D"Arial, Helvetica, sans-serif"><EM>Table 3-1 <STRONG =
+class=3DBold>Statistics=20
+Gathering Procedures in the DBMS_STATS=20
+Package</STRONG></EM></FONT></STRONG></H5>
+<TABLE class=3DFormal dir=3Dltr title=3D"" cellSpacing=3D0 =
+cellPadding=3D3 rules=3Dgroups=20
+width=3D"100%" summary=3D"" border=3D1 frame=3Dhsides>
+  <THEAD>
+  <TR class=3DFormal>
+    <TH class=3DFormal vAlign=3Dbottom scope=3Dcol align=3Dleft><A=20
+      name=3D25651></A><FONT=20
+      face=3D"Arial, Helvetica, =
+sans-serif"><STRONG>Procedure</STRONG></FONT></TH>
+    <TH class=3DFormal vAlign=3Dbottom scope=3Dcol align=3Dleft><A=20
+      name=3D25653></A><FONT=20
+      face=3D"Arial, Helvetica, =
+sans-serif"><STRONG>Collects</STRONG></FONT></TH></TR></THEAD>
+  <TBODY>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D25656></A>
+      <P class=3DTB><CODE>GATHER_INDEX_STATS</CODE></P></TD>
+    <TD class=3DFormal><A name=3D25658></A>
+      <P class=3DTB>Index statistics</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D25661></A>
+      <P class=3DTB><CODE>GATHER_TABLE_STATS</CODE></P></TD>
+    <TD class=3DFormal><A name=3D25663></A>
+      <P class=3DTB>Table, column, and index statistics</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D25666></A>
+      <P class=3DTB><CODE>GATHER_SCHEMA_STATS</CODE></P></TD>
+    <TD class=3DFormal><A name=3D25668></A>
+      <P class=3DTB>Statistics for all objects in a schema</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D25671></A>
+      <P class=3DTB><CODE>GATHER_DATABASE_STATS</CODE></P></TD>
+    <TD class=3DFormal><A name=3D25673></A>
+      <P class=3DTB>Statistics for all objects in a =
+database</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D28738></A>
+      <P class=3DTB><CODE>GATHER_SYSTEM_STATS</CODE></P></TD>
+    <TD class=3DFormal><A name=3D28740></A>
+      <P class=3DTB>CPU and I/O statistics for the=20
+system</P></TD></TR></TBODY></TABLE><A name=3D25685></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNoteAlso>
+    <TD class=3DNoteAlso><A name=3D25678></A><FONT=20
+      face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH>See=20
+      Also:</STRONG></FONT> <A name=3D25679></A>
+      <P class=3DNB><EM class=3DItalic><A class=3D"xlinkSRC ARPLS059"=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/appdev.920/a966=
+12/d_stats.htm#ARPLS059">Oracle9i=20
+      Supplied PL/SQL Packages and Types Reference</A></EM> for syntax =
+and=20
+      examples of all <CODE>DBMS_STATS</CODE>=20
+procedures</P></TD></TR></TBODY></TABLE></DIV><A =
+name=3D28810></A><!--TOC=3Dh3-"28810"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Gathering=20
+System Statistics</FONT></H4><!--/TOC=3Dh3--><A name=3D28811></A>
+<P class=3DBP>System statistics enable the optimizer to consider a =
+system's I/O=20
+and CPU performance and utilization. For each plan candidate, the =
+optimizer=20
+computes estimates for I/O and CPU costs. It is important to know the =
+system=20
+characteristics to pick the most efficient plan with optimal proportion =
+between=20
+I/O and CPU cost.</P><A name=3D28812></A>
+<P class=3DBP>System I/O characteristics depend on many factors and do =
+not stay=20
+constant all the time. Using system statistics management routines, =
+database=20
+administrators can capture statistics in the interval of time when the =
+system=20
+has the most common workload. For example, database applications can =
+process=20
+OLTP transactions during the day and run OLAP reports at night. =
+Administrators=20
+can gather statistics for both states and activate appropriate OLTP or =
+OLAP=20
+statistics when needed. This enables the optimizer to generate relevant =
+costs=20
+with respect to available system resource plans.</P><A name=3D28813></A>
+<P class=3DBP>When Oracle generates system statistics, it analyzes =
+system activity=20
+in a specified period of time. Unlike table, index, or column =
+statistics, Oracle=20
+does not invalidate already parsed SQL statements when system statistics =
+get=20
+updated. All new SQL statements are parsed using new statistics. Oracle=20
+Corporation highly recommends that you gather system statistics.</P><A=20
+name=3D28814></A>
+<P class=3DBP>The =
+<CODE>DBMS_STATS</CODE>.<CODE>GATHER_SYSTEM_STATS</CODE> routine=20
+collects system statistics in a user-defined timeframe. You can also set =
+system=20
+statistics values explicitly using=20
+<CODE>DBMS_STATS</CODE>.<CODE>SET_SYSTEM_STATS</CODE>. Use=20
+<CODE>DBMS_STATS</CODE>.<CODE>GET_SYSTEM_STATS</CODE> to verify system=20
+statistics.</P><A name=3D28819></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNote dir=3Dltr title=3D"This is a layout table to format =
+a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNote>
+    <TD class=3DNote>
+      <HR>
+      <A name=3D28817></A><FONT face=3D"Arial, Helvetica, =
+sans-serif"><STRONG=20
+      class=3DNH>Note:</STRONG></FONT> <A name=3D28818></A>
+      <P class=3DNB>You must have DBA privileges to update dictionary =
+system=20
+      statistics.</P>
+      <HR>
+    </TD></TR></TBODY></TABLE></DIV><A name=3D33255></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#33258">Example&nbsp;3-1</A>=20
+shows database applications processing OLTP transactions during the day =
+and=20
+running reports at night. First, system statistics must be collected. =
+The values=20
+in this example are user-defined; in other words, you must determine an=20
+appropriate time interval and name for your environment.</P><A =
+name=3D33258></A>
+<H4 class=3DET><FONT face=3D"Arial, Helvetica, sans-serif"><EM>Example =
+3-1=20
+Generating System Statistics</EM></FONT></H4><A name=3D33259></A>
+<P class=3DBP>Gather statistics during the day. Gathering ends after 720 =
+minutes=20
+and is stored in the <CODE>mystats</CODE> table:</P><PRE class=3DCE><A =
+name=3D29363></A>BEGIN
+<A name=3D34720></A>DBMS_STATS.GATHER_SYSTEM_STATS(
+<A name=3D34721></A>             gathering_mode =3D&gt; 'interval',
+<A name=3D34722></A>             interval =3D&gt; 720,
+<A name=3D28825></A>             stattab =3D&gt; 'mystats',
+<A name=3D28826></A>             statid =3D&gt; 'OLTP');
+<A name=3D28827></A>END;
+<A name=3D28828></A>/
+<A name=3D28829></A>
+</PRE><A name=3D28830></A>
+<P class=3DBP>Gather statistics during the night. Gathering ends after =
+720 minutes=20
+and is stored in the <CODE>mystats</CODE> table:</P><PRE class=3DCE><A =
+name=3D28831></A>BEGIN
+<A name=3D34733></A>DBMS_STATS.GATHER_SYSTEM_STATS(
+<A name=3D34734></A>             gathering_mode =3D&gt; 'interval',
+<A name=3D34735></A>             interval =3D&gt; 720,
+<A name=3D34736></A>             stattab =3D&gt; 'mystats',
+<A name=3D34737></A>             statid =3D&gt; 'OLAP');
+<A name=3D28835></A>END;
+<A name=3D28836></A>/
+<A name=3D28837></A>
+</PRE><A name=3D28838></A>
+<P class=3DBP>If appropriate, you can switch between the statistics =
+gathered. It=20
+is possible to automate this process by submitting a job to update the=20
+dictionary with appropriate statistics.</P><A name=3D29615></A>
+<P class=3DBP>During the day, the following jobs import the OLTP =
+statistics for=20
+the daytime run:</P><PRE class=3DCE><A name=3D28839></A>VARIABLE jobno =
+number;
+<A name=3D28840></A>BEGIN
+<A name=3D28841></A>   DBMS_JOB.SUBMIT(:jobno,
+<A name=3D28842></A>      =
+'DBMS_STATS.IMPORT_SYSTEM_STATS(''mystats'',''OLTP'');'
+<A name=3D28843></A>      SYSDATE, 'SYSDATE + 1');
+<A name=3D28844></A>   COMMIT;
+<A name=3D28845></A>END;
+<A name=3D28846></A>/
+<A name=3D28847></A>
+</PRE><A name=3D29391></A>
+<P class=3DBP>During the night, the following jobs import the OLAP =
+statistics for=20
+the nighttime run:</P><PRE class=3DCE><A name=3D29389></A>BEGIN
+<A name=3D28848></A>   DBMS_JOB.SUBMIT(:jobno,
+<A name=3D28849></A>      =
+'DBMS_STATS.IMPORT_SYSTEM_STATS(''mystats'',''OLAP'');'
+<A name=3D28850></A>      SYSDATE + 0.5, 'SYSDATE + 1');
+<A name=3D28851></A>   COMMIT;
+<A name=3D28852></A>END;
+<A name=3D28853></A>/
+</PRE><A name=3D28863></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNoteAlso>
+    <TD class=3DNoteAlso><A name=3D28856></A><FONT=20
+      face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH>See=20
+      Also:</STRONG></FONT> <A name=3D28862></A>
+      <P class=3DNB><A class=3D"xlinkSRC ARPLS059"=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/appdev.920/a966=
+12/d_stats.htm#ARPLS059"><EM=20
+      class=3DItalic>Oracle9i Supplied PL/SQL Packages and Types=20
+      Reference</EM></A> for detailed information on the procedures in =
+the=20
+      <CODE>DBMS_STATS</CODE> package for implementing system=20
+  statistics</P></TD></TR></TBODY></TABLE></DIV><A =
+name=3D28808></A><!--TOC=3Dh3-"28808"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Gathering=20
+Index Statistics</FONT></H4><!--/TOC=3Dh3--><A name=3D26597></A>
+<P class=3DBP>Oracle can gather some statistics automatically while =
+creating or=20
+rebuilding a B-tree or bitmap index. The <CODE>COMPUTE</CODE>=20
+<CODE>STATISTICS</CODE> option of <CODE>CREATE</CODE> <CODE>INDEX</CODE> =
+or=20
+<CODE>ALTER</CODE> <CODE>INDEX</CODE> ... <CODE>REBUILD</CODE> enables =
+this=20
+gathering of statistics.</P><A name=3D26598></A>
+<P class=3DBP>The statistics that Oracle gathers for the =
+<CODE>COMPUTE</CODE>=20
+<CODE>STATISTICS</CODE> option depend on whether the index is =
+partitioned or=20
+nonpartitioned.</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D26599></A>For a nonpartitioned =
+index, Oracle=20
+  gathers index, table, and column statistics while creating or =
+rebuilding the=20
+  index. In a concatenated-key index, the column statistics refer only =
+to the=20
+  leading column of the key.=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D26600></A>For a partitioned =
+index, Oracle does=20
+  not gather any table or column statistics while creating the index or=20
+  rebuilding its partitions.=20
+  <UL class=3DLD2>
+    <LI class=3DLD2 type=3DCIRCLE><A name=3D26601></A>While creating a =
+partitioned=20
+    index, Oracle gathers index statistics for each partition and for =
+the entire=20
+    index. If the index uses composite partitioning, then Oracle also =
+gathers=20
+    statistics for each subpartition.=20
+    <LI class=3DLD2 type=3DCIRCLE><A name=3D26602></A>While rebuilding a =
+partition or=20
+    subpartition of an index, Oracle gathers index statistics only for =
+that=20
+    partition or subpartition. </LI></UL></LI></UL><A name=3D26603></A>
+<P class=3DBP>To ensure correctness of the statistics, Oracle always =
+uses base=20
+tables when creating an index with the <CODE>COMPUTE</CODE>=20
+<CODE>STATISTICS</CODE> option, even if another index is available that =
+could be=20
+used to create the index.</P><A name=3D26593></A>
+<P class=3DBP>If you do not use the <CODE>COMPUTE</CODE> =
+<CODE>STATISTICS</CODE>=20
+clause, or if you have made significant changes to the data, then use =
+the=20
+<CODE>DBMS_STATS</CODE>.<CODE>GATHER_INDEX_STATS</CODE> procedure to =
+collect=20
+index statistics.</P><A name=3D25701></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNoteAlso>
+    <TD class=3DNoteAlso><A name=3D25694></A><FONT=20
+      face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH><STRONG=20
+      class=3DBold>See Also</STRONG>:</STRONG></FONT> <A =
+name=3D25695></A>
+      <P class=3DNB><EM class=3DItalic><A class=3D"olinkSRC SQLRF"=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+40/toc.htm">Oracle9i=20
+      SQL Reference</A></EM> for more information about the =
+<CODE>COMPUTE</CODE>=20
+      <CODE>STATISTICS</CODE> =
+clause</P></TD></TR></TBODY></TABLE></DIV><A=20
+name=3D33195></A><!--TOC=3Dh4-"33195"-->
+<H5 class=3DH4><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Gathering=20
+Statistics for Function-Based Indexes</FONT></H5><!--/TOC=3Dh4--><A=20
+name=3D33131></A>
+<P class=3DBP>You should analyze the table after creating a =
+function-based index,=20
+to allow Oracle to collect column statistics equivalent information for =
+the=20
+expression. Optionally, you can collect histograms for the index =
+expressions by=20
+specifying <CODE>for</CODE> <CODE>all</CODE> <CODE>hidden</CODE>=20
+<CODE>columns</CODE> <CODE>size</CODE> =
+<EM><CODE>number_of_buckets</CODE></EM>=20
+in the <CODE>METHOD_OPT</CODE> argument to the <CODE>DBMS_STATS</CODE>=20
+procedures.</P><A name=3D33284></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNoteAlso>
+    <TD class=3DNoteAlso><A name=3D33290></A><FONT=20
+      face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH>See=20
+      Also:</STRONG></FONT> <A name=3D33291></A>
+      <UL class=3DNL>
+        <LI class=3DNL type=3Ddisc><A name=3D33376></A><A=20
+        =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#27124">"Using=20
+        Histograms"</A><A=20
+        =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#27124"></A>=20
+
+        <LI class=3DNL type=3Ddisc><A name=3D33380></A><EM =
+class=3DItalic><A=20
+        class=3D"olinkSRC ARPLS"=20
+        =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/appdev.920/a966=
+12/toc.htm">Oracle9i=20
+        Supplied PL/SQL Packages and Types Reference</A></EM> for the =
+syntax of=20
+        the <CODE>METHOD_OPT</CODE> argument=20
+</LI></UL></TD></TR></TBODY></TABLE></DIV><A =
+name=3D33117></A><!--TOC=3Dh3-"33117"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Gathering=20
+New Optimizer Statistics</FONT></H4><!--/TOC=3Dh3--><A name=3D25704></A>
+<P class=3DBP>Before gathering new statistics for a particular schema, =
+use the=20
+<CODE>DBMS_STATS</CODE>.<CODE>EXPORT_SCHEMA_STATS</CODE> procedure to =
+extract=20
+and save existing statistics. Then use=20
+<CODE>DBMS_STATS</CODE>.<CODE>GATHER_SCHEMA_STATS</CODE> to gather new=20
+statistics. You can implement both of these with a single call to the=20
+<CODE>GATHER_SCHEMA_STATS</CODE> procedure, by specifying additional=20
+parameters.</P><A name=3D29401></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNoteAlso>
+    <TD class=3DNoteAlso><A name=3D29404></A><FONT=20
+      face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH>See=20
+      Also:</STRONG></FONT> <A name=3D29405></A>
+      <P class=3DNB><A=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#25787">"Preserving=20
+      Versions of Statistics"</A><A=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#25787"></A></P></TD></TR></TBODY></TABLE></DIV><A=20
+name=3D25705></A>
+<P class=3DBP>If key SQL statements experience significant performance=20
+degradation, then you can either gather statistics again using a larger =
+sample=20
+size or perform the following steps:</P>
+<OL class=3DLN1 type=3D1>
+  <LI class=3DLN1 type=3D1 value=3D1><A name=3D27955></A>Use=20
+  <CODE>DBMS_STATS</CODE>.<CODE>EXPORT_SCHEMA_STATS</CODE> to save the =
+new=20
+  statistics in a different statistics table or a statistics table with =
+a=20
+  different statistics identifier.=20
+  <LI class=3DLN1 type=3D1 value=3D2><A name=3D25707></A>Use=20
+  <CODE>DBMS_STATS</CODE>.<CODE>IMPORT_SCHEMA_STATS</CODE> to restore =
+the old=20
+  statistics. The application is now ready to run again. </LI></OL><A=20
+name=3D25708></A>
+<P class=3DBP>You might want to use the new statistics if they result in =
+improved=20
+performance for the majority of SQL statements and if the number of =
+problem SQL=20
+statements is small. In this case, perform the following steps:</P>
+<OL class=3DLN1 type=3D1>
+  <LI class=3DLN1 type=3D1 value=3D1><A name=3D25709></A>Create a stored =
+outline for=20
+  each problematic SQL statement, using the old statistics. Stored =
+outlines are=20
+  precompiled execution plans that Oracle can use to mimic proven =
+application=20
+  performance characteristics.=20
+  <P><A name=3D25714></A></P>
+  <DIV align=3Dcenter>
+  <TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+  cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+  summary=3D"This is a layout table to format a note" border=3D0>
+    <TBODY>
+    <TR class=3DNoteAlso>
+      <TD class=3DNoteAlso><A name=3D25712></A><FONT=20
+        face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH><STRONG =
+
+        class=3DBold>See Also</STRONG>:</STRONG></FONT> <A =
+name=3D25713></A>
+        <P class=3DNB><A=20
+        =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/outlines.htm#13547">Chapter&nbsp;7,=20
+        "Using Plan Stability"</A></P></TD></TR></TBODY></TABLE></DIV>
+  <LI class=3DLN1 type=3D1 value=3D2><A name=3D25716></A>Use=20
+  <CODE>DBMS_STATS</CODE>.<CODE>IMPORT_SCHEMA_STATS</CODE> to restore =
+the new=20
+  statistics. The application is now ready to run with the new =
+statistics.=20
+  However, you will continue to achieve the previous performance levels =
+for the=20
+  problem SQL statements. </LI></OL><A =
+name=3D25727></A><!--TOC=3Dh3-"25727"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Gathering=20
+Automated Statistics</FONT></H4><!--/TOC=3Dh3--><A name=3D25728></A>
+<P class=3DBP>You can automatically gather statistics or create lists of =
+tables=20
+that have stale or no statistics. To automatically gather statistics, =
+run the=20
+<CODE>DBMS_STATS</CODE>.<CODE>GATHER_SCHEMA_STATS</CODE> and=20
+<CODE>DBMS_STATS</CODE>.<CODE>GATHER_DATABASE_STATS</CODE> procedures =
+with the=20
+<CODE>OPTIONS</CODE> and <CODE>objlist</CODE> parameters. Use the values =
+listed=20
+in <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#36292">Table&nbsp;3-2</A>=20
+for the <CODE>options</CODE> parameter.</P>
+<H5 class=3DTT><A name=3D36289></A><A name=3D36292></A><STRONG><FONT=20
+face=3D"Arial, Helvetica, sans-serif"><EM>Table 3-2 Options Parameters =
+for=20
+Gathering Statistics</EM></FONT></STRONG></H5>
+<TABLE class=3DFormal dir=3Dltr title=3D"" cellSpacing=3D0 =
+cellPadding=3D3 rules=3Dgroups=20
+width=3D"100%" summary=3D"" border=3D1 frame=3Dhsides>
+  <THEAD>
+  <TR class=3DFormal>
+    <TH class=3DFormal vAlign=3Dbottom scope=3Dcol align=3Dleft><A=20
+      name=3D36296></A><FONT=20
+      face=3D"Arial, Helvetica, =
+sans-serif"><STRONG>Value</STRONG></FONT></TH>
+    <TH class=3DFormal vAlign=3Dbottom scope=3Dcol align=3Dleft><A=20
+      name=3D36298></A><FONT=20
+      face=3D"Arial, Helvetica, =
+sans-serif"><STRONG>Meaning</STRONG></FONT></TH></TR></THEAD>
+  <TBODY>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D36336></A>
+      <P class=3DTB><CODE>GATHER STALE</CODE></P></TD>
+    <TD class=3DFormal><A name=3D36338></A>
+      <P class=3DTB>Gathers statistics on tables with stale =
+statistics.</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D36332></A>
+      <P class=3DTB><CODE>GATHER</CODE></P></TD>
+    <TD class=3DFormal><A name=3D36334></A>
+      <P class=3DTB>Gathers statistics on all tables. =
+(default)</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D36328></A>
+      <P class=3DTB><CODE>GATHER EMPTY</CODE></P></TD>
+    <TD class=3DFormal><A name=3D36330></A>
+      <P class=3DTB>Gathers statistics only on tables without=20
+statistics.</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D36324></A>
+      <P class=3DTB><CODE>LIST STALE</CODE></P></TD>
+    <TD class=3DFormal><A name=3D36326></A>
+      <P class=3DTB>Creates a list of tables with stale =
+statistics.</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D36320></A>
+      <P class=3DTB><CODE>LIST EMPTY</CODE></P></TD>
+    <TD class=3DFormal><A name=3D36322></A>
+      <P class=3DTB>Creates a list of tables that do not have=20
+statistics.</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D36316></A>
+      <P class=3DTB><CODE>GATHER AUTO</CODE></P></TD>
+    <TD class=3DFormal><A name=3D36318></A>
+      <P class=3DTB>Gathers <EM class=3DItalic>all</EM> the statistics =
+for the=20
+      objects of a specific schema (or database with=20
+      <CODE>DBMS_STATS</CODE>.<CODE>GATHER_DATABASE_STATS()</CODE>) that =
+are not=20
+      up-to-date.</P></TD></TR></TBODY></TABLE><A name=3D30936></A>
+<P class=3DBP>The <CODE>objlist</CODE> parameter identifies an output =
+parameter=20
+for the <CODE>LIST</CODE> <CODE>STALE</CODE> and <CODE>LIST</CODE>=20
+<CODE>EMPTY</CODE> options. The <CODE>objlist</CODE> parameter is of =
+type=20
+<CODE>DBMS_STATS</CODE>.<CODE>OBJECTTAB</CODE>.</P><A =
+name=3D25754></A><!--TOC=3Dh4-"25754"-->
+<H5 class=3DH4><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Designating=20
+Tables for Monitoring and Automated Statistics =
+Gathering</FONT></H5><!--/TOC=3Dh4--><A name=3D29157></A>
+<P class=3DBP>Before you can utilize automated statistics gathering for =
+a=20
+particular table, you must bring either the tables of a specific schema =
+or a=20
+complete database into the monitoring mode. Do this with the=20
+<CODE>DBMS_STATS</CODE>.<CODE>ALTER_SCHEMA_TAB_MONITORING</CODE> or=20
+<CODE>DBMS_STATS</CODE>.<CODE>ALTER_DATABASE_TAB_MONITORING</CODE> =
+procedures.=20
+Alternatively, you can enable the monitoring attribute using the=20
+<CODE>MONITORING</CODE> keyword. This keyword is part of the =
+<CODE>CREATE</CODE>=20
+<CODE>TABLE</CODE> and <CODE>ALTER</CODE> <CODE>TABLE</CODE> statement =
+syntax.=20
+Monitoring tracks the approximate number of <CODE>INSERT</CODE>s,=20
+<CODE>UPDATE</CODE>s, and <CODE>DELETE</CODE>s for that table since the =
+last=20
+time statistics were gathered. Oracle uses this data to identify tables =
+with=20
+stale statistics. Then, you can enable automated statistics gathering by =
+setting=20
+up a recurring job (perhaps by using job queues) that invokes=20
+<CODE>DBMS_STATS</CODE>.<CODE>GATHER_TABLE_STATS</CODE> with the=20
+<CODE>GATHER</CODE> <CODE>STALE</CODE> option at an appropriate interval =
+for=20
+your application.</P><A name=3D29163></A>
+<P class=3DBP>Objects are considered stale when 10% of the total rows =
+have been=20
+changed. When you issue <CODE>GATHER_TABLE_STATS</CODE> with =
+<CODE>GATHER</CODE>=20
+<CODE>STALE</CODE>, the procedure checks the =
+<CODE>USER_TAB_MODIFICATIONS</CODE>=20
+view. If a monitored table has been modified more than 10%, then =
+statistics are=20
+gathered again. The information about changes of tables, as shown in the =
+
+<CODE>USER_TAB_MODIFICATIONS</CODE> view, can be flushed from the SGA =
+into the=20
+data dictionary with the=20
+<CODE>DBMS_STATS</CODE>.<CODE>FLUSH_DATABASE_MONITORING_INFO</CODE>=20
+procedure.</P><A name=3D25762></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNote dir=3Dltr title=3D"This is a layout table to format =
+a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNote>
+    <TD class=3DNote>
+      <HR>
+      <A name=3D25760></A><FONT face=3D"Arial, Helvetica, =
+sans-serif"><STRONG=20
+      class=3DNH><STRONG class=3DBold>Note</STRONG>:</STRONG></FONT> <A=20
+      name=3D25761></A>
+      <P class=3DNB>There can be a few minutes delay while Oracle =
+propagates=20
+      information to this view.</P>
+      <HR>
+    </TD></TR></TBODY></TABLE></DIV><A name=3D25763></A>
+<P class=3DBP>To disable monitoring, use the=20
+<CODE>DBMS_STATS</CODE>.<CODE>ALTER_SCHEMA_TAB_MONITORING</CODE> or=20
+<CODE>DBMS_STATS</CODE>.<CODE>ALTER_DATABASE_TAB_MONITORING</CODE> =
+procedures,=20
+or use the <CODE>NOMONITORING</CODE> keyword.</P><A name=3D25773></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNoteAlso>
+    <TD class=3DNoteAlso><A name=3D25766></A><FONT=20
+      face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH>See=20
+      Also:</STRONG></FONT> <A name=3D25767></A>
+      <P class=3DNB><EM class=3DItalic><A class=3D"olinkSRC SQLRF"=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+40/toc.htm">Oracle9i=20
+      SQL Reference</A></EM> for more information about the =
+<CODE>CREATE</CODE>=20
+      <CODE>TABLE</CODE> and <CODE>ALTER</CODE> <CODE>TABLE</CODE> =
+syntax and=20
+      the <CODE>MONITORING</CODE> and <CODE>NOMONITORING</CODE>=20
+  keywords</P></TD></TR></TBODY></TABLE></DIV><A =
+name=3D25774></A><!--TOC=3Dh4-"25774"-->
+<H5 class=3DH4><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Enabling=20
+Automated Statistics Gathering</FONT></H5><!--/TOC=3Dh4--><A =
+name=3D25775></A>
+<P class=3DBP>The <CODE>GATHER</CODE> <CODE>STALE</CODE> option gathers =
+statistics=20
+only for tables that have stale statistics and for which you have =
+enabled=20
+monitoring.</P><A name=3D27965></A>
+<P class=3DBP>The <CODE>GATHER</CODE> <CODE>STALE</CODE> option =
+maintains=20
+up-to-date statistics for the cost-based optimizer. Using this option at =
+regular=20
+intervals also avoids the overhead associated with gathering statistics =
+on all=20
+tables at one time. The <CODE>GATHER</CODE> option can incur much more =
+overhead,=20
+because this option generally gathers statistics for a greater number of =
+tables=20
+than <CODE>GATHER</CODE> <CODE>STALE</CODE>.</P><A name=3D25783></A>
+<P class=3DBP>Use a script or job scheduling tool for the=20
+<CODE>GATHER_SCHEMA_STATS</CODE> and <CODE>GATHER_DATABASE_STATS</CODE>=20
+procedures to establish a frequency of statistics collection that is =
+appropriate=20
+for the application. The frequency of collection intervals should =
+balance the=20
+task of providing accurate statistics for the optimizer against the =
+processing=20
+overhead incurred by the statistics collection process.</P><A =
+name=3D25784></A><!--TOC=3Dh4-"25784"-->
+<H5 class=3DH4><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Creating=20
+Lists of Tables with Stale or No =
+Statistics</FONT></H5><!--/TOC=3Dh4--><A=20
+name=3D25785></A>
+<P class=3DBP>You can use the <CODE>GATHER_SCHEMA_STATS</CODE> and=20
+<CODE>GATHER_DATABASE_STATS</CODE> procedures to create a list of tables =
+with=20
+stale statistics. You can also use these procedures to create a list of =
+tables=20
+with no statistics. Use the lists to identify tables for which you want =
+to=20
+gather manual statistics.</P><A name=3D25787></A><!--TOC=3Dh3-"25787"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Preserving=20
+Versions of Statistics</FONT></H4><!--/TOC=3Dh3--><A name=3D25788></A>
+<P class=3DBP>You can preserve versions of statistics for tables by =
+specifying the=20
+<CODE>stattab</CODE>, <CODE>statid</CODE>, and <CODE>statown</CODE> =
+parameters=20
+in the <CODE>DBMS_STATS</CODE> package. Use <CODE>stattab</CODE> to =
+identify a=20
+destination table for archiving previous versions of statistics. Further =
+
+identify these versions using <CODE>statid</CODE> to denote the date and =
+time=20
+the version was made. Use <CODE>statown</CODE> to identify a destination =
+schema,=20
+if it is different from the schema(s) of the actual tables. You must =
+first=20
+create such a table, using the <CODE>CREATE_STAT_TABLE</CODE> procedure =
+of the=20
+<CODE>DBMS_STATS</CODE> package.</P><A name=3D25800></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNoteAlso>
+    <TD class=3DNoteAlso><A name=3D25791></A><FONT=20
+      face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH><STRONG=20
+      class=3DBold>See Also</STRONG>:</STRONG></FONT> <A =
+name=3D25792></A>
+      <P class=3DNB><EM class=3DItalic><A class=3D"xlinkSRC ARPLS059"=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/appdev.920/a966=
+12/d_stats.htm#ARPLS059">Oracle9i=20
+      Supplied PL/SQL Packages and Types Reference</A></EM> for more =
+information=20
+      on <CODE>DBMS_STATS</CODE> procedures and=20
+parameters</P></TD></TR></TBODY></TABLE></DIV><A =
+name=3D29318></A><!--TOC=3Dh2-"29318"-->
+<H3 class=3DH2><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Using the=20
+ANALYZE Statement</FONT></H3><!--/TOC=3Dh2--><A name=3D34424></A>
+<P class=3DBP>You can use the ANALYZE statement to generate statistics =
+for=20
+cost-based optimization.</P><A name=3D36029></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNote dir=3Dltr title=3D"This is a layout table to format =
+a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNote>
+    <TD class=3DNote>
+      <HR>
+      <A name=3D36019></A><FONT face=3D"Arial, Helvetica, =
+sans-serif"><STRONG=20
+      class=3DNH>Note:</STRONG></FONT> <A name=3D36020></A>
+      <P class=3DNB>Oracle Corporation strongly recommends that you use =
+the=20
+      <CODE>DBMS_STATS</CODE> package rather than <CODE>ANALYZE</CODE> =
+to=20
+      collect optimizer statistics. That package lets you collect =
+statistics in=20
+      parallel, collect global statistics for partitioned objects, and =
+fine tune=20
+      your statistics collection in other ways. Further, the cost-based=20
+      optimizer will eventually use only statistics that have been =
+collected by=20
+      <CODE>DBMS_STATS</CODE>. See <EM class=3DItalic><A =
+class=3D"olinkSRC ARPLS"=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/appdev.920/a966=
+12/toc.htm">Oracle9i=20
+      Supplied PL/SQL Packages and Types Reference</A></EM> for more =
+information=20
+      on this package. <A name=3D36026></A></P>
+      <P class=3DNB>However, you must use the <CODE>ANALYZE</CODE> =
+statement=20
+      rather than <CODE>DBMS_STATS</CODE> for statistics collection not =
+related=20
+      to the cost-based optimizer, such as:</P>
+      <UL class=3DNL>
+        <LI class=3DNL type=3Ddisc><A name=3D36027></A>To use the=20
+        <CODE>VALIDATE</CODE> or <CODE>LIST CHAINED ROWS</CODE> clauses=20
+        <LI class=3DNL type=3Ddisc><A name=3D36028></A>To collect =
+information on=20
+        freelist blocks </LI></UL>
+      <HR>
+    </TD></TR></TBODY></TABLE></DIV><A =
+name=3D29436></A><!--TOC=3Dh2-"29436"-->
+<H3 class=3DH2><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Finding=20
+Data Distribution</FONT></H3><!--/TOC=3Dh2--><A name=3D25907></A>
+<P class=3DBP>The statistics gathered help you determine how the data is =
+
+distributed across the tables. The optimizer assumes that the data is =
+uniformly=20
+distributed. You can analyze the actual data distribution in the tables =
+by=20
+viewing the appropriate dictionary table: <CODE>DBA_TABLES</CODE> for =
+tables and=20
+<CODE>DBA_TAB_COL_STATISTICS</CODE> for column statistics.</P><A =
+name=3D25908></A>
+<P class=3DBP>You can use histograms to determine attribute skew.</P><A=20
+name=3D26954></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNoteAlso>
+    <TD class=3DNoteAlso><A name=3D26957></A><FONT=20
+      face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH>See=20
+      Also:</STRONG></FONT> <A name=3D26958></A>
+      <UL class=3DNL>
+        <LI class=3DNL type=3Ddisc><A name=3D29648></A><A=20
+        =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#25018">"Understanding=20
+        Statistics"</A><A=20
+        =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#25018"></A>=20
+
+        <LI class=3DNL type=3Ddisc><A name=3D29647></A><A=20
+        =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#27027">"Using=20
+        Histograms"</A><A=20
+        =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#27027"></A>=20
+        </LI></UL></TD></TR></TBODY></TABLE></DIV><A =
+name=3D25056></A><!--TOC=3Dh2-"25056"-->
+<H3 class=3DH2><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Missing=20
+Statistics</FONT></H3><!--/TOC=3Dh2--><A name=3D25057></A>
+<P class=3DBP>When statistics do not exist, the optimizer uses the =
+default values=20
+shown in <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#25064">Table&nbsp;3-4</A>=20
+and <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#25064">Table&nbsp;3-4</A>.</P>
+<H5 class=3DTT><A name=3D36410></A><A name=3D36373></A><STRONG><FONT=20
+face=3D"Arial, Helvetica, sans-serif"><EM>Table 3-3 Default Table Values =
+When=20
+Statistics are Missing</EM></FONT></STRONG></H5>
+<TABLE class=3DFormal dir=3Dltr title=3D"" cellSpacing=3D0 =
+cellPadding=3D3 rules=3Dgroups=20
+width=3D"100%" summary=3D"" border=3D1 frame=3Dhsides>
+  <THEAD>
+  <TR class=3DFormal>
+    <TH class=3DFormal vAlign=3Dbottom scope=3Dcol align=3Dleft><A=20
+      name=3D36377></A><FONT face=3D"Arial, Helvetica, =
+sans-serif"><STRONG>Table=20
+      Statistic</STRONG></FONT></TH>
+    <TH class=3DFormal vAlign=3Dbottom scope=3Dcol align=3Dleft><A=20
+      name=3D36379></A><FONT face=3D"Arial, Helvetica, =
+sans-serif"><STRONG>Default=20
+      Value Used by Optimizer</STRONG></FONT></TH></TR></THEAD>
+  <TBODY>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D36382></A>
+      <P class=3DTB><CODE>Cardinality</CODE></P></TD>
+    <TD class=3DFormal><A name=3D36389></A>
+      <P class=3DTB>num_of_blocks * (block_size - cache_layer) /=20
+  avg_row_len</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D36470></A>
+      <P class=3DTB><CODE>Average row length</CODE></P></TD>
+    <TD class=3DFormal><A name=3D36474></A>
+      <P class=3DTB>100 bytes</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D36482></A>
+      <P class=3DTB><CODE>Number of blocks</CODE></P></TD>
+    <TD class=3DFormal><A name=3D36464></A></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D36488></A>
+      <P class=3DTB><CODE>Remote cardinality</CODE></P></TD>
+    <TD class=3DFormal><A name=3D36460></A>
+      <P class=3DTB>2000 rows</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D36454></A>
+      <P class=3DTB><CODE>Remote average row length</CODE></P></TD>
+    <TD class=3DFormal><A name=3D36456></A>
+      <P class=3DTB>100 bytes</P></TD></TR></TBODY></TABLE>
+<H5 class=3DTT><A name=3D25101></A><A name=3D25064></A><STRONG><FONT=20
+face=3D"Arial, Helvetica, sans-serif"><EM>Table 3-4 <STRONG =
+class=3DBold><EM=20
+class=3DItalic>Default Index Values When Statistics are=20
+Missing</EM></STRONG></EM></FONT></STRONG></H5>
+<TABLE class=3DFormal dir=3Dltr title=3D"" cellSpacing=3D0 =
+cellPadding=3D3 rules=3Dgroups=20
+width=3D"100%" summary=3D"" border=3D1 frame=3Dhsides>
+  <THEAD>
+  <TR class=3DFormal>
+    <TH class=3DFormal vAlign=3Dbottom scope=3Dcol align=3Dleft><A=20
+      name=3D25068></A><FONT face=3D"Arial, Helvetica, =
+sans-serif"><STRONG>Index=20
+      Statistic</STRONG></FONT></TH>
+    <TH class=3DFormal vAlign=3Dbottom scope=3Dcol align=3Dleft><A=20
+      name=3D25070></A><FONT face=3D"Arial, Helvetica, =
+sans-serif"><STRONG>Default=20
+      Value Used by Optimizer</STRONG></FONT></TH></TR></THEAD>
+  <TBODY>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D25087></A>
+      <P class=3DTB><CODE>Levels</CODE></P></TD>
+    <TD class=3DFormal><A name=3D25095></A>
+      <P class=3DTB>1</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D36576></A>
+      <P class=3DTB><CODE>Leaf blocks</CODE></P></TD>
+    <TD class=3DFormal><A name=3D36535></A>
+      <P class=3DTB>25</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D36529></A>
+      <P class=3DTB><CODE>Leaf blocks/key</CODE></P></TD>
+    <TD class=3DFormal><A name=3D36531></A>
+      <P class=3DTB>1</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D36555></A>
+      <P class=3DTB><CODE>Data blocks/key</CODE></P></TD>
+    <TD class=3DFormal><A name=3D36527></A>
+      <P class=3DTB>1</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D36521></A>
+      <P class=3DTB><CODE>Distinct keys</CODE></P></TD>
+    <TD class=3DFormal><A name=3D36523></A>
+      <P class=3DTB>100</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D36537></A>
+      <P class=3DTB><CODE>Clustering factor</CODE></P></TD>
+    <TD class=3DFormal><A name=3D36519></A>
+      <P class=3DTB>800 (8 * number of =
+blocks)</P></TD></TR></TBODY></TABLE><A=20
+name=3D31058></A><!--TOC=3Dh1-"31058"-->
+<H2 class=3DH1><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Using=20
+Statistics</FONT></H2><!--/TOC=3Dh1--><A name=3D25382></A>
+<P class=3DBP>This section provides guidelines on how to use and view =
+statistics.=20
+This includes:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D33639></A><A=20
+  =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#26228">Managing=20
+  Statistics</A>=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D26220></A><A=20
+  =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#26226">Verifying=20
+  Table Statistics</A>=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D25375></A><A=20
+  =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#25115">Verifying=20
+  Index Statistics</A>=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D25376></A><A=20
+  =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#32682">Verifying=20
+  Column Statistics</A>=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D25377></A><A=20
+  =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#27027">Using=20
+  Histograms</A> </LI></UL><A name=3D26228></A><!--TOC=3Dh2-"26228"-->
+<H3 class=3DH2><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Managing=20
+Statistics</FONT></H3><!--/TOC=3Dh2--><A name=3D26229></A>
+<P class=3DBP>This section describes statistics tables and lists the =
+views that=20
+display information about statistics stored in the data =
+dictionary.</P><A=20
+name=3D26231></A><!--TOC=3Dh3-"26231"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Using=20
+Statistics Tables</FONT></H4><!--/TOC=3Dh3--><A name=3D26232></A>
+<P class=3DBP>The <CODE>DBMS_STATS</CODE> package lets you store =
+statistics in a=20
+statistics table. You can transfer the statistics for a column, table, =
+index, or=20
+schema into a statistics table and subsequently restore those statistics =
+to the=20
+data dictionary. The optimizer does not use statistics that are stored =
+in a=20
+statistics table.</P><A name=3D26233></A>
+<P class=3DBP>Statistics tables enable you to experiment with different =
+sets of=20
+statistics. For example, you can back up a set of statistics before you =
+delete=20
+them, modify them, or generate new statistics. You can then compare the=20
+performance of SQL statements optimized with different sets of =
+statistics, and=20
+if the statistics stored in a table give the best performance, you can =
+restore=20
+them to the data dictionary.</P><A name=3D26234></A>
+<P class=3DBP>A statistics table can keep multiple distinct sets of =
+statistics, or=20
+you can create multiple statistics tables to store distinct sets of =
+statistics=20
+separately.</P><A name=3D26235></A><!--TOC=3Dh3-"26235"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Viewing=20
+Statistics</FONT></H4><!--/TOC=3Dh3--><A name=3D28114></A>
+<P class=3DBP>Use the <CODE>DBMS_STATS</CODE> package to view the =
+statistics=20
+stored in the data dictionary or in a statistics table. <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#32528">Example&nbsp;3-2</A>=20
+queries a statistics table.</P><A name=3D32528></A>
+<H4 class=3DET><FONT face=3D"Arial, Helvetica, sans-serif"><EM>Example =
+3-2 Viewing=20
+Statistics in a Statistics Table</EM></FONT></H4><PRE class=3DCE><A =
+name=3D30196></A>DECLARE
+<A name=3D30197></A>  num_rows NUMBER;
+<A name=3D30198></A>  num_blocks NUMBER;
+<A name=3D30199></A>  avg_row_len NUMBER;
+<A name=3D31065></A>
+<A name=3D31066></A>BEGIN
+<A name=3D30201></A>  -- retrieve the values of table statistics on =
+OE.ORDERS
+<A name=3D30202></A>  -- statistics table name: OE.SAVESTATS    =
+statistics ID: TEST1
+<A name=3D30203></A>
+<A name=3D30226></A>  DBMS_STATS.GET_TABLE_STATS('OE','ORDERS',null,
+<A name=3D30204></A>    'SAVESTATS','TEST1',
+<A name=3D30205></A>    num_rows,num_blocks,avg_row_len);
+<A name=3D30206></A>
+<A name=3D30207></A>  -- print the values
+<A =
+name=3D30209></A>DBMS_OUTPUT.PUT_LINE('num_rows=3D'||num_rows||',num_bloc=
+ks=3D'||num_blocks||
+<A name=3D30211></A>                     =
+',avg_row_len=3D'||avg_row_len);
+<A name=3D30194></A>END;
+<A name=3D32536></A>
+</PRE><A name=3D28128></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNote dir=3Dltr title=3D"This is a layout table to format =
+a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNote>
+    <TD class=3DNote>
+      <HR>
+      <A name=3D28166></A><FONT face=3D"Arial, Helvetica, =
+sans-serif"><STRONG=20
+      class=3DNH>Note:</STRONG></FONT> <A name=3D28167></A>
+      <P class=3DNB>Statistics held in a statistics table are held in a =
+form that=20
+      is only understood by using <CODE>DBMS_STATS</CODE> package.</P>
+      <HR>
+    </TD></TR></TBODY></TABLE></DIV><A name=3D26240></A>
+<P class=3DBP>To view statistics in the data dictionary, query the =
+appropriate=20
+data dictionary view (<CODE>USER_</CODE>, <CODE>ALL_</CODE>, or=20
+<CODE>DBA_</CODE>). The following list shows the <CODE>DBA_</CODE> =
+views:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A =
+name=3D29816></A><CODE>DBA_TABLES</CODE>=20
+  <LI class=3DLB1 type=3Ddisc><A =
+name=3D26242></A><CODE>DBA_TAB_COL_STATISTICS</CODE>=20
+  <LI class=3DLB1 type=3Ddisc><A =
+name=3D26243></A><CODE>DBA_INDEXES</CODE>=20
+  <LI class=3DLB1 type=3Ddisc><A =
+name=3D26244></A><CODE>DBA_CLUSTERS</CODE>=20
+  <LI class=3DLB1 type=3Ddisc><A =
+name=3D26245></A><CODE>DBA_TAB_PARTITIONS</CODE>=20
+  <LI class=3DLB1 type=3Ddisc><A =
+name=3D26246></A><CODE>DBA_TAB_SUBPARTITIONS</CODE>=20
+  <LI class=3DLB1 type=3Ddisc><A =
+name=3D26247></A><CODE>DBA_IND_PARTITIONS</CODE>=20
+  <LI class=3DLB1 type=3Ddisc><A =
+name=3D26248></A><CODE>DBA_IND_SUBPARTITIONS</CODE>=20
+  <LI class=3DLB1 type=3Ddisc><A =
+name=3D26249></A><CODE>DBA_PART_COL_STATISTICS</CODE>=20
+
+  <LI class=3DLB1 type=3Ddisc><A=20
+  name=3D26250></A><CODE>DBA_SUBPART_COL_STATISTICS</CODE>=20
+  <P><A name=3D26262></A></P>
+  <DIV align=3Dcenter>
+  <TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+  cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+  summary=3D"This is a layout table to format a note" border=3D0>
+    <TBODY>
+    <TR class=3DNoteAlso>
+      <TD class=3DNoteAlso><A name=3D26253></A><FONT=20
+        face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH>See=20
+        Also:</STRONG></FONT> <A name=3D26254></A>
+        <P class=3DNB><EM class=3DItalic><A class=3D"olinkSRC REFRN"=20
+        =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+36/toc.htm">Oracle9i=20
+        Database Reference</A></EM> for information on the statistics in =
+these=20
+        views</P></TD></TR></TBODY></TABLE></DIV></LI></UL><A =
+name=3D26226></A><!--TOC=3Dh2-"26226"-->
+<H3 class=3DH2><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Verifying=20
+Table Statistics</FONT></H3><!--/TOC=3Dh2--><A name=3D30016></A>
+<P class=3DBP>To verify that the table statistics are available, query =
+the data=20
+dictionary view <CODE>DBA_TABLES</CODE>, using a statement like the one =
+in <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#32604">Example&nbsp;3-3</A>:</P><A=20
+name=3D32604></A>
+<H4 class=3DET><FONT face=3D"Arial, Helvetica, sans-serif"><EM>Example =
+3-3 Verifying=20
+Table Statistics</EM></FONT></H4><PRE class=3DCE><A =
+name=3D30019></A>SQL&gt; SELECT TABLE_NAME, NUM_ROWS, BLOCKS, =
+AVG_ROW_LEN,
+<A name=3D30020></A>       TO_CHAR(LAST_ANALYZED, 'MM/DD/YYYY =
+HH24:MI:SS')
+<A name=3D30021></A>     FROM DBA_TABLES
+<A name=3D30022></A>     WHERE TABLE_NAME IN =
+('SO_LINES_ALL','SO_HEADERS_ALL','SO_LAST_ALL');
+<A name=3D30023></A>
+</PRE><A name=3D30024></A>
+<P class=3DBP>This returns the following typical data:</P><PRE =
+class=3DCEW><A name=3D30026></A>TABLE_NAME                 NUM_ROWS    =
+BLOCKS  AVG_ROW_LEN        LAST_ANALYZED
+<A name=3D30028></A>------------------------   --------   -------  =
+-----------  -------------------
+<A name=3D30030></A>SO_HEADERS_ALL              1632264    207014        =
+  449  07/29/1999 00:59:51
+<A name=3D30032></A>SO_LINES_ALL               10493845   1922196        =
+  663  07/29/1999 01:16:09
+<A name=3D30034></A>SO_LAST_ALL ...
+<A name=3D32627></A>
+</PRE><A name=3D30333></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNote dir=3Dltr title=3D"This is a layout table to format =
+a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNote>
+    <TD class=3DNote>
+      <HR>
+      <A name=3D30086></A><FONT face=3D"Arial, Helvetica, =
+sans-serif"><STRONG=20
+      class=3DNH>Note:</STRONG></FONT> <A name=3D30087></A>
+      <P class=3DNB>Because the table <CODE>SO_LAST_ALL</CODE> has no =
+statistics,=20
+      it returns blanks for all columns.</P>
+      <HR>
+    </TD></TR></TBODY></TABLE></DIV><A =
+name=3D25115></A><!--TOC=3Dh2-"25115"-->
+<H3 class=3DH2><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Verifying=20
+Index Statistics</FONT></H3><!--/TOC=3Dh2--><A name=3D25116></A>
+<P class=3DBP>To verify that index statistics are available and decide =
+which are=20
+the best indexes to use in an application, query the data dictionary =
+view=20
+<CODE>DBA_INDEXES</CODE>, using a statement like the one in <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#32637">Example&nbsp;3-4</A>:</P><A=20
+name=3D32637></A>
+<H4 class=3DETW><FONT face=3D"Arial, Helvetica, sans-serif"><EM>Example =
+3-4=20
+Verifying Index Statistics</EM></FONT></H4><PRE class=3DCE><A =
+name=3D30150></A>SQL&gt; SELECT INDEX_NAME "NAME", NUM_ROWS, =
+DISTINCT_KEYS "DISTINCT",
+<A name=3D30151></A>  1  LEAF_BLOCKS, CLUSTERING_FACTOR "CF", BLEVEL =
+"LEVEL",
+<A name=3D30152></A>  2  AVG_LEAF_BLOCKS_PER_KEY "ALFBPKEY"
+<A name=3D30153></A>  3  FROM DBA_INDEXES
+<A name=3D30154></A>  4  WHERE OWNER =3D 'SH'
+<A name=3D30155></A>  5* ORDER BY INDEX_NAME;
+<A name=3D35720></A>
+</PRE><A name=3D35719></A>
+<P class=3DBP>Typical output is:</P><PRE class=3DCEW><A =
+name=3D35394></A>NAME                       NUM_ROWS DISTINCT =
+LEAF_BLOCKS      CF   LEVEL   ALFBPKEY
+<A name=3D35395></A>-------------------------- -------- -------- =
+----------- ------- ------- ----------
+<A name=3D30159></A>CUSTOMERS_PK                  50000    50000         =
+454    4405       2          1
+<A name=3D30160></A>PRODUCTS_PK                   10000    10000         =
+ 90    1552       1          1
+<A name=3D30161></A>PRODUCTS_PROD_CAT_IX          10000        4         =
+ 99    4422       1         24
+<A name=3D30162></A>PRODUCTS_PROD_SUBCAT_IX       10000       37         =
+170    6148       2          4
+<A name=3D30163></A>SALES_PROD_BIX                 6287      909        =
+1480    6287       1          1
+<A name=3D30164></A>SALES_PROMO_BIX                4727      459         =
+570    4727       1          1
+<A name=3D30165></A>
+<A name=3D30167></A>6 rows selected.
+</PRE><A name=3D25135></A><!--TOC=3Dh3-"25135"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Optimizer=20
+Index Determination Criteria</FONT></H4><!--/TOC=3Dh3--><A =
+name=3D25136></A>
+<P class=3DBP>The optimizer uses the following criteria when determining =
+which=20
+index to use:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D25137></A>Number of rows in the =
+index=20
+  (cardinality).=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D25138></A>Number of distinct =
+keys. These=20
+  define the selectivity of the index.=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D25139></A>Level or height of the =
+index. This=20
+  indicates how deeply the data probe must search in order to find the =
+data.=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D25140></A>Number of leaf blocks =
+in the index.=20
+  This is the number of I/Os needed to find the desired rows of data.=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D27815></A>Clustering factor =
+(<CODE>CF</CODE>).=20
+  This is the collocation amount of the index block relative to data =
+blocks. The=20
+  higher the CF, the less likely the optimizer is to select this index.=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D29771></A>Average leaf blocks =
+for each key=20
+  (<CODE>ALFBKEY</CODE>). Average number of leaf blocks in which each =
+distinct=20
+  value in the index appears, rounded to the nearest integer. For =
+indexes that=20
+  enforce <CODE>UNIQUE</CODE> and <CODE>PRIMARY</CODE> <CODE>KEY</CODE>=20
+  constraints, this value is always one. </LI></UL><A =
+name=3D25143></A><!--TOC=3Dh3-"25143"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Determining=20
+if You Have Chosen the Right Index</FONT></H4><!--/TOC=3Dh3--><A =
+name=3D27827></A>
+<P class=3DBP>Use the following notes to assist you in deciding whether =
+you have=20
+chosen an appropriate index for a table, data, and query:</P><A =
+name=3D25144></A><!--TOC=3Dh4-"25144"-->
+<H5 class=3DH4><FONT face=3D"Arial, Helvetica, sans-serif"=20
+color=3D#330099>DISTINCT</FONT></H5><!--/TOC=3Dh4--><A name=3D25912></A>
+<P class=3DBP>Consider index <CODE>ap_invoices_n3</CODE>, having two =
+distinct=20
+keys. The resulting selectivity based on index =
+<CODE>ap_invoices_n3</CODE> is=20
+poor, and the optimizer is not likely to use this index. Using this =
+index=20
+fetches 50% of the data in the table. In this case, a full table scan is =
+cheaper=20
+than using index <CODE>ap_invoices_n3</CODE>.</P><A =
+name=3D25145></A><!--TOC=3Dh4-"25145"-->
+<H5 class=3DH4><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Index Cost=20
+Tie</FONT></H5><!--/TOC=3Dh4--><A name=3D26840></A>
+<P class=3DBP>The optimizer uses alphabetic determination. If the =
+optimizer=20
+determines that the selectivity, cost, and cardinality of two finalist =
+indexes=20
+is the same, then it looks at the names of the indexes and chooses the =
+name that=20
+begins with the lower alphabetic letter or number.</P><A =
+name=3D32682></A><!--TOC=3Dh2-"32682"-->
+<H3 class=3DH2><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Verifying=20
+Column Statistics</FONT></H3><!--/TOC=3Dh2--><A name=3D32683></A>
+<P class=3DBP>To verify that column statistics are available, query the =
+data=20
+dictionary view <CODE>DBA_TAB_COL_STATISTICS</CODE>, using a statement =
+like the=20
+one in <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#32652">Example&nbsp;3-5</A>:</P><A=20
+name=3D32652></A>
+<H4 class=3DET><FONT face=3D"Arial, Helvetica, sans-serif"><EM>Example =
+3-5 Verifying=20
+Column Statistics</EM></FONT></H4><PRE class=3DCE><A =
+name=3D25149></A>SQL&gt; SELECT COLUMN_NAME, NUM_DISTINCT, NUM_NULLS, =
+NUM_BUCKETS, DENSITY
+<A name=3D25150></A>FROM DBA_TAB_COL_STATISTICS
+<A name=3D25151></A>WHERE TABLE_NAME =3D"PA_EXPENDITURE_ITEMS_ALL"
+<A name=3D25152></A>ORDER BY COLUMN_NAME;
+</PRE><A name=3D25153></A><A name=3D25154></A>
+<P class=3DBP>This returns the following data:</P><PRE class=3DCE><A =
+name=3D28911></A>COLUMN_NAME                    NUM_DISTINCT  NUM_NULLS =
+NUM_BUCKETS    DENSITY=20
+<A name=3D27373></A>------------------------------ ------------ =
+---------- ----------- ----------=20
+<A name=3D27374></A>BURDEN_COST                            4300      =
+71957           1 .000232558=20
+<A name=3D27375></A>BURDEN_COST_RATE                        675    =
+7376401           1 .001481481=20
+<A name=3D27376></A>CONVERTED_FLAG                            1   =
+16793903           1          1=20
+<A name=3D27377></A>COST_BURDEN_DISTRIBUTED_FLAG              2      =
+15796           1         .5=20
+<A name=3D27378></A>COST_DISTRIBUTED_FLAG                     2          =
+0           1         .5=20
+<A name=3D27379></A>COST_IND_COMPILED_SET_ID                 87    =
+6153143           1 .011494253=20
+<A name=3D27380></A>EXPENDITURE_ID                      1171831          =
+0           1 8.5337E-07=20
+<A name=3D27381></A>TASK_ID                                8648          =
+0           1 .000115634=20
+<A name=3D25166></A>TRANSFERRED_FROM_EXP_ITEM_ID        1233787   =
+15568891           1 8.1051E-07=20
+<A name=3D25167></A>
+</PRE><A name=3D27391></A>
+<P class=3DBP>Verifying column statistics are important for the =
+following=20
+conditions:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D32593></A>Join conditions=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D32594></A>When the =
+<CODE>WHERE</CODE> clause=20
+  includes a column(s) with a bind variable; for example: <CODE>column x =
+=3D=20
+  :variable_y</CODE> </LI></UL><A name=3D32758></A>
+<P class=3DBP>In these cases, you can use the stored column statistics =
+to get a=20
+representative cardinality estimation for the given expression.</P><A=20
+name=3D32762></A>
+<P class=3DBP>The following subsections examine the data returned by the =
+query in=20
+<A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#32652">Example&nbsp;3-5</A>.</P><A=20
+name=3D32763></A><!--TOC=3Dh3-"32763"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif"=20
+color=3D#330099>NUM_DISTINCT Column =
+Statistic</FONT></H4><!--/TOC=3Dh3--><A=20
+name=3D32764></A>
+<P class=3DBP><CODE>NUM_DISTINCT</CODE> indicates the number of distinct =
+values=20
+for a column.</P><A name=3D25175></A><!--TOC=3Dh4-"25175"-->
+<H5 class=3DH4><FONT face=3D"Arial, Helvetica, sans-serif"=20
+color=3D#330099>Low</FONT></H5><!--/TOC=3Dh4--><A name=3D32717></A>
+<P class=3DBP>In <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#32652">Example&nbsp;3-5</A>,=20
+the number of distinct values for the column <CODE>CONVERTED_FLAG</CODE> =
+is 1.=20
+In this case, this column has only one value. If there is a bind =
+variable on=20
+column <CODE>CONVERTED_FLAG</CODE> in the <CODE>WHERE</CODE> clause (for =
+
+example, <CODE>CONVERTED_FLAG =3D:variable_y</CODE>), then this leads to =
+poor=20
+selectivity, and <CODE>CONVERTED_FLAG</CODE> is a poor candidate to be =
+used as=20
+the index.</P><A name=3D32718></A>
+<P class=3DBP>Column <CODE>COST_BURDEN_DISTRIBUTED_FLAG</CODE>:=20
+<CODE>NUM_DISTINCT</CODE> =3D 2. Likewise, this value is low.=20
+<CODE>COST_BURDEN_DISTRIBUTED_FLAG</CODE> is not a good candidate for an =
+index=20
+unless there is much skew or there are a lot of nulls. If there is data =
+skew of,=20
+say, 90%, then 90% of the data has one particular value and 10% of the =
+data has=20
+another value. If the query only needs to access the 10%, then a =
+histogram is=20
+needed on that column in order for the optimizer to recognize the skew =
+and use=20
+an index on this column.</P><A name=3D25178></A><!--TOC=3Dh4-"25178"-->
+<H5 class=3DH4><FONT face=3D"Arial, Helvetica, sans-serif"=20
+color=3D#330099>High</FONT></H5><!--/TOC=3Dh4--><A name=3D27254></A>
+<P class=3DBP>In <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#32652">Example&nbsp;3-5</A>,=20
+<CODE>NUM_DISTINCT</CODE> is more than 1 million for column=20
+<CODE>EXPEDITURE_ID</CODE>. If there is a bind variable on column=20
+<CODE>EXPENDITURE_ID</CODE>, then this leads to high selectivity =
+(implying high=20
+density of data on this column). In other words, =
+<CODE>EXPENDITURE_ID</CODE> is=20
+a good candidate to be used as the index.</P><A =
+name=3D32739></A><!--TOC=3Dh3-"32739"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>NUM_NULL=20
+Column Statistic</FONT></H4><!--/TOC=3Dh3--><A name=3D32740></A>
+<P class=3DBP><CODE>NUM_NULLS</CODE> indicates the number of null values =
+for that=20
+column.</P><A name=3D32741></A><!--TOC=3Dh4-"32741"-->
+<H5 class=3DH4><FONT face=3D"Arial, Helvetica, sans-serif"=20
+color=3D#330099>Low</FONT></H5><!--/TOC=3Dh4--><A name=3D25951></A>
+<P class=3DBP>If a single column index has few nulls, such as the=20
+<CODE>COST_DISTRIBUTED_FLAG</CODE> column in <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#32652">Example&nbsp;3-5</A>,=20
+and if this column is used as the index, then the resulting data set is=20
+large.</P><A name=3D25182></A><!--TOC=3Dh4-"25182"-->
+<H5 class=3DH4><FONT face=3D"Arial, Helvetica, sans-serif"=20
+color=3D#330099>High</FONT></H5><!--/TOC=3Dh4--><A name=3D25952></A>
+<P class=3DBP>If there are many nulls on a particular column, such as =
+the=20
+<CODE>CONVERTED_FLAG</CODE> column in <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#32652">Example&nbsp;3-5</A>,=20
+and if this column is used as the index, then the resulting data set is =
+small.=20
+This means that <CODE>COST_DISTRIBUTED_FLAG</CODE> is a more appropriate =
+column=20
+to index.</P><A name=3D25184></A><!--TOC=3Dh3-"25184"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>DENSITY=20
+Column Statistic</FONT></H4><!--/TOC=3Dh3--><A name=3D25185></A>
+<P class=3DBP>This indicates the density of the values of that column. =
+This is=20
+calculated as 1 divided by <CODE>NUM_DISTINCT</CODE>.</P><A =
+name=3D25186></A><!--TOC=3Dh3-"25186"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Column=20
+Statistics and Join Methods</FONT></H4><!--/TOC=3Dh3--><A =
+name=3D25187></A>
+<P class=3DBP>Column statistics are useful to help determine the most =
+efficient=20
+join method, which, in turn, is also based on the number of rows =
+returned.</P><A=20
+name=3D27027></A><!--TOC=3Dh1-"27027"-->
+<H2 class=3DH1><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Using=20
+Histograms</FONT></H2><!--/TOC=3Dh1--><A name=3D27032></A>
+<P class=3DBP>The cost-based optimizer can use data value histograms to =
+get=20
+accurate estimates of the distribution of column data. A <STRONG=20
+class=3DGlossaryTerm>histogram</STRONG> partitions the values in the =
+column into=20
+bands, so that all column values in a band fall within the same range.=20
+Histograms provide improved selectivity estimates in the presence of =
+data skew,=20
+resulting in optimal execution plans with nonuniform data =
+distributions.</P><A=20
+name=3D27040></A>
+<P class=3DBP>One of the fundamental tasks of the cost-based optimizer =
+is=20
+determining the selectivity of predicates that appear in queries. =
+Selectivity=20
+estimates are used to decide when to use an index and the order in which =
+to join=20
+tables. Some attribute domains (a table's columns) are not uniformly=20
+distributed.</P><A name=3D27041></A>
+<P class=3DBP>The cost-based optimizer uses height-based histograms on =
+specified=20
+attributes to describe the distributions of nonuniform domains. In a=20
+height-based histogram, the column values are divided into bands so that =
+each=20
+band contains approximately the same number of values. The useful =
+information=20
+that the histogram provides, then, is where in the range of values the =
+endpoints=20
+fall.</P><A name=3D27052></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNoteAlso>
+    <TD class=3DNoteAlso><A name=3D27044></A><FONT=20
+      face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH>See=20
+      Also:</STRONG></FONT> <A name=3D27050></A>
+      <P class=3DNB><A=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#27102">"Types=20
+      of Histograms"</A><A=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#27102"></A></P></TD></TR></TBODY></TABLE></DIV><A=20
+name=3D27053></A>
+<P class=3DBP>Consider a column C with values between 1 and 100 and a =
+histogram=20
+with 10 buckets. If the data in C is uniformly distributed, then the =
+histogram=20
+looks similar to <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#35723">Figure&nbsp;3-1</A>,=20
+where the numbers are the endpoint values.</P><A name=3D35723></A>
+<H4 class=3DFT><FONT face=3D"Arial, Helvetica, sans-serif"><EM>Figure =
+3-1 Histogram=20
+with Uniform Distribution</EM></FONT></H4><A name=3D27057><IMG=20
+alt=3D"Text description of pfgrf208.gif follows"=20
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a9653=
+3/pfgrf208.gif"></A><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/img_text/pfgrf208.htm"><BR>Text=20
+description of the illustration pfgrf208.gif</A><BR><BR><A =
+name=3D27058></A>
+<P class=3DBP>The number of rows in each bucket is one tenth the total =
+number of=20
+rows in the table. Four-tenths of the rows have values between 60 and =
+100 in=20
+this example of uniform distribution.</P><A name=3D27059></A>
+<P class=3DBP>If the data is not uniformly distributed, then the =
+histogram might=20
+look similar to <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#35726">Figure&nbsp;3-2</A>.</P><A=20
+name=3D35726></A>
+<H4 class=3DFT><FONT face=3D"Arial, Helvetica, sans-serif"><EM>Figure =
+3-2 Histogram=20
+with Non-Uniform Distribution</EM></FONT></H4><A name=3D27063><IMG=20
+alt=3D"Text description of pfgrf209.gif follows"=20
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a9653=
+3/pfgrf209.gif"></A><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/img_text/pfgrf209.htm"><BR>Text=20
+description of the illustration pfgrf209.gif</A><BR><BR><A =
+name=3D27064></A>
+<P class=3DBP>In this case, most of the rows have the value 5 for the =
+column; only=20
+1/10 of the rows have values between 60 and 100.</P><A =
+name=3D27065></A><!--TOC=3Dh2-"27065"-->
+<H3 class=3DH2><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>When to Use=20
+Histograms</FONT></H3><!--/TOC=3Dh2--><A name=3D29512></A>
+<P class=3DBP>Histograms can affect performance and should be used only =
+when they=20
+substantially improve query plans. Histogram statistics data is =
+persistent, so=20
+the space required to save the data depends on the sample size. In =
+general,=20
+create histograms on columns that are used frequently in =
+<CODE>WHERE</CODE>=20
+clauses of queries and have a highly skewed data distribution. For =
+uniformly=20
+distributed data, the cost-based optimizer can make fairly accurate =
+guesses=20
+about the cost of executing a particular statement without the use of=20
+histograms.</P><A name=3D27068></A>
+<P class=3DBP>Histograms, like all other optimizer statistics, are =
+static. They=20
+are useful only when they reflect the current data distribution of a =
+given=20
+column. (The data in the column can change as long as the <EM=20
+class=3DItalic>distribution</EM> remains constant.) If the data =
+distribution of a=20
+column changes frequently, you must recompute its histogram =
+frequently.</P><A=20
+name=3D27069></A>
+<P class=3DBP>Histograms are not useful for columns with the following=20
+characteristics:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D27070></A>All predicates on the =
+column use=20
+  bind variables.=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D36222></A>The column data is =
+uniformly=20
+  distributed.=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D36225></A>The column is unique =
+and is used=20
+  only with equality predicates. </LI></UL><A =
+name=3D35016></A><!--TOC=3Dh2-"35016"-->
+<H3 class=3DH2><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Creating=20
+Histograms</FONT></H3><!--/TOC=3Dh2--><A name=3D27980></A>
+<P class=3DBP>You generate histograms by using the =
+<CODE>DBMS_STATS</CODE>=20
+package. You can generate histograms for columns of a table or =
+partition. For=20
+example, to create a 10-bucket histogram on the <CODE>SAL</CODE> column =
+of the=20
+<CODE>emp</CODE> table, issue the following statement:</P><PRE =
+class=3DCE><A name=3D28252></A>EXECUTE DBMS_STATS.GATHER_TABLE_STATS=20
+<A name=3D27521></A>('scott','emp', METHOD_OPT =3D&gt; 'FOR COLUMNS SIZE =
+10 sal');
+<A name=3D27522></A>
+</PRE><A name=3D27523></A>
+<P class=3DBP>The <CODE>SIZE</CODE> keyword declares the maximum number =
+of buckets=20
+for the histogram. You would create a histogram on the <CODE>SAL</CODE> =
+column=20
+if there were an unusually high number of employees with the same salary =
+and few=20
+employees with other salaries. You can also collect histograms for a =
+single=20
+partition of a table.</P><A name=3D27992></A>
+<P class=3DBP>Oracle Corporation recommends using the =
+<CODE>DBMS_STATS</CODE>=20
+package to have the database automatically decide which columns need =
+histograms.=20
+This is done by specifying <CODE>SIZE</CODE> <CODE>AUTO</CODE>.</P><A=20
+name=3D27538></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNoteAlso>
+    <TD class=3DNoteAlso><A name=3D27531></A><FONT=20
+      face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH><STRONG=20
+      class=3DBold>See Also</STRONG>:</STRONG></FONT> <A =
+name=3D27532></A>
+      <P class=3DNB><EM class=3DItalic><A class=3D"xlinkSRC ARPLS059"=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/appdev.920/a966=
+12/d_stats.htm#ARPLS059">Oracle9i=20
+      Supplied PL/SQL Packages and Types Reference</A></EM> for more =
+information=20
+      on the <CODE>DBMS_STATS</CODE> =
+package</P></TD></TR></TBODY></TABLE></DIV><A=20
+name=3D27539></A><!--TOC=3Dh3-"27539"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Choosing=20
+the Number of Buckets for a Histogram</FONT></H4><!--/TOC=3Dh3--><A=20
+name=3D27540></A>
+<P class=3DBP>If the number of frequently occurring distinct values in a =
+column is=20
+relatively small, then set the number of buckets to be greater than that =
+number.=20
+The default number of buckets for a histogram is 75. This value provides =
+an=20
+appropriate level of detail for most data distributions. However, =
+because the=20
+number of buckets and the data distribution both affect a histogram's=20
+usefulness, you might need to experiment with different numbers of =
+buckets to=20
+obtain optimal results.</P><A name=3D27102></A><!--TOC=3Dh2-"27102"-->
+<H3 class=3DH2><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Types of=20
+Histograms</FONT></H3><!--/TOC=3Dh2--><A name=3D27103></A>
+<P class=3DBP>There are two types of histograms:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D27107></A><A=20
+  =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#27113">Understanding=20
+  Height-Based Histograms</A>=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D27111></A><A=20
+  =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#27119">Understanding=20
+  Value-Based Histograms</A> </LI></UL><A =
+name=3D27113></A><!--TOC=3Dh3-"27113"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif"=20
+color=3D#330099>Understanding Height-Based =
+Histograms</FONT></H4><!--/TOC=3Dh3--><A=20
+name=3D29968></A>
+<P class=3DBP>Height-based histograms place approximately the same =
+number of=20
+values into each range, so that the endpoints of the range are =
+determined by how=20
+many values are in that range. Only the last (largest) values in each =
+bucket=20
+appear as bucket (end point) values.</P><A name=3D27115></A>
+<P class=3DBP>Consider that a table's query results in the following =
+four sample=20
+values: 4, 18, 30, and 35.</P><A name=3D27116></A>
+<P class=3DBP>For a height-based histogram, each of these values =
+occupies a=20
+portion of one bucket, in proportion to their size. The resulting =
+selectivity is=20
+computed with the following formula:</P><PRE class=3DCE><A =
+name=3D27117></A>S =3D Height(35) / Height(4 + 18 + 30 + 35)
+</PRE><A name=3D27119></A><!--TOC=3Dh3-"27119"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif"=20
+color=3D#330099>Understanding Value-Based =
+Histograms</FONT></H4><!--/TOC=3Dh3--><A=20
+name=3D29915></A>
+<P class=3DBP>Value-based histograms are created when the number of =
+distinct=20
+values is less than or equal to the number of histogram buckets =
+specified. In=20
+value-based histograms, all the values in the column have corresponding =
+buckets,=20
+and the bucket number reflects the repetition count of each value. These =
+can=20
+also be known as frequency histograms.</P><A name=3D29530></A>
+<P class=3DBP>Consider the same four sample values in the previous =
+example. In a=20
+value-based histogram, a bucket is used to represent each of the four =
+distinct=20
+values. In other words, one bucket represents 4, one bucket represents =
+18,=20
+another represents 30, and another represents 35. The resulting =
+selectivity is=20
+computed with the following formula:</P><PRE class=3DCE><A =
+name=3D27121></A>S =3D [#rows(35)/(#rows(4) + #rows(18) + #rows(30) + =
+#rows(35))] / #buckets
+<A name=3D27122></A>
+</PRE><A name=3D27123></A>
+<P class=3DBP>If there are many different values anticipated for a =
+particular=20
+column of table, it is preferable to use the value-based histogram =
+rather than=20
+the height-based histogram. This is because if there is much data skew =
+in the=20
+height, then the skew can offset the selectivity calculation and give a=20
+nonrepresentative selectivity value.</P><A =
+name=3D27124></A><!--TOC=3Dh3-"27124"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Using=20
+Histograms</FONT></H4><!--/TOC=3Dh3--><A name=3D27125></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#32833">Example&nbsp;3-6</A>=20
+illustrates the use of a histogram in order to improve the execution =
+plan and=20
+demonstrate the skewed behavior of the <CODE>s6</CODE> indexed =
+column.</P><A=20
+name=3D32833></A>
+<H4 class=3DET><FONT face=3D"Arial, Helvetica, sans-serif"><EM>Example =
+3-6 Using a=20
+Histogram to Improve an Execution Plan</EM></FONT></H4><PRE =
+class=3DCE><A name=3D29142></A>UPDATE so_lines l=20
+<A name=3D27127></A>SET open_flag=3Dnull,=20
+<A name=3D27128></A>     s6=3D10,=20
+<A name=3D27129></A>     s6_date=3Dsysdate,=20
+<A name=3D27130></A>WHERE l.line_type_code in =
+('REGULAR','DETAIL','RETURN') AND=20
+<A name=3D27131></A>      l.open_flag =3D 'Y' AND =
+NVL(l.shipped_quantity, 0)=3D0 OR=20
+<A name=3D27132></A>      NVL(l.shipped_quantity, 0) !=3D 0 AND=20
+<A name=3D27133></A>      l.shipped_quantity +NVL(l.cancelled_quantity, =
+0)=3D l.ordered_quantity)) AND=20
+<A name=3D27134></A>      l.s6=3D18
+<A name=3D27135></A>
+</PRE><A name=3D27136></A>
+<P class=3DBP>This query shows the skewed distribution of data values =
+for=20
+<CODE>s6</CODE>. In this case, there are two distinct non-null values: =
+10 and=20
+18. The majority of the rows consists of <CODE>s6</CODE> =3D 10 =
+(1,589,464), while=20
+a small number of rows consist of <CODE>s6</CODE> =3D 18 =
+(13,091).</P><PRE class=3DCE><A name=3D28914></A>S6:      COUNT(*)
+<A =
+name=3D27138></A>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+<A name=3D27139></A>10        1,589,464
+<A name=3D27140></A>18           13,091
+<A name=3D27141></A>NULL         21,889=20
+<A name=3D27143></A>
+</PRE><A name=3D27485></A>
+<P class=3DBP>The selectivity of column <CODE>s6</CODE>, where =
+<CODE>s6</CODE>=20
+<CODE>=3D</CODE> <CODE>18</CODE>:</P><PRE class=3DCE><A =
+name=3D29222></A>S =3D 13,091 / (13,091 + 1,589,464) =3D 0.008
+<A name=3D32846></A>
+</PRE><A name=3D27146></A>
+<P class=3DBP>If No Histogram is Used: The selectivity of column =
+<CODE>s6</CODE>=20
+is assumed to be 50%, uniformly distributed across 10 and 18. This is =
+not=20
+selective; therefore, <CODE>s6</CODE> is not an ideal choice for use as =
+an=20
+index.</P><A name=3D27147></A>
+<P class=3DBP>If a Histogram is Used: The data distribution information =
+is stored=20
+in the dictionary. This allows the optimizer to use this information and =
+compute=20
+the correct selectivity based on the data distribution. In <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#32833">Example&nbsp;3-6</A>,=20
+the selectivity, based on the histogram data, is 0.008. This is a =
+relatively=20
+high, or good, selectivity, which leads the optimizer to use an index on =
+column=20
+<CODE>s6</CODE> in the execution plan.</P><A =
+name=3D27451></A><!--TOC=3Dh2-"27451"-->
+<H3 class=3DH2><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Viewing=20
+Histograms</FONT></H3><!--/TOC=3Dh2--><A name=3D32890></A>
+<P class=3DBP>To view histogram information, query the appropriate data =
+dictionary=20
+view (<CODE>USER_</CODE>, <CODE>ALL_</CODE>, or <CODE>DBA_</CODE>). The=20
+following list shows the <CODE>DBA_</CODE> views:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A =
+name=3D29145></A><CODE>DBA_HISTOGRAMS</CODE>=20
+  <LI class=3DLB1 type=3Ddisc><A =
+name=3D27455></A><CODE>DBA_PART_HISTOGRAMS</CODE>=20
+  <LI class=3DLB1 type=3Ddisc><A =
+name=3D27456></A><CODE>DBA_SUBPART_HISTOGRAMS</CODE>=20
+  <LI class=3DLB1 type=3Ddisc><A =
+name=3D27457></A><CODE>DBA_TAB_COL_STATISTICS</CODE>=20
+  </LI></UL><A name=3D27458></A><!--TOC=3Dh4-"27458"-->
+<H5 class=3DH4><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Number of=20
+Rows</FONT></H5><!--/TOC=3Dh4--><A name=3D27459></A>
+<P class=3DBP>View the <CODE>DBA_HISTOGRAMS</CODE> dictionary table for =
+the number=20
+of buckets (in other words, the number of rows) for each column:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A =
+name=3D27460></A><CODE>ENDPOINT_NUMBER</CODE>=20
+  <LI class=3DLB1 type=3Ddisc><A =
+name=3D27461></A><CODE>ENDPOINT_VALUE</CODE>=20
+  <P><A name=3D27471></A></P>
+  <DIV align=3Dcenter>
+  <TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+  cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+  summary=3D"This is a layout table to format a note" border=3D0>
+    <TBODY>
+    <TR class=3DNoteAlso>
+      <TD class=3DNoteAlso><A name=3D27464></A><FONT=20
+        face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH><STRONG =
+
+        class=3DBold>See Also</STRONG>:</STRONG></FONT> <A =
+name=3D27465></A>
+        <P class=3DNB><EM class=3DItalic><A class=3D"olinkSRC CNCPT"=20
+        =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+24/toc.htm">Oracle9i=20
+        Database Reference</A></EM> for column descriptions of data =
+dictionary=20
+        views, as well as histogram use and=20
+  restrictions</P></TD></TR></TBODY></TABLE></DIV></LI></UL><A =
+name=3D27490></A><!--TOC=3Dh2-"27490"-->
+<H3 class=3DH2><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Verifying=20
+Histogram Statistics</FONT></H3><!--/TOC=3Dh2--><A name=3D27491></A>
+<P class=3DBP>To verify that histogram statistics are available, query =
+the data=20
+dictionary's <CODE>DBA_HISTOGRAMS</CODE> table, using a statement =
+similar to <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#32924">Example&nbsp;3-7</A>.</P><A=20
+name=3D32924></A>
+<H4 class=3DET><FONT face=3D"Arial, Helvetica, sans-serif"><EM>Example =
+3-7 Verifying=20
+Histogram Statistics</EM></FONT></H4><PRE class=3DCE><A =
+name=3D30255></A>SQL&gt; SELECT ENDPOINT_NUMBER, ENDPOINT_VALUE=20
+<A name=3D30256></A>     FROM DBA_HISTOGRAMS=20
+<A name=3D30257></A>     WHERE TABLE_NAME =3D"SO_LINES_ALL" AND =
+COLUMN_NAME=3D"S2"=20
+<A name=3D30253></A>     ORDER BY ENDPOINT_NUMBER;=20
+<A name=3D27495></A>=20
+</PRE><A name=3D27496></A>
+<P class=3DBP>This query returns the following typical data:</P><PRE =
+class=3DCE><A name=3D27497></A>ENDPOINT_NUMBER   ENDPOINT_VALUE
+<A name=3D27498></A>---------------  ---------------
+<A name=3D27499></A>          1365                 4
+<A name=3D27500></A>          1370                 5
+<A name=3D27501></A>          2124                 8
+<A name=3D27502></A>          2228                18
+<A name=3D27503></A>
+</PRE><A name=3D33055></A>
+<P class=3DBP>One row corresponds to one bucket in the histogram. =
+Consider the=20
+differences between <CODE>ENDPOINT_NUMBER</CODE> values in <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#32924">Example&nbsp;3-7</A>=20
+listed in <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#33026">Table&nbsp;3-5</A>.</P>
+<H5 class=3DTT><A name=3D35514></A><A name=3D33026></A><STRONG><FONT=20
+face=3D"Arial, Helvetica, sans-serif"><EM>Table 3-5 ENDPOINT_NUMBER=20
+Differences</EM></FONT></STRONG></H5>
+<TABLE class=3DFormal dir=3Dltr title=3D"" cellSpacing=3D0 =
+cellPadding=3D3 rules=3Dgroups=20
+width=3D"100%" summary=3D"" border=3D1 frame=3Dhsides>
+  <THEAD>
+  <TR class=3DFormal>
+    <TH class=3DFormal vAlign=3Dbottom scope=3Dcol align=3Dleft><A=20
+      name=3D33032></A><FONT face=3D"Arial, Helvetica, =
+sans-serif"><STRONG>Bucket=20
+      (values)</STRONG></FONT></TH>
+    <TH class=3DFormal vAlign=3Dbottom scope=3Dcol align=3Dleft><A=20
+      name=3D33034></A><FONT=20
+      face=3D"Arial, Helvetica, =
+sans-serif"><STRONG><STRONG><CODE>ENDPOINT_NUMBER</CODE></STRONG>=20
+      Difference</STRONG></FONT></TH>
+    <TH class=3DFormal vAlign=3Dbottom scope=3Dcol align=3Dleft><A=20
+      name=3D33036></A><FONT face=3D"Arial, Helvetica, =
+sans-serif"><STRONG>Number of=20
+      Values in Bucket</STRONG></FONT></TH></TR></THEAD>
+  <TBODY>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D33069></A>
+      <P class=3DTB>1 (0 to 4)</P></TD>
+    <TD class=3DFormal><A name=3D33071></A>
+      <P class=3DTB>N/A</P></TD>
+    <TD class=3DFormal><A name=3D33073></A>
+      <P class=3DTB>N/A</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D33038></A>
+      <P class=3DTB>2 (4 to 5)</P></TD>
+    <TD class=3DFormal><A name=3D33040></A>
+      <P class=3DTB>1370 - 1365</P></TD>
+    <TD class=3DFormal><A name=3D33042></A>
+      <P class=3DTB>5</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D33044></A>
+      <P class=3DTB>3 (5 to 8)</P></TD>
+    <TD class=3DFormal><A name=3D33046></A>
+      <P class=3DTB>2124 - 1370</P></TD>
+    <TD class=3DFormal><A name=3D33048></A>
+      <P class=3DTB>754</P></TD></TR>
+  <TR class=3DFormal vAlign=3Dtop align=3Dleft>
+    <TD class=3DFormal><A name=3D33050></A>
+      <P class=3DTB>4 (8 to 18)</P></TD>
+    <TD class=3DFormal><A name=3D33052></A>
+      <P class=3DTB>2228 - 2124</P></TD>
+    <TD class=3DFormal><A name=3D33054></A>
+      <P class=3DTB>104</P></TD></TR></TBODY></TABLE><A =
+name=3D32946></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#33026">Table&nbsp;3-5</A>=20
+shows that the buckets hold very different numbers of values. The data =
+is=20
+skewed: 754 values are between 5 and 8, but only 104 are between 8 and =
+18. More=20
+buckets should be used.</P><!-- Start Footer --></DIV>
+<DIV class=3Dfooter>
+<HR>
+
+<TABLE cellSpacing=3D0 cellPadding=3D0 width=3D"100%" summary=3D"layout =
+table">
+  <TBODY>
+  <TR>
+    <TD align=3Dleft width=3D"33%">
+      <TABLE cellSpacing=3D0 cellPadding=3D0 width=3D90 align=3Dleft=20
+      summary=3D"layout table">
+        <TBODY>
+        <TR>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/opt_ops.htm"><IMG=20
+            alt=3D"Go to previous page"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/lar=
+row.gif"=20
+            border=3D0></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/data_acc.htm"><IMG=20
+            alt=3D"Go to next page"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/rar=
+row.gif"=20
+            border=3D0></A></TD></TR></TBODY></TABLE></TD>
+    <TD align=3Dmiddle width=3D"34%"><IMG alt=3DOracle=20
+      =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/ora=
+cle.gif"><BR><A=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/html/cp=
+yr.htm"><FONT=20
+      size=3D-2>Copyright =A9 2000, 2002 Oracle =
+Corporation.</FONT></A><BR><FONT=20
+      size=3D-2>All Rights Reserved.</FONT></TD>
+    <TD align=3Dright width=3D"33%">
+      <TABLE cellSpacing=3D0 cellPadding=3D0 width=3D270 align=3Dright=20
+      summary=3D"layout table">
+        <TBODY>
+        <TR>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/index.htm"><IMG=
+=20
+            alt=3D"Go to Documentation Library"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/pro=
+dicon.gif"=20
+            border=3D0><BR><FONT size=3D-2>Home</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/nav/docindex.ht=
+m"><IMG=20
+            alt=3D"Go to Product List"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/boo=
+kicon.gif"=20
+            border=3D0><BR><FONT size=3D-2>Book List</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/toc.htm"><IMG=20
+            alt=3D"Go to Table of Contents"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/con=
+ticon.gif"=20
+            border=3D0><BR><FONT size=3D-2>Contents</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/index.htm"><IMG=20
+            alt=3D"Go to Index"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/ind=
+xicon.gif"=20
+            border=3D0><BR><FONT size=3D-2>Index</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/mix.920/a96625/=
+toc.htm"><IMG=20
+            alt=3D"Go to Master Index"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/mix=
+.gif"=20
+            border=3D0><BR><FONT size=3D-2>Master Index</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/html/fe=
+edback.htm"><IMG=20
+            alt=3D"Go to Feedback page"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/fee=
+dback.gif"=20
+            border=3D0><BR><FONT=20
+  =
+size=3D-2>Feedback</FONT></A></TD></TR></TBODY></TABLE></TD></TR></TBODY>=
+</TABLE></DIV></BODY></HTML>
+
+------=_NextPart_000_0000_01C482EE.B5E2E630
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/prodicon.gif
+
+R0lGODlhHgAeAOYAAP///4SEhLW1td7e3ittsZSUlAQoTwMJIYyMjHuLlAtumufn5yAgJAYmLGZm
+ZiwlKwAAZqysrDMzM8zMzDw9QQEJBwAAMzOZzABmzDMzzA5jvQAAAPf39wBmmSlKXHh6rU9aliUh
+vxIOo1BNWTNmmQAAzLq/vwAzZgCZzNrW1pqx3AAAme/v8U6SuQAzM6Gp+2ZmzJnMzJmZmYiUuVpn
+azMzmZilsZSMjDOZmWbM/2aZ/2Zm/5nM/97e52aZmZmZzDNmZl9f3+/3/5lm/2YzmTMzZko5KQAz
+mQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5
+BAAAAAAALAAAAAAeAB4AQAf/gACCg4SFhoeGCRoEIA0bFhlDHw8HCjkqNBIFJgITA4gJBKIGGyM/
+LyAHByQ5MR4MDgEFAp+IggsCMggIBb27vL4FESYLtgMTKRMCMzAwIAwMPioxJCMTtoOhGhgGFRYi
+JSsHDQooCgawsrSgRScGqhYQEBbjBu4ND7Gztdj9/v8TbhT7N8iGKAKkLIQI8qzShRYeKEzgQJED
+KFEkXHgLkaHGOAUPPeTjte6QNgwnvIET16CDOXT6SiYigIFbBQgcRRxwARLHiXT7+g2IcCOA0aNI
+jwbtx2LBgAELojqFGvXpAosEs2bloALGBwpGBAgBYAJBCn89bHyYEYCCgRA7niY5bAFEor9QBDJu
+wNnxY0gKtFIMYHGRkYSbGXTI7XAhBo0HAWTIkFlIG8KbKz+i6ACTJL/KNG1CAAdB8zmglAlp00DK
+QIYMpcldQIj6s+qDpEa8eEFEFQ4eKl7FtJ2NhIYj3SysKBG7AwbOtREJGPHggQQKFCRIsJ59u4QR
+Rpcai4Dg6C7z5QN4ZqosQgQB8AW4j+/eRArCWvPr9xcIADs=
+
+------=_NextPart_000_0000_01C482EE.B5E2E630
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/bookicon.gif
+
+R0lGODlhHgAeAPcAAP///4SEhPf39+/v75SUlMbGxoyMjN7e3pycnOfn56WlpbW1tb29va2trdbW
+1gAAIQAASgAAUgAAWikpKQAAQs7Oznt7ewAAAAAAMQAACAgIGAAAEACM51paWnNzcwBzxgAAKUpK
+QkJCQgAIMQgIECGc5zExMWtraxgYGN7e1jlCSkJSWkJCSoSEe0pCQlJSUgAAOSkpOcbGvQgxUhAQ
+MTFChO/v52NjYwAIIQAxWhgYShgpKQAAYyEpSlKlzkpzjJyclIyEjEJCMZSMjFpaUgAYtRAhMRA5
+7wgQKRgpMTlKWjFa3jFS1hAhKQBKexghMUJCUjlKnFKcxlJzlJyMhBgpSgBzvRBKcwAQvQBrtaWc
+nAhCaxiMziEhIWNaWlKl1kJ7pTEpMYR7c0JKUkpKSt7WzhAQIUJCORAxxrW1rVpaQntzayE5UggQ
+MSGExhAQGCE5WtbWziEhGClKzu/n5zlCQjE5Sjk5MQAAGDEpIVpSUikhIRAQCAAQITExOQAAa1Jz
+jAB7zlJKSgAIGL21rYxza0pre0JKSufv7xghIa21tYSMjAAhpVJCOQAICEpSa0p7lBgYQmNjWgAQ
+rQhCcwhKe+fe3ggICIyMlBBC9zExKYSEjBgYIRghSkJzjEqczhgQEFpSSjlCjDFSzgghtQBCexAQ
+SiEhSjE5UgBjrRgYECGc3ko5QgAYOYR7e2trcxA593NrYzlSrd7W3jk5OaWtpa2lpa2tpUpKOQAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAAeAB4A
+QAj/AAEIHEiwoMGDCAE06IRmSY1IMCBI4PEHxgU5LRYcEJAQAIMVTgJxKCFlCpxWI0Yg8bNGhoMG
+BBQUSMCxo0ABBxgoIGAggE8DMRlUODCgZsIGISZoeIABBAkhCgbYHJjABRswnnZcoMCIVA81aWws
+eDGhQwADCipI7XiAigpKpQaJqbBIRBcTHTz8RKDR6NSbA4r+TZjgxp0QBNYOHljg1aNTGChImBwB
+xJsQQBz4RXjA1Z4NEbAcYSLK1IMMKG4ocrAg5kyElljl+FDCB6AkF3JzitHmwQMNE/RYQPA6IYMx
+W6xw4GKoUSgENgAUeHFpwomYCxwoRjhggYpEoCZY/wgw3ufZoBsHC0jgQCeCBgUc0FxMf3GBACJU
+acigCcF29QsIQgIeFEAQQQQYkIALEHH815ECqMgShQ4YGBjBRBRoQEQD6dmUwAk0TALLKDXoIBEF
+D2wQRgsN3MJAhwYNYAELShixAQRFZDJHD3ycUUsKMhAwHgF9HVRVDm588cMOjowAAQ2SaLGJHTig
+IMIJBhCXwEF0eDFDFiP58MMTGWSwwQMgPGDGIQEQEISWCRWwQiUfcLDKJ5BUgUMMsRCCyCwIEEAA
+XxXMh5AtLFzxQSpNFJLCAQUYQAsKZXkAVANqJSRAGUNAMUMfeZhgQh1k6GVeli9udtAADGDCk3k/
+ZR/ZAAPaDTaAAwUsgIABQL1XAFGq/jUApPEJVt+xAgUEADs=
+
+------=_NextPart_000_0000_01C482EE.B5E2E630
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/conticon.gif
+
+R0lGODlhHgAeAOYAAP///wAAOYyMjAAIQvf39+fn5+/v7wAAQgAAMdbW1r29va2trcbGxs7OzqWl
+pd7e3pycnJSUlFpaWoSEhGtra7W1tRgYIWNjY3t7ewAIOSFCtTExOTk5OQAAKa2tpSEhIRg5rWNj
+awAIMYSElCE5pWt7tQAAEAAAIVJSUjExMSEpWiFCpb29tRgpWiExc5SUjBgYMQgAKXt7cykxOUpK
+Sjk5QhgYGEJCUggIGEJCQiFCvQAIKVpjcwgYe2uEzhAxpTk5YwgIOQgppYSEpQAQYwgQKTE5Sikp
+KQgQIdbW3muExiEhOSE5nEJCWkJKSkI5UggxtSEhKQAIShA5tSlKvQgxpVJac1pSUlpaQhAYMRAI
+IQgIEGtrY3Nzc2NjWmNztQgICCkpOVpjaxAxrQgYawgAMSFCxoSEnDk5UqWcnBAQIRAhayFKzkJK
+Wjk5MXt7lHNzaxghUkJCSmt7vQAYhHuEpXuEnN7e1ufn3lpaYxgpcwAAGDk5WmNjUgAAAAAAACH5
+BAAAAAAALAAAAAAeAB4AQAf/gACCg4SFhoeFDy9ccjgIBwMBkgMDkB0WEgsNBQSIggkhKiQaQiBK
+bxtgFl4edwAEFRQYAhMCDgyehQQPCg4QEAsKCQUGnbmDDQIXMCcbDsbHghU1a1MaXyM3CAgBGRmU
+lQEIJjaZm9CHDxcuREYeLBQ0NBIXtQIRERAOFQnR/v8Ao/GSsAHGtgCUdoSZIIxTrgozXPgYciMG
+N0kIIx04cMmcw0IN8rRYoeMHiBJn+HA7EOCECRxuZDAooOCepgLpKKhgwoaOGjh4DBhIsABDjiMo
+7AmAoOAYAwkfOHShZU/fggoMhhkI+MoAMXRcw0YrQIGDA7HIFISwgETEgB0bvyB89WcgDQoOWUQ8
+YhkAkogoF26CJaTACY86TWL0xZhxY0fBhxTUIENlzognZbh5y/hNCgJMEGaChajHzBgSJUagOUiJ
+pUstbWRgiABZEAEGYkbqqHLSDpAgHfZs+XCBRbECDSLY7Fcogc5RUFZYwdLnxQMAQyOk+EDB3i1E
+D0LE0dBjiQcASRxQSMHhAoZZAuJ/95SARxEbV1CkyNE9fj5gFQizVTS79BLfPftk9UAxXBnwAAMK
+ZDUXWhRWKEggADs=
+
+------=_NextPart_000_0000_01C482EE.B5E2E630
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/indxicon.gif
+
+R0lGODlhHgAeANUAAP///62trff390pKSrW1tVpaWu/v7zk5OUJCQmtra3NzcwAAAJSUlAgICN7e
+3r29vSEhIYSEhNbW1sbGxhAQEHt7ezExMaWlpWNjY5ycnOfn5ykpKVJSUhgYGM7OzoyMjHtze62l
+rXNrcwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAAeAB4AQAb/QIBw
+SCwaj8eBxQISOBMHhHQ63Sw+SMBh4kkovuDwlwGINCAFhiErkBDeDw/hEZhPuHWCRJDt+48HBABO
+fwAVDRsJGWtFAwcJIggLkwsDCQgNkxSWAxsWaYyFoqOkSA4hEakEDqVEgYNOsbKyAB8UCgChrg8a
+D3dvwMEEAQK2aGpGr0IGzKEGGsxCh8e6QxIZFQgWA9wF2gccjgWOCAMYF9Wt6uvs7ewPFxgDBQUY
+HAkXAfr7+xkSWRYyQBuiQYKDgwgPSkjQoEKWLQQOcJtIkRuCBGUaDAjwgE+RLQ/uYaBHsiQ9A2ao
+JXvgIMOFfPz4XXhQhoLKj4JGKTgDKlkAQiETIHTocOBfgA0UOiBYU8FmzyIaMGVagODAggaZKGjT
+dEAiB2SmGCTAkIBBgAoVxiaIkC+BWwb/SnksMted3VFBAAA7
+
+------=_NextPart_000_0000_01C482EE.B5E2E630
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/mix.gif
+
+R0lGODlhHgAeANUAAP////f3962trVpaWkJCQkpKSpSUlN7e3mtra+/v7zk5OQgICLW1tXNzc4SE
+hAAAACEhITExMRAQEGNjY6WlpZycnNbW1r29vXt7e1JSUikpKefn54yMjMbGxq2lrRgYGHtze87O
+znNrcwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAAeAB4AQAb/QIBw
+SCwaj8ZCJAIKOBEKgnQ61Tw4Cw2ikhAqGAAnsojJbgcGdBdQUCBEhIf8UUAQFnJJvaCJoMdCSkxO
+AVBUh1YcRYJNT1GHVVdmFWpeHSEIDZqbnJoGAA4LEGhoFoCnqEcHHg6tDAepSKutDgyEt7cAHBIN
+AGtDs664w7q8EqMGa19hw83FDcekyV4XGxcdHQza29wCAbvIaBMUymBCCei/CRvoQmXIE0gVGAQR
+BfcD9QoZbQNtBAXixRqI6gKFCQUGDJiQAQEFARAjRqxgCkmECuyGbLBwoKPHjhYQLMBwxCBChQwd
+SlxZIVQBAReKXMwoZOPHjyFHiqoEwGTCiIUNH66c6FIAsjUzf9m8CVLkO2nKsim4R7XqPQIIQC14
+GW4aAAUdLjScoLCsWYUJQnXN4FXBhQMVKAgdKoBCTAfR0hgwUPGruVgNdhpgW0SBACEdIHz4oMCU
+AA0SPhDogiEvkjt4HhBQ8GABHgn18iiYShiQAQQTEBgQgAEDagQOHiKYTbA2kSAAOw==
+
+------=_NextPart_000_0000_01C482EE.B5E2E630
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/feedback.gif
+
+R0lGODlhHgAeAPcAAP///SclKGiocOry2v3/0398hf78/4i5mGZkeD9BTrm4ys/R/9b/4jU6lGRm
+ZURHSMTJvvz8+lRkUf//+/X+/2NgZ//89w8qEDZEi0NcP/31/r29vP7//+Pk4vz//8v/2JiZqOrs
+8Hx8e6q3qjs9RZ2dnTZKVd311YSFg//4/uP4/+vr6f/6/7K/rez+9O3y9WaGZf/+/8rKw+j9/pCR
+jPr5/vTy7evx7UE9PMbGxENPrwocCP379v3/8q2yvdrb1vn59f//+v///6WlpPr9+isqRqKjnP7/
++MLDzWxvbjIxM/79+d3d2vr7+fr///j//zs8PfX18vL//v7+/PX+7ZaWluz85fLs//ny/tTU0svL
+yayrqvj//fvx8vP84v/7+XV1d/n/6vz8//z/+I6Oj1tcXLm7tu3/+Pj3//Hx/u/t7fn+8pGRkv/1
++vT/+fz6/+3///b66fH/7Ozz5vDw+PH2+fHy73JtfeP/8f7+/vv//fP/9//7/GBeYv7+/5SVkO72
++fH2/+75//b1+un5//H+6v7/7tLazfv89jdKpouMh/H08rKnrv7/+vr/5v7/6vf2/PDu8v38+ImJ
+ivb/8OPw+Pz+/f/8/fr17/L56vL57P/++amqorGysfj8/3SGbEJUX/P++M3M3PL6/u/w/4uKnM7N
+0kM5UcHP0sDF24+Qi/X79/Dj/3RxhJOTlFicYYaGiCwua/ns/zEkKy83Oufv8sDCvWGMcLex03h4
+dXJ8e/v9/+nr+HWghPn77VdWUkdVnEFDlkpMiY2OieLn/+j2//P5yenx/1lOVP39+zMtT/f68Sca
+Ifb29PTz8cnX2vPz9dTK0vTw+4V4f+b+4N756ufo5WxflIW/jd7k1u7+5/n3+NfY1v/z+MC2vv3w
+/3lrqOHi3fz/+//+/BchIPX5/D1lQ1ZMZOfy9EVefP348kdUQvv9/EpIVVRTWSYtIC8hXsq/xcvT
+yC83XlZbcZiNkzw7N9/4/6CSz+fd5aOrroqSlfb+6UBNQJeXmN7p6yH5BAAAAAAALAAAAAAeAB4A
+QAj/AJcdiWGgoIEYiII8cjRhwqAYZ85cutSGBRcXe/ZYsJAiRaYeY+zs8kdCQZgwITz0yLSrFQss
+usj1G3FoTqQYLKR5uBGhWRQAALjlCuCkjqAnJkzAUeEO0kFoADYoEYHizx9OMoBq1SqJh4VNSyxg
+spFji78SnXIwWbG1oQdPPXrEiWOgxjg+C/AF6IPglD5ALDQYYLFIDxcufPiwYGGpCRIShyhRstIg
+mBw5OhrAgfMmEp5bAhh82oEsnqg0FKRw4AAgWYQmPHis6FAGyos6tShE6qOkDxgyJfxVqWJkyAYm
+QYI0XO3Bg5PnTpIlazgl2RSgESIk2ypEiB8DYxrF/z0SpIaBKzmlxdgWsVvFFKG4uHHz5UtHR16a
+o/FzwxauIsYQwMo1BaSAQDsFIJHFCnqskkceBcVAkAGaQNAPFYE4UQglaQhDhRWEUJACC9VUc8sF
+67QQjQYxpPECIAM8csQP9BQxCgUzzAAMBvfco0Mii1jCwAECvFLICdMwA4ICz1DQBAdNOBMBANsw
+UdsTFFBQCShwEASJGUqAwcYkNAxDgyJGQMABEVMCEMESEwABhBo5/IIDDg+4AgsKKFQxRCdm2KJF
+ONbY0dAEQHW32mrXJWcBDxHYoYYzTURw3VZAHXGEQW+IEQN5MQLRSAw1uHBGCl2w0MYNXGS0UUd+
+1P8QXg++IDJQDRpggQYJSmxxhhSqdmNRKPPV15EH5RgiVw8xDOLMD+DAw4IBKZxDwj75sJBCG0QY
+hphiLODXHB0hmJGEMhoQQIAs39zRCiR3BFBBJ9zcoMeDEcZAxRziiONDArzswk9+L2TTwy6kYMHC
+E0nsIMEI8higBhaX3OABGgZA8A4EmjhBwRpyEBOLBNpIAawGeJzBgDkXSMCINzWg8dxqgSDxzhof
+khJMBtQQo4MJM8QQQi8HYIPNCZ/gUI8PovyDziOGrHFEKgjMcwwcMxSDQTozLJBIGTcw8IEAH1AD
+wyyMlFKKD6jYAZQdQAAggwgPvHAUIaAohUYMb9SlIEQ7AZCBgiJ/0DCEDBws4jYAUfwUQhK0AFKJ
+yYRIaIoSSRRA1R+q0EADVuyw1kQTAEzAQ2vhOPBAHU6MQkIfuUwyJnBDbLFBDj9EQQRrrSWzhCRg
+STKBDbnYI8MQ/pBRhSudbKEFNx0gIj2imAK1xPWbgKUOJh1kkYMWTBTaJlCHUq/oolNMsUkQ2QNQ
+KVDJvI9pcstx0JwnTjiXHZxbpV99dwEBADs=
+
+------=_NextPart_000_0000_01C482EE.B5E2E630
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/larrow.gif
+
+R0lGODlhKAAeANUAAP///wAAe4SEjN7e5/f39/f3/wgIhO/v787O1tbW3pycpefn7+fn50pKpa2t
+1oyMjMbGzu/v95SUnN7e70JChK2ttd7e3rW1vYyMlHNzjHt7vb29xhgYjEpKjEpKlHt7tVpahCEh
+hAAAhHt7jM7O3pycxnNztTk5nKWlpaWlrSkpjMbGxlpalEpKhLW1tTExlOfn987Ozr29vTExjGNj
+rbW11pSUxrW1xr29zlpajFJSnMbG1gAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAAoAB4AQAb/QIBw
+SCwajwDYBMkULl6BqHRKlX6aWECBEDkwLAnEJiURmAWP2w4rFUYBAbc8Tp/bs9nCRMOpeh4DeEUE
+BwMyZWcCGRQGVR0KK4KSk5SVlnh6fFEmBJdCmX1VUhQPEIGUhAMbCouNolEdKBUxlluFYRAViGet
+UTSnnkRbXQwDYQgXCoBscsF4cUPQ0ETScHZv0c5HBQ4NBhHaRgTdUwYkwMHjDa8iIxXok9zrr1Mt
+LB81lVsLNif0UzM86ChRiQCDXWZAhGA3QoALfQQWDBCjAEMiAQrL4bBwaZhEXMksJsqhwkCCcAQI
+fUQAIaSZd+GIpDywoNiAARYGdGrSRtC0JUrV6mCbNrSaNTjYqClFOtRaHafNki5txjTb0aRCpbr5
+x7Vr0iAAOw==
+
+------=_NextPart_000_0000_01C482EE.B5E2E630
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/rarrow.gif
+
+R0lGODlhKAAeANUAAP///wAAe4SEjN7e5/f39+/v7/f3/+fn7wgIhO/v987O1tbW3pycpa2t1oyM
+jJSUnEJChEpKpa2ttefn58bGzt7e7xgYjHNzjIyMlHt7vbW1vb29xt7e3nt7jEpKjCEhhAAAhEpK
+lFpahHt7tVJSnDExlJSUxikpjOfn97W1xpycxjExjFpajEpKhDk5nL29vb29zs7O3mNjrcbGxnNz
+taWlrVpalLW11rW1tc7OzsbG1qWlpQAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAAoAB4AQAb/QIBw
+KKygiMikcqksjALQqHQaLR2YzIIu5RB4BY/aRrHgTAoJggHLFgYA77h7/oa3l4mBI0S1ZCprd20H
+MwweVAgQF19eDy8DBQSCk5SVlpUGBDRQfoCXbQUDFA4QVFKdgZcFORI7h6ZQiRcMG5CSlKEysYqM
+YBIUZLapk3kODBoKwWdpw59EUHNsdZ910NN00ZcJCBENzc5LBAMxCFLdt+BIoRIdILDn6QAJNyM2
+LbBT3d93BSokISvwSXFh4oCaSgdwCGgH64OIXg8moBNUgAOMclEc9sJAS8EAg/uwFFiA4ASLjceA
+LfjITNUACV44alD5MdLET+I4DNg54YDNIXhKoNkBykROtWpD4lyrdBROlKRQnU07Kifa0kkCs7IJ
+AgA7
+
+------=_NextPart_000_0000_01C482EE.B5E2E630
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a96533/pfgrf208.gif
+
+R0lGODdh8AEoAPcAAAAAAAAAPwAAfwAAwAAA/wAqAAAqPwAqfwAqwAAq/wBVAABVPwBVfwBVwABV
+/wB/AAB/PwB/fwB/wAB//wCqAACqPwCqfwCqwACq/wDVAADVPwDVfwDVwADV/wD/AAD/PwD/fwD/
+wAD//yoAACoAPyoAfyoAwCoA/yoqACoqPyoqfyoqwCoq/ypVACpVPypVfypVwCpV/yp/ACp/Pyp/
+fyp/wCp//yqqACqqPyqqfyqqwCqq/yrVACrVPyrVfyrVwCrV/yr/ACr/Pyr/fyr/wCr//1UAAFUA
+P1UAf1UAwFUA/1UqAFUqP1Uqf1UqwFUq/1VVAFVVP1VVf1VVwFVV/1V/AFV/P1V/f1V/wFV//1Wq
+AFWqP1Wqf1WqwFWq/1XVAFXVP1XVf1XVwFXV/1X/AFX/P1X/f1X/wFX//38AAH8AP38Af38AwH8A
+/38qAH8qP38qf38qwH8q/39VAH9VP39Vf39VwH9V/39/AH9/P39/f39/wH9//3+qAH+qP3+qf3+q
+wH+q/3/VAH/VP3/Vf3/VwH/V/3//AH//P3//f3//wH///6oAAKoAP6oAf6oAwKoA/6oqAKoqP6oq
+f6oqwKoq/6pVAKpVP6pVf6pVwKpV/6p/AKp/P6p/f6p/wKp//6qqAKqqP6qqf6qqwKqq/6rVAKrV
+P6rVf6rVwKrV/6r/AKr/P6r/f6r/wKr//9UAANUAP9UAf9UAwNUA/9UqANUqP9Uqf9UqwNUq/9VV
+ANVVP9VVf9VVwNVV/9V/ANV/P9V/f9V/wNV//9WqANWqP9Wqf9WqwNWq/9XVANXVP9XVf9XVwNXV
+/9X/ANX/P9X/f9X/wNX///8AAP8AP/8Af/8AwP8A//8qAP8qP/8qf/8qwP8q//9VAP9VP/9Vf/9V
+wP9V//9/AP9/P/9/f/9/wP9///+qAP+qP/+qf/+qwP+q///VAP/VP//Vf//VwP/V////AP//P///
+f///wP////8AAP8AP/8Af/8AwAAAACoqKlVVVX9/f6qqqtXV1f///ywAAAAA8AEoAAAI/wD/CRxI
+sKDBgwgTKlzIsKHDhxAjSpxIsaLFixgzatzIsaPHjwLz+QNJUB8/kAX18QNJUB8/kAXz+QNJkJ8+
+kAXz+QNJkJ8+kAXz+QNJkJ8+kAXz+QMJEmTDfP5AEtTHD2RBffxAEtTHD2TBfP5AEuSnD2TBfP5A
+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
+lTqV6r+AADs7
+
+------=_NextPart_000_0000_01C482EE.B5E2E630
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a96533/pfgrf209.gif
+
+R0lGODdh8AEoAPcAAAAAAAAAPwAAfwAAwAAA/wAqAAAqPwAqfwAqwAAq/wBVAABVPwBVfwBVwABV
+/wB/AAB/PwB/fwB/wAB//wCqAACqPwCqfwCqwACq/wDVAADVPwDVfwDVwADV/wD/AAD/PwD/fwD/
+wAD//yoAACoAPyoAfyoAwCoA/yoqACoqPyoqfyoqwCoq/ypVACpVPypVfypVwCpV/yp/ACp/Pyp/
+fyp/wCp//yqqACqqPyqqfyqqwCqq/yrVACrVPyrVfyrVwCrV/yr/ACr/Pyr/fyr/wCr//1UAAFUA
+P1UAf1UAwFUA/1UqAFUqP1Uqf1UqwFUq/1VVAFVVP1VVf1VVwFVV/1V/AFV/P1V/f1V/wFV//1Wq
+AFWqP1Wqf1WqwFWq/1XVAFXVP1XVf1XVwFXV/1X/AFX/P1X/f1X/wFX//38AAH8AP38Af38AwH8A
+/38qAH8qP38qf38qwH8q/39VAH9VP39Vf39VwH9V/39/AH9/P39/f39/wH9//3+qAH+qP3+qf3+q
+wH+q/3/VAH/VP3/Vf3/VwH/V/3//AH//P3//f3//wH///6oAAKoAP6oAf6oAwKoA/6oqAKoqP6oq
+f6oqwKoq/6pVAKpVP6pVf6pVwKpV/6p/AKp/P6p/f6p/wKp//6qqAKqqP6qqf6qqwKqq/6rVAKrV
+P6rVf6rVwKrV/6r/AKr/P6r/f6r/wKr//9UAANUAP9UAf9UAwNUA/9UqANUqP9Uqf9UqwNUq/9VV
+ANVVP9VVf9VVwNVV/9V/ANV/P9V/f9V/wNV//9WqANWqP9Wqf9WqwNWq/9XVANXVP9XVf9XVwNXV
+/9X/ANX/P9X/f9X/wNX///8AAP8AP/8Af/8AwP8A//8qAP8qP/8qf/8qwP8q//9VAP9VP/9Vf/9V
+wP9V//9/AP9/P/9/f/9/wP9///+qAP+qP/+qf/+qwP+q///VAP/VP//Vf//VwP/V////AP//P///
+f///wP////8AAP8AP/8Af/8AwAAAACoqKlVVVX9/f6qqqtXV1f///ywAAAAA8AEoAAAI/wD/CRxI
+sKDBgwgTKlzIsKHDhxAjSpxIsaLFixgzatzIsaPHjwL1+QNJkF8/kAX1+QNJUJ8/kAT96QNZUJ8/
+kAT78QNZUJ8/kAT78QNJ0J8+kAX59QMJEqTDfP5AEtTHD2TBfP5AEsznDyRBf/lAFsznDyRBfvpA
+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
+
+------=_NextPart_000_0000_01C482EE.B5E2E630
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/oracle.gif
+
+R0lGODlhSwAJAKIAAP///94AIe97lPe1vecIOe9Kc//e5wAAACH5BAAAAAAALAAAAABLAAkAQAPT
+CCAV9LAMNaB1U+kRitaGYD3BUAlfahQjUQ5o6AZ0TWQcCjbFGugql2HQqNUGhpmRhiIqj4pOatrJ
+hQQwxk+RJBgUDZSgNN1sp+OlQ6oYe8rJwPD8MbDBP6EmXAbk+g8ZfXxwLCZnFXQLHXFrjC6CKX9T
+XZFlDQQFmptFTQ6cmpB1M0B+LqAFnqUfiagCQxwEfRQ/k3V3bn5stlO8Zj0msCYad2UcEltppHs/
+Bs4VXr6sir8mWNdfXKcC3N0iUrZxOl1fWdwNJg+p3ljH7Nzpme8ZCQA7
+
+------=_NextPart_000_0000_01C482EE.B5E2E630--

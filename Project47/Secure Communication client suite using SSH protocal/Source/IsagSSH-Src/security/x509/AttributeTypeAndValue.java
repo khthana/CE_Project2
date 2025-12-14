@@ -1,0 +1,67 @@
+
+package security.x509;
+
+import asn1.ASN1Object;
+import asn1.ASN1Sequence;
+import asn1.ASN1OID;
+import asn1.ASN1OIDRegistry;
+import asn1.ASN1AnyDefinedBy;
+import asn1.ASN1BitString;
+import asn1.ASN1CharString;
+import asn1.ASN1PrintableString;
+
+/**
+ * <pre>
+ *   AttributeTypeAndValue ::= SEQUENCE {
+ *     type     AttributeType,
+ *     value    AttributeValue }
+ *
+ *   AttributeType ::= OBJECT IDENTIFIER
+ *
+ *   AttributeValue ::= ANY DEFINED BY AttributeType
+ * </pre>
+ */
+public final class AttributeTypeAndValue extends ASN1Sequence {
+
+    public ASN1OID          type;
+    public ASN1AnyDefinedBy value;
+
+    public AttributeTypeAndValue() {
+	type  = new ASN1OID();
+	value = new ASN1AnyDefinedBy(type, true);
+	addComponent(type);
+	addComponent(value);
+    }
+
+    public String getRFC2253Value() {
+	String typeOID  = type.getString();
+	String typeName = ASN1OIDRegistry.lookupShortName(typeOID);
+	if(typeName == null) {
+	    typeName = ASN1OIDRegistry.lookupName(typeOID);
+	}
+	if(typeName == null) {
+	    typeName = typeOID;
+	}
+	// TODO should encode as octetstring if type name not known
+	return typeName + "=" + valueAsString();
+    }
+
+    private String valueAsString() {
+	ASN1Object vo = value.getValue();
+	String     vs = "<unknown>";
+	if(vo instanceof DirectoryString) {
+	    vs = ((DirectoryString)vo).getString();
+	} else if(vo instanceof ASN1CharString) {
+	    vs = ((ASN1CharString)vo).getValue();
+	} else if(vo instanceof ASN1PrintableString) {
+	    vs = ((ASN1PrintableString)vo).getValue();
+	} else if(vo instanceof ASN1BitString) {
+	    vs = ((ASN1BitString)vo).toPrintableString();
+	} // else { TODO, encode as octetstring
+	// TODO, escape characters according to rfc2253
+
+	return vs;
+    }
+
+}
+

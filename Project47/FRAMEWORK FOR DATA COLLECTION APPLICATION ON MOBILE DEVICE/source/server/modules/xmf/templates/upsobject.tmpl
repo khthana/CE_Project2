@@ -1,0 +1,13 @@
+from sqlobj import $model.name as sqlobj
+
+class UserPasswordStore(object):
+	def __init__(self):
+		#set $entity = $model.xmlroot.clientusername.split(".")[0]
+		#set $userProperty = $model.xmlroot.clientusername.split(".")[1]
+		#set $passwordProperty = $model.xmlroot.clientpassword.split(".")[1]
+		self.userList = sqlobj.${entity}.select()
+		
+	def getPassword(self, username):
+		for user in self.userList:
+			if user.${userProperty} == username:
+				return user.${passwordProperty}

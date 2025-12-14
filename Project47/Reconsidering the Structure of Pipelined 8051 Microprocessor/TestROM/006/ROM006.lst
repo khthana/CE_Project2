@@ -1,0 +1,25 @@
+   0000                 	ORG		0
+                        ;Basic Data for Test
+   0000   74 00             MOV		A,#00000000B
+   0002   78 01             MOV		R0,#00000001B
+   0004   75 30 02          MOV		30H,#00000010B
+   0007   79 04             MOV		R1,#00000100B
+                        ;Test ORL Operation - ORL A,???
+   0009   48            	ORL		A,R0                                
+   000a   45 30         	ORL		A,30H					        
+   000c   46            	ORL		A,@R0                              
+   000d   44 08         	ORL		A,#00001000B						
+                        ;Basic Data for Test
+   000f   75 30 03      	MOV		30H,#00000011B
+   0012   74 00         	MOV		A,#00000000B			
+                        ;Test ORL Operation - ORL direct,???
+   0014   42 30         	ORL		30H,A                   		
+   0016   43 30 0c      	ORL		30H,#00001100B     
+   0019                 MAIN:
+   0019   01 19         	AJMP	MAIN                							
+   001b   00                NOP
+   001c   00                NOP
+   001d   00                NOP
+   001e   00                NOP
+   001f   00                NOP
+0019  MAIN      

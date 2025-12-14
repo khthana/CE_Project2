@@ -1,0 +1,35 @@
+   0000                 	ORG		0
+                        ;Basic Data for Test
+   0000   78 02         	MOV     R0,#00000010B
+   0002   75 33 04      	MOV		33H,#00000100B
+   0005   7a 08         	MOV		R2,#00001000B
+                        ;Test ADDC Operation - ADDC A,???
+   0007   74 80         	MOV		A,#10000000B
+   0009   33            	RLC		A                           ;set carry flag for test
+   000a   74 00         	MOV		A,#00000000B
+   000c   38            	ADDC	A,R0                        
+                        	
+   000d   74 80         	MOV		A,#10000000B
+   000f   33            	RLC		A                           ;set carry flag for test
+   0010   74 02         	MOV		A,#00000010B
+   0012   35 33         	ADDC	A,33H                       
+                        	
+   0014   74 80         	MOV		A,#10000000B
+   0016   33            	RLC		A                           ;set carry flag for test
+   0017   74 06         	MOV		A,#00000110B
+   0019   36            	ADDC	A,@R0                       
+                        	
+   001a   74 80         	MOV		A,#10000000B
+   001c   33            	RLC		A                           ;set carry flag for test
+   001d   74 0e         	MOV		A,#00001110B
+   001f   34 10         	ADDC	A,#00010000B	            
+                        
+   0021                 MAIN:
+   0021   01 21         	AJMP	MAIN                							;worked
+   0023   00                NOP
+   0024   00                NOP
+   0025   00                NOP
+   0026   00                NOP
+   0027   00                NOP
+                        	
+0021  MAIN      

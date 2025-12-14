@@ -1,0 +1,393 @@
+<html>
+
+<head>
+
+<!-- ZoneLabs Privacy Insertion -->
+<script language='javascript' src='http://127.0.0.1:1028/js.cgi?pa&r=2306'></script>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>SCS-Client - Frequently Asked Questions</title>
+</head>
+
+<body>
+
+<h1 align="center">SCS-Client</h1>
+<h2 align="center">Frequently Asked Questions</h2>
+<h3>Contents</h3>
+<ol>
+	<li><a href="#faq1">Why is the video picture cropped at the borders?</a>
+	</li>
+	<li><a href="#faq2">Why is changing the video configuration disabled?</a>
+	</li>
+	<li><a href="#faq3">Why don't the boxes snap to the Main-Bar even though I've configured them to do so?</a>
+	</li>
+	<li><a href="#faq4">Where is the SCS-Client configuration stored?</a>
+	</li>
+	<li><a href="#faq5">Does the SCS-Client also use the Windows Registry?</a>
+	</li>
+	<li><a href="#faq6">When uninstalling and then re-installing the SCS-Client, the configuration settings do not get reset.</a>
+	</li>
+	<li><a href="#faq7">How can I configure the tracer?</a>
+	</li>
+	<li><a href="#faq8">Where is the trace file?</a>
+	</li>
+	<li><a href="#faq9">How can I start/stop the tracer?</a>
+	</li>
+	<li><a href="#faq10">Why does the SCS-Client bind to "127.0.0.1".</a>
+	</li>
+	<li><a href="#faq11">Do I need to have administrative privileges to install the SCS-Client?</a>
+	</li>
+	<li><a href="#faq12">Do I need to install the SCS-Client on a local hard-disk?</a>
+	</li>
+	<li><a href="#faq12">Do I need to have &quot;file create&quot; and &quot;file write&quot; privileges for the SCS-Client installation directory?</a>
+	</li>
+	<li><a href="#faq14">What data does the SCS-Client software protection mechanism transmit via the Internet and via Email?</a>
+	</li>
+	<li><a href="#faq15">I cannot create a trial licence after my first trial licence has expired.</a>
+	</li>
+	<li><a href="#faq16">Is my SCS-Client licence deleted when I uninstall it?</a>
+	</li>
+	<li><a href="#faq17">Is my SCS-Client licence deleted if I install a newer version of the SCS-Client?</a>
+	</li>
+	<li><a href="#faq18">How can I delete my SCS-Client licence?</a>
+	</li>
+	<li><a href="#faq19">What is the difference between the three versions of SCS-Client?</a>
+	</li>
+	<li><a href="#faq20">Does my network infrastructure work with the SCS-Client?</a>
+	</li>
+	<li><a href="#faq21">Does the SCS-Client work with NAT? (network address translation)?</a>
+	</li>
+	<li><a href="#faq22">Does the SCS-Client work with firewalls?</a>
+	</li>
+	<li><a href="#faq23">Can the SCS-Client been started more than once?</a>
+	</li>
+	<li><a href="#faq24">How can I display the SIP message log dialog?</a>
+	</li>
+	<li><a href="#faq25">How can I force the SCS-Client to re-register at the SIP registrar?</a>
+	</li>
+	<li><a href="#faq26">How can I send DTMF characters?</a>
+	</li>
+	<li><a href="#faq27">How can I edit/configure the &quot;Shared Contacts&quot;?</a>
+	</li>
+	<li><a href="#faq28">How can I change the available font zoom values in the &quot;Connection&quot; box?</a>
+	</li>
+	<li><a href="#faq29">How can I prevent the SCS-Client from clearing the chat history when I close the &quot;Connection&quot; box?</a>
+	</li>
+	<li><a href="#faq30">How can I register more than one SIP URL?</a>
+	</li>
+	<li><a href="#faq31">How can I configure the Ringer (for incoming calls) to play a different wave-file or use the beeper-device instead of the sound card?</a>
+	</li>
+</ol>
+
+<p>&nbsp;</p>
+<h3>Answers</h3>
+<ol>
+	<li><a name="faq1"></a><b>Why is the video picture cropped at the borders?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		This is caused by faulty Windows drivers of the video camera, mainly of video cameras with a native CCD/CMOS sensor resolution that is not
+		(Q)CIF but (Q)VGA. These faulty drivers do not interpolate (downsample)
+		the VGA sensor data to CIF but instead just crop the borders and
+		provide the application (in this case the SCS-Client) with the center
+		portion of the VGA picture only.<br>
+		<br>
+		<i>
+		Solution (workaround):</i><br>
+		Configure the SCS-Client to not ask the video camera driver for the
+		(Q)CIF resolution but the (Q)VGA instead and let the SCS-Clientdo the interpolation itself. Go to the configuration dialog, to the
+		page &quot;Audio &amp; Video&quot; and select either "CIF interpolated" or
+		"QCIF interpolated" under "Video settings" -> "Size"<br>
+		<br>
+	</li>
+	<li><b><a name="faq2"></a>Why is changing the video configuration disabled?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		The video settings controls are automatically greyed out when either the &quot;My Video Camera&quot; Box is open or at least one &quot;Connection&quot; Box has an active video connection.<br>
+		<br>
+		<i>
+		Solution:</i><br>
+		Close the &quot;My Video Camera&quot; Box and all video connections.<br>
+		<br>
+	</li>
+	<li><b><a name="faq3"></a>Why don't the boxes snap to the Main-Bar even though I've configured them to do so?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		This is caused by a well known bug. The SCS-Client box snapping does not work if the Windows display properties "Show window contents while dragging" (under Start -> Settings -> Control Panel -> Display -> Effects) is not enabled.<br>
+		<br>
+		<i>
+		Solution:</i><br>
+		Enable the "Show window contents while dragging" setting.<br>
+		<br>
+	</li>
+	<li><b><a name="faq4"></a>Where is the SCS-Client configuration stored?<br>
+		<br>
+		</b><i>Answer:</i><br>
+		The SCS-Client stores its configuration in two XML files. These are located in the directory &quot;C:\Documents and Settings\USERNAME\Application Data\Siemens\ScsClient&quot; (of course the drive and/or directory names change depending on the type and language of the installation).<br>
+		<br>
+		<i>Note 1:</i><br>
+		Every Windows user has a complete private configuration.<br>
+		<br>
+		<i>Note 2:</i><br>
+		These XML files are synchronized with Window domain servers (if one is used and configured to do so) and therefore also available on other PCs in the same domain when using the same Windows login.<br>
+		<br>
+	</li>
+	<li><b><a name="faq5"></a>Does the SCS-Client also use the Windows Registry?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		The SCS-Client neither reads from nor writes to the Windows Registry.<br>
+		<br>
+	</li>
+	<li><b><a name="faq6"></a>When uninstalling and then re-installing the SCS-Client, the configuration settings do not get reset.</b><br>
+		<br>
+		<i>Cause:</i><br>
+		The configuration XML files are not deleted during uninstallation. This is by design and not a bug. You can delete these files manually if you want to reset the configuration for a specific user.<br>
+		<br>
+		<i>Workaround 1:</i><br>
+		You can delete these files manually if you want to. This does not cause any problems (apart from the user configuration being lost of course).<br>
+		<br>
+		<i>Workaround 2:</i><br>
+		You can delete these files using the unofficial "SCSClientConfigReset.exe" tool. You can find this tool in the SCS-Client installation directory (usually &quot;C:\Program Files\SCS-Client\SCSClientConfigReset.exe&quot;).<br>
+		<br>
+	</li>
+	<li><b><a name="faq7"></a>How can I configure the tracer?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		The tracer can only be configured by editing the &quot;user-config.xml&quot; configuration file. Edit the section under &lt;tracers> and read the &quot;default-config.xml&quot; for basic documentation.<br>
+		<br>
+	</li>
+	<li><b><a name="faq8"></a>Where is the trace file?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		If you don't give a path in the &quot;file&quot; field in the file tracer configuration (&lt;tracers>&lt;tracer>&lt;file>), the trace file is automatically placed in either the %TEMP% or %TMP% directory and the file name is automatically prefixed with the current users Windows login name.<br>
+		<br>
+	</li>
+	<li><a name="faq9"></a><b>How can I start/stop the tracer?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		Starting and stopping the tracer is available from the enhanced Main-Bar menu which is shown if Shift+Ctrl is pressed (on the keyboard) together with the right mouse button.<br>
+		<br>
+	</li>
+	<li><a name="faq10"></a><b>Why does the SCS-Client bind to "127.0.0.1".</b><br>
+		<br>
+		<i>Answer:</i><br>
+		There are two possible reasons:<br>
+		<br>
+		1) Your PC does not have any IP address configured. In this case, the SCS-Client uses the &quot;127.0.0.1&quot; IP address as fallback. Note that &quot;127.0.0.1&quot; is also used if you have installed the "Microsoft Loopback Adapter" as your only network device. You can open a command prompt and type in "ipconfig /all" to see if which IP addresses and network cards you have configured.<br>
+		<br>
+		2) You have configured the SCS-Client to bind to &quot;127.0.0.1&quot; explicitly. Check and change this in the configuration dialog page &quot;IP address&quot;.<br>
+		<br>
+	</li>
+	<li><a name="faq11"></a><b>Do I need to have administrative privileges to install the SCS-Client?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		Yes. Our software protection mechanism requires this. Even if you managed to install the SCS-Clientwithout having administrative privileges, it will not run after such an installation.<br>
+		<br>
+	</li>
+	<li><a name="faq12"></a><b>Do I need to install the SCS-Client on a local hard-disk?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		Yes. Our software protection mechanism requires this. You cannot install the SCS-Client on a network drive.<br>
+		<br>
+	</li>
+	<li><a name="faq13"></a><b>Do I need to have &quot;file create&quot; and &quot;file write&quot; privileges for the SCS-Client installation directory?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		Yes. Our software protection mechanism requires this.<br>
+		<br>
+	</li>
+	<li><a name="faq14"></a><b>What data does the SCS-Client software protection mechanism transmit via the Internet and via Email?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		When you request an SCS-Client licence via the licence wizard, only the data that you enter yourself into the wizard is transmitted, together with your random SCS-Clientsite code. This site code is an unreversible hash code of your computer's hardware configuration.<br>
+		<br>
+		<i>Note:</i><br>
+		When you create a trial licence, nothing at all is transmitted via the Internet. The trial licence is created locally on your computer.<br>
+		<br>
+	</li>
+	<li><a name="faq15"></a><b>I cannot create a trial licence after my first trial licence has expired.</b><br>
+		<br>
+		<i>Answer:</i><br>
+		You can only create an SCS-Client trial licence once on every computer. After your first SCS-Client trial licence has expired, you need to buy a real licence.<br>
+		<br>
+		<i>Note:</i><br>
+		Re-installing the SCS-Client does not enable you to create another trial licence. Re-installing Windows does not enable you to create another trial licence. Reformatting all your hard-drives does not enable you to create another trial licence. So don't try, it's just a waste of time.<br>
+		<br>
+	</li>
+	<li><a name="faq16"></a><b>Is my SCS-Client licence deleted when I uninstall it?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		The SCS-Client uninstaller does not delete the SCS-Client licence. The SCS-Client uninstaller will not delete some directories and files on your computer. However, if you delete these directories or files manually, you will also lose your SCS-Client licence.<br>
+		<br>
+	</li>
+	<li><a name="faq17"></a><b>    Is my SCS-Client licence deleted if I install a newer version of the SCS-Client?<br>
+		</b><br>
+		<i>Answer:</i><br>
+		If you install a newer version of the SCS-Client over an older version using the procedures described below, you will not lose your SCS-Client unless you delete directories or files manually.<br>
+		<br>
+		<i>Instructions:</i><br>
+		1) Uninstall the old version of the SCS-Clientusing either the uninstall link in the Windows Start Menu or from the Add/Remove Programs Control Panel application.<br>
+		2) Reboot your PC immediately.<br>
+		3) Install the newer version of the SCS-Clientinto exactly the same directory where the old version has been installed before.<br>
+		<br>
+	</li>
+	<li><a name="faq18"></a><b>How can I delete my SCS-Client licence?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		This is available from the licence info dialog if Shift+Ctrl is pressed while performing a double click on the image with the right mouse button. A confirmation dialog will be shown.<br>
+		<br>
+	</li>
+	<li><a name="faq19"></a><b>What is the difference between the three versions of SCS-Client?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		Their feature set is different.<br>
+		<br>
+		The &quot;Basic&quot; version has only the basic feature set.<br>
+		<br>
+		The &quot;Advanced&quot; version has all the features of the &quot;Basic&quot; version plus secure-chat and secure-file-transfer via TLS.<br>
+		<br>
+		The &quot;Professional&quot; version has all the features of the &quot;Advanced&quot; version plus CIF video and flexible configuration of video bandwidth between 32 and 400 kBit/s (the other versions always use 350 kBit/s).<br>
+		<br>
+	</li>
+	<li><a name="faq20"></a><b>Does my network infrastructure work with the SCS-Client?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		If your PC is using a public IP address, the SCS-Client should work (you also need to check if you are using a firewall, see below). This is usually the case with the simplest home network infrastructure, where the home user is using a modem (with no other network device) like a PSTN/ISDN/cable/ADSL modem to connect to the internet. You can test if your PC is using a public IP address through the following steps:<br>
+		1) connect your PC to the internet<br>
+		2) select "Run..." from the Windows Start menu<br>
+		3) type in "cmd /k ipconfig /all" (without the quotes), click "OK"<br>
+		4) a command window should open an show some information<br>
+		5) look for lines (maybe more than one) that start with "IP Address. ." and look at the number at the end of the line<br>
+		6) if one of these numbers do NOT match the following patterns, you use at least one public number:<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 127.0.0.1    (loopback address)<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10.*.*.*     (RFC 1918 class A private address range)<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 172.x.*.*    (RFC 1918 class B private address ranges, where x=16..31)<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 192.168.*.*  (RFC 1918 class C private address ranges)<br>
+		<br>
+		<i>Private IP addresses:</i><br>
+		If you are using a private IP address and are connected to the internet through one or many NAT router(s) (like an ADSL router), SIP and so the SCS-Client will generally not work without specific changes. First, all your NAT routers must either be SIP capable or support UPnP. NAT routers that do support neither can technically not be used with SIP. See below for more details about using SIP with NAT routers.<br>
+		<br>
+		<i>Firewalls:</i><br>
+		If you are using a firewall (either a personal firewall or a hardware firewall), you need to configure this firewall (or all firwalls if<br>
+       there is more than one) to allow SIP network traffic. See below for more details about configuring a firewall for SIP.<br>
+		<br>
+	</li>
+	<li><a name="faq21"></a><b>Does the SCS-Client work with NAT? (network address translation)?</b><br>
+		<br>
+		<i>Why is NAT needed?</i><br>
+		Each network endpoint (computer) needs a unique IP address for communicating over the internet. Because there are not that many IP addresses to begin with, and they also have not been assigned very smart, the world seems to run out of available IP addresses. NAT has been designed to solve this problem (among others).<br>
+		<br>
+		<i>How does NAT work?</i><br>
+		There are three small ranges of IP addresses (for example 192.168.*.*) that are called private IP addresses. No network endpoint that is connected to the internet is allowed to use these private IP addresses. All other IP addresses are called public IP addresses. Private IP addresses can only be used in private networks (LANs). To connect such a private LAN to the public internet, a NAT router is needed. The NAT router has two network interfaces, one connected to the public internet and one connected to the private LAN. The public interface gets a public IP address  while the private interface gets a private IP address assigned.<br>
+		For network traffic (messages) from the private LAN, the NAT router replaces the private source IP address with its own public IP address and forwards the message to the public internet, remembers this mapping and so can route a reply from the public internet back to the original message source on the private LAN.<br>
+		<br>
+		<i>What is the issue with NAT?</i><br>
+		Even when using a NAT router to connect to the public internet, the network endpoints on the private LAN are not directly visible from the public internet. No network endpoint on the public internet can send anything to a computer on the private LAN, because these have no public IP address to send messages to. Note that this has also big security advantages.<br>
+		<br>
+		<i>NAT and home users?</i><br>
+		NAT is used by most companies these days. But it's more and more often also used in home networks, often even without the home users explicitly knowing about it. For example, do all ADSL routers use NAT.<br>
+		<br>
+		<i>How does this affect SIP and the SCS-Client?</i><br>
+		Like many other IP based protocols, SIP has big problems with NAT. And because SIP is an open IETF standard, no vendor can (or at least none should) solve the NAT issues of SIP on their own. What does that mean for users of the SCS-Client? It means that if your PC is behind a NAT (router), you cannot talk to any SCS-Client user on the other side of your NAT router. If you are a home user and you are connected to the internet via a NAT router, it means you cannot use the SCS-Client at all.<br>
+		<br>
+		<i>Solutions:</i><br>
+		Today, there are two possible solutions:<br>
+		1) UPnP (Universal Plug &amp; Play): through UPnP, the SCS-Client could talk to your NAT router and solve the SIP-NAT issue. v1.10 of the SCS-Client will implement UPnP.<br>
+		2) SIP (RFC3261) capable NAT routers: if your NAT router "supports" SIP (is a SIP (RFC3261) application layer gateway), you'll have no problems and the SCS-Client will work fine.<br>
+		<br>
+		<i>Solutions for more than one NAT router:</i><br>
+		UPnP solves NAT for SIP only for the NAT router closest to your PC. All<br>
+       other NAT routers must directly support SIP.<br>
+		<br>
+	</li>
+	<li><a name="faq22"></a><b>Does the SCS-Client work with firewalls?</b><br>
+		<br>
+		<i>W</i><i>hat is the problem (1)?</i><br>
+		Firewall block most IP traffic. If a firewall is not configured to let SIP traffic pass through, firewalls will block SIP.<br>
+		<br>
+		<i>What is the problem (2)?</i><br>
+		As an additional security mechanism, firewalls often also do NAT. See comments above about NAT.<br>
+		<br>
+		S<i>olution:</i><br>
+		If your (hardware or software) firewall knows SIP, you'll have no problem at all.<br>
+		<br>
+		<i>Solution for hardware based firewalls that do not know SIP:</i><br>
+		If you use a hardware based firewall that does not know SIP, you must configure it to let SIP pass through. You'll need to open these protocols/ports for the SCS-Client:<br>
+		- port 5060 in both directions for all IPs for UDP (SIP)<br>
+		- ports 5060 and 5061 in both directions for all IPs for TCP (SIP)<br>
+		- ports 4500 through 4599 in both directions for all IPs for UDP and TCP (audio, video, chat)<br>
+		<br>
+		<i>Solution for software based firewalls (personal firewalls) that do not know SIP:</i><br>
+		If you use a personal firewall that does not know SIP, you must configure it to let SIP pass through. Usually this is simpler than<br>
+       configuring hardware based firewalls. Simply configure your personal firewall to allow UDP and TCP traffic for all ports for all IPs for the SCS-Client application (SCSC.EXE).<br>
+		<br>
+	</li>
+	<li><a name="faq23"></a><b>Can the SCS-Client been started more than once?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		Generally not. You can force the SCS-Client to start more than once by using the command line argument "/multistart".<br>
+		<br>
+	</li>
+	<li><a name="faq24"></a><b>How can I display the SIP message log dialog?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		The SIP message log dialog is available from the enhanced Main-Bar menu which is shown if Shift+Ctrl is pressed (on the keyboard) together with the right mouse button.<br>
+		<br>
+	</li>
+	<li><a name="faq25"></a><b>How can I force the SCS-Client to re-register at the SIP registrar?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		Re-Registering at SIP registrar is available from the enhanced "My SIP URL" menu (in the &quot;My Contacts&quot; Box) which is shown if Shift+Ctrl is pressed (on the<br>
+         keyboard) together with the right/left mouse button.<br>
+		<br>
+	</li>
+	<li><a name="faq26"></a><b>How can I send DTMF characters?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		Select the SIP-URL of remote party in the &quot;Connection&quot; Box while audio is active (means both connected and neither on hold nor on mute), then press the DTMF key on the keyboard (0-9, a-d, *, #). You'll get textual feedback in the history when the DTMF character has been sent (no audio feedback is provided on the local machine).<br>
+		<br>
+	</li>
+	<li><a name="faq27"></a><b>How can I edit/configure the &quot;Shared Contacts&quot;?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		This feature can only be configured by editing the &quot;user-config.xml&quot; configuration file. Edit the section under &lt;buddyList>&lt;centralBuddyListFile>.<br>
+		<br>
+	</li>
+	<li><a name="faq28"></a><b>How can I change the available font zoom values in the &quot;Connection&quot; box?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		This feature can only be configured by editing the &quot;user-config.xml&quot; configuration file. Edit the section under &lt;gui>&lt;communicationBoxZoom>&lt;availableZoom>.<br>
+		<br>
+	</li>
+	<li><a name="faq29"></a><b>How can I prevent the SCS-Client from clearing the chat history when I close the &quot;Connection&quot; box?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		This feature can only be configured by editing the &quot;user-config.xml&quot; configuration file. Edit the section under &lt;gui>&lt;clearHistoryOnBoxClose>.<br>
+		<br>
+	</li>
+	<li><a name="faq30"></a><b>How can I register more than one SIP URL?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		This feature can only be configured by editing the &quot;user-config.xml&quot; configuration file. Edit the section under &lt;sipAccount>&lt;additionalSipUrls>.<br>
+		<br>
+	</li>
+	<li><a name="faq31"></a><b>How can I configure the Ringer (for incoming calls) to play a different wave-file or use the beeper-device instead of the sound card?</b><br>
+		<br>
+		<i>Answer:</i><br>
+		This feature can only be configured by editing the &quot;user-config.xml&quot; configuration file. Edit the section under &lt;gui>&lt;ringer> and it's sub-keys.</li>
+</ol>
+
+<p>&nbsp;</p>
+<hr>
+<p>SCS-Client v1.1-b9</p>
+<p>Copyright 2001-2004 Siemens Switzerland Ltd., All rights reserved.<br>
+Internet: <a href="http://www.mysip.ch">http://www.mysip.ch</a><br>
+Email: <a href="mailto:patrick.maechler@siemens.com">Patrick Maechler &lt;patrick.maechler@siemens.com></a><br>
+</p>
+
+</body>
+
+</html>
+
+<!-- ZoneLabs Popup Blocking Insertion -->
+<script language='javascript'>postamble();</script>

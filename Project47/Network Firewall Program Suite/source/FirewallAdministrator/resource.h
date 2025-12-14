@@ -1,0 +1,39 @@
+//{{NO_DEPENDENCIES}}
+// Microsoft Developer Studio generated include file.
+// Used by FirewallManager.rc
+//
+#define IDM_ABOUTBOX                    0x0010
+#define IDD_ABOUTBOX                    100
+#define IDS_ABOUTBOX                    101
+#define IDD_FIREWALLMANAGER_DIALOG      102
+#define IDR_MAINFRAME                   128
+#define IDC_STATIC_NUMBER_OF_GROUP      1000
+#define IDC_LISTBOX_GROUP               1001
+#define IDC_LISTCTRL_RULE_OF_GROUP      1002
+#define IDC_STATIC_RULE_OF_GROUP        1003
+#define IDC_BUTTON_ADD_RULE             1005
+#define IDC_IPADDRESS_SRC_ADDR          1006
+#define IDC_IPADDRESS_SRC_MASK          1007
+#define IDC_IPADDRESS_DST_MASK          1008
+#define IDC_IPADDRESS_DST_ADDR          1009
+#define IDC_EDIT_SRC_PORT               1010
+#define IDC_EDIT_DST_PORT               1011
+#define IDC_COMBO_PROTOCOL              1012
+#define IDC_COMBO_ACTION                1013
+#define IDC_BUTTON_EDIT_RULE            1014
+#define IDC_BUTTON_DELETE_RULE          1015
+#define IDC_RADIO_ALLOW_ALL             1016
+#define IDC_RADIO_DENY_ALL              1017
+#define IDC_BUTTON_DEFAULT_RULE         1018
+#define IDC_BUTTON_CLEAR_RULE           1019
+
+// Next default values for new objects
+// 
+#ifdef APSTUDIO_INVOKED
+#ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_NEXT_RESOURCE_VALUE        130
+#define _APS_NEXT_COMMAND_VALUE         32771
+#define _APS_NEXT_CONTROL_VALUE         1020
+#define _APS_NEXT_SYMED_VALUE           101
+#endif
+#endif

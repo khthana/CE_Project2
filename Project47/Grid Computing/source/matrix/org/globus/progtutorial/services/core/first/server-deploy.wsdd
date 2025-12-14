@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<deployment name="defaultServerConfig" xmlns="http://xml.apache.org/axis/wsdd/"
+	xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+	<service name="progtutorial/core/first/MatrixService" provider="Handler" style="wrapped">
+		<parameter name="name" value="MatrixService"/>
+		<parameter name="baseClassName" value="org.globus.progtutorial.services.core.first.impl.MatrixImpl"/>
+		<parameter name="className" value="org.globus.progtutorial.stubs.MatrixService.MatrixPortType"/>
+		<parameter name="schemaPath" value="schema/progtutorial/MatrixService/Matrix_service.wsdl"/>
+
+		<!-- Start common parameters -->
+		<parameter name="allowedMethods" value="*"/>
+		<parameter name="persistent" value="true"/>
+		<parameter name="handlerClass" value="org.globus.ogsa.handlers.RPCURIProvider"/>
+	</service>
+
+	<service name="progtutorial/core/first/MatrixFactoryService" provider="Handler" style="wrapped">
+		<parameter name="name" value="MatrixService Factory"/>
+		<parameter name="instance-name" value="MatrixService Instance"/>
+		<parameter name="instance-schemaPath" value="schema/progtutorial/MatrixService/Matrix_service.wsdl"/>
+		<parameter name="instance-baseClassName" value="org.globus.progtutorial.services.core.first.impl.MatrixImpl"/>
+		<parameter name="instance-className" value="org.globus.progtutorial.stubs.MatrixService.MatrixPortType"/>
+
+		<!-- Start common parameters -->
+		<parameter name="allowedMethods" value="*"/>
+		<parameter name="persistent" value="true"/>
+		<parameter name="className" value="org.gridforum.ogsi.Factory"/>
+		<parameter name="baseClassName" value="org.globus.ogsa.impl.ogsi.GridServiceImpl"/>
+		<parameter name="schemaPath" value="schema/ogsi/ogsi_factory_service.wsdl"/>
+		<parameter name="handlerClass" value="org.globus.ogsa.handlers.RPCURIProvider"/>
+		<parameter name="factoryCallback" value="org.globus.ogsa.impl.ogsi.DynamicFactoryCallbackImpl"/>
+		<parameter name="operationProviders" value="org.globus.ogsa.impl.ogsi.FactoryProvider"/>
+	</service>
+
+
+</deployment>

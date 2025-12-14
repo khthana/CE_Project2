@@ -1,0 +1,39 @@
+; Code Composer Project File, Version 2.0 (do not modify or remove this line)
+
+[Project Settings]
+ProjectDir="c:\ti\myprojects\test_dtmfg\"
+ProjectType=Executable
+CPUFamily=TMS320C67XX
+Tool="Compiler"
+Tool="DspBiosBuilder"
+Tool="Linker"
+Config="Debug"
+Config="Release"
+
+[Source Files]
+Source="konfig.cdb"
+Source="main.c"
+Source="sumcfg.cmd"
+
+[Generated Files]
+Source="konfigcfg.s62"
+Source="konfigcfg_c.c"
+
+["Compiler" Settings: "Debug"]
+Options=-g -q -fr"c:\ti\myprojects\test_dtmfg\Debug" -i"C:\ti\plugins\xdais\CW\DTMFG\include" -i"C:\ti\c6000\xdais\include" -i"C:\ti\plugins\xdais\CW\DTMFG\dtmfg" -i"C:\ti\referenceframeworks\include" -d"_DEBUG" -mv6700
+
+["Compiler" Settings: "Release"]
+Options=-q -o3 -fr"c:\ti\myprojects\test_dtmfg\Release" -mv6700
+
+["DspBiosBuilder" Settings: "Debug"]
+Options=-v6x
+
+["DspBiosBuilder" Settings: "Release"]
+Options=-v6x
+
+["Linker" Settings: "Debug"]
+Options=-q -c -m".\Debug\test_dtmfg.map" -o".\Debug\test_dtmfg.out" -x -i"C:\ti\referenceframeworks\lib"
+
+["Linker" Settings: "Release"]
+Options=-q -c -m".\Release\test_dtmfg.map" -o".\Release\test_dtmfg.out" -x
+

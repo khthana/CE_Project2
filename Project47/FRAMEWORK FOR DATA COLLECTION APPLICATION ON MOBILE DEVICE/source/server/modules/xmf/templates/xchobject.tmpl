@@ -1,0 +1,238 @@
+#set global idt = "    "
+
+#def makeIndent($i)
+#for $n in range($i)
+$idt#slurp
+#end for
+#end def
+
+#def initNodes($parentNode, $childNode, $i)
+#set $parentNodeName = 'x' + $parentNode.name
+#set $childNodeName = 'x' + $childNode.name
+#set $childNodeCon = $childNode.name
+#set $relObj = 'r' + $parentNode.entity
+#set $initRObj = $findReferrenceName($parentNode.entity, $childNode.entity)
+#if $initRObj[-1:] == 's'
+#set $rItemName = $initRObj[0].upper() + initRObj[1:-1]
+#else
+#set $rItemName = $initRObj[0].upper() + initRObj[1:]
+#end if
+##${makeIndent(i)}match = False
+##${makeIndent(i)}for ${rItemName} in ${relObj}.${initRObj}:
+${makeIndent(i)}for ${childNode.entity} in ${relObj}.${initRObj}:
+${makeIndent(i+1)}match = False
+${makeIndent(i+1)}try:
+${makeIndent(i+2)}execStr = 'if ' + self.conditionDict['${childNode.entity}'] + ': match = True'
+##${makeIndent(i+2)}print execStr
+${makeIndent(i+2)}exec execStr
+##${makeIndent(i+2)}print ${childNode.entity}
+##${makeIndent(i+2)}print match
+${makeIndent(i+1)}except KeyError:
+${makeIndent(i+2)}match = True
+${makeIndent(i+1)}except AttributeError:
+${makeIndent(i+2)}match = False
+${makeIndent(i+1)}if match:
+##${makeIndent(i+2)}print 'match'
+##${makeIndent(i+2)}print ${childNode.entity}
+${makeIndent(i+2)}${childNodeName} = xpkg.${childNodeCon}()
+#for $attr in $childNode.attributes
+${makeIndent(i+2)}try:
+${makeIndent(i+3)}if ${childNode.entity}.${attr.property}:
+${makeIndent(i+4)}${childNodeName}.${attr.name} = str(${childNode.entity}.${attr.property})
+##${makeIndent(i+4)}print str(${childNode.entity}.${attr.property})
+${makeIndent(i+2)}except:
+${makeIndent(i+3)}pass
+##${makeIndent(i+3)}print 'attribute access error'
+#end for
+${makeIndent(i+2)}${parentNodeName}.${childNode.name}.append(${childNodeName})
+#if $childNode.elements
+${makeIndent(i+2)}r${childNode.entity} = ${childNode.entity}
+${makeIndent(i+1)}if not match:
+${makeIndent(i+2)}continue
+#end if
+#end def
+
+#def findForeignKeyEntity($entityName, $foreignKeyName)
+#for $entity in $model.entities
+#if $entity.name == $entityName
+#for $forKey in $entity.foreignKeys
+#if $forKey.name == $foreignKeyName
+#return $forKey.refEntity
+#end if
+#end for
+#end if
+#end for
+#end def
+
+#def propertyType($entityName, $propertyName)
+#if '.' in $propertyName
+#set $foreignKeyName = $propertyName.split('.')[0]
+#set $propertyName = $propertyName.split('.')[1]
+#set $entityName = $findForeignKeyEntity($entityName, $foreignKeyName)
+#end if
+#for $entity in $model.entities
+#if $entity.name == $entityName
+#for $prop in $entity.properties
+#if $prop.name == $propertyName
+#return $prop.type
+#end if
+#end for
+#break
+#end if
+#end for
+#end def
+
+#def findParentForeignKey($parentEntityName, $childEntityName)
+#for $entity in $model.entities
+#if $entity.name == $childEntityName
+#for $foreignKey in $entity.foreignKeys
+#if $foreignKey.refEntity == $parentEntityName
+#return $foreignKey.name
+#end if
+#end for
+#end if
+#end for
+#end def
+
+#def initObjects($parentNode, $childNode, $i)
+#set $parentElementName = 'x' + $parentNode.name
+#set $childElementName = 'x' + $childNode.name
+#set $parentElement = $parentNode.name
+#set $childElement = $childNode.name
+#set $childEntity = $childNode.entity
+#set $parentEntity = $parentNode.entity
+#set $childEntityName = 'r' + $childNode.entity
+#set $parentEntityName = 'r' + $parentNode.entity
+#set $parentIDName = $findParentForeignKey($parentEntity, $childEntity) + 'ID'
+${makeIndent(i)}for ${childElementName} in ${parentElementName}.${childElement}:
+${makeIndent(i+1)}if ${childElementName}.id:
+${makeIndent(i+2)}${childEntityName} = rpkg.${childEntity}.select(rpkg.${childEntity}.q.id == int(${childElementName}.id))[0]
+#for $attribute in $childNode.attributes
+#if not $attribute.name == 'id'
+${makeIndent(i+2)}if ${childElementName}.${attribute.name}:
+#if $propertyType($childEntity, $attribute.property) == "String"
+${makeIndent(i+3)}${childEntityName}.${attribute.property} = ${childElementName}.${attribute.name}
+#elif $propertyType($childEntity, $attribute.property) == "Integer"
+${makeIndent(i+3)}${childEntityName}.${attribute.property} = int(${childElementName}.${attribute.name})
+#elif $propertyType($childEntity, $attribute.property) == "Float"
+${makeIndent(i+3)}${childEntityName}.${attribute.property} = float(${childElementName}.${attribute.name})
+#elif $propertyType($childEntity, $attribute.property) == "DateTime"
+${makeIndent(i+3)}${childEntityName}.${attribute.property} = DateTimeFrom(str(${childElementName}.${attribute.name}))
+#end if
+#end if
+#end for
+${makeIndent(i+1)}else:
+${makeIndent(i+2)}${childEntityName} = rpkg.${childEntity}()
+${makeIndent(i+2)}
+#for $attribute in $childNode.attributes
+#if not $attribute.name == 'id'
+${makeIndent(i+2)}if ${childElementName}.${attribute.name}:
+#if $propertyType($childEntity, $attribute.property) == "String"
+${makeIndent(i+3)}${childEntityName}.${attribute.property} = ${childElementName}.${attribute.name}
+#elif $propertyType($childEntity, $attribute.property) == "Integer"
+${makeIndent(i+3)}${childEntityName}.${attribute.property} = int(${childElementName}.${attribute.name})
+#elif $propertyType($childEntity, $attribute.property) == "Float"
+${makeIndent(i+3)}${childEntityName}.${attribute.property} = float(${childElementName}.${attribute.name})
+#elif $propertyType($childEntity, $attribute.property) == "DateTime"
+${makeIndent(i+3)}${childEntityName}.${attribute.property} = DateTimeFrom(str(${childElementName}.${attribute.name}))
+#end if
+#end if
+#end for
+${makeIndent(i+2)}${childEntityName}.${parentIDName} = ${parentEntityName}.id
+#end def
+
+#def $findReferrenceName($entityName, $refEntityName)
+#for $entity in $model.entities
+#if $entity.name == $entityName
+#set $targetEntity = $entity
+#break
+#end if
+#end for
+
+#for $oneToMany in $targetEntity.oneToManys
+#if $oneToMany.refEntity == $refEntityName
+#return $oneToMany.name
+#end if
+#end for
+
+#for $manyToMany in $targetEntity.manyToManys
+#if $manyToMany.refEntity == $refEntityName
+#return $manyToMany.name
+#end if
+#end for
+#end def
+
+#def createElements($parent, $i)
+#for $element in $parent.elements
+$initNodes($parent, $element, $i)
+#if $element.elements
+$createElements($element, $i+1)
+#end if
+#end for
+#end def
+
+#def createRelObj($parent, $i)
+#for $element in $parent.elements
+$initObjects($parent, $element, $i)
+#if $element.elements
+$createRelObj($element, $i+1)
+#end if
+#end for
+#end def
+
+from mx.DateTime import DateTimeFrom
+from xmf.runtime.userfunctions import *
+
+class Exchanger(object):
+    conditionDict = {}
+    def __init__(self, conditionDict={}):
+        self.conditionDict = conditionDict
+        
+    def select(self, conditionDict={}):
+        self.conditionDict = conditionDict
+        from sqlobj import ${model.name} as rpkg
+        #set $entity = $root.entity
+        
+        result = rpkg.${entity}.select()
+        
+        execStr = 'if ' + self.conditionDict['${entity}'] + ':\n${makeIndent(4)}robject = ${entity}'
+        ##print execStr
+        
+        for ${entity} in result:
+            exec execStr
+
+        xmlobj = self._relationalToXML(robject, self.conditionDict)
+        return xmlobj
+        
+    def update(self, xmlobj):
+    	from sqlobj import ${model.name} as rpkg
+        #set $entity = $root.entity
+		
+        robject = rpkg.${entity}.select(rpkg.${entity}.q.id == xmlobj.id)[0]
+        self._xmlToRelational(xmlobj, robject)
+		
+        return self._relationalToXML(robject, self.conditionDict)
+
+    def _relationalToXML(self, relObj, conditionDict):
+        from xmlobj import ${model.name} as xpkg
+        #set $nodeName = 'x' + $root.name
+        #set $nodeCon = $root.name
+        #set $relObj = 'r' + $root.entity
+        ${relObj} = relObj
+        ${nodeName} = xpkg.${nodeCon}()
+        #for $attr in $root.attributes
+        ${nodeName}.${attr.name} = str(${relObj}.${attr.property})
+        #end for
+$createElements($root, 2)
+        return ${nodeName}
+
+    def _xmlToRelational(self, xmlObj, relObj):
+        from sqlobj import ${model.name} as rpkg
+		#set $nodeName = 'x' + $root.name
+		#set $entity = $root.entity
+		#set $relObj = 'r' + $entity
+        ${nodeName} = xmlObj
+        ${relObj} = relObj
+$createRelObj($root, 2)
+
+    

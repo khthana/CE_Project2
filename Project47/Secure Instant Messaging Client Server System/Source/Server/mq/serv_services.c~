@@ -1,0 +1,3924 @@
+#ifndef HEADER_SERVICES_H
+#define HEADER_SERVICES_H 
+
+#include "common.h"
+#include "dbmysql.h"
+#include "serv_services.h"
+#include "support_serv.h"
+
+
+void format_string(char des[] ,char src[])
+{
+	int i,current;
+	int len;
+	
+	len = strlen(src);
+	
+	for(i=0 ; i< len*2 ; i++) des[i] = '\0';
+        current=0;
+        
+	for(i=0 ; i< len ; i++)
+        {
+                if(src[i] == 0x27)
+                {
+                        des[current] = 0x27;
+                        current++;
+                        des[current] = 0x27;
+                };
+                des[current] = src[i];
+                current++;
+        }
+}
+
+
+int check_db5(char tempq1[], char user_id[], char tempq2[],char user_id_contact[],char type_service[])
+{
+	MYSQL_RES *res_set;
+ 	MYSQL_ROW row;
+	int check_query;
+	int i;
+	char query[MAX_MESSAGE];
+
+
+	for(i=0;i < MAX_MESSAGE;i++)
+      		query[i] = '\0';
+   	strcpy(query, tempq1);
+   	strncat(query, user_id, FIX_USER_ID);
+	strcat(query, tempq2);
+	strncat(query, user_id_contact, FIX_USER_ID);
+		strcat(query,"'");
+	fprintf(stdout,"%s\n",query);
+	check_query = process_query(isagmq_db, query);
+
+    if( check_query == 1)
+   	{
+		mysql_query(isagmq_db, query);
+	  	res_set = mysql_store_result(isagmq_db);
+		row = mysql_fetch_row(res_set);
+		if( row == NULL) 
+		{
+			fprintf(stdout, "%s   Can %s \n", user_id, type_service);
+		//	fprintf(stdout, "checking roorororoo \n");
+			return 1;
+		}
+		else
+		return 0;
+
+		mysql_free_result(res_set);
+	}	
+   	else if(check_query == 0) 
+	{
+     	fprintf(stdout, "%s   Can't %s \n", user_id,  type_service);
+      	return 0;
+	}
+    else 
+	{
+      		//*Send NACK  DB system error
+		fprintf(stdout,"%s             DB system error\n", type_service);
+		return -1;
+    }			
+}
+
+
+void getemailaddr(char contact_id[], char email[])
+{
+	MYSQL_RES *res_set;
+ 	MYSQL_ROW row;
+	
+	char query[MAX_MESSAGE];
+  	unsigned int i;
+  	int check_query;
+
+	/*Find nick_name from DB*/
+    for(i=0;i < MAX_MESSAGE;i++) query[i] = '\0';
+    strcpy(query, "SELECT EMAIL FROM user WHERE USER_ID = ");
+    strncat(query, contact_id, FIX_USER_ID);
+	fprintf(stdout,"%s\n",query);
+     			
+    check_query = process_query(isagmq_db, query);
+    if( check_query == 1)
+    {					
+		mysql_query(isagmq_db, query);
+      	res_set = mysql_store_result(isagmq_db);
+		if((row = mysql_fetch_row(res_set)) != NULL)
+		{
+			strcpy(email,row[0]);
+		}
+		else
+		{
+			fprintf(stdout,"Can't not find this USER ID %s\n",contact_id);
+		}
+
+		mysql_free_result(res_set);
+	}
+	else if ( check_query == 0)
+    {
+       	//strncat(nickname, "#N/A", 4);
+        fprintf(stdout,"            Add Nick not this userID = %s\n", contact_id);
+    }
+     else 
+	{
+		//strncat(nickname, "#N/A$", 5);
+		fprintf(stdout,"            Add Nick DB system error\n", contact_id);
+	}
+
+
+}
+
+void get_nick_email(char contact_id[], char nickname[],char email[])
+{
+	MYSQL_RES *res_set;
+ 	MYSQL_ROW row;
+	
+	char query[MAX_MESSAGE];
+  	unsigned int i;
+  	int check_query;
+
+	
+	/*Find nick_name from DB*/
+    for(i=0;i < MAX_MESSAGE;i++) query[i] = '\0';
+    strcpy(query, "SELECT NICK_NAME ,EMAIL FROM user WHERE USER_ID = ");
+    strncat(query, contact_id, FIX_USER_ID);
+//	fprintf(stdout,"%s\n",query);
+     			
+    check_query = process_query(isagmq_db, query);
+    if( check_query == 1)
+    {					
+		mysql_query(isagmq_db, query);
+      	res_set = mysql_store_result(isagmq_db);
+		if((row = mysql_fetch_row(res_set)) != NULL)
+		{
+			strcpy(nickname,row[0]);
+			strcpy(email,row[1]);
+		}
+		else
+		{
+			fprintf(stdout,"Can't not find this USER ID %s\n",contact_id);
+		}
+
+		mysql_free_result(res_set);
+	}
+	else if ( check_query == 0)
+    {
+       	//strncat(nickname, "#N/A", 4);
+        fprintf(stdout,"            Add Nick not this userID = %s\n", contact_id);
+    }
+     else 
+	{
+		//strncat(nickname, "#N/A$", 5);
+		fprintf(stdout,"            Add Nick DB system error\n", contact_id);
+	}
+
+
+}
+
+void write_error(SSL *ssl,char message[])
+{
+	unsigned char buffer[MAX_MESSAGE];
+	int i ;
+
+	for (i =0 ; i < MAX_MESSAGE ;i++ )
+	{
+		buffer[i] = '\0';
+	}
+
+	buffer[0] = 0x06;
+	buffer[1] = 0x00;
+	buffer[2] = 0x01;
+	buffer[3] = 0x00;
+	buffer[4] = 0x01;
+	buffer[5] = 0x62;
+	buffer[6] = 0xff;
+
+	for (i =0; i < MAX_MESSAGE ; i++ )
+	{
+		if(message[i] == NULL) break;
+		buffer[i + 7] = message[i];
+	}
+
+	ssl_write(ssl,buffer,sizeof(buffer));
+}
+
+int get_data(char buf[], char data[], int start)
+{
+    	int iptr = 0;
+    	unsigned char c;
+
+    	while(1)
+        {
+	        c = buf[start];
+	        if(c == '$')
+	        {
+	            start++;
+               	data[iptr] = '\0';
+	            break;
+	        }
+	        else if( c < 0x21 || c > 0x7e || c == '\0' )  
+			{
+				fprintf(stdout, "             ");
+				fprintf(stdout, "ERROR No. Data\n");
+	            return 0;
+	   		}
+	        data[iptr] = c;
+	        start++;
+	        iptr++;
+    	}
+        return start;
+}
+
+
+int checklength(char contact_id[],char nickname[],char status[],char ip[],char temp[],int msg,int length)
+{
+	int len;
+	int max;
+	max = msg-2;
+	//len = length;
+
+	len = length + strlen(contact_id) + strlen(nickname) + strlen(status) + strlen(ip) + 4;
+	if(len < max)
+	{
+		strncat(temp,contact_id,strlen(contact_id));
+		strncat(temp,"#",1);
+		strncat(temp,nickname,strlen(nickname));
+		strncat(temp,"#",1);
+		strncat(temp,status,strlen(status));
+		strncat(temp,"#",1);
+		strncat(temp,ip,strlen(ip));
+		strncat(temp,"$",1);
+		return len;
+	}
+	else
+	{
+		return 0;
+	}
+
+}
+
+void getnickname(char contact_id[], char nickname[])
+{
+	MYSQL_RES *res_set;
+ 	MYSQL_ROW row;
+	
+	char query[MAX_MESSAGE];
+  	unsigned int i;
+	char name[10];
+  	int check_query;
+
+	for(i =0 ; i<10 ;i++ ) name[i] = '\0';
+	
+		/*Find nick_name from DB*/
+     			for(i=0;i < MAX_MESSAGE;i++)
+       				query[i] = '\0';
+     			strcpy(query, "SELECT NICK_NAME FROM user WHERE USER_ID = ");
+     			strncat(query, contact_id, FIX_USER_ID);
+			//	strncat(query, "'", 1);
+			fprintf(stdout,"%s\n",query);
+     			
+     			check_query = process_query(isagmq_db, query);
+     			if( check_query ==1)
+     			{					
+					mysql_query(isagmq_db, query);
+      				res_set = mysql_store_result(isagmq_db);
+       				row = mysql_fetch_row(res_set);
+         			if( row[0] != NULL) 
+					{
+             			/*get Nick$ contact*/
+						strcpy(nickname,"#");
+						strcpy(name,row[0]);
+						strncpy(nickname,name,strlen(name));
+						//strncat(nickname, "#", 1);
+						//strcat(nickname, row[0]);					
+					}
+					else 
+					{
+						strncat(nickname, "#N/A", 4);
+					}
+					mysql_free_result(res_set);
+				}
+				else if ( check_query == 0)
+     			{
+       				strncat(nickname, "#N/A", 4);
+         			fprintf(stdout,"            Add Nick not this userID = %s\n", contact_id);
+     			}
+     			else 
+				{
+					strncat(nickname, "#N/A$", 5);
+					fprintf(stdout,"            Add Nick DB system error\n", contact_id);
+				}
+				
+}
+
+
+void new_user(SSL *ssl, unsigned char *buffer_read, char *ip_client, char user_id[]){
+	int i;
+        unsigned char buffer_user[MAX_MESSAGE];
+        for( i=0;i<MAX_MESSAGE;i++) buffer_user[i] = '\0';
+        strcpy(buffer_user,"Let's start add new user");
+        ssl_write(ssl,buffer_user,sizeof(buffer_user));	
+}
+void add_nick_name(char user_id_contact[], char contact_list[]){
+
+}
+int add_ip(char user_id_contact[],char contact_list[]){
+
+}
+void login(SSL *ssl, unsigned char *buffer_read, char user_id[]){
+	int i;
+        unsigned char buffer_user[MAX_MESSAGE];
+        for( i=0;i<MAX_MESSAGE;i++) buffer_user[i] = '\0';
+        strcpy(buffer_user,"Let's start Login");
+        ssl_write(ssl,buffer_user,sizeof(buffer_user));
+}
+void chat(SSL *ssl,unsigned char * buffer_read)
+{
+	int i ;
+	unsigned char buffer[MAX_MESSAGE];
+	
+	for(i=0;i<MAX_MESSAGE; i++)
+	{
+		buffer[i]= '\0';
+	}
+	
+	if(buffer_read[5] == 0x01)
+	{
+		
+	}	
+}
+
+void contactlist(SSL *ssl, unsigned char *buffer_read, char user_id[])
+{	
+	char query[MAX_MESSAGE];
+	char temp[MAX_MESSAGE];
+	unsigned char buffer[MAX_MESSAGE];
+
+	char contact_id[10];
+	char email[255];
+
+	int i;
+	int check_db;
+	int len = 0;
+	int temp_len = 0;
+	int check_query;
+
+	MYSQL_RES *res_set;
+ 	MYSQL_ROW row;
+
+	for(i =0 ;i< MAX_MESSAGE ; i++)
+	{
+		query[i] = '\0';
+		temp[i] = '\0';
+		buffer[i] = '\0';
+	}
+
+	if ((buffer_read[0] == 0x55) && (buffer_read[5] == 0x51))
+	{
+		isagmq_db = do_connect (DEF_HOST_NAME, DEF_USER_NAME, DEF_PASSWORD, DEF_DB_NAME,
+      	       				DEF_PORT_NUM, DEF_SOCKET_NAME, 0);
+					
+		if(isagmq_db == NULL)
+      	{
+			fprintf(stdout, "%s   ", user_id);
+           	fprintf(stdout, "Status Connect to Database Error");
+            check_db = 0;
+       	}
+		else
+		{
+			//***********************************************************************************			
+			fprintf(stdout,"query");
+			strcpy(query, "SELECT CONTACT_ID  FROM contact_list WHERE USER_ID = '");
+			strncat(query, user_id, FIX_USER_ID);
+			strcat(query,"'");
+
+			check_query = process_query(isagmq_db, query);
+			if( check_query == 1)
+			{
+				mysql_query(isagmq_db, query);
+     			res_set = mysql_store_result(isagmq_db);
+			//	strcpy(contact_list,"");
+				strcpy(temp,"");
+				//sequence = random_sequence(65535, 1234);
+				//sequence = rand();
+
+                while((row = mysql_fetch_row(res_set)) != NULL)
+		        {
+	               
+						strcpy(contact_id,row[0]);
+						getemailaddr(contact_id,email);
+						len += strlen(contact_id);
+						len++;
+						len += strlen(email);
+						len++;
+
+						if(len < MAX_MESSAGE-9)
+						{
+							strcat(temp,contact_id);
+							strcat(temp,"#");
+							strcat(temp,email);
+							strcat(temp,"$");
+							temp_len = strlen(temp);
+							len = temp_len;
+						}
+						else
+						{
+							strcat(temp,"$");
+							for(i=0;i<MAX_MESSAGE;i++) buffer[i] ='\0';
+	
+      						buffer[0] = 0x55;
+							buffer[1] = 0x01;
+							buffer[2] = 0x00;
+							buffer[3] = 0x00;
+							buffer[4] = 0x01;
+      						buffer[5] = 0x52;
+      						buffer[6] = 0x01;				/*More of package*/
+
+							for(i=0;i<MAX_MESSAGE;i++)
+							{
+								buffer[7+i] = temp[i];
+								if(temp[i] == '\0') break;
+								
+							}
+							
+							ssl_write(ssl,buffer,sizeof(buffer));
+
+							for(i=0;i<MAX_MESSAGE;i++)
+							{
+								temp[i] = '\0';
+								buffer[i] = '\0';
+							}
+
+							strcpy(temp,contact_id);
+							strcat(temp,"#");
+							strcat(temp,email);
+							strcat(temp,"$");
+							temp_len = strlen(temp);
+							len = temp_len;
+
+						}
+
+				}
+				
+				strcat(temp,"$");
+				for(i=0;i<MAX_MESSAGE;i++) buffer[i] ='\0';
+
+				buffer[0] = 0x55;
+				buffer[1] = 0x00;
+				buffer[2] = 0x01;
+				buffer[3] = 0x00;
+				buffer[4] = 0x07;
+				buffer[5] = 0x52;
+				buffer[6] = 0x00;	
+
+				//fprintf(stdout,"ALL INFO \n%s\n",temp);
+				for(i=0;i<MAX_MESSAGE;i++)
+				{
+					buffer[7+i] = temp[i];
+					if(temp[i] == '\0')
+					{
+						fprintf(stdout,"Number of Chars ->%d\n",i);       
+						break;
+					}	
+				}
+							
+				ssl_write(ssl,buffer,sizeof(buffer));
+
+
+			}
+     		else if ( check_query == 0)
+     		{
+       			//Send NACK  No. this userID
+         		fprintf(stdout, "%s   ", user_id);
+				fprintf(stdout,"No. this userID = %s\n", user_id);
+         		/*Disconnect MySQL*/
+     		}
+     		else 
+			{
+				fprintf(stdout, "%s   ", user_id);
+				fprintf(stdout,"DB system error %s\n", user_id);
+					/*Disconnect MySQL*/
+			}
+
+		//****************************** esle *****************************************************			
+		}
+		 
+		 do_disconnect(isagmq_db); 
+
+	}
+	else
+	{
+		fprintf(stdout,"Packet Error \n");
+	}
+												
+}
+
+
+void delete_admin(SSL *ssl, unsigned char *buffer_read, char user_id[]){
+	int i;
+        unsigned char buffer_user[MAX_MESSAGE];
+        for( i=0;i<MAX_MESSAGE;i++) buffer_user[i] = '\0';
+        strcpy(buffer_user,"Let's start delete admin");
+        ssl_write(ssl,buffer_user,sizeof(buffer_user));
+}
+
+//*******************************************************************************************
+//						      Delete Contact List Function
+//*******************************************************************************************
+//
+// This function for adding other users into contactlist 
+//
+// TOS = 0x0B CMD = 0xB0 - Request to delete contact list from user
+// TOS = 0x0B CMD = 0xB1 - Reply success result to user
+// TOS = 0x06 CMD = 0x62 or write_error - reply all errors occur during processing
+//------------------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------------------
+// Input =  (ContactID)
+// Output = complete or error message
+//	
+//------------------------------------------------------------------------------------------
+
+void delete_contactlist(SSL *ssl, unsigned char *buffer_read, char user_id[]){
+	unsigned char buffer[MAX_MESSAGE];
+	unsigned char temp[MAX_MESSAGE];
+	
+  	unsigned char query[MAX_MESSAGE];
+	char mess[MAX_MESSAGE];
+	unsigned int i;
+	unsigned char contact_id[10];
+  	int check_query;	
+	int valid;
+	int point=0;
+
+	for(i=0;i <= 10;i++)
+	{
+		contact_id[i] = '\0';	
+	}
+	for(i=0;i < MAX_MESSAGE ;i++)
+	{
+		buffer[i] = '\0';	
+		temp[i] = '\0';	
+		query[i] = '\0';	
+		mess[i] = '\0';
+	}
+
+	//***********************************************************************
+	// Start Process of Delete Contactlist with User ID
+	//***********************************************************************											
+	
+    if ((buffer_read[0] == 0x0b) && (buffer_read[5] == 0xb1))
+    {
+
+		//***********************************************************************
+		// --1st Process--
+		//		- Get data form packet and check its validity
+		//-----------------------------------------------------------------------
+		//
+		// There are 2 subprocess to do
+		//  1. Check length of contactID is not longer than 10 characters
+		//	2. Check contactID that contain only allowable character
+		//
+		// input  = Packet
+		// output = valid ContactID -> id
+		//							-> valid =1
+		//		  = invalid -> valid = 0
+		//***********************************************************************											
+
+		point = get_data(buffer_read,contact_id,7);
+
+		if(point != 0)
+		{
+			if(strlen(contact_id) < 11 && check_userid(contact_id) !=0) 
+				valid = 1;
+			else valid = 0;
+		}
+		else valid =0;
+
+
+		if(valid == 1)
+		{
+			//***********************************************************************
+			// --2nd Process--
+			//		- Connect to DB to do everything
+			//-----------------------------------------------------------------------
+			//
+			// There are 3 subprocess to do
+			//  1. Query DB to check the existence of ContactID
+			//	2. Delete (UserID , ContactID)
+			//	3. Update (ContactID,UserID,'X')
+			//
+			// input  = Query
+			// output = Success or Error 
+			//
+			//***********************************************************************		
+			
+			isagmq_db = do_connect (DEF_HOST_NAME, DEF_USER_NAME, DEF_PASSWORD, DEF_DB_NAME,
+	                		DEF_PORT_NUM, DEF_SOCKET_NAME,CLIENT_FOUND_ROWS);
+
+       		if(isagmq_db == NULL)
+       		{
+				fprintf(stdout, "%s   ", user_id);
+            	fprintf(stdout, "Delete Contactlist Connect to Database Error");
+				strcpy(temp,"Can't connect Database...$");
+				write_error(ssl,temp);
+       		}
+			else
+			{
+				for(i = 0;i < MAX_MESSAGE;i++) 
+				{
+	     			query[i] = '\0';
+				}
+
+				//-----------------------------------------------------------------------
+				// --1st SupProcess--
+				//		- Check the existence of ContactID
+				//-----------------------------------------------------------------------
+
+				if(!check_db5("SELECT CONTACT_ID FROM contact_list WHERE USER_ID = '", user_id, "' AND CONTACT_ID = '", contact_id, "Delete contact"))
+				{
+					//-----------------------------------------------------------------------
+					// --2nd SupProcess--
+					//		- Delete (UserID , ContactID)
+					//
+					// Note : Not to be worry about the same of the User ID and your ID 
+					//		  becuase program retrict the same value
+					//        between USER ID and CONTACT ID
+					//-----------------------------------------------------------------------
+
+					strcpy(query, "DELETE FROM contact_list WHERE CONTACT_ID = ");
+					strncat(query, contact_id, FIX_USER_ID);
+					strcat(query," AND USER_ID = '");
+					strncat(query, user_id, FIX_USER_ID);
+					strcat(query,"'" );
+					fprintf(stdout, "Query :%s\n", query);
+					check_query = process_query(isagmq_db, query);
+
+					if(check_query < 0) 
+					{
+						fprintf(stdout, "Delete Contactlist Error\n");
+						strcpy(mess,"Not Found..$"); 
+						write_error(ssl,mess); 
+					}
+					else
+					{
+
+						fprintf(stdout, "%s   ", user_id);
+						fprintf(stdout, "Deleted Contactlist Complete...\n");
+
+						//-----------------------------------------------------------------------
+						// --3nd SupProcess--
+						//		- Update (ContactID,UserID,'X')
+						//	
+						//	- Must have to check that (ContactID,UserID) exist before blocking
+						//-----------------------------------------------------------------------
+						
+						if(!check_db5("SELECT USER_ID FROM contact_list WHERE USER_ID = '", 
+										contact_id, "' AND CONTACT_ID = '",user_id, "Blocking"))
+						{
+
+							strcpy(query, "UPDATE contact_list SET STATUS = 'X'");
+							strcat(query," WHERE USER_ID = '");
+							strcat(query, contact_id);
+							strcat(query,"'");
+							strcat(query," AND CONTACT_ID = '");
+							strcat(query, user_id);
+							strcat(query,"'" );
+							fprintf(stdout, "Query :%s\n", query);
+
+							check_query = process_query_row(isagmq_db, query);
+
+							if(check_query == 1)
+							{
+								fprintf(stdout,"Delete and Block Complete\n");
+
+								for(i=0;i < MAX_MESSAGE;i++) 
+								{
+									temp[i] = '\0';
+									buffer[i] = '\0';
+								}
+
+									buffer[0] = 0x0b;
+									buffer[1] = 0x00;
+									buffer[2] = 0x01;
+									buffer[3] = 0x00;
+									buffer[4] = 0x07;
+									buffer[5] = 0xb2;
+									buffer[6] = 0xff;
+
+								strcpy(temp, "Delete contactlist OK...$");
+
+
+								for(i=0;i < 255;i++) 
+								{
+									buffer[i+7] =  temp[i];
+								}
+
+								ssl_write(ssl, buffer, sizeof(buffer));
+							}
+							else if (check_query == 0)
+							{
+								fprintf(stdout,"Blocking Update Incomplete\n", user_id);
+								strcpy(mess,"Can't update blocking status...$");
+								write_error(ssl,mess);
+							}
+							else
+							{
+								fprintf(stdout,"Blocking :DB system error %s\n");
+								strcpy(mess,"Blocking : DB system error...$");
+								write_error(ssl,mess);
+							}
+
+						}
+						else
+						{
+							fprintf(stdout, "Blocking from Delete Request Error : NOT FOUND\n");
+							strcpy(mess,"Blocking Incomplete :Not Found..$"); 
+							write_error(ssl,mess); 
+						}
+
+						//-----------------------------------------------------------------------
+						// --End of 3nd SupProcess--
+						//-----------------------------------------------------------------------
+
+					}
+
+				}
+
+				else 
+				{
+					fprintf(stdout, "%s   ", user_id);
+					fprintf(stdout,"DB system error %s\n", user_id);
+					strcpy(mess,"Your requested User ID doesn't exist...$");
+					write_error(ssl,mess);
+				}
+
+				do_disconnect(isagmq_db); 		
+				//-----------------------------------------------------------------------
+				//-- 2nd Process--
+				//			
+				//***********************************************************************
+
+			 }
+		}
+		else
+	    {
+			fprintf(stdout,"Invalid UserID\n");
+			strcpy(mess,"Invalid UserID..$");
+			write_error(ssl,mess);
+		}		
+		//-----------------------------------------------------------------------
+		//-- 1st Process--
+		//			
+		//***********************************************************************
+
+
+	}
+	else
+	{
+		//buffer_read Error (Incorrect Packet)
+		fprintf(stdout,"Invalid Packet! \n");
+		strcpy(mess,"Invalid Packet..$");
+		write_error(ssl,mess);
+
+	}
+	
+}
+
+//*******************************************************************************************
+//						     End of Delete Contact List Function
+//*******************************************************************************************
+
+
+//*******************************************************************************************
+//						          Find Contact List Function
+//*******************************************************************************************
+//
+// This function for adding other users into contactlist 
+//
+// TOS = 0x08 CMD = 0x81 - Request to find contact list from user
+// TOS = 0x08 CMD = 0x82 - Reply result of finding
+// TOS = 0x06 CMD = 0x62 or write_error - reply all errors occur during processing
+//------------------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------------------
+// Input =  (Option,UserID,Email,FirstName,LastName)
+// Output = complete or error message
+//	
+//------------------------------------------------------------------------------------------
+
+void find_contactlist(SSL *ssl, unsigned char *buffer_read, char user_id[],NODE *link){
+	MYSQL_RES *res_set;
+	MYSQL_ROW row;	
+
+	unsigned char buffer[MAX_MESSAGE];
+	char find_infor[MAX_MESSAGE];
+	char query[MAX_MESSAGE];
+	char mess[MAX_MESSAGE];
+	char temp[MAX_MESSAGE];
+	char option[5];
+	char uid[15];
+	char email[128];
+	char f_name[128];
+	char l_name[128];
+	int i;
+	int len_temp;
+	int count =0;
+	int valid =0;
+	int ptr=0;
+	int chk_op =0;
+	int chk_uid =0;
+	int chk_email = 0;
+	int chk_fname = 0;
+	int chk_lname =0;
+	int before=0;
+	int max;
+	int check_query;
+	int length;
+
+	for(i=0 ; i<MAX_MESSAGE ; i++)
+	{
+		buffer[i] = '\0';
+		find_infor[i] = '\0';
+		query[i] = '\0';
+		mess[i] = '\0';
+		temp[i] = '\0';
+	}
+	for(i=0 ; i<128 ; i++)
+	{
+		email[i] = '\0';
+		f_name[i] = '\0';
+		l_name[i] = '\0';
+	}
+	for(i=0 ;i<5 ; i++) option[i] = '\0';
+	for(i=0 ;i<15 ; i++) uid[i] = '\0';
+
+
+	if ((buffer_read[0] == 0x08) && (buffer_read[5] == 0x81))
+	{
+
+
+		//***********************************************************************
+		// --1st Process--
+		//		- Get data form packet and check its validity
+		//-----------------------------------------------------------------------
+		//
+		// There are 3 subprocess to do
+		//  1. Extract Data into (Option,UserID,Email,FirstName,LastName)
+		//	2. Check validity of them
+		//		- Option (AND , OR) AND by default
+		//		- UserID (length < 11 , allowable characters)
+		//		- Email (length < 64 , allowable characters)
+		//		- First Name (length < 64 , allowable characters)
+		//		- Last Name (length < 64 , allowable characters)
+		//	   Check first character of content
+		//		- if the first one is "_" ,it means that do not use this field 
+		//		- unless it is used to query DB -> chk_* = 2
+		//	
+		//
+		// input  = Packet
+		// output = Option , UserID , First Name , Last Name
+		//		  = chk_op , chk_uid , chk_fname , chk_lname
+		//
+		//***********************************************************************											
+
+		for(i=0 ; i < MAX_MESSAGE ; i++)
+		{
+			if(buffer_read[i+7] == NULL) break;
+			temp[i] = buffer_read[i+7];
+		}
+		//fprintf(stdout,"Temp :%s\n",temp);	
+
+		len_temp = strlen(temp);
+
+		for(i=0 ; i< len_temp ; i++)
+		{
+			if(temp[i] == '#') count++;
+		}
+
+		if(count != 4) 
+		{
+			fprintf(stdout,"Invalid Specific Format Input\n");
+			strcpy(mess,"Invalid Specific Format Input..$");
+			write_error(ssl,mess);
+			valid = 0;
+		}
+		else
+		{
+
+			//-----------------------------------------------------------------------
+			// --1st SupProcess--
+			//		- Extract Data into (Option,UserID,Email,FirstName,LastName)
+			//-----------------------------------------------------------------------
+
+			fprintf(stdout,"Checking Format Input\n");
+			// Get Option
+			option[0] = temp[0];
+			// Get UserID
+			for(i=2 ; i < len_temp ; i++)
+			{
+				if(temp[i] == '#')
+				{
+					ptr = i;
+					break;
+				}
+				uid[i-2] = temp[i];
+			}
+			ptr++;
+			// Get Email
+			for(i=ptr ; i < len_temp ; i++)
+			{
+				if(temp[i] == '#')
+				{
+					ptr = i;
+					break;
+				}
+				email[i-ptr] = temp[i];
+			}
+			ptr++;
+
+			// Get First name
+			for(i=ptr ; i < len_temp ; i++)
+			{
+				if(temp[i] == '#')
+				{
+					ptr = i;
+					break;
+				}
+				f_name[i-ptr] = temp[i];
+			}
+			ptr++;
+
+			// Get Last name
+			for(i=ptr ; i < len_temp+1 ; i++)
+			{
+				if(temp[i] == '$' && temp[i+1] == NULL) break;
+				l_name[i-ptr] = temp[i];
+			}
+
+			
+			switch (option[0])
+			{
+				case 'a' : strcpy(option," AND") ; break;
+				case 'A' : strcpy(option," AND") ; break;
+				case 'o' : strcpy(option," OR") ; break;
+				case 'O' : strcpy(option," OR") ; break;
+				default  : strcpy(option," AND") ; break;
+			}
+			chk_op = 2;
+
+			fprintf(stdout,"Option : %s\n",option);
+			fprintf(stdout,"UserID : %s\n",uid);
+			fprintf(stdout,"Email : %s\n",email);
+			fprintf(stdout,"First_name : %s\n",f_name);
+			fprintf(stdout,"Last_name : %s\n",l_name);
+		
+			//-----------------------------------------------------------------------
+			// --2nd SupProcess--
+			//		- Check validity of  (Option,UserID,Email,FirstName,LastName)
+			//		- Check first character of content
+			//-----------------------------------------------------------------------
+
+
+			chk_uid = check_userid(uid);
+			if(chk_uid == 1 && strlen(uid)>0 && strlen(uid) <11) chk_uid =2;
+
+			chk_email = spc_email_isvalid(email);
+			if(chk_email == 1 && strlen(email) < 65 ) chk_email =2;
+
+			chk_fname = check_name(f_name);
+			if(chk_fname == 1 && strlen(f_name)>0 && strlen(f_name) < 65 && f_name[0] != '_') chk_fname = 2;
+			else chk_fname =1;
+
+			chk_lname = check_name(l_name);
+			if(chk_lname ==1 && strlen(l_name)>0 && strlen(l_name)< 65 && l_name[0] != '_') chk_lname = 2;
+			else chk_lname =1;
+			
+			fprintf(stdout,"uid: %d\temail: %d\tf_name: %d\tl_name: %d\n",chk_uid,chk_email,chk_fname,chk_lname);
+			if(chk_uid == 0 && chk_email == 0 && chk_fname == 1 && chk_lname ==1)
+			{
+				fprintf(stdout,"Invalid Input\n");
+				strcpy(mess,"Invalid input...$");
+				write_error(ssl,mess);	
+			}
+			else
+			{
+
+				//***********************************************************************
+				// --2nd Process--
+				//		- Query DB according to valid input
+				//-----------------------------------------------------------------------
+				//
+				// input  = Query
+				// output = (UserID,Email,Status)
+				//
+				//***********************************************************************											
+
+		
+				strcpy(query,"SELECT USER_ID , EMAIL FROM user WHERE");
+
+				if(chk_uid == 2) 
+				{
+					strcat(query," USER_ID = '");
+					strcat(query,uid);
+					strcat(query,"'");
+					before =1;
+				}
+
+				if(chk_email == 2) 
+				{
+					if(before == 0)
+					{
+						strcat(query," EMAIL = '");
+						strcat(query,email);
+						strcat(query,"'");
+						before =1;
+					}
+					else
+					{
+						strcat(query," ");
+						strcat(query,option);
+						strcat(query," EMAIL = '");
+						strcat(query,email);
+						strcat(query,"'");
+					}
+				}
+				if(chk_fname == 2) 
+				{
+					if(before == 0)
+					{
+						strcat(query," FIRST_NAME = '");
+						strcat(query,f_name);
+						strcat(query,"'");
+						before =1;
+					}
+					else
+					{
+						strcat(query," ");
+						strcat(query,option);
+						strcat(query," FIRST_NAME = '");
+						strcat(query,f_name);
+						strcat(query,"'");
+					}
+				}
+				if(chk_lname == 2) 
+				{
+					if(before == 0)
+					{
+						strcat(query," LAST_NAME = '");
+						strcat(query,l_name);
+						strcat(query,"'");
+						before =1;
+					}
+					else
+					{
+						strcat(query," ");
+						strcat(query,option);
+						strcat(query," LAST_NAME = '");
+						strcat(query,l_name);
+						strcat(query,"'");
+					}
+				}
+
+				fprintf(stdout,"Query : %s\n",query);
+
+	//*******************************************************************************************************
+
+				isagmq_db = do_connect (DEF_HOST_NAME, DEF_USER_NAME, DEF_PASSWORD, DEF_DB_NAME,
+															DEF_PORT_NUM, DEF_SOCKET_NAME, 0);
+
+				if(isagmq_db == NULL)
+				{
+					fprintf(stdout, "Find Contactlist: Can't Connect to Database Error\n");
+					strcpy(mess,"Can't connect database ...$");
+					write_error(ssl,temp);
+				}
+				else
+				{
+					for(i=0;i < MAX_MESSAGE;i++) 
+					{
+						temp[i] = '\0';
+						buffer[i] = '\0';
+						find_infor[i] = '\0';
+					}
+
+					max = strlen(find_infor);
+					check_query = process_query(isagmq_db, query);
+					if(check_query ==1)
+					{
+						mysql_query(isagmq_db, query);
+						res_set = mysql_store_result(isagmq_db);
+						while( (row = mysql_fetch_row(res_set)) != NULL )
+						{	
+							if( row != NULL) 
+							{
+																		
+								strcpy(temp, row[0]);
+								strncat(temp, "#", 1);
+								strcat(temp, row[1]);	
+								strncat(temp, "#", 1);
+
+								if(find(link,row[0]))
+									strncat(temp, "O", 1);
+								else
+									strncat(temp, "F", 1);
+
+								length = strlen(temp);
+//								fprintf(stdout,"packet temp : %s\n",temp);
+//								fprintf(stdout,"\nLength : %d\n",length);
+								if(length + max < 150)
+								{
+									strcat(find_infor, temp);		
+									max = strlen(find_infor);
+								}
+								else
+								{
+									fprintf(stdout, " More Package\n");
+											
+									/*More package*/
+									buffer[0] = 0x08;
+									buffer[1] = 0x00;
+									buffer[2] = 0x01;
+									buffer[3] = 0x00;
+									buffer[4] = 0x07;
+									buffer[5] = 0x82;
+									buffer[6] = 0x01;				/*More of package*/
+											
+									strncat(find_infor, "$", 1);	
+										
+									i = 0;
+									while(i < MAX_MESSAGE  )
+									{
+										if(find_infor[i] == '\0')	break;
+										buffer[FIX_HEADER + i + 1] = find_infor[i];
+										i++;
+									}			
+									buffer[FIX_HEADER+i+1] = '$';
+									ssl_write(ssl, buffer, sizeof(buffer));
+											
+											
+									for(i = 0;i < MAX_MESSAGE;i++) 
+									{
+										buffer[i] = '\0';
+										find_infor[i] = '\0';
+									}
+											
+									strcpy(find_infor, temp);	
+									max = strlen(find_infor);
+											
+									length = 0;
+
+									for(i = 0 ;i < MAX_MESSAGE ; i++) temp[i] = '\0';
+								}	
+								// End of More Packet
+							}	
+							// End of row == NULL
+							strncat(find_infor, "$", 1);								
+						}
+						// End of while
+
+						strncat(find_infor, "$", 1);
+
+						mysql_free_result(res_set);						
+															
+						for(i = 0;i < MAX_MESSAGE;i++)
+						{	
+							buffer[i] = '\0';
+						}	
+
+						buffer[0] = 0x08;
+						buffer[1] = 0x00;
+						buffer[2] = 0x01;
+						buffer[3] = 0x00;
+						buffer[4] = 0x07;
+						buffer[5] = 0x82;
+						buffer[6] = 0x00;				/*End of package*/
+						
+						i = 0;
+						//fprintf(stdout,"find %s\n",find_infor);
+						while(i < MAX_MESSAGE  )
+						{
+							if(find_infor[i] == '\0')
+										break;
+							buffer[FIX_HEADER + i + 1] = find_infor[i];
+							i++;
+						}	
+						
+						ssl_write(ssl, buffer, sizeof(buffer));
+								
+					}
+					else if (check_query == 0)
+					{
+						fprintf(stdout,"Can't found your request\n", user_id);
+						strcpy(mess,"Can't found...$");
+						write_error(ssl,mess);
+					}
+					else 
+					{
+						fprintf(stdout,"DB system error %s\n");
+						strcpy(mess,"DB system error...$");
+						write_error(ssl,mess);
+
+					}
+
+					do_disconnect(isagmq_db);
+				}
+
+	//**************************************************************************************************************			
+			//-----------------------------------------------------------------------
+			//-- 2nd Process--
+			//			
+			//***********************************************************************
+
+			}
+		}
+	//-----------------------------------------------------------------------
+	//-- 1st Process--
+	//			
+	//***********************************************************************
+
+	}
+	else
+	{
+		fprintf(stdout,"Invalid Packet! \n");
+		strcpy(mess,"Invalid Packet..$");
+		write_error(ssl,mess);
+
+	}
+}
+
+//*******************************************************************************************
+//							End of	Find Contact List Function
+//*******************************************************************************************
+
+//*******************************************************************************************
+//						      Add Contact List Function
+//*******************************************************************************************
+//
+// This function for adding other users into contactlist 
+//
+// TOS = 0x03 CMD = 0x30 - add contactlist with email request from user
+// TOS = 0x03 CMD = 0x31 - add contactlist with userID request from user
+// TOS = 0x03 CMD = 0x32 - complete message of add contactlist with email reply to user
+// TOS = 0x03 CMD = 0x33 - complete message of add contactlist with userID reply to user
+// TOS = 0x06 CMD = 0x62 or write_error - reply all errors occur during processing
+//------------------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------------------
+// Input =  (ContactID or Contact Email)
+// Output = complete or error message
+//	
+//------------------------------------------------------------------------------------------
+
+
+int add_contactlist(SSL *ssl, unsigned char *buffer_read, char user_id[])
+{
+	int i;
+	int dbcheck;
+	int point;
+	int check_len;
+	int valid;
+	unsigned char email_contact[MAX_MESSAGE];
+	unsigned char id[MAX_MESSAGE];
+	unsigned char buffer[MAX_MESSAGE];
+	MYSQL_RES *res_set;
+ 	MYSQL_ROW row;	
+	char query[MAX_MESSAGE];
+	char mess[MAX_MESSAGE];
+	char user_id_contact[FIX_USER_ID];
+	int check_query;
+
+	for(i = 0 ; i < MAX_MESSAGE ; i++)
+	{
+		email_contact[i] = '\0';
+		id[i] = '\0';
+		buffer[i] = '\0';
+		query[i] = '\0';
+		mess[i] = '\0';
+	}
+
+	//***********************************************************************
+	// Start Process of Adding Contactlist with Email
+	//***********************************************************************											
+
+		
+	if ((buffer_read[0] == 0x03) && (buffer_read[5] == 0x30))
+	{
+
+		//***********************************************************************
+		// --1st Process--
+		//		- Get data form packet and check its validity
+		//-----------------------------------------------------------------------
+		//
+		// There are 2 subprocess to do
+		//  1. Check length of email address is not longer than 64 characters
+		//	2. Check email that is contain only allowable character
+		//
+		// input  = Packet
+		// output = valid email address -> email_contact
+		//								-> valid =1
+		//		  = invalid -> valid = 0
+		//***********************************************************************											
+
+//		for(i=0 ; i<MAX_MESSAGE; i++)
+//		{
+//			email_contact[i] = buffer_read[i+7];
+//			if(buffer_read[i+7] == '\0') break;
+//		}
+//		point = 1;	
+		point = get_data(buffer_read,email_contact,7);
+
+		if(point != 0)
+		{
+			if((strlen(email_contact) < 65) && (spc_email_isvalid(email_contact) != 0))
+				valid = 1;
+			else valid =0;
+		}
+		else valid =0;
+
+		if(valid == 1)
+		{
+			fprintf(stdout,"\nThis email :%s\n",email_contact);
+
+			//***********************************************************************
+			// --2nd Process--
+			//		- Connect to DB to do everything
+			//-----------------------------------------------------------------------
+			//
+			// There are 3 subprocess to do
+			//  1. Query DB to get UserID according to the email
+			//	2. Query DB to check that the returned UserID isn't the same as yours
+			//	3. Insert to DB (UserID , ContactID ,'W')
+			//
+			// input  = Query
+			// output = Success or Error 
+			//
+			//***********************************************************************											
+
+			isagmq_db = do_connect (DEF_HOST_NAME, DEF_USER_NAME, DEF_PASSWORD, DEF_DB_NAME,
+									 DEF_PORT_NUM, DEF_SOCKET_NAME, 0);
+			if(isagmq_db == NULL)
+			{
+				fprintf(stdout, "Error connecting to Database\n");
+				strcpy(mess,"Can not connect to DB..$");
+				write_error(ssl,mess);
+				
+			}
+			else
+			{
+
+				//-----------------------------------------------------------------------
+				// --1st SupProcess--
+				//		- Get ContactID from Email
+				//-----------------------------------------------------------------------
+
+				strcpy(query, "SELECT USER_ID FROM user WHERE EMAIL = '");
+				strncat(query, email_contact, strlen(email_contact));
+				strncat(query, "'", 1);
+
+				mysql_query(isagmq_db,query);
+				if(!(res_set = mysql_store_result(isagmq_db)))
+						fprintf(stdout,"Error query");
+				else fprintf(stdout,"Quering Database\n");
+
+				row = mysql_fetch_row(res_set);
+					
+				if(row == NULL)
+				{
+					fprintf(stdout,"Email Address Doesn't Exist\n");
+					strcpy(mess,"Email Address Doesn't Exist..$");
+					write_error(ssl,mess);
+				}
+				else
+				{
+
+					for(i = 0;i < 10;i++)  user_id_contact[i] = '\0';
+					// Get contactID from the row returned
+					strncpy(user_id_contact, row[0], FIX_USER_ID);
+					mysql_free_result(res_set);
+
+					//-----------------------------------------------------------------------
+					// --2nd SupProcess--
+					//		- Check the returned UserID isn't the same as yours
+					//-----------------------------------------------------------------------
+
+					if(strcmp(user_id_contact,user_id) != 0)
+					{
+						dbcheck = check_db5("SELECT CONTACT_ID FROM contact_list WHERE USER_ID = ", 
+									  user_id,
+									  " AND CONTACT_ID = '", 
+									  user_id_contact,
+									  "Add_contactlist");
+							
+						if(dbcheck == 1)
+						{
+							for(i=0;i < MAX_MESSAGE;i++)	query[i] = '\0';
+
+							//-----------------------------------------------------------------------
+							// --3rd SupProcess--
+							//		- Insert to DB (UserID , ContactID ,'W')
+							//
+							//	Note : if the corresponding info exist the insertion will be fail
+							//		   automatically
+							//-----------------------------------------------------------------------
+
+							strcpy(query, "INSERT INTO contact_list VALUES('");
+							strcat(query, user_id);
+							strcat(query, "', '");
+							strcat(query, user_id_contact);
+							strcat(query, "', '");
+							strcat(query, "W");
+							strcat(query, "')"); 
+
+							check_query = process_query(isagmq_db, query);
+							if( (check_query != 0) || (check_query == -1) )
+							{
+								fprintf(stdout, "Insertion Failed\n");
+								strcpy(mess,"Insertion Failed..$");
+								write_error(ssl,mess);
+
+							}
+							else 
+							{
+								fprintf(stdout, "%s   ", user_id);
+								fprintf(stdout, "Insertion Completed\n");
+								for(i=0;i<MAX_MESSAGE;i++)
+								{
+									buffer[i] = '\0';
+								}	
+
+								buffer[0] = 0x03;
+								buffer[1] = 0x00;
+								buffer[2] = 0x01;
+								buffer[3] = 0x00;
+								buffer[4] = 0x07;
+								buffer[5] = 0x32;
+								buffer[6] = 0xff;
+
+								ssl_write(ssl,buffer,sizeof(buffer));
+							}
+						
+						}
+						else if (dbcheck == 0)
+						{
+							//The email corresponding to its contact_id has already added up
+							fprintf(stdout,"This email has already added\n");
+							strcpy(mess,"This Email Address had already added..$");
+							write_error(ssl,mess);
+						}
+						else
+						{
+							fprintf(stdout,"DB Error\n");
+							strcpy(mess,"DB Error..$");
+							write_error(ssl,mess);
+						}
+					}
+					else
+					{
+						fprintf(stdout,"You are adding your email\n");
+						strcpy(mess,"Can not add your own email..$");
+						write_error(ssl,mess);
+
+					}
+
+				}	
+				do_disconnect(isagmq_db); 		
+				return 0;
+			//-----------------------------------------------------------------------
+			//-- 2nd Process--
+			//			
+			//***********************************************************************
+
+			}
+		}
+		else
+		{
+			fprintf(stdout,"Invalid Email\n");
+			strcpy(mess,"Invalid email..$");
+			write_error(ssl,mess);
+			return 1;
+
+		}
+		//-----------------------------------------------------------------------
+		//-- 1st Process--
+		//			
+		//***********************************************************************
+
+	}
+	
+	//***********************************************************************
+	// Finished Process of Adding Contactlist with Email
+	//***********************************************************************											
+
+//--------------------------------------------------------------------------------
+
+	//***********************************************************************
+	// Start Process of Adding Contactlist with User ID
+	//***********************************************************************											
+
+
+	if ((buffer_read[0] == 0x03) && (buffer_read[5] == 0x31))
+	{
+
+		//***********************************************************************
+		// --1st Process--
+		//		- Get data form packet and check its validity
+		//-----------------------------------------------------------------------
+		//
+		// There are 2 subprocess to do
+		//  1. Check length of contactID is not longer than 10 characters
+		//	2. Check contactID that contain only allowable character
+		//
+		// input  = Packet
+		// output = valid ContactID -> id
+		//							-> valid =1
+		//		  = invalid -> valid = 0
+		//***********************************************************************											
+
+		point = get_data(buffer_read,id,7);
+		if(point != 0)
+		{
+			if(strlen(id) < 11 && check_userid(id) !=0) 
+				valid = 1;
+			else valid = 0;
+		}
+		else valid =0;
+
+		if(valid == 1)
+		{
+			fprintf(stdout,"\nThis User ID :%s\n",id);
+
+			//***********************************************************************
+			// --2nd Process--
+			//		- Connect to DB to do everything
+			//-----------------------------------------------------------------------
+			//
+			// There are 3 subprocess to do
+			//  1. Query DB to check the existence of ContactID
+			//	2. Query DB to check that ContactID isn't the same as yours
+			//	3. Insert to DB (UserID , ContactID ,'W')
+			//
+			// input  = Query
+			// output = Success or Error 
+			//
+			//***********************************************************************											
+
+
+			isagmq_db = do_connect (DEF_HOST_NAME, DEF_USER_NAME, DEF_PASSWORD, DEF_DB_NAME,
+									 DEF_PORT_NUM, DEF_SOCKET_NAME, 0);
+			if(isagmq_db == NULL)
+			{
+				fprintf(stdout, "Error connecting to Database\n");
+				strcpy(mess,"Can not connect to DB..$");
+				write_error(ssl,mess);
+
+			}
+			else
+			{
+				//-----------------------------------------------------------------------
+				// --1st SupProcess--
+				//		- Check the existence of ContactIDl
+				//-----------------------------------------------------------------------
+
+				strcpy(query, "SELECT USER_ID FROM user WHERE USER_ID = '");
+				strncat(query, id , strlen(id));
+				strncat(query, "'", 1);
+
+				mysql_query(isagmq_db,query);
+				if(!(res_set = mysql_store_result(isagmq_db)))
+						fprintf(stdout,"Error query");
+				else fprintf(stdout,"Quering Database\n");
+
+				row = mysql_fetch_row(res_set);
+					
+				if(row == NULL)
+				{
+					fprintf(stdout,"User ID Doesn't Exist\n");
+					strcpy(mess,"User ID Doesn't Exist..$");
+					write_error(ssl,mess);
+				}
+				else
+				{
+					//Row return must be 1 : There is only unique User ID
+					for(i = 0;i < 10;i++)  user_id_contact[i] = '\0';
+					strncpy(user_id_contact, row[0], FIX_USER_ID);
+					mysql_free_result(res_set);
+
+					//-----------------------------------------------------------------------
+					// --2nd SupProcess--
+					//		- Check that ContactID isn't the same as yours
+					//-----------------------------------------------------------------------
+
+					if(strcmp(user_id_contact,user_id) != 0)
+					{
+						dbcheck = check_db5("SELECT CONTACT_ID FROM contact_list WHERE USER_ID = ", 
+										  user_id,
+										  " AND CONTACT_ID = '", 
+										  user_id_contact,
+										  "Add_contactlist");
+							
+						if(dbcheck == 1)
+						{
+							//-----------------------------------------------------------------------
+							// --3rd SupProcess--
+							//		- Insert to DB (UserID , ContactID ,'W')
+							//
+							//	Note : if the corresponding info exist the insertion will be fail
+							//		   automatically
+							//-----------------------------------------------------------------------
+
+							for(i=0;i < MAX_MESSAGE;i++)	query[i] = '\0';
+
+							strcpy(query, "INSERT INTO contact_list VALUES('");
+							strcat(query, user_id);
+							strcat(query, "', '");
+							strcat(query, user_id_contact);
+							strcat(query, "','W')"); 
+
+							check_query = process_query(isagmq_db, query);
+
+							if( (check_query != 0) || (check_query == -1) )
+							{
+								fprintf(stdout, "Insertion Failed\n");
+								strcpy(mess,"Insertion Failed..$");
+								write_error(ssl,mess);
+							}
+							else 
+							{
+								fprintf(stdout, "%s   ", user_id);
+								fprintf(stdout, "Insertion Completed\n");
+								for(i=0 ; i<MAX_MESSAGE; i++)
+								{
+									buffer[i] = '\0';
+								}
+				
+								buffer[0] = 0x03;
+								buffer[1] = 0x00;
+								buffer[2] = 0x01;
+								buffer[3] = 0x00;
+								buffer[4] = 0x07;
+								buffer[5] = 0x33;
+								buffer[6] = 0xff;
+
+								ssl_write(ssl,buffer,sizeof(buffer));
+
+							}
+						
+						}
+						else if (dbcheck == 0)
+						{
+							//The prefered User ID  has already added in contact id
+							fprintf(stdout,"This User ID has already added\n");
+							strcpy(mess,"This User ID had already added..$");
+							write_error(ssl,mess);
+						}
+						else
+						{
+							fprintf(stdout,"DB Error\n");
+							strcpy(mess,"DB Error..$");
+							write_error(ssl,mess);
+						}
+					}
+					else
+					{
+						fprintf(stdout,"You are adding your User ID\n");
+						strcpy(mess,"Can not add your own User ID..$");
+						write_error(ssl,mess);
+					}
+				}	
+				do_disconnect(isagmq_db); 
+					
+			}
+			return 0;
+		 }
+		 else
+		 {
+			fprintf(stdout,"Invalid ContactID \n");
+			strcpy(mess,"Invalid ContactID..$");
+			write_error(ssl,mess);
+			return 1;
+
+		 }
+	}
+	else
+	{
+		fprintf(stdout,"Invalid Packet \n");
+		strcpy(mess,"Invalid Packet..$");
+		write_error(ssl,mess);
+		return 1;
+	}
+		
+	//***********************************************************************
+	// Finish Process of Adding Contactlist with User ID
+	//***********************************************************************											
+
+} 
+
+
+//*******************************************************************************************
+//						     End of  Add Contact List Function
+//*******************************************************************************************
+
+
+
+
+
+//*******************************************************************************************
+//						Admit(Unblock) Function
+//*******************************************************************************************
+
+//------------------------------------------------------------------------------------------
+// This function for unblocking the blocked contactlist user
+// TOS = 0x55 CMD = 0x5a - receive admit request from user
+// TOS = 0x55 CMD = 0x5b - reply complete result to user;
+// TOS = 0x06 CMD = 0x62 or write_error - reply all errors occur during processing
+//------------------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------------------
+// Input = (contact_id , user_status) -- contact_id is the target user want to block
+//									  -- user_status is current status of user
+// Output = (complete or error message)
+//------------------------------------------------------------------------------------------
+
+void admit(SSL *ssl, unsigned char *buffer_read, char user_id[]){
+	MYSQL_RES *res_set;
+ 	MYSQL_ROW row;
+	unsigned char buffer[MAX_MESSAGE];
+	unsigned char temp[MAX_MESSAGE];
+  	char query[MAX_MESSAGE];
+	char mess[MAX_MESSAGE];
+	char contact_id[10];
+	char contact_id_status[2];
+	char user_id_status[2];
+  	unsigned int i;
+  	int check_query;
+	int check_get_data =0;
+	int check_valid_data = 0;
+	int len,count,ptr,j;
+	for(i =0 ;i<MAX_MESSAGE ; i++)
+	{
+		buffer[i]= '\0';
+		temp[i] = '\0';
+		query[i] = '\0';
+		mess[i] = '\0';
+	}
+	for(i= 0 ; i< 10 ; i++) contact_id[i] = '\0';
+	//***********************************************************************
+	// Start Process of Admit
+	//***********************************************************************											
+	strcpy(user_id_status,"");
+	if((buffer_read[0] == 0x55) && (buffer_read[5] == 0x5a))
+    {
+		//***********************************************************************
+		// Checking Input Process
+		//		1 contact_id must be digit
+		//		2 contact_id must not be longer than 10 
+		//		3 user_status must be in ('O','A','B')
+		//
+		// Result of this Process
+		//		-check_valid_data = 1 : all correct 
+		//		-check_valid_data = 0 : some invalid error occur
+		//***********************************************************************											
+
+		check_get_data = get_data(buffer_read,temp,7);
+		len = strlen(temp);
+		count=0;
+		ptr = 0;
+		j=0;
+		strncpy(contact_id,temp,len-2);
+		user_id_status[0] = temp[len-1];
+		user_id_status[1] = '\0';
+		if( check_userid(contact_id) == 1 && 
+		    (user_id_status[0] == 0x41 || user_id_status[0] == 0x42 ||
+		     user_id_status[0] == 0x4F )
+		  )
+		{
+					check_valid_data = 1;
+		}
+		//***********************************************************************
+		// Finish Checking Process
+		//***********************************************************************											
+
+		if((strlen(contact_id)>10) || (check_valid_data == 0) )
+		{
+			//write error message
+			fprintf(stdout,"Your Contact_id is invalid\n");
+			strcpy(mess,"Invalid Contact ID..$");
+			write_error(ssl,mess);
+		}
+		else
+		{
+
+		//***********************************************************************
+		// DB Process - To change following user request
+		//***********************************************************************											
+
+			isagmq_db = do_connect (DEF_HOST_NAME, DEF_USER_NAME, DEF_PASSWORD, DEF_DB_NAME,
+	        	    		DEF_PORT_NUM, DEF_SOCKET_NAME, CLIENT_FOUND_ROWS);
+
+    		if(isagmq_db == NULL)
+       		{
+				fprintf(stdout, "%s   ", user_id);
+            	fprintf(stdout, "Change Connect to Database Error");
+				strcpy(mess,"Can not connect to DB..$");
+				write_error(ssl,mess);
+
+       		}
+			else
+			{
+				//***********************************************************************
+				//-- 1st Process--
+				//			- Get "Status of Contact_id" to use
+				//-----------------------------------------------------------------------
+				//	
+				//	Input  - Query DB to get Status
+				//	Output - check_query = 1	:Status of Contact_id -> contact_id_status
+				//		   - Error 
+				//				1 check_query =  0 - contact_id doesn't exist
+				//				2 check_query = -1 - DB Processing error 
+				//***********************************************************************											
+
+				strcpy(query,"SELECT STATUS FROM contact_list WHERE CONTACT_ID = '");
+				strcat(query,contact_id);
+				strcat(query,"'");
+				strcat(query," AND STATUS NOT IN ('D','X','W')");
+				strcat(query," GROUP BY STATUS");
+				check_query = process_query(isagmq_db, query);
+				fprintf(stdout,"Query1 :%s\n",query);
+				if( check_query == 1 )
+				{
+					mysql_query(isagmq_db,query);
+					res_set = mysql_store_result(isagmq_db);
+
+					if((row = mysql_fetch_row(res_set)) != NULL)
+					{
+						//Get Current Status of Contact ID 
+						strcpy(contact_id_status,row[0]);
+						fprintf(stdout,"\n user_id : %s user_id_status : %s contact_id : %s contact_id_status : %s\n"
+						,user_id,user_id_status,contact_id,contact_id_status);
+
+						//***********************************************************************
+						//-- 2nd Process--
+						//			- To change status of (contact_id,user_id,user_status)
+						//-----------------------------------------------------------------------
+						//	
+						//	Input  - Query DB by (contact_id,user_id,user_status)
+						//	Output - check_query = 1	: Complete
+						//		   - Error 
+						//				1 check_query =  0 - (contact_id,user_id) doesn't exist
+						//				2 check_query = -1 - DB Processing error 
+						//***********************************************************************											
+
+						strcpy(query, "UPDATE contact_list SET STATUS = '");
+						strcat(query, user_id_status);
+						strcat(query,"'");
+						strcat(query, " WHERE USER_ID = '");
+						strncat(query, contact_id, FIX_USER_ID);	
+						strcat(query, "'");
+						strcat(query," AND CONTACT_ID ='");
+						strcat(query,user_id);
+						strcat(query,"'");
+						strcat(query," AND STATUS NOT IN ('W')");
+						fprintf(stdout,"Query2 :%s\n",query);
+
+						check_query = process_query_row(isagmq_db, query);
+
+						if( check_query == 1 /*|| check_query == 0*/)
+						{
+							//***********************************************************************
+							//-- 3rd Process--
+							//			-To change status of (user_id,contact_id,contact_id_status)
+							//-----------------------------------------------------------------------
+							//	
+							//	Input  - Query DB by (user_id,contact_id,contact_id_status)
+							//	Output - check_query = 1	: Complete
+							//		   - Error 
+							//				1 check_query =  0 - (contact_id,user_id) doesn't exist
+							//				2 check_query = -1 - DB Processing error 
+							//***********************************************************************											
+							strcpy(query, "UPDATE contact_list SET STATUS = '");
+							strcat(query, contact_id_status);
+							strcat(query,"'");
+							strcat(query, " WHERE USER_ID = '");
+							strncat(query, user_id, FIX_USER_ID);	
+							strcat(query, "'");
+							strcat(query," AND CONTACT_ID ='");
+							strcat(query,contact_id);
+							strcat(query,"'");
+							strcat(query," AND STATUS NOT IN ('W')");
+							fprintf(stdout,"Query3 :%s\n",query);
+
+							check_query = process_query_row(isagmq_db, query);
+
+							if( check_query == 1  /*check_query == 0*/)
+							{
+								//fprintf(stdout,"Block user completed \n");
+								fprintf(stdout, "%s   ", user_id);
+								fprintf(stdout, "Admit user  OK...\n");
+
+								buffer[0] = 0x55;
+								buffer[1] = 0x00;
+								buffer[2] = 0x01;
+								buffer[3] = 0x00;
+								buffer[4] = 0x07;
+								buffer[5] = 0x5b;
+								buffer[6] = 0xff;
+
+								strcpy(temp, "Admit Completed OK...$");
+													
+								for(i=0;i < 255;i++) 
+								{
+									if(temp[i] == NULL) break;
+									buffer[i+7] =  temp[i];
+								}
+
+								ssl_write(ssl, buffer, sizeof(buffer));
+
+							}
+							else if (check_query == 0)
+							{
+								fprintf(stdout,"Can't not find UserID : %s and ContactId :%s\n",
+												user_id , contact_id);
+								strcpy(mess,"Missed Match UserId & ContactID..$");
+								write_error(ssl,mess);
+
+							}
+							else
+							{
+								fprintf(stdout,"Error UPDATE INNER PROCESS\n");
+								strcpy(mess,"Can not admit this ContactID..$");
+								write_error(ssl,mess);
+
+								//write_error;
+							}
+							//-----------------------------------------------------------------------
+							//-- 3rd Process--
+							//			
+							//***********************************************************************
+
+						}
+						else if (check_query == 0)
+						{
+							fprintf(stdout,"Can't not find UserID : %s and ContactId :%s\n",
+											contact_id,user_id);
+							strcpy(mess,"Missed Match ContactID & UserID..$");
+							write_error(ssl,mess);
+
+						}
+						else
+						{
+							fprintf(stdout,"Error UPDATE OUTER PROCESS\n");
+							strcpy(mess,"Can not admit this Contact ID..$");
+							write_error(ssl,mess);
+
+							//write_error;
+						}
+					//-----------------------------------------------------------------------
+					//-- 2nd Process--
+					//			
+					//***********************************************************************
+
+					}
+					else
+					{
+						fprintf(stdout,"No result set returned\n");
+						strcpy(mess,"No result set returned..$");
+						write_error(ssl,mess);
+
+					}
+				
+				}
+				else if(check_query == 0)
+				{
+					fprintf(stdout,"Requested UserID does not exist\n");
+					strcpy(mess,"Can not find your request CONTACT ID ..$");
+					write_error(ssl,mess);
+
+				}
+				else
+				{
+					fprintf(stdout, "%s   ", user_id);
+					fprintf(stdout,"DB system error %s\n", user_id);
+					strcpy(mess,"Query Error..$");
+					write_error(ssl,mess);
+
+					/*Disconnect MySQL*/
+				}
+				//-----------------------------------------------------------------------
+				//-- 1st Process--
+				//			
+				//***********************************************************************
+	 			
+				do_disconnect(isagmq_db);
+			}
+
+		}
+		//-----------------------------------------------------------------------
+		//-- Checking Process--
+		//			
+		//***********************************************************************
+	}
+	else
+	{
+	  	fprintf(stdout, "Incorrect Packet\n");
+		strcpy(mess,"Invalid Packet..$");
+		write_error(ssl,mess);
+
+	}
+		
+}
+
+//*******************************************************************************************
+//							End of	Admit(Unblock) Function
+//*******************************************************************************************
+
+
+
+//*******************************************************************************************
+//							Deny(Block) Function
+//*******************************************************************************************
+
+//------------------------------------------------------------------------------------------
+// This function for unblocking the blocked contactlist user
+// TOS = 0x55 CMD = 0x51 - receive deny request from user
+// TOS = 0x55 CMD = 0x52 - reply complete result to user;
+// TOS = 0x06 CMD = 0x62 or write_error - reply all errors occur during processing
+//------------------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------------------
+// Input = (contact_id) -- contact_id is the target user want to block
+// Output = (complete or error message)
+//------------------------------------------------------------------------------------------
+
+
+void deny(SSL *ssl, unsigned char *buffer_read, char user_id[]){
+	unsigned char buffer[MAX_MESSAGE];
+	unsigned char temp[MAX_MESSAGE];
+	unsigned char contact_id[255];	
+	
+  	char query[MAX_MESSAGE];
+	char mess[MAX_MESSAGE];
+  	unsigned int i;
+  	int check_query;
+	int valid_input = 0;
+	int check_getdata = 0;
+	
+
+	for(i =0 ;i<MAX_MESSAGE ; i++)
+	{
+		buffer[i]= '\0';
+		temp[i] = '\0';
+		query[i] = '\0';
+		mess[i] = '\0';
+	}
+	for(i =0 ;i<255 ; i++)
+	{
+		contact_id[i]= '\0';
+	}
+
+	//***********************************************************************
+	// Start Process of deny
+	//***********************************************************************											
+
+	if((buffer_read[0] == 0x55) && (buffer_read[5] == 0x51))
+    {
+
+		//***********************************************************************
+		// Checking Input Process
+		//		1 contact_id must be digit
+		//		2 contact_id must not be longer than 10 
+		//
+		// Result of this Process
+		//		-valid_input = 1 : all correct 
+		//		-valid_input = 0 : some invalid error occur
+		//***********************************************************************											
+
+		check_getdata = get_data(buffer_read,contact_id,7);
+		if((check_getdata != 0) && (check_userid(contact_id) ==1) && (strlen(contact_id)<=10))
+		{
+			valid_input = 1;
+		}
+		else
+		{
+			valid_input =0;
+		}
+
+		if(valid_input == 0) 
+		{
+			fprintf(stdout,"Your Contact_id is invalid\n");
+			strcpy(mess,"Invalid Contact ID..$");
+			write_error(ssl,mess);
+		}
+		else
+		{
+
+		//***********************************************************************
+		// DB Process - To change following user request
+		//***********************************************************************											
+
+			isagmq_db = do_connect (DEF_HOST_NAME, DEF_USER_NAME, DEF_PASSWORD, DEF_DB_NAME,
+	        	    		DEF_PORT_NUM, DEF_SOCKET_NAME,CLIENT_FOUND_ROWS);
+
+    		if(isagmq_db == NULL)
+       		{
+				fprintf(stdout, "%s   ", user_id);
+            	fprintf(stdout, "Change Connect to Database Error");
+				strcpy(mess,"Can not connect to DB..$");
+				write_error(ssl,mess);
+
+       		}
+			else
+			{
+				//***********************************************************************
+				//-- 1st Process--
+				//			- To change status of (contact_id,user_id,'X')
+				//-----------------------------------------------------------------------
+				//	
+				//	Input  - Query DB by (contact_id,user_id,'X')
+				//	Output - check_query = 1	: Updated 
+				//		   - Error 
+				//				1 check_query =  0 - (contact_id,user_id) doesn't exist
+				//				2 check_query = -1 - DB Processing error 
+				//***********************************************************************											
+
+				strcpy(query, "UPDATE contact_list SET STATUS = 'X'");
+				strcat(query, " WHERE USER_ID = '");
+				strncat(query, contact_id, FIX_USER_ID);	
+				strcat(query, "'");
+				strcat(query," AND CONTACT_ID ='");
+				strcat(query,user_id);
+				strcat(query,"'");
+				strcat(query," AND STATUS NOT IN ('W')");
+				fprintf(stdout,"Query : %s\n",query);
+				check_query = process_query_row(isagmq_db, query);
+
+				if( check_query == 1 )
+				{
+					//***********************************************************************
+					//-- 2nd Process--
+					//			- To change status of (user_id,contact_id,'D')
+					//-----------------------------------------------------------------------
+					//	
+					//	Input  - Query DB by (user_id,contact_id,'D')
+					//	Output - check_query = 1	: Updated 
+					//		   - Error 
+					//				1 check_query =  0 - (user_id,contact_id) doesn't exist
+					//				2 check_query = -1 - DB Processing error 
+					//***********************************************************************											
+					strcpy(query, "UPDATE contact_list SET STATUS = 'D'");
+					strcat(query, " WHERE USER_ID = '");
+					strncat(query, user_id, FIX_USER_ID);	
+					strcat(query, "'");
+					strcat(query," AND CONTACT_ID ='");
+					strcat(query,contact_id);
+					strcat(query,"'");
+					strcat(query," AND STATUS NOT IN ('W','X')");
+					fprintf(stdout,"Query : %s\n",query);
+					check_query = process_query_row(isagmq_db, query);
+
+
+					if( check_query == 1)
+					{
+						//fprintf(stdout,"Block user completed \n");
+						fprintf(stdout, "%s   ", user_id);
+						fprintf(stdout, "Deny user  OK...\n");
+
+						buffer[0] = 0x55;
+						buffer[1] = 0x00;
+						buffer[2] = 0x01;
+						buffer[3] = 0x00;
+						buffer[4] = 0x07;
+						buffer[5] = 0x52;
+						buffer[6] = 0xff;
+
+						strcpy(temp, "Deny Completed OK...$");
+											
+						for(i=0;i < 255;i++) 
+						{
+							if(temp[i] == NULL) break;
+							buffer[i+7] =  temp[i];
+						}
+
+						ssl_write(ssl, buffer, sizeof(buffer));
+
+					}
+					else if(check_query == 0)
+					{
+
+						fprintf(stdout,"Can't not find UserID : %s and ContactId :%s\n",
+										user_id,contact_id );
+						strcpy(mess,"Missed Match UserId & ContactID..$");
+						write_error(ssl,mess);
+
+					}
+					else
+					{
+						fprintf(stdout,"Can't block this user : %s \n",contact_id);
+						strcpy(mess,"Can not block this Contact ID..$");
+						write_error(ssl,mess);
+
+						
+					}
+
+					//-----------------------------------------------------------------------
+					//-- 2nd Process--
+					//			
+					//***********************************************************************
+				}		
+				else if(check_query == 0)
+				{
+					fprintf(stdout,"Can't not find UserID : %s and ContactId :%s\n",
+										contact_id,user_id );
+					strcpy(mess,"Missed Match ContactId & UserID..$");
+					write_error(ssl,mess);
+
+				}
+	
+				
+				else
+				{
+					fprintf(stdout, "%s   ", user_id);
+					fprintf(stdout,"DB system error %s\n", user_id);
+					strcpy(mess,"Query Error..$");
+					write_error(ssl,mess);
+				}
+	 
+			}
+
+			do_disconnect(isagmq_db);
+
+			//-----------------------------------------------------------------------
+			//-- 1st Process--
+			//			
+			//***********************************************************************
+
+		}	
+		//-----------------------------------------------------------------------
+		//-- Checking Input Process--
+		//			
+		//***********************************************************************
+
+	}
+	else
+	{
+	  	fprintf(stdout, "Incorrect Packet\n");
+		strcpy(mess,"Invalid Packet..$");
+		write_error(ssl,mess);
+	}
+		
+}
+
+
+//*******************************************************************************************
+//							End of	Deny(Block) Function
+//*******************************************************************************************
+
+
+
+//*******************************************************************************************
+//							     Set Status Function
+//*******************************************************************************************
+
+// This function for unblocking the blocked contactlist user
+// TOS = 0x51 CMD = 0x51 - receive changing status request from user
+// TOS = 0x55 CMD = 0x52 - reply complete result to user;
+// TOS = 0x06 CMD = 0x62 or write_error - reply all errors occur during processing
+//------------------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------------------
+// Input =  (user_status) -- the status user request must be in ('A','B','O')
+//									- A is "Away"
+//									- B is "Busy"
+//									- O is "Online"
+// Output = (complete or error message)
+//------------------------------------------------------------------------------------------
+
+
+void set_status(SSL *ssl, unsigned char *buffer_read, char user_id[])
+{
+
+	unsigned char buffer[MAX_MESSAGE];
+	unsigned char temp[MAX_MESSAGE];
+	char mess[MAX_MESSAGE];
+  	char query[MAX_MESSAGE];
+	char status[2];
+  	unsigned int i;
+  	int check_query;
+
+	for(i =0 ;i<2 ; i++) status[i] = '\0';
+
+	for(i =0 ;i<MAX_MESSAGE ; i++)
+	{
+		buffer[i]= '\0';
+		temp[i] = '\0';
+		query[i] = '\0';
+		mess[i] = '\0';
+	}
+
+	//***********************************************************************
+	// Start of Set Status Process
+	//***********************************************************************											
+
+	if((buffer_read[0] == 0x51) && (buffer_read[5] == 0x51))
+    {
+		//***********************************************************************
+		// --1st Process--
+		//		- to check input stauts must be in ('A','B','O')
+		//-----------------------------------------------------------------------
+		//		A = 0x41 a = 0x61 B = 0x42 b = 0x62 O = 0x4f o = 0x6f
+		//
+		// input  = status in buffer_read[7]
+		// output = valid status -> status[0]
+		//		  = invalid status -> error message
+		//***********************************************************************											
+
+		if((buffer_read[7] == 0x61) || (buffer_read[7] == 0x41) ||
+		   (buffer_read[7] == 0x62) || (buffer_read[7] == 0x42) ||
+     	   (buffer_read[7] == 0x6f) || (buffer_read[7] == 0x4f) )
+		{
+			status[0] = buffer_read[7];
+
+			//***********************************************************************
+			// --2nd Process--
+			//		- Connect DB and Change requested status
+			//-----------------------------------------------------------------------
+			// input  = Query to change status
+			// output = complete change
+			//		  = invalid status -> error message
+			//***********************************************************************											
+
+			isagmq_db = do_connect (DEF_HOST_NAME, DEF_USER_NAME, DEF_PASSWORD, DEF_DB_NAME,
+	        	    		DEF_PORT_NUM, DEF_SOCKET_NAME, CLIENT_FOUND_ROWS);
+
+    		if(isagmq_db == NULL)
+       		{
+            	fprintf(stdout, "Can't Connect to Database Error");
+				strcpy(mess,"Can not connnect to DB..$");
+				write_error(ssl,mess);
+
+       		}
+			else
+			{
+				strcpy(query, "UPDATE contact_list SET STATUS = '");
+				strcat(query,status);
+				strcat(query,"'");
+				strcat(query," WHERE CONTACT_ID ='");
+				strcat(query,user_id);
+				strcat(query,"'");
+				strcat(query," AND STATUS  NOT IN ('W','X')");
+				fprintf(stdout,"Query  :%s\n",query);
+
+				check_query = process_query_row(isagmq_db, query);
+
+				if( check_query == 1 )
+				{
+						fprintf(stdout, "%s   ", user_id);
+						fprintf(stdout, "Set Status  OK...\n");
+
+						buffer[0] = 0x51;
+						buffer[1] = 0x00;
+						buffer[2] = 0x01;
+						buffer[3] = 0x00;
+						buffer[4] = 0x07;
+						buffer[5] = 0x52;
+						buffer[6] = 0xff;
+
+						strcpy(temp, "Setting Status Completed OK...$");
+											
+						for(i=0;i < 255;i++) 
+						{
+							if(temp[i] == NULL) break;
+							buffer[i+7] =  temp[i];
+						}
+
+						ssl_write(ssl, buffer, sizeof(buffer));
+
+				}
+				else if (check_query == 0)
+				{
+					fprintf(stdout,"Can't update nickname : NOT FOUND");
+					strcpy(mess,"Can't update nickname..$");
+					write_error(ssl,mess);
+				}
+				else
+				{
+					fprintf(stdout,"DB system error %s\n", user_id);
+					strcpy(mess,"Query Process Error..$");
+					write_error(ssl,mess);
+				}
+	 
+			}
+
+			do_disconnect(isagmq_db);
+			//-----------------------------------------------------------------------
+			//-- 2nd Process--
+			//			
+			//***********************************************************************
+		}	
+		else
+		{
+			fprintf(stdout,"Invalid Status\n");
+			strcpy(mess,"Invalid Status..$");
+			write_error(ssl,mess);
+
+		}
+		//-----------------------------------------------------------------------
+		//-- 1st Process--
+		//			
+		//***********************************************************************
+	}
+	else
+	{
+	  	fprintf(stdout, "Incorrect Packet\n");
+		strcpy(mess,"Invalid Packet..$");
+		write_error(ssl,mess);
+
+	}
+		
+}
+
+//*******************************************************************************************
+//							End of	Set Status Function
+//*******************************************************************************************
+
+
+//*******************************************************************************************
+//							 Change Nickname Function
+//*******************************************************************************************
+
+// This function for unblocking the blocked contactlist user
+// TOS = 0x04 CMD = 0x41 - receive changing nickname request from user
+// TOS = 0x04 CMD = 0x42 - reply complete result to user;
+// TOS = 0x06 CMD = 0x62 or write_error - reply all errors occur during processing
+//------------------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------------------
+// Input =  (new_nickname) -- It must not be longer than 255 characters
+// Output = (complete or error message)
+//------------------------------------------------------------------------------------------
+
+
+void change_nick_name(SSL *ssl, unsigned char *buffer_read, char user_id[]){
+	unsigned char buffer[MAX_MESSAGE];
+	unsigned char temp[MAX_MESSAGE];
+	unsigned char nick_name[MAX_MESSAGE];	
+	unsigned char db_nick_name[MAX_MESSAGE];
+
+  	char mess[MAX_MESSAGE];
+  	char query[MAX_MESSAGE];
+  	unsigned int i;
+  	int check_query;
+	int check_nick_name;
+	int valid_data =0;
+	for(i =0 ;i<MAX_MESSAGE ; i++)
+	{
+		buffer[i]= '\0';
+		temp[i] = '\0';
+		query[i] = '\0';
+		mess[i] = '\0';
+		nick_name[i]= '\0';
+		db_nick_name[i] = '\0';
+	}
+
+	//***********************************************************************
+	// Start Process of Change Nick Name
+	//***********************************************************************											
+
+	if((buffer_read[0] == 0x04) && (buffer_read[5] == 0x41))
+    {
+
+		//***********************************************************************
+		// --1st Process--
+		//		- to check input nickname must not be longer than 255 char 
+		//		  and every characters are valid according to the definition
+		//-----------------------------------------------------------------------
+		//
+		// There are 3 things to check .
+		//	1. nickname must not be null
+		//	2. nickname must not be longer than 255
+		//	3. nickname must consist of allowed charater (>32 && <127 in Decimal)
+		//
+		// input  = nickname
+		// output = valid nickname -> valid_data = 1;
+		//		  = invalid nickname -> valid_data =0;
+		//***********************************************************************											
+		for(i = 0 ; i < MAX_MESSAGE - 7 ; i++)
+		{
+			if(buffer_read[i+7] == NULL) break;
+			nick_name[i] = buffer_read[i+7];
+		}
+		if (i ==0 || i==1)
+		{
+			fprintf(stdout,"New nickname is NULL : Invalid \n");
+			valid_data =0;
+		}
+		else if(i >254)
+		{
+			fprintf(stdout,"New nickname is too long : Invalid \n");
+			valid_data =0;
+		}
+		else
+		{
+			nick_name[i-1] = '\0';
+			check_nick_name = check_nick(nick_name);
+
+			if(check_nick_name == 1) 
+			{	
+				format_string(db_nick_name , nick_name);
+				valid_data = 1 ;
+			}
+			else valid_data = 0;
+		}
+
+		if( valid_data == 0 )
+		{
+			fprintf(stdout,"Your Nickname is invalid\n");
+			strcpy(mess,"Invalid nick name...$");
+			write_error(ssl,mess);
+		}
+		else
+		{
+
+			fprintf(stdout,"Nickname : %s\n",nick_name);
+			fprintf(stdout,"DB Nickname : %s\n",db_nick_name);
+
+			//***********************************************************************
+			// --2nd Process--
+			//		- Connect DB and change to new nickname
+			//-----------------------------------------------------------------------
+			// The difference between nick_name & db_nick_name is
+			//	nick_name is valid for program but it may be not valid
+			//	for DB becaust there will be some restricted chars for
+			//	DB (MySQL) such as " ' " : apostrophe
+			//
+			// input  = Query DB (new_nickname -> db_nick_name)
+			// output = Complete changing
+			//		  = Error message
+			//***********************************************************************											
+
+			isagmq_db = do_connect (DEF_HOST_NAME, DEF_USER_NAME, DEF_PASSWORD, DEF_DB_NAME,
+	        	    		DEF_PORT_NUM, DEF_SOCKET_NAME,CLIENT_FOUND_ROWS);
+
+    		if(isagmq_db == NULL)
+       		{
+				fprintf(stdout, "%s   ", user_id);
+            	fprintf(stdout, "Change Connect to Database Error");
+				strcpy(mess,"Can not connect to DB...$");
+				write_error(ssl,mess);
+
+       		}
+			else
+			{
+				strcpy(query, "UPDATE user SET NICK_NAME = ");
+				strncat(query, "'", 1);
+				strcat(query, db_nick_name);
+				strncat(query, "'", 1);
+				strcat(query, " WHERE USER_ID = '");
+				strncat(query, user_id, FIX_USER_ID);	
+				strcat(query, "'");
+				fprintf(stdout,"Query :%s\n",query);
+				check_query = process_query_row(isagmq_db, query);
+
+				if( check_query == 1)
+				{
+					fprintf(stdout, "%s   ", user_id);
+					fprintf(stdout, "Change Nick Name OK...\n");
+
+					buffer[0] = 0x04;
+					buffer[1] = 0x00;
+					buffer[2] = 0x01;
+					buffer[3] = 0x00;
+					buffer[4] = 0x07;
+					buffer[5] = 0x42;
+					buffer[6] = 0xff;
+
+					strcpy(temp, "Change Nick Name OK...$");
+										
+					for(i=0;i < 255;i++) 
+					{
+						buffer[i+7] =  temp[i];
+					}
+
+					ssl_write(ssl, buffer, sizeof(buffer));
+				}
+				else if (check_query == 0)
+				{
+					fprintf(stdout,"Can't change to new nickname : NOT FOUND\n");
+					strcpy(mess,"Can't change nick name...$");
+					write_error(ssl,mess);
+				}
+				else
+				{
+					fprintf(stdout,"DB system error \n");
+					strcpy(mess,"DB ERROR...$");
+					write_error(ssl,mess);
+				}
+
+			//-----------------------------------------------------------------------
+			//-- 2nd Process--
+			//			
+			//***********************************************************************
+	 
+			}
+
+			do_disconnect(isagmq_db);
+		}	
+		//-----------------------------------------------------------------------
+		//-- 1st Process--
+		//			
+		//***********************************************************************
+	}
+	else
+	{
+		fprintf(stdout, "%s   ", user_id);
+	  	fprintf(stdout, "Incorrect Packet\n");
+		strcpy(mess,"Invalid packet...$");
+		write_error(ssl,mess);
+
+	}
+		
+}
+
+//*******************************************************************************************
+//							 Request Status Function
+//*******************************************************************************************
+
+// This function for getting updated status on user's contactlist
+// TOS = 0x05 CMD = 0x51 - receive status request from user
+// TOS = 0x05 CMD = 0x52 - reply complete result to user;
+// TOS = 0x06 CMD = 0x62 or write_error - reply all errors occur during processing
+//------------------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------------------
+// Input =  () -- Packet requests for Status
+// Output = (complete or error) if complete -> send all information to user
+//	
+// Information contains : 
+//		1. ContactID
+//		2. Email
+//		3. Nickname
+//		4. Status
+//		5. IP Address
+//------------------------------------------------------------------------------------------
+
+
+void status(SSL *ssl, unsigned char *buffer_read, char user_id[],NODE *list)
+{
+	MYSQL_RES *res_set;
+ 	MYSQL_ROW row;
+
+	NODE *link;
+	  
+	unsigned char buffer[MAX_MESSAGE];
+	unsigned char temp[MAX_MESSAGE];
+				
+  	char contact_list[MAX_MESSAGE];
+  	char query[MAX_MESSAGE];
+  	char mess[MAX_MESSAGE];
+	char contact_id[10];
+	char email[255];
+	char nickname[255];
+	char status[10];
+	char ip[16];
+
+  	unsigned int i;
+  	int check_query;
+	int check_db = 1;
+	int temp_length = 0;
+	int len =0;
+
+	link = list;
+
+	for(i=0;i < MAX_MESSAGE;i++)
+	{
+		buffer[i] = '\0';
+		temp[i] = '\0';
+		contact_list[i] = '\0';
+		query[i] = '\0';
+		mess[i] = '\0';
+	}
+	
+	for(i=0;i < 10;i++)
+	{
+		contact_id[i] = '\0';
+		status[i] = '\0';
+	}
+
+	for(i=0;i < 255;i++)
+	{
+		nickname[i] = '\0';
+		email[i] = '\0';
+	}
+
+	for(i=0;i < 16;i++)
+	{
+		ip[i] = '\0';
+	}
+
+
+    if ((buffer_read[0] == 0x05) && (buffer_read[5] == 0x51))
+	{
+		//***********************************************************************
+		// --1st Process--
+		//		- Connect to DB using requesting UserID
+		//-----------------------------------------------------------------------
+		//
+		// input  = Query DB (UserID)
+		// output = Information defined above
+		//		  = NULL if something is wrong or there isn't data returned form DB
+		//
+		//***********************************************************************											
+
+		isagmq_db = do_connect (DEF_HOST_NAME, DEF_USER_NAME, DEF_PASSWORD, DEF_DB_NAME,
+      	       				DEF_PORT_NUM, DEF_SOCKET_NAME, 0);
+					
+		if(isagmq_db == NULL)
+      	{
+			fprintf(stdout, "%s   ", user_id);
+           	fprintf(stdout, "Status Connect to Database Error");
+			strcpy(mess,"Can't connect to DB...$");
+			write_error(ssl,mess);
+            check_db = 0;
+       	}
+		else
+		{
+
+			strcpy(query, "SELECT CONTACT_ID ,STATUS FROM contact_list WHERE USER_ID = '");
+			strncat(query, user_id, FIX_USER_ID);
+			strcat(query,"'");
+			fprintf(stdout,"Query : %s\n",query);
+
+			check_query = process_query(isagmq_db, query);
+			if( check_query == 1)
+			{
+				mysql_query(isagmq_db, query);
+     			res_set = mysql_store_result(isagmq_db);
+				strcpy(contact_list,"");
+				strcpy(temp,"");
+
+                while((row = mysql_fetch_row(res_set)) != NULL)
+		        {
+						strcpy(contact_id,row[0]);
+						get_nick_email(contact_id,nickname,email);	
+						find_online(link,contact_id,status,ip);
+
+						if(strcmp(row[1],"W") == 0) 
+						{
+							strcpy(status,"W");
+							//strcpy(ip,"-");
+						}
+						else if(strcmp(row[1],"D")== 0)
+						{
+							strcpy(status,"D");
+						}
+						else if(strcmp(row[1],"X")== 0)
+						{
+							strcpy(status,"F");
+							strcpy(ip,"-");
+						}
+						else if(strcmp(row[1],"U")== 0)
+						{
+							strcpy(status,"W");
+							strcpy(ip,"-");
+						}
+						else
+						{
+							strcpy(status,row[1]);
+						}
+
+						len += strlen(contact_id)+ strlen(email)+ strlen(nickname) + strlen(status) + strlen(ip);
+						len = len + 4;
+
+						if(len < MAX_MESSAGE - 9 )
+						//if(len < 50 )
+						{
+							strcat(temp,contact_id);
+							strcat(temp,"#");
+							strcat(temp,email);
+							strcat(temp,"#");
+							strcat(temp,nickname);
+							strcat(temp,"#");
+							strcat(temp,status);
+							strcat(temp,"#");
+							strcat(temp,ip);
+							strcat(temp,"$");
+							temp_length = strlen(temp);
+							len = temp_length;
+						//	fprintf(stdout,"temp : %s\n",temp);	
+						}
+						else
+						{
+							
+							for(i=0;i<MAX_MESSAGE;i++) buffer[i] ='\0';
+	
+      						buffer[0] = 0x05;
+							buffer[1] = 0x00;
+							buffer[2] = 0x01;
+							buffer[3] = 0x00;
+							buffer[4] = 0x01;
+      						buffer[5] = 0x52;
+      						buffer[6] = 0x01;				/*More of package*/
+
+							for(i=0;i<MAX_MESSAGE;i++)
+							{
+								buffer[7+i] = temp[i];
+								if(temp[i] == '\0') break;
+								
+							}
+							buffer[7+i] = '$';
+							
+							ssl_write(ssl,buffer,sizeof(buffer));
+							fprintf(stdout,"More Status Packets\n");
+							for(i=0;i<MAX_MESSAGE;i++)
+							{
+								temp[i] = '\0';
+								buffer[i] = '\0';
+							}
+
+							strcpy(temp,contact_id);
+							strcat(temp,"#");
+							strcat(temp,email);
+							strcat(temp,"#");
+							strcat(temp,nickname);
+							strcat(temp,"#");
+							strcat(temp,status);
+							strcat(temp,"#");
+							strcat(temp,ip);
+							strcat(temp,"$");
+							temp_length = strlen(temp);
+							len = temp_length;
+						}	
+				}
+				
+				strcat(temp,"$");
+
+				for(i=0;i<MAX_MESSAGE;i++) buffer[i] ='\0';
+
+				buffer[0] = 0x05;
+				buffer[1] = 0x00;
+				buffer[2] = 0x01;
+				buffer[3] = 0x00;
+				buffer[4] = 0x07;
+				buffer[5] = 0x52;
+				buffer[6] = 0x00;	
+
+				for(i=0;i<MAX_MESSAGE;i++)
+				{
+					buffer[7+i] = temp[i];
+					if(temp[i] == '\0') break;
+				}
+							
+				ssl_write(ssl,buffer,sizeof(buffer));
+
+
+			}
+     		else if ( check_query == 0)
+     		{
+         		fprintf(stdout, "%s   ", user_id);
+				fprintf(stdout,"No. this userID = %s\n", user_id);
+     		}
+     		else 
+			{
+				fprintf(stdout, "%s   ", user_id);
+				fprintf(stdout,"DB system error %s\n", user_id);
+			}
+
+		}
+
+		do_disconnect(isagmq_db); 
+
+	//-----------------------------------------------------------------------
+	//-- 1st Process--
+	//			
+	//***********************************************************************
+
+	}
+	else
+	{
+		fprintf(stdout, "%s   ", user_id);
+	  	fprintf(stdout, "Incorrect Packet\n");
+		strcpy(mess,"Invalid packet...$");
+		write_error(ssl,mess);
+
+	}
+	    		
+}
+
+//*******************************************************************************************
+//							End of	Request Status Function
+//*******************************************************************************************
+
+
+//*******************************************************************************************
+//							    Logout  Function
+//*******************************************************************************************
+
+// This function for logging out from server
+// TOS = 0x07 CMD = 0x71 - receive logout request from user
+// TOS = 0x07 CMD = 0x72 - reply complete result to user;
+// TOS = 0x06 CMD = 0x62 or write_error - reply all errors occur during processing
+//------------------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------------------
+// Input =  () -- Packet requests for Logging out
+// Output = (complete or error) 
+//	
+//------------------------------------------------------------------------------------------
+
+
+void logout(SSL *ssl , unsigned char *buffer_read , char user_id[])
+{
+	unsigned char buffer[MAX_MESSAGE];
+	char temp[MAX_MESSAGE];
+  	char query[MAX_MESSAGE];
+	int i ;
+	int check_query;
+
+	for(i =0 ;i< MAX_MESSAGE ; i++)
+	{
+		query[i] = '\0';
+		temp[i] = '\0';
+		buffer[i] = '\0';
+	}
+
+		//***********************************************************************
+		// --1st Process--
+		//		- Connect to DB to set status to 'F'
+		//-----------------------------------------------------------------------
+		//
+		// input  = Query DB (UserID)
+		// output = complete or error message
+		//
+		//***********************************************************************											
+		isagmq_db = do_connect (DEF_HOST_NAME, DEF_USER_NAME, DEF_PASSWORD, DEF_DB_NAME,
+      	       				DEF_PORT_NUM, DEF_SOCKET_NAME,CLIENT_FOUND_ROWS);
+		
+		if(isagmq_db == NULL)
+      	{
+			fprintf(stdout, "%s   ", user_id);
+           	fprintf(stdout, "Status Connect to Database Error");
+			strcpy(temp,"Can't connect to DB...$");
+			write_error(ssl,temp);
+            //check_db = 0;
+       	}
+		else
+		{
+			strcpy(query, "UPDATE contact_list SET STATUS = 'F'");
+			strcat(query," WHERE CONTACT_ID ='");
+			strcat(query,user_id);
+			strcat(query,"'");
+			strcat(query," AND STATUS NOT IN ('X','D','W')");
+			fprintf(stdout,"Query : %s\n",query);
+
+			check_query = process_query_row(isagmq_db, query);
+
+			if( check_query == 1)
+			{
+				buffer[0] = 0x07;
+				buffer[1] = 0x00;
+				buffer[2] = 0x01;
+				buffer[3] = 0x00;
+				buffer[4] = 0x01;
+				buffer[5] = 0x72;
+				buffer[6] = 0xff;
+					
+				strcpy(temp,"Logout successfully..$");
+				for(i=0 ; i< strlen(temp);i++)
+				{
+					buffer[i+7] = temp[i];
+				}
+
+				ssl_write(ssl,buffer,sizeof(buffer));
+			}
+			else if( check_query == 0)
+			{
+				fprintf(stdout,"Can't update status : NOT FOUND");
+				strcpy(temp,"Can't update  status...$");
+				write_error(ssl,temp);
+			}
+			else
+			{
+				fprintf(stdout,"Can't update Logout status");
+				strcpy(temp,"Can't update Logout status...$");
+				write_error(ssl,temp);
+			}
+
+
+			do_disconnect(isagmq_db); 
+		}
+	
+		//-----------------------------------------------------------------------
+		//-- 1st Process--
+		//			
+		//***********************************************************************
+
+
+}
+
+//*******************************************************************************************
+//							End of Logout Function
+//*******************************************************************************************
+
+
+//*******************************************************************************************
+//							    Login  Function
+//*******************************************************************************************
+//
+// This function for logging into server
+// TOS = 0x02 CMD = 0x21 - receive login request from user
+// TOS = 0x02 CMD = 0x22 - reply complete result to user;
+// TOS = 0x06 CMD = 0x62 or write_error - reply all errors occur during processing
+//------------------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------------------
+// Input =  (IP's Client) -- Packet requests for Logging in
+// Output = (Nickname ,Email) if complete 
+//			error message
+//	
+//------------------------------------------------------------------------------------------
+
+
+void request_info(SSL *ssl , unsigned char *buffer_read , char user_id[],NODE *list)
+{
+	MYSQL_RES *res_set;
+ 	MYSQL_ROW row;
+	unsigned char buffer[MAX_MESSAGE];
+	char temp[MAX_MESSAGE];
+  	char query[MAX_MESSAGE];
+	char contact_id[10];
+	int i ;
+	int check_query;
+	char nickname[255];
+	char email[128];
+	char ip[128];
+	NODE *current ;	
+	for(i =0 ;i< 128 ; i++) ip[i] = '\0';
+	for(i =0 ;i< MAX_MESSAGE ; i++)
+	{
+		query[i] = '\0';
+		temp[i] = '\0';
+		buffer[i] = '\0';
+	}
+
+	if ((buffer_read[0] == 0x02) && (buffer_read[5] == 0x21))
+	{
+
+		//***********************************************************************
+		// --1st Process--
+		//		- Get IP's client from packet
+		//-----------------------------------------------------------------------
+		//
+		// input  = packet request to login
+		// output = IP's client connected
+		//
+		//***********************************************************************											
+
+		for(i=0;i < 10;i++) contact_id[i] = '\0';
+		for(i=0 ; i<MAX_MESSAGE ; i++)
+		{
+			if( buffer_read[i+7] == '$' || buffer_read[i+7+1] == NULL) break;
+			ip[i] = buffer_read[i+7];
+		}
+		fprintf(stdout,"IP's Client Connected : %s\n",ip);
+
+		//***********************************************************************
+		// --2nd Process--
+		//		- Insert IP's client into linkedlist
+		//-----------------------------------------------------------------------
+		//
+		// input  = IP's client
+		// output = IP's client into Linkedlist
+		//
+		//***********************************************************************											
+
+	 	current = getNode(list,user_id);
+		strncpy(current->ip,ip,16);
+
+
+		//***********************************************************************
+		// --3rd Process--
+		//		- Connect to DB to update current user status
+		//-----------------------------------------------------------------------
+		//
+		// input  = Query DB
+		// output = Updated or error
+		//
+		//***********************************************************************											
+
+		isagmq_db = do_connect (DEF_HOST_NAME, DEF_USER_NAME, DEF_PASSWORD, DEF_DB_NAME,
+      	       				DEF_PORT_NUM, DEF_SOCKET_NAME,CLIENT_FOUND_ROWS);
+		
+		if(isagmq_db == NULL)
+      	{
+			fprintf(stdout, "%s   ", user_id);
+           	fprintf(stdout, "Status Connect to Database Error");
+			strcpy(temp,"Can't connect to DB...$");
+			write_error(ssl,temp);
+            //check_db = 0;
+       	}
+		else
+		{
+			strcpy(query, "UPDATE contact_list SET STATUS = 'O'");
+			strcat(query," WHERE CONTACT_ID ='");
+			strcat(query,user_id);
+			strcat(query,"'");
+			strcat(query," AND STATUS NOT IN ('X','D','W')");
+			fprintf(stdout,"Query : %s\n",query);
+			check_query = process_query_row(isagmq_db, query);
+
+			if( check_query == 1 )
+			{
+
+				//***********************************************************************
+				// --4th Process--
+				//		- Connect to DB to get user's profile
+				//-----------------------------------------------------------------------
+				// Profile contains following below
+				//		1. Nickname
+				//		2. Email
+				//
+				// input  = Query DB
+				// output = Profile or error
+				//
+				//***********************************************************************											
+
+				strcpy(query, "SELECT NICK_NAME , EMAIL  FROM user WHERE USER_ID = '");
+				strncat(query, user_id, FIX_USER_ID);
+				strcat(query,"'");
+				fprintf(stdout,"Query : %s\n",query);
+
+				check_query = process_query(isagmq_db, query);
+				if( check_query == 1)
+				{
+					mysql_query(isagmq_db, query);
+					res_set = mysql_store_result(isagmq_db);
+					if((row = mysql_fetch_row(res_set)) != NULL)
+					{
+						strcpy(nickname,row[0]);
+						strcpy(email,row[1]);
+						strcpy(temp,user_id);
+						strcat(temp,"#");
+						strcat(temp,email);
+						strcat(temp,"#");
+						strcat(temp,nickname);
+						strcat(temp,"$");
+
+						buffer[0] = 0x02;
+						buffer[1] = 0x00;
+						buffer[2] = 0x01;
+						buffer[3] = 0x00;
+						buffer[4] = 0x01;
+						buffer[5] = 0x22;
+						buffer[6] = 0xff;
+						
+						for(i=0 ; i< strlen(temp)+1;i++)
+						{
+							buffer[i+7] = temp[i];
+						}
+
+						ssl_write(ssl,buffer,sizeof(buffer));
+
+					}
+				}
+				else if ( check_query == 0)
+				{
+					//Send NACK  No. this userID
+					fprintf(stdout, "%s   ", user_id);
+					fprintf(stdout,"No. this userID = %s\n", user_id);
+					strcpy(temp,"Don't have authorization requesting list..$");
+					write_error(ssl,temp);
+					/*Disconnect MySQL*/
+				}
+				else 
+				{
+					fprintf(stdout, "%s   ", user_id);
+					fprintf(stdout,"DB system error %s\n", user_id);
+					strcpy(temp,"DB system error..$");
+					write_error(ssl,temp);
+					/*Disconnect MySQL*/
+				}
+				//-----------------------------------------------------------------------
+				//-- 4th Process--
+				//			
+				//***********************************************************************
+
+			}
+			else if (check_query == 0)
+			{
+				fprintf(stdout,"Can't update initial status : NOT FOUND");
+				strcpy(temp,"Can't update initial status ,retry to login next time...$");
+				write_error(ssl,temp);
+
+			}
+			else
+			{
+				fprintf(stdout,"Can't update initial status");
+				strcpy(temp,"Can't update initial status ,retry to login next time...$");
+				write_error(ssl,temp);
+			}
+			do_disconnect(isagmq_db); 
+
+		}
+		//-----------------------------------------------------------------------
+		//-- 3rd Process--
+		//			
+		//***********************************************************************
+
+	}
+	else
+	{
+		fprintf(stdout,"Packet Error\n");
+		strcpy(temp,"Packet Error...$");
+		write_error(ssl,temp);
+	}
+
+}
+
+//*******************************************************************************************
+//							End of Login Function
+//*******************************************************************************************
+
+
+//*******************************************************************************************
+//						 Authorizaton List  Function
+//*******************************************************************************************
+//
+// This function for listing pending authorization user
+// TOS = 0x5E CMD = 0x51 - receive login request from user
+// TOS = 0x5E CMD = 0x52 - reply complete result to user;
+// TOS = 0x06 CMD = 0x62 or write_error - reply all errors occur during processing
+//------------------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------------------
+// Input =  Packet requests for authorization list
+// Output = (UserID,Nickname ,Email,Status,IP) if complete 
+//			error message
+//	
+//------------------------------------------------------------------------------------------
+
+void authorize_list(SSL *ssl, unsigned char *buffer_read, char user_id[],NODE *list)
+{	
+	MYSQL_RES *res_set;
+ 	MYSQL_ROW row;
+	  
+	unsigned char buffer[MAX_MESSAGE];
+	unsigned char temp[MAX_MESSAGE];
+				
+  	char query[MAX_MESSAGE];
+	char contact_id[10];
+	char email[255];
+	char nickname[255];
+	char status[10];
+	char ip[16];
+	char ans[2];
+
+	int temp_length;
+	int i;
+	int check_db;
+	int len;
+	int temp_len;
+	int check_query;
+	int len2 ;
+	
+	i= temp_length = temp_len = len2 = len = 0;
+	for(i =0 ;i< MAX_MESSAGE ; i++)
+	{
+		query[i] = '\0';
+		temp[i] = '\0';
+		buffer[i] = '\0';
+	}
+	for(i=0;i < 10;i++)
+	{
+		contact_id[i] = '\0';
+		status[i] = '\0';
+	}
+
+	for(i=0;i < 255;i++)
+	{
+		nickname[i] = '\0';
+		email[i] = '\0';
+	}
+
+	for(i=0;i < 16;i++)
+	{
+		ip[i] = '\0';
+	}
+	
+	for(i=0 ; i<2 ; i++) ans[i] = '\0';
+
+	check_query =0;
+	
+	if ((buffer_read[0] == 0x5e) && (buffer_read[5] == 0x51))
+	{
+
+		//***********************************************************************
+		// --1st Process--
+		//		- Connect to DB to get pending authorization UserID
+		//-----------------------------------------------------------------------
+		//
+		// input  = Query DB
+		// output = pending authorization UserID
+		//
+		//***********************************************************************											
+
+		isagmq_db = do_connect (DEF_HOST_NAME, DEF_USER_NAME, DEF_PASSWORD, DEF_DB_NAME,
+      	       				DEF_PORT_NUM, DEF_SOCKET_NAME, 0);
+					
+		if(isagmq_db == NULL)
+      	{
+			fprintf(stdout, "%s   ", user_id);
+           	fprintf(stdout, "Connect to Database Error");
+			strcpy(temp,"Can't connect to DB...$");
+			write_error(ssl,temp);
+       	}
+		else
+		{
+			strcpy(query, "SELECT USER_ID  FROM contact_list WHERE CONTACT_ID = '");
+			strncat(query, user_id, FIX_USER_ID);
+			strcat(query,"'");
+			strcat(query," AND STATUS = 'W'");
+			fprintf(stdout,"Query :%s\n",query);
+
+			check_query = process_query(isagmq_db, query);
+
+			if( check_query == 1)
+			{
+				mysql_query(isagmq_db, query);
+     			res_set = mysql_store_result(isagmq_db);
+				strcpy(temp,"");
+
+                while((row = mysql_fetch_row(res_set)) != NULL)
+		        {
+						//***********************************************************************
+						// --2nd Process--
+						//		- Connect to DB to get profile of pending UserID
+						//-----------------------------------------------------------------------
+						// Profile contains :
+						//		1. UserID
+						//		2. Email
+						//		3. Nickname
+						//		4. Status
+						//		5. IP Address
+						//
+						// input  = Query DB
+						// output = Profile of pending UserID
+						//
+						//***********************************************************************											
+	               
+						strcpy(contact_id,row[0]);
+						get_nick_email(contact_id,nickname,email);	
+						find_online(list,contact_id,status,ip);
+						//if(strcmp(row[1],"W") == 0)  strcpy(status,"W");
+						len += strlen(contact_id)+ strlen(email)+ strlen(nickname) + strlen(status) + strlen(ip);
+						len = len + 4;
+						//fprintf(stdout,"len - > %d\n",len);
+
+						//***********************************************************************
+						// --3rd Process--
+						//		- Copy profile 
+						//-----------------------------------------------------------------------
+						//
+						// input  =	profile
+						// output = sent packet
+						//
+						//***********************************************************************											
+
+						if(len < MAX_MESSAGE-9)
+						{
+							strcat(temp,contact_id);
+							strcat(temp,"#");
+							strcat(temp,email);
+							strcat(temp,"#");
+							strcat(temp,nickname);
+							strcat(temp,"#");
+							strcat(temp,status);
+							strcat(temp,"#");
+							strcat(temp,ip);
+							strcat(temp,"$");
+							temp_length = strlen(temp);
+							len = temp_length;
+						}
+						else
+						{
+							
+							for(i=0;i<MAX_MESSAGE;i++) buffer[i] ='\0';
+	
+      						buffer[0] = 0x5e;
+							buffer[1] = 0x00;
+							buffer[2] = 0x01;
+							buffer[3] = 0x00;
+							buffer[4] = 0x01;
+      						buffer[5] = 0x52;
+      						buffer[6] = 0x01;				/*More of package*/
+
+							for(i=0;i<MAX_MESSAGE;i++)
+							{
+								buffer[7+i] = temp[i];
+								if(temp[i] == '\0') break;								
+							}
+						 	buffer[i+7] = '$';	
+							ssl_write(ssl,buffer,sizeof(buffer));
+
+							for(i=0;i<MAX_MESSAGE;i++)
+							{
+								temp[i] = '\0';
+								buffer[i] = '\0';
+							}
+
+							strcpy(temp,contact_id);
+							strcat(temp,"#");
+							strcat(temp,email);
+							strcat(temp,"#");
+							strcat(temp,nickname);
+							strcat(temp,"#");
+							strcat(temp,status);
+							strcat(temp,"#");
+							strcat(temp,ip);
+							strcat(temp,"$");
+							temp_length = strlen(temp);
+							len = temp_length;
+						}
+						//-----------------------------------------------------------------------
+						//-- 3rd Process--
+						//			
+						//***********************************************************************
+
+				}
+				
+				strcat(temp,"$");
+
+				for(i=0;i<MAX_MESSAGE;i++) buffer[i] ='\0';
+
+				buffer[0] = 0x5e;
+				buffer[1] = 0x00;
+				buffer[2] = 0x01;
+				buffer[3] = 0x00;
+				buffer[4] = 0x07;
+				buffer[5] = 0x52;
+				buffer[6] = 0x00;	
+
+				fprintf(stdout,"ALL INFO \n%s\n",temp);
+				for(i=0;i<MAX_MESSAGE;i++)
+				{
+					buffer[7+i] = temp[i];
+					if(temp[i] == '\0') break;
+				}
+							
+				ssl_write(ssl,buffer,sizeof(buffer));
+
+			}
+     		else if ( check_query == 0)
+     		{
+         		fprintf(stdout, "%s   ", user_id);
+				fprintf(stdout,"No. this userID = %s\n", user_id);
+				strcpy(temp,"Don't have authorization requesting list..$");
+				write_error(ssl,temp);
+     		}
+     		else 
+			{
+				fprintf(stdout, "%s   ", user_id);
+				fprintf(stdout,"DB system error %s\n", user_id);
+				strcpy(temp,"DB system error..$");
+				write_error(ssl,temp);
+
+			}
+
+		}
+		 
+		 do_disconnect(isagmq_db); 
+
+		//-----------------------------------------------------------------------
+		//-- 1st Process--
+		//			
+		//***********************************************************************
+
+
+	}
+	else
+	{
+		fprintf(stdout,"Packet Error \n");
+		strcpy(temp,"Invalid Packet..$");
+		write_error(ssl,temp);
+
+	}
+												
+}
+
+//*******************************************************************************************
+//							End of Authorization List Function
+//*******************************************************************************************
+
+
+//*******************************************************************************************
+//						      Accept Authorization Function
+//*******************************************************************************************
+//
+// This function for accepting authorization reply from the owner 
+//		and manipulating it repect to reply
+//
+// TOS = 0x5E CMD = 0x55 - receive authorization reply from user
+// TOS = 0x5E CMD = 0x56 - reply complete result to user;
+// TOS = 0x06 CMD = 0x62 or write_error - reply all errors occur during processing
+//------------------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------------------
+// Input =  (ContactID , answer , User Status)
+// Output = complete or error message
+//	
+//------------------------------------------------------------------------------------------
+
+
+void accept_authorize(SSL *ssl, unsigned char *buffer_read, char user_id[])
+{
+	MYSQL_ROW row;
+	unsigned char buffer[MAX_MESSAGE];
+	unsigned char temp[MAX_MESSAGE];
+  	char query[MAX_MESSAGE];
+	char contact_id[10];
+	int i ;
+	int len2;
+	char ans[2];
+	char user_id_status[2];
+	char contact_id_status[2];
+	int check_query;
+	int check_get_data;
+	int check_contact_id;
+	int check_status;
+	int check_confirm;
+	int con_status_ok;
+	int valid;
+
+
+	for(i =0 ;i< MAX_MESSAGE ; i++)
+	{
+		query[i] = '\0';
+		temp[i] = '\0';
+		buffer[i] = '\0';
+	}
+	for(i=0;i < 10;i++) contact_id[i] = '\0';
+
+	
+	if ((buffer_read[0] == 0x5e) && (buffer_read[5] == 0x55))
+	{
+		
+		//***********************************************************************
+		// --1st Process--
+		//		- Get data form packet and check its validity
+		//-----------------------------------------------------------------------
+		//
+		// There are 3 subprocess to do
+		//  1. Check ContactID that consists of allowed charater 
+		//	2. Check the answer that consists of ('Y','y','N','n') Y-yes , N-no
+		//	3. Check UserID status that consists of ('A','B','O') 
+		//
+		// input  = Packet
+		// output = (ContactID , answer , User's Status )
+		//			if all is valid - check_contact_id = 1
+		//							- check_confirm = 1
+		//							- check_status = 1
+		//***********************************************************************											
+
+		check_get_data = get_data(buffer_read,temp,7);
+		fprintf(stdout,"Accepting :%s\n",temp);
+		if(check_get_data == 0) valid= 0;
+		else
+		{
+			for(i = 0 ; i<10 ; i++)
+			{
+				if(temp[i] == '#') break;
+				contact_id[i] = temp[i];					
+			}
+
+			len2 = strlen(contact_id);
+			check_contact_id = check_userid(contact_id);
+
+			if(	(buffer_read[7+len2+1] == 0x6e) || (buffer_read[7+len2+1] == 0x4e) ||
+				(buffer_read[7+len2+1] == 0x79) || (buffer_read[7+len2+1] == 0x59) )
+			{
+				ans[0] = buffer_read[7+len2+1];
+				ans[1] = '\0';
+				check_confirm = 1;
+			}
+			else check_confirm =0;
+			
+			if (buffer_read[7+len2+3] == 0x41 ||buffer_read[7+len2+3] == 0x42 ||  buffer_read[7+len2+3] == 0x4F )
+			{
+				user_id_status[0] = buffer_read[7+len2+3];
+				user_id_status[1] = '\0';
+				check_status = 1;
+			}
+			else check_status = 0;   
+		}
+
+		if((check_contact_id == 1) && (check_confirm == 1) && (check_status==1))
+		{
+
+			//***********************************************************************
+			// --2nd Process--
+			//		- Connect to DB to do everything
+			//-----------------------------------------------------------------------
+			//
+			// There are 3 subprocess to do
+			//  1. Get current status of ContactID -> contact_id_status
+			//	2. Update DB (ContactID,UserID,UserID status)
+			//	3. Insert or Update DB (UserID,ContactID,ContactID status)
+			//
+			// input  = Query
+			// output = Success or Error 
+			//
+			//***********************************************************************											
+
+
+			isagmq_db = do_connect (DEF_HOST_NAME, DEF_USER_NAME, DEF_PASSWORD, DEF_DB_NAME,
+								DEF_PORT_NUM, DEF_SOCKET_NAME,CLIENT_FOUND_ROWS);
+			
+			if(isagmq_db == NULL)
+			{
+				fprintf(stdout, "%s   ", user_id);
+				fprintf(stdout, "Connect to Database Error");
+				strcpy(temp,"Can't connect to DB...$");
+				write_error(ssl,temp);
+			}
+			else
+			{
+				//-----------------------------------------------------------------------
+				// --1st SupProcess--
+				//		- Get ContactID Status
+				//-----------------------------------------------------------------------
+
+				strcpy(query,"SELECT STATUS FROM contact_list WHERE CONTACT_ID = '");
+				strcat(query,contact_id);
+				strcat(query,"'");
+				strcat(query," AND STATUS NOT IN ('D','X','W')");
+				strcat(query," GROUP BY STATUS");
+				check_query = process_query(isagmq_db, query);
+				fprintf(stdout,"Query :%s\n",query);
+
+				if( check_query == 1 )
+				{
+					mysql_query(isagmq_db,query);
+					res_set = mysql_store_result(isagmq_db);
+
+					if((row = mysql_fetch_row(res_set)) != NULL)
+					{
+						//Get Current Status of Contact ID 
+						strcpy(contact_id_status,row[0]);
+						con_status_ok =1;
+						fprintf(stdout,"\n user_id : %s user_id_status : %s contact_id : %s contact_id_status : %s  answer : %s\n"
+						,user_id,user_id_status,contact_id,contact_id_status,ans);
+
+					}
+				}
+				else 
+				{
+					con_status_ok = 0;
+				}
+
+				//-----------------------------------------------------------------------
+				// --2nd SupProcess--
+				//		-  Update (ContactID,UserID,UserID status)
+				//		-  This case is Yes answer
+				//-----------------------------------------------------------------------
+
+				if( ((ans[0] == 0x79) || (ans[0] == 0x59)) && con_status_ok == 1)
+				{
+					strcpy(query, "UPDATE contact_list SET STATUS = '");
+					strcat(query,user_id_status);
+					strcat(query,"'");
+					strcat(query," WHERE USER_ID ='");
+					strcat(query,contact_id);
+					strcat(query,"'");
+					strcat(query," AND CONTACT_ID ='");
+					strcat(query,user_id);
+					strcat(query,"'");
+					strcat(query," AND STATUS = 'W'");
+					fprintf(stdout,"Query :%s\n",query);
+
+					check_query = process_query_row(isagmq_db, query);
+
+					if( check_query == 1 )
+					{
+						for(i =0 ;i< MAX_MESSAGE ; i++)	query[i] = '\0';
+
+						//-----------------------------------------------------------------------
+						// --3rd SupProcess--
+						//		-  Update (UserID,ContactID,ContactID status)
+						//
+						//	Note: We have to check before about row to be inserted that is exist
+						//		  If exist then just update otherwise insert.
+						//-----------------------------------------------------------------------
+					
+						if(!check_db5("SELECT CONTACT_ID FROM contact_list WHERE USER_ID = '", user_id, 
+							"' AND CONTACT_ID = '", contact_id, "Delete contact"))
+						{
+
+							strcpy(query, "UPDATE contact_list SET STATUS = '");
+							strcat(query,contact_id_status);
+							strcat(query,"'");
+							strcat(query," WHERE USER_ID ='");
+							strcat(query,user_id);
+							strcat(query,"'");
+							strcat(query," AND CONTACT_ID ='");
+							strcat(query,contact_id);
+							strcat(query,"'");
+							strcat(query," AND STATUS = 'W'");
+							fprintf(stdout,"Query :%s\n",query);
+
+							check_query = process_query_row(isagmq_db, query);
+
+							if( check_query == 1 )
+							{
+								fprintf(stdout, "%s   ", user_id);
+								fprintf(stdout, "Authorization  OK...\n");
+
+								buffer[0] = 0x55;
+								buffer[1] = 0x00;
+								buffer[2] = 0x01;
+								buffer[3] = 0x00;
+								buffer[4] = 0x07;
+								buffer[5] = 0x56;
+								buffer[6] = 0xff;
+
+								strcpy(temp, "Authorization Completed OK...$");
+																			
+								for(i=0;i < 255;i++) 
+								{
+									if(temp[i] == NULL) break;
+									buffer[i+7] =  temp[i];
+								}
+
+								ssl_write(ssl, buffer, sizeof(buffer));
+
+							}
+							else if (check_query == 0)
+							{
+								fprintf(stdout,"Can't update : NOT FOUND\n");
+								strcpy(temp,"Update Authorization Incompleted...$");
+								write_error(ssl,temp);
+							}
+							else
+							{
+								fprintf(stdout,"Can't authorize this user : %s \n",contact_id);
+								strcpy(temp,"Authorize Incompleted...$");
+								write_error(ssl,temp);
+							}
+
+						}
+						else
+						{
+							strcpy(query, "INSERT INTO contact_list VALUES('");
+							strcat(query, user_id);
+							strcat(query, "', '");
+							strcat(query, contact_id);
+							strcat(query, "', '");
+							strcat(query, contact_id_status);
+							strcat(query, "')"); 
+							fprintf(stdout,"Query :%s\n",query);
+
+							check_query = process_query(isagmq_db, query);
+
+							if( check_query == 1 || check_query == 0)
+							{
+								fprintf(stdout, "%s   ", user_id);
+								fprintf(stdout, "Authorization  OK...\n");
+
+								buffer[0] = 0x55;
+								buffer[1] = 0x00;
+								buffer[2] = 0x01;
+								buffer[3] = 0x00;
+								buffer[4] = 0x07;
+								buffer[5] = 0x56;
+								buffer[6] = 0xff;
+
+								strcpy(temp, "Authorization Completed OK...$");
+																			
+								for(i=0;i < 255;i++) 
+								{
+									if(temp[i] == NULL) break;
+									buffer[i+7] =  temp[i];
+								}
+
+								ssl_write(ssl, buffer, sizeof(buffer));
+
+							}
+							else
+							{
+								fprintf(stdout,"Can't insert \n");
+								strcpy(temp,"Authorize Incompleted...$");
+								write_error(ssl,temp);
+							}
+
+						}
+																	
+					}
+					else if (check_query == 0)
+					{
+						fprintf(stdout,"Can't update : NOT FOUND\n");
+						strcpy(temp,"Update Authorization Incompleted...$");
+						write_error(ssl,temp);
+					}
+					else
+					{
+						fprintf(stdout,"DB ERROR\n");
+						strcpy(temp,"Update Authorization Incompleted...$");
+						write_error(ssl,temp);
+					}
+
+				}
+
+				//-----------------------------------------------------------------------
+				// --2nd SupProcess--
+				//		-  Update (ContactID,UserID,UserID status)
+				//		-  This case is No answer
+				//
+				// Note : In this case there just update only
+				//-----------------------------------------------------------------------
+
+				else if(((ans[0] == 0x6e) || (ans[0] == 0x4e))  && con_status_ok == 1)
+				{
+					strcpy(query, "UPDATE contact_list SET STATUS = 'U'");
+					strcat(query," WHERE USER_ID ='");
+					strcat(query,contact_id);
+					strcat(query,"'");
+					strcat(query," AND CONTACT_ID ='");
+					strcat(query,user_id);
+					strcat(query,"'");
+					strcat(query," AND STATUS = 'W'");
+					fprintf(stdout,"Query :%s\n",query);
+
+					check_query = process_query_row(isagmq_db, query);
+					if( check_query == 1)
+					{
+						fprintf(stdout, "%s   ", user_id);
+						fprintf(stdout, "Deny Authorization  OK...\n");
+
+						buffer[0] = 0x55;
+						buffer[1] = 0x00;
+						buffer[2] = 0x01;
+						buffer[3] = 0x00;
+						buffer[4] = 0x07;
+						buffer[5] = 0x56;
+						buffer[6] = 0xff;
+
+						strcpy(temp, "Deny Authorization Completed OK...$");
+
+						for(i=0;i < 255;i++) 
+						{
+							if(temp[i] == NULL) break;
+							buffer[i+7] =  temp[i];
+						}
+
+						ssl_write(ssl, buffer, sizeof(buffer));
+																	
+
+					}
+					else if (check_query == 0)
+					{
+						fprintf(stdout,"Can't update : NOT FOUND\n");
+						strcpy(temp,"Update Authorization Incompleted...$");
+						write_error(ssl,temp);
+					}
+
+					else
+					{
+						fprintf(stdout,"DB ERROR\n");
+						strcpy(temp, "Update Authorization Incompleted...$");
+						write_error(ssl,temp);
+					}
+				}
+				do_disconnect(isagmq_db); 
+			}
+
+		//-----------------------------------------------------------------------
+		//-- 2nd Process--
+		//			
+		//***********************************************************************
+
+		}
+		else
+		{
+			fprintf(stdout,"Invalid Answer \n");
+			strcpy(temp,"Invalid Answer...$");
+			write_error(ssl,temp);
+		}
+	
+	//-----------------------------------------------------------------------
+	//-- 1st Process--
+	//			
+	//***********************************************************************
+
+	}
+	else
+	{
+		fprintf(stdout,"Invalid Packet\n");
+		strcpy(temp,"Invalid Packet...$");
+		write_error(ssl,temp);
+
+	}
+
+
+}
+
+
+//*******************************************************************************************
+//						End of Accept Authorization  Function
+//*******************************************************************************************
+
+#endif

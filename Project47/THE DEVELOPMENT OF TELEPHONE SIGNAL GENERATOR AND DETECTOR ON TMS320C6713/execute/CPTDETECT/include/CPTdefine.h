@@ -1,0 +1,255 @@
+#ifndef _CPTDEFINEH
+#define _CPTDEFINEH
+
+//////CPT silence/////
+#define CPTsilence -5500	//dBm divide by 100 
+#define SAMP_RATE 8000
+/////state//////
+#define START	100
+#define SPECIAL1	4
+#define SPECIAL2	5
+#define SPECIAL3	6
+#define PAYPHONE1	8
+#define RECALL_CONFIRM1	11
+#define RECALL_CONFIRM2	12
+#define RECALL_CONFIRM3	13
+#define INTERCEPT1	14
+#define BUSY_VERIFICATION1	17
+#define	CALLER_WAITING1	19
+#define	CALLER_WAITING2	20
+/////end state///////
+
+
+#define		DIAL_TONE_MIN_DURATION 2000
+#define 	CPT_SilenceMin 10
+#define 	CPT_IntMax 5
+#define 	CPT_SigOprMin 5
+#define 	CPT_INTR 40
+#define 	CPT_PAUSE_INTR 5
+
+#ifdef DETECT_CONST
+
+const int	DIAL_FREQ1[] ={360};
+const int   DIAL_THRESHOLD1[] = {5500000};
+#define		DIAL_NUM1 1
+const int	DIAL_FREQ2[] ={440};
+const int   DIAL_THRESHOLD2[] = {5000000};
+#define		DIAL_NUM2 1
+const int	DIAL_FREQ3[] ={400};
+const int   DIAL_THRESHOLD3[] = {15000000};
+#define		DIAL_NUM3 1
+const int	DIAL_DB[] = {-5,-15}; 
+
+const int	RING_FREQ[] ={440};
+const int   RING_THRESHOLD[] = {9500000};
+#define		RING_NUM 1
+#define		RING_TONE_MIN_DURATION 670
+#define		RING_TONE_MAX_DURATION 1500
+#define		RING_PAUSE_MIN_DURATION 3000
+#define		RING_PAUSE_MAX_DURATION 5000
+const int	RING_DB[] = {-5,-15}; 
+
+const int	BUSY_FREQ[] = {440};
+const int	BUSY_THRESHOLD[] = {9500000};
+#define		BUSY_NUM 1
+#define		BUSY_TONE_MIN_DURATION 450
+#define		BUSY_TONE_MAX_DURATION 550
+#define		BUSY_PAUSE_MIN_DURATION 450
+#define		BUSY_PAUSE_MAX_DURATION 550
+const int	BUSY_DB[] = {-5,-15}; 
+
+const int	CONGESTION_FREQ[] = {440};
+const int	CONGESTION_THRESHOLD[] = {9500000};
+#define		CONGESTION_NUM 1
+#define		CONGESTION_TONE_MIN_DURATION 200
+#define		CONGESTION_TONE_MAX_DURATION 400
+#define		CONGESTION_PAUSE_MIN_DURATION 150
+#define		CONGESTION_PAUSE_MAX_DURATION 250
+#define		CONGESTION_TOTAL_MIN_DURATION 400
+#define		CONGESTION_TOTAL_MAX_DURATION 800
+const int	CONGESTION_DB[] = {-5,-15}; 
+
+const int	SPECIAL_FREQ[] = {960,1400,1800};
+const int	SPECIAL_THRESHOLD[] = {600000,2000000,1500000};
+#define		SPECIAL_NUM 1
+#define		SPECIAL_TONE_MIN_DURATION0 260
+#define		SPECIAL_TONE_MAX_DURATION0 400
+#define		SPECIAL_PAUSE_MIN_DURATION0 25
+#define		SPECIAL_PAUSE_MAX_DURATION0 35
+#define		SPECIAL_TONE_MIN_DURATION1 260
+#define		SPECIAL_TONE_MAX_DURATION1 400
+#define		SPECIAL_PAUSE_MIN_DURATION1 25
+#define		SPECIAL_PAUSE_MAX_DURATION1 35
+#define		SPECIAL_TONE_MIN_DURATION2 260
+#define		SPECIAL_TONE_MAX_DURATION2 400
+#define		SPECIAL_PAUSE_MIN_DURATION2 750
+#define		SPECIAL_PAUSE_MAX_DURATION2 1250
+const int	SPECIAL_DB[] = {-5,-15}; 
+
+const int	WARNING_FREQ[] = {1400};
+const int	WARNING_THRESHOLD[] = {2000000};
+#define		WARNING_NUM 1
+#define		WARNING_TONE_MIN_DURATION 350
+#define		WARNING_TONE_MAX_DURATION 500
+#define		WARNING_PAUSE_MIN_DURATION 12000
+#define		WARNING_PAUSE_MAX_DURATION 18000
+const int	WARNING_DB[] = {-5,-15}; 
+
+const int	PAYPHONE_FREQ[] = {1400,1100};
+const int	PAYPHONE_THRESHOLD[] = {40000,20000};
+#define		PAYPHONE_NUM 1
+#define		PAYPHONE_TONE_MIN_DURATION0 150
+#define		PAYPHONE_TONE_MAX_DURATION0 250
+#define		PAYPHONE_PAUSE_MIN_DURATION0 150
+#define		PAYPHONE_PAUSE_MAX_DURATION0 250
+#define		PAYPHONE_TONE_MIN_DURATION1 150
+#define		PAYPHONE_TONE_MAX_DURATION1 250
+#define		PAYPHONE_PAUSE_MIN_DURATION1 1800
+#define		PAYPHONE_PAUSE_MAX_DURATION1 2200
+const int	PAYPHONE_DB[] = {0,-20}; 
+
+const int	CALL_WAIT_FREQ[] = {440};
+const int	CALL_WAIT_THRESHOLD[] = {9500000};
+#define		CALL_WAIT_NUM 1
+#define		CALL_WAIT_TONE_MIN_DURATION 300
+#define		CALL_WAIT_TONE_MAX_DURATION 500
+#define		CALL_WAIT_PAUSE_MIN_DURATION 8000
+#define		CALL_WAIT_PAUSE_MAX_DURATION 10000
+const int	CALL_WAIT_DB[] = {0,-15}; 
+
+//const int	RECALL_FREQ[] = {360,440};
+//const int	RECALL_THRESHOLD[] = {55000000,9500000};
+//const int	RECALL_NUM = 2;
+//const int	RECALL_DB[] = {-10,-15};
+//confirm and busy is same db
+
+const int	INTERCEPT_FREQ[] = {440,620};
+const int	INTERCEPT_THRESHOLD[] = {9500000,5000000};
+#define		INTERCEPT_NUM 1
+#define		INTERCEPT_TONE_MIN_DURATION0 160
+#define		INTERCEPT_TONE_MAX_DURATION0 300
+#define		INTERCEPT_TOTAL_MIN_DURATION0 450
+#define		INTERCEPT_TOTAL_MAX_DURATION0 550
+#define		INTERCEPT_TONE_MIN_DURATION1 160
+#define		INTERCEPT_TONE_MAX_DURATION1 300
+#define		INTERCEPT_TOTAL_MIN_DURATION1 450
+#define		INTERCEPT_TOTAL_MAX_DURATION1 550
+const int	INTERCEPT_DB[] = {0,-15}; 
+
+//for CONFIRMATION AND RECALL
+const int	CONFIRM_FREQ[] = {360,440};
+const int	CONFIRM_THRESHOLD[] = {5500000,9500000};
+#define		CONFIRM_NUM 1
+#define		CONFIRM_TONE_MIN_DURATION0 80
+#define		CONFIRM_TONE_MAX_DURATION0 120
+#define		CONFIRM_PAUSE_MIN_DURATION0 80
+#define		CONFIRM_PAUSE_MAX_DURATION0 120
+#define		CONFIRM_TONE_MIN_DURATION1 80
+#define		CONFIRM_TONE_MAX_DURATION1 120
+#define		CONFIRM_PAUSE_MIN_DURATION1 80
+#define		CONFIRM_PAUSE_MAX_DURATION1 120
+#define		CONFIRM_TONE_MIN_DURATION2 80
+#define		CONFIRM_TONE_MAX_DURATION2 120
+#define		CONFIRM_PAUSE_MIN_DURATION2 80
+#define		CONFIRM_PAUSE_MAX_DURATION2 120
+const int	CONFIRM_DB[] = {0,-15}; //confirm and busy is same db
+
+const int	COMFORT_FREQ[] = {480};
+const int	COMFORT_THRESHOLD[] = {10000000};
+#define		COMFORT_NUM 1
+#define		COMFORT_TONE_MIN_DURATION 2000
+const int	COMFORT_DB[] = {0,-15}; 
+
+
+const int	BUSY_VER_FREQ[] = {440};
+const int	BUSY_VER_THRESHOLD[] = {9500000};
+#define		BUSY_VER_NUM 1
+#define		BUSY_VER_TONE_MIN_DURATION0 1000
+#define		BUSY_VER_TONE_MAX_DURATION0 1500
+#define		BUSY_VER_PAUSE_MIN_DURATION0 7500
+#define		BUSY_VER_PAUSE_MAX_DURATION0 10000
+#define		BUSY_VER_TONE_MIN_DURATION1 200
+#define		BUSY_VER_TONE_MAX_DURATION1 300
+#define		BUSY_VER_PAUSE_MIN_DURATION1 7500
+#define		BUSY_VER_PAUSE_MAX_DURATION1 10000
+const int	BUSY_VER_DB[] = {0,-15}; 
+
+const int	CALLER_FREQ[] = {440};
+const int	CALLER_THRESHOLD[] = {9500000};
+#define		CALLER_NUM 1
+#define		CALLER_TONE_MIN_DURATION 900
+#define		CALLER_TONE_MAX_DURATION 1100
+#define		CALLER_PAUSE_MIN_DURATION 180
+#define		CALLER_PAUSE_MAX_DURATION 220
+const int	CALLER_DB[] = {0,-15}; 
+
+/////////END CPT////////////
+#else
+extern  int	DIAL_FREQ1[];
+extern  int   DIAL_THRESHOLD1[];
+extern  int	DIAL_FREQ2[];
+extern  int   DIAL_THRESHOLD2[];
+extern  int	DIAL_FREQ3[];
+extern  int   DIAL_THRESHOLD3[];
+extern  int	DIAL_DB[]; 
+
+extern  int	RING_FREQ[];
+extern  int   RING_THRESHOLD[];
+extern  int	RING_DB[]; 
+
+extern  int	BUSY_FREQ[];
+extern  int	BUSY_THRESHOLD[];
+extern  int	BUSY_DB[]; 
+
+extern  int	CONGESTION_FREQ[];
+extern  int	CONGESTION_THRESHOLD[];
+extern  int	CONGESTION_DB[]; 
+
+extern  int	SPECIAL_FREQ[];
+extern  int	SPECIAL_THRESHOLD[];
+
+extern  int	SPECIAL_DB[]; 
+
+extern  int	WARNING_FREQ[];
+extern  int	WARNING_THRESHOLD[];
+
+extern  int	WARNING_DB[]; 
+
+extern  int	PAYPHONE_FREQ[];
+extern  int	PAYPHONE_THRESHOLD[];
+extern  int	PAYPHONE_DB[]; 
+
+extern  int	CALL_WAIT_FREQ[];
+extern  int	CALL_WAIT_THRESHOLD[];
+
+extern  int	CALL_WAIT_DB[]; 
+
+extern  int	RECALL_FREQ[];
+extern  int	RECALL_THRESHOLD[];
+
+extern  int	INTERCEPT_FREQ[];
+extern  int	INTERCEPT_THRESHOLD[];
+extern  int	INTERCEPT_DB[]; 
+
+//for CONFIRMATION AND RECALL
+extern  int	CONFIRM_FREQ[];
+extern  int	CONFIRM_THRESHOLD[];
+extern  int	CONFIRM_DB[]; //confirm and busy is same db
+
+extern  int	COMFORT_FREQ[];
+extern  int	COMFORT_THRESHOLD[];
+extern  int	COMFORT_DB[]; 
+
+
+extern  int	BUSY_VER_FREQ[];
+extern  int	BUSY_VER_THRESHOLD[];
+extern  int	BUSY_VER_DB[]; 
+
+extern  int	CALLER_FREQ[];
+extern  int	CALLER_THRESHOLD[];
+extern  int	CALLER_DB[]; 
+
+#endif
+
+
+#endif

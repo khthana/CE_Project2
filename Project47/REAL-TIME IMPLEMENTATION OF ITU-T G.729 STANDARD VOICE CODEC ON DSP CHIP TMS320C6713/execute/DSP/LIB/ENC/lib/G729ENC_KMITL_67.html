@@ -1,0 +1,1923 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD><TITLE>Compliance Test Report</TITLE></HEAD>
+<BODY>
+
+<TABLE BORDER="1" WIDTH="100%">
+  <TR>
+    <TD COLSPAN="2">
+      <CENTER><FONT SIZE="+1"><B>TMS320 DSP Algorithm Interoperability Standard</B></FONT></CENTER><BR>
+      <CENTER><B>QualiTI Compliance Testing</B></CENTER><BR>
+      <CENTER><B>Compliance Test Report</B></CENTER><BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD><B>Date</B></TD><TD>Thursday, March 24, 2005, 00:13, SE Asia Standard Time</TD>
+  </TR>
+
+  <TR>
+    <TD><B>Vendor</B></TD><TD>KMITL</TD>
+  </TR>
+
+  <TR>
+    <TD><B>Algorithm</B></TD><TD>G729ENC</TD>
+  </TR>
+
+  <TR>
+    <TD><B>Architecture</B></TD><TD>67</TD>
+  </TR>
+
+  <TR>
+    <TD><B>Generic Interface</B></TD><TD>None</TD>
+  </TR>
+
+  <TR>
+    <TD><B>Version</B></TD><TD>None</TD>
+  </TR>
+
+  <TR>
+    <TD><B>Serial Number</B></TD><TD>None</TD>
+  </TR>
+
+  <TR>
+    <TD><B>Test Result</B></TD>
+    <TD><font color="#FF0000"><B>Fail    : </B></font> <a href="#5">5</a>  <a href="#7">7</a>  <a href="#8">8</a>  <a href="#9">9</a>  <a href="#12">12</a>  <a href="#13">13</a>  <a href="#14">14</a>  <a href="#17">17</a>  <a href="#19">19</a>  <a href="#24">24</a>  <a href="#27">27</a> <BR></TD>
+  </TR>
+  <TR>
+    <TD COLSPAN="2">
+        <B>Test Notes</B><BR>
+        &nbsp;&nbsp;&nbsp;This report has been generated with QualiTI Version 2.3.7 - the XDAIS compliance test suite. <BR><BR>
+
+        &nbsp;&nbsp;&nbsp;All references to Rules and Guidelines are from  the literature numbered SPRU352E. <BR><BR>
+
+        &nbsp;&nbsp;&nbsp;The Rules 15, 18, 28, 29, 30, 31, 32, 33, 34, 35, DMA 1, DMA 2, DMA 3, DMA 4, DMA 5, DMA 6, DMA 7, DMA 8, DMA 9, DMA 10, DMA 11 are not applicable and hence were not tested.<BR><BR>
+
+        &nbsp;&nbsp;&nbsp;If instance creation parameter that leads  to the worst case heap memory usage is not provided separately in a C file then QualiTI tests rule 19 with default instance creation parameter.<BR><BR>
+
+        &nbsp;&nbsp;&nbsp;If you have any questions or comments about the test results below, please send an email message to: <a href="mailto:algtesters@list.ti.com?Subject=QualiTI Version 2.3.7 - Report">algtesters@list.ti.com</a><BR><BR>
+
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B>Documentation:</B><BR>
+      &nbsp;&nbsp;&nbsp;None<BR><BR>
+      <B>Header File(s):</B><BR>
+      &nbsp;&nbsp;&nbsp;C:\ti\myprojects\ForPresent\PrelibENC\include\ig729enc.h<BR>
+      &nbsp;&nbsp;&nbsp;C:\ti\myprojects\ForPresent\PrelibENC\include\g729enc_kmitl.h<BR>
+      &nbsp;&nbsp;&nbsp;C:\ti\myprojects\ForPresent\PrelibENC\g729enc\g729enc.h<BR>
+<BR>
+      <B>Algorithm Archive(s):</B><BR>
+      &nbsp;&nbsp;&nbsp;C:\ti\myprojects\ForPresent\PrelibENC\lib\g729enc_kmitl.l67<BR>
+<BR>
+      <B>Linker Command File:</B><BR>
+      &nbsp;&nbsp;&nbsp;None<BR><BR>
+      <B>Source File Defining Worst Case Heap Memory Parametrs:</B><BR>
+      &nbsp;&nbsp;&nbsp;C:\ti\myprojects\ForPresent\PrelibENC\src\g729enc_kmitl_ialg.c<BR><BR>
+      <B>Instance creation parameters name for worst case heap memory:</B><BR>
+      &nbsp;&nbsp;&nbsp;coderMemBlk<BR><BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="0">Screening Test:</a></B> All algorithms must have at least one top level header file named mod_vend.h (mod is the name of the algorithm and vend is the name of the vendor) that includes all the other header files that are provided with the algorithm. In addition the external symbols MOD_VEND_IALG and MOD_VEND_IMOD / MOD_VEND_IGENERICINTERFACE must be present for the algorithm to be tested.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Screening test passed<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="1">Rule 1:</a></B> All algorithms must follow the run-time conventions imposed by TI's implementation of the C programming language.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Vendor states compliance in the documentation <BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="2">Rule 2:</a></B> All algorithms must be reentrant within a preemptive environment (including time-sliced preemption)<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Vendor states compliance in the documentation <BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="3">Rule 3:</a></B> All algorithm data references must be fully relocatable (subject to alignment requirements). That is, there must be no "hard coded" data memory locations.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Vendor states compliance in the documentation <BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="4">Rule 4:</a></B> All algorithm code must be fully relocatable. That is, there can be no hard coded program memory locations.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Vendor states compliance in the documentation <BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="5">Rule 5:</a></B> Algorithms must characterize their ROM-ability; i.e., state whether they are ROM-able or not.<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>         Not characterized by vendor<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="6">Rule 6:</a></B> Algorithms must never directly access any peripheral device. This includes but is not limited to on-chip DMAs, timers, I/O devices, and cache control registers.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Vendor states compliance in the documentation <BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="7">Rule 7:</a></B> All header files must support multiple inclusions within a single source file.<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>         QualiTI failed this rule after testing<BR>
+<p><font face="Courier">Header&nbsp;file&nbsp;'g729enc.h'&nbsp;does&nbsp;not&nbsp;support&nbsp;multiple&nbsp;inclusions<BR>
+<BR>
+"C:\\temp\\qualititemp\\inc\\g729enc.h",&nbsp;line&nbsp;29:&nbsp;fatal&nbsp;error:&nbsp;could&nbsp;not&nbsp;open&nbsp;source&nbsp;file&nbsp;"algrf.h"<BR>
+1&nbsp;fatal&nbsp;error&nbsp;detected&nbsp;in&nbsp;the&nbsp;compilation&nbsp;of&nbsp;"C:\Temp\qualititemp\rule7\test.c".<BR>
+Compilation&nbsp;terminated.<BR>
+</font></p><BR>    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="8">Rule 8:</a></B> All external definitions must be either API identifiers or API and vendor prefixed.<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>     90: Undefined symbol does not have _VEND_ in it<BR>
+<p><font face="Courier"><BR>
+<BR>
+<BR>
+The&nbsp;following&nbsp;undefined&nbsp;symbol(s)&nbsp;do&nbsp;not&nbsp;have&nbsp;the&nbsp;prefix&nbsp;_KMITL_&nbsp;in&nbsp;them<BR>
+<BR>
+_sqrtdp<BR>
+_log10dp<BR>
+_powdp<BR>
+_cosdp<BR>
+_rsqrtdp</font></p><BR>    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="9">Rule 9:</a></B> All undefined references must refer either to the operations specified in Appendix B (a subset of C runtime support library functions and a subset of the DSP/BIOS HWI API functions), or TI's DSPLIB or IMGLIB functions or other XDAIS-compliant modules.<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>     91: The algorithm refers to the following disallowed symbols<BR>
+<p><font face="Courier">The&nbsp;algorithm&nbsp;has&nbsp;referred&nbsp;the&nbsp;following&nbsp;disallowed&nbsp;symbol(s)<BR>
+=============================================================<BR>
+_printf<BR>
+_exit<BR>
+_malloc<BR>
+_malloc<BR>
+_free<BR>
+_free<BR>
+</font></p><BR>    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="10">Rule 10:</a></B> All modules must follow the eXpressDSP naming conventions for those external declarations disclosed to the client.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Vendor states compliance in the documentation <BR>
+<p><font face="Courier">QualiTI&nbsp;has&nbsp;produced&nbsp;a&nbsp;list&nbsp;of&nbsp;exposed&nbsp;external&nbsp;symbols&nbsp;for&nbsp;the&nbsp;user&nbsp;to&nbsp;<BR>
+verify&nbsp;that&nbsp;DSP/BIOS&nbsp;naming&nbsp;conventions&nbsp;have&nbsp;been&nbsp;followed.<BR>
+<BR>
+List&nbsp;of&nbsp;exposed&nbsp;external&nbsp;symbols<BR>
+G729ENC_KMITL_IG729ENC<BR>
+G729ENC_KMITL_init<BR>
+G729ENC_KMITL_exit<BR>
+G729ENC_KMITL_IALG<BR>
+</font></p><BR>    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="11">Rule 11:</a></B> All modules must supply an initialization and finalization method.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         QualiTI passed this rule after testing<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="12">Rule 12:</a></B> All algorithms must implement the IALG interface.<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>     48: QualiTI failed to build the test program with the algorithm<BR>
+<p><font face="Courier">&gt;&gt;&nbsp;warning:&nbsp;Output&nbsp;section&nbsp;".bss"'s&nbsp;user&nbsp;specified&nbsp;run&nbsp;alignment&nbsp;of&nbsp;8&nbsp;is<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;overridden&nbsp;to&nbsp;be&nbsp;32&nbsp;by&nbsp;the&nbsp;required&nbsp;alignment&nbsp;of&nbsp;the&nbsp;input&nbsp;section<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;"C:\temp\qualititemp\lib\g729enc_kmitl.l67"<BR>
+<BR>
+<BR>
+undefined&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first&nbsp;referenced<BR>
+&nbsp;symbol&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;file<BR>
+---------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----------------<BR>
+_sqrtdp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C:\temp\qualititemp\lib\g729enc_kmitl.l67<BR>
+_log10dp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C:\temp\qualititemp\lib\g729enc_kmitl.l67<BR>
+_powdp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C:\temp\qualititemp\lib\g729enc_kmitl.l67<BR>
+_cosdp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C:\temp\qualititemp\lib\g729enc_kmitl.l67<BR>
+_rsqrtdp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C:\temp\qualititemp\lib\g729enc_kmitl.l67<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;referencing&nbsp;errors&nbsp;-&nbsp;'a.out'&nbsp;not&nbsp;built<BR>
+</font></p><BR>    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="13">Rule 13:</a></B> Each of the IALG methods implemented by an algorithm must be independently relocatable.<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>     94: Rule 13 log file not found, possibly, due to test errors in Rule 12<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="14">Rule 14:</a></B> All abstract algorithm interfaces must derive from the IALG interface.<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>     48: QualiTI failed to build the test program with the algorithm<BR>
+<p><font face="Courier">&gt;&gt;&nbsp;warning:&nbsp;Output&nbsp;section&nbsp;".bss"'s&nbsp;user&nbsp;specified&nbsp;run&nbsp;alignment&nbsp;of&nbsp;8&nbsp;is<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;overridden&nbsp;to&nbsp;be&nbsp;32&nbsp;by&nbsp;the&nbsp;required&nbsp;alignment&nbsp;of&nbsp;the&nbsp;input&nbsp;section<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;"C:\temp\qualititemp\lib\g729enc_kmitl.l67"<BR>
+<BR>
+<BR>
+undefined&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first&nbsp;referenced<BR>
+&nbsp;symbol&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;file<BR>
+---------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----------------<BR>
+_sqrtdp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C:\temp\qualititemp\lib\g729enc_kmitl.l67<BR>
+_log10dp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C:\temp\qualititemp\lib\g729enc_kmitl.l67<BR>
+_powdp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C:\temp\qualititemp\lib\g729enc_kmitl.l67<BR>
+_cosdp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C:\temp\qualititemp\lib\g729enc_kmitl.l67<BR>
+_rsqrtdp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C:\temp\qualititemp\lib\g729enc_kmitl.l67<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;referencing&nbsp;errors&nbsp;-&nbsp;'a.out'&nbsp;not&nbsp;built<BR>
+</font></p><BR>    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="16">Rule 16:</a></B> Each XDAIS-compliant algorithm header must follow a uniform naming convention.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         QualiTI passed this rule after testing<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="17">Rule 17:</a></B> Different versions of an XDAIS-compliant algorithm from the same vendor must follow a uniform naming convention.<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>     76: Invalid variant archive name: Variant part not found<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="19">Rule 19:</a></B> All algorithms must characterize their worst-case heap data memory requirements (including alignment).<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>     48: QualiTI failed to build the test program with the algorithm<BR>
+<p><font face="Courier">"C:\\Temp\\qualititemp\\param\\g729enc_kmitl_ialg.c",&nbsp;line&nbsp;49:&nbsp;fatal&nbsp;error:&nbsp;could&nbsp;not&nbsp;open&nbsp;source&nbsp;file&nbsp;"structure.h"<BR>
+1&nbsp;fatal&nbsp;error&nbsp;detected&nbsp;in&nbsp;the&nbsp;compilation&nbsp;of&nbsp;"C:\Temp\qualititemp\param\g729enc_kmitl_ialg.c".<BR>
+Compilation&nbsp;terminated.<BR>
+</font></p><BR>    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="20">Rule 20:</a></B> All algorithms must characterize their worst-case stack space memory requirements (including alignment).<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Characterized by the vendor<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="21">Rule 21:</a></B> Algorithms must characterize their static data memory requirements.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         QualiTI has generated the data<BR>
+    <BR><B>Table of static data memory usage</B><BR>
+      <table border="1" width="100%">
+        <tr>
+           <td width="16%" bgcolor="#C0C0C0"><b>Section Number</b></td>
+           <td width="20%" bgcolor="#C0C0C0"><b>Object File Name</b></td>
+           <td width="16%" bgcolor="#C0C0C0"><b>Section Name</b></td>
+           <td width="16%" bgcolor="#C0C0C0"><b>Given Size (bytes)</b></td>
+           <td width="16%" bgcolor="#C0C0C0"><b>Calculated Size (bytes)</b></td>
+           <td width="16%" bgcolor="#C0C0C0"><b>Given Alignment (bytes)</b></td>
+        </tr>
+        <tr>
+           <td width="16%">0</td>
+           <td width="20%">g729enc.out</td>
+           <td width="16%">.far</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">200</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">1</td>
+           <td width="20%">g729enc.out</td>
+           <td width="16%">.bss:ACELP_codebook:_ACELP_codebook</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">1984</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">2</td>
+           <td width="20%">g729enc.out</td>
+           <td width="16%">.const</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">550</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">3</td>
+           <td width="20%">g729enc.out</td>
+           <td width="16%">.bss:ener_dB:_ener_dB</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">512</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">4</td>
+           <td width="20%">g729enc.out</td>
+           <td width="16%">.bss:gauss:_gauss</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">160</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">5</td>
+           <td width="20%">g729enc.out</td>
+           <td width="16%">.bss:calc_exc_rand:_calc_exc_rand</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">2784</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">6</td>
+           <td width="20%">g729enc.out</td>
+           <td width="16%">.bss:coder_ld8c:_coder_ld8c</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">10208</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">7</td>
+           <td width="20%">g729enc.out</td>
+           <td width="16%">.bss:corr_xy2:_corr_xy2</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">928</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">8</td>
+           <td width="20%">g729enc.out</td>
+           <td width="16%">.bss:cor_h_x:_cor_h_x</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">224</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">9</td>
+           <td width="20%">g729enc.out</td>
+           <td width="16%">.bss:dec_cng:_dec_cng</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">576</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">10</td>
+           <td width="20%">g729enc.out</td>
+           <td width="16%">.bss:decod_ld8c:_decod_ld8c</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">6080</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">11</td>
+           <td width="20%">g729enc.out</td>
+           <td width="16%">.bss:update_cng:_update_cng</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">608</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">12</td>
+           <td width="20%">g729enc.out</td>
+           <td width="16%">.bss:cod_cng:_cod_cng</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">1632</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">13</td>
+           <td width="20%">g729enc.out</td>
+           <td width="16%">.data:G729_dtx_table</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">1616</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">14</td>
+           <td width="20%">g729enc.out</td>
+           <td width="16%">.data:G729_ld8k_table</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">18520</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">15</td>
+           <td width="20%">g729enc.out</td>
+           <td width="16%">.data:G729_ld8cp_table</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">3688</td>
+           <td width="20%">Not Given</td>
+        </tr>
+      </table
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="22">Rule 22:</a></B> All algorithms must characterize their program memory requirements.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         QualiTI has generated the data<BR>
+    <BR><B>Table of program memory usage</B><BR>
+      <table border="1" width="100%">
+        <tr>
+           <td width="16%" bgcolor="#C0C0C0"><b>Section Number</b></td>
+           <td width="18%" bgcolor="#C0C0C0"><b>Object File Name</b></td>
+           <td width="18%" bgcolor="#C0C0C0"><b>Section Name</b></td>
+           <td width="16%" bgcolor="#C0C0C0"><b>Given Size (bytes)</b></td>
+           <td width="16%" bgcolor="#C0C0C0"><b>Calculated Size (bytes)</b></td>
+           <td width="16%" bgcolor="#C0C0C0"><b>Given Alignment (bytes)</b></td>
+        </tr>
+        <tr>
+           <td width="16%">0</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">$BRID</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">2908</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">1</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_G729ENC_KMITL_numAlloc</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">2</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:algrfMoved:_G729ENC_KMITL_moved</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">448</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">3</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:algrfInit:_G729ENC_KMITL_initObj</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">1344</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">4</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:init:_G729ENC_KMITL_init</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">5</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:algrfAlloc:_G729ENC_KMITL_alloc</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">576</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">6</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:algrfFree:_G729ENC_KMITL_free</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">96</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">7</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:exit:_G729ENC_KMITL_exit</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">8</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:algrfDeactivate:_G729ENC_KMITL_deactivate</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">480</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">9</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:algrfControl:_G729ENC_KMITL_control</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">224</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">10</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_G729ENC_KMITL_bitToSerial</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">11</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_G729ENC_KMITL_apply</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">1280</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">12</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:algrfActivate:_G729ENC_KMITL_activate</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">480</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">13</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.cinit</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">24156</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">14</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:cor_h_cp:_cor_h_cp</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">3552</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">15</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:ACELP_codebook64:_ACELP_codebook64</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">5312</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">16</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:compute_pilot:_compute_pilot</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">448</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">17</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:d4i40_17:_d4i40_17</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">4928</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">18</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:set_sign:_set_sign</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">1376</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">19</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:cor_h_e:_cor_h_e</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">2016</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">20</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:cor_h_vec:_cor_h_vec</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">288</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">21</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:search_ixiy:_search_ixiy</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">576</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">22</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:build_code:_build_code</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">768</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">23</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:pack3:_pack3</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">320</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">24</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:ACELP_12i40_44bits:_ACELP_12i40_44bits</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">3264</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">25</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:ACELP_10i40_35bits:_ACELP_10i40_35bits</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">2656</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">26</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_int2bin</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">128</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">27</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_prm2bits_ld8c</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">736</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">28</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_bin2int</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">128</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">29</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_bits2prm_ld8c</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">896</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">30</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:update_bwd:_update_bwd</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">128</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">31</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:calc_stat:_calc_stat</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">992</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">32</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:set_lpc_mode:_set_lpc_mode</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">1536</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">33</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:tst_bwd_dominant:_tst_bwd_dominant</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">160</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">34</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:lag_window_bwd:_lag_window_bwd</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">160</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">35</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:int_bwd:_int_bwd</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">288</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">36</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:autocorr_hyb_window:_autocorr_hyb_window</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">736</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">37</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:init:_init_coder_ld8c</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">1472</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">38</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:decod_ACELP64:_decod_ACELP64</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">448</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">39</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:decod_ACELP:_decod_ACELP</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">448</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">40</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:dec_pulses:_dec_pulses</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">192</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">41</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:dec_ACELP_12i40_44bits:_dec_ACELP_12i40_44bits</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">320</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">42</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_dec_ACELP_10i40_35bits</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">224</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">43</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:sid_lsfq_decode:_sid_lsfq_decode</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">896</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">44</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:init:_init_lsfq_noise</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">1664</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">45</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:init:_init_dec_cng</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">192</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">46</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:dec_lag3cp:_dec_lag3cp</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">448</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">47</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:init:_init_decod_ld8c</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">896</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">48</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:dec_gaine:_dec_gaine</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">928</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">49</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:dec_gain_6k:_dec_gain_6k</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">640</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">50</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:calc_sum_acf:_calc_sum_acf</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">480</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">51</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:update_sumAcf:_update_sumAcf</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">192</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">52</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:init:_init_cod_cng</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">320</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">53</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:cmp_filt:_cmp_filt</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">320</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">54</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:calc_pastfilt:_calc_pastfilt</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">256</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">55</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:calc_RCoeff:_calc_RCoeff</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">448</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">56</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_syn_filte</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">416</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">57</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_residue</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">224</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">58</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_convolve</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">192</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">59</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_gain_update_erasure</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">256</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">60</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_gain_update</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">160</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">61</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_gain_predict</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">512</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">62</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_levinsone</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">1152</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">63</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lag_window</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">128</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">64</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_chebyshev</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">192</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">65</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_az_lsp</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">1056</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">66</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_autocorr</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">320</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">67</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_weight_az</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">192</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">68</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsp_lsf</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">128</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">69</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_get_lsp_pol</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">416</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">70</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsp_az</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">672</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">71</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsf_lsp</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">128</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">72</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_int_qlpc</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">288</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">73</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_int_lpc</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">384</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">74</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsp_decw_resete</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">224</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">75</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsp_iqua_cse</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">576</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">76</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_d_lspe</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">128</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">77</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsp_stability</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">448</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">78</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsp_prev_update</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">192</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">79</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsp_prev_extract</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">288</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">80</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsp_prev_compose</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">256</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">81</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsp_expand_1_2</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">192</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">82</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsp_get_quante</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">832</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">83</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsp_expand_2</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">192</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">84</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsp_expand_1</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">192</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">85</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_musdetect</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">2816</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">86</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_parity_pitch</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">64</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">87</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_check_parity_pitch</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">64</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">88</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_Update_PhDisp</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">160</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">89</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_PhDisp</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">2208</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">90</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lag_max</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">480</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">91</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_pitch_ol</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">352</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">92</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_norm_corr</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">768</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">93</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_interpol_3</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">384</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">94</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_pitch_fr3cp</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">1120</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">95</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_g_pitch</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">448</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">96</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_enc_lag3cp</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">256</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">97</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_post_process</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">352</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">98</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_init_post_process</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">64</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">99</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_pre_process</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">352</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">100</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_init_pre_process</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">64</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">101</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_pred_lt_3</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">480</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">102</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_search_del</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">3424</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">103</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_compute_ltp_l</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">736</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">104</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_select_ltp</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">96</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">105</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_filt_plt</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">352</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">106</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_pst_ltpe</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">704</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">107</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_calc_rc0_he</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">384</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">108</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_calc_st_filte</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">512</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">109</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_filt_mu</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">480</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">110</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_scale_st</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">960</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">111</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_poste</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">800</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">112</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_init_post_filter</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">384</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">113</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_perc_var</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">1024</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">114</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_perc_vare</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">160</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">115</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_gbk_presel_6k</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">608</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">116</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_qua_gain_6k</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">1760</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">117</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_gbk_presel</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">640</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">118</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_qua_gain</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">1760</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">119</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_quant_Energy</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">512</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">120</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_qua_Sidgain</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">224</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">121</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_New_ML_search_1</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">1312</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">122</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_New_ML_search_2</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">1376</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">123</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_Qnt_e</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">768</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">124</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsfq_noise</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">1056</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">125</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsp_pre_select</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">608</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">126</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsp_select_1</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">672</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">127</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsp_select_2</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">640</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">128</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsp_get_tdist</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">224</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">129</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_relspwede</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">1152</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">130</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_get_wegt</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">544</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">131</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsp_qua_cse</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">288</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">132</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_qua_lspe</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">288</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">133</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_lsp_encw_resete</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">160</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">134</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:init:_vad_mblk_init</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">256</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">135</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:exit:_vad_mblk_free</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">136</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:init:_q_gaincp_mblk_init</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">160</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">137</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:exit:_q_gaincp_mblk_free</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">138</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:init:_pwf_mblk_init</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">96</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">139</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:exit:_pwf_mblk_free</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">140</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:init:_preProcMemBlk_init</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">141</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:exit:_preProcMemBlk_free</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">142</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:init:_phdisp_mblk_init</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">192</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">143</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:exit:_phdisp_mblk_free</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">144</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:init:_exc_err_mblk_init</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">145</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:exit:_exc_err_mblk_free</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">146</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_copyArrI</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">64</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">147</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:init:_coderMemBlk_init</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">384</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">148</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:exit:_coderMemBlk_free</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">149</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:init:_cod_cng_mblk_init</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">150</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:exit:_cod_cng_mblk_free</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">151</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:init:_bwfwfunc_mblk_init</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">64</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">152</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:exit:_bwfwfunc_mblk_free</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">153</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:init:_acelp_cp_d4i40_17_mblk_init</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">154</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:exit:_acelp_cp_d4i40_17_mblk_free</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">155</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:init:_ENCODER_G729_MEM_BLK_init</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">448</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">156</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:exit:_ENCODER_G729_MEM_BLK_free</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">352</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">157</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_initTab_dtx</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">158</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_initTab_ld8k</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">159</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_initTab_ld8cp</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">32</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">160</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_update_exc_err</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">448</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">161</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_test_err</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">320</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">162</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_init_exc_err</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">64</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">163</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_track_pit</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">448</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">164</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_set_zero</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">96</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">165</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_random_g729c</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">64</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">166</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_dvwadd</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">128</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">167</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_dvsub</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">192</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">168</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_dvsmul</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">160</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">169</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_dvdot</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">96</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">170</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_copy</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">96</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">171</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_vad_init</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">224</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">172</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_MakeDec</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">704</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">173</td>
+           <td width="18%">g729enc.out</td>
+           <td width="18%">.text:_vad</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">4192</td>
+           <td width="16%">Not Given</td>
+        </tr>
+      </table
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="23">Rule 23:</a></B> All algorithms must characterize their worst-case interrupt latency for every operation.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Characterized by the vendor<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="24">Rule 24:</a></B> All algorithms must characterize the typical period and worst-case execution time for each operation.<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>         Not characterized by vendor<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="25">Rule 25:</a></B> All C6x algorithms must be supplied in little endian format.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         QualiTI passed this rule after testing<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="26">Rule 26:</a></B> All C6x algorithms must access all static and global data as far data.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Vendor states compliance in the documentation <BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="27">Rule 27:</a></B> C6x algorithms must never assume placement in on-chip program memory; i.e., they must properly operate with program memory operated in cache mode.<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>     46: Vendor does not state compliance in the documentation <BR>
+    </TD>
+  </TR>
+
+</TABLE>
+</BODY>
+</HTML>

@@ -1,0 +1,43 @@
+<wsSecurityPolicy xsi:schemaLocation="WSSecurity-policy.xsd" 
+xmlns="http://www.bea.com/2003/03/wsse/config" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<wsSecurityIn>
+    <!--
+		<token tokenType="username"/>
+    -->
+		<encryptionRequired>
+			<decryptionKey>
+				<alias>mycompany</alias>
+				<password>password</password>
+			</decryptionKey>
+		</encryptionRequired> 
+
+		<signatureRequired>true</signatureRequired>
+	</wsSecurityIn>
+    
+    <wsSecurityOut>
+    <!--
+        <userNameToken>
+                <userName>GoodUser</userName>
+                <password type="TEXT">weblogic</password>
+        </userNameToken> 
+    -->
+		<encryption>
+			<encryptionKey>
+				<alias>client1</alias>
+			</encryptionKey>
+		</encryption>  
+
+        <signatureKey>
+			<alias>mycompany</alias>
+			<password>password</password>
+		</signatureKey>
+    </wsSecurityOut>
+ 	
+    <keyStore>
+		<keyStoreLocation>C:\samples_mycompany.jks</keyStoreLocation>
+		<keyStorePassword>password</keyStorePassword>
+	</keyStore>
+</wsSecurityPolicy>

@@ -1,0 +1,63 @@
+package orderservice; 
+
+import java.sql.*;
+
+/**
+ * @jws:ws-security-service file="policy.wsse"
+ */
+public class service implements com.bea.jws.WebService
+{ 
+    static final long serialVersionUID = 1L;
+    
+    /**
+     * @common:operation
+     */
+    public int addorder(String sfname,String slname,String spackage,String s_add,String dfname,String dlname,String d_add,int sphone,int dphone)
+    {
+        int irandom=0;
+        int uid=5;
+        try
+        {
+            int id[]=new int[8];
+            String testsql=new String();
+            boolean checkrandom=true;
+            String random=new String();
+	
+            Class.forName("com.mysql.jdbc.Driver");
+            String url ="jdbc:mysql://localhost:3306/project";
+            Connection mycon =DriverManager.getConnection( url,"root", "olala023");
+            Statement stmt = mycon.createStatement();
+	
+            while(checkrandom)
+            {
+                for(int i=0;i<8;i++)
+                {
+                    id[i]=(int)(Math.random()*9);
+                    random=random+id[i];
+                }
+                irandom=Integer.parseInt(random);
+                testsql="select * from product where TrackNO ="+irandom;
+                ResultSet result= stmt.executeQuery(testsql);
+                if(!result.next())
+                {
+                    checkrandom=false;
+                }
+            }
+            String sql1="insert into product values("+irandom+",'"+sfname+"','"+slname+"','"+sphone+"','"+s_add+"','"+spackage+"','"+dfname+"','"+dlname+"','"+dphone+"','"+d_add+"')";
+            ResultSet rs1 = stmt.executeQuery(sql1);
+            String sql2="insert into orderservice(uid,TrackNO,time) values("+uid+","+irandom+",now())";
+            ResultSet rs2 = stmt.executeQuery(sql2);
+        }
+        catch(ClassNotFoundException e)
+        {
+            System.out.println("ClassNotFound");
+            e.printStackTrace();
+        }
+        catch(SQLException e)
+        {
+            System.out.println("SQLException");
+            e.printStackTrace();
+        }
+        return irandom;
+    }
+} 

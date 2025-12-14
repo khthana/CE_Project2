@@ -1,0 +1,105 @@
+#def sqlObjectClass($entity)
+class ${entity.name}(SQLObject):
+	_cacheValues = False
+	#if $entity.tableName
+	_table = "${entity.tableName}"
+	#end if
+	#if $entity.id and $entity.id.columnName
+	_idName = "${entity.id.columnName}"
+	#end if
+	##property gen
+	#for $prop in $entity.properties
+	#if $prop.type == "String"
+	#set $constructString = "StringCol("
+	#elif $prop.type == "Integer"
+	#set $constructString = "IntCol("
+	#elif $prop.type == "Float"
+	#set $constructString = "FloatCol("
+	#elif $prop.type == "DateTime"
+	#set $constructString = "DateTimeCol("
+	#end if
+	#if $prop.columnName
+	#set $constructString = $constructString + "dbName='" + $prop.columnName + "', "
+	#end if
+	#if $prop.default
+	#set $constructString = $constructString + "default='" + $prop.default + "', "
+	#elif not $prop.required == "True"
+	#set $constructString = $constructString + "default=None, "
+	#end if
+	#if $prop.alternateID
+	#set $constructString = $constructString + "alternateID=True, "
+	#end if
+	${prop.name} = ${constructString})
+	#end for
+	##foreign key gen
+	#for $foreignKey in $entity.foreignKeys
+	#if $foreignKey.columnName
+	#set $constructString = "ForeignKey('" + $foreignKey.refEntity + "', " + "dbName='" + $foreignKey.columnName + "'"
+	#else
+	#set $constructString = "ForeignKey('" + $foreignKey.refEntity + "'"
+	#end if
+	${foreignKey.name} = ${constructString} ,default=None)
+	#end for
+	##one to many gen
+	#for $one in $entity.oneToManys
+	#set $constructString = "MultipleJoin('" + $one.refEntity + "', "
+	#if $one.joinColumn
+	#set $constructString = $constructString + "joinColumn='" + $one.joinColumn + "', "
+	#end if
+	${one.name} = ${constructString})
+	#end for
+	##many to many gen
+	#for $many in $entity.manyToManys
+	#set $constructString = "RelatedJoin('" + $many.refEntity + "', "
+	#if $many.intermediateTable
+	#set $constructString = $constructString + "intermediateTable='" + $many.intermediateTable + "', "
+	#end if
+	#if $many.otherColumn
+	#set $constructString = $constructString + "otherColumn='" + $many.otherColumn + "', "
+	#end if
+	${many.name} = $constructString)
+	#end for
+#end def
+
+from sqlobject.mysql import builder
+from sqlobject import *
+
+#make mxDateTime work
+from sqlobject import col
+if col.mxdatetime_available:
+    col.default_datetime_implementation = col.MXDATETIME_IMPLEMENTATION
+
+MySQLConnection = builder()
+conn = MySQLConnection(host='${model.host}', db='${model.database}', user='${model.user}', passwd='${model.password}', debug=0)
+__connection__ = conn
+
+#for $entity in $model.entities
+$sqlObjectClass($entity)
+#end for
+
+def createTables():
+	#for $entity in $model.entities
+	${entity.name}.createTable()
+	#end for
+
+def createTablesSQL():
+	sql = ''
+	#for $entity in $model.entities
+	sql += ${entity.name}.createTableSQL()
+	#end for
+	return sql
+	
+def getUsernamePasswordDict():
+	#set $password = str($model.xmlroot.clientpassword)
+	#set $username = str($model.xmlroot.clientusername)
+	#set $usernameEntity = $username.split('.')[0]
+	#set $usernameProperty = $username.split('.')[1]
+	#set $passwordEntity = $password.split('.')[0]
+	#set $passwordProperty = $password.split('.')[1]
+	usernameResults = ${usernameEntity}.select()
+	passwordResults = ${passwordEntity}.select()
+	usernameResults = list(usernameResults)
+	usernamePasswordDict = {}
+	for username in usernameResults:
+		usernamePasswordDict[username.${usernameProperty}] = passwordResults[usernameResults.index(username)].$passwordProperty
+	return usernamePasswordDict

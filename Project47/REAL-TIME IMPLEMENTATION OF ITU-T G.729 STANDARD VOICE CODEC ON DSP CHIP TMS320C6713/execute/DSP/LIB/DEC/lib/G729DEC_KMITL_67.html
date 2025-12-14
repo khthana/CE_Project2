@@ -1,0 +1,1923 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD><TITLE>Compliance Test Report</TITLE></HEAD>
+<BODY>
+
+<TABLE BORDER="1" WIDTH="100%">
+  <TR>
+    <TD COLSPAN="2">
+      <CENTER><FONT SIZE="+1"><B>TMS320 DSP Algorithm Interoperability Standard</B></FONT></CENTER><BR>
+      <CENTER><B>QualiTI Compliance Testing</B></CENTER><BR>
+      <CENTER><B>Compliance Test Report</B></CENTER><BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD><B>Date</B></TD><TD>Saturday, March 12, 2005, 03:17, SE Asia Standard Time</TD>
+  </TR>
+
+  <TR>
+    <TD><B>Vendor</B></TD><TD>KMITL</TD>
+  </TR>
+
+  <TR>
+    <TD><B>Algorithm</B></TD><TD>G729DEC</TD>
+  </TR>
+
+  <TR>
+    <TD><B>Architecture</B></TD><TD>67</TD>
+  </TR>
+
+  <TR>
+    <TD><B>Generic Interface</B></TD><TD>None</TD>
+  </TR>
+
+  <TR>
+    <TD><B>Version</B></TD><TD>None</TD>
+  </TR>
+
+  <TR>
+    <TD><B>Serial Number</B></TD><TD>None</TD>
+  </TR>
+
+  <TR>
+    <TD><B>Test Result</B></TD>
+    <TD><font color="#FF0000"><B>Fail    : </B></font> <a href="#5">5</a>  <a href="#8">8</a>  <a href="#12">12</a>  <a href="#13">13</a>  <a href="#14">14</a>  <a href="#19">19</a>  <a href="#20">20</a>  <a href="#23">23</a>  <a href="#24">24</a> <BR></TD>
+  </TR>
+  <TR>
+    <TD COLSPAN="2">
+        <B>Test Notes</B><BR>
+        &nbsp;&nbsp;&nbsp;This report has been generated with QualiTI Version 2.3.7 - the XDAIS compliance test suite. <BR><BR>
+
+        &nbsp;&nbsp;&nbsp;All references to Rules and Guidelines are from  the literature numbered SPRU352E. <BR><BR>
+
+        &nbsp;&nbsp;&nbsp;The Rules 17, 18, 28, 29, 30, 31, 32, 33, 34, 35, DMA 1, DMA 2, DMA 3, DMA 4, DMA 5, DMA 6, DMA 7, DMA 8, DMA 9, DMA 10, DMA 11 are not applicable and hence were not tested.<BR><BR>
+
+        &nbsp;&nbsp;&nbsp;If instance creation parameter that leads  to the worst case heap memory usage is not provided separately in a C file then QualiTI tests rule 19 with default instance creation parameter.<BR><BR>
+
+        &nbsp;&nbsp;&nbsp;If you have any questions or comments about the test results below, please send an email message to: <a href="mailto:algtesters@list.ti.com?Subject=QualiTI Version 2.3.7 - Report">algtesters@list.ti.com</a><BR><BR>
+
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B>Documentation:</B><BR>
+      &nbsp;&nbsp;&nbsp;None<BR><BR>
+      <B>Header File(s):</B><BR>
+      &nbsp;&nbsp;&nbsp;C:\ti\myprojects\Xdais\G729DEC\include\g729dec_kmitl.h<BR>
+      &nbsp;&nbsp;&nbsp;C:\ti\myprojects\Xdais\G729DEC\include\ig729dec.h<BR>
+<BR>
+      <B>Algorithm Archive(s):</B><BR>
+      &nbsp;&nbsp;&nbsp;C:\ti\myprojects\Xdais\G729DEC\lib\g729dec_kmitl.l67<BR>
+<BR>
+      <B>Linker Command File:</B><BR>
+      &nbsp;&nbsp;&nbsp;None<BR><BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="0">Screening Test:</a></B> All algorithms must have at least one top level header file named mod_vend.h (mod is the name of the algorithm and vend is the name of the vendor) that includes all the other header files that are provided with the algorithm. In addition the external symbols MOD_VEND_IALG and MOD_VEND_IMOD / MOD_VEND_IGENERICINTERFACE must be present for the algorithm to be tested.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Screening test passed<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="1">Rule 1:</a></B> All algorithms must follow the run-time conventions imposed by TI's implementation of the C programming language.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Vendor states compliance in the documentation <BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="2">Rule 2:</a></B> All algorithms must be reentrant within a preemptive environment (including time-sliced preemption)<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Vendor states compliance in the documentation <BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="3">Rule 3:</a></B> All algorithm data references must be fully relocatable (subject to alignment requirements). That is, there must be no "hard coded" data memory locations.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Vendor states compliance in the documentation <BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="4">Rule 4:</a></B> All algorithm code must be fully relocatable. That is, there can be no hard coded program memory locations.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Vendor states compliance in the documentation <BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="5">Rule 5:</a></B> Algorithms must characterize their ROM-ability; i.e., state whether they are ROM-able or not.<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>         Not characterized by vendor<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="6">Rule 6:</a></B> Algorithms must never directly access any peripheral device. This includes but is not limited to on-chip DMAs, timers, I/O devices, and cache control registers.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Vendor states compliance in the documentation <BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="7">Rule 7:</a></B> All header files must support multiple inclusions within a single source file.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         QualiTI passed this rule after testing<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="8">Rule 8:</a></B> All external definitions must be either API identifiers or API and vendor prefixed.<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>     90: Undefined symbol does not have _VEND_ in it<BR>
+<p><font face="Courier">'_KMITL_'&nbsp;not&nbsp;found&nbsp;in&nbsp;the&nbsp;following&nbsp;symbol(s)<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_RTDX_Mask_IER<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ALGRF_activate<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ALGRF_control<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ALGRF_create<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ALGRF_memFree<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ALGRF_deactivate<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ALGRF_delete<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ALGRF_setup<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_c_int00<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_G729DEC_INIT<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_Params<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_G729DEC<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__strasg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_G729DEC_create<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_G729DEC_control<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_prm2bits_ld8c<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_bits2prm_ld8c<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_G729_LD8K_TablePtr<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_G729_LD8CP_TablePtr<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_exit<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_autocorr_hyb_window<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_int_bwd<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_tst_bwd_dominant<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ener_dB<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_lag_window_bwd<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_log10<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__divd<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_calc_exc_rand<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_update_exc_err<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_pred_lt_3<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_sqrt<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_random_g729c<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_Update_PhDisp<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_copy<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_decod_ACELP64<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_dec_ACELP_10i40_35bits<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_decod_ACELP<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_dec_ACELP_12i40_44bits<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_dec_cng<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_init_lsfq_noise<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_init_dec_cng<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_sid_lsfq_decode<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_G729_DTX_TablePtr<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_lsp_stability<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_cos<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_int_qlpc<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_qua_Sidgain<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_lsp_prev_compose<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_lsp_expand_1_2<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_lsp_prev_update<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_dec_lag3cp<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__divi<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__remi<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_init_decod_ld8c<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_decod_ld8c<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_lsp_az<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_PhDisp<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_dec_gain_6k<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_weight_az<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_levinsone<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_d_lspe<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_lsp_decw_resete<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_set_zero<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_dec_gaine<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_syn_filte<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_track_pit<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_gain_update<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_gain_update_erasure<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_gain_predict<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_convolve<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_residue<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_G729DEC_delete<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_G729DEC_bits2prm_ld8c<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_G729DEC_apply<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_G729DEC_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_G729DEC_exit<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_write16<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_init_decodecp<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_post_process<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_check_parity_pitch<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_DECODER_G729_MEM_BLK_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_init_post_filter<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_init_post_process<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_memcpy<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_poste<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_BIOS_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__HOOK_knlId<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOG_system$buf<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_toHost$pipe$dtab<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOG_system<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KNL_swi$sts<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_toHost$pipe$rd<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_END$<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BIOS$$CLKON<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_toHost$pipe$aaa<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_toHost$pipe$bbb<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_dataPump<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KNL_swi<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hwi0<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hwi1<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hwi2<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hwi3<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hwi4<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_toHost$pipe$wr<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_INTERNALHEAP<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hwi5<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLK_null<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hwi6<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hwi7<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_fromHost$rtdx<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_RTDX_Buffer<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hwi8<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hwi9<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_toHost<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_BIOS_start<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_RTDX_Buffer_Start<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__HOOK_NUMHOOKS<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TRC_R_mask<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRD_clock<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BIOS_start<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KNL_swi$sts$stsobj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_OBJ_table<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_fromHost$pipe$rd<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_RTDX_Buffer_End<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_fromHost$pipe$dtab<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_toHost$buf<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_END<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BIOS$$CLKOFF<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_TSK<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_dataPump$<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_fromHost$pipe$wr<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_MEM_memtab<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BIOS_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hwi10<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hwi11<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hwi12<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_fromHost$buf<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hwi13<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TSK_idle$sts$stsobj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hwi14<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hwi15<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TRC_cinit<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_toHost$pipe<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_busyObj$stsobj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_busyObj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TSK_idle<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_dispatcher$<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_dispatcher<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TSK_idle$sts<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_fromHost$pipe$aaa<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IRAM<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_TRC_R_mask<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TSK_idle$stkptr<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TSK_idle$stack<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_fromHost$pipe$bbb<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_cpuLoad<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_EXTERNALHEAP<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GBL_initdone<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_toHost$rtdx<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SYS$config<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_fromHost<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_cpuLoad$<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_fromHost$pipe<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SDRAM<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_CLK_start<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_D_rdytab<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IRAM$B<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_exit<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TSK_VCREATEFXN<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_UTL_doError<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PIP_F_start<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TSK_VDELETEFXN<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KNL_glue<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_UTL_doAbort<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_GBL_cslCacheInit<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_F_loop<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GBL_stackbeg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_UTL_doPutc<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_MEM<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_GBL_setPLLto225MHz<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRD_F_tick<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_CSL_cfgInit<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_F_or<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GBL_stackend<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HWI_A_VECS<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_FXN_F_nop<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_D_calibrate<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_run<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_dspFrameRequestMask<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLK_F_isr<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PIP_D_tabbeg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SDRAM$B<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_UTL_halt<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_MEM_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_F_dispatch<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_TSK_startup<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_TSK_setup<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_queues<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLK_A_TABBEG<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_F_dataPump<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TSK_VEXITFXN<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GBL_F_version<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HWI_F_dispatch<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_RTDX_Poll<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_GBL_cslInit<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_TSK_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_D_busyObj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_TSK_exit<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_F_enable<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FXN_F_run<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_CLK_start6x<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_HWI_dispatchTab<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_dspFrameReadyMask<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_F_busy<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_pow<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_az_lsp<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_lag_window<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_autocorr<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_lsf_lsp<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_int_lpc<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_lsp_lsf<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_acos<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_lsp_get_quante<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_lsp_prev_extract<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_lsp_expand_1<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_lsp_expand_2<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_PtrOut0<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_main<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_fopen<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_fwrite<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_fclose<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_fread<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_parity_pitch<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_dec_sid_mblk_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_decld8cp_mblk_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_pwf_mblk_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_dec_sid_mblk_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_vad_mblk_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_decld8cp_mblk_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_post_pro_mblk_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_degaincp_mblk_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_coderMemBlk_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_vad_mblk_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_q_gaincp_mblk_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_decodecp_mblk_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_post_pro_mblk_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_copyArrI<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_acelp_cp_d4i40_17_mblk_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_degaincp_mblk_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_coderMemBlk_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_pstcp_mblk_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_q_gaincp_mblk_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_decodecp_mblk_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_cod_cng_mblk_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_acelp_cp_d4i40_17_mblk_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_pstcp_mblk_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_phdisp_mblk_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_cod_cng_mblk_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_preProcMemBlk_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_bwfwfunc_mblk_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_DECODER_G729_MEM_BLK_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ENCODER_G729_MEM_BLK_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_phdisp_mblk_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_exc_err_mblk_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_preProcMemBlk_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_bwfwfunc_mblk_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ENCODER_G729_MEM_BLK_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_exc_err_mblk_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_pwf_mblk_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_G729_dtx_table<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_initTab_dtx<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_initTab_ld8k<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_G729_ld8k_table<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_G729_ld8cp_table<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_initTab_ld8cp<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_test_err<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_init_exc_err<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_dvsmul<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_dvdot<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_dvsub<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_dvwadd<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GBL_USERINITFXN<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MEM_SEGZERO<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MEM_MALLOCSEG<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLK_TIMEFXN<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLK_F_getshtime<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLK_HOOKFXN<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRD_THOOKFXN<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_tick<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTDX_DATAMEMSEG<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HST_DSMBUFSEG<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_EXECFXN<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_F_iexec<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_RUNFXN<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_F_run<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TSK_STACKSEG<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_CALIBRFXN<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_F_stub<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SYS_ABORTFXN<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SYS_ERRORFXN<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SYS_EXITFXN<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SYS_PUTCFXN<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GIO_CREATEFXN<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GIO_DELETEFXN<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GIO_PENDFXN<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GIO_POSTFXN<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_IRAM<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SDRAM<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_PRD_clock<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_RTA_fromHost<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_RTA_toHost<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_swi<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_TSK_idle<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_LNK_dataPump<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_RTA_dispatcher<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_IDL_cpuLoad<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_LOG_system<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_IDL_busyObj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLK_F_gethtime<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLK_A_TABEND<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRD_A_TABBEG<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRD_A_TABEND<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_A_TABBEG<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_A_TABEND<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_A_TABBEG<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_A_TABEND<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_A_CALBEG<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_A_CALEND<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STS_A_TABBEG<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_STS_A_TABBEG<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STS_A_TABEND<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_STS_A_TABEND<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PIP_A_TABBEG<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_PIP_A_TABBEG<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PIP_A_TABEND<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_PIP_A_TABEND<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOG_A_TABBEG<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_LOG_A_TABBEG<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOG_A_TABEND<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_LOG_A_TABEND<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HST_A_TABBEG<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_HST_A_TABBEG<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HST_A_TABEND<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_HST_A_TABEND<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SYS_PUTCBEG<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SYS_PUTCEND<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_IRAM_base<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_HWI_STKBOTTOM<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_HWI_STKTOP<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SDRAM_base<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_F_getChanPtr<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_wrloop<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_F_readCallBack<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_rcloop<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_newout<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_newin<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_F_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_rrloop<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_readFail<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_wrrtry<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_readDone<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_rdrtry<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_readPend<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_writeFail<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LNK_F_checkBufferCall<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PIP_F_give<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_RTDX_Buffer_Read<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PIP_F_take<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_RTDX_Buffer_Write<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__stack<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__auto_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cinit<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$bss<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_IDL_loop<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___pinit__<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRD_D_tick<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SWI_D_rdybeg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SWI_D_curfxn<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SWI_D_lock<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOG_D_system<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_D_stsval<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_MEM_D_freelist<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRD_D_tabbeg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRD_D_cur<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_D_logval<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_MEM_D_memtab<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_D_fromHost<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_LOG_D_system<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_MEM_D_unlockaddr<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_D_ehook<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SWI_D_curmask<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRD_D_scalar<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRD_D_prevtim<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_MEM_D_lockaddr<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRD_D_tablen<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLK_D_isrhook<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRD_D_elapsed<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_D_runaddr<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLK_D_tabbeg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HST_D_chanmask<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLK_R_time<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_D_toHost<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRD_D_thook<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SYS<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_D_calbeg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_D_ihook<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLK_D_idletime<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_D_pending<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLK_D_timefxn<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_D_rdybeg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_D_lock<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_D_curmask<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_D_curfxn<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_D_curmbox<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_MEM_D_NUMSEGMENTS<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_D_tabbeg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PIP_D_tablen<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_D_curset<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRD_D_swihandle<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_PRD_D_tick<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_D_execaddr<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__CLK_lat1beg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_CLK_F_itime<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_CLK_itime<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__CLK_lat1end<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLK_F_itime<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLK_F_getltime<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLK_F_getfhtime<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOG_F_event<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FXN_F_zero<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_FXN_F_zero<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_FXN_F_run<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FXN_F_nop<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__HWI_lat3end1<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__HWI_lat3end2<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_HWI_F_dispatch<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__HWI_lat1beg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__HWI_lat2beg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__HWI_lat3beg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__HWI_lat1end<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__HWI_lat2end1<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__HWI_lat2end2<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_HWI_D_spsave<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_GBL_irqIntTable<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HWI_D_ccmask<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__IDL_lat1beg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__IDL_lat1end<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STS_F_delta<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__LOG_lat1end1<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__LOG_lat1end2<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__LOG_lat1beg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_LOG_event<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PIP_F_probe<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STS_F_add<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRD_F_swi<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_F_post<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__RTA_lat1beg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_F_getlog<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__RTA_lat1end<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_F_writeword<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_F_readblk<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_F_getsts<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_F_resetmem<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_execute<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTA_F_andn<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_STS_delta<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_STS_reset<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STS_F_reset<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_STS_add<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__SWI_lat1beg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__SWI_lat2beg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__SWI_lat3beg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__SWI_lat3end<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__SWI_lat1end1<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__SWI_lat1end2<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__SWI_lat2end2<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SWI_F_exec<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_GBL_irqEventTable<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_GBL_cslTimerHandle<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__CSL_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_TIMER_configArgs<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_TIMER_start<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_IRQ_enable<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_CACHE_setL2Mode<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_wait500nS<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_maxqueue<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_inactive<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_tswitchfxn<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_setpri<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_swiptr<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_dummy<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_curtask<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_curqueue<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_wList<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_curtime<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_set<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_alarm<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_prevtask<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_idlefxn<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_priority<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_treadyfxn<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_tcreatefxn<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_wFlag<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_tdeletefxn<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_enter<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_check<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_TRC_query<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_saveIsrFrame<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_switch<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ATM_deci<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_QUE_get<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_QUE_put<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_STS_set<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_post<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_ipost<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SWI_post<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ATM_inci<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__KNL_lat1beg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__KNL_lat1end<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_max<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_KNL_idle<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_memalign<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_malloc<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_realloc<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_calloc<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_MEM_free<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_memset<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_MEM_alloc<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SYS_error<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IDL_F_calibrate<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__QUE_lat1beg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__QUE_lat2beg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__QUE_lat1end<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__QUE_lat2end<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SYS_exit<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_TSK_nTasks<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SYS_exitStack<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SYS_exitStackPtr<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SYS_exitStackTop<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_TSK_timerSem<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_TSK_pid<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_TSK_ATTRS<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__SEM_dopost<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__TSK_mutex<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_LCK_pend<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__register_lock<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_LCK_post<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__register_unlock<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SEM_pend<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SEM_post<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SEM_postEnterKnl<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_SEM_pendEnterKnl<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ATM_seti<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ATM_cleari<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ATM_setu<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ATM_clearu<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ATM_ori<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ATM_oru<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ATM_decu<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ATM_andi<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ATM_andu<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ATM_incu<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_TRC_enable<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_TRC_disable<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_rtdx_buffer_state<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_RTDX_Buffer_Initialize<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_RTDX_writing<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_RTDX_Mon_Queue<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_rtdx_mon_state<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_RTDX_Init_RT_Monitor<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_RTDX_IsFlowEnabled<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_RTDX_Final_RT_Monitor<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_atexit<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_RTDX_Set_IER<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__IRQ_eventTable<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__IRQ_intTable<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_TIMER_open<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__TIMER_hBios<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__IRQ_init<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_CACHE_wait<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_CACHE_clean<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_CACHE_wbInvL1d<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__IRQ_dispatchTable<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__IRQ_hookFetchPacket<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_TIMER_reset<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__TIMER_hDev0<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__TIMER_hDev1<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__TIMER_deviceTable<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__lock<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__nop<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__unlock<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_errno<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__trunc<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_modf<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__round<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__frcdivd<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__dtors_ptr<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__cleanup_ptr<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_abort<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C$$EXIT<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_remove<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_close<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__tmpnams<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__doflush<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__ftable<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__ft_end<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_fflush<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_write<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_freopen<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__cleanup<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_open<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__rd_ok<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__divu<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__buff_read<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_read<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__wrt_ok<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_setvbuf<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_fseek<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_lseek<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_log<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_frexp<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_remove_device<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_rename<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_add_device<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_unlink<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_HOSTclose<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_HOSTrename<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_HOSTunlink<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_HOSTread<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_HOSTopen<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_HOSTwrite<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_HOSTlseek<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ldexp<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_HOSTtime<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_getenv<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_HOSTclock<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_writemsg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_readmsg<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__CIOBUF_<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C$$IO$$<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ALGRF<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_MEM_valloc<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_ALGRF_config<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.bss<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___bss__<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___end__<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.data<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___data__<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;edata<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___edata__<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pinit<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.text<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___text__<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;etext<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___etext__<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___cinit__<BR>
+<BR>
+<BR>
+<BR>
+The&nbsp;following&nbsp;undefined&nbsp;symbol(s)&nbsp;do&nbsp;not&nbsp;have&nbsp;the&nbsp;prefix&nbsp;_KMITL_&nbsp;in&nbsp;them<BR>
+<BR>
+.text:_CSL6713_LIB_<BR>
+.text:_CACHE_wbL2<BR>
+.text:_CACHE_wbInvL2<BR>
+.text:_CACHE_wbInvAllL2<BR>
+.text:_CACHE_wbAllL2<BR>
+.text:_CACHE_setPccMode<BR>
+.text:_CACHE_resetEmifb<BR>
+.text:_CACHE_resetEmifa<BR>
+.text:_CACHE_reset<BR>
+.text:_CACHE_invalidate<BR>
+.text:_CACHE_invL1p<BR>
+.text:_CACHE_invAllL1p<BR>
+.text:_CACHE_getL2SramSize<BR>
+.text:_CACHE_getL2Mode<BR>
+.text:_CACHE_flush<BR>
+.text:_CACHE_enableCaching<BR>
+.text:_IRQ_globalDisable<BR>
+.text:_IRQ_globalRestore<BR>
+.text:_IRQ_test<BR>
+.text:_IRQ_setVecs<BR>
+.text:_IRQ_setArg<BR>
+.text:_IRQ_set<BR>
+.text:_IRQ_restore<BR>
+.text:_IRQ_resetAll<BR>
+.text:_IRQ_reset<BR>
+.text:_IRQ_nmiEnable<BR>
+.text:_IRQ_nmiDisable<BR>
+.text:_setMux<BR>
+.text:_IRQ_map<BR>
+.text:_IRQ_hook<BR>
+.text:_IRQ_globalEnable<BR>
+.text:_IRQ_getConfig<BR>
+.text:_IRQ_getArg<BR>
+.text:_IRQ_disable<BR>
+.text:_IRQ_configArgs<BR>
+.text:_IRQ_config<BR>
+.text:_IRQ_clear<BR>
+.text:_IRQ_biosPresent<BR>
+.text:_TIMER_setPeriod<BR>
+.text:_TIMER_setDatOut<BR>
+.text:_TIMER_setCount<BR>
+.text:_TIMER_resume<BR>
+.text:_TIMER_resetAll<BR>
+.text:_TIMER_pause<BR>
+.text:_TIMER_getTstat<BR>
+.text:_TIMER_getPeriod<BR>
+.text:_TIMER_getEventId<BR>
+.text:_TIMER_getDatIn<BR>
+.text:_TIMER_getCount<BR>
+.text:_TIMER_getConfig<BR>
+.text:_TIMER_getBiosHandle<BR>
+.text:_TIMER_config<BR>
+.text:_TIMER_close</font></p><BR>    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="9">Rule 9:</a></B> All undefined references must refer either to the operations specified in Appendix B (a subset of C runtime support library functions and a subset of the DSP/BIOS HWI API functions), or TI's DSPLIB or IMGLIB functions or other XDAIS-compliant modules.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         QualiTI passed this rule after testing<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="10">Rule 10:</a></B> All modules must follow the eXpressDSP naming conventions for those external declarations disclosed to the client.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Vendor states compliance in the documentation <BR>
+<p><font face="Courier">QualiTI&nbsp;has&nbsp;produced&nbsp;a&nbsp;list&nbsp;of&nbsp;exposed&nbsp;external&nbsp;symbols&nbsp;for&nbsp;the&nbsp;user&nbsp;to&nbsp;<BR>
+verify&nbsp;that&nbsp;DSP/BIOS&nbsp;naming&nbsp;conventions&nbsp;have&nbsp;been&nbsp;followed.<BR>
+<BR>
+List&nbsp;of&nbsp;exposed&nbsp;external&nbsp;symbols<BR>
+G729DEC_KMITL_IG729DEC<BR>
+G729DEC_KMITL_init<BR>
+G729DEC_KMITL_exit<BR>
+Params<BR>
+G729DEC<BR>
+IG729DEC_PARAMS<BR>
+bits2prm_ld8c<BR>
+exit<BR>
+G729DEC_KMITL_IALG<BR>
+</font></p><BR>    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="11">Rule 11:</a></B> All modules must supply an initialization and finalization method.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         QualiTI passed this rule after testing<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="12">Rule 12:</a></B> All algorithms must implement the IALG interface.<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>     48: QualiTI failed to build the test program with the algorithm<BR>
+<p><font face="Courier">&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_c_int00&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;boot.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_exit&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;exit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__divd&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;divd.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_memcpy&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memcpy62.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_main&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;rule12_test.obj&nbsp;and<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g729dec.out&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_fopen&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fopen.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_fclose&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fclose.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_free&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memory.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__stack&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;boot.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__auto_init&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;autoinit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_memalign&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memory.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_malloc&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memory.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_realloc&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memory.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_calloc&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memory.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_memset&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memset.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__register_lock&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_lock.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__register_unlock&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_lock.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_atexit&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;exit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__lock&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_lock.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__nop&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_lock.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__unlock&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_lock.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__frcdivd&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;frcdivd.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__dtors_ptr&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;exit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__cleanup_ptr&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;exit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_abort&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;exit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;C$$EXIT&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;exit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_remove&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;remove.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_close&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__tmpnams&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;defs.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__doflush&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fflush.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__ftable&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;defs.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__ft_end&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;defs.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_fflush&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fflush.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_write&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_freopen&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fopen.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__cleanup&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fopen.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_open&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__rd_ok&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_io_perm.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__divu&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;divu.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_read&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__wrt_ok&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_io_perm.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_setvbuf&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;setvbuf.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_fseek&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fseek.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_lseek&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_remove_device&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_rename&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_add_device&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_unlink&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTclose&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTrename&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTunlink&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTread&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTopen&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTwrite&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTlseek&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTtime&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_getenv&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTclock&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_writemsg&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgmsg.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_readmsg&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgmsg.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__CIOBUF_&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgmsg.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;C$$IO$$&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgmsg.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;warning:&nbsp;library&nbsp;'C:\temp\qualititemp\lib\g729dec_kmitl.l67',&nbsp;member<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'g729dec.out'&nbsp;has&nbsp;no&nbsp;relocation&nbsp;information<BR>
+</font></p><BR>    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="13">Rule 13:</a></B> Each of the IALG methods implemented by an algorithm must be independently relocatable.<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>     94: Rule 13 log file not found, possibly, due to test errors in Rule 12<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="14">Rule 14:</a></B> All abstract algorithm interfaces must derive from the IALG interface.<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>     48: QualiTI failed to build the test program with the algorithm<BR>
+<p><font face="Courier">&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_c_int00&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;boot.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_exit&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;exit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__divd&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;divd.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_memcpy&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memcpy62.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_main&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;rule12_test.obj&nbsp;and<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g729dec.out&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_fopen&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fopen.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_fclose&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fclose.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_free&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memory.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__stack&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;boot.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__auto_init&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;autoinit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_memalign&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memory.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_malloc&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memory.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_realloc&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memory.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_calloc&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memory.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_memset&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memset.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__register_lock&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_lock.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__register_unlock&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_lock.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_atexit&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;exit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__lock&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_lock.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__nop&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_lock.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__unlock&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_lock.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__frcdivd&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;frcdivd.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__dtors_ptr&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;exit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__cleanup_ptr&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;exit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_abort&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;exit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;C$$EXIT&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;exit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_remove&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;remove.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_close&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__tmpnams&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;defs.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__doflush&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fflush.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__ftable&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;defs.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__ft_end&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;defs.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_fflush&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fflush.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_write&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_freopen&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fopen.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__cleanup&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fopen.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_open&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__rd_ok&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_io_perm.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__divu&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;divu.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_read&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__wrt_ok&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_io_perm.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_setvbuf&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;setvbuf.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_fseek&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fseek.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_lseek&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_remove_device&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_rename&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_add_device&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_unlink&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTclose&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTrename&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTunlink&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTread&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTopen&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTwrite&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTlseek&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTtime&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_getenv&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTclock&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_writemsg&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgmsg.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_readmsg&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgmsg.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__CIOBUF_&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgmsg.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;C$$IO$$&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgmsg.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;warning:&nbsp;library&nbsp;'C:\temp\qualititemp\lib\g729dec_kmitl.l67',&nbsp;member<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'g729dec.out'&nbsp;has&nbsp;no&nbsp;relocation&nbsp;information<BR>
+</font></p><BR>    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="15">Rule 15:</a></B> Each XDAIS-compliant algorithm must be packaged in an archive which has a name that follows a uniform naming convention.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         QualiTI passed this rule after testing<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="16">Rule 16:</a></B> Each XDAIS-compliant algorithm header must follow a uniform naming convention.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         QualiTI passed this rule after testing<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="19">Rule 19:</a></B> All algorithms must characterize their worst-case heap data memory requirements (including alignment).<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>     48: QualiTI failed to build the test program with the algorithm<BR>
+<p><font face="Courier">&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_c_int00&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;boot.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_exit&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;exit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__divd&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;divd.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_memcpy&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memcpy62.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_main&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;rule19.obj&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_fopen&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fopen.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_fclose&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fclose.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_free&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memory.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__stack&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;boot.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__auto_init&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;autoinit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_memalign&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memory.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_malloc&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memory.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_realloc&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memory.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_calloc&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memory.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_memset&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;memset.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__register_lock&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_lock.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__register_unlock&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_lock.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_atexit&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;exit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__lock&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_lock.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__nop&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_lock.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__unlock&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_lock.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__frcdivd&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;frcdivd.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__dtors_ptr&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;exit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__cleanup_ptr&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;exit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_abort&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;exit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;C$$EXIT&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;exit.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_remove&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;remove.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_close&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__tmpnams&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;defs.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__doflush&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fflush.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__ftable&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;defs.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__ft_end&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;defs.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_fflush&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fflush.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_write&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_freopen&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fopen.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__cleanup&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fopen.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_open&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__rd_ok&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_io_perm.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__divu&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;divu.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_read&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__wrt_ok&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;_io_perm.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_setvbuf&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;setvbuf.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_fseek&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;fseek.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_lseek&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_remove_device&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_rename&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_add_device&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_unlink&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;lowlev.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTclose&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTrename&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTunlink&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTread&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTopen&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTwrite&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTlseek&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTtime&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_getenv&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_HOSTclock&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgdrv.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_writemsg&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgmsg.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;_readmsg&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgmsg.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;__CIOBUF_&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgmsg.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;&nbsp;&nbsp;error:&nbsp;symbol&nbsp;C$$IO$$&nbsp;is&nbsp;defined&nbsp;multiple&nbsp;times:&nbsp;trgmsg.obj<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\ti\c6000\cgtools\lib\rts6700.lib)&nbsp;and&nbsp;g729dec.out<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(C:\temp\qualititemp\lib\g729dec_kmitl.l67)<BR>
+&gt;&gt;&nbsp;warning:&nbsp;library&nbsp;'C:\temp\qualititemp\lib\g729dec_kmitl.l67',&nbsp;member<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'g729dec.out'&nbsp;has&nbsp;no&nbsp;relocation&nbsp;information<BR>
+</font></p><BR>    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="20">Rule 20:</a></B> All algorithms must characterize their worst-case stack space memory requirements (including alignment).<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>         Not characterized by vendor<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="21">Rule 21:</a></B> Algorithms must characterize their static data memory requirements.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         QualiTI has generated the data<BR>
+    <BR><B>Table of static data memory usage</B><BR>
+      <table border="1" width="100%">
+        <tr>
+           <td width="16%" bgcolor="#C0C0C0"><b>Section Number</b></td>
+           <td width="20%" bgcolor="#C0C0C0"><b>Object File Name</b></td>
+           <td width="16%" bgcolor="#C0C0C0"><b>Section Name</b></td>
+           <td width="16%" bgcolor="#C0C0C0"><b>Given Size (bytes)</b></td>
+           <td width="16%" bgcolor="#C0C0C0"><b>Calculated Size (bytes)</b></td>
+           <td width="16%" bgcolor="#C0C0C0"><b>Given Alignment (bytes)</b></td>
+        </tr>
+        <tr>
+           <td width="16%">0</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.vers</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">56</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">1</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.clk</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">8</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">2</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.swi</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">44</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">3</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.idl</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">32</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">4</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.sts</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">48</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">5</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.pip</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">200</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">6</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.LOG_system$buf</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">256</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">7</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.log</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">24</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">8</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.TSK_idle$stk</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">1024</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">9</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.tsk</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">96</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">10</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.hst0</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">256</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">11</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.hst1</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">16</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">12</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.hst</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">44</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">13</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.rtdx_data</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">1080</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">14</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.trace</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">512</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">15</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.IRAM$heap</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">32768</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">16</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.bss</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">1224</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">17</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.far</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">27360</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">18</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.args</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">4</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">19</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.const</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">744</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">20</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.cio</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">288</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">21</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.mem</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">4</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">22</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.gblinit</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">40</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">23</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.trcdata</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">12</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">24</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.stack</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">16384</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">25</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.sys</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">16</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">26</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.SDRAM$heap</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">32768</td>
+           <td width="20%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">27</td>
+           <td width="20%">g729dec.out</td>
+           <td width="16%">.hyper</td>
+           <td width="20%">Not Given</td>
+           <td width="20%">24</td>
+           <td width="20%">Not Given</td>
+        </tr>
+      </table
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="22">Rule 22:</a></B> All algorithms must characterize their program memory requirements.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         QualiTI has generated the data<BR>
+    <BR><B>Table of program memory usage</B><BR>
+      <table border="1" width="100%">
+        <tr>
+           <td width="16%" bgcolor="#C0C0C0"><b>Section Number</b></td>
+           <td width="18%" bgcolor="#C0C0C0"><b>Object File Name</b></td>
+           <td width="18%" bgcolor="#C0C0C0"><b>Section Name</b></td>
+           <td width="16%" bgcolor="#C0C0C0"><b>Given Size (bytes)</b></td>
+           <td width="16%" bgcolor="#C0C0C0"><b>Calculated Size (bytes)</b></td>
+           <td width="16%" bgcolor="#C0C0C0"><b>Given Alignment (bytes)</b></td>
+        </tr>
+        <tr>
+           <td width="16%">0</td>
+           <td width="18%">g729dec.out</td>
+           <td width="18%">$BRID</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">3956</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">1</td>
+           <td width="18%">g729dec.out</td>
+           <td width="18%">.hwi_vec</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">512</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">2</td>
+           <td width="18%">g729dec.out</td>
+           <td width="18%">.switch</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">44</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">3</td>
+           <td width="18%">g729dec.out</td>
+           <td width="18%">.rtdx_text</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">3552</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">4</td>
+           <td width="18%">g729dec.out</td>
+           <td width="18%">.pinit</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">12</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">5</td>
+           <td width="18%">g729dec.out</td>
+           <td width="18%">.bios</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">18144</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">6</td>
+           <td width="18%">g729dec.out</td>
+           <td width="18%">.text</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">88128</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">7</td>
+           <td width="18%">g729dec.out</td>
+           <td width="18%">.sysinit</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">928</td>
+           <td width="16%">Not Given</td>
+        </tr>
+        <tr>
+           <td width="16%">8</td>
+           <td width="18%">g729dec.out</td>
+           <td width="18%">.cinit</td>
+           <td width="16%">Not Given</td>
+           <td width="16%">28676</td>
+           <td width="16%">Not Given</td>
+        </tr>
+      </table
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="23">Rule 23:</a></B> All algorithms must characterize their worst-case interrupt latency for every operation.<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>         Not characterized by vendor<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="24">Rule 24:</a></B> All algorithms must characterize the typical period and worst-case execution time for each operation.<BR><BR>
+
+      <B>Report:</B> <font color="#FF0000"><B>Failed</B></font><BR><BR>
+      <B>Details:</B>         Not characterized by vendor<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="25">Rule 25:</a></B> All C6x algorithms must be supplied in little endian format.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         QualiTI passed this rule after testing<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="26">Rule 26:</a></B> All C6x algorithms must access all static and global data as far data.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Vendor states compliance in the documentation <BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD COLSPAN="2">
+      <B><a name="27">Rule 27:</a></B> C6x algorithms must never assume placement in on-chip program memory; i.e., they must properly operate with program memory operated in cache mode.<BR><BR>
+
+      <B>Report:</B> <font color="#008080"><B>Passed</B></font><BR><BR>
+      <B>Details:</B>         Vendor states compliance in the documentation <BR>
+    </TD>
+  </TR>
+
+</TABLE>
+</BODY>
+</HTML>

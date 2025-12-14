@@ -1,0 +1,39 @@
+; Code Composer Project File, Version 2.0 (do not modify or remove this line)
+
+[Project Settings]
+ProjectDir="d:\ce\my 4d project\dsp\test std alg\CPTGEN\"
+ProjectType=Executable
+CPUFamily=TMS320C67XX
+Tool="Compiler"
+Tool="DspBiosBuilder"
+Tool="Linker"
+Config="Debug"
+Config="Release"
+
+[Source Files]
+Source="CPTGEN.cdb"
+Source="main.c"
+Source="CPTGEN2.cmd"
+
+[Generated Files]
+Source="CPTGENcfg.s62"
+Source="CPTGENcfg_c.c"
+
+["Compiler" Settings: "Debug"]
+Options=-g -q -fr"d:\ce\my 4d project\dsp\test std alg\CPTGEN\Debug" -i"C:\ti\c6000\xdais\include" -i"C:\ti\c6000\xdais\src\api" -d"_DEBUG" -mv6700
+
+["Compiler" Settings: "Release"]
+Options=-q -o3 -fr"d:\ce\my 4d project\dsp\test std alg\CPTGEN\Release" -mv6700
+
+["DspBiosBuilder" Settings: "Debug"]
+Options=-v6x
+
+["DspBiosBuilder" Settings: "Release"]
+Options=-v6x
+
+["Linker" Settings: "Debug"]
+Options=-q -c -m".\Debug\CPTGEN.map" -o".\Debug\CPTGEN.out" -x
+
+["Linker" Settings: "Release"]
+Options=-q -c -m".\Release\CPTGEN.map" -o".\Release\CPTGEN.out" -x
+

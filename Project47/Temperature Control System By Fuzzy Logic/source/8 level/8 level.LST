@@ -1,0 +1,797 @@
+C51 COMPILER V7.03   8_LEVEL                                                               04/20/2005 06:30:12 PAGE 1   
+
+
+C51 COMPILER V7.03, COMPILATION OF MODULE 8_LEVEL
+OBJECT MODULE PLACED IN 8 level.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 8 level.c OPTIMIZE(0,SPEED) BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include <Atmel/AT89X51.h>
+   2          #include <stdio.h>
+   3          #include <intrins.h>
+   4          #include <math.h>
+   5          
+   6          // GLOBAL VARIABLE - and define
+   7          #define BUFFER_SIZE 3
+   8          #define MAX_LEVEL 7     // Number of level - 1
+   9          #define divide 32
+  10          
+  11          sbit CH = 0x93;
+  12          sbit sync=0xB3;
+  13          sbit DQ = 0xA7;
+  14          
+  15          data unsigned short PhaseLen;   // 'ON' Phase length (in cycles unit)
+  16          data unsigned short StepLen;            // How long does a level runs (cycles)
+  17          data unsigned short MapTable[8];        // Each level cycles
+  18          data unsigned short Remain;
+  19          data unsigned char CHLevel = 0; //  Level of channel
+  20          data unsigned char TmpLev = 0;
+  21          data unsigned char start=0;
+  22          idata unsigned char buffer[BUFFER_SIZE];
+  23          //unsigned char ff = 0xff;
+  24          int i,j,k;
+  25          int loop = 0;
+  26          bit loaded = 0;
+  27          char set_p[1];
+  28          
+  29          // SERIAL - Get SBUF to buffer
+  30          void receive(void) interrupt 4
+  31          {
+  32   1              if(RI)
+  33   1              {
+  34   2                      RI = 0;
+  35   2                      if (loop < 1) 
+  36   2                      {
+  37   3                              buffer[loop] = SBUF;
+  38   3                              loop++;
+  39   3                      }
+  40   2                      else 
+  41   2                      {
+  42   3                              buffer[loop] = SBUF;
+  43   3                              loop = 0;
+  44   3                              loaded = 1;
+  45   3                      }
+  46   2              }
+  47   1      }
+  48          // GET_DATA - get data from serial port
+  49          int get_data(char* co) 
+  50          {
+  51   1              //unsigned char a[16];
+  52   1      
+  53   1              if (loaded==1) 
+  54   1              {
+  55   2                      co[0] = ((buffer[0] - 0x30) * 10) +(buffer[1]-0x30); 
+C51 COMPILER V7.03   8_LEVEL                                                               04/20/2005 06:30:12 PAGE 2   
+
+  56   2                      loaded=0;
+  57   2                      //TI = 1;
+  58   2                      printf("Setpoint = %d degrees C \n ",(int)co[0]);
+  59   2                      TI = 0;
+  60   2                      return(0);
+  61   2              }
+  62   1              return(1);
+  63   1      }
+  64          // DELAY - with an 11.059MHz crystal. Calling 24us, and count 16us.
+  65          void delay(int seconds) {
+  66   1              for (k=0; k<seconds; k++);
+  67   1      }
+  68          // OW_RESET - Reset the one-wire bus and returns the presence detect.
+  69          unsigned char ow_reset(void) {
+  70   1              unsigned char presence;
+  71   1      
+  72   1              DQ = 0;                                         //pull DQ line low
+  73   1              delay(29);                                      // leave it low for 480us
+  74   1              DQ = 1;                                         // allow line to return high
+  75   1              delay(3);                                       // wait for presence
+  76   1              presence = DQ;                          // get presence signal
+  77   1              delay(25);                                      // wait for end of timeslot
+  78   1              return(presence);                       // presence signal returned
+  79   1      }                                                               // 0=presence, 1 = no part
+  80          // READ_BIT - reads a bit from the one-wire bus.
+  81          unsigned char read_bit(void) {
+  82   1              bit dat;
+  83   1              DQ = 0;                                         // pull DQ low to start timeslot
+  84   1              _nop_ ();
+  85   1              _nop_ ();
+  86   1              DQ = 1;                                         // then return high
+  87   1              _nop_ ();
+  88   1              _nop_ ();
+  89   1              _nop_ ();
+  90   1              _nop_ ();
+  91   1              dat = DQ;       
+  92   1              for(k=0; k<8; k++) _nop_();     // delay 15us from start of timeslot
+  93   1              return(dat);                            // return value of DQ line
+  94   1      }
+  95          // WRITE_BIT - writes a bit to the one-wire bus, passed in bitval.
+  96          void write_bit(char bitval) {
+  97   1              DQ = 0;                                         // pull DQ low to start timeslot
+  98   1              if(bitval==1) DQ =1;            // return DQ high if write 1
+  99   1              delay(5);                                       // hold value for remainder of timeslot
+ 100   1              DQ = 1;
+ 101   1      }
+ 102          // READ_BYTE - reads a byte from the one-wire bus.
+ 103          unsigned char read_byte(void) {
+ 104   1              unsigned char value = 0;
+ 105   1      
+ 106   1              for (j=0; j<8; j++) {
+ 107   2                      if(read_bit()) value|=0x01<<j; // reads byte in, one byte at a time and then shifts it left
+ 108   2                      delay(6);                               // wait for rest of timeslot
+ 109   2              }
+ 110   1              return(value);
+ 111   1      }
+ 112          // WRITE_BYTE - writes a byte to the one-wire bus.
+ 113          void write_byte(char val) {
+ 114   1              unsigned char temp;
+ 115   1      
+ 116   1              for (j=0; j<8; j++) {           // writes byte, one bit at a time
+ 117   2                      temp = val>>j;                  // shifts val right 'i' spaces
+C51 COMPILER V7.03   8_LEVEL                                                               04/20/2005 06:30:12 PAGE 3   
+
+ 118   2                      temp &= 0x01;                   // copy that bit to temp
+ 119   2                      write_bit(temp);                // write bit in temp into
+ 120   2              }
+ 121   1              delay(5);
+ 122   1      }
+ 123          // READ_TEMP - read temperature by skiprom
+ 124          char Read_Temp(char* sensor) {
+ 125   1              char get[2];//secode[8];
+ 126   1              char temp_lsb,temp_msb;
+ 127   1      
+ 128   1              ow_reset();
+ 129   1              write_byte(0x55);                                                                       // math ROM
+ 130   1              for (i=0;i<8;i++) write_byte(sensor[i]);
+ 131   1              write_byte(0x44);                                                                       // Convert T
+ 132   1              ES = 1;
+ 133   1              delay(20000);
+ 134   1              ES = 0;
+ 135   1              ow_reset();
+ 136   1              write_byte(0x55);                                                                       // math ROM
+ 137   1              for (i=0;i<8;i++) write_byte(sensor[i]);
+ 138   1              write_byte(0xBE);                                                                       // Read Scratch Pad
+ 139   1              for (i=0; i<2; i++) get[i]=read_byte();
+ 140   1              temp_msb = get[1];                                                                      // Sign byte + lsbit
+ 141   1              temp_lsb = get[0];                                                                      // Temp data plus lsb
+ 142   1              if (temp_msb <= 0x80) temp_lsb = (temp_lsb/2);          // shift to get whole degree
+ 143   1              temp_msb = temp_msb & 0x80;                                             // mask all but the sign bit
+ 144   1              if (temp_msb >= 0x80) temp_lsb = (~temp_lsb)+1;         // twos complement
+ 145   1              if (temp_msb >= 0x80) temp_lsb = (temp_lsb/2);          // shift to get whole degree
+ 146   1              if (temp_msb >= 0x80) temp_lsb = ((-1)*temp_lsb);       // add sign bit
+ 147   1              return(temp_lsb);
+ 148   1      }
+ 149          
+ 150          // READ_ROM - ROM by 1 device
+ 151          /*void Read_ROM(void) {
+ 152                  char dat[8];
+ 153          
+ 154                  ow_reset();
+ 155                  write_byte(0x33);
+ 156                  for (i=0; i<8; i++) dat[i]=read_byte();
+ 157                  printf("$");
+ 158                  printf("%x",ff,dat[7]);
+ 159                  printf("%x",ff,dat[6]);
+ 160                  printf("%x",ff,dat[5]);
+ 161                  printf("%x",ff,dat[4]);
+ 162                  printf("%x",ff,dat[3]);
+ 163                  printf("%x",ff,dat[2]);
+ 164                  printf("%x",ff,dat[1]);
+ 165                  printf("%x",ff,dat[0]);
+ 166                  printf("@\n");
+ 167          }*/
+ 168          void fan_1()  //Front fan 
+ 169          {
+ 170   1              P2_0 = 1;
+ 171   1              P2_1 = 0;
+ 172   1              P2_2 = 1;
+ 173   1              P2_3 = 0;
+ 174   1              P2_4 = 1;
+ 175   1              P2_5 = 0;
+ 176   1      } 
+ 177          void fan_2()    //Back fan
+ 178          {
+ 179   1              P2_0 = 0;
+C51 COMPILER V7.03   8_LEVEL                                                               04/20/2005 06:30:12 PAGE 4   
+
+ 180   1              P2_1 = 0;
+ 181   1              P2_2 = 1;
+ 182   1              P2_3 = 0;
+ 183   1              P2_4 = 0;
+ 184   1              P2_5 = 1;
+ 185   1      }
+ 186          void fan_s()    //stop fan
+ 187          {
+ 188   1              P2_0 = 1;
+ 189   1              P2_1 = 0;
+ 190   1              P2_2 = 1;
+ 191   1              P2_3 = 0;
+ 192   1              P2_4 = 0;
+ 193   1              P2_5 = 0;
+ 194   1      }
+ 195          void init_serial(void) {
+ 196   1              TMOD |= 0x20;
+ 197   1              TCON = 0x40;
+ 198   1              SCON = 0x50;
+ 199   1              PCON &= 0x7F;
+ 200   1              TH1 = 0xFD;
+ 201   1              //TL1 = 0xFD; 
+ 202   1              TR1 = 1;
+ 203   1              TI = 1; 
+ 204   1      }
+ 205          /*void initialize_serial()
+ 206          {
+ 207          // Initialize the serial port (9600, 8, N, 1) 
+ 208                  PCON &= 0x7F;                                                   // Clear bit 7 of the PCON register (SMOD1 = 0)  
+ 209                  SCON = 0x50;                                                    // 0101,0000 (Mode 1 and RxD enable)                    
+ 210                  TMOD |= 0x20;                                                   // Timer #1 in autoreload 8 bit mode
+ 211                  TCON = 0x40;                                                    // Set Timer #1 to run mode
+ 212                  TH1 = 0xFD;//FA = 4800 FD=9600                  // Baud rate is determined by
+ 213                                                                                                  // Timer #1 overflow rate
+ 214                                                                                                  // Baud Rate = (Fcpu / 384) / (256 - TH1)
+ 215                                                                                                  // Fcpu = 11.0592 MHz
+ 216                                                                                                  // TH1 = 253
+ 217                  TR1 = 1;                                                                // Turn on Timer 1
+ 218          }*/
+ 219           
+ 220          void onoff() interrupt 1                        // timer 0 interrupt TF0
+ 221          {
+ 222   1              if (start==1 && TmpLev>0)
+ 223   1              {
+ 224   2                      start=0;
+ 225   2                      CH=0;//turn off light
+ 226   2                      Remain=0xFFFF-(MapTable[TmpLev]-PhaseLen);
+ 227   2                      TH0 = ((unsigned short)Remain >> 8);//load remain timer
+ 228   2                      TL0 = Remain;
+ 229   2                  TR0 = 1;//enable timer 
+ 230   2              }
+ 231   1              else 
+ 232   1              {
+ 233   2                      CH=1;//turn on light
+ 234   2                      TmpLev=CHLevel;
+ 235   2              }
+ 236   1      }
+ 237          void synchronize() interrupt 2          //external interrupt 
+ 238          {
+ 239   1              start=1;        
+ 240   1              TH0 = ((unsigned short)MapTable[TmpLev] >> 8);//load timer
+ 241   1              TL0 = MapTable[TmpLev];
+C51 COMPILER V7.03   8_LEVEL                                                               04/20/2005 06:30:12 PAGE 5   
+
+ 242   1              TR0 = 1;//Enable timer 0*/
+ 243   1      }
+ 244          void GetPhaseLen(void)
+ 245          {
+ 246   1              // Init Timer 0
+ 247   1              TMOD |= 0x01;   // Timer 0, Mode 1, 16-bit timer
+ 248   1              TR0 = 0;                // Disable timer 0
+ 249   1              TH0 = 0;                // Reload timer
+ 250   1              TL0 = 0;
+ 251   1      
+ 252   1              // Wait for falling edge
+ 253   1              while (!sync) {}
+ 254   1              while (sync) {}
+ 255   1              TR0 = 1;                // Enable timer 0
+ 256   1      
+ 257   1              // Wait for rising edge
+ 258   1              while (!sync) {}
+ 259   1              TR0 = 0;                // Disable timer 0
+ 260   1      }
+ 261          
+ 262          unsigned short GetAvgPhaseLen(void)
+ 263          {
+ 264   1              unsigned short avg;
+ 265   1              //unsigned char i;
+ 266   1      
+ 267   1              GetPhaseLen();
+ 268   1              avg = ((unsigned short)TH0 << 8) | (unsigned short)TL0;         // TH0 or TL0 
+ 269   1              for (i=0;i<19;i++) // Use 20 samples
+ 270   1              {       
+ 271   2                      GetPhaseLen();
+ 272   2                      avg = (avg + (((unsigned short)TH0 << 8) | (unsigned short)TL0)) / 2;
+ 273   2              }
+ 274   1              return avg;
+ 275   1      }
+ 276          
+ 277          
+ 278          void main(void) 
+ 279          {
+ 280   1              //unsigned char start;
+ 281   1              int temp1,temp2,err1,err2,c_err;
+ 282   1              char secode1[8],secode2[8];
+ 283   1              secode1[0] = 0x10;
+ 284   1              secode1[1] = 0xA4;
+ 285   1              secode1[2] = 0x6D;
+ 286   1              secode1[3] = 0x92;
+ 287   1              secode1[4] = 0x00;
+ 288   1              secode1[5] = 0x08;
+ 289   1              secode1[6] = 0x00;
+ 290   1              secode1[7] = 0x16;
+ 291   1              //16 00 08 00 92 6D A4 10
+ 292   1              secode2[0] = 0x10;
+ 293   1              secode2[1] = 0x24;
+ 294   1              secode2[2] = 0x99;
+ 295   1              secode2[3] = 0x92;
+ 296   1              secode2[4] = 0x00;
+ 297   1              secode2[5] = 0x08;
+ 298   1              secode2[6] = 0x00;
+ 299   1              secode2[7] = 0x45;
+ 300   1              // 45 00 08 00 92 99 24 10
+ 301   1      
+ 302   1              // Find phase length
+ 303   1              PhaseLen = GetAvgPhaseLen();
+C51 COMPILER V7.03   8_LEVEL                                                               04/20/2005 06:30:12 PAGE 6   
+
+ 304   1              StepLen = PhaseLen / (MAX_LEVEL+1);
+ 305   1              PhaseLen = 0xFFFF-PhaseLen;
+ 306   1              for (i=0; i<MAX_LEVEL; i++) {   // Create map table
+ 307   2                      MapTable[i] = 0xFFFF-((MAX_LEVEL-i) * StepLen);
+ 308   2              }
+ 309   1              MapTable[MAX_LEVEL]=MapTable[MAX_LEVEL-1]+(StepLen/2);
+ 310   1              init_serial();
+ 311   1              /*printf("PhaseLen %x \n",(int)PhaseLen);
+ 312   1              printf("MapTable[0] %x \n",(int)MapTable[0]);
+ 313   1              printf("MapTable[1] %x \n",(int)MapTable[1]);
+ 314   1              printf("MapTable[2] %x \n",(int)MapTable[2]);
+ 315   1              printf("MapTable[3] %x \n",(int)MapTable[3]);
+ 316   1              printf("MapTable[4] %x \n",(int)MapTable[4]);
+ 317   1              printf("MapTable[5] %x \n",(int)MapTable[5]);
+ 318   1              printf("MapTable[6] %x \n",(int)MapTable[6]);
+ 319   1              printf("MapTable[7] %x \n",(int)MapTable[7]);*/
+ 320   1      
+ 321   1      while(1){
+ 322   2              //init_serial();
+ 323   2              TMOD |= 0x01;   // Timer 0, Mode 1, 16-bit timer
+ 324   2              TR0 = 0;                // Disable timer 0
+ 325   2              IT1 = 0x01;     //External interrupt1 active falling edge
+ 326   2              IE      = 0x96; //10010110//enable global,External interupt1 and interrupt Timer0
+ 327   2              
+ 328   2              printf("enter setpoint \n");
+ 329   2              TI =0;
+ 330   2              loop = 0;
+ 331   2              while(get_data(set_p));
+ 332   2              //printf("Setpoint = ",co);
+ 333   2              EA = 0;
+ 334   2              temp1 = Read_Temp(secode1);
+ 335   2              EA = 1;
+ 336   2              EA = 0;
+ 337   2              temp2 = Read_Temp(secode2);
+ 338   2              EA = 0;
+ 339   2      
+ 340   2                      err2 = set_p[0] - temp2;
+ 341   2                      for (i=0;i<100;i++)
+ 342   2                              for (j=0;j<1000;j++);
+ 343   2      
+ 344   2                              while(1) {
+ 345   3                                      //ES = 0;
+ 346   3                                      EA = 0;
+ 347   3                                      CH=1;
+ 348   3                                      temp1 = Read_Temp(secode1);
+ 349   3                                      EA =1;
+ 350   3                                      //TI = 1;
+ 351   3                                      printf("Temp1 %d degrees C \n",(int)temp1);
+ 352   3                                      TI =0;
+ 353   3                                      EA =0;
+ 354   3                                      CH=1;
+ 355   3                                      temp2 = Read_Temp(secode2);
+ 356   3                                      EA =1;
+ 357   3                                      printf("Temp2 %d degrees C \n",(int)temp2);
+ 358   3                                      TI =0;
+ 359   3                                              err1 = err2; 
+ 360   3                                              err2 = set_p[0] - temp2;
+ 361   3                                      c_err = err2 -err1;
+ 362   3                                      //ES = 1;
+ 363   3                                              //if (!RI)
+ 364   3                                                      //{
+ 365   3                                                      
+C51 COMPILER V7.03   8_LEVEL                                                               04/20/2005 06:30:12 PAGE 7   
+
+ 366   3                                                      printf("Setpoint = %d degrees C\n",(int)set_p[0]);
+ 367   3                                                      TI =0;
+ 368   3                                                      ///////////////////////
+ 369   3                                                      if ((err2 < -4) && (c_err == -2))
+ 370   3                                                              {
+ 371   4                                                                      CHLevel = 0 ;
+ 372   4                                                                      printf("CHLevel 0 \n");
+ 373   4                                                                      TI =0;
+ 374   4                                                              }
+ 375   3                                                      if ((err2 < -4) && (c_err == -1))
+ 376   3                                                              {
+ 377   4                                                                      CHLevel = 0 ;
+ 378   4                                                                      printf("CHLevel 0 \n");
+ 379   4                                                                      TI =0;
+ 380   4                                                              }
+ 381   3                                                      if ((err2 < -4) && (c_err == 0))
+ 382   3                                                              {
+ 383   4                                                                      CHLevel = 0 ;
+ 384   4                                                                      printf("CHLevel 0 \n");
+ 385   4                                                                      TI =0;
+ 386   4                                                              }
+ 387   3                                                      if ((err2 < -4) && (c_err == 1))
+ 388   3                                                              {
+ 389   4                                                                      CHLevel = 0 ;
+ 390   4                                                                      printf("CHLevel 0 \n");
+ 391   4                                                                      TI =0;
+ 392   4                                                              }
+ 393   3                                                      if ((err2 < -4) && (c_err == 2))
+ 394   3                                                              {
+ 395   4                                                                      CHLevel = 0 ;
+ 396   4                                                                      printf("CHLevel 0 \n");
+ 397   4                                                                      TI =0;
+ 398   4                                                              }
+ 399   3                                              ///////////////////////////
+ 400   3                                                      if ((err2 == -4) && (c_err == -2))
+ 401   3                                                              {
+ 402   4                                                                      CHLevel = 0 ;
+ 403   4                                                                      printf("CHLevel 0 \n");
+ 404   4                                                                      TI =0;
+ 405   4                                                              }
+ 406   3                                                      if ((err2 == -4) && (c_err == -1))
+ 407   3                                                              {
+ 408   4                                                                      CHLevel = 0 ;
+ 409   4                                                                      printf("CHLevel 0 \n");
+ 410   4                                                                      TI =0;
+ 411   4                                                              }
+ 412   3                                                      if ((err2 == -4) && (c_err == 0))
+ 413   3                                                              {
+ 414   4                                                                      CHLevel = 0 ;
+ 415   4                                                                      printf("CHLevel 0 \n");
+ 416   4                                                                      TI =0;
+ 417   4                                                              }
+ 418   3                                                      if ((err2 == -4) && (c_err == 1))
+ 419   3                                                              {
+ 420   4                                                                      CHLevel = 0 ;
+ 421   4                                                                      printf("CHLevel 0 \n");
+ 422   4                                                                      TI =0;
+ 423   4                                                              }
+ 424   3                                                      if ((err2 == -4) && (c_err == 2))
+ 425   3                                                              {
+ 426   4                                                                      CHLevel = 1 ;
+ 427   4                                                                      printf("CHLevel 1 \n");
+C51 COMPILER V7.03   8_LEVEL                                                               04/20/2005 06:30:12 PAGE 8   
+
+ 428   4                                                                      TI =0;
+ 429   4                                                              }
+ 430   3                                              //////////////////////////////////
+ 431   3                                                      if ((err2 == -3) && (c_err == -2))
+ 432   3                                                              {
+ 433   4                                                                      CHLevel = 0 ;
+ 434   4                                                                      printf("CHLevel 0 \n");
+ 435   4                                                                      TI =0;
+ 436   4                                                              }
+ 437   3                                                      if ((err2 == -3) && (c_err == -1))
+ 438   3                                                              {
+ 439   4                                                                      CHLevel = 0 ;
+ 440   4                                                                      printf("CHLevel 0 \n");
+ 441   4                                                                      TI =0;
+ 442   4                                                              }
+ 443   3                                                      if ((err2 == -3) && (c_err == 0))
+ 444   3                                                              {
+ 445   4                                                                      CHLevel = 0 ;
+ 446   4                                                                      printf("CHLevel 0 \n");
+ 447   4                                                                      TI =0;
+ 448   4                                                              }
+ 449   3                                                      if ((err2 == -3) && (c_err == 1))
+ 450   3                                                              {
+ 451   4                                                                      CHLevel = 0 ;
+ 452   4                                                                      printf("CHLevel 0 \n");
+ 453   4                                                                      TI =0;
+ 454   4                                                              }
+ 455   3                                                      if ((err2 == -3) && (c_err == 2))
+ 456   3                                                              {
+ 457   4                                                                      CHLevel = 1 ;
+ 458   4                                                                      printf("CHLevel 1 \n");
+ 459   4                                                                      TI =0;
+ 460   4                                                              }
+ 461   3                                              ///////////////////////
+ 462   3                                                      if ((err2 == -2) && (c_err == -2))
+ 463   3                                                              {
+ 464   4                                                                      CHLevel = 0 ;
+ 465   4                                                                      printf("CHLevel 0 \n");
+ 466   4                                                                      TI =0;
+ 467   4                                                              }
+ 468   3                                                      if ((err2 == -2) && (c_err == -1))
+ 469   3                                                              {
+ 470   4                                                                      CHLevel = 1 ;
+ 471   4                                                                      printf("CHLevel 1 \n");
+ 472   4                                                                      TI =0;
+ 473   4                                                              }
+ 474   3                                                      if ((err2 == -2) && (c_err == 0))
+ 475   3                                                              {
+ 476   4                                                                      CHLevel = 1 ;
+ 477   4                                                                      printf("CHLevel 1 \n");
+ 478   4                                                                      TI =0;
+ 479   4                                                              }
+ 480   3                                                      if ((err2 == -2) && (c_err == 1))
+ 481   3                                                              {
+ 482   4                                                                      CHLevel = 1 ;
+ 483   4                                                                      printf("CHLevel 1 \n");
+ 484   4                                                                      TI =0;
+ 485   4                                                              }
+ 486   3                                                      if ((err2 == -2) && (c_err == 2))
+ 487   3                                                              {
+ 488   4                                                                      CHLevel = 2 ;
+ 489   4                                                                      printf("CHLevel 2 \n");
+C51 COMPILER V7.03   8_LEVEL                                                               04/20/2005 06:30:12 PAGE 9   
+
+ 490   4                                                                      TI =0;
+ 491   4                                                              }
+ 492   3                                              ///////////////////////
+ 493   3                                                      if ((err2 == -1) && (c_err == -2))
+ 494   3                                                              {
+ 495   4                                                                      CHLevel = 1 ;
+ 496   4                                                                      printf("CHLevel 1 \n");
+ 497   4                                                                      TI =0;
+ 498   4                                                              }
+ 499   3                                                      if ((err2 == -1) && (c_err == -1))
+ 500   3                                                              {
+ 501   4                                                                      CHLevel = 2 ;
+ 502   4                                                                      printf("CHLevel 2 \n");
+ 503   4                                                                      TI =0;
+ 504   4                                                              }
+ 505   3                                                      if ((err2 == -1) && (c_err == 0))
+ 506   3                                                              {
+ 507   4                                                                      CHLevel = 2 ;
+ 508   4                                                                      printf("CHLevel 2 \n");
+ 509   4                                                                      TI =0;
+ 510   4                                                              }
+ 511   3                                                      if ((err2 == -1) && (c_err == 1))
+ 512   3                                                              {
+ 513   4                                                                      CHLevel = 2 ;
+ 514   4                                                                      printf("CHLevel 2 \n");
+ 515   4                                                                      TI =0;
+ 516   4                                                              }
+ 517   3                                                      if ((err2 == -1) && (c_err == 2))
+ 518   3                                                              {
+ 519   4                                                                      CHLevel = 3 ;
+ 520   4                                                                      printf("CHLevel 3 \n");
+ 521   4                                                                      TI =0;
+ 522   4                                                              }
+ 523   3                                              ///////////////////////////
+ 524   3                                                      if ((err2 == 0) && (c_err == -2))
+ 525   3                                                              {
+ 526   4                                                                      CHLevel = 2 ;
+ 527   4                                                                      printf("CHLevel 2 \n");
+ 528   4                                                                      TI =0;
+ 529   4                                                              }
+ 530   3                                                      if ((err2 == 0) && (c_err == -1))
+ 531   3                                                              {
+ 532   4                                                                      CHLevel = 3 ;
+ 533   4                                                                      printf("CHLevel 3 \n");
+ 534   4                                                                      TI =0;
+ 535   4                                                              }
+ 536   3                                                      if ((err2 == 0) && (c_err == 0))
+ 537   3                                                              {
+ 538   4                                                                      CHLevel = 3 ;
+ 539   4                                                                      printf("CHLevel 3 \n");
+ 540   4                                                                      TI =0;
+ 541   4                                                              }
+ 542   3                                                      if ((err2 == 0) && (c_err == 1))
+ 543   3                                                              {
+ 544   4                                                                      CHLevel = 3 ;
+ 545   4                                                                      printf("CHLevel 3 \n");
+ 546   4                                                                      TI =0;
+ 547   4                                                              }
+ 548   3                                                      if ((err2 == 0) && (c_err == 2))
+ 549   3                                                              {
+ 550   4                                                                      CHLevel = 4 ;
+ 551   4                                                                      printf("CHLevel 4 \n");
+C51 COMPILER V7.03   8_LEVEL                                                               04/20/2005 06:30:12 PAGE 10  
+
+ 552   4                                                                      TI =0;
+ 553   4                                                              }
+ 554   3                                              ////////////////////////
+ 555   3                                                      if ((err2 == 1) && (c_err == -2))
+ 556   3                                                              {
+ 557   4                                                                      CHLevel = 3 ;
+ 558   4                                                                      printf("CHLevel 3 \n");
+ 559   4                                                                      TI =0;
+ 560   4                                                              }
+ 561   3                                                      if ((err2 == 1) && (c_err == -1))
+ 562   3                                                              {
+ 563   4                                                                      CHLevel = 4 ;
+ 564   4                                                                      printf("CHLevel 4 \n");
+ 565   4                                                                      TI =0;
+ 566   4                                                              }
+ 567   3                                                      if ((err2 == 1) && (c_err == 0))
+ 568   3                                                              {
+ 569   4                                                                      CHLevel = 4 ;
+ 570   4                                                                      printf("CHLevel 4 \n");
+ 571   4                                                                      TI =0;
+ 572   4                                                              }
+ 573   3                                                      if ((err2 == 1) && (c_err == 1))
+ 574   3                                                              {
+ 575   4                                                                      CHLevel = 4 ;
+ 576   4                                                                      printf("CHLevel 4 \n");
+ 577   4                                                                      TI =0;
+ 578   4                                                              }
+ 579   3                                                      if ((err2 == 1) && (c_err == 2))
+ 580   3                                                              {
+ 581   4                                                                      CHLevel = 5 ;
+ 582   4                                                                      printf("CHLevel 5 \n");
+ 583   4                                                                      TI =0;
+ 584   4                                                              }
+ 585   3                                              //////////////////////////      
+ 586   3                                                      if ((err2 == 2) && (c_err == -2))
+ 587   3                                                              {
+ 588   4                                                                      CHLevel = 4 ;
+ 589   4                                                                      printf("CHLevel 4 \n");
+ 590   4                                                                      TI =0;
+ 591   4                                                              }
+ 592   3                                                      if ((err2 == 2) && (c_err == -1))
+ 593   3                                                              {
+ 594   4                                                                      CHLevel = 5 ;
+ 595   4                                                                      printf("CHLevel 5 \n");
+ 596   4                                                                      TI =0;
+ 597   4                                                              }
+ 598   3                                                      if ((err2 == 2) && (c_err == 0))
+ 599   3                                                              {
+ 600   4                                                                      CHLevel = 5 ;
+ 601   4                                                                      printf("CHLevel 5 \n");
+ 602   4                                                                      TI =0;
+ 603   4                                                              }
+ 604   3                                                      if ((err2 == 2) && (c_err == 1))
+ 605   3                                                              {
+ 606   4                                                                      CHLevel = 5 ;
+ 607   4                                                                      printf("CHLevel 5 \n");
+ 608   4                                                                      TI =0;
+ 609   4                                                              }
+ 610   3                                                      if ((err2 == 2) && (c_err == 2))
+ 611   3                                                              {
+ 612   4                                                                      CHLevel = 6 ;
+ 613   4                                                                      printf("CHLevel 6 \n");
+C51 COMPILER V7.03   8_LEVEL                                                               04/20/2005 06:30:12 PAGE 11  
+
+ 614   4                                                                      TI =0;
+ 615   4                                                              }
+ 616   3                                              /////////////////////////////   
+ 617   3                                                      if ((err2 == 3) && (c_err == -2))
+ 618   3                                                              {
+ 619   4                                                                      CHLevel = 5 ;
+ 620   4                                                                      printf("CHLevel 5 \n");
+ 621   4                                                                      TI =0;
+ 622   4                                                              }
+ 623   3                                                      if ((err2 == 3) && (c_err == -1))
+ 624   3                                                              {
+ 625   4                                                                      CHLevel = 6 ;
+ 626   4                                                                      printf("CHLevel 6 \n");
+ 627   4                                                                      TI =0;
+ 628   4                                                              }
+ 629   3                                                      if ((err2 == 3) && (c_err == 0))
+ 630   3                                                              {
+ 631   4                                                                      CHLevel = 6;
+ 632   4                                                                      printf("CHLevel 6 \n");
+ 633   4                                                                      TI =0;
+ 634   4                                                              }
+ 635   3                                                      if ((err2 == 3) && (c_err == 1))
+ 636   3                                                              {
+ 637   4                                                                      CHLevel = 6 ;
+ 638   4                                                                      printf("CHLevel 6 \n");
+ 639   4                                                                      TI =0;
+ 640   4                                                              }
+ 641   3                                                      if ((err2 == 3) && (c_err == 2))
+ 642   3                                                              {
+ 643   4                                                                      CHLevel = 7 ;
+ 644   4                                                                      printf("CHLevel 7 \n");
+ 645   4                                                                      TI =0;
+ 646   4                                                              }
+ 647   3                                              ///////////////////////
+ 648   3                                                      if ((err2 == 4) && (c_err == -2))
+ 649   3                                                              {
+ 650   4                                                                      CHLevel = 6 ;
+ 651   4                                                                      printf("CHLevel 6 \n");
+ 652   4                                                                      TI =0;
+ 653   4                                                              }
+ 654   3                                                      if ((err2 == 4) && (c_err == -1))
+ 655   3                                                              {
+ 656   4                                                                      CHLevel = 6 ;
+ 657   4                                                                      printf("CHLevel 6 \n");
+ 658   4                                                                      TI =0;
+ 659   4                                                              }
+ 660   3                                                      if ((err2 == 4) && (c_err == 0))
+ 661   3                                                              {
+ 662   4                                                                      CHLevel = 7 ;
+ 663   4                                                                      printf("CHLevel 7 \n");
+ 664   4                                                                      TI =0;
+ 665   4                                                              }
+ 666   3                                                      if ((err2 == 4) && (c_err == 1))
+ 667   3                                                              {
+ 668   4                                                                      CHLevel = 7 ;
+ 669   4                                                                      printf("CHLevel 7 \n");
+ 670   4                                                                      TI =0;
+ 671   4                                                              }
+ 672   3                                                      if ((err2 == 4) && (c_err == 2))
+ 673   3                                                              {
+ 674   4                                                                      CHLevel = 7 ;
+ 675   4                                                                      printf("CHLevel 7 \n");
+C51 COMPILER V7.03   8_LEVEL                                                               04/20/2005 06:30:12 PAGE 12  
+
+ 676   4                                                                      TI =0;
+ 677   4                                                              }
+ 678   3                                              /////////////////////////////   
+ 679   3                                                      if ((err2 > 4) && (c_err == -2))
+ 680   3                                                              {
+ 681   4                                                                      CHLevel = 6 ;
+ 682   4                                                                      printf("CHLevel 6 \n");
+ 683   4                                                                      TI =0;
+ 684   4                                                              }
+ 685   3                                                      if ((err2 > 4) && (c_err == -1))
+ 686   3                                                              {
+ 687   4                                                                      CHLevel = 7 ;
+ 688   4                                                                      printf("CHLevel 7 \n");
+ 689   4                                                                      TI =0;
+ 690   4                                                              }
+ 691   3                                                      if ((err2 > 4) && (c_err == 0))
+ 692   3                                                              {
+ 693   4                                                                      CHLevel = 7 ;
+ 694   4                                                                      printf("CHLevel 7 \n");
+ 695   4                                                                      TI =0;
+ 696   4                                                              }
+ 697   3                                                      if ((err2 > 4) && (c_err == 1))
+ 698   3                                                              {
+ 699   4                                                                      CHLevel = 7 ;
+ 700   4                                                                      printf("CHLevel 7 \n");
+ 701   4                                                                      TI =0;
+ 702   4                                                              }
+ 703   3                                                      if ((err2 > 4) && (c_err == 2))
+ 704   3                                                              {
+ 705   4                                                                      CHLevel = 7 ;
+ 706   4                                                                      printf("CHLevel 7 \n");
+ 707   4                                                                      TI =0;
+ 708   4                                                              }
+ 709   3                                              //////////////////////////////  
+ 710   3                                                      if ((temp1 - temp2 ) > (1))
+ 711   3                                                              {
+ 712   4                                                                      fan_2();
+ 713   4                                                                      printf("Fan2 \n\n");
+ 714   4                                                                      TI =0;
+ 715   4                                                              } 
+ 716   3                                                      if ((temp2 - temp1 ) > (1))
+ 717   3                                                      {
+ 718   4                                                              fan_1();
+ 719   4                                                              printf("Fan1 \n\n");
+ 720   4                                                              TI =0;
+ 721   4                                                      }
+ 722   3                                                      if (abs(temp1 - temp2 ) <= (1))
+ 723   3                                                      {
+ 724   4                                                              fan_s();
+ 725   4                                                              printf("Stop \n\n");
+ 726   4                                                              TI =0;
+ 727   4                                                      }
+ 728   3                                                      if (((temp1-set_p[0]) > (1)) || ((temp2-set_p[0]) > (1)))
+ 729   3                                                      {
+ 730   4                                                              fan_1();
+ 731   4                                                              fan_2();
+ 732   4                                                              printf("Fan1 and Fan2 \n\n");
+ 733   4                                                              TI =0;
+ 734   4                                                      }
+ 735   3                                                      //Read_ROM();
+ 736   3                                                      for (i=0;i<200;i++)                                             
+ 737   3                                                              for (j=0;j<1000;j++);
+C51 COMPILER V7.03   8_LEVEL                                                               04/20/2005 06:30:12 PAGE 13  
+
+ 738   3                              //}
+ 739   3                                                      if (RI && (SBUF == 'r')) 
+ 740   3                                                      {
+ 741   4                                                      break;
+ 742   4                                                      }
+ 743   3                                                      else
+ 744   3                                                      RI = 0;
+ 745   3              }
+ 746   2      }       
+ 747   1      }
+ 748          
+ 749          
+ 750          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   3575    ----
+   CONSTANT SIZE    =    248    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     79    ----
+   IDATA SIZE       =      3    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

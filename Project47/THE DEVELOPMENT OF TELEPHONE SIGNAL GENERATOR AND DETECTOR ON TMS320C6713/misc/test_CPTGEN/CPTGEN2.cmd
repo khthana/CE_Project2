@@ -1,0 +1,4 @@
+-l CPTGENcfg.cmd
+-l cptgen.l67
+-l cptgen_kmitl.l67
+-l C:\ti\c6000\xdais\lib\api.l67

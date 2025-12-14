@@ -1,0 +1,2454 @@
+From: <Saved by Microsoft Internet Explorer 5>
+Subject: Using the Rule-Based Optimizer
+Date: Sun, 15 Aug 2004 17:39:34 +0700
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----=_NextPart_000_0025_01C482EE.D3E4C8B0"
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0025_01C482EE.D3E4C8B0
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a96533/rbo.htm
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML lang=3Den-US><HEAD><TITLE>Using the Rule-Based Optimizer</TITLE>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<META http-equiv=3DContent-Language content=3Den-US>
+<META http-equiv=3DContent-Style-Type content=3Dtext/css>
+<META http-equiv=3DContent-Script-Type content=3Dtext/javascript>
+<META scheme=3Dhttp://www.robotstxt.org/ content=3Dall name=3Drobots>
+<META=20
+content=3D"Oracle9i Database Performance Tuning Guide and Reference =
+Release 2 (9.2)"=20
+name=3Ddoctitle>
+<META content=3DA96533-02 name=3Dpartno><LINK title=3DHome =
+href=3D"../../index.htm"=20
+type=3Dtext/html rel=3DStart><LINK title=3DCopyright=20
+href=3D"../../dcommon/html/cpyr.htm" type=3Dtext/html =
+rel=3DCopyright><LINK=20
+title=3DContents href=3D"toc.htm" type=3Dtext/html rel=3DContents><LINK =
+title=3DIndex=20
+href=3D"index.htm" type=3Dtext/html rel=3DIndex><LINK title=3DPrevious=20
+href=3D"outlines.htm" type=3Dtext/html rel=3DPrev><LINK title=3DNext =
+href=3D"part2.htm"=20
+type=3Dtext/html rel=3DNext><!-- link =
+href=3D"../../dcommon/css/doccd.css" rel=3D"Stylesheet"=0A=
+ title=3D"Default" type=3D"text/css" --><LINK=20
+title=3D"PDF version" href=3D"../a96533.pdf" type=3Dapplication/pdf>
+<META content=3D"MSHTML 6.00.2900.2180" name=3DGENERATOR></HEAD>
+<BODY>
+<DIV class=3Dheader>
+<P><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#BEGIN"=20
+name=3Dtop>Skip Headers</A></P>
+<TABLE cellSpacing=3D0 cellPadding=3D0 width=3D"100%" summary=3D"layout =
+table">
+  <TBODY>
+  <TR>
+    <TD vAlign=3Dtop align=3Dleft><FONT face=3D"Helvetica, Arial, =
+sans-serif"=20
+      color=3D#330099><STRONG>Oracle9<I>i</I> Database Performance =
+Tuning Guide=20
+      and Reference<BR>Release 2 (9.2)</STRONG><BR>Part Number=20
+    A96533-02</FONT></TD>
+    <TD vAlign=3Dbottom align=3Dright>
+      <TABLE cellSpacing=3D0 cellPadding=3D0 width=3D270 =
+summary=3D"layout table">
+        <TBODY>
+        <TR>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/index.htm"><IMG=
+=20
+            alt=3D"Go to Documentation Home"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/pro=
+dicon.gif"=20
+            border=3D0><BR><FONT size=3D-2>Home</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/nav/docindex.ht=
+m"><IMG=20
+            alt=3D"Go to Book List"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/boo=
+kicon.gif"=20
+            border=3D0><BR><FONT size=3D-2>Book List</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/toc.htm"><IMG=20
+            alt=3D"Go to Table of Contents"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/con=
+ticon.gif"=20
+            border=3D0><BR><FONT size=3D-2>Contents</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/index.htm"><IMG=20
+            alt=3D"Go to Index"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/ind=
+xicon.gif"=20
+            border=3D0><BR><FONT size=3D-2>Index</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/mix.920/a96625/=
+toc.htm"><IMG=20
+            alt=3D"Go to Master Index"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/mix=
+.gif"=20
+            border=3D0><BR><FONT =
+size=3D-2>Master&nbsp;Index</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/html/fe=
+edback.htm"><IMG=20
+            alt=3D"Go to Feedback page"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/fee=
+dback.gif"=20
+            border=3D0><BR><FONT=20
+  =
+size=3D-2>Feedback</FONT></A></TD></TR></TBODY></TABLE></TD></TR></TBODY>=
+</TABLE>
+<HR>
+
+<TABLE cellSpacing=3D0 cellPadding=3D0 width=3D"100%" summary=3D"layout =
+table">
+  <TBODY>
+  <TR>
+    <TD vAlign=3Dtop align=3Dleft>
+      <TABLE cellSpacing=3D0 cellPadding=3D0 width=3D90 align=3Dleft=20
+      summary=3D"layout table">
+        <TBODY>
+        <TR>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/outlines.htm"><IMG=20
+            alt=3D"Go to previous page"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/lar=
+row.gif"=20
+            border=3D0></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/part2.htm"><IMG=20
+            alt=3D"Go to next page"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/rar=
+row.gif"=20
+            border=3D0></A></TD></TR></TBODY></TABLE></TD>
+    <TD vAlign=3Dtop align=3Dright><A=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33.pdf"><FONT=20
+      size=3D-2>View PDF</FONT></A></TD></TR></TBODY></TABLE><A =
+name=3DBEGIN></A></DIV>
+<DIV class=3DIND><!-- End Header --><A =
+name=3D721></A><!--TOC=3DTitle-"721"-->
+<H1 class=3DTitle><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>8<BR><A=20
+name=3DPFGRF008>Using the Rule-Based =
+Optimizer</A></FONT></H1><!--/TOC=3DTitle--><A=20
+name=3D28908></A>
+<P class=3DBP>This chapter discusses Oracle's rule-based optimizer =
+(RBO). In=20
+general, always use the cost-based approach. The rule-based approach is=20
+available for backward compatibility.</P><A name=3D43761></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNote dir=3Dltr title=3D"This is a layout table to format =
+a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNote>
+    <TD class=3DNote>
+      <HR>
+      <A name=3D43787></A><FONT face=3D"Arial, Helvetica, =
+sans-serif"><STRONG=20
+      class=3DNH>Note:</STRONG></FONT> <A name=3D43788></A>
+      <P class=3DNB>Oracle Corporation strongly advises the use of =
+cost-based=20
+      optimization. Rule-based optimization will be deprecated in a =
+future=20
+      release.</P>
+      <HR>
+    </TD></TR></TBODY></TABLE></DIV><A name=3D41321></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNoteAlso>
+    <TD class=3DNoteAlso><A name=3D41324></A><FONT=20
+      face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH><STRONG=20
+      class=3DBold>See Also</STRONG>:</STRONG></FONT> <A =
+name=3D41325></A>
+      <P class=3DNB><A=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/optimops.htm#721">Chapter&nbsp;1,=20
+      "Introduction to the =
+Optimizer"</A></P></TD></TR></TBODY></TABLE></DIV><A=20
+name=3D29099></A>
+<P class=3DBP>This chapter contains the following sections:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D41298></A><A=20
+  =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#38864">Overview=20
+  of the Rule-Based Optimizer (RBO)</A>=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D41302></A><A=20
+  =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#38893">Understanding=20
+  Access Paths for the RBO</A>=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D42310></A><A=20
+  =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#41432">Transforming=20
+  and Optimizing Statements with the RBO</A> </LI></UL><A =
+name=3D38864></A><!--TOC=3Dh1-"38864"-->
+<H2 class=3DH1><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Overview of=20
+the Rule-Based Optimizer (RBO)</FONT></H2><!--/TOC=3Dh1--><A =
+name=3D38865></A>
+<P class=3DBP>Although Oracle supports the rule-based optimizer, you =
+should design=20
+new applications to use the cost-based optimizer (CBO). You should also =
+use the=20
+CBO for data warehousing applications, because the CBO supports enhanced =
+
+features for DSS. Many new performance features, such as partitioned =
+tables,=20
+improved star query processing, and materialized views, are only =
+available with=20
+the CBO.</P><A name=3D38873></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNote dir=3Dltr title=3D"This is a layout table to format =
+a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNote>
+    <TD class=3DNote>
+      <HR>
+      <A name=3D38868></A><FONT face=3D"Arial, Helvetica, =
+sans-serif"><STRONG=20
+      class=3DNH>Note:</STRONG></FONT> <A name=3D38871></A>
+      <P class=3DNB>If you have developed OLTP applications using Oracle =
+version=20
+      6, and if you have tuned the SQL statements carefully based on the =
+rules=20
+      of the optimizer, then you might want to continue using the RBO =
+when you=20
+      upgrade these applications to a new Oracle release. <A =
+name=3D38872></A></P>
+      <P class=3DNB>If you are using applications provided by =
+third-party vendors,=20
+      then check with the vendors to determine which type of optimizer =
+is best=20
+      suited to that application.</P>
+      <HR>
+    </TD></TR></TBODY></TABLE></DIV><A name=3D38874></A>
+<P class=3DBP>If <CODE>OPTIMIZER_MODE</CODE>=3D<CODE>CHOOSE</CODE>, if =
+statistics do=20
+not exist, and if you do not add hints to SQL statements, then SQL =
+statements=20
+use the RBO. You can use the RBO to access both relational data and =
+object=20
+types. If <CODE>OPTIMIZER_MODE</CODE>=3D<CODE>FIRST_ROWS</CODE>,=20
+<CODE>FIRST_ROWS_</CODE><EM class=3DItalic>n</EM>, or =
+<CODE>ALL_ROWS</CODE> and no=20
+statistics exist, then the CBO uses default statistics. Migrate existing =
+
+applications to use the cost-based approach.</P><A name=3D38875></A>
+<P class=3DBP>You can enable the CBO on a trial basis simply by =
+collecting=20
+statistics. You can then return to the RBO by deleting the statistics or =
+by=20
+setting either the value of the <CODE>OPTIMIZER_MODE</CODE> =
+initialization=20
+parameter or the <CODE>OPTIMIZER_MODE</CODE> clause of the =
+<CODE>ALTER</CODE>=20
+<CODE>SESSION</CODE> statement to <CODE>RULE</CODE>. You can also use =
+this value=20
+if you want to collect and examine statistics for data without using the =
+
+cost-based approach.</P><A name=3D38891></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNoteAlso>
+    <TD class=3DNoteAlso><A name=3D38880></A><FONT=20
+      face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH><STRONG=20
+      class=3DBold>See Also</STRONG>:</STRONG></FONT> <A =
+name=3D38881></A>
+      <P class=3DNB><A=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/stats.htm#13547">Chapter&nbsp;3,=20
+      "Gathering Optimizer Statistics"</A> for an explanation of how to =
+gather=20
+      statistics</P></TD></TR></TBODY></TABLE></DIV><A =
+name=3D38893></A><!--TOC=3Dh1-"38893"-->
+<H2 class=3DH1><FONT face=3D"Arial, Helvetica, sans-serif"=20
+color=3D#330099>Understanding Access Paths for the =
+RBO</FONT></H2><!--/TOC=3Dh1--><A=20
+name=3D38896></A>
+<P class=3DBP>Using the RBO, the optimizer chooses an execution plan =
+based on the=20
+access paths available and the ranks of these access paths. Oracle's =
+ranking of=20
+the access paths is heuristic. If there is more than one way to execute =
+a SQL=20
+statement, then the RBO always uses the operation with the lower rank. =
+Usually,=20
+operations of lower rank execute faster than those associated with =
+constructs of=20
+higher rank.</P><A name=3D38897></A>
+<P class=3DBP>The list shows access paths and their ranking:</P><A =
+name=3D38901></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#38960">RBO=20
+Path 1: Single Row by Rowid</A></P><A name=3D38905></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#38979">RBO=20
+Path 2: Single Row by Cluster Join</A></P><A name=3D38909></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#39019">RBO=20
+Path 3: Single Row by Hash Cluster Key with Unique or Primary =
+Key</A></P><A=20
+name=3D38913></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#39041">RBO=20
+Path 4: Single Row by Unique or Primary Key</A></P><A name=3D38917></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#39063">RBO=20
+Path 5: Clustered Join</A></P><A name=3D38921></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#39095">RBO=20
+Path 6: Hash Cluster Key</A></P><A name=3D38925></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#39114">RBO=20
+Path 7: Indexed Cluster Key</A></P><A name=3D38929></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#39135">RBO=20
+Path 8: Composite Index</A></P><A name=3D38933></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#39156">RBO=20
+Path 9: Single-Column Indexes</A></P><A name=3D38937></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#39197">RBO=20
+Path 10: Bounded Range Search on Indexed Columns</A></P><A =
+name=3D38941></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#39232">RBO=20
+Path 11: Unbounded Range Search on Indexed Columns</A></P><A =
+name=3D38945></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#39269">RBO=20
+Path 12: Sort Merge Join</A></P><A name=3D38949></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#39301">RBO=20
+Path 13: MAX or MIN of Indexed Column</A></P><A name=3D38953></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#39321">RBO=20
+Path 14: ORDER BY on Indexed Column</A></P><A name=3D38957></A>
+<P class=3DBP><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#39346">RBO=20
+Path 15: Full Table Scan</A></P><A =
+name=3D43890></A><!--TOC=3Dh2-"43890"-->
+<H3 class=3DH2><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Details of=20
+the RBO Access Paths</FONT></H3><!--/TOC=3Dh2--><A name=3D43886></A>
+<P class=3DBP>Each of the following sections describes an access path, =
+discusses=20
+when it is available, and shows the output generated for it by the=20
+<CODE>EXPLAIN</CODE> <CODE>PLAN</CODE> statement.</P><A =
+name=3D38960></A><!--TOC=3Dh3-"38960"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>RBO Path 1:=20
+Single Row by Rowid</FONT></H4><!--/TOC=3Dh3--><A name=3D38963></A>
+<P class=3DBP>This access path is available only if the statement's=20
+<CODE>WHERE</CODE> clause identifies the selected rows by rowid or with =
+the=20
+<CODE>CURRENT</CODE> <CODE>OF</CODE> <CODE>CURSOR</CODE> embedded SQL =
+syntax=20
+supported by the Oracle precompilers. To execute the statement, Oracle =
+accesses=20
+the table by rowid.</P><A name=3D38964></A>
+<P class=3DBP>For example:</P><PRE class=3DCE><A name=3D38966></A>SELECT =
+* FROM emp WHERE ROWID =3D 'AAAA7bAA5AAAA1UAAA';=20
+<A name=3D38967></A>
+</PRE><A name=3D38969></A>
+<P class=3DBP>The <CODE>EXPLAIN</CODE> <CODE>PLAN</CODE> output for this =
+statement=20
+might look like this:</P><PRE class=3DCE><A name=3D38970></A>OPERATION   =
+              OPTIONS        OBJECT_NAME=20
+<A =
+name=3D38971></A>-----------------------------------------------------=20
+<A name=3D38972></A>SELECT STATEMENT=20
+<A name=3D38973></A>    TABLE ACCESS          BY ROWID       EMP=20
+</PRE><A name=3D38979></A><!--TOC=3Dh3-"38979"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>RBO Path 2:=20
+Single Row by Cluster Join</FONT></H4><!--/TOC=3Dh3--><A =
+name=3D38980></A>
+<P class=3DBP>This access path is available for statements that join =
+tables stored=20
+in the same cluster if both of the following conditions are true:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D38981></A>The statement's =
+<CODE>WHERE</CODE>=20
+  clause contains conditions that equate each column of the cluster key =
+in one=20
+  table with the corresponding column in the other table.=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D38982></A>The statement's =
+<CODE>WHERE</CODE>=20
+  clause also contains a condition that guarantees the join returns only =
+one=20
+  row. Such a condition is likely to be an equality condition on the =
+column(s)=20
+  of a unique or primary key. </LI></UL><A name=3D38983></A>
+<P class=3DBP>These conditions must be combined with <CODE>AND</CODE> =
+operators.=20
+To execute the statement, Oracle performs a nested loops =
+operation.</P><A=20
+name=3D38994></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNoteAlso>
+    <TD class=3DNoteAlso><A name=3D38986></A><FONT=20
+      face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH>See=20
+      Also:</STRONG></FONT> <A name=3D38987></A>
+      <P class=3DNB><A=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/optimops.htm#77042">"Nested=20
+      Loop Outer Joins"</A><A=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/optimops.htm#77042"></A></P></TD></TR></TBODY></TABLE></DIV><A=20
+name=3D38995></A>
+<P class=3DBP>For example, in the following statement, the =
+<CODE>emp</CODE> and=20
+<CODE>dept</CODE> tables are clustered on the <CODE>deptno</CODE> =
+column, and=20
+the <CODE>empno</CODE> column is the primary key of the <CODE>emp</CODE> =
+
+table:</P><PRE class=3DCE><A name=3D38997></A>SELECT *=20
+<A name=3D38998></A>  FROM emp, dept=20
+<A name=3D38999></A>  WHERE emp.deptno =3D dept.deptno=20
+<A name=3D39000></A>    AND emp.empno =3D 7900;=20
+<A name=3D39001></A>
+</PRE><A name=3D39003></A>
+<P class=3DBP>The <CODE>EXPLAIN</CODE> <CODE>PLAN</CODE> output for this =
+statement=20
+might look like this:</P><PRE class=3DCE><A name=3D39004></A>OPERATION   =
+              OPTIONS        OBJECT_NAME=20
+<A =
+name=3D39005></A>-----------------------------------------------------=20
+<A name=3D39006></A>SELECT STATEMENT=20
+<A name=3D39007></A>    NESTED LOOPS=20
+<A name=3D39008></A>       TABLE ACCESS       BY ROWID       EMP=20
+<A name=3D39009></A>       INDEX              UNIQUE SCAN    PK_EMP   =20
+<A name=3D39010></A>       TABLE ACCESS       CLUSTER        DEPT=20
+<A name=3D39011></A>
+</PRE><A name=3D39012></A>
+<P class=3DBP><CODE>pk_emp</CODE> is the name of an index that enforces =
+the=20
+primary key.</P><A name=3D39019></A><!--TOC=3Dh3-"39019"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>RBO Path 3:=20
+Single Row by Hash Cluster Key with Unique or Primary =
+Key</FONT></H4><!--/TOC=3Dh3--><A name=3D39020></A>
+<P class=3DBP>This access path is available if both of the following =
+conditions=20
+are true:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D39021></A>The statement's =
+<CODE>WHERE</CODE>=20
+  clause uses all columns of a hash cluster key in equality conditions. =
+For=20
+  composite cluster keys, the equality conditions must be combined with=20
+  <CODE>AND</CODE> operators.=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D39022></A>The statement is =
+guaranteed to=20
+  return only one row, because the columns that make up the hash cluster =
+key=20
+  also make up a unique or primary key. </LI></UL><A name=3D39023></A>
+<P class=3DBP>To execute the statement, Oracle applies the cluster's =
+hash function=20
+to the hash cluster key value specified in the statement to obtain a =
+hash value.=20
+Oracle then uses the hash value to perform a hash scan on the =
+table.</P><A=20
+name=3D39024></A>
+<P class=3DBP>For example:</P><A name=3D39025></A>
+<P class=3DBP>In the following statement, the <CODE>orders</CODE> and=20
+<CODE>line_items</CODE> tables are stored in a hash cluster, and the=20
+<CODE>orderno</CODE> column is both the cluster key and the primary key =
+of the=20
+<CODE>orders</CODE> table:</P><PRE class=3DCE><A name=3D39026></A>SELECT =
+*=20
+<A name=3D39027></A>    FROM orders=20
+<A name=3D39028></A>    WHERE orderno =3D 65118968;=20
+<A name=3D39029></A>
+</PRE><A name=3D39031></A>
+<P class=3DBP>The <CODE>EXPLAIN</CODE> <CODE>PLAN</CODE> output for this =
+statement=20
+might look like this:</P><PRE class=3DCE><A name=3D39032></A>OPERATION   =
+              OPTIONS        OBJECT_NAME=20
+<A =
+name=3D39033></A>-----------------------------------------------------=20
+<A name=3D39034></A>SELECT STATEMENT=20
+<A name=3D39035></A>    TABLE ACCESS          HASH           ORDERS=20
+</PRE><A name=3D39041></A><!--TOC=3Dh3-"39041"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>RBO Path 4:=20
+Single Row by Unique or Primary Key</FONT></H4><!--/TOC=3Dh3--><A =
+name=3D39042></A>
+<P class=3DBP>This access path is available if the statement's =
+<CODE>WHERE</CODE>=20
+clause uses all columns of a unique or primary key in equality =
+conditions. For=20
+composite keys, the equality conditions must be combined with =
+<CODE>AND</CODE>=20
+operators. To execute the statement, Oracle performs a unique scan on =
+the index=20
+on the unique or primary key to retrieve a single rowid, and then =
+accesses the=20
+table by that rowid.</P><A name=3D39043></A>
+<P class=3DBP>For example:</P><A name=3D39044></A>
+<P class=3DBP>In the following statement, the <CODE>empno</CODE> column =
+is the=20
+primary key of the <CODE>emp</CODE> table:</P><PRE class=3DCE><A =
+name=3D39045></A>SELECT *=20
+<A name=3D39046></A>    FROM emp=20
+<A name=3D39047></A>    WHERE empno =3D 7900;=20
+<A name=3D39048></A>
+</PRE><A name=3D39050></A>
+<P class=3DBP>The <CODE>EXPLAIN</CODE> <CODE>PLAN</CODE> output for this =
+statement=20
+might look like this:</P><PRE class=3DCE><A name=3D39051></A>OPERATION   =
+              OPTIONS        OBJECT_NAME=20
+<A =
+name=3D39052></A>-----------------------------------------------------=20
+<A name=3D39053></A>SELECT STATEMENT=20
+<A name=3D39054></A>  TABLE ACCESS            BY ROWID       EMP=20
+<A name=3D39055></A>    INDEX                 UNIQUE SCAN    PK_EMP=20
+<A name=3D39056></A>
+</PRE><A name=3D39057></A>
+<P class=3DBP><CODE>pk_emp</CODE> is the name of the index that enforces =
+the=20
+primary key.</P><A name=3D39063></A><!--TOC=3Dh3-"39063"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>RBO Path 5:=20
+Clustered Join</FONT></H4><!--/TOC=3Dh3--><A name=3D39064></A>
+<P class=3DBP>This access path is available for statements that join =
+tables stored=20
+in the same cluster if the statement's <CODE>WHERE</CODE> clause =
+contains=20
+conditions that equate each column of the cluster key in one table with =
+the=20
+corresponding column in the other table. For a composite cluster key, =
+the=20
+equality conditions must be combined with <CODE>AND</CODE> operators. To =
+execute=20
+the statement, Oracle performs a nested loops operation.</P><A =
+name=3D39075></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNoteAlso>
+    <TD class=3DNoteAlso><A name=3D39067></A><FONT=20
+      face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH>See=20
+      Also:</STRONG></FONT> <A name=3D39068></A>
+      <P class=3DNB><A=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/optimops.htm#77042">"Nested=20
+      Loop Outer Joins"</A><A=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/optimops.htm#77042"></A></P></TD></TR></TBODY></TABLE></DIV><A=20
+name=3D39076></A>
+<P class=3DBP>For example:</P><A name=3D39077></A>
+<P class=3DBP>In the following statement, the <CODE>emp</CODE> and=20
+<CODE>dept</CODE> tables are clustered on the <CODE>deptno</CODE> =
+column:</P><PRE class=3DCE><A name=3D39078></A>SELECT *=20
+<A name=3D39079></A>    FROM emp, dept=20
+<A name=3D39080></A>    WHERE emp.deptno =3D dept.deptno;=20
+<A name=3D39081></A>
+</PRE><A name=3D39083></A>
+<P class=3DBP>The <CODE>EXPLAIN</CODE> <CODE>PLAN</CODE> output for this =
+statement=20
+might look like this:</P><PRE class=3DCE><A name=3D39084></A>OPERATION   =
+              OPTIONS        OBJECT_NAME=20
+<A =
+name=3D39085></A>-----------------------------------------------------=20
+<A name=3D39086></A>SELECT STATEMENT=20
+<A name=3D39087></A>  NESTED LOOPS=20
+<A name=3D39088></A>    TABLE ACCESS          FULL           DEPT=20
+<A name=3D39089></A>    TABLE ACCESS          CLUSTER        EMP=20
+</PRE><A name=3D39095></A><!--TOC=3Dh3-"39095"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>RBO Path 6:=20
+Hash Cluster Key</FONT></H4><!--/TOC=3Dh3--><A name=3D39096></A>
+<P class=3DBP>This access path is available if the statement's =
+<CODE>WHERE</CODE>=20
+clause uses all the columns of a hash cluster key in equality =
+conditions. For a=20
+composite cluster key, the equality conditions must be combined with=20
+<CODE>AND</CODE> operators. To execute the statement, Oracle applies the =
+
+cluster's hash function to the hash cluster key value specified in the =
+statement=20
+to obtain a hash value. Oracle then uses this hash value to perform a =
+hash scan=20
+on the table.</P><A name=3D39097></A>
+<P class=3DBP>For example: In the following statement, the =
+<CODE>orders</CODE> and=20
+<CODE>line_items</CODE> tables are stored in a hash cluster, and the=20
+<CODE>orderno</CODE> column is the cluster key:</P><PRE class=3DCE><A =
+name=3D39099></A>SELECT *=20
+<A name=3D39100></A>    FROM line_items=20
+<A name=3D39101></A>    WHERE orderno =3D 65118968;=20
+<A name=3D39102></A>
+</PRE><A name=3D39104></A>
+<P class=3DBP>The <CODE>EXPLAIN</CODE> <CODE>PLAN</CODE> output for this =
+statement=20
+might look like this:</P><PRE class=3DCE><A name=3D39105></A>OPERATION   =
+              OPTIONS        OBJECT_NAME=20
+<A =
+name=3D39106></A>-----------------------------------------------------=20
+<A name=3D39107></A>SELECT STATEMENT=20
+<A name=3D39108></A>    TABLE ACCESS          HASH           LINE_ITEMS=20
+</PRE><A name=3D39114></A><!--TOC=3Dh3-"39114"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>RBO Path 7:=20
+Indexed Cluster Key</FONT></H4><!--/TOC=3Dh3--><A name=3D39115></A>
+<P class=3DBP>This access path is available if the statement's =
+<CODE>WHERE</CODE>=20
+clause uses all the columns of an indexed cluster key in equality =
+conditions.=20
+For a composite cluster key, the equality conditions must be combined =
+with=20
+<CODE>AND</CODE> operators.</P><A name=3D39116></A>
+<P class=3DBP>To execute the statement, Oracle performs a unique scan on =
+the=20
+cluster index to retrieve the rowid of one row with the specified =
+cluster key=20
+value. Oracle then uses that rowid to access the table with a cluster =
+scan.=20
+Because all rows with the same cluster key value are stored together, =
+the=20
+cluster scan requires only a single rowid to find them all.</P><A=20
+name=3D39117></A>
+<P class=3DBP>For example:</P><A name=3D39118></A>
+<P class=3DBP>In the following statement, the <CODE>emp</CODE> table is =
+stored in=20
+an indexed cluster, and the <CODE>deptno</CODE> column is the cluster =
+key:</P><PRE class=3DCE><A name=3D39119></A>SELECT *  FROM emp=20
+<A name=3D39120></A>  WHERE deptno =3D 10;=20
+<A name=3D39121></A>
+</PRE><A name=3D39123></A>
+<P class=3DBP>The <CODE>EXPLAIN</CODE> <CODE>PLAN</CODE> output for this =
+statement=20
+might look like this:</P><PRE class=3DCE><A name=3D39124></A>OPERATION   =
+              OPTIONS        OBJECT_NAME=20
+<A =
+name=3D39125></A>-----------------------------------------------------=20
+<A name=3D39126></A>SELECT STATEMENT=20
+<A name=3D39127></A>  TABLE ACCESS            CLUSTER        EMP=20
+<A name=3D39128></A>    INDEX                 UNIQUE SCAN    PERS_INDEX=20
+<A name=3D39129></A>
+</PRE><A name=3D39130></A>
+<P class=3DBP><CODE>pers_index</CODE> is the name of the cluster =
+index.</P><A=20
+name=3D39135></A><!--TOC=3Dh3-"39135"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>RBO Path 8:=20
+Composite Index</FONT></H4><!--/TOC=3Dh3--><A name=3D39136></A>
+<P class=3DBP>This access path is available if the statement's =
+<CODE>WHERE</CODE>=20
+clause uses all columns of a composite index in equality conditions =
+combined=20
+with <CODE>AND</CODE> operators. To execute the statement, Oracle =
+performs a=20
+range scan on the index to retrieve rowids of the selected rows, and =
+then=20
+accesses the table by those rowids.</P><A name=3D39137></A>
+<P class=3DBP>For example:</P><A name=3D39138></A>
+<P class=3DBP>In the following statement, there is a composite index on =
+the=20
+<CODE>job</CODE> and <CODE>deptno</CODE> columns:</P><PRE class=3DCE><A =
+name=3D39139></A>SELECT *=20
+<A name=3D39140></A>    FROM emp=20
+<A name=3D39141></A>    WHERE job =3D 'CLERK'=20
+<A name=3D39142></A>      AND deptno =3D 30;=20
+<A name=3D39143></A>
+</PRE><A name=3D39145></A>
+<P class=3DBP>The <CODE>EXPLAIN</CODE> <CODE>PLAN</CODE> output for this =
+statement=20
+might look like this:</P><PRE class=3DCE><A name=3D39146></A>OPERATION   =
+              OPTIONS        OBJECT_NAME=20
+<A =
+name=3D39147></A>-----------------------------------------------------=20
+<A name=3D39148></A>SELECT STATEMENT=20
+<A name=3D39149></A>  TABLE ACCESS            BY ROWID       EMP=20
+<A name=3D39150></A>    INDEX                 RANGE SCAN     =
+JOB_DEPTNO_INDEX=20
+<A name=3D39151></A>
+</PRE><A name=3D39152></A>
+<P class=3DBP><CODE>job_deptno_index</CODE> is the name of the composite =
+index on=20
+the <CODE>job</CODE> and <CODE>deptno</CODE> columns.</P><A =
+name=3D39156></A><!--TOC=3Dh3-"39156"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>RBO Path 9:=20
+Single-Column Indexes</FONT></H4><!--/TOC=3Dh3--><A name=3D39157></A>
+<P class=3DBP>This access path is available if the statement's =
+<CODE>WHERE</CODE>=20
+clause uses the columns of one or more single-column indexes in equality =
+
+conditions. For multiple single-column indexes, the conditions must be =
+combined=20
+with <CODE>AND</CODE> operators.</P><A name=3D39158></A>
+<P class=3DBP>If the <CODE>WHERE</CODE> clause uses the column of only =
+one index,=20
+then Oracle executes the statement by performing a range scan on the =
+index to=20
+retrieve the rowids of the selected rows, and then accesses the table by =
+these=20
+rowids.</P><A name=3D39159></A>
+<P class=3DBP>For example:</P><A name=3D39160></A>
+<P class=3DBP>In the following statement, there is an index on the=20
+<CODE>job</CODE> column of the <CODE>emp</CODE> table:</P><PRE =
+class=3DCE><A name=3D39161></A>SELECT *=20
+<A name=3D39162></A>    FROM emp=20
+<A name=3D39163></A>    WHERE job =3D 'ANALYST';=20
+<A name=3D39164></A>
+</PRE><A name=3D39166></A>
+<P class=3DBP>The <CODE>EXPLAIN</CODE> <CODE>PLAN</CODE> output for this =
+statement=20
+might look like this:</P><PRE class=3DCE><A name=3D39167></A>OPERATION   =
+              OPTIONS        OBJECT_NAME=20
+<A =
+name=3D39168></A>-----------------------------------------------------=20
+<A name=3D39169></A>SELECT STATEMENT=20
+<A name=3D39170></A>  TABLE ACCESS            BY ROWID       EMP=20
+<A name=3D39171></A>    INDEX                 RANGE SCAN     JOB_INDEX=20
+<A name=3D39172></A>
+</PRE><A name=3D39173></A>
+<P class=3DBP><CODE>job_index</CODE> is the index on=20
+<CODE>emp</CODE>.<CODE>job</CODE>.</P><A name=3D39174></A>
+<P class=3DBP>If the <CODE>WHERE</CODE> clauses uses columns of many =
+single-column=20
+indexes, then Oracle executes the statement by performing a range scan =
+on each=20
+index to retrieve the rowids of the rows that satisfy each condition. =
+Oracle=20
+then merges the sets of rowids to obtain a set of rowids of rows that =
+satisfy=20
+all conditions. Oracle then accesses the table using these rowids.</P><A =
+
+name=3D39175></A>
+<P class=3DBP>Oracle can merge up to five indexes. If the =
+<CODE>WHERE</CODE>=20
+clause uses columns of more than five single-column indexes, then Oracle =
+merges=20
+five of them, accesses the table by rowid, and then tests the resulting =
+rows to=20
+determine whether they satisfy the remaining conditions before returning =
+
+them.</P><A name=3D39177></A>
+<P class=3DBP>In the following statement, there are indexes on both the=20
+<CODE>job</CODE> and <CODE>deptno</CODE> columns of the <CODE>emp</CODE> =
+
+table:</P><PRE class=3DCE><A name=3D39178></A>SELECT *=20
+<A name=3D39179></A>    FROM emp=20
+<A name=3D39180></A>    WHERE job =3D 'ANALYST'=20
+<A name=3D39181></A>      AND deptno =3D 20;=20
+<A name=3D39182></A>
+</PRE><A name=3D39184></A>
+<P class=3DBP>The <CODE>EXPLAIN</CODE> <CODE>PLAN</CODE> output for this =
+statement=20
+might look like this:</P><PRE class=3DCE><A name=3D39185></A>OPERATION   =
+              OPTIONS        OBJECT_NAME=20
+<A =
+name=3D39186></A>-----------------------------------------------------=20
+<A name=3D39187></A>SELECT STATEMENT=20
+<A name=3D39188></A>  TABLE ACCESS            BY ROWID       EMP=20
+<A name=3D39189></A>    AND-EQUAL=20
+<A name=3D39190></A>      INDEX               RANGE SCAN     JOB_INDEX=20
+<A name=3D39191></A>      INDEX               RANGE SCAN     =
+DEPTNO_INDEX=20
+<A name=3D39192></A>
+</PRE><A name=3D39193></A>
+<P class=3DBP>The <CODE>AND</CODE>-<CODE>EQUAL</CODE> operation merges =
+the rowids=20
+obtained by the scans of the <CODE>job_index</CODE> and the=20
+<CODE>deptno_index</CODE>, resulting in a set of rowids of rows that =
+satisfy the=20
+query.</P><A name=3D39197></A><!--TOC=3Dh3-"39197"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>RBO Path=20
+10: Bounded Range Search on Indexed =
+Columns</FONT></H4><!--/TOC=3Dh3--><A=20
+name=3D39198></A>
+<P class=3DBP>This access path is available if the statement's =
+<CODE>WHERE</CODE>=20
+clause contains a condition that uses either the column of a =
+single-column index=20
+or one or more columns that make up a leading portion of a composite =
+index:</P><PRE class=3DCE><A name=3D39199></A>column =3D =
+<EM><CODE>expr</CODE></EM>=20
+<A name=3D39200></A>
+<A name=3D39201></A>column &gt;[=3D] <EM><CODE>expr</CODE></EM> AND =
+column &lt;[=3D] <EM><CODE>expr</CODE></EM>=20
+<A name=3D39202></A>
+<A name=3D39203></A>column BETWEEN <EM><CODE>expr</CODE></EM> AND =
+<EM><CODE>expr</CODE></EM>=20
+<A name=3D39204></A>
+<A name=3D39205></A>column LIKE 'c%'=20
+<A name=3D39206></A>
+</PRE><A name=3D39207></A>
+<P class=3DBP>Each of these conditions specifies a bounded range of =
+indexed values=20
+that are accessed by the statement. The range is said to be bounded =
+because the=20
+conditions specify both its least value and its greatest value. To =
+execute such=20
+a statement, Oracle performs a range scan on the index, and then =
+accesses the=20
+table by rowid.</P><A name=3D39208></A>
+<P class=3DBP>This access path is not available if the expression=20
+<EM><CODE>expr</CODE></EM> references the indexed column.&nbsp;</P><A=20
+name=3D39209></A>
+<P class=3DBP>For example:</P><A name=3D39210></A>
+<P class=3DBP>In the following statement, there is an index on the=20
+<CODE>sal</CODE> column of the <CODE>emp</CODE> table:</P><PRE =
+class=3DCE><A name=3D39211></A>SELECT *=20
+<A name=3D39212></A>    FROM emp=20
+<A name=3D39213></A>    WHERE sal BETWEEN 2000 AND 3000;=20
+<A name=3D39214></A>
+</PRE><A name=3D39216></A>
+<P class=3DBP>The <CODE>EXPLAIN</CODE> <CODE>PLAN</CODE> output for this =
+statement=20
+might look like this:</P><PRE class=3DCE><A name=3D39217></A>OPERATION   =
+              OPTIONS        OBJECT_NAME=20
+<A =
+name=3D39218></A>-----------------------------------------------------=20
+<A name=3D39219></A>SELECT STATEMENT=20
+<A name=3D39220></A>  TABLE ACCESS            BY ROWID       EMP=20
+<A name=3D39221></A>    INDEX                 RANGE SCAN     SAL_INDEX=20
+<A name=3D39222></A>
+</PRE><A name=3D39223></A>
+<P class=3DBP><CODE>sal_index</CODE> is the name of the index on=20
+<CODE>emp</CODE>.<CODE>sal</CODE>.</P><A name=3D39225></A>
+<P class=3DBP>In the following statement, there is an index on the=20
+<CODE>ename</CODE> column of the <CODE>emp</CODE> table:</P><PRE =
+class=3DCE><A name=3D39226></A>SELECT *=20
+<A name=3D39227></A>    FROM emp=20
+<A name=3D39228></A>    WHERE ename LIKE 'S%';=20
+</PRE><A name=3D39232></A><!--TOC=3Dh3-"39232"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>RBO Path=20
+11: Unbounded Range Search on Indexed =
+Columns</FONT></H4><!--/TOC=3Dh3--><A=20
+name=3D39233></A>
+<P class=3DBP>This access path is available if the statement's =
+<CODE>WHERE</CODE>=20
+clause contains one of the following conditions that use either the =
+column of a=20
+single-column index or one or more columns of a leading portion of a =
+composite=20
+index:</P><PRE class=3DCE><A name=3D39234></A>WHERE column &gt;[=3D] =
+<EM><CODE>expr</CODE></EM>=20
+<A name=3D39235></A>
+<A name=3D39236></A>WHERE column &lt;[=3D] <EM><CODE>expr</CODE></EM>=20
+<A name=3D39237></A>
+</PRE><A name=3D39238></A>
+<P class=3DBP>Each of these conditions specifies an unbounded range of =
+index=20
+values accessed by the statement. The range is said to be unbounded, =
+because the=20
+condition specifies either its least value or its greatest value, but =
+not both.=20
+To execute such a statement, Oracle performs a range scan on the index, =
+and then=20
+accesses the table by rowid.</P><A name=3D39239></A>
+<P class=3DBP>For example:</P><A name=3D39240></A>
+<P class=3DBP>In the following statement, there is an index on the=20
+<CODE>sal</CODE> column of the <CODE>emp</CODE> table:</P><PRE =
+class=3DCE><A name=3D39241></A>SELECT *=20
+<A name=3D39242></A>    FROM emp=20
+<A name=3D39243></A>    WHERE sal &gt; 2000;=20
+<A name=3D39244></A>
+</PRE><A name=3D39246></A>
+<P class=3DBP>The <CODE>EXPLAIN</CODE> <CODE>PLAN</CODE> output for this =
+statement=20
+might look like this:</P><PRE class=3DCE><A name=3D39247></A>OPERATION   =
+              OPTIONS        OBJECT_NAME=20
+<A =
+name=3D39248></A>-----------------------------------------------------=20
+<A name=3D39249></A>SELECT STATEMENT=20
+<A name=3D39250></A>  TABLE ACCESS            BY ROWID       EMP=20
+<A name=3D39251></A>    INDEX                 RANGE SCAN     SAL_INDEX=20
+<A name=3D39253></A>
+</PRE><A name=3D41016></A>
+<P class=3DBP>In the following statement, there is a composite index on =
+the=20
+<CODE>order</CODE> and <CODE>line</CODE> columns of the =
+<CODE>line_items</CODE>=20
+table:</P><PRE class=3DCE><A name=3D39254></A>SELECT *=20
+<A name=3D39255></A>    FROM line_items=20
+<A name=3D39256></A>    WHERE order &gt; 65118968;=20
+<A name=3D39257></A>
+</PRE><A name=3D39258></A>
+<P class=3DBP>The access path is available, because the =
+<CODE>WHERE</CODE> clause=20
+uses the <CODE>order</CODE> column, a leading portion of the =
+index.</P><A=20
+name=3D39260></A>
+<P class=3DBP>This access path is <EM class=3DItalic>not</EM> available =
+in the=20
+following statement, in which there is an index on the =
+<CODE>order</CODE> and=20
+<CODE>line</CODE> columns:</P><PRE class=3DCE><A name=3D39261></A>SELECT =
+*=20
+<A name=3D39262></A>    FROM line_items=20
+<A name=3D39263></A>    WHERE line &lt; 4;=20
+<A name=3D39264></A>
+</PRE><A name=3D39265></A>
+<P class=3DBP>The access path is not available because the =
+<CODE>WHERE</CODE>=20
+clause only uses the <CODE>line</CODE> column, which is not a leading =
+portion of=20
+the index.</P><A name=3D39269></A><!--TOC=3Dh3-"39269"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>RBO Path=20
+12: Sort Merge Join</FONT></H4><!--/TOC=3Dh3--><A name=3D39270></A>
+<P class=3DBP>This access path is available for statements that join =
+tables that=20
+are not stored together in a cluster if the statement's =
+<CODE>WHERE</CODE>=20
+clause uses columns from each table in equality conditions. To execute =
+such a=20
+statement, Oracle uses a sort-merge operation. Oracle can also use a =
+nested=20
+loops operation to execute a join statement.</P><A name=3D39281></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNoteAlso>
+    <TD class=3DNoteAlso><A name=3D39273></A><FONT=20
+      face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH>See=20
+      Also:</STRONG></FONT> <A name=3D39276></A>
+      <P class=3DNB><A=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/optimops.htm#39473">"Understanding=20
+      Joins"</A><A=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/optimops.htm#39473"></A>=20
+      for information on these =
+operations</P></TD></TR></TBODY></TABLE></DIV><A=20
+name=3D39282></A>
+<P class=3DBP>For example:</P><A name=3D39283></A>
+<P class=3DBP>In the following statement, the <CODE>emp</CODE> and=20
+<CODE>dept</CODE> tables are not stored in the same cluster:</P><PRE =
+class=3DCE><A name=3D39284></A>SELECT *=20
+<A name=3D39285></A>    FROM emp, dept=20
+<A name=3D39286></A>    WHERE emp.deptno =3D dept.deptno;=20
+<A name=3D39287></A>
+</PRE><A name=3D39289></A>
+<P class=3DBP>The <CODE>EXPLAIN</CODE> <CODE>PLAN</CODE> output for this =
+statement=20
+might look like this:</P><PRE class=3DCE><A name=3D39290></A>OPERATION   =
+              OPTIONS        OBJECT_NAME=20
+<A =
+name=3D39291></A>-----------------------------------------------------=20
+<A name=3D39292></A>SELECT STATEMENT=20
+<A name=3D39293></A>  MERGE JOIN=20
+<A name=3D39294></A>    SORT                  JOIN=20
+<A name=3D39295></A>      TABLE ACCESS        FULL           EMP=20
+<A name=3D39296></A>    SORT                  JOIN=20
+<A name=3D39297></A>  TABLE ACCESS            FULL           DEPT=20
+</PRE><A name=3D39301></A><!--TOC=3Dh3-"39301"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>RBO Path=20
+13: MAX or MIN of Indexed Column</FONT></H4><!--/TOC=3Dh3--><A =
+name=3D39302></A>
+<P class=3DBP>This access path is available for a <CODE>SELECT</CODE> =
+statement,=20
+and all of the following conditions are true:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D39303></A>The query uses the =
+<CODE>MAX</CODE>=20
+  or <CODE>MIN</CODE> function to select the maximum or minimum value of =
+either=20
+  the column of a single-column index or the leading column of a =
+composite=20
+  index. The index cannot be a cluster index. The argument to the=20
+  <CODE>MAX</CODE> or <CODE>MIN</CODE> function can be any expression =
+involving=20
+  the column, a constant, or the addition operator (+), the =
+concatenation=20
+  operation (||), or the <CODE>CONCAT</CODE> function.=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D39304></A>There are no other =
+expressions in=20
+  the select list.=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D39305></A>The statement has no=20
+  <CODE>WHERE</CODE> clause or <CODE>GROUP</CODE> <CODE>BY</CODE> =
+clause.=20
+</LI></UL><A name=3D39306></A>
+<P class=3DBP>To execute the query, Oracle performs a full scan of the =
+index to=20
+find the maximum or minimum indexed value. Because only this value is =
+selected,=20
+Oracle need not access the table after scanning the index.</P><A =
+name=3D39307></A>
+<P class=3DBP>For example, in the following statement, there is an index =
+on the=20
+<CODE>sal</CODE> column of the <CODE>emp</CODE> table:</P><PRE =
+class=3DCE><A name=3D39309></A>SELECT MAX(sal) FROM emp;=20
+<A name=3D39310></A>
+</PRE><A name=3D39312></A>
+<P class=3DBP>The <CODE>EXPLAIN</CODE> <CODE>PLAN</CODE> output for this =
+statement=20
+might look like this:</P><PRE class=3DCE><A name=3D42492></A>  0      =
+SELECT STATEMENT Optimizer=3DCHOOSE=20
+<A name=3D42493></A>  1    0  SORT (AGGREGATE)=20
+<A name=3D42473></A>  2    1    INDEX (FULL SCAN (MIN/MAX)) OF =
+'SAL_INDEX' (NON-UNIQUE)
+</PRE><A name=3D39321></A><!--TOC=3Dh3-"39321"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>RBO Path=20
+14: ORDER BY on Indexed Column</FONT></H4><!--/TOC=3Dh3--><A =
+name=3D39322></A>
+<P class=3DBP>This access path is available for a <CODE>SELECT</CODE> =
+statement,=20
+and all of the following conditions are true:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D39323></A>The query contains an=20
+  <CODE>ORDER</CODE> <CODE>BY</CODE> clause that uses either the column =
+of a=20
+  single-column index or a leading portion of a composite index. The =
+index=20
+  cannot be a cluster index.=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D39324></A>There is a =
+<CODE>PRIMARY</CODE>=20
+  <CODE>KEY</CODE> or <CODE>NOT</CODE> <CODE>NULL</CODE> integrity =
+constraint=20
+  that guarantees that at least one of the indexed columns listed in the =
+
+  <CODE>ORDER</CODE> <CODE>BY</CODE> clause contains no nulls.=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D39326></A>The =
+<CODE>NLS_SORT</CODE>=20
+  initialization parameter is set to <CODE>BINARY</CODE>. </LI></UL><A=20
+name=3D39327></A>
+<P class=3DBP>To execute the query, Oracle performs a range scan of the =
+index to=20
+retrieve the rowids of the selected rows in sorted order. Oracle then =
+accesses=20
+the table by these rowids.</P><A name=3D39328></A>
+<P class=3DBP>For example:</P><A name=3D39329></A>
+<P class=3DBP>In the following statement, there is a primary key on the=20
+<CODE>empno</CODE> column of the <CODE>emp</CODE> table:</P><PRE =
+class=3DCE><A name=3D39330></A>SELECT *=20
+<A name=3D39331></A>    FROM emp=20
+<A name=3D39332></A>    ORDER BY empno;=20
+<A name=3D39333></A>
+</PRE><A name=3D39335></A>
+<P class=3DBP>The <CODE>EXPLAIN</CODE> <CODE>PLAN</CODE> output for this =
+statement=20
+might look like this:</P><PRE class=3DCE><A name=3D39336></A>OPERATION   =
+              OPTIONS        OBJECT_NAME=20
+<A =
+name=3D39337></A>-----------------------------------------------------=20
+<A name=3D39338></A>SELECT STATEMENT=20
+<A name=3D39339></A>  TABLE ACCESS            BY ROWID       EMP=20
+<A name=3D39340></A>    INDEX                 RANGE SCAN     PK_EMP=20
+<A name=3D39341></A>
+</PRE><A name=3D39342></A>
+<P class=3DBP><CODE>pk_emp</CODE> is the name of the index that enforces =
+the=20
+primary key. The primary key ensures that the column does not contain=20
+nulls.</P><A name=3D39346></A><!--TOC=3Dh3-"39346"-->
+<H4 class=3DH3><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>RBO Path=20
+15: Full Table Scan</FONT></H4><!--/TOC=3Dh3--><A name=3D39347></A>
+<P class=3DBP>This access path is available for any SQL statement, =
+regardless of=20
+its <CODE>WHERE</CODE> clause conditions, except when its =
+<CODE>FROM</CODE>=20
+clause contains <CODE>SAMPLE</CODE> or <CODE>SAMPLE</CODE>=20
+<CODE>BLOCK</CODE>.</P><A name=3D39350></A>
+<P class=3DBP>Note that the full table scan is the lowest ranked access =
+path on=20
+the list. This means that the RBO always chooses an access path that =
+uses an=20
+index if one is available, even if a full table scan might execute =
+faster.</P><A=20
+name=3D39353></A>
+<P class=3DBP>The following conditions make index access paths =
+unavailable:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D39354></A>column1 &gt; column2=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D39355></A>column1 &lt; column2=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D39356></A>column1 &gt;=3D =
+column2=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D39357></A>column1 &lt;=3D =
+column2 </LI></UL><A=20
+name=3D39358></A>
+<P class=3DBP>where <EM class=3DItalic>column1</EM> and <EM=20
+class=3DItalic>column2</EM> are in the same table.</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D39359></A>column <CODE>IS</CODE> =
+
+  <CODE>NULL</CODE>=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D39360></A>column <CODE>IS</CODE> =
+
+  <CODE>NOT</CODE> <CODE>NULL</CODE>=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D39361></A>column =
+<CODE>NOT</CODE>=20
+  <CODE>IN</CODE>=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D39362></A>column !=3D expr=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D39363></A>column =
+<CODE>LIKE</CODE> '%pattern'=20
+  </LI></UL><A name=3D39364></A>
+<P class=3DBP>regardless of whether <EM class=3DItalic>column</EM> is =
+indexed.</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D39365></A>expr =3D expr2 =
+</LI></UL><A=20
+name=3D39366></A>
+<P class=3DBP>where <EM class=3DItalic>expr</EM> is an expression that =
+operates on a=20
+column with an operator or function, regardless of whether the column is =
+
+indexed.</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D39367></A><CODE>NOT</CODE> =
+<CODE>EXISTS</CODE>=20
+  subquery=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D39371></A><CODE>ROWNUM</CODE> =
+pseudocolumn in=20
+  a view=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D39372></A>Any condition =
+involving a column=20
+  that is not indexed </LI></UL><A name=3D39373></A>
+<P class=3DBP>Any SQL statement that contains only these constructs and =
+no others=20
+that make index access paths available must use full table scans.</P><A=20
+name=3D39374></A>
+<P class=3DBP>For example: The following statement uses a full table =
+scan to=20
+access the <CODE>emp</CODE> table:</P><PRE class=3DCE><A =
+name=3D39376></A>SELECT *=20
+<A name=3D39377></A>    FROM emp;=20
+<A name=3D39378></A>
+</PRE><A name=3D39380></A>
+<P class=3DBP>The <CODE>EXPLAIN</CODE> <CODE>PLAN</CODE> output for this =
+statement=20
+might look like this:</P><PRE class=3DCE><A name=3D39381></A>OPERATION   =
+              OPTIONS        OBJECT_NAME=20
+<A =
+name=3D39382></A>-----------------------------------------------------=20
+<A name=3D39383></A>SELECT STATEMENT=20
+<A name=3D38861></A>  TABLE ACCESS            FULL           EMP=20
+</PRE><A name=3D41378></A><!--TOC=3Dh2-"41378"-->
+<H3 class=3DH2><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Choosing=20
+Execution Plans for Joins with the RBO</FONT></H3><!--/TOC=3Dh2--><A=20
+name=3D41410></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNote dir=3Dltr title=3D"This is a layout table to format =
+a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNote>
+    <TD class=3DNote>
+      <HR>
+      <A name=3D41414></A><FONT face=3D"Arial, Helvetica, =
+sans-serif"><STRONG=20
+      class=3DNH>Note:</STRONG></FONT> <A name=3D41415></A>
+      <P class=3DNB>The following considerations apply to both the =
+cost-based and=20
+      rule-based approaches:</P>
+      <UL class=3DNL>
+        <LI class=3DNL type=3Ddisc><A name=3D41416></A>The optimizer =
+first determines=20
+        whether joining two or more of the tables definitely results in =
+a row=20
+        source containing at most one row. The optimizer recognizes such =
+
+        situations based on <CODE>UNIQUE</CODE> and <CODE>PRIMARY</CODE> =
+
+        <CODE>KEY</CODE> constraints on the tables. If such a situation =
+exists,=20
+        then the optimizer places these tables first in the join order. =
+The=20
+        optimizer then optimizes the join of the remaining set of =
+tables.=20
+        <LI class=3DNL type=3Ddisc><A name=3D41417></A>For join =
+statements with outer=20
+        join conditions, the table with the outer join operator must =
+come after=20
+        the other table in the condition in the join order. The =
+optimizer does=20
+        not consider join orders that violate this rule. </LI></UL>
+      <HR>
+    </TD></TR></TBODY></TABLE></DIV><A name=3D41381></A>
+<P class=3DBP>With the rule-based approach, the optimizer performs the =
+following=20
+steps to choose an execution plan for a statement that joins R =
+tables:</P>
+<OL class=3DLN1 type=3D1>
+  <LI class=3DLN1 type=3D1 value=3D1><A name=3D41382></A>The optimizer =
+generates a set=20
+  of R join orders, each with a different table as the first table. The=20
+  optimizer generates each potential join order using this algorithm:=20
+  <UL class=3DLB2>
+    <LI class=3DLB2 type=3Ddisc><A name=3D41383></A>To fill each =
+position in the join=20
+    order, the optimizer chooses the table with the most highly ranked =
+available=20
+    access path according to the ranks for access paths described in <A=20
+    =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#38893">"Understanding=20
+    Access Paths for the RBO"</A><A=20
+    =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#38893"></A>.=20
+    The optimizer repeats this step to fill each subsequent position in =
+the join=20
+    order.=20
+    <LI class=3DLB2 type=3Ddisc><A name=3D42520></A>For each table in =
+the join order,=20
+    the optimizer also chooses the operation with which to join the =
+table to the=20
+    previous table or row source in the order. The optimizer does this =
+by=20
+    ranking the sort-merge operation as access path 12 and applying =
+these rules:=20
+
+    <UL class=3DLA3>
+      <LI class=3DLA3 type=3DSQUARE><A name=3D42521></A>If the access =
+path for the=20
+      chosen table is ranked 11 or better, then the optimizer chooses a =
+nested=20
+      loops operation using the previous table or row source in the join =
+order=20
+      as the outer table.=20
+      <LI class=3DLA3 type=3DSQUARE><A name=3D42522></A>If the access =
+path for the=20
+      table is ranked lower than 12, and if there is an equijoin =
+condition=20
+      between the chosen table and the previous table or row source in =
+join=20
+      order, then the optimizer chooses a sort-merge operation.=20
+      <LI class=3DLA3 type=3DSQUARE><A name=3D42523></A>If the access =
+path for the=20
+      chosen table is ranked lower than 12, and if there is not an =
+equijoin=20
+      condition, then the optimizer chooses a nested loops operation =
+with the=20
+      previous table or row source in the join order as the outer table. =
+
+    </LI></UL></LI></UL>
+  <LI class=3DLN1 type=3D1 value=3D2><A name=3D42524></A>The optimizer =
+then chooses=20
+  among the resulting set of execution plans. The goal of the =
+optimizer's choice=20
+  is to maximize the number of nested loops join operations in which the =
+inner=20
+  table is accessed using an index scan. Because a nested loops join =
+involves=20
+  accessing the inner table many times, an index on the inner table can =
+greatly=20
+  improve the performance of a nested loops join.=20
+  <P><A name=3D41395></A></P>
+  <P class=3DBP1>Usually, the optimizer does not consider the order in =
+which=20
+  tables appear in the <CODE>FROM</CODE> clause when choosing an =
+execution plan.=20
+  The optimizer makes this choice by applying the following rules=20
+  in&nbsp;order:</P>
+  <UL class=3DLB2>
+    <LI class=3DLB2 type=3Ddisc><A name=3D41396></A>The optimizer =
+chooses the=20
+    execution plan with the fewest nested-loops operations in which the =
+inner=20
+    table is accessed with a full table scan.=20
+    <LI class=3DLB2 type=3Ddisc><A name=3D41397></A>If there is a tie, =
+then the=20
+    optimizer chooses the execution plan with the fewest sort-merge =
+operations.=20
+    <LI class=3DLB2 type=3Ddisc><A name=3D41398></A>If there is still a =
+tie, then the=20
+    optimizer chooses the execution plan for which the first table in =
+the join=20
+    order has the most highly ranked access path:=20
+    <UL class=3DLA3>
+      <LI class=3DLA3 type=3DSQUARE><A name=3D41399></A>If there is a =
+tie among=20
+      multiple plans whose first tables are accessed by the =
+single-column=20
+      indexes access path, then the optimizer chooses the plan whose =
+first table=20
+      is accessed with the most merged indexes.=20
+      <LI class=3DLA3 type=3DSQUARE><A name=3D41400></A>If there is a =
+tie among=20
+      multiple plans whose first tables are accessed by bounded range =
+scans,=20
+      then the optimizer chooses the plan whose first table is accessed =
+with the=20
+      greatest number of leading columns of the composite index. =
+</LI></UL>
+    <LI class=3DLB2 type=3Ddisc><A name=3D41401></A>If there is still a =
+tie, then the=20
+    optimizer chooses the execution plan for which the first table =
+appears later=20
+    in the query's <CODE>FROM</CODE> clause. </LI></UL></LI></OL><A =
+name=3D41432></A><!--TOC=3Dh1-"41432"-->
+<H2 class=3DH1><FONT face=3D"Arial, Helvetica, sans-serif"=20
+color=3D#330099>Transforming and Optimizing Statements with the =
+RBO</FONT></H2><!--/TOC=3Dh1--><A name=3D41434></A>
+<P class=3DBP>SQL is a very flexible query language; often, there are =
+many=20
+statements you could use to achieve the same goal. Sometimes, the =
+optimizer=20
+transforms one such statement into another that achieves the same goal =
+if the=20
+second statement can be executed more efficiently.</P><A =
+name=3D42321></A>
+<P class=3DBP>This section discusses the following topics:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D42322></A><A=20
+  =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#42324">Transforming=20
+  ORs into Compound Queries with the RBO</A>=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D42333></A><A=20
+  =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#42251">Using=20
+  Alternative SQL Syntax</A> </LI></UL><A =
+name=3D42324></A><!--TOC=3Dh2-"42324"-->
+<H3 class=3DH2><FONT face=3D"Arial, Helvetica, sans-serif"=20
+color=3D#330099>Transforming ORs into Compound Queries with the =
+RBO</FONT></H3><!--/TOC=3Dh2--><A name=3D41472></A>
+<P class=3DBP>If a query contains a <CODE>WHERE</CODE> clause with =
+multiple=20
+conditions combined with <CODE>OR</CODE> operators, then the optimizer=20
+transforms it into an equivalent compound query that uses the =
+<CODE>UNION</CODE>=20
+<CODE>ALL</CODE> set operator if this makes it execute more =
+efficiently:</P>
+<UL class=3DLB1>
+  <LI class=3DLB1 type=3Ddisc><A name=3D41474></A>If each condition =
+individually makes=20
+  an index access path available, then the optimizer can make the=20
+  transformation. The optimizer chooses an execution plan for the =
+resulting=20
+  statement that accesses the table multiple times using the different =
+indexes,=20
+  and then puts the results together.=20
+  <LI class=3DLB1 type=3Ddisc><A name=3D41475></A>If any condition =
+requires a full=20
+  table scan because it does not make an index available, then the =
+optimizer=20
+  does not transform the statement. The optimizer chooses a full table =
+scan to=20
+  execute the statement, and Oracle tests each row in the table to =
+determine=20
+  whether it satisfies any of the conditions.=20
+  <P><A name=3D41494></A></P>
+  <DIV align=3Dcenter>
+  <TABLE class=3DNoteAlso dir=3Dltr title=3D"This is a layout table to =
+format a note"=20
+  cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+  summary=3D"This is a layout table to format a note" border=3D0>
+    <TBODY>
+    <TR class=3DNoteAlso>
+      <TD class=3DNoteAlso><A name=3D41480></A><FONT=20
+        face=3D"Arial, Helvetica, sans-serif"><STRONG class=3DNH>See=20
+        Also:</STRONG></FONT> <A name=3D44076></A>
+        <P class=3DNB><A=20
+        =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#38893">"Understanding=20
+        Access Paths for the RBO"</A><A=20
+        =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#38893"></A>=20
+        and <A=20
+        =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/opt_ops.htm#1005572">"How=20
+        the CBO Transforms ORs into Compound Queries"</A><A=20
+        =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/opt_ops.htm#1005572"></A>=20
+        for information on access paths and how indexes make them=20
+      available</P></TD></TR></TBODY></TABLE></DIV></LI></UL><A =
+name=3D41514></A>
+<P class=3DBP>With the RBO, the optimizer makes this <CODE>UNION</CODE>=20
+<CODE>ALL</CODE> transformation, because each component query of the =
+resulting=20
+compound query can be executed using an index. The RBO assumes that =
+executing=20
+the compound query using two index scans is faster than executing the =
+original=20
+query using a full table scan.</P><A =
+name=3D42251></A><!--TOC=3Dh2-"42251"-->
+<H3 class=3DH2><FONT face=3D"Arial, Helvetica, sans-serif" =
+color=3D#330099>Using=20
+Alternative SQL Syntax</FONT></H3><!--/TOC=3Dh2--><A name=3D42252></A>
+<P class=3DBP>Because SQL is a flexible language, more than one SQL =
+statement can=20
+meet the needs of an application. Although two SQL statements can =
+produce the=20
+same result, Oracle might process one faster than the other. You can use =
+the=20
+results of the <CODE>EXPLAIN</CODE> <CODE>PLAN</CODE> statement to =
+compare the=20
+execution plans and costs of the two statements and determine which is =
+more=20
+efficient.</P><A name=3D42255></A>
+<P class=3DBP>This example shows the execution plans for two SQL =
+statements that=20
+perform the same function. Both statements return all the departments in =
+the=20
+<CODE>dept</CODE> table that have no employees in the <CODE>emp</CODE> =
+table.=20
+Each statement searches the <CODE>emp</CODE> table with a subquery. =
+Assume there=20
+is an index, <CODE>deptno_index</CODE>, on the <CODE>deptno</CODE> =
+column of the=20
+<CODE>emp</CODE> table.</P><A name=3D42258></A>
+<P class=3DBP>The first statement and its execution plan:</P><PRE =
+class=3DCE><A name=3D42259></A>SELECT dname, deptno
+<A name=3D42260></A>   FROM dept
+<A name=3D42261></A>   WHERE deptno NOT IN
+<A name=3D42262></A>      (SELECT deptno FROM emp);
+<A name=3D44245></A>
+</PRE><A name=3D44248></A>
+<P class=3DBP>The execution plan for the transformed statement might =
+look like the=20
+illustration in <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#42263">Figure&nbsp;8-1</A>.=20
+The shaded boxes indicate steps that physically retrieve data and the =
+clear=20
+boxes indicate steps that operate on data returned from the previous =
+step.</P><A=20
+name=3D42263></A>
+<H4 class=3DFT><FONT face=3D"Arial, Helvetica, sans-serif"><EM>Figure =
+8-1 Execution=20
+Plan with Two Full Table Scans</EM></FONT></H4><A name=3D42267><IMG=20
+alt=3D"Text description of pfgrf023.gif follows"=20
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a9653=
+3/pfgrf023.gif"></A><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/img_text/pfgrf023.htm"><BR>Text=20
+description of the illustration pfgrf023.gif</A><BR><BR><A =
+name=3D42268></A>
+<P class=3DBP>Step 3 of the output indicates that Oracle executes this =
+statement=20
+by performing a full table scan of the <CODE>emp</CODE> table despite =
+the index=20
+on the <CODE>deptno</CODE> column. This full table scan can be a =
+time-consuming=20
+operation. Oracle does not use the index, because the subquery that =
+searches the=20
+<CODE>emp</CODE> table does not have a <CODE>WHERE</CODE> clause that =
+makes the=20
+index available.</P><A name=3D42273></A>
+<P class=3DBP>However, this SQL statement selects the same rows by =
+accessing the=20
+index:</P><PRE class=3DCE><A name=3D42274></A>SELECT dname, deptno
+<A name=3D42275></A>FROM dept
+<A name=3D42276></A>WHERE NOT EXISTS
+<A name=3D42277></A>    (SELECT deptno
+<A name=3D42278></A>    FROM emp
+<A name=3D42279></A>    WHERE dept.deptno =3D emp.deptno);
+<A name=3D44261></A>
+</PRE><A name=3D44264></A>
+<P class=3DBP>The execution plan for the transformed statement might =
+look like the=20
+illustration in <A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/rbo.htm#42280">Figure&nbsp;8-2</A>.=20
+The shaded boxes indicate steps that physically retrieve data and the =
+clear=20
+boxes indicate steps that operate on data returned from the previous =
+step.</P><A=20
+name=3D42280></A>
+<H4 class=3DFT><FONT face=3D"Arial, Helvetica, sans-serif"><EM>Figure =
+8-2 Execution=20
+Plan with a Full Table Scan and an Index Scan</EM></FONT></H4><A =
+name=3D42284><IMG=20
+alt=3D"Text description of pfgrf024.gif follows"=20
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a9653=
+3/pfgrf024.gif"></A><A=20
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/img_text/pfgrf024.htm"><BR>Text=20
+description of the illustration pfgrf024.gif</A><BR><BR><A =
+name=3D42285></A>
+<P class=3DBP>The <CODE>WHERE</CODE> clause of the subquery refers to =
+the=20
+<CODE>deptno</CODE> column of the <CODE>emp</CODE> table, so the index=20
+<CODE>deptno_index</CODE> is used. The use of the index is reflected in =
+step 3=20
+of the execution plan. The index range scan of <CODE>deptno_index</CODE> =
+takes=20
+less time than the full scan of the <CODE>emp</CODE> table in the first=20
+statement. Furthermore, the first query performs one full scan of the=20
+<CODE>emp</CODE> table for every <CODE>deptno</CODE> in the =
+<CODE>dept</CODE>=20
+table. For these reasons, the second SQL statement is faster than the=20
+first.</P><A name=3D42286></A>
+<P class=3DBP>If you have statements in an application that use the=20
+<CODE>NOT</CODE> <CODE>IN</CODE> operator, as the first query in this =
+example=20
+does, then consider rewriting them so that they use the <CODE>NOT</CODE> =
+
+<CODE>EXISTS</CODE> operator. This allows such statements to use an =
+index if one=20
+exists.</P><A name=3D42291></A>
+<DIV align=3Dcenter>
+<TABLE class=3DNote dir=3Dltr title=3D"This is a layout table to format =
+a note"=20
+cellSpacing=3D0 cellPadding=3D0 width=3D"80%"=20
+summary=3D"This is a layout table to format a note" border=3D0>
+  <TBODY>
+  <TR class=3DNote>
+    <TD class=3DNote>
+      <HR>
+      <A name=3D42289></A><FONT face=3D"Arial, Helvetica, =
+sans-serif"><STRONG=20
+      class=3DNH>Note:</STRONG></FONT> <A name=3D42290></A>
+      <P class=3DNB>Alternative SQL syntax is effective only with the =
+rule-based=20
+      optimizer.</P>
+      <HR>
+    </TD></TR></TBODY></TABLE></DIV><!-- Start Footer --></DIV>
+<DIV class=3Dfooter>
+<HR>
+
+<TABLE cellSpacing=3D0 cellPadding=3D0 width=3D"100%" summary=3D"layout =
+table">
+  <TBODY>
+  <TR>
+    <TD align=3Dleft width=3D"33%">
+      <TABLE cellSpacing=3D0 cellPadding=3D0 width=3D90 align=3Dleft=20
+      summary=3D"layout table">
+        <TBODY>
+        <TR>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/outlines.htm"><IMG=20
+            alt=3D"Go to previous page"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/lar=
+row.gif"=20
+            border=3D0></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/part2.htm"><IMG=20
+            alt=3D"Go to next page"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/rar=
+row.gif"=20
+            border=3D0></A></TD></TR></TBODY></TABLE></TD>
+    <TD align=3Dmiddle width=3D"34%"><IMG alt=3DOracle=20
+      =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/ora=
+cle.gif"><BR><A=20
+      =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/html/cp=
+yr.htm"><FONT=20
+      size=3D-2>Copyright =A9 2000, 2002 Oracle =
+Corporation.</FONT></A><BR><FONT=20
+      size=3D-2>All Rights Reserved.</FONT></TD>
+    <TD align=3Dright width=3D"33%">
+      <TABLE cellSpacing=3D0 cellPadding=3D0 width=3D270 align=3Dright=20
+      summary=3D"layout table">
+        <TBODY>
+        <TR>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/index.htm"><IMG=
+=20
+            alt=3D"Go to Documentation Library"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/pro=
+dicon.gif"=20
+            border=3D0><BR><FONT size=3D-2>Home</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/nav/docindex.ht=
+m"><IMG=20
+            alt=3D"Go to Product List"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/boo=
+kicon.gif"=20
+            border=3D0><BR><FONT size=3D-2>Book List</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/toc.htm"><IMG=20
+            alt=3D"Go to Table of Contents"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/con=
+ticon.gif"=20
+            border=3D0><BR><FONT size=3D-2>Contents</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a965=
+33/index.htm"><IMG=20
+            alt=3D"Go to Index"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/ind=
+xicon.gif"=20
+            border=3D0><BR><FONT size=3D-2>Index</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/mix.920/a96625/=
+toc.htm"><IMG=20
+            alt=3D"Go to Master Index"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/mix=
+.gif"=20
+            border=3D0><BR><FONT size=3D-2>Master Index</FONT></A></TD>
+          <TD vAlign=3Dtop align=3Dmiddle><A=20
+            =
+href=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/html/fe=
+edback.htm"><IMG=20
+            alt=3D"Go to Feedback page"=20
+            =
+src=3D"http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/fee=
+dback.gif"=20
+            border=3D0><BR><FONT=20
+  =
+size=3D-2>Feedback</FONT></A></TD></TR></TBODY></TABLE></TD></TR></TBODY>=
+</TABLE></DIV></BODY></HTML>
+
+------=_NextPart_000_0025_01C482EE.D3E4C8B0
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/prodicon.gif
+
+R0lGODlhHgAeAOYAAP///4SEhLW1td7e3ittsZSUlAQoTwMJIYyMjHuLlAtumufn5yAgJAYmLGZm
+ZiwlKwAAZqysrDMzM8zMzDw9QQEJBwAAMzOZzABmzDMzzA5jvQAAAPf39wBmmSlKXHh6rU9aliUh
+vxIOo1BNWTNmmQAAzLq/vwAzZgCZzNrW1pqx3AAAme/v8U6SuQAzM6Gp+2ZmzJnMzJmZmYiUuVpn
+azMzmZilsZSMjDOZmWbM/2aZ/2Zm/5nM/97e52aZmZmZzDNmZl9f3+/3/5lm/2YzmTMzZko5KQAz
+mQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5
+BAAAAAAALAAAAAAeAB4AQAf/gACCg4SFhoeGCRoEIA0bFhlDHw8HCjkqNBIFJgITA4gJBKIGGyM/
+LyAHByQ5MR4MDgEFAp+IggsCMggIBb27vL4FESYLtgMTKRMCMzAwIAwMPioxJCMTtoOhGhgGFRYi
+JSsHDQooCgawsrSgRScGqhYQEBbjBu4ND7Gztdj9/v8TbhT7N8iGKAKkLIQI8qzShRYeKEzgQJED
+KFEkXHgLkaHGOAUPPeTjte6QNgwnvIET16CDOXT6SiYigIFbBQgcRRxwARLHiXT7+g2IcCOA0aNI
+jwbtx2LBgAELojqFGvXpAosEs2bloALGBwpGBAgBYAJBCn89bHyYEYCCgRA7niY5bAFEor9QBDJu
+wNnxY0gKtFIMYHGRkYSbGXTI7XAhBo0HAWTIkFlIG8KbKz+i6ACTJL/KNG1CAAdB8zmglAlp00DK
+QIYMpcldQIj6s+qDpEa8eEFEFQ4eKl7FtJ2NhIYj3SysKBG7AwbOtREJGPHggQQKFCRIsJ59u4QR
+Rpcai4Dg6C7z5QN4ZqosQgQB8AW4j+/eRArCWvPr9xcIADs=
+
+------=_NextPart_000_0025_01C482EE.D3E4C8B0
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/bookicon.gif
+
+R0lGODlhHgAeAPcAAP///4SEhPf39+/v75SUlMbGxoyMjN7e3pycnOfn56WlpbW1tb29va2trdbW
+1gAAIQAASgAAUgAAWikpKQAAQs7Oznt7ewAAAAAAMQAACAgIGAAAEACM51paWnNzcwBzxgAAKUpK
+QkJCQgAIMQgIECGc5zExMWtraxgYGN7e1jlCSkJSWkJCSoSEe0pCQlJSUgAAOSkpOcbGvQgxUhAQ
+MTFChO/v52NjYwAIIQAxWhgYShgpKQAAYyEpSlKlzkpzjJyclIyEjEJCMZSMjFpaUgAYtRAhMRA5
+7wgQKRgpMTlKWjFa3jFS1hAhKQBKexghMUJCUjlKnFKcxlJzlJyMhBgpSgBzvRBKcwAQvQBrtaWc
+nAhCaxiMziEhIWNaWlKl1kJ7pTEpMYR7c0JKUkpKSt7WzhAQIUJCORAxxrW1rVpaQntzayE5UggQ
+MSGExhAQGCE5WtbWziEhGClKzu/n5zlCQjE5Sjk5MQAAGDEpIVpSUikhIRAQCAAQITExOQAAa1Jz
+jAB7zlJKSgAIGL21rYxza0pre0JKSufv7xghIa21tYSMjAAhpVJCOQAICEpSa0p7lBgYQmNjWgAQ
+rQhCcwhKe+fe3ggICIyMlBBC9zExKYSEjBgYIRghSkJzjEqczhgQEFpSSjlCjDFSzgghtQBCexAQ
+SiEhSjE5UgBjrRgYECGc3ko5QgAYOYR7e2trcxA593NrYzlSrd7W3jk5OaWtpa2lpa2tpUpKOQAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAAeAB4A
+QAj/AAEIHEiwoMGDCAE06IRmSY1IMCBI4PEHxgU5LRYcEJAQAIMVTgJxKCFlCpxWI0Yg8bNGhoMG
+BBQUSMCxo0ABBxgoIGAggE8DMRlUODCgZsIGISZoeIABBAkhCgbYHJjABRswnnZcoMCIVA81aWws
+eDGhQwADCipI7XiAigpKpQaJqbBIRBcTHTz8RKDR6NSbA4r+TZjgxp0QBNYOHljg1aNTGChImBwB
+xJsQQBz4RXjA1Z4NEbAcYSLK1IMMKG4ocrAg5kyElljl+FDCB6AkF3JzitHmwQMNE/RYQPA6IYMx
+W6xw4GKoUSgENgAUeHFpwomYCxwoRjhggYpEoCZY/wgw3ufZoBsHC0jgQCeCBgUc0FxMf3GBACJU
+acigCcF29QsIQgIeFEAQQQQYkIALEHH815ECqMgShQ4YGBjBRBRoQEQD6dmUwAk0TALLKDXoIBEF
+D2wQRgsN3MJAhwYNYAELShixAQRFZDJHD3ycUUsKMhAwHgF9HVRVDm588cMOjowAAQ2SaLGJHTig
+IMIJBhCXwEF0eDFDFiP58MMTGWSwwQMgPGDGIQEQEISWCRWwQiUfcLDKJ5BUgUMMsRCCyCwIEEAA
+XxXMh5AtLFzxQSpNFJLCAQUYQAsKZXkAVANqJSRAGUNAMUMfeZhgQh1k6GVeli9udtAADGDCk3k/
+ZR/ZAAPaDTaAAwUsgIABQL1XAFGq/jUApPEJVt+xAgUEADs=
+
+------=_NextPart_000_0025_01C482EE.D3E4C8B0
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/conticon.gif
+
+R0lGODlhHgAeAOYAAP///wAAOYyMjAAIQvf39+fn5+/v7wAAQgAAMdbW1r29va2trcbGxs7OzqWl
+pd7e3pycnJSUlFpaWoSEhGtra7W1tRgYIWNjY3t7ewAIOSFCtTExOTk5OQAAKa2tpSEhIRg5rWNj
+awAIMYSElCE5pWt7tQAAEAAAIVJSUjExMSEpWiFCpb29tRgpWiExc5SUjBgYMQgAKXt7cykxOUpK
+Sjk5QhgYGEJCUggIGEJCQiFCvQAIKVpjcwgYe2uEzhAxpTk5YwgIOQgppYSEpQAQYwgQKTE5Sikp
+KQgQIdbW3muExiEhOSE5nEJCWkJKSkI5UggxtSEhKQAIShA5tSlKvQgxpVJac1pSUlpaQhAYMRAI
+IQgIEGtrY3Nzc2NjWmNztQgICCkpOVpjaxAxrQgYawgAMSFCxoSEnDk5UqWcnBAQIRAhayFKzkJK
+Wjk5MXt7lHNzaxghUkJCSmt7vQAYhHuEpXuEnN7e1ufn3lpaYxgpcwAAGDk5WmNjUgAAAAAAACH5
+BAAAAAAALAAAAAAeAB4AQAf/gACCg4SFhoeFDy9ccjgIBwMBkgMDkB0WEgsNBQSIggkhKiQaQiBK
+bxtgFl4edwAEFRQYAhMCDgyehQQPCg4QEAsKCQUGnbmDDQIXMCcbDsbHghU1a1MaXyM3CAgBGRmU
+lQEIJjaZm9CHDxcuREYeLBQ0NBIXtQIRERAOFQnR/v8Ao/GSsAHGtgCUdoSZIIxTrgozXPgYciMG
+N0kIIx04cMmcw0IN8rRYoeMHiBJn+HA7EOCECRxuZDAooOCepgLpKKhgwoaOGjh4DBhIsABDjiMo
+7AmAoOAYAwkfOHShZU/fggoMhhkI+MoAMXRcw0YrQIGDA7HIFISwgETEgB0bvyB89WcgDQoOWUQ8
+YhkAkogoF26CJaTACY86TWL0xZhxY0fBhxTUIENlzognZbh5y/hNCgJMEGaChajHzBgSJUagOUiJ
+pUstbWRgiABZEAEGYkbqqHLSDpAgHfZs+XCBRbECDSLY7Fcogc5RUFZYwdLnxQMAQyOk+EDB3i1E
+D0LE0dBjiQcASRxQSMHhAoZZAuJ/95SARxEbV1CkyNE9fj5gFQizVTS79BLfPftk9UAxXBnwAAMK
+ZDUXWhRWKEggADs=
+
+------=_NextPart_000_0025_01C482EE.D3E4C8B0
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/indxicon.gif
+
+R0lGODlhHgAeANUAAP///62trff390pKSrW1tVpaWu/v7zk5OUJCQmtra3NzcwAAAJSUlAgICN7e
+3r29vSEhIYSEhNbW1sbGxhAQEHt7ezExMaWlpWNjY5ycnOfn5ykpKVJSUhgYGM7OzoyMjHtze62l
+rXNrcwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAAeAB4AQAb/QIBw
+SCwaj8eBxQISOBMHhHQ63Sw+SMBh4kkovuDwlwGINCAFhiErkBDeDw/hEZhPuHWCRJDt+48HBABO
+fwAVDRsJGWtFAwcJIggLkwsDCQgNkxSWAxsWaYyFoqOkSA4hEakEDqVEgYNOsbKyAB8UCgChrg8a
+D3dvwMEEAQK2aGpGr0IGzKEGGsxCh8e6QxIZFQgWA9wF2gccjgWOCAMYF9Wt6uvs7ewPFxgDBQUY
+HAkXAfr7+xkSWRYyQBuiQYKDgwgPSkjQoEKWLQQOcJtIkRuCBGUaDAjwgE+RLQ/uYaBHsiQ9A2ao
+JXvgIMOFfPz4XXhQhoLKj4JGKTgDKlkAQiETIHTocOBfgA0UOiBYU8FmzyIaMGVagODAggaZKGjT
+dEAiB2SmGCTAkIBBgAoVxiaIkC+BWwb/SnksMted3VFBAAA7
+
+------=_NextPart_000_0025_01C482EE.D3E4C8B0
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/mix.gif
+
+R0lGODlhHgAeANUAAP////f3962trVpaWkJCQkpKSpSUlN7e3mtra+/v7zk5OQgICLW1tXNzc4SE
+hAAAACEhITExMRAQEGNjY6WlpZycnNbW1r29vXt7e1JSUikpKefn54yMjMbGxq2lrRgYGHtze87O
+znNrcwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAAeAB4AQAb/QIBw
+SCwaj8ZCJAIKOBEKgnQ61Tw4Cw2ikhAqGAAnsojJbgcGdBdQUCBEhIf8UUAQFnJJvaCJoMdCSkxO
+AVBUh1YcRYJNT1GHVVdmFWpeHSEIDZqbnJoGAA4LEGhoFoCnqEcHHg6tDAepSKutDgyEt7cAHBIN
+AGtDs664w7q8EqMGa19hw83FDcekyV4XGxcdHQza29wCAbvIaBMUymBCCei/CRvoQmXIE0gVGAQR
+BfcD9QoZbQNtBAXixRqI6gKFCQUGDJiQAQEFARAjRqxgCkmECuyGbLBwoKPHjhYQLMBwxCBChQwd
+SlxZIVQBAReKXMwoZOPHjyFHiqoEwGTCiIUNH66c6FIAsjUzf9m8CVLkO2nKsim4R7XqPQIIQC14
+GW4aAAUdLjScoLCsWYUJQnXN4FXBhQMVKAgdKoBCTAfR0hgwUPGruVgNdhpgW0SBACEdIHz4oMCU
+AA0SPhDogiEvkjt4HhBQ8GABHgn18iiYShiQAQQTEBgQgAEDagQOHiKYTbA2kSAAOw==
+
+------=_NextPart_000_0025_01C482EE.D3E4C8B0
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/feedback.gif
+
+R0lGODlhHgAeAPcAAP///SclKGiocOry2v3/0398hf78/4i5mGZkeD9BTrm4ys/R/9b/4jU6lGRm
+ZURHSMTJvvz8+lRkUf//+/X+/2NgZ//89w8qEDZEi0NcP/31/r29vP7//+Pk4vz//8v/2JiZqOrs
+8Hx8e6q3qjs9RZ2dnTZKVd311YSFg//4/uP4/+vr6f/6/7K/rez+9O3y9WaGZf/+/8rKw+j9/pCR
+jPr5/vTy7evx7UE9PMbGxENPrwocCP379v3/8q2yvdrb1vn59f//+v///6WlpPr9+isqRqKjnP7/
++MLDzWxvbjIxM/79+d3d2vr7+fr///j//zs8PfX18vL//v7+/PX+7ZaWluz85fLs//ny/tTU0svL
+yayrqvj//fvx8vP84v/7+XV1d/n/6vz8//z/+I6Oj1tcXLm7tu3/+Pj3//Hx/u/t7fn+8pGRkv/1
++vT/+fz6/+3///b66fH/7Ozz5vDw+PH2+fHy73JtfeP/8f7+/vv//fP/9//7/GBeYv7+/5SVkO72
++fH2/+75//b1+un5//H+6v7/7tLazfv89jdKpouMh/H08rKnrv7/+vr/5v7/6vf2/PDu8v38+ImJ
+ivb/8OPw+Pz+/f/8/fr17/L56vL57P/++amqorGysfj8/3SGbEJUX/P++M3M3PL6/u/w/4uKnM7N
+0kM5UcHP0sDF24+Qi/X79/Dj/3RxhJOTlFicYYaGiCwua/ns/zEkKy83Oufv8sDCvWGMcLex03h4
+dXJ8e/v9/+nr+HWghPn77VdWUkdVnEFDlkpMiY2OieLn/+j2//P5yenx/1lOVP39+zMtT/f68Sca
+Ifb29PTz8cnX2vPz9dTK0vTw+4V4f+b+4N756ufo5WxflIW/jd7k1u7+5/n3+NfY1v/z+MC2vv3w
+/3lrqOHi3fz/+//+/BchIPX5/D1lQ1ZMZOfy9EVefP348kdUQvv9/EpIVVRTWSYtIC8hXsq/xcvT
+yC83XlZbcZiNkzw7N9/4/6CSz+fd5aOrroqSlfb+6UBNQJeXmN7p6yH5BAAAAAAALAAAAAAeAB4A
+QAj/AJcdiWGgoIEYiII8cjRhwqAYZ85cutSGBRcXe/ZYsJAiRaYeY+zs8kdCQZgwITz0yLSrFQss
+usj1G3FoTqQYLKR5uBGhWRQAALjlCuCkjqAnJkzAUeEO0kFoADYoEYHizx9OMoBq1SqJh4VNSyxg
+spFji78SnXIwWbG1oQdPPXrEiWOgxjg+C/AF6IPglD5ALDQYYLFIDxcufPiwYGGpCRIShyhRstIg
+mBw5OhrAgfMmEp5bAhh82oEsnqg0FKRw4AAgWYQmPHis6FAGyos6tShE6qOkDxgyJfxVqWJkyAYm
+QYI0XO3Bg5PnTpIlazgl2RSgESIk2ypEiB8DYxrF/z0SpIaBKzmlxdgWsVvFFKG4uHHz5UtHR16a
+o/FzwxauIsYQwMo1BaSAQDsFIJHFCnqskkceBcVAkAGaQNAPFYE4UQglaQhDhRWEUJACC9VUc8sF
+67QQjQYxpPECIAM8csQP9BQxCgUzzAAMBvfco0Mii1jCwAECvFLICdMwA4ICz1DQBAdNOBMBANsw
+UdsTFFBQCShwEASJGUqAwcYkNAxDgyJGQMABEVMCEMESEwABhBo5/IIDDg+4AgsKKFQxRCdm2KJF
+ONbY0dAEQHW32mrXJWcBDxHYoYYzTURw3VZAHXGEQW+IEQN5MQLRSAw1uHBGCl2w0MYNXGS0UUd+
+1P8QXg++IDJQDRpggQYJSmxxhhSqdmNRKPPV15EH5RgiVw8xDOLMD+DAw4IBKZxDwj75sJBCG0QY
+hphiLODXHB0hmJGEMhoQQIAs39zRCiR3BFBBJ9zcoMeDEcZAxRziiONDArzswk9+L2TTwy6kYMHC
+E0nsIMEI8higBhaX3OABGgZA8A4EmjhBwRpyEBOLBNpIAawGeJzBgDkXSMCINzWg8dxqgSDxzhof
+khJMBtQQo4MJM8QQQi8HYIPNCZ/gUI8PovyDziOGrHFEKgjMcwwcMxSDQTozLJBIGTcw8IEAH1AD
+wyyMlFKKD6jYAZQdQAAggwgPvHAUIaAohUYMb9SlIEQ7AZCBgiJ/0DCEDBws4jYAUfwUQhK0AFKJ
+yYRIaIoSSRRA1R+q0EADVuyw1kQTAEzAQ2vhOPBAHU6MQkIfuUwyJnBDbLFBDj9EQQRrrSWzhCRg
+STKBDbnYI8MQ/pBRhSudbKEFNx0gIj2imAK1xPWbgKUOJh1kkYMWTBTaJlCHUq/oolNMsUkQ2QNQ
+KVDJvI9pcstx0JwnTjiXHZxbpV99dwEBADs=
+
+------=_NextPart_000_0025_01C482EE.D3E4C8B0
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/larrow.gif
+
+R0lGODlhKAAeANUAAP///wAAe4SEjN7e5/f39/f3/wgIhO/v787O1tbW3pycpefn7+fn50pKpa2t
+1oyMjMbGzu/v95SUnN7e70JChK2ttd7e3rW1vYyMlHNzjHt7vb29xhgYjEpKjEpKlHt7tVpahCEh
+hAAAhHt7jM7O3pycxnNztTk5nKWlpaWlrSkpjMbGxlpalEpKhLW1tTExlOfn987Ozr29vTExjGNj
+rbW11pSUxrW1xr29zlpajFJSnMbG1gAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAAoAB4AQAb/QIBw
+SCwajwDYBMkULl6BqHRKlX6aWECBEDkwLAnEJiURmAWP2w4rFUYBAbc8Tp/bs9nCRMOpeh4DeEUE
+BwMyZWcCGRQGVR0KK4KSk5SVlnh6fFEmBJdCmX1VUhQPEIGUhAMbCouNolEdKBUxlluFYRAViGet
+UTSnnkRbXQwDYQgXCoBscsF4cUPQ0ETScHZv0c5HBQ4NBhHaRgTdUwYkwMHjDa8iIxXok9zrr1Mt
+LB81lVsLNif0UzM86ChRiQCDXWZAhGA3QoALfQQWDBCjAEMiAQrL4bBwaZhEXMksJsqhwkCCcAQI
+fUQAIaSZd+GIpDywoNiAARYGdGrSRtC0JUrV6mCbNrSaNTjYqClFOtRaHafNki5txjTb0aRCpbr5
+x7Vr0iAAOw==
+
+------=_NextPart_000_0025_01C482EE.D3E4C8B0
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/rarrow.gif
+
+R0lGODlhKAAeANUAAP///wAAe4SEjN7e5/f39+/v7/f3/+fn7wgIhO/v987O1tbW3pycpa2t1oyM
+jJSUnEJChEpKpa2ttefn58bGzt7e7xgYjHNzjIyMlHt7vbW1vb29xt7e3nt7jEpKjCEhhAAAhEpK
+lFpahHt7tVJSnDExlJSUxikpjOfn97W1xpycxjExjFpajEpKhDk5nL29vb29zs7O3mNjrcbGxnNz
+taWlrVpalLW11rW1tc7OzsbG1qWlpQAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAAoAB4AQAb/QIBw
+KKygiMikcqksjALQqHQaLR2YzIIu5RB4BY/aRrHgTAoJggHLFgYA77h7/oa3l4mBI0S1ZCprd20H
+MwweVAgQF19eDy8DBQSCk5SVlpUGBDRQfoCXbQUDFA4QVFKdgZcFORI7h6ZQiRcMG5CSlKEysYqM
+YBIUZLapk3kODBoKwWdpw59EUHNsdZ910NN00ZcJCBENzc5LBAMxCFLdt+BIoRIdILDn6QAJNyM2
+LbBT3d93BSokISvwSXFh4oCaSgdwCGgH64OIXg8moBNUgAOMclEc9sJAS8EAg/uwFFiA4ASLjceA
+LfjITNUACV44alD5MdLET+I4DNg54YDNIXhKoNkBykROtWpD4lyrdBROlKRQnU07Kifa0kkCs7IJ
+AgA7
+
+------=_NextPart_000_0025_01C482EE.D3E4C8B0
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a96533/pfgrf023.gif
+
+R0lGODdh8AHwAPcAAAAAAAAAPwAAfwAAwAAA/wAqAAAqPwAqfwAqwAAq/wBVAABVPwBVfwBVwABV
+/wB/AAB/PwB/fwB/wAB//wCqAACqPwCqfwCqwACq/wDVAADVPwDVfwDVwADV/wD/AAD/PwD/fwD/
+wAD//yoAACoAPyoAfyoAwCoA/yoqACoqPyoqfyoqwCoq/ypVACpVPypVfypVwCpV/yp/ACp/Pyp/
+fyp/wCp//yqqACqqPyqqfyqqwCqq/yrVACrVPyrVfyrVwCrV/yr/ACr/Pyr/fyr/wCr//1UAAFUA
+P1UAf1UAwFUA/1UqAFUqP1Uqf1UqwFUq/1VVAFVVP1VVf1VVwFVV/1V/AFV/P1V/f1V/wFV//1Wq
+AFWqP1Wqf1WqwFWq/1XVAFXVP1XVf1XVwFXV/1X/AFX/P1X/f1X/wFX//38AAH8AP38Af38AwH8A
+/38qAH8qP38qf38qwH8q/39VAH9VP39Vf39VwH9V/39/AH9/P39/f39/wH9//3+qAH+qP3+qf3+q
+wH+q/3/VAH/VP3/Vf3/VwH/V/3//AH//P3//f3//wH///6oAAKoAP6oAf6oAwKoA/6oqAKoqP6oq
+f6oqwKoq/6pVAKpVP6pVf6pVwKpV/6p/AKp/P6p/f6p/wKp//6qqAKqqP6qqf6qqwKqq/6rVAKrV
+P6rVf6rVwKrV/6r/AKr/P6r/f6r/wKr//9UAANUAP9UAf9UAwNUA/9UqANUqP9Uqf9UqwNUq/9VV
+ANVVP9VVf9VVwNVV/9V/ANV/P9V/f9V/wNV//9WqANWqP9Wqf9WqwNWq/9XVANXVP9XVf9XVwNXV
+/9X/ANX/P9X/f9X/wNX///8AAP8AP/8Af/8AwP8A//8qAP8qP/8qf/8qwP8q//9VAP9VP/9Vf/9V
+wP9V//9/AP9/P/9/f/9/wP9///+qAP+qP/+qf/+qwP+q///VAP/VP//Vf//VwP/V////AP//P///
+f///wP////8AAP8AP/8Af/8AwAAAACoqKlVVVX9/f6qqqtXV1f///ywAAAAA8AHwAAAI/wD/CRxI
+sKDBgwgTKlxosB9AfQIHEixo8CDChAoXMmzoUB/AfwIHEixo8CDChAoXMmzo8CHEiBInUqxo8SLG
+jBo3LuSXDyA/gQMJFjR4EGFChQsZNmS4Lx/AfwIHEixo8CDChAoXMmzo8CHEiBInUqxo8SLGjBo3
+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
+HRn2y5cv376OHTt27NixY8eOHTt27NixY8J++fLl09fRYb98+fLt69ixY8eOHTt27NixY8eOHTse
+7JcvXz59HSH2y5cv376O/x07duzYsWPHjh07duzYsWPBfvny5dPXUWK/fPny7evYsWPHjh07duzY
+sWPHjh07DuyXL18+fR0p9suXL9++jh07duzYsWPHjh07duzYseO/fvny5dPX0WK/fPny7evYsWPH
+jh07duzYsWPHjh059suXL5++jhj75cuXb1/Hjh07duzYsWPHjh07duyosV++fADz6QP4T+BAggUN
+HkSYUGG/fPny7QP4T+BAggUNHkSYUOFChg0dPoQYUeJEihUtXsSYUeNGjhj75cuXT19Hjv3y5cu3
+r2PHjh07duzYsWPHjh07drTYL1++fPo6dvzXL1++fPs6duzYsWPHjh07dv/s2LFjR4r98uXLp69j
+x4H98uXLt69jx44dO3bs2LFjx44RAfITOJBgQYMHESZUuJChwn358uXL19AfwH8CBxIsaPAgQoD8
+BA4kOHBfvnz59AHkJ3AgwYIGDyJMqHAhQ4X9AP4TOJBgQYMHESZUuJBhQ4cPIUaUOJFiRYf+AOYT
+OJBgQYMHESZUuJBhQ4f5+AH8J3AgwYIGDyIEmE/gQIIFDR5EmFDhQoYNHebTB/CfwIEECxo8iDCh
+woUMGzp8CDGixIkUKzr0BzCfwIEECxo8iDChwoUMGzrMxw/gP4EDCRY0eBAhwHwCBxIsaPAgwoQK
+FzJs6DCfPoD/BA4kWND/4EGECRUuZNjQ4UOIESVOpFjRoT+A+QQOJFjQ4EGECRUuZNjQYT5+AP8J
+HEiwoMGDCAHmEziQYEGDBxEmVLiQYUOH+fQB/CdwIMGCBg8iTKhwIcOGDh9CjChxIsWKDv0BzCdw
+IMGCBg8iTKhwIcOGDvPxA/hP4ECCBQ0eRAgwn8CBBAsaPIgwocKFDBs6zKcP4D+BAwkWNHgQYUKF
+Cxk2dPgQYkSJEylWdOgPYD6BAwkWNHgQYUKFCxk2dJiPH8B/AgcSLGjwIEKA+QQOJFjQ4EGECRUu
+ZNjQYT59AP8JHEiwoMGDCBMqXMiwocOHECNKnEixokN/APMJHEiwoMGD/wgTKlzIsKHDfPwA/hM4
+kGBBgwcRAswncCDBggYPIkyocCHDhg7z6QP4T+BAggUNHkSYUOFChg0dPoQYUeJEihUd+gOYT+BA
+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
+lDmTZk2bN3Hm1GkxIAA7Ow==
+
+------=_NextPart_000_0025_01C482EE.D3E4C8B0
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/server.920/a96533/pfgrf024.gif
+
+R0lGODdh8AHwAPcAAAAAAAAAPwAAfwAAwAAA/wAqAAAqPwAqfwAqwAAq/wBVAABVPwBVfwBVwABV
+/wB/AAB/PwB/fwB/wAB//wCqAACqPwCqfwCqwACq/wDVAADVPwDVfwDVwADV/wD/AAD/PwD/fwD/
+wAD//yoAACoAPyoAfyoAwCoA/yoqACoqPyoqfyoqwCoq/ypVACpVPypVfypVwCpV/yp/ACp/Pyp/
+fyp/wCp//yqqACqqPyqqfyqqwCqq/yrVACrVPyrVfyrVwCrV/yr/ACr/Pyr/fyr/wCr//1UAAFUA
+P1UAf1UAwFUA/1UqAFUqP1Uqf1UqwFUq/1VVAFVVP1VVf1VVwFVV/1V/AFV/P1V/f1V/wFV//1Wq
+AFWqP1Wqf1WqwFWq/1XVAFXVP1XVf1XVwFXV/1X/AFX/P1X/f1X/wFX//38AAH8AP38Af38AwH8A
+/38qAH8qP38qf38qwH8q/39VAH9VP39Vf39VwH9V/39/AH9/P39/f39/wH9//3+qAH+qP3+qf3+q
+wH+q/3/VAH/VP3/Vf3/VwH/V/3//AH//P3//f3//wH///6oAAKoAP6oAf6oAwKoA/6oqAKoqP6oq
+f6oqwKoq/6pVAKpVP6pVf6pVwKpV/6p/AKp/P6p/f6p/wKp//6qqAKqqP6qqf6qqwKqq/6rVAKrV
+P6rVf6rVwKrV/6r/AKr/P6r/f6r/wKr//9UAANUAP9UAf9UAwNUA/9UqANUqP9Uqf9UqwNUq/9VV
+ANVVP9VVf9VVwNVV/9V/ANV/P9V/f9V/wNV//9WqANWqP9Wqf9WqwNWq/9XVANXVP9XVf9XVwNXV
+/9X/ANX/P9X/f9X/wNX///8AAP8AP/8Af/8AwP8A//8qAP8qP/8qf/8qwP8q//9VAP9VP/9Vf/9V
+wP9V//9/AP9/P/9/f/9/wP9///+qAP+qP/+qf/+qwP+q///VAP/VP//Vf//VwP/V////AP//P///
+f///wP////8AAP8AP/8Af/8AwAAAACoqKlVVVX9/f6qqqtXV1f///ywAAAAA8AHwAAAI/wD/CRxI
+sKDBgwgTKlxYsB9AfQIHEixo8CDChAoXMmzYkB/AfwIHEixo8CDChAoXMmzo8CHEiBInUqxo8SLG
+jBo3MuSXDyA/gQMJFjR4EGFChQsZNlyoTx/AfwIHEixo8CDChAoXMmzo8CHEiBInUqxo8SLGjBo3
+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
+
+------=_NextPart_000_0025_01C482EE.D3E4C8B0
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.cise.ufl.edu/help/database/oracle-docs/dcommon/gifs/oracle.gif
+
+R0lGODlhSwAJAKIAAP///94AIe97lPe1vecIOe9Kc//e5wAAACH5BAAAAAAALAAAAABLAAkAQAPT
+CCAV9LAMNaB1U+kRitaGYD3BUAlfahQjUQ5o6AZ0TWQcCjbFGugql2HQqNUGhpmRhiIqj4pOatrJ
+hQQwxk+RJBgUDZSgNN1sp+OlQ6oYe8rJwPD8MbDBP6EmXAbk+g8ZfXxwLCZnFXQLHXFrjC6CKX9T
+XZFlDQQFmptFTQ6cmpB1M0B+LqAFnqUfiagCQxwEfRQ/k3V3bn5stlO8Zj0msCYad2UcEltppHs/
+Bs4VXr6sir8mWNdfXKcC3N0iUrZxOl1fWdwNJg+p3ljH7Nzpme8ZCQA7
+
+------=_NextPart_000_0025_01C482EE.D3E4C8B0--

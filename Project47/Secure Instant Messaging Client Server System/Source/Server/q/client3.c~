@@ -1,0 +1,226 @@
+#include "common.h"
+//****************************************
+#include <signal.h>
+#include <unistd.h>
+#include "service.h"
+
+char certificate[255];
+char user_id[10];
+char email[128] ;
+char nick_name[255] ;
+char *current_status ;
+char short_nick[30];
+char client_ip[128];
+char hostname[255];
+
+SSL *ssl_temp;
+#define CIPHER_LIST "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"
+#define CAFILE "root.pem"
+#define CADIR NULL
+#define CERTFILE "client.pem"
+SSL_CTX *setup_client_ctx(void)
+{
+    SSL_CTX *ctx;
+ 
+    ctx = SSL_CTX_new(SSLv23_method(  ));
+    if (SSL_CTX_load_verify_locations(ctx, CAFILE, CADIR) != 1)
+        int_error("Error loading CA file and/or directory");
+    if (SSL_CTX_set_default_verify_paths(ctx) != 1)
+        int_error("Error loading default CA file and/or directory");
+    if (SSL_CTX_use_certificate_chain_file(ctx, /*CERTFILE*/certificate) != 1)
+        int_error("Error loading certificate from file");
+    if (SSL_CTX_use_PrivateKey_file(ctx, /*CERTFILE*/certificate, SSL_FILETYPE_PEM) != 1)
+        int_error("Error loading private key from file");
+    SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, verify_callback);
+    SSL_CTX_set_verify_depth(ctx, 4);
+    SSL_CTX_set_options(ctx, SSL_OP_ALL|SSL_OP_NO_SSLv2);
+    if (SSL_CTX_set_cipher_list(ctx, CIPHER_LIST) != 1)
+        int_error("Error setting cipher list (no valid ciphers)");
+    return ctx;
+}
+
+int do_client_loop(SSL *ssl)
+{
+    int  err, nwritten;
+    char buf[80];
+ 
+    for (;;)
+    {
+        if (!fgets(buf, sizeof(buf), stdin))
+            break;
+        for (nwritten = 0;  nwritten < sizeof(buf);  nwritten += err)
+        {
+            err = SSL_write(ssl, buf + nwritten, sizeof(buf) - nwritten);
+            if (err <= 0)
+                return 0;
+        }
+    }
+    return 1;
+}
+/*
+void print_alarm(int sig)
+{
+	fprintf(stderr,"Hello\n");
+	status(ssl_temp);
+	alarm(5);
+}
+*/
+int make_services(SSL *ssl)
+{
+	char menu [80];
+    	int  exit = 1;
+ 	int mune_invalid=0;
+//	signal(SIGALRM,print_alarm);
+  //      alarm(15);
+	fprintf(stdout,"IP : %s Connected...\n",client_ip);
+  	request_info(ssl,user_id,email,nick_name,client_ip);
+	strncpy(short_nick,nick_name,26);
+	if(strlen(nick_name)> 26) strcat(short_nick,"...");
+	current_status = ONLINE;
+//	fprintf(stdout,"user : %s\temail : %s\tnickname : %s\t\n",user_id,email,nick_name);	
+		while(1)
+		{
+				
+      		printf("\n");
+      		printf("\n");
+
+			printf("************************************************************\n");
+			printf("*                                                          *\n");    
+		printf("*%10s <%35s> %10s\n", user_id,short_nick,current_status);
+			printf("*                                                          *\n");    
+			printf("*************  Select Services Menu ************************\n");
+      		printf("          a = Add Contactlist with Email\n");
+			printf("          u = Add Contactlist with User_id\n");
+      		printf("          c = Change Nick Name\n");
+	  		printf("          f = Find Contactlist\n");
+			printf("          z = Delete Contactlist\n");
+			printf("          d = Deny User\n");
+			printf("          p = Admit User\n");
+			printf("          l = Authorize Request List\n");
+			printf("          s = Status Contactlist Update\n");
+			printf("          v = Set Status \n");
+      		printf("          o = Logout\n\n");
+      		if(mune_invalid)
+          		printf("Menu Invalid!!!!!\n\n");
+
+      		printf("Enter menu  :");
+      		scanf("%s", menu);
+      		printf("\n");
+      		printf("\n");
+
+	  		system("clear");
+	  
+      		switch(menu[0])
+      		{
+        		case 'a': printf("Add Contactlist with Email \n");
+                  				add_contactlist(ssl, 'a');
+                  				mune_invalid = 0;
+                  				break;
+				case 'u': printf("Add Contactlist with User_id \n");
+                  				add_contactlist(ssl, 'u');
+                  				mune_invalid = 0;
+                  				break;
+       			case 's': printf("Status Contact_list \n");
+				  				status(ssl);	
+                  				mune_invalid = 0;
+                  				break;
+        		case 'c': printf("Change Nick Name\n");
+								change_nick_name(ssl,nick_name);
+								strncpy(short_nick,nick_name,26);
+								if(strlen(nick_name)> 26) strcat(short_nick,"...");
+                  				mune_invalid = 0;
+                  				break;
+				case 'l': printf("List Authorized Request\n");
+								authorize(ssl);
+								mune_invalid = 0;
+                  				break;
+				case 'f': printf("Find Contactlist\n");
+								find_contactlist(ssl);
+								mune_invalid = 0;
+                  				break;
+				case 'z': printf("Delete Contactlist\n");
+								delete_contactlist(ssl);
+								mune_invalid = 0;
+                  				break;
+				case 'v': printf("Set Status\n");
+								current_status =(char*)set_status(ssl,current_status);
+								mune_invalid = 0;
+								//exit = 0;
+                  				break;
+				case 'd': printf("Deny User\n");
+								deny(ssl);
+								mune_invalid = 0;
+								//exit = 0;
+                  				break;
+				case 'p': printf("Admit User\n");
+								admit(ssl,current_status);
+								mune_invalid = 0;
+								//exit = 0;
+                  				break;
+        		case 'o': printf("Logout \n");
+                  				logout(ssl);
+                  				exit = 0;
+                  				break;
+        		default : mune_invalid = 1;
+                  				break;
+      		}
+			
+      		if(!exit)
+          		break;
+		}
+        
+exit_services:
+}
+
+ 
+int main(int argc, char *argv[])
+{
+    BIO     *conn,*rev,*send;
+    SSL     *ssl;
+    SSL_CTX *ctx;
+    long    err;
+    struct hostent *client_addr;
+    struct in_addr address;
+
+    gethostname(hostname,255);
+    client_addr = gethostbyname(hostname);
+    memcpy(&address,client_addr->h_addr,4);
+    strcpy(client_ip,inet_ntoa(address));
+ 
+    system("clear");
+    init_OpenSSL(  );
+    seed_prng(  );
+    
+    Login(certificate);
+
+    ctx = setup_client_ctx(  );
+ 
+    conn = BIO_new_connect(SERVER ":" PORT);
+    if (!conn)
+        int_error("Error creating connection BIO");
+ 
+    if (BIO_do_connect(conn) <= 0)
+        int_error("Error connecting to remote machine");
+ 
+    
+    ssl = SSL_new(ctx);
+    SSL_set_bio(ssl, conn, conn);
+    if (SSL_connect(ssl) <= 0)
+        int_error("Error connecting SSL object");
+    if ((err = post_connection_check(ssl, SERVER)) != X509_V_OK)
+    {
+        fprintf(stderr, "-Error: peer certificate: %s\n",
+                X509_verify_cert_error_string(err));
+        int_error("Error checking SSL object after connection");
+    }
+    fprintf(stderr, "SSL Connection opened\n");
+    if (make_services(ssl))
+        SSL_shutdown(ssl);
+    else
+        SSL_clear(ssl);
+    fprintf(stderr, "SSL Connection closed\n");
+ 
+    SSL_free(ssl);
+    SSL_CTX_free(ctx);
+    return 0;
+}

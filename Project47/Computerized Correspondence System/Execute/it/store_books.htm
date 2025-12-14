@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+<style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+-->
+</style>
+<link href="nissan.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style1 {
+	color: #0000FF;
+	font-weight: bold;
+}
+.style3 {
+	color: #F5F5F5;
+}
+.style4 {color: #666666}
+.style6 {color: #666666; font-weight: bold; }
+-->
+</style>
+<style type="text/css">
+<!--
+.small {
+	font-family: BrowalliaUPC;
+	font-size: 9px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+}
+-->
+</style>
+</head>
+
+<body>
+<?
+	class store {
+			stroe($d1, $d2, $d3, $d4,$d5, $d6,$d7, $d8){
+				require("config.php");
+				$tbname = "book";
+				mysql_connect("$hostname","$user","$password") or die ("can't connect data base server");//ติดต่อ data base
+				mysql_select_db("$dbname")or die("can't conected database");//เลือกฐานข้อมูล
+				//คำสั่ง SQL และสั่งให้ทำงาน
+				$sql ="INSERT INTO `book` ( `ID_BOOKS` , `SECTION_SEND` , `DATE` , `TOPIC` , `DATA1` , `DATA2` , `NAME` , `PICTURE` ) 
+							VALUES ('$d1', '$d2', '$d3', '$d4', '$d5', '$d6', '$d7', '$d8')";
+				$dbquery = mysql_db_query($dbname,$sql);
+	 			mysql_close();
+		}
+	}  
+?>
+</body>
+</html>

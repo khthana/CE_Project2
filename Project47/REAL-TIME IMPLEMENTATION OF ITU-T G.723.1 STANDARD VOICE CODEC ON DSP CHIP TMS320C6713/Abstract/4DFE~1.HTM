@@ -1,0 +1,124 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-874">
+<meta name=Generator content="Microsoft Word 11 (filtered)">
+<title>การเข้ารหัสสัญญาณเสียงแบบ Real-time สำหรับมาตรฐาน  ITU-T G</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:PMingLiU;
+	panose-1:2 2 3 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"Angsana New";
+	panose-1:2 2 6 3 5 4 5 2 3 4;}
+@font-face
+	{font-family:"Cordia New";
+	panose-1:2 11 3 4 2 2 2 2 2 4;}
+@font-face
+	{font-family:AngsanaUPC;
+	panose-1:2 2 6 3 5 4 5 2 3 4;}
+@font-face
+	{font-family:"\@PMingLiU";
+	panose-1:2 2 3 0 0 0 0 0 0 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span lang=TH
+style='font-size:15.0pt;font-family:AngsanaUPC'>การเข้ารหัสสัญญาณเสียงแบบ </span></b><b><span
+style='font-size:15.0pt;font-family:"Cordia New"'>Real-time </span></b><b><span
+lang=TH style='font-size:15.0pt;font-family:AngsanaUPC'>สำหรับมาตรฐาน </span></b><b><span
+style='font-size:15.0pt;font-family:"Cordia New"'>&nbsp;ITU-T G.</span></b><b><span
+lang=TH style='font-size:15.0pt;font-family:AngsanaUPC'>723.1 </span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span lang=TH
+style='font-size:15.0pt;font-family:AngsanaUPC'>บน </span></b><b><span
+style='font-size:15.0pt;font-family:"Cordia New"'>DSP chip</span></b><b><span
+lang=TH style='font-size:15.0pt;font-family:AngsanaUPC'>&nbsp; </span></b><b><span
+style='font-size:15.0pt;font-family:"Cordia New"'>TMS320C6713</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:15.0pt;font-family:"Cordia New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=TH style='font-size:15.0pt;font-family:AngsanaUPC'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-size:15.0pt;font-family:"Cordia New"'>&nbsp;&nbsp;</span><span
+lang=TH style='font-size:15.0pt;font-family:AngsanaUPC'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; นายธนิต&nbsp;&nbsp;
+นพพันธ์&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 44010203</span></p>
+
+<p class=MsoNormal><span lang=TH style='font-size:15.0pt;font-family:AngsanaUPC'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; นายนริศร&nbsp;
+พงษ์พานิช&nbsp;&nbsp; 44010243</span></p>
+
+<p class=MsoNormal><span lang=TH style='font-size:15.0pt;font-family:AngsanaUPC'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ผศ.ดร.อรฉัตร
+จิตต์โสภักตร์&nbsp; อาจารย์ที่ปรึกษา</span></p>
+
+<p class=MsoNormal><span lang=TH style='font-size:15.0pt;font-family:AngsanaUPC'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;ปีการศึกษา
+2547</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:15.0pt;font-family:"Cordia New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-align:justify;text-justify:inter-ideograph'><b><span
+lang=TH style='font-size:15.0pt;font-family:AngsanaUPC'>บทคัดย่อ</span></b></p>
+
+<p class=MsoNormal style='text-align:justify;text-justify:inter-ideograph'><span
+style='font-size:15.0pt;font-family:"Cordia New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+lang=TH style='font-size:15.0pt;font-family:AngsanaUPC'>ในการส่งข้อมูลภาพและเสียงผ่านเครือข่ายในปัจจุบัน
+นิยมใช้การบีบอัดข้อมูลเสียงเพื่อลดอัตราการส่งข้อมูล&nbsp;&nbsp;
+วิธีการบีบอัดข้อมูลเสียงโดยใช้มาตรฐาน </span><span style='font-size:15.0pt;
+font-family:"Cordia New"'>ITU G.723.1</span><span lang=TH style='font-size:
+15.0pt;font-family:AngsanaUPC'>
+เป็นวิธีที่แพร่หลายเพราะเหมาะสมกับเสียงพูดของมนุษย์ </span></p>
+
+<p class=MsoNormal style='text-align:justify;text-justify:inter-ideograph'><span
+style='font-size:15.0pt;font-family:"Cordia New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+lang=TH style='font-size:15.0pt;font-family:AngsanaUPC'>วิธีการบีบอัดข้อมูลเสียงโดยใช้มาตรฐาน
+</span><span style='font-size:15.0pt;font-family:"Cordia New"'>ITU G.723.1</span><span
+lang=TH style='font-size:15.0pt;font-family:AngsanaUPC'> นั้น
+มีความซับซ้อนและการคำนวณมากมายจึงใช้เวลาในการประมวลผลมาก
+เมื่อนำไปใช้กับระบบที่เป็น </span><span style='font-size:15.0pt;font-family:
+"Cordia New"'>Real-time </span><span lang=TH style='font-size:15.0pt;
+font-family:AngsanaUPC'>จะไม่สามารถทำงานได้ทันเวลา
+เพราะว่าการบีบอัดแต่ละช่วงนั้นต้องกระทำในช่วงเวลาที่จำกัด </span></p>
+
+<p class=MsoNormal style='text-align:justify;text-justify:inter-ideograph'><span
+style='font-size:15.0pt;font-family:"Cordia New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+lang=TH style='font-size:15.0pt;font-family:AngsanaUPC'>มาตรฐาน </span><span
+style='font-size:15.0pt;font-family:"Cordia New"'>G.723.1</span><span lang=TH
+style='font-size:15.0pt;font-family:AngsanaUPC'> จึงถูกนำมาประยุกต์ใช้กับหน่วยประมวลผลทางเสียงซึ่งมีการประมวลผลที่รวดเร็ว
+และมีสถาปัตยกรรมเหมาะสมกับการทำงานโดยเลือกใช้ </span><span style='font-size:
+15.0pt;font-family:"Cordia New"'>DSP Chip TMS320C6713</span><span lang=TH
+style='font-size:15.0pt;font-family:AngsanaUPC'>&nbsp;&nbsp;
+นอกจากนี้เพื่อลดความซับซ้อนในการประมวลผล</span><span lang=TH style='font-size:
+15.0pt;font-family:"Cordia New"'> </span><span lang=TH style='font-size:15.0pt;
+font-family:AngsanaUPC'>จึงปรับแต่งมาตรฐานเพื่อให้ใช้เวลาในการเข้ารหัสสัญญาณเสียงน้อยลงและปรับปรุงโปรแกรม</span><span
+style='font-size:15.0pt;font-family:"Cordia New"'> G.723.1 </span><span
+lang=TH style='font-size:15.0pt;font-family:AngsanaUPC'>ให้รองรับการทำงานแบบหลายช่องสัญญาณได้อย่างมีประสิทธิภาพ</span></p>
+
+<p class=MsoNormal><span lang=TH style='font-family:"Angsana New"'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

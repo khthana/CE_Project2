@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+  <welcome-file-list>
+    <welcome-file>/43010023/index.jsp</welcome-file>
+  </welcome-file-list>
+  <security-constraint>
+        <display-name>
+            Test SSL
+        </display-name>
+		<web-resource-collection>
+            <web-resource-name>allfile</web-resource-name>
+            <description>A web service secured by SSL and basic authentication</description>
+            <!--
+            Defines the scope of the web resource to be secured with SSL.
+            Secure all methods calls to the HelloWorldSecure web service.
+            -->
+            <url-pattern>/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+		</web-resource-collection>
+        <!--
+        Encrypt the traffic between the client and this web resource.
+        -->
+        <user-data-constraint> 
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee> 
+        </user-data-constraint>
+	</security-constraint>
+</web-app>
+

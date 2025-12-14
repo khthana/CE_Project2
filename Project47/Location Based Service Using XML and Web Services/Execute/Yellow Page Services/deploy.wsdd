@@ -1,0 +1,33 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from YellowPageServicesService WSDL service -->
+
+  <service name="YellowPageServices" provider="java:RPC" style="rpc" use="encoded">
+      <parameter name="wsdlTargetNamespace" value="urn:servicesyellowpage"/>
+      <parameter name="wsdlServiceElement" value="YellowPageServicesService"/>
+      <parameter name="wsdlServicePort" value="YellowPageServices"/>
+      <parameter name="className" value="servicesyellowpage.YellowPageServicesSoapBindingSkeleton"/>
+      <parameter name="wsdlPortType" value="YellowPageServices"/>
+      <parameter name="allowedMethods" value="*"/>
+      <parameter name="scope" value="Session"/>
+
+      <typeMapping
+        xmlns:ns="urn:servicesyellowpage"
+        qname="ns:ArrayOf_xsd_string"
+        type="java:java.lang.String[]"
+        serializer="org.apache.axis.encoding.ser.ArraySerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.ArrayDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+  </service>
+</deployment>

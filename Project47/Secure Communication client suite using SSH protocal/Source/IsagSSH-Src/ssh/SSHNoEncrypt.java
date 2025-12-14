@@ -1,0 +1,17 @@
+
+package ssh;
+
+public final class SSHNoEncrypt extends SSHCipher {
+
+    public void encrypt(byte[] src, int srcOff, byte[] dest, int destOff, int len) {
+	System.arraycopy(src, srcOff, dest, destOff, len);
+    }
+
+    public void decrypt(byte[] src, int srcOff, byte[] dest, int destOff, int len) {
+	System.arraycopy(src, srcOff, dest, destOff, len);
+    }
+
+    public void setKey(byte[] key) {
+    }
+
+}

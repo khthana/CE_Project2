@@ -1,0 +1,20 @@
+   0000                 	ORG		0
+                        ;Basic Data for Test
+   0000   74 03         	MOV		A,#00000011B			;mov	a,data          
+   0002   78 01         	MOV		R0,#00000001B           ;mov	Rn,data         
+   0004   79 0f         	MOV		R1,#00001111B          	;mov	Rn,data         
+                        ;Test MOV Operation - MOV Direct,???
+   0006   f5 30             MOV		30H,A					;mov	direct,A		
+   0008   88 31             MOV		31H,R0					;mov	direct,Rn       
+   000a   85 30 32          MOV		32H,30H                 ;mov	direct,direct	
+   000d   86 33             MOV		33H,@R0					;mov	direct,@Ri		
+   000f   75 34 f0          MOV		34H,#11110000B			;mov	direct,#data	
+   0012                 MAIN:
+   0012   01 12         	AJMP	MAIN                							
+   0014   00                NOP
+   0015   00                NOP
+   0016   00                NOP
+   0017   00                NOP
+   0018   00                NOP
+                        	
+0012  MAIN      

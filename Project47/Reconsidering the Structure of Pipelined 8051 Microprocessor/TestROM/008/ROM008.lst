@@ -1,0 +1,26 @@
+   0000                 	ORG		0
+                        ;Basic Data for Test
+   0000   74 ff         	MOV		A,#11111111B
+   0002   78 fe         	MOV		R0,#11111110B
+   0004   75 31 fd      	MOV		31H,#11111101B
+   0007   79 02         	MOV		R1,#00000010B
+   0009   7a fb         	MOV		R2,#11111011B
+                        ;Test ANL Operation - ANL A,???
+   000b   58            	ANL		A,R0					
+   000c   55 31         	ANL		A,31H                   
+   000e   57            	ANL		A,@R1                   
+   000f   54 f7         	ANL		A,#11110111B
+                        ;Basic Data for Test
+   0011   75 31 fc      	MOV		31H,#11111100B
+   0014   74 ff         	MOV		A,#11111111B
+                        ;Test ANL Operation - ANL direct,???
+   0016   52 31         	ANL		31H,A                   
+   0018   53 31 f0      	ANL		31H,#11110000B          
+   001b                 MAIN:
+   001b   01 1b         	AJMP	MAIN                							
+   001d   00                NOP
+   001e   00                NOP
+   001f   00                NOP
+   0020   00                NOP
+   0021   00                NOP
+001b  MAIN      

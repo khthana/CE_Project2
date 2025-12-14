@@ -1,0 +1,28 @@
+#def xmlObj($element)
+
+#Framework generated code
+#XMLObject code for entity "${element.name}" mapping with entity "${element.entity}"
+
+class ${element.name}(XMLObject):
+	_name = '${element.name}'
+	#for $attr in $element.attributes
+	${attr.name} = StringAttribute(optional=True)
+	#end for
+	#for $element in $element.elements
+	${element.name} = ListNode('${element.name}', optional=True)
+	#end for
+#end def
+
+#def createXMLObject($node)
+$xmlObj($node)
+#if $node.elements
+#for $element in $node.elements
+$createXMLObject($element)
+#end for
+#end if
+#end def
+
+from EaseXML import *
+
+#Framework generate module code
+$createXMLObject($root)

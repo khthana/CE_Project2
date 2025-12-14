@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="MatrixService"
+	targetNamespace="http://www.globus.org/namespaces/2004/02/progtutorial/MatrixService"
+	xmlns:tns="http://www.globus.org/namespaces/2004/02/progtutorial/MatrixService"
+	xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI"
+	xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<import location="../../ogsi/ogsi.gwsdl"
+	namespace="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+
+<types>
+<xsd:schema targetNamespace="http://www.globus.org/namespaces/2004/02/progtutorial/MatrixService"
+	attributeFormDefault="qualified"
+	elementFormDefault="qualified"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+	xmlns="http://www.w3.org/2001/XMLSchema">
+
+	<xsd:complexType name="ArrayOfInteger">
+		<xsd:complexContent>
+			<xsd:restriction base="soapenc:Array">
+				<xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="xsd:int[]"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="multiplyMatrix">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="value1" type="tns:ArrayOfInteger"/>
+				<xsd:element name="value2" type="tns:ArrayOfInteger"/>
+				<xsd:element name="value3" type="xsd:int"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="multiplyMatrixResponse">
+		<xsd:complexType/>
+	</xsd:element>
+
+	<xsd:element name="getValue">
+		<xsd:complexType/>
+	</xsd:element>
+	<xsd:element name="getValueResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="value" type="xsd:int"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>
+</types>
+
+<message name="multiplyMatrixInputMessage">
+	<part name="parameters" element="tns:multiplyMatrix"/>
+</message>
+<message name="multiplyMatrixOutputMessage">
+	<part name="parameters" element="tns:multiplyMatrixResponse"/>
+</message>
+<message name="GetValueInputMessage">
+	<part name="parameters" element="tns:getValue"/>
+</message>
+<message name="GetValueOutputMessage">
+	<part name="parameters" element="tns:getValueResponse"/>
+</message>
+
+<gwsdl:portType name="MatrixPortType" extends="ogsi:GridService">
+	<operation name="multiplyMatrix">
+		<input message="tns:multiplyMatrixInputMessage"/>
+		<output message="tns:multiplyMatrixOutputMessage"/>
+		<fault name="Fault" message="ogsi:FaultMessage"/>
+	</operation>
+	<operation name="getValue">
+		<input message="tns:GetValueInputMessage"/>
+		<output message="tns:GetValueOutputMessage"/>
+		<fault name="Fault" message="ogsi:FaultMessage"/>
+	</operation>
+</gwsdl:portType>
+
+</definitions>

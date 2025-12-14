@@ -1,0 +1,44 @@
+-- phpMyAdmin SQL Dump
+-- version 2.6.0-pl2
+-- http://www.phpmyadmin.net
+-- 
+-- โฮสต์: localhost:3306
+-- เวลาในการสร้าง: 07 ม.ค. 2005  12:43น.
+-- รุ่นของเซิร์ฟเวอร์: 4.1.8
+-- รุ่นของ PHP: 4.3.5
+-- 
+-- ฐานข้อมูล: `isagmq`
+-- 
+
+-- --------------------------------------------------------
+
+-- 
+-- โครงสร้างตาราง `contact_list`
+-- 
+
+CREATE TABLE `contact_list` (
+  `USER_ID` bigint(10) NOT NULL default '0',
+  `CONTACT_ID` bigint(10) NOT NULL default '0',
+  `STATUS` char(1) NOT NULL default '',
+  PRIMARY KEY  (`USER_ID`,`CONTACT_ID`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- 
+-- dump ตาราง `contact_list`
+-- 
+
+INSERT INTO `contact_list` VALUES (16, 17, 'F');
+INSERT INTO `contact_list` VALUES (16, 18, 'F');
+INSERT INTO `contact_list` VALUES (16, 19, 'F');
+INSERT INTO `contact_list` VALUES (1, 2, 'F');
+INSERT INTO `contact_list` VALUES (1, 3, 'F');
+INSERT INTO `contact_list` VALUES (2, 3, 'F');
+INSERT INTO `contact_list` VALUES (3, 2, 'F');
+INSERT INTO `contact_list` VALUES (3, 1, 'F');
+INSERT INTO `contact_list` VALUES (3, 4, 'F');
+INSERT INTO `contact_list` VALUES (4, 3, 'F');
+INSERT INTO `contact_list` VALUES (16, 1, 'W');
+INSERT INTO `contact_list` VALUES (16, 2, 'D');
+INSERT INTO `contact_list` VALUES (2, 16, 'X');
+INSERT INTO `contact_list` VALUES (16, 4, 'D');
+INSERT INTO `contact_list` VALUES (4, 16, 'X');
