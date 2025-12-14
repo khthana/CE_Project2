@@ -1,0 +1,7 @@
+LOAD DATA
+INTO TABLE ALLIANCE.AIRLINE
+APPEND
+FIELDS TERMINATED BY ','
+(airlinecode,
+airlinename,
+country )

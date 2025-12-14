@@ -1,0 +1,49 @@
+[Version]
+Signature=$CHICAGO$
+Class=Sample
+ClassGuid={894A7460-A033-11d2-821E-444553540000}
+Provider=%MFGNAME%
+
+[Manufacturer]
+%MFGNAME%=DeviceList
+
+[DestinationDirs]
+DefaultDestDir=10,System32\Drivers
+
+[SourceDisksFiles]
+fileio.sys=1,objchk\i386
+fileio.jnk=1
+
+[DeviceList]
+%DESCRIPTION%=DriverInstall,*WCO0301
+
+;------------------------------------------------------------------------------
+;  Windows 2000 Sections
+;------------------------------------------------------------------------------
+
+[DriverInstall.NT]
+CopyFiles=DriverCopyFiles
+
+[DriverCopyFiles]
+fileio.sys,,,2
+fileio.jnk,,,2
+
+[DriverInstall.NT.Services]
+AddService=FILEIO,2,DriverService
+
+[DriverService]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%10%\system32\drivers\fileio.sys
+
+[DriverInstall.nt.hw]
+AddReg=DriverHwAddReg
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+
+[Strings]
+MFGNAME="Test Project"
+DESCRIPTION="Test Project"

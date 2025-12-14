@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://tempuri.org/skyhighWS/SeatbySkyHigh" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://tempuri.org/skyhighWS/SeatbySkyHigh" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/skyhighWS/SeatbySkyHigh">
+      <s:import namespace="http://www.w3.org/2001/XMLSchema" />
+      <s:element name="SeatAvai">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateSeatSet">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SeatAvaiResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SeatAvaiResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </types>
+  <message name="SeatAvaiSoapIn">
+    <part name="parameters" element="s0:SeatAvai" />
+  </message>
+  <message name="SeatAvaiSoapOut">
+    <part name="parameters" element="s0:SeatAvaiResponse" />
+  </message>
+  <portType name="SeatbySkyHighSoap">
+    <operation name="SeatAvai">
+      <documentation>Update seat available from SkyHigh</documentation>
+      <input message="s0:SeatAvaiSoapIn" />
+      <output message="s0:SeatAvaiSoapOut" />
+    </operation>
+  </portType>
+  <binding name="SeatbySkyHighSoap" type="s0:SeatbySkyHighSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <operation name="SeatAvai">
+      <soap:operation soapAction="http://tempuri.org/skyhighWS/SeatbySkyHigh/SeatAvai" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="SeatbySkyHigh">
+    <port name="SeatbySkyHighSoap" binding="s0:SeatbySkyHighSoap">
+      <soap:address location="http://localhost/skyhighWS/SeatbySkyHigh.asmx" />
+    </port>
+  </service>
+</definitions>

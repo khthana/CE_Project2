@@ -1,0 +1,50 @@
+<?php
+session_start();
+?>
+<html>
+<head>
+<title>:: Hidden Manipulation ::</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+<style type="text/css">
+<!--
+.style0 {
+	                   font-family: "MS Sans Serif";
+					   font-size: 14px;
+					   color:#006699;
+					   scrollbar-face-color: #0099FF;
+					   scrollbar-highlight-color: #006699; 
+					   scrollbar-shadow-color: #006699; 
+					   scrollbar-arrow-color: #FFFFFF;
+					   scrollbar-track-color: #FFFFFF; 
+					   scrollbar-darkshadow-color: #009900;
+        }
+		a:link {
+	color: #F58227;
+	text-decoration: none;
+}
+a:visited {
+	text-decoration: none;
+	color: #006699;
+}
+a:hover {
+	text-decoration: none;
+	background-color: #FF8204;
+	color: #FFFFFF; 
+	width:100%
+}
+-->
+</style>
+</head>
+
+<body  class="style0">
+<font color="#FF0000">วิธีการป้องกัน</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ทำได้โดยการลดหรือไม่ใช้ input type hidden ในการรับส่งค่าสำคัญๆต่างๆซึ่งในPHPนั้นสามารถใช้ตัวแปล 
+SESSION ซึ่งตัวแปล SESSION นั้นจะเก็บเอาไว้ทางฝั่งของ Server ซึ่งจะปลอดภัยกว่าแต่ก็ใช่ว่าตัวแปล 
+SESSION จะปลอดภัยเสียทีเดียวแต่ก็ปลอดภัยกว่า การส่งตัวแปลแบบ Hidden field หรือถ้าหากจำเป็นต้องใช้ 
+ก็ต้องใช้การ Check ค่า ตัวแปล HTTP_REFERER ซึ่งเป็นตัวแปล Environment Variable 
+ของ HTTP เพื่อดูว่าหน้า page ที่ส่งค่ามานั้นมาจากหน้าเว็บของ Server ของ เว็บของเราหรือเปล่าแต่วิธีนี้ก็ยังไม่ปลอดภัยเพราะว่า 
+Hacker สามารถที่จะเขียนส่วนหัวของ Header ของ HTTP ให้สามารถเปลี่ยนค่า HTTP_REFERER 
+ได้เช่นกัน การที่จะให้ปลอกภัยมากขึ้นคือต้องมีการ Check ค่าที่รับมาว่าค่านั้นถูกต้องก่อนการคำนวณราคาสินค้าและต้องมีการ 
+Check ขนาดของค่าที่รับมาว่ามีขนาดไม่เกินที่กำหนดไว้หรือเปล่าด้วย
+</body>
+</html>

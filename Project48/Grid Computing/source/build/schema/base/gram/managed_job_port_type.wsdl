@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="ManagedJob" targetNamespace="http://www.globus.org/namespaces/2003/12/managed_job/managed_job" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:mj-types="http://www.globus.org/namespaces/2003/12/managed_job/types" xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI" xmlns:sd="http://www.gridforum.org/namespaces/2003/03/serviceData" xmlns:tns="http://www.globus.org/namespaces/2003/12/managed_job/managed_job" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <import location="../../ogsi/ogsi.gwsdl" namespace="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <import location="../../base/gram/managed_job_types.wsdl" namespace="http://www.globus.org/namespaces/2003/12/managed_job/types"/>
+    <import location="../../base/streaming/file_stream_port_type.wsdl" namespace="http://www.globus.org/namespaces/2003/04/base/streaming"/>
+
+    <types>
+      <xsd:schema targetNamespace="http://www.globus.org/namespaces/2003/12/managed_job/managed_job" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:mj-types="http://www.globus.org/namespaces/2003/12/managed_job/types" xmlns:ogsa-types="http://www.gridforum.org/namespaces/2002/10/gridServices" xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI" xmlns:sd="http://www.gridforum.org/namespaces/2003/03/serviceData" xmlns:tns="http://www.globus.org/namespaces/2003/12/managed_job/managed_job" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:element name="start" type="tns:StartType"/>
+      <xsd:complexType name="StartType"/>
+
+      <xsd:element name="startResponse" type="tns:StartResponseType"/>
+      <xsd:complexType name="StartResponseType">
+        <xsd:sequence>
+          <xsd:element name="jobStatus" type="mj-types:JobStatusType"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:element name="startFault" type="mj-types:FaultType"/>
+    </xsd:schema>
+  </types>
+  <message name="startInputMessage">
+    <part element="tns:start" name="parameters"/>
+  </message>
+  <message name="startOutputMessage">
+    <part element="tns:startResponse" name="parameters"/>
+  </message>
+  <message name="FaultMessage">
+      <part element="tns:startFault" name="fault"/>
+  </message>
+
+  <portType name="ManagedJobPortType"><operation name="subscribe">
+    <input message="ns32:SubscribeInputMessage" xmlns:ns32="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns33:SubscribeOutputMessage" xmlns:ns33="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns34:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns34="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns35:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns35="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns36:TargetInvalidFaultMessage" name="TargetInvalidFault" xmlns:ns36="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns37:FaultMessage" name="Fault" xmlns:ns37="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="setServiceData">
+    <input message="ns44:SetServiceDataInputMessage" xmlns:ns44="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns45:SetServiceDataOutputMessage" xmlns:ns45="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns46:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns46="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+    <fault message="ns47:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns47="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+    <fault message="ns48:CardinalityViolationFaultMessage" name="CadinalityViolationFault" xmlns:ns48="http://www.gridforum.org/namespaces/2003/03/OGSI"/>  
+    <fault message="ns49:MutabilityViolationFaultMessage" name="MutabilityViolationFault" xmlns:ns49="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns50:ModifiabilityViolationFaultMessage" name="ModifabilityViolationFault" xmlns:ns50="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns51:TypeViolationFaultMessage" name="TypeViolationFault" xmlns:ns51="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns52:IncorrectValueFaultMessage" name="IncorrectValueFault" xmlns:ns52="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns53:PartialFailureFaultMessage" name="PartialFailureFault" xmlns:ns53="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns54:FaultMessage" name="Fault" xmlns:ns54="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="destroy">
+    <input message="ns63:DestroyInputMessage" xmlns:ns63="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns64:DestroyOutputMessage" xmlns:ns64="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns65:ServiceNotDestroyedFaultMessage" name="ServiceNotDestroyedFault" xmlns:ns65="http://www.gridforum.org/namespaces/2003/03/OGSI"/>      
+    <fault message="ns66:FaultMessage" name="Fault" xmlns:ns66="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="requestTerminationAfter">
+    <input message="ns55:RequestTerminationAfterInputMessage" xmlns:ns55="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns56:RequestTerminationAfterOutputMessage" xmlns:ns56="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns57:TerminationTimeUnchangedFaultMessage" name="TerminationTimeUnchangedFault" xmlns:ns57="http://www.gridforum.org/namespaces/2003/03/OGSI"/>    
+    <fault message="ns58:FaultMessage" name="Fault" xmlns:ns58="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="requestTerminationBefore">
+    <input message="ns59:RequestTerminationBeforeInputMessage" xmlns:ns59="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns60:RequestTerminationBeforeOutputMessage" xmlns:ns60="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns61:TerminationTimeUnchangedFaultMessage" name="TerminationTimeUnchangedFault" xmlns:ns61="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+    <fault message="ns62:FaultMessage" name="Fault" xmlns:ns62="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="findServiceData">
+    <input message="ns38:FindServiceDataInputMessage" xmlns:ns38="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns39:FindServiceDataOutputMessage" xmlns:ns39="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns40:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns40="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns41:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns41="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns42:TargetInvalidFaultMessage" name="TargetInvalidFault" xmlns:ns42="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns43:FaultMessage" name="Fault" xmlns:ns43="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="start">
+      <input message="ns0:startInputMessage" xmlns:ns0="http://www.globus.org/namespaces/2003/12/managed_job/managed_job"/>
+      <output message="ns1:startOutputMessage" xmlns:ns1="http://www.globus.org/namespaces/2003/12/managed_job/managed_job"/>
+      <fault message="ns2:FaultMessage" name="startFault" xmlns:ns2="http://www.globus.org/namespaces/2003/12/managed_job/managed_job"/>
+    </operation></portType><gwsdl:portType extends="ogsi:GridService                             ogsi:NotificationSource" name="ManagedJobPortType">
+    
+    <sd:serviceData maxOccurs="1" minOccurs="1" mutability="mutable" name="ManagedJobState" type="mj-types:JobStatusType"/>
+    <sd:serviceData element="xsd:anyType" maxOccurs="1" minOccurs="1" mutability="mutable" name="ManagedJobSLA"/>
+    <sd:serviceData element="xsd:string" maxOccurs="1" minOccurs="1" mutability="mutable" name="ManagedJobUserIdLocal"/>
+    <sd:serviceData element="ogsa-types:ExtensibilityType" maxOccurs="1" minOccurs="1" mutability="mutable" name="UserIdGridCredentials"/>
+    <sd:serviceData element="ogsi:HandleType" maxOccurs="1" minOccurs="0" mutability="mutable" name="stdOutHandle"/>
+    <sd:serviceData element="ogsi:HandleType" maxOccurs="1" minOccurs="0" mutability="mutable" name="stdErrHandle"/>
+  </gwsdl:portType>
+</definitions>

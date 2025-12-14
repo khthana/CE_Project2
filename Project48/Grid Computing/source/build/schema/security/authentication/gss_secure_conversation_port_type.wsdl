@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="SecureContextEstablishment" targetNamespace="http://ogsa.globus.org/security/authentication" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:tns="http://ogsa.globus.org/security/authentication" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+<types>
+  <xsd:schema targetNamespace="http://ogsa.globus.org/security/authentication" xmlns:auth-types="http://ogsa.globus.org/security/authentication/types" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:tns="http://ogsa.globus.org/security/authentication" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <xsd:import namespace="http://ogsa.globus.org/security/authentication/types" schemaLocation="../../security/authentication/gss_secure_conversation.xsd"/>
+
+    <xsd:element name="initTokenExchange" type="auth-types:InitContextTokenElementType"/>
+    <xsd:element name="initTokenExchangeResponse" type="auth-types:ContextTokenOutElementType"/>
+
+    <xsd:element name="continueTokenExchange" type="auth-types:ContextTokenElementType"/>
+    <xsd:element name="continueTokenExchangeResponse" type="auth-types:ContextTokenOutElementType"/>
+
+  </xsd:schema>
+</types>
+
+<message name="InitTokenExchangeInputMessage">
+  <part element="tns:initTokenExchange" name="parameters"/>
+</message>
+
+<message name="InitTokenExchangeOutputMessage">
+  <part element="tns:initTokenExchangeResponse" name="parameters"/>
+</message>
+
+<message name="ContinueTokenExchangeInputMessage">
+  <part element="tns:continueTokenExchange" name="parameters"/>
+</message>
+
+<message name="ContinueTokenExchangeOutputMessage">
+  <part element="tns:continueTokenExchangeResponse" name="parameters"/>
+</message>
+
+<!-- faults -->
+
+<message name="MechanismTypeNotSupportedFault">
+  <part name="description" type="xsd:string"/>
+</message>
+
+<message name="InvalidContextIdFault">
+  <part name="description" type="xsd:string"/>
+</message>
+
+<portType name="SecureContextEstablishmentPortType"><operation name="continueTokenExchange">
+    <input message="ns3:ContinueTokenExchangeInputMessage" xmlns:ns3="http://ogsa.globus.org/security/authentication"/>
+    <output message="ns4:ContinueTokenExchangeOutputMessage" xmlns:ns4="http://ogsa.globus.org/security/authentication"/>
+    <fault message="ns5:InvalidContextIdFault" name="InvalidContextIdFault" xmlns:ns5="http://ogsa.globus.org/security/authentication"/>
+  </operation><operation name="initTokenExchange">
+    <input message="ns0:InitTokenExchangeInputMessage" xmlns:ns0="http://ogsa.globus.org/security/authentication"/>
+    <output message="ns1:InitTokenExchangeOutputMessage" xmlns:ns1="http://ogsa.globus.org/security/authentication"/>
+    <fault message="ns2:MechanismTypeNotSupportedFault" name="MechanismTypeNotSupportedFault" xmlns:ns2="http://ogsa.globus.org/security/authentication"/>
+  </operation></portType><gwsdl:portType name="SecureContextEstablishmentPortType">
+
+  
+
+  
+
+</gwsdl:portType>
+
+</definitions>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://ogsa.globus.org/samples/chat" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI" xmlns:tns="http://ogsa.globus.org/samples/chat" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:element name="setAlias">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="alias" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="setAliasResponse">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="getAlias">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="getAliasResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="alias" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="sendMessage">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="message" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="sendMessageResponse">
+                <xsd:complexType/>
+            </xsd:element>
+            <xsd:element name="executeCommand">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="command" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="executeCommandResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="commandResult" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:complexType name="messageData">
+                <xsd:sequence>
+                    <xsd:element name="text" type="xsd:string"/>
+                    <xsd:element name="alias" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<schema targetNamespace="http://ogsa.globus.org/types/subscription"
+        xmlns:tns="http://ogsa.globus.org/types/subscription"
+        xmlns="http://www.w3.org/2001/XMLSchema"
+        elementFormDefault="qualified">
+
+ <element name="SubscribeByServiceDataXPath">
+    <complexType>
+      <sequence>
+        <element name="subscribeByServiceDataXPath" type="tns:ServiceDataXPathSubscriptionExpressionType"/>
+      </sequence>
+    </complexType>
+  </element>
+  
+  <complexType name="ServiceDataXPathSubscriptionExpressionType">
+    <sequence>
+      <element name="name" type="QName"/>
+      <element name="xpath" type="string"/>
+      <element name="namespaces" type="string" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+
+</schema>

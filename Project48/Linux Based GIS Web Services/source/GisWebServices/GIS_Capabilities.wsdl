@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://giswebservices" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://giswebservices" xmlns:intf="http://giswebservices" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.2.1
+Built on Aug 08, 2005 (11:49:10 PDT)-->
+
+   <wsdl:message name="getCapabilitiesRequest">
+
+   </wsdl:message>
+
+   <wsdl:message name="getCapabilitiesResponse">
+
+      <wsdl:part name="getCapabilitiesReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="GIS_Capabilities">
+
+      <wsdl:operation name="getCapabilities">
+
+         <wsdl:input message="impl:getCapabilitiesRequest" name="getCapabilitiesRequest"/>
+
+         <wsdl:output message="impl:getCapabilitiesResponse" name="getCapabilitiesResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="GIS_CapabilitiesSoapBinding" type="impl:GIS_Capabilities">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="getCapabilities">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getCapabilitiesRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getCapabilitiesResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="GIS_CapabilitiesService">
+
+      <wsdl:port binding="impl:GIS_CapabilitiesSoapBinding" name="GIS_Capabilities">
+
+         <wsdlsoap:address location="http://localhost:8080/GisServer/services/GIS_Capabilities"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

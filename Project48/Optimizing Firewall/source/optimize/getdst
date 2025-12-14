@@ -1,0 +1,15 @@
+#!/bin/bash
+#get destination ipaddress field from rule
+#argument1 is file (redirect firewall rule)
+#argument2 is number of rule
+fname=$1
+rule=`expr $2 + 2`
+#get destination ipaddress field from file
+dst=`cat $fname | grep -n ' ' | grep -m 1 $rule: | cut -d':' -f2 | cut -b42- | cut -d' ' -f1`
+dstaddr=`echo $dst | cut -d'/' -f1`
+dstmask=`echo $dst | cut -d'/' -f2`
+#case destination ipaddress is host
+if [ $dstaddr = $dstmask ]
+then
+	dstmask=32
+fi

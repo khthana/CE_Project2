@@ -1,0 +1,37 @@
+#!/bin/sh
+
+module="crypto_prng"
+device="crypto_PRNG"
+#mode="664"
+mode="666"
+
+# Group: since distrubutions do it differently, look for wheel or use staff
+##if grep -q '^staff:' /etc/group; then
+##	group="staff"
+##else
+##	group="wheel"
+##fi
+
+# invoke insmod with all arguments we got
+# and use a pathname, as insmod doesn't look in. by default
+/sbin/insmod ./$module.ko $* || exit 1
+
+# remove stable nodes
+rm -f /dev/${device}
+
+# retrieve major number
+major=$(awk "\$2==\"$device\" {print \$1}" /proc/devices)
+# Remove stale nodes and replace them, then give gid and perms
+# Usually the script is shorter, it's cryptochip that has several devices in it.
+
+rm -f /dev/${device}
+mknod /dev/${device} c $major 0
+
+# give appropriate group/permissions, and change the group.
+# Not all distributions have staff, some have "wheel" instead.
+group="staff"
+grep -q '^staff:' /etc/group || group="wheel"
+
+###ln -sf ${device}0 /dev/${device}
+chgrp $group /dev/${device}
+chmod $mode /dev/${device}

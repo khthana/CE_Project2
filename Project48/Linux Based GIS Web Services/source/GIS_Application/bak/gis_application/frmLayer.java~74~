@@ -1,0 +1,714 @@
+package gis_application;
+
+import java.awt.*;
+import javax.swing.*;
+import com.borland.jbcl.layout.XYLayout;
+import com.borland.jbcl.layout.*;
+import javax.swing.border.TitledBorder;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
+import java.awt.Color;
+import java.awt.Dimension;
+
+public class frmLayer
+    extends JFrame {
+  //mydefind
+  MyProfile mp = new MyProfile() ;
+  frmData frmData = new frmData();
+  frmCreateLayer frmCreateLayer = new frmCreateLayer();
+
+  String itemName[];
+
+  int layerId[];
+  String layerName[];
+  String geomtype[];
+
+  String geomData[];
+
+  String col[];
+  String row[][];
+
+  int selectedItem=0;
+  int updatedItem=0;
+  int showdataItem=0;
+
+  //jbuilder
+  JPanel contentPane;
+  XYLayout xYLayout1 = new XYLayout();
+  JPanel jPanel1 = new JPanel();
+  XYLayout xYLayout2 = new XYLayout();
+  TitledBorder titledBorder1 = new TitledBorder("");
+  JPanel jPanel2 = new JPanel();
+  XYLayout xYLayout3 = new XYLayout();
+  TitledBorder titledBorder2 = new TitledBorder("");
+  TitledBorder titledBorder3 = new TitledBorder("");
+  JScrollPane jScrollPane1 = new JScrollPane();
+  TitledBorder titledBorder4 = new TitledBorder("");
+  JList lstLayer = new JList();
+  JButton cmdView = new JButton();
+  JButton cmdDelete = new JButton();
+  JButton cmdCreate = new JButton();
+  JTextArea lblLayerName = new JTextArea();
+  TitledBorder titledBorder5 = new TitledBorder("");
+  JLabel jLabel1 = new JLabel();
+  TitledBorder titledBorder6 = new TitledBorder("");
+  TitledBorder titledBorder7 = new TitledBorder("");
+  TitledBorder titledBorder8 = new TitledBorder("");
+  JButton cmdPublic = new JButton();
+  JButton cmdPrivate = new JButton();
+  TitledBorder titledBorder9 = new TitledBorder("");
+  TitledBorder titledBorder10 = new TitledBorder("");
+  JTextField lblOrgname = new JTextField();
+  JTextField txtLayerName = new JTextField();
+  JTextField lblGeomtype = new JTextField();
+  JTextField lblLayerId = new JTextField();
+  JLabel jLabel2 = new JLabel();
+  JLabel jLabel3 = new JLabel();
+  JLabel jLabel4 = new JLabel();
+  JLabel jLabel5 = new JLabel();
+  TitledBorder titledBorder11 = new TitledBorder("");
+  TitledBorder titledBorder12 = new TitledBorder("");
+  TitledBorder titledBorder13 = new TitledBorder("");
+  TitledBorder titledBorder14 = new TitledBorder("");
+  JButton cmdUpdate = new JButton();
+  TitledBorder titledBorder15 = new TitledBorder("");
+  JPanel jPanel3 = new JPanel();
+  TitledBorder titledBorder16 = new TitledBorder("");
+  XYLayout xYLayout4 = new XYLayout();
+  JButton cmdRefresh = new JButton();
+  TitledBorder titledBorder17 = new TitledBorder("");
+  JButton cmdViewData = new JButton();
+  TitledBorder titledBorder18 = new TitledBorder("");
+  JScrollPane paneData = new JScrollPane();
+  TitledBorder titledBorder19 = new TitledBorder("");
+  JTable tbData = new JTable();
+  JButton cmdInsertData = new JButton();
+  JTextArea lblGeom = new JTextArea();
+  JScrollPane jScrollPane2 = new JScrollPane();
+  TitledBorder titledBorder20 = new TitledBorder("");
+  TitledBorder titledBorder21 = new TitledBorder("");
+  JButton cmdUpdateData = new JButton();
+  TitledBorder titledBorder22 = new TitledBorder("");
+  JButton cmdDelData = new JButton();
+  TitledBorder titledBorder23 = new TitledBorder("");
+  JButton cmdViewDat = new JButton();
+  TitledBorder titledBorder24 = new TitledBorder("");
+  public frmLayer() {
+    try {
+      //setDefaultCloseOperation(EXIT_ON_CLOSE);
+      jbInit();
+    }
+    catch (Exception exception) {
+      exception.printStackTrace();
+    }
+  }
+
+  /**
+   * Component initialization.
+   *
+   * @throws java.lang.Exception
+   */
+  private void jbInit() throws Exception {
+    contentPane = (JPanel) getContentPane();
+    contentPane.setLayout(xYLayout1);
+    setSize(new Dimension(800, 630));
+    setTitle("Layer Management");
+    jPanel1.setLayout(xYLayout2);
+    jPanel1.setBackground(Color.white);
+    jPanel1.setBorder(titledBorder3);
+    jPanel1.setOpaque(true);
+    jPanel2.setLayout(xYLayout3);
+    jPanel2.setBackground(Color.white);
+    jPanel2.setBorder(titledBorder2);
+    jPanel2.setOpaque(true);
+    contentPane.setBackground(Color.white);
+    contentPane.setOpaque(true);
+    jScrollPane1.setBorder(titledBorder4);
+    lstLayer.setBackground(new Color(195, 249, 249));
+    lstLayer.addMouseListener(new frmLayer_lstLayer_mouseAdapter(this));
+    cmdView.setBackground(Color.white);
+    cmdView.setForeground(new Color(80, 143, 0));
+    cmdView.setBorder(titledBorder8);
+    cmdView.setText("View this Layer");
+    cmdView.addActionListener(new frmLayer_cmdView_actionAdapter(this));
+    cmdDelete.setBackground(Color.white);
+    cmdDelete.setForeground(Color.red);
+    cmdDelete.setBorder(titledBorder7);
+    cmdDelete.setText("Delete");
+    cmdDelete.addActionListener(new frmLayer_cmdDelete_actionAdapter(this));
+    cmdCreate.setBackground(Color.white);
+    cmdCreate.setForeground(Color.blue);
+    cmdCreate.setBorder(titledBorder6);
+    cmdCreate.setText("Create new Layer");
+    cmdCreate.addActionListener(new frmLayer_cmdCreate_actionAdapter(this));
+    lblLayerName.setBackground(new Color(255, 255, 229));
+    lblLayerName.setBorder(titledBorder5);
+    lblLayerName.setWrapStyleWord(true);
+    jLabel1.setText("List of Layers");
+    cmdPublic.setBackground(new Color(240, 255, 237));
+    cmdPublic.setBorder(titledBorder9);
+    cmdPublic.setText("[+] Public");
+    cmdPublic.addActionListener(new frmLayer_cmdPublic_actionAdapter(this));
+    cmdPrivate.setBackground(new Color(255, 245, 230));
+    cmdPrivate.setBorder(titledBorder10);
+    cmdPrivate.setText("[-] Private");
+    cmdPrivate.addActionListener(new frmLayer_cmdPrivate_actionAdapter(this));
+    jLabel2.setText("Organization");
+    jLabel3.setText("Layer ID");
+    jLabel4.setText("Layer name");
+    jLabel5.setText("Geometry type");
+    lblOrgname.setBorder(titledBorder11);
+    lblOrgname.setEditable(false);
+    lblLayerId.setBorder(titledBorder12);
+    lblLayerId.setEditable(false);
+    txtLayerName.setForeground(SystemColor.activeCaption);
+    txtLayerName.setBorder(titledBorder13);
+    lblGeomtype.setBorder(titledBorder14);
+    lblGeomtype.setEditable(false);
+    cmdUpdate.setBackground(Color.white);
+    cmdUpdate.setBorder(titledBorder15);
+    cmdUpdate.setOpaque(true);
+    cmdUpdate.setText("Change Layer Name");
+    cmdUpdate.addActionListener(new frmLayer_cmdUpdate_actionAdapter(this));
+    jPanel3.setBackground(Color.white);
+    jPanel3.setBorder(titledBorder16);
+    jPanel3.setOpaque(true);
+    jPanel3.setLayout(xYLayout4);
+    cmdRefresh.setBackground(Color.white);
+    cmdRefresh.setForeground(Color.magenta);
+    cmdRefresh.setBorder(titledBorder17);
+    cmdRefresh.setText("Refresh");
+    cmdRefresh.addActionListener(new frmLayer_cmdRefresh_actionAdapter(this));
+    cmdViewData.setBackground(Color.white);
+    cmdViewData.setBorder(titledBorder18);
+    cmdViewData.setText("View Information");
+    cmdViewData.addActionListener(new frmLayer_cmdViewData_actionAdapter(this));
+    paneData.setBorder(titledBorder19);
+    cmdInsertData.setBackground(Color.white);
+    cmdInsertData.setBorder(titledBorder21);
+    cmdInsertData.setText("insert");
+    cmdInsertData.addActionListener(new frmLayer_cmdInsertData_actionAdapter(this));
+    tbData.setEnabled(false);
+    tbData.addMouseListener(new frmLayer_tbData_mouseAdapter(this));
+    lblGeom.setBackground(new Color(255, 254, 247));
+    lblGeom.setEditable(false);
+    lblGeom.setText("geom");
+    lblGeom.setLineWrap(true);
+    lblGeom.setWrapStyleWord(true);
+    jScrollPane2.setBorder(titledBorder20);
+    cmdUpdateData.setBackground(Color.white);
+    cmdUpdateData.setBorder(titledBorder22);
+    cmdUpdateData.setText("update");
+    cmdUpdateData.addActionListener(new frmLayer_cmdUpdateData_actionAdapter(this));
+    cmdDelData.setBackground(Color.white);
+    cmdDelData.setForeground(Color.red);
+    cmdDelData.setBorder(titledBorder23);
+    cmdDelData.setText("delete");
+    cmdDelData.addActionListener(new frmLayer_cmdDelData_actionAdapter(this));
+    cmdViewDat.setBackground(Color.white);
+    cmdViewDat.setBorder(titledBorder24);
+    cmdViewDat.setText("view");
+    cmdViewDat.addActionListener(new frmLayer_cmdViewDat_actionAdapter(this));
+    jScrollPane1.getViewport().add(lstLayer);
+    jPanel1.add(jLabel1, new XYConstraints(9, 5, 107, 26));
+    contentPane.add(jPanel2, new XYConstraints(266, 9, 521, 193));
+    jPanel2.add(lblGeomtype, new XYConstraints(147, 114, 203, -1));
+    jPanel2.add(jLabel2, new XYConstraints(22, 28, -1, -1));
+    jPanel2.add(jLabel3, new XYConstraints(22, 59, -1, -1));
+    jPanel2.add(jLabel4, new XYConstraints(22, 89, -1, -1));
+    jPanel2.add(jLabel5, new XYConstraints(22, 122, -1, -1));
+    jPanel2.add(lblLayerId, new XYConstraints(147, 51, 84, -1));
+    jPanel2.add(cmdUpdate, new XYConstraints(321, 150, 165, 26));
+    jPanel2.add(lblOrgname, new XYConstraints(147, 20, 339, -1));
+    jPanel2.add(txtLayerName, new XYConstraints(147, 82, 339, -1));
+    jPanel1.add(cmdRefresh, new XYConstraints(127, 10, 104, 19));
+    jPanel2.add(cmdViewData, new XYConstraints(147, 150, 165, 26));
+    contentPane.add(jPanel1, new XYConstraints(8, 9, 252, 575));
+    contentPane.add(jPanel3, new XYConstraints(266, 210, 521, 374));
+    jPanel1.add(cmdView, new XYConstraints(9, 496, 222, -1));
+    jPanel1.add(lblLayerName, new XYConstraints(9, 395, 222, 54));
+    jPanel1.add(cmdPublic, new XYConstraints(9, 458, 107, -1));
+    jPanel1.add(cmdPrivate, new XYConstraints(125, 458, 106, -1));
+    jPanel1.add(cmdCreate, new XYConstraints(9, 528, 222, 29));
+    jPanel1.add(jScrollPane1, new XYConstraints(9, 42, 222, 309));
+    jPanel3.add(cmdDelData, new XYConstraints(420, 328, 81, -1));
+    jPanel3.add(paneData, new XYConstraints(6, 1, 495, 207));
+    jScrollPane2.getViewport().add(lblGeom);
+    jPanel3.add(jScrollPane2, new XYConstraints(6, 211, 495, 104));
+    jPanel3.add(tbData, new XYConstraints(447, 330, 29, 18));
+    jPanel3.add(cmdViewDat, new XYConstraints(6, 328, 111, -1));
+    jPanel3.add(cmdInsertData, new XYConstraints(126, 328, 107, -1));
+    jPanel3.add(cmdUpdateData, new XYConstraints(241, 328, 105, -1));
+    jPanel1.add(cmdDelete, new XYConstraints(150, 359, 81, -1));
+  }
+
+  public void setTable(Object row[][], Object column[]){
+    tbData =null;
+    tbData =new JTable(row,column);
+    tbData.setBackground(Color.white);
+    //tbData.setBorder(BorderFactory.createLineBorder(Color.black));
+    //tbData.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    tbData.setCellSelectionEnabled(true);
+    tbData.setGridColor(Color.lightGray);
+
+    //jPanel3.add(tbData, new XYConstraints(21, 170, 464, 92));
+    tbData.addMouseListener(new frmLayer_tbData_mouseAdapter(this));
+    paneData.getViewport().add(tbData);
+  }
+
+  public void getInformation(){
+    try{
+      CallServices cs=new CallServices("GIS_InformationServices","detailColumn") ;
+      String res = cs.strInvoke(new Object[]{mp.getSessionkey(), selectedItem });
+      System.out.println(res);
+      GisXmlReader gxr = new GisXmlReader(res);
+      int colsize=gxr.child("layer").child("column").count()-1;
+      col = new String[colsize];
+      for (int i=0; i<colsize; i++) {col[i]=gxr.child("layer").child("column",i).attribute("name");
+        System.out.print(col[i]+" | ");
+      }
+      System.out.println("");
+      cs=new CallServices("GIS_InformationServices","detailGeomInformation") ;
+      res = cs.strInvoke(new Object[]{mp.getSessionkey(), selectedItem });
+      gxr = new GisXmlReader(res);
+      System.out.println(res);
+      int rowsize=gxr.child("layer").child("row").count();
+      row = new String[rowsize][colsize];
+      geomData=new String[rowsize];
+      for (int r=0; r<rowsize; r++){
+        row[r][0]=gxr.child("layer").child("row", r).attribute("id");
+        System.out.print(row[r][0] + ", ");
+        for (int c = 1; c < colsize; c++){
+          row[r][c] = gxr.child("layer").child("row", r).child("data", c-1).value();
+          System.out.print(row[r][c] + ", ");
+        }
+        geomData[r]=gxr.child("layer").child("row", r).child("data", colsize-1).value();
+        System.out.println("");
+      }
+      setTable(row,col);
+
+    }catch(Exception e){
+      row = new String[1][col.length];
+      for (int i=0; i<col.length; i++) row[0][i]="null";
+      setTable(row,col);
+      e.printStackTrace() ;
+    }
+  }
+
+  public void callMe(){
+    this.setVisible(true);
+    try{
+      lstLayer.removeAll();
+      itemName=new String[1];
+      itemName[0]="";
+
+      CallServices cs=new CallServices("GIS_LayerServices","listMyLayer") ;
+      String res = cs.strInvoke(new Object[]{mp.getSessionkey() });
+      //System.out.println(res);
+      GisXmlReader gxr= new GisXmlReader(res);
+      int size=gxr.child("layer").count();
+      layerId =new int[size];
+      itemName =new String[size];
+      geomtype =new String[size];
+      layerName =new String[size];
+      for (int i=0; i<size;i++){
+        String pub = "[-] ";
+        String status = gxr.child("layer",i).attribute("status");
+        if (status.indexOf("pub")>=0) pub="[+] ";
+        layerId[i]=Integer.parseInt(gxr.child("layer",i).attribute("id"));
+        geomtype[i] = gxr.child("layer",i).attribute("geomtype");
+        layerName[i] = gxr.child("layer",i).value();
+        itemName[i]= pub+layerName[i];
+      }
+      lstLayer.setListData(itemName);
+
+      if (mp.getPlayroll().toLowerCase().indexOf("gis")>=0 ||
+          mp.getPlayroll().toLowerCase().indexOf("map")>=0 )
+        cmdCreate.setVisible(true);
+      else cmdCreate.setVisible(false);
+
+
+    }catch(Exception e){
+      e.printStackTrace() ;
+
+    }
+
+  }
+
+  public void lstLayer_mouseClicked(MouseEvent e) {
+    int index=lstLayer.getSelectedIndex();
+    selectedItem = layerId[index]  ;
+    lblLayerName.setText(layerName[index]) ;
+
+  }
+
+  public void cmdPublic_actionPerformed(ActionEvent e) {
+    try{
+      CallServices cs=new CallServices("GIS_LayerServices","publicLayer") ;
+      int res = cs.intInvoke(new Object[]{mp.getSessionkey(),selectedItem,true});
+      callMe();
+      if (res>100)
+            JOptionPane.showMessageDialog(null,lblLayerName.getText() + "\n is public",
+                                      "Layer Accessibility",
+                                      JOptionPane.INFORMATION_MESSAGE );
+
+      else JOptionPane.showMessageDialog(null,  "nError code: " + res,
+                                      "Layer Accessibility",
+                                      JOptionPane.ERROR_MESSAGE);
+
+    }catch(Exception ea){
+      ea.printStackTrace() ;
+    }
+
+  }
+
+  public void cmdPrivate_actionPerformed(ActionEvent e) {
+    try{
+          CallServices cs=new CallServices("GIS_LayerServices","publicLayer") ;
+          int res = cs.intInvoke(new Object[]{mp.getSessionkey(),selectedItem,false});
+          callMe();
+          if (res>100)
+                JOptionPane.showMessageDialog(null,lblLayerName.getText() + "\n is private",
+                                          "Layer Accessibility",
+                                          JOptionPane.INFORMATION_MESSAGE );
+
+          else JOptionPane.showMessageDialog(null,  "nError code: " + res,
+                                          "Layer Accessibility",
+                                          JOptionPane.ERROR_MESSAGE);
+
+        }catch(Exception ea){
+          ea.printStackTrace() ;
+    }
+  }
+
+  public void cmdView_actionPerformed(ActionEvent e) {
+    int index=lstLayer.getSelectedIndex();
+    updatedItem=selectedItem;
+    lblOrgname.setText(mp.getOwnername() ) ;
+    lblLayerId.setText(""+layerId[index]) ;
+    txtLayerName.setText(layerName[index]) ;
+    lblGeomtype.setText(geomtype[index]) ;
+
+  }
+
+  public void cmdUpdate_actionPerformed(ActionEvent e) {
+    try{
+          CallServices cs=new CallServices("GIS_LayerServices","updateLayer") ;
+          int res = cs.intInvoke(new Object[]{mp.getSessionkey(),updatedItem,
+                                 txtLayerName.getText() });
+          callMe();
+          if (res>100)
+                JOptionPane.showMessageDialog(null,lblLayerName.getText() + " has already changed.",
+                                          "Changing Layer Name",
+                                          JOptionPane.INFORMATION_MESSAGE );
+
+          else JOptionPane.showMessageDialog(null,  "nError code: " + res,
+                                          "Changing Layer Name",
+                                          JOptionPane.ERROR_MESSAGE);
+
+        }catch(Exception ea){
+          ea.printStackTrace() ;
+    }
+
+  }
+
+  public void cmdRefresh_actionPerformed(ActionEvent e) {
+    callMe();
+  }
+
+  public void cmdCreate_actionPerformed(ActionEvent e) {
+    frmCreateLayer.setVisible(true);
+  }
+
+  public void cmdViewData_actionPerformed(ActionEvent e) {
+    showdataItem=updatedItem;
+    getInformation();
+  }
+
+  public void cmdInsertData_actionPerformed(ActionEvent e) {
+    int size = col.length;
+    String c[]=new String[size];
+    String r[]=new String[size];
+    for (int i=0; i<size-1; i++){
+      c[i]=col[i+1];
+      r[i]="";
+    }
+    c[size-1]="geom";
+    r[size-1]="null";
+    frmData.callMeAsInsert(showdataItem,0,c,r);
+  }
+
+  public void tbData_mouseClicked(MouseEvent e) {
+    int index=tbData.getSelectedRow();
+    //cmdInsertData.setText("i="+index);
+    lblGeom.setText(geomData[index]);
+  }
+
+  public void cmdUpdateData_actionPerformed(ActionEvent e) {
+    int size = col.length;
+    String c[]=new String[size];
+    String r[]=new String[size];
+    int index=tbData.getSelectedRow();
+    for (int i=0; i<size-1; i++){
+      c[i]=col[i+1];
+      r[i]=row[index][i+1];
+    }
+    c[size-1]="geom";
+    r[size-1]=geomData[index];
+    int id=Integer.parseInt(row[index][0]);
+    frmData.callMeAsUpdate(showdataItem,id,c,r);
+
+  }
+
+  public void cmdViewDat_actionPerformed(ActionEvent e) {
+    int size = col.length;
+    String c[]=new String[size];
+    String r[]=new String[size];
+    int index=tbData.getSelectedRow();
+    for (int i=0; i<size-1; i++){
+      c[i]=col[i+1];
+      r[i]=row[index][i+1];
+    }
+    c[size-1]="geom";
+    r[size-1]=geomData[index];
+    int id=Integer.parseInt(row[index][0]);
+    frmData.callMeAsView(id,c,r);
+
+  }
+
+  public void cmdDelData_actionPerformed(ActionEvent e) {
+    try{
+      int confirm =JOptionPane.showConfirmDialog(null,"Do you want to delete this?","Delete Information",JOptionPane.WARNING_MESSAGE);
+      //System.out.println("con="+confirm);
+      if (confirm==0){
+        int thisrow = tbData.getSelectedRow();
+        int rowID=Integer.parseInt(row[thisrow][0]);
+        CallServices cs = new CallServices("GIS_InformationServices",
+                                           "deleteInformation");
+
+
+        int res = cs.intInvoke(new Object[] {mp.getSessionkey(), showdataItem,
+                               rowID});
+        System.out.println(showdataItem+" "+rowID);
+
+        if (res > 100){
+          getInformation();
+          JOptionPane.showMessageDialog(null,
+                                        "Delete Information Complete",
+                                        "Delete Information",
+                                        JOptionPane.INFORMATION_MESSAGE);
+        }
+        else
+          JOptionPane.showMessageDialog(null, "Error code: " + res,
+                                        "Delete Information",
+                                        JOptionPane.ERROR_MESSAGE);
+      }
+    }catch(Exception er){
+      er.printStackTrace();
+    }
+
+  }
+
+  public void cmdDelete_actionPerformed(ActionEvent e) {
+    try{
+      int confirm =JOptionPane.showConfirmDialog(null,"Do you want to delete this?","Delete Layer",JOptionPane.WARNING_MESSAGE);
+      //System.out.println("con="+confirm);
+      if (confirm==0){
+        int thisrow = tbData.getSelectedRow();
+
+        CallServices cs = new CallServices("GIS_LayerServices",
+                                           "deleteLayer");
+
+        int res = cs.intInvoke(new Object[] {mp.getSessionkey(), selectedItem});
+
+        System.out.println(" "+selectedItem);
+
+        if (res > 100){
+          JOptionPane.showMessageDialog(null,
+                                        "Delete Layer Complete",
+                                        "Delete Layer",
+                                        JOptionPane.INFORMATION_MESSAGE);
+          callMe();
+        }
+        else
+          JOptionPane.showMessageDialog(null, "Error code: " + res,
+                                        "Delete Layer",
+                                        JOptionPane.ERROR_MESSAGE);
+      }
+    }catch(Exception er){
+      er.printStackTrace();
+    }
+
+  }
+}
+
+class frmLayer_cmdDelete_actionAdapter
+    implements ActionListener {
+  private frmLayer adaptee;
+  frmLayer_cmdDelete_actionAdapter(frmLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdDelete_actionPerformed(e);
+  }
+}
+
+class frmLayer_cmdDelData_actionAdapter
+    implements ActionListener {
+  private frmLayer adaptee;
+  frmLayer_cmdDelData_actionAdapter(frmLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdDelData_actionPerformed(e);
+  }
+}
+
+class frmLayer_cmdViewDat_actionAdapter
+    implements ActionListener {
+  private frmLayer adaptee;
+  frmLayer_cmdViewDat_actionAdapter(frmLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdViewDat_actionPerformed(e);
+  }
+}
+
+class frmLayer_cmdUpdateData_actionAdapter
+    implements ActionListener {
+  private frmLayer adaptee;
+  frmLayer_cmdUpdateData_actionAdapter(frmLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdUpdateData_actionPerformed(e);
+  }
+}
+
+class frmLayer_tbData_mouseAdapter
+    extends MouseAdapter {
+  private frmLayer adaptee;
+  frmLayer_tbData_mouseAdapter(frmLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void mouseClicked(MouseEvent e) {
+    adaptee.tbData_mouseClicked(e);
+  }
+}
+
+class frmLayer_cmdInsertData_actionAdapter
+    implements ActionListener {
+  private frmLayer adaptee;
+  frmLayer_cmdInsertData_actionAdapter(frmLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdInsertData_actionPerformed(e);
+  }
+}
+
+class frmLayer_cmdViewData_actionAdapter
+    implements ActionListener {
+  private frmLayer adaptee;
+  frmLayer_cmdViewData_actionAdapter(frmLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdViewData_actionPerformed(e);
+  }
+}
+
+class frmLayer_cmdCreate_actionAdapter
+    implements ActionListener {
+  private frmLayer adaptee;
+  frmLayer_cmdCreate_actionAdapter(frmLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdCreate_actionPerformed(e);
+  }
+}
+
+class frmLayer_cmdRefresh_actionAdapter
+    implements ActionListener {
+  private frmLayer adaptee;
+  frmLayer_cmdRefresh_actionAdapter(frmLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdRefresh_actionPerformed(e);
+  }
+}
+
+class frmLayer_cmdUpdate_actionAdapter
+    implements ActionListener {
+  private frmLayer adaptee;
+  frmLayer_cmdUpdate_actionAdapter(frmLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdUpdate_actionPerformed(e);
+  }
+}
+
+class frmLayer_cmdView_actionAdapter
+    implements ActionListener {
+  private frmLayer adaptee;
+  frmLayer_cmdView_actionAdapter(frmLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdView_actionPerformed(e);
+  }
+}
+
+class frmLayer_cmdPrivate_actionAdapter
+    implements ActionListener {
+  private frmLayer adaptee;
+  frmLayer_cmdPrivate_actionAdapter(frmLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdPrivate_actionPerformed(e);
+  }
+}
+
+class frmLayer_cmdPublic_actionAdapter
+    implements ActionListener {
+  private frmLayer adaptee;
+  frmLayer_cmdPublic_actionAdapter(frmLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdPublic_actionPerformed(e);
+  }
+}
+
+class frmLayer_lstLayer_mouseAdapter
+    extends MouseAdapter {
+  private frmLayer adaptee;
+  frmLayer_lstLayer_mouseAdapter(frmLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void mouseClicked(MouseEvent e) {
+    adaptee.lstLayer_mouseClicked(e);
+  }
+}

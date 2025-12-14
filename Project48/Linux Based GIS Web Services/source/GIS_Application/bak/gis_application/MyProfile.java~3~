@@ -1,0 +1,44 @@
+package gis_application;
+
+public class MyProfile {
+   String sessionkey="null";
+   private static int level=7;
+   private static int memid=0;
+   private static int ownid=0;
+   private static String name="null";
+   private static String address="null";
+   private static String phone="null";
+   private static String email="null";
+
+  public MyProfile() {
+  }
+
+  public void setSessionkey(String sessionKey) throws Exception{
+    sessionkey=sessionKey;
+    String mydetail="";
+    try{
+      CallServices cs = new CallServices("GIS_UserServices","detailUser");
+      mydetail=cs.strInvoke(new Object[]{sessionkey}) ;
+      GisXmlReader gxr=new GisXmlReader(mydetail);
+
+      name=gxr.child("member").child("name").value();
+      address=gxr.child("member").child("address").value();
+      phone=gxr.child("member").child("phone").value();
+      email=gxr.child("member").child("email").value();
+
+      level=gxr.child("member").child("name").value();
+    }catch(Exception e){
+      throw e;
+    }
+  }
+
+  public int getLevel(){ return level;}
+  public int getMemberID(){ return memid;}
+  public int getOwnerID(){ return ownid;}
+
+  public String getSessionkey(){ return sessionkey;}
+  public String getName(){ return name;}
+  public String getAddress(){ return address;}
+  public String getPhone(){ return phone;}
+  public String getEmail(){ return email;}
+}

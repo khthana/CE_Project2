@@ -1,0 +1,39 @@
+#!/bin/bash
+#get source and destination port number
+#argument1 is file (redirect firewall rule)
+#argument2 is rule number
+rule=`expr $2 + 2`
+#case protocol is all
+if [ $prot = all ]
+then
+	sport=all
+	dport=all
+else
+	port=`cat $1 | grep -n ' ' | grep -m 1 $rule: | cut -d':' -f2- | cut -b66-68`
+	#case has source port number
+	if [ $port ] && [ $port = spt ]
+	then
+		#get source port number from file
+		sport=`cat $1 | grep -n ' ' | grep -m 1 $rule: | cut -d':' -f2- | cut -b70- | cut -d' ' -f1`
+		port=`cat $1 | grep -n ' ' | grep -m 1 $rule: | cut -d':' -f2- | cut -b70- | cut -d' ' -f2 | cut -d':' -f1`
+		#case has destination port number too
+		if [ $port ] && [ $port = dpt ]
+		then
+			#get destination port number from file
+			dport=`cat $1 | grep -n ' ' | grep -m 1 $rule: | cut -d':' -f2- | cut -b70- | cut -d' ' -f2 | cut -d':' -f2`
+		#case not has destination port number (has only source port number)
+		else
+			dport=all
+		fi
+	#case has only destination port number
+	elif [ $port ] && [ $port = dpt ]
+	then
+		sport=all
+		#get destination port number from file
+		dport=`cat $1 | grep -n ' ' | grep -m 1 $rule: | cut -d':' -f2- | cut -b70- | cut -d' ' -f1`
+	#case no port number in rule
+	else
+		sport=all
+		dport=all
+	fi
+fi

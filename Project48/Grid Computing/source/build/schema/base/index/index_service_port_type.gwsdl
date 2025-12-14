@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="IndexService"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             targetNamespace="http://www.globus.org/namespaces/2003/04/index"
+             xmlns:tns="http://www.globus.org/namespaces/2003/04/index"
+             xmlns:aggregator="http://www.globus.org/namespaces/2003/09/data_aggregator"
+             xmlns:provider="http://www.globus.org/namespaces/2003/04/service_data_provider_execution"
+             xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI"
+             xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    
+<import location="../../ogsi/ogsi.gwsdl" 
+        namespace="http://www.gridforum.org/namespaces/2003/03/OGSI"/>   
+<import location="../../base/aggregator/data_aggregator_port_type.gwsdl"
+        namespace="http://www.globus.org/namespaces/2003/09/data_aggregator"/>   
+<import location="../../base/provider/service_data_provider_execution_port_type.gwsdl" 
+        namespace="http://www.globus.org/namespaces/2003/04/service_data_provider_execution"/>   
+
+<gwsdl:portType name="IndexService" 
+                extends="ogsi:ServiceGroupRegistration 
+                         ogsi:NotificationSink 
+                         ogsi:NotificationSource
+                         aggregator:DataAggregationPortType
+                         provider:ServiceDataProviderExecutionPortType"/>
+    <annotation><documentation>The ogsi:ServiceGroupRegistration add 
+    operation is idempotent in this port type, with respect to adding
+    a particular service to the group. It will only allow one
+    entry to exist for any particular service. It will return an OGSI
+    serviceAlreadyExists fault in the case of a second or subsequent 
+    attempt to add a service, which will contain a locator to the 
+    appropriate already-existing entry service.
+    </documentation></annotation>
+</definitions>

@@ -1,0 +1,17 @@
+#!/bin/bash
+#Calculate traffic
+#argument is chain
+/sbin/iptables -L $1 -n > temp
+chain=$1
+count=1
+#count rule
+source rulecount `cat temp | cut -d' ' -f1`
+rm -f traffic
+#calculate traffic until last rule
+while [ $count -le $max ]
+do
+	#calculate traffic each rule
+	source sumtraffic $count `cat /var/log/messages | grep $chain$count | cut -d' ' -f1`
+	#go to next rule
+	count=`expr $count + 1`
+done

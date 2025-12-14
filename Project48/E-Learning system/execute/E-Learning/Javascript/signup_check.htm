@@ -1,0 +1,108 @@
+<script language="javascript" type="text/JavaScript">
+function Check() {
+	var name= document.getElementById("name");
+	var surname = document.getElementById("surname");
+	var username = document.getElementById("username");
+	var password = document.getElementById("password");
+	var confirm_password = document.getElementById("confirm_password");
+	var obj_male = document.getElementById("male");
+	var obj_female = document.getElementById("female");
+	var day = document.getElementById("day");
+	var month = document.getElementById("month");
+	var year = document.getElementById("year");
+	var address = document.getElementById("address");
+	var telnum = document.getElementById("telnum");
+	var email = document.getElementById("email");
+	var workplace = document.getElementById("workplace");
+	var occupation = document.getElementById("occupation");
+	
+	if (name.value == ""){
+		alert("กรุณากรอก ชื่อ");
+		name.focus();
+		return false;
+	}
+	else if (surname.value == ""){
+		alert("กรุณากรอก นามสกุล");
+		surname.focus();
+		return false;
+	}
+	else if (username.value.length < 6){
+		alert("กรุณากรอก username");
+		username.focus();
+		return false;
+	}
+	else if (password.value.length < 6){
+		alert("password ไม่ถูกต้อง");
+		password.focus();
+		return false;
+	}
+	else if (confirm_password.value.length < 6){
+		alert("Confirm Password ไม่ถูกต้อง");
+		confirm_password.focus();
+		return false;
+	}
+	else if (obj_male.checked == false && obj_female.checked == false){
+		alert("กรุณาเลือก เพศ");
+		obj_male.focus();
+		return false;
+	}
+	else if (day.selectedIndex == 0 || day.selectedIndex == ""){
+		alert("กรุณาเลือก วันเกิด");
+		day.focus();
+		return false;
+	}
+	else if (month.selectedIndex == 0 || month.selectedIndex == ""){
+		alert("กรุณาเลือก เดือนเกิด");
+		month.focus();
+		return false;
+	}
+	else if (year.selectedIndex == 0 || year.selectedIndex == ""){
+		alert("กรุณาเลือก ปีเกิด");
+		year.focus();
+		return false;
+	}
+	else if (address.value==""){
+		alert("กรุณากรอก ที่อยู่");
+		address.focus();
+		return false;
+	}
+	else if (telnum.value==""){
+		alert("กรุณากรอก เบอร์โทรศัพท์");
+		telnum.focus();
+		return false;
+	}
+	else if (email.value==""){
+		alert("กรุณากรอก Email address");
+		email.focus();
+		return false;
+	}
+	else if (workplace.value==""){
+		alert("กรุณากรอก สถานที่ทำงานหรือสถานศึกษา");
+		workplace.focus();
+		return false;
+	}
+	else if (occupation.selectedIndex == 0 || occupation.selectedIndex == ""){
+		alert("กรุณาเลือก อาชีพ");
+		occupation.focus();
+		return false;
+	}
+	else if(password.value!=confirm_password.value){
+	alert("พาสเวิร์ดกับคอนเฟิมพาสเวิร์ดไม่ตรงกัน กรุณากรอกใหม่ค่ะ");
+	confirm_password.focus();
+	return false;
+	}
+	else if(isNaN(telnum.value)){
+	alert("หมายเลขโทรศัพท ์ต้องเป็นตัวเลขค่ะ");
+	telnum.focus();
+	return false;
+	}
+	else {
+	p=email.value.indexOf('@');
+    		if (p<1 || p==(email.value.length-1)){
+			alert("อีเมลผิด กรุณากรอกใหม่ค่ะ");
+			email.focus();
+			return false;
+			}
+	}
+}
+</script>

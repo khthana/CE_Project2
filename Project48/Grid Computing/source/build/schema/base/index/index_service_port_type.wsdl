@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="IndexService" targetNamespace="http://www.globus.org/namespaces/2003/04/index" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:aggregator="http://www.globus.org/namespaces/2003/09/data_aggregator" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI" xmlns:provider="http://www.globus.org/namespaces/2003/04/service_data_provider_execution" xmlns:tns="http://www.globus.org/namespaces/2003/04/index" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    
+<import location="../../ogsi/ogsi.gwsdl" namespace="http://www.gridforum.org/namespaces/2003/03/OGSI"/>   
+<import location="../../base/aggregator/data_aggregator_port_type.gwsdl" namespace="http://www.globus.org/namespaces/2003/09/data_aggregator"/>   
+<import location="../../base/provider/service_data_provider_execution_port_type.gwsdl" namespace="http://www.globus.org/namespaces/2003/04/service_data_provider_execution"/>   
+
+<portType name="IndexService"><operation name="executeProvider">
+    <input message="ns84:ServiceDataProviderExecutionInputMessage" xmlns:ns84="http://www.globus.org/namespaces/2003/04/service_data_provider_execution"/>  
+  </operation><operation name="deliverNotification">
+    <input message="ns83:DeliverNotificationInputMessage" xmlns:ns83="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="subscribe">
+    <input message="ns45:SubscribeInputMessage" xmlns:ns45="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns46:SubscribeOutputMessage" xmlns:ns46="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns47:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns47="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns48:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns48="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns49:TargetInvalidFaultMessage" name="TargetInvalidFault" xmlns:ns49="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns50:FaultMessage" name="Fault" xmlns:ns50="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="setServiceData">
+    <input message="ns57:SetServiceDataInputMessage" xmlns:ns57="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns58:SetServiceDataOutputMessage" xmlns:ns58="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns59:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns59="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+    <fault message="ns60:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns60="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+    <fault message="ns61:CardinalityViolationFaultMessage" name="CadinalityViolationFault" xmlns:ns61="http://www.gridforum.org/namespaces/2003/03/OGSI"/>  
+    <fault message="ns62:MutabilityViolationFaultMessage" name="MutabilityViolationFault" xmlns:ns62="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns63:ModifiabilityViolationFaultMessage" name="ModifabilityViolationFault" xmlns:ns63="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns64:TypeViolationFaultMessage" name="TypeViolationFault" xmlns:ns64="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns65:IncorrectValueFaultMessage" name="IncorrectValueFault" xmlns:ns65="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns66:PartialFailureFaultMessage" name="PartialFailureFault" xmlns:ns66="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns67:FaultMessage" name="Fault" xmlns:ns67="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="remove">
+    <input message="ns8:removeInputMessage" xmlns:ns8="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns9:removeOutputMessage" xmlns:ns9="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns10:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns10="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns11:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns11="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns12:MatchFailedFaultMessage" name="MatchFailedFault" xmlns:ns12="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns13:RemoveFailedFaultMessage" name="RemoveFailedFault" xmlns:ns13="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns14:FaultMessage" name="Fault" xmlns:ns14="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="findServiceData">
+    <input message="ns51:FindServiceDataInputMessage" xmlns:ns51="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns52:FindServiceDataOutputMessage" xmlns:ns52="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns53:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns53="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns54:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns54="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns55:TargetInvalidFaultMessage" name="TargetInvalidFault" xmlns:ns55="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns56:FaultMessage" name="Fault" xmlns:ns56="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="addDataAggregation">
+    <input message="ns80:AddDataAggregationInputMessage" xmlns:ns80="http://www.globus.org/namespaces/2003/09/data_aggregator"/>
+    <output message="ns81:AddDataAggregationOutputMessage" xmlns:ns81="http://www.globus.org/namespaces/2003/09/data_aggregator"/>
+  </operation><operation name="requestTerminationBefore">
+    <input message="ns72:RequestTerminationBeforeInputMessage" xmlns:ns72="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns73:RequestTerminationBeforeOutputMessage" xmlns:ns73="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns74:TerminationTimeUnchangedFaultMessage" name="TerminationTimeUnchangedFault" xmlns:ns74="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+    <fault message="ns75:FaultMessage" name="Fault" xmlns:ns75="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="destroy">
+    <input message="ns76:DestroyInputMessage" xmlns:ns76="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns77:DestroyOutputMessage" xmlns:ns77="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns78:ServiceNotDestroyedFaultMessage" name="ServiceNotDestroyedFault" xmlns:ns78="http://www.gridforum.org/namespaces/2003/03/OGSI"/>      
+    <fault message="ns79:FaultMessage" name="Fault" xmlns:ns79="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="enumProviders">
+    <input message="ns85:ServiceDataProviderEnumInputMessage" xmlns:ns85="http://www.globus.org/namespaces/2003/04/service_data_provider_execution"/>
+    <output message="ns86:ServiceDataProviderEnumOutputMessage" xmlns:ns86="http://www.globus.org/namespaces/2003/04/service_data_provider_execution"/>
+  </operation><operation name="removeDataAggregation">
+    <input message="ns82:RemoveDataAggregationInputMessage" xmlns:ns82="http://www.globus.org/namespaces/2003/09/data_aggregator"/>   
+  </operation><operation name="requestTerminationAfter">
+    <input message="ns68:RequestTerminationAfterInputMessage" xmlns:ns68="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns69:RequestTerminationAfterOutputMessage" xmlns:ns69="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns70:TerminationTimeUnchangedFaultMessage" name="TerminationTimeUnchangedFault" xmlns:ns70="http://www.gridforum.org/namespaces/2003/03/OGSI"/>    
+    <fault message="ns71:FaultMessage" name="Fault" xmlns:ns71="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="add">
+    <input message="ns0:AddInputMessage" xmlns:ns0="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns1:AddOutputMessage" xmlns:ns1="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns2:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns2="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns3:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns3="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns4:ContentCreationFailedFaultMessage" name="ContentCreationFailedFault" xmlns:ns4="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns5:UnsupportedMemberInterfaceFaultMessage" name="UnsupportedMemberInterfaceFault" xmlns:ns5="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns6:AddRefusedFaultMessage" name="AddRefusedFault" xmlns:ns6="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns7:FaultMessage" name="Fault" xmlns:ns7="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation></portType><gwsdl:portType extends="ogsi:ServiceGroupRegistration                           ogsi:NotificationSink                           ogsi:NotificationSource                          aggregator:DataAggregationPortType                          provider:ServiceDataProviderExecutionPortType" name="IndexService"/>
+    <annotation><documentation>The ogsi:ServiceGroupRegistration add 
+    operation is idempotent in this port type, with respect to adding
+    a particular service to the group. It will only allow one
+    entry to exist for any particular service. It will return an OGSI
+    serviceAlreadyExists fault in the case of a second or subsequent 
+    attempt to add a service, which will contain a locator to the 
+    appropriate already-existing entry service.
+    </documentation></annotation>
+</definitions>

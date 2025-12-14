@@ -1,0 +1,7 @@
+#!/bin/bash
+#call Add LOG Prefix rule
+#argument is Chain
+/sbin/iptables -L $1 -n > temp
+source addrule temp `cat temp | cut -d' ' -f1`
+rm -f temp
+/sbin/iptables-save > /etc/sysconfig/iptables

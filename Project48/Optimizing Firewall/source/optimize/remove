@@ -1,0 +1,15 @@
+#!/bin/bash
+#remove LOG Prefix rule from firewall
+#argument1 is file (redirect firewall rule)
+#other argument is row in file
+max=`expr $# - 3`
+max=`expr $max / 2`
+count=1
+chain=`cat $1 | grep -n ' ' | grep -m 1 1: | cut -d':' -f2 | cut -d' ' -f2`
+#remove LOG Prefix rule from firewall
+while [ $max != 0 ]
+do
+	/sbin/iptables -D $chain $count
+	count=`expr $count + 1`
+	max=`expr $max - 1`
+done

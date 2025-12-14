@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://tempuri.org/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://tempuri.org/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="hello">
+        <s:complexType />
+      </s:element>
+      <s:element name="helloResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="helloResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="checkReserv">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="useTime" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="reservTime" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="endTime" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="covers" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="cardID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="lastname" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="age" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="sex" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="province" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="postcode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="telephone" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="shopID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="shopName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="checkReservResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="checkReservResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="test">
+        <s:complexType />
+      </s:element>
+      <s:element name="testResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="testResult" type="s0:menu" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="menu" />
+      <s:element name="updateMenu">
+        <s:complexType />
+      </s:element>
+      <s:element name="updateMenuResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="updateMenuResult" type="s0:ArrayOfMenu" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfMenu">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="menu" nillable="true" type="s0:menu" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="updateMenuAll">
+        <s:complexType />
+      </s:element>
+      <s:element name="updateMenuAllResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="updateMenuAllResult" type="s0:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfAnyType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="anyType" nillable="true" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="updatePromotion">
+        <s:complexType />
+      </s:element>
+      <s:complexType name="promotion" />
+      <s:complexType name="ArrayOfPromotion">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="promotion" nillable="true" type="s0:promotion" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="updatePromotionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="updatePromotionResult" type="s0:ArrayOfPromotion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="updatePromotionAll">
+        <s:complexType />
+      </s:element>
+      <s:element name="updatePromotionAllResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="updatePromotionAllResult" type="s0:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cancelReserv">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="tableID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="reservTime" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="endTime" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cancelReservResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="cancelReservResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </types>
+  <message name="helloSoapIn">
+    <part name="parameters" element="s0:hello" />
+  </message>
+  <message name="helloSoapOut">
+    <part name="parameters" element="s0:helloResponse" />
+  </message>
+  <message name="checkReservSoapIn">
+    <part name="parameters" element="s0:checkReserv" />
+  </message>
+  <message name="checkReservSoapOut">
+    <part name="parameters" element="s0:checkReservResponse" />
+  </message>
+  <message name="testSoapIn">
+    <part name="parameters" element="s0:test" />
+  </message>
+  <message name="testSoapOut">
+    <part name="parameters" element="s0:testResponse" />
+  </message>
+  <message name="updateMenuSoapIn">
+    <part name="parameters" element="s0:updateMenu" />
+  </message>
+  <message name="updateMenuSoapOut">
+    <part name="parameters" element="s0:updateMenuResponse" />
+  </message>
+  <message name="updateMenuAllSoapIn">
+    <part name="parameters" element="s0:updateMenuAll" />
+  </message>
+  <message name="updateMenuAllSoapOut">
+    <part name="parameters" element="s0:updateMenuAllResponse" />
+  </message>
+  <message name="updatePromotionSoapIn">
+    <part name="parameters" element="s0:updatePromotion" />
+  </message>
+  <message name="updatePromotionSoapOut">
+    <part name="parameters" element="s0:updatePromotionResponse" />
+  </message>
+  <message name="updatePromotionAllSoapIn">
+    <part name="parameters" element="s0:updatePromotionAll" />
+  </message>
+  <message name="updatePromotionAllSoapOut">
+    <part name="parameters" element="s0:updatePromotionAllResponse" />
+  </message>
+  <message name="cancelReservSoapIn">
+    <part name="parameters" element="s0:cancelReserv" />
+  </message>
+  <message name="cancelReservSoapOut">
+    <part name="parameters" element="s0:cancelReservResponse" />
+  </message>
+  <portType name="Service1Soap">
+    <operation name="hello">
+      <input message="s0:helloSoapIn" />
+      <output message="s0:helloSoapOut" />
+    </operation>
+    <operation name="checkReserv">
+      <input message="s0:checkReservSoapIn" />
+      <output message="s0:checkReservSoapOut" />
+    </operation>
+    <operation name="test">
+      <input message="s0:testSoapIn" />
+      <output message="s0:testSoapOut" />
+    </operation>
+    <operation name="updateMenu">
+      <input message="s0:updateMenuSoapIn" />
+      <output message="s0:updateMenuSoapOut" />
+    </operation>
+    <operation name="updateMenuAll">
+      <input message="s0:updateMenuAllSoapIn" />
+      <output message="s0:updateMenuAllSoapOut" />
+    </operation>
+    <operation name="updatePromotion">
+      <input message="s0:updatePromotionSoapIn" />
+      <output message="s0:updatePromotionSoapOut" />
+    </operation>
+    <operation name="updatePromotionAll">
+      <input message="s0:updatePromotionAllSoapIn" />
+      <output message="s0:updatePromotionAllSoapOut" />
+    </operation>
+    <operation name="cancelReserv">
+      <input message="s0:cancelReservSoapIn" />
+      <output message="s0:cancelReservSoapOut" />
+    </operation>
+  </portType>
+  <binding name="Service1Soap" type="s0:Service1Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <operation name="hello">
+      <soap:operation soapAction="http://tempuri.org/hello" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="checkReserv">
+      <soap:operation soapAction="http://tempuri.org/checkReserv" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="test">
+      <soap:operation soapAction="http://tempuri.org/test" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="updateMenu">
+      <soap:operation soapAction="http://tempuri.org/updateMenu" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="updateMenuAll">
+      <soap:operation soapAction="http://tempuri.org/updateMenuAll" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="updatePromotion">
+      <soap:operation soapAction="http://tempuri.org/updatePromotion" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="updatePromotionAll">
+      <soap:operation soapAction="http://tempuri.org/updatePromotionAll" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="cancelReserv">
+      <soap:operation soapAction="http://tempuri.org/cancelReserv" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="Service1">
+    <port name="Service1Soap" binding="s0:Service1Soap">
+      <soap:address location="http://localhost/WebserviceRestaurant/Service1.asmx" />
+    </port>
+  </service>
+</definitions>

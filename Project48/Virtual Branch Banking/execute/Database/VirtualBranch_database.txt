@@ -1,0 +1,84 @@
+'*************************
+'ACCOUNT table
+'*************************
+create table ACCOUNT(ACC_NO number(20),ACC_TYPE varchar(20),CUR_BALANCE number(20),
+	AVAL_BALANCE number(20),CUSTOMER_ID varchar(20),OPEN_DATE date,CLOSE_DATE date,
+	primarykey ACC_NO);
+'*************************
+ACCOUNT_HIS table
+'*************************
+create table ACCOUNT_HIS(ACC_HIS_ID number(20),ACC_NO number(20),DUE_DATE date,
+	WITHDRAW number(20),DEPOSIT number(20),FEE number(20),BALANCE number(20),
+	primarykey ACC_HIS_ID);
+'*************************
+'BANK table
+'*************************
+create table BANK(BANK_CODE varchar(20),BANK_NAME varchar(30),BANK_LOCATION varchar(50),
+	primarykey BANK_CODE);
+
+insert into BANK(BANK_CODE,BANK_NAME,BANK_LOCATION) values("KMITL001","KMITLBANK",
+	"225 chalongkrung rd,Ladkrabang, Bangkok 10520");
+'*************************
+'ADDRESS table
+'*************************
+create table ADDRESS(CUSTOMER_ID varchar(20),ADDRESS_TYPE varchar(20),ADDRESS_NO varchar(20),
+	SOI varchar(20),STREET varchar(20),DISTRICT varchar(20),CITY varchar(20),
+	STATE varchar(20),POSTCODE varchar(20),primarykey CUSTOMER_ID);
+'*************************
+'ADMIN table
+'*************************
+create table ADMIN(ADMIN_ID number(20),USERNAME varchar(30),PASSWORD varchar(30),
+	primarykey ADMIN_ID);
+'*************************
+'CARD table
+'*************************
+create table CARD(CARD_NO number(20),CARD_TYPE varchar(20),PIN number(10),CUSTOMER_ID varchar(20),
+	ACC_NO number(20),primarykey CARD_NO);
+'*************************
+'ATM table
+'*************************
+create table ATM(ATM_CODE varchar(20),BANK_CODE varchar(20),ATM_LOCATION varchar(50),
+	ATM_AREA varchar(20),ATM_CITY varchar(20),SYSTEM_USED varchar(20),primarykey ATM_CODE);
+'*************************
+'CHECKING table
+'*************************
+create table CHECKING(CHECK_CODE number(20),CHECK_NO number(20),ACC_NO number(20),
+	CHECK_STATUS varchar(20),CHECK_TYPE varchar(20),primarykey CHECK_CODE);
+'*************************
+'CUSTOMER table
+'*************************
+create table CUSTOMER(CUSTOMER_ID varchar(20),CUS_EN_NAME varchar(20),CUS_EN_SURNAME varchar(20),
+	CUS_TH_NAME varchar(20),CUS_TH_SURNAME varchar(20),D_BIRTH number(10),M_BIRTH number(10),
+	Y_BIRTH number(10),AGE varchar(10),GENDER varchar(10),EMAIL varchar(50),OCCUPATION varchar(20),
+	SALARY varchar(20),HOME_PHONE varchar(20),OFFICE_PHONE varchar(20),MOBILE_PHONE varchar(20),
+	FAXNO varchar(20),CUS_STATUS varchar(20),primarykey CUSTOMER_ID);
+'*************************
+'FOREX table
+'*************************
+create table FOREX(FOREX_ID number(20),CURRENCY varchar(20),RATE number(20),primarykey FOREX_ID);
+'*************************
+'MEMBER table
+'*************************
+create table MEMBER(MEMBER_ID varchar(20),USERNAME varchar(30),PASSWORD varchar(30),
+	MEM_EXP_DATE date,MEM_STATUS varchar(20),CUSTOMER_ID varchar(20),
+	primarykey MEMBER_ID);
+'*************************
+'MERCHANT table
+'*************************
+create table MERCHANT(MERCHANT_ID number(20),MERCHANT_NAME varchar(30),MERCHANT_TYPE varchar(20),
+	PRODUCT_NAME varchar(30),PHONE_NO varchar(20),FAX_NO varchar(30),
+	primarykey MERCHANT_ID);
+'*************************
+'TRANSACTION table
+'*************************
+create table TRANSACTION(TR_CODE number(20),TR_DATE date,TR_TIME date,TR_SEQ number(20),
+	CUSTOMER_USED varchar(20),SERVICE_USED varchar(20),ATM_USED varchar(20),
+	FROM_ACC number(20),TO_ACC number(20),AMOUNT number(20)SUCCESS_FLAG varchar(20),
+	primarykey TR_CODE);
+'*************************
+'TRANSFER_HIS table
+'*************************
+create table TRANSFER_HIS(TRANSFER_ID number(20),DUE_DATE date,FROM_ACCOUNT number(20),
+	FROM_ACCOUNT_TYPE varchar(20),TO_ACCOUNT number(20),TO_ACCOUNT_TYPE varchar(20),
+	AMOUNT number(20),FEE number(20),CUSTOMER_ID varchar(20),primarykey TRANSFER_ID);
+'*************************

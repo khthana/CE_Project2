@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="OgsiManagement" targetNamespace="http://ogsa.globus.org/core/management" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI" xmlns:sd="http://www.gridforum.org/namespaces/2003/03/serviceData" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://ogsa.globus.org/core/management" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+  <!-- ******************************************************************************* -->
+  <!--                            Grid Service Imports                                 -->
+  <!-- ******************************************************************************* -->
+  <import location="../../ogsi/ogsi.gwsdl" namespace="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+         
+
+  <!-- ******************************************************************************* -->
+  <!--                                Types                                            -->
+  <!-- ******************************************************************************* -->
+  <types>
+    
+    <xsd:schema targetNamespace="http://ogsa.globus.org/core/management" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI" xmlns:sd="http://www.gridforum.org/namespaces/2003/03/serviceData" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://ogsa.globus.org/core/management" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+       
+	<xsd:simpleType name="ContainerStateSimpleType">
+    	<xsd:restriction base="xsd:string">
+      		<xsd:enumeration value="active"/>
+      		<xsd:enumeration value="shutdown"/>
+      	</xsd:restriction>
+ 	</xsd:simpleType>                                                               
+  	
+  	<xsd:complexType name="ContainerStateType">
+    	<xsd:sequence>
+      		<xsd:element name="containerState" type="tns:ContainerStateSimpleType"/>
+    	</xsd:sequence>
+  	</xsd:complexType>            
+
+      <!-- ================================================================ -->
+      <!--            Number of Services complex type                       -->
+      <!-- ================================================================ -->
+      <xsd:complexType name="NumberServicesElementType">
+        <xsd:sequence>
+          <xsd:element name="numberAvailableServices" type="xsd:int"/>
+          <xsd:element name="numberDeployedServices" type="xsd:int"/>
+          <xsd:element name="numberActiveServices" type="xsd:int"/>
+          <xsd:element name="numberDeactiveServices" type="xsd:int"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    
+      <!-- ================================================================ -->
+      <!--            Wrapped Message Elements                              -->
+      <!-- ================================================================ -->
+      <xsd:element name="invalidStateFaultElement" type="tns:InvalidStateFaultType"/>
+      <xsd:complexType name="InvalidStateFaultType">
+        <xsd:complexContent>
+          <xsd:extension base="ogsi:FaultType"/>
+        </xsd:complexContent>
+      </xsd:complexType>
+ 
+      <xsd:element name="endService">
+          <xsd:complexType>
+              <xsd:sequence>
+           <xsd:element name="aHandle" type="ogsi:HandleType"/>
+              </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="endServiceResponse">
+          <xsd:complexType/>
+      </xsd:element>
+
+      <xsd:element name="endServiceForce">
+          <xsd:complexType>
+              <xsd:sequence>
+           <xsd:element name="aHandle" type="ogsi:HandleType"/>
+              </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="endServiceForceResponse">
+          <xsd:complexType/>
+      </xsd:element>
+
+      <xsd:element name="activateService">
+          <xsd:complexType>
+              <xsd:sequence>
+           <xsd:element name="aHandle" type="ogsi:HandleType"/>
+              </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="activateServiceResponse">
+        <xsd:complexType/>
+      </xsd:element>
+
+      <xsd:element name="deactivateService">
+          <xsd:complexType>
+              <xsd:sequence>
+           <xsd:element name="aHandle" type="ogsi:HandleType"/>
+              </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deactivateServiceResponse">
+          <xsd:complexType/>
+      </xsd:element>
+      
+      <xsd:element name="shutdown">
+      	<xsd:complexType>
+        	<xsd:sequence>
+          		<xsd:element name="hard" type="xsd:boolean"/>
+        	</xsd:sequence>
+      	</xsd:complexType>
+	</xsd:element>
+    <xsd:element name="shutdownResponse">
+    	<xsd:complexType/>
+    </xsd:element>
+
+      <!-- ================================================================ -->
+      <!--             Fault Types                                          -->
+      <!-- ================================================================ -->
+      <xsd:element name="unknownHandleFaultElement" type="tns:UnknownHandleFaultType"/>
+      <xsd:complexType name="UnknownHandleFaultType">
+        <xsd:complexContent>
+          <xsd:extension base="ogsi:FaultType"/>
+        </xsd:complexContent>
+      </xsd:complexType>
+      
+     <xsd:element name="hardShutdownNotAllowedFaultElement" type="tns:HardShutdownNotAllowedFaultType"/>
+     <xsd:complexType name="HardShutdownNotAllowedFaultType">
+       <xsd:complexContent>
+         <xsd:extension base="ogsi:FaultType"/>
+       </xsd:complexContent>
+     </xsd:complexType>
+      
+    </xsd:schema>
+  
+  </types>
+  
+
+
+
+  <!-- ******************************************************************************* -->
+  <!--                               Messages                                          -->
+  <!-- ******************************************************************************* -->
+    
+  <message name="endServiceRequest">
+    <part element="tns:endService" name="parameters"/>
+  </message>
+
+  <message name="endServiceResponse">
+    <part element="tns:endServiceResponse" name="parameters"/>
+  </message>
+  
+  <message name="endServiceForceRequest">
+    <part element="tns:endServiceForce" name="parameters"/>
+  </message>
+  <message name="endServiceForceResponse">
+    <part element="tns:endServiceForceResponse" name="parameters"/>
+  </message>
+
+  <message name="activateServiceRequest">
+      <part element="tns:activateService" name="parameters"/>
+  </message>
+  <message name="activateServiceResponse">
+    <part element="tns:activateServiceResponse" name="parameters"/>
+  </message>
+
+  <message name="deactivateServiceRequest">
+      <part element="tns:deactivateService" name="parameters"/>
+  </message>
+  <message name="deactivateServiceResponse">
+    <part element="tns:deactivateServiceResponse" name="parameters"/>
+  </message>
+
+  <message name="shutdownRequestMessage">
+  	 <part element="tns:shutdown" name="parameters"/>
+  </message>
+  <message name="shutdownResponseMessage">
+    <part element="tns:shutdownResponse" name="parameters"/>
+  </message>
+  
+  <!-- ======================================================= -->
+  <!--           fault messages                                -->
+  <!-- ======================================================= -->
+  <message name="UnknownHandleFaultMessage">
+      <part element="tns:unknownHandleFaultElement" name="fault"/>
+  </message>
+  <message name="InvalidStateFaultMessage">
+      <part element="tns:invalidStateFaultElement" name="fault"/>
+  </message>
+  <message name="HardShutdownNotAllowedFaultMessage">
+  	<part element="tns:hardShutdownNotAllowedFaultElement" name="fault"/>
+  </message>
+
+  <!-- ******************************************************************************* -->
+  <!--                        OgsiManagement portType                                  -->
+  <!-- ******************************************************************************* -->
+  
+  <portType name="OgsiManagementPortType"><operation name="subscribe">
+    <input message="ns22:SubscribeInputMessage" xmlns:ns22="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns23:SubscribeOutputMessage" xmlns:ns23="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns24:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns24="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns25:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns25="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns26:TargetInvalidFaultMessage" name="TargetInvalidFault" xmlns:ns26="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns27:FaultMessage" name="Fault" xmlns:ns27="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="endServiceForce">
+          <input message="ns5:endServiceForceRequest" name="endServiceForceRequest" xmlns:ns5="http://ogsa.globus.org/core/management"/>
+          <output message="ns6:endServiceForceResponse" name="endServiceForceResponse" xmlns:ns6="http://ogsa.globus.org/core/management"/>
+          <fault message="ns7:UnknownHandleFaultMessage" name="UnknownHandleFault" xmlns:ns7="http://ogsa.globus.org/core/management"/> 
+          <fault message="ns8:InvalidHandleFaultMessage" name="InvalidHandleFault" xmlns:ns8="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+      </operation><operation name="shutdown">
+    	 <input message="ns19:shutdownRequestMessage" xmlns:ns19="http://ogsa.globus.org/core/management"/>
+    	 <output message="ns20:shutdownResponseMessage" xmlns:ns20="http://ogsa.globus.org/core/management"/>
+    	 <fault message="ns21:HardShutdownNotAllowedFaultMessage" name="HardShutdownNotAllowedFault" xmlns:ns21="http://ogsa.globus.org/core/management"/> 
+  	  </operation><operation name="setServiceData">
+    <input message="ns63:SetServiceDataInputMessage" xmlns:ns63="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns64:SetServiceDataOutputMessage" xmlns:ns64="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns65:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns65="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+    <fault message="ns66:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns66="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+    <fault message="ns67:CardinalityViolationFaultMessage" name="CadinalityViolationFault" xmlns:ns67="http://www.gridforum.org/namespaces/2003/03/OGSI"/>  
+    <fault message="ns68:MutabilityViolationFaultMessage" name="MutabilityViolationFault" xmlns:ns68="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns69:ModifiabilityViolationFaultMessage" name="ModifabilityViolationFault" xmlns:ns69="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns70:TypeViolationFaultMessage" name="TypeViolationFault" xmlns:ns70="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns71:IncorrectValueFaultMessage" name="IncorrectValueFault" xmlns:ns71="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns72:PartialFailureFaultMessage" name="PartialFailureFault" xmlns:ns72="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns73:FaultMessage" name="Fault" xmlns:ns73="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="findServiceData">
+    <input message="ns57:FindServiceDataInputMessage" xmlns:ns57="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns58:FindServiceDataOutputMessage" xmlns:ns58="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns59:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns59="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns60:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns60="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns61:TargetInvalidFaultMessage" name="TargetInvalidFault" xmlns:ns61="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns62:FaultMessage" name="Fault" xmlns:ns62="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="endService">
+          <input message="ns0:endServiceRequest" name="endServiceRequest" xmlns:ns0="http://ogsa.globus.org/core/management"/>
+          <output message="ns1:endServiceResponse" name="endServiceResponse" xmlns:ns1="http://ogsa.globus.org/core/management"/>
+          <fault message="ns2:UnknownHandleFaultMessage" name="UnknownHandleFault" xmlns:ns2="http://ogsa.globus.org/core/management"/> 
+          <fault message="ns3:InvalidHandleFaultMessage" name="InvalidHandleFault" xmlns:ns3="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+          <fault message="ns4:ServiceNotDestroyedFaultMessage" name="ServiceNotDestroyedFault" xmlns:ns4="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+      </operation><operation name="activateService">
+          <input message="ns9:activateServiceRequest" name="activateServiceRequest" xmlns:ns9="http://ogsa.globus.org/core/management"/>
+          <output message="ns10:activateServiceResponse" name="activateServiceResponse" xmlns:ns10="http://ogsa.globus.org/core/management"/>
+          <fault message="ns11:UnknownHandleFaultMessage" name="UnknownHandleFault" xmlns:ns11="http://ogsa.globus.org/core/management"/> 
+          <fault message="ns12:InvalidHandleFaultMessage" name="InvalidHandleFault" xmlns:ns12="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+          <fault message="ns13:InvalidStateFaultMessage" name="InvalidStateFault" xmlns:ns13="http://ogsa.globus.org/core/management"/> 
+      </operation><operation name="deactivateService">
+          <input message="ns14:deactivateServiceRequest" name="deactivateServiceRequest" xmlns:ns14="http://ogsa.globus.org/core/management"/>
+          <output message="ns15:deactivateServiceResponse" name="deactivateServiceResponse" xmlns:ns15="http://ogsa.globus.org/core/management"/>
+          <fault message="ns16:UnknownHandleFaultMessage" name="UnknownHandleFault" xmlns:ns16="http://ogsa.globus.org/core/management"/> 
+          <fault message="ns17:InvalidHandleFaultMessage" name="InvalidHandleFault" xmlns:ns17="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+          <fault message="ns18:InvalidStateFaultMessage" name="InvalidStateFault" xmlns:ns18="http://ogsa.globus.org/core/management"/> 
+      </operation><operation name="destroy">
+    <input message="ns82:DestroyInputMessage" xmlns:ns82="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns83:DestroyOutputMessage" xmlns:ns83="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns84:ServiceNotDestroyedFaultMessage" name="ServiceNotDestroyedFault" xmlns:ns84="http://www.gridforum.org/namespaces/2003/03/OGSI"/>      
+    <fault message="ns85:FaultMessage" name="Fault" xmlns:ns85="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="requestTerminationBefore">
+    <input message="ns78:RequestTerminationBeforeInputMessage" xmlns:ns78="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns79:RequestTerminationBeforeOutputMessage" xmlns:ns79="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns80:TerminationTimeUnchangedFaultMessage" name="TerminationTimeUnchangedFault" xmlns:ns80="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+    <fault message="ns81:FaultMessage" name="Fault" xmlns:ns81="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="requestTerminationAfter">
+    <input message="ns74:RequestTerminationAfterInputMessage" xmlns:ns74="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns75:RequestTerminationAfterOutputMessage" xmlns:ns75="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns76:TerminationTimeUnchangedFaultMessage" name="TerminationTimeUnchangedFault" xmlns:ns76="http://www.gridforum.org/namespaces/2003/03/OGSI"/>    
+    <fault message="ns77:FaultMessage" name="Fault" xmlns:ns77="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation></portType><gwsdl:portType extends="ogsi:NotificationSource ogsi:ServiceGroup" name="OgsiManagementPortType">
+      
+      
+      
+      
+          
+      
+      <sd:serviceData maxOccurs="1" minOccurs="1" modifiable="false" mutability="mutable" name="numberServices" nillable="false" type="tns:NumberServicesElementType"/>
+                      
+       <sd:serviceData maxOccurs="1" minOccurs="1" modifiable="true" mutability="mutable" name="ContainerState" type="tns:ContainerStateType">
+       </sd:serviceData>
+              
+  </gwsdl:portType>
+
+     
+</wsdl:definitions>

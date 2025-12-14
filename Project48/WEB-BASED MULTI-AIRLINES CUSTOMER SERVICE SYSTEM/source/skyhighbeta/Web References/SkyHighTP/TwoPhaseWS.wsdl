@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://tempuri.org/skyhighWS/skyhighbooking" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://tempuri.org/skyhighWS/skyhighbooking" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/skyhighWS/skyhighbooking">
+      <s:import namespace="http://www.w3.org/2001/XMLSchema" />
+      <s:element name="Booking">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BookedFlightSet">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="BookedDetailsString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BookingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="BookingResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Cancel">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BookRef" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CancelType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Reason" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CancelResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Changing">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BookRef" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="NewBookedFlightSet">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="NewBookedDetailsString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ChangingResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Paying">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BookRef" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PayingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="PayingResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </types>
+  <message name="BookingSoapIn">
+    <part name="parameters" element="s0:Booking" />
+  </message>
+  <message name="BookingSoapOut">
+    <part name="parameters" element="s0:BookingResponse" />
+  </message>
+  <message name="CancelSoapIn">
+    <part name="parameters" element="s0:Cancel" />
+  </message>
+  <message name="CancelSoapOut">
+    <part name="parameters" element="s0:CancelResponse" />
+  </message>
+  <message name="ChangingSoapIn">
+    <part name="parameters" element="s0:Changing" />
+  </message>
+  <message name="ChangingSoapOut">
+    <part name="parameters" element="s0:ChangingResponse" />
+  </message>
+  <message name="PayingSoapIn">
+    <part name="parameters" element="s0:Paying" />
+  </message>
+  <message name="PayingSoapOut">
+    <part name="parameters" element="s0:PayingResponse" />
+  </message>
+  <portType name="TwoPhaseWSSoap">
+    <operation name="Booking">
+      <documentation>Booking by using Two-Phase Commit</documentation>
+      <input message="s0:BookingSoapIn" />
+      <output message="s0:BookingSoapOut" />
+    </operation>
+    <operation name="Cancel">
+      <documentation>Cancel flight by using Two-Phase Commit</documentation>
+      <input message="s0:CancelSoapIn" />
+      <output message="s0:CancelSoapOut" />
+    </operation>
+    <operation name="Changing">
+      <documentation>Change flight by using Two-Phase Commit</documentation>
+      <input message="s0:ChangingSoapIn" />
+      <output message="s0:ChangingSoapOut" />
+    </operation>
+    <operation name="Paying">
+      <documentation>Paying by using Two-Phase Commit</documentation>
+      <input message="s0:PayingSoapIn" />
+      <output message="s0:PayingSoapOut" />
+    </operation>
+  </portType>
+  <binding name="TwoPhaseWSSoap" type="s0:TwoPhaseWSSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <operation name="Booking">
+      <soap:operation soapAction="http://tempuri.org/skyhighWS/skyhighbooking/Booking" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="Cancel">
+      <soap:operation soapAction="http://tempuri.org/skyhighWS/skyhighbooking/Cancel" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="Changing">
+      <soap:operation soapAction="http://tempuri.org/skyhighWS/skyhighbooking/Changing" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="Paying">
+      <soap:operation soapAction="http://tempuri.org/skyhighWS/skyhighbooking/Paying" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="TwoPhaseWS">
+    <port name="TwoPhaseWSSoap" binding="s0:TwoPhaseWSSoap">
+      <soap:address location="http://localhost/skyhighWS/TwoPhaseWS.asmx" />
+    </port>
+  </service>
+</definitions>

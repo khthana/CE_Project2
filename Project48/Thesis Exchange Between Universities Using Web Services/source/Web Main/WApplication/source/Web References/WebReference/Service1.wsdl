@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://tempuri.org/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:import namespace="http://www.w3.org/2001/XMLSchema" />
+      <s:element name="TitleAll">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="a" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="b" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="c" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="d" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="count" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TitleAllResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TitleAllResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TitleSome">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="a" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="b" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="c" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="d" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="count" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TitleSomeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TitleSomeResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="KeywordAll">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="a" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="b" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="c" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="d" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="count" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="KeywordAllResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="KeywordAllResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="KeywordSome">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="a" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="b" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="c" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="d" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="count" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="KeywordSomeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="KeywordSomeResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Uname">
+        <s:complexType />
+      </s:element>
+      <s:element name="UnameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UnameResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listFac">
+        <s:complexType />
+      </s:element>
+      <s:element name="listFacResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listFacResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listDept">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="aa" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listDeptResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listDeptResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listYear">
+        <s:complexType />
+      </s:element>
+      <s:element name="listYearResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listYearResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listYearWithFac">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fac" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listYearWithFacResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listYearWithFacResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listYearWithFacDept">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fac" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dept" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listYearWithFacDeptResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listYearWithFacDeptResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="result">
+        <s:complexType />
+      </s:element>
+      <s:element name="resultResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="resultResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DetailP">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="jj" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DetailPResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DetailPResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DetailA">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="jj" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DetailAResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DetailAResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Name">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="a" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="kind" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="NameResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Group">
+        <s:complexType />
+      </s:element>
+      <s:element name="GroupResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GroupResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GroupDB">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="gr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GroupDBResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GroupDBResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Mail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="gr" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MailResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="TitleAllSoapIn">
+    <wsdl:part name="parameters" element="tns:TitleAll" />
+  </wsdl:message>
+  <wsdl:message name="TitleAllSoapOut">
+    <wsdl:part name="parameters" element="tns:TitleAllResponse" />
+  </wsdl:message>
+  <wsdl:message name="TitleSomeSoapIn">
+    <wsdl:part name="parameters" element="tns:TitleSome" />
+  </wsdl:message>
+  <wsdl:message name="TitleSomeSoapOut">
+    <wsdl:part name="parameters" element="tns:TitleSomeResponse" />
+  </wsdl:message>
+  <wsdl:message name="KeywordAllSoapIn">
+    <wsdl:part name="parameters" element="tns:KeywordAll" />
+  </wsdl:message>
+  <wsdl:message name="KeywordAllSoapOut">
+    <wsdl:part name="parameters" element="tns:KeywordAllResponse" />
+  </wsdl:message>
+  <wsdl:message name="KeywordSomeSoapIn">
+    <wsdl:part name="parameters" element="tns:KeywordSome" />
+  </wsdl:message>
+  <wsdl:message name="KeywordSomeSoapOut">
+    <wsdl:part name="parameters" element="tns:KeywordSomeResponse" />
+  </wsdl:message>
+  <wsdl:message name="UnameSoapIn">
+    <wsdl:part name="parameters" element="tns:Uname" />
+  </wsdl:message>
+  <wsdl:message name="UnameSoapOut">
+    <wsdl:part name="parameters" element="tns:UnameResponse" />
+  </wsdl:message>
+  <wsdl:message name="listFacSoapIn">
+    <wsdl:part name="parameters" element="tns:listFac" />
+  </wsdl:message>
+  <wsdl:message name="listFacSoapOut">
+    <wsdl:part name="parameters" element="tns:listFacResponse" />
+  </wsdl:message>
+  <wsdl:message name="listDeptSoapIn">
+    <wsdl:part name="parameters" element="tns:listDept" />
+  </wsdl:message>
+  <wsdl:message name="listDeptSoapOut">
+    <wsdl:part name="parameters" element="tns:listDeptResponse" />
+  </wsdl:message>
+  <wsdl:message name="listYearSoapIn">
+    <wsdl:part name="parameters" element="tns:listYear" />
+  </wsdl:message>
+  <wsdl:message name="listYearSoapOut">
+    <wsdl:part name="parameters" element="tns:listYearResponse" />
+  </wsdl:message>
+  <wsdl:message name="listYearWithFacSoapIn">
+    <wsdl:part name="parameters" element="tns:listYearWithFac" />
+  </wsdl:message>
+  <wsdl:message name="listYearWithFacSoapOut">
+    <wsdl:part name="parameters" element="tns:listYearWithFacResponse" />
+  </wsdl:message>
+  <wsdl:message name="listYearWithFacDeptSoapIn">
+    <wsdl:part name="parameters" element="tns:listYearWithFacDept" />
+  </wsdl:message>
+  <wsdl:message name="listYearWithFacDeptSoapOut">
+    <wsdl:part name="parameters" element="tns:listYearWithFacDeptResponse" />
+  </wsdl:message>
+  <wsdl:message name="resultSoapIn">
+    <wsdl:part name="parameters" element="tns:result" />
+  </wsdl:message>
+  <wsdl:message name="resultSoapOut">
+    <wsdl:part name="parameters" element="tns:resultResponse" />
+  </wsdl:message>
+  <wsdl:message name="DetailPSoapIn">
+    <wsdl:part name="parameters" element="tns:DetailP" />
+  </wsdl:message>
+  <wsdl:message name="DetailPSoapOut">
+    <wsdl:part name="parameters" element="tns:DetailPResponse" />
+  </wsdl:message>
+  <wsdl:message name="DetailASoapIn">
+    <wsdl:part name="parameters" element="tns:DetailA" />
+  </wsdl:message>
+  <wsdl:message name="DetailASoapOut">
+    <wsdl:part name="parameters" element="tns:DetailAResponse" />
+  </wsdl:message>
+  <wsdl:message name="NameSoapIn">
+    <wsdl:part name="parameters" element="tns:Name" />
+  </wsdl:message>
+  <wsdl:message name="NameSoapOut">
+    <wsdl:part name="parameters" element="tns:NameResponse" />
+  </wsdl:message>
+  <wsdl:message name="GroupSoapIn">
+    <wsdl:part name="parameters" element="tns:Group" />
+  </wsdl:message>
+  <wsdl:message name="GroupSoapOut">
+    <wsdl:part name="parameters" element="tns:GroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="GroupDBSoapIn">
+    <wsdl:part name="parameters" element="tns:GroupDB" />
+  </wsdl:message>
+  <wsdl:message name="GroupDBSoapOut">
+    <wsdl:part name="parameters" element="tns:GroupDBResponse" />
+  </wsdl:message>
+  <wsdl:message name="MailSoapIn">
+    <wsdl:part name="parameters" element="tns:Mail" />
+  </wsdl:message>
+  <wsdl:message name="MailSoapOut">
+    <wsdl:part name="parameters" element="tns:MailResponse" />
+  </wsdl:message>
+  <wsdl:portType name="Service1Soap">
+    <wsdl:operation name="TitleAll">
+      <wsdl:input message="tns:TitleAllSoapIn" />
+      <wsdl:output message="tns:TitleAllSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TitleSome">
+      <wsdl:input message="tns:TitleSomeSoapIn" />
+      <wsdl:output message="tns:TitleSomeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="KeywordAll">
+      <wsdl:input message="tns:KeywordAllSoapIn" />
+      <wsdl:output message="tns:KeywordAllSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="KeywordSome">
+      <wsdl:input message="tns:KeywordSomeSoapIn" />
+      <wsdl:output message="tns:KeywordSomeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Uname">
+      <wsdl:input message="tns:UnameSoapIn" />
+      <wsdl:output message="tns:UnameSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="listFac">
+      <wsdl:input message="tns:listFacSoapIn" />
+      <wsdl:output message="tns:listFacSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="listDept">
+      <wsdl:input message="tns:listDeptSoapIn" />
+      <wsdl:output message="tns:listDeptSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="listYear">
+      <wsdl:input message="tns:listYearSoapIn" />
+      <wsdl:output message="tns:listYearSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="listYear">
+      <wsdl:input name="listYearWithFac" message="tns:listYearWithFacSoapIn" />
+      <wsdl:output name="listYearWithFac" message="tns:listYearWithFacSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="listYear">
+      <wsdl:input name="listYearWithFacDept" message="tns:listYearWithFacDeptSoapIn" />
+      <wsdl:output name="listYearWithFacDept" message="tns:listYearWithFacDeptSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="result">
+      <wsdl:input message="tns:resultSoapIn" />
+      <wsdl:output message="tns:resultSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DetailP">
+      <wsdl:input message="tns:DetailPSoapIn" />
+      <wsdl:output message="tns:DetailPSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DetailA">
+      <wsdl:input message="tns:DetailASoapIn" />
+      <wsdl:output message="tns:DetailASoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Name">
+      <wsdl:input message="tns:NameSoapIn" />
+      <wsdl:output message="tns:NameSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Group">
+      <wsdl:input message="tns:GroupSoapIn" />
+      <wsdl:output message="tns:GroupSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GroupDB">
+      <wsdl:input message="tns:GroupDBSoapIn" />
+      <wsdl:output message="tns:GroupDBSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Mail">
+      <wsdl:input message="tns:MailSoapIn" />
+      <wsdl:output message="tns:MailSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Service1Soap" type="tns:Service1Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <wsdl:operation name="TitleAll">
+      <soap:operation soapAction="http://tempuri.org/TitleAll" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TitleSome">
+      <soap:operation soapAction="http://tempuri.org/TitleSome" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="KeywordAll">
+      <soap:operation soapAction="http://tempuri.org/KeywordAll" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="KeywordSome">
+      <soap:operation soapAction="http://tempuri.org/KeywordSome" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Uname">
+      <soap:operation soapAction="http://tempuri.org/Uname" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listFac">
+      <soap:operation soapAction="http://tempuri.org/listFac" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listDept">
+      <soap:operation soapAction="http://tempuri.org/listDept" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listYear">
+      <soap:operation soapAction="http://tempuri.org/listYear" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listYear">
+      <soap:operation soapAction="http://tempuri.org/listYearWithFac" style="document" />
+      <wsdl:input name="listYearWithFac">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="listYearWithFac">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listYear">
+      <soap:operation soapAction="http://tempuri.org/listYearWithFacDept" style="document" />
+      <wsdl:input name="listYearWithFacDept">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="listYearWithFacDept">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="result">
+      <soap:operation soapAction="http://tempuri.org/result" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DetailP">
+      <soap:operation soapAction="http://tempuri.org/DetailP" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DetailA">
+      <soap:operation soapAction="http://tempuri.org/DetailA" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Name">
+      <soap:operation soapAction="http://tempuri.org/Name" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Group">
+      <soap:operation soapAction="http://tempuri.org/Group" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GroupDB">
+      <soap:operation soapAction="http://tempuri.org/GroupDB" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Mail">
+      <soap:operation soapAction="http://tempuri.org/Mail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service1">
+    <wsdl:port name="Service1Soap" binding="tns:Service1Soap">
+      <soap:address location="http://161.246.5.112/WService/Service1.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

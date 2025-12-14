@@ -1,0 +1,77 @@
+--------------------------------------------------------------------------------
+Release 7.1i Trace H.38
+Copyright (c) 1995-2005 Xilinx, Inc.  All rights reserved.
+
+C:/Xilinx/bin/nt/trce.exe -ise c:\project\usbhost_v1\USBHost_v1.ise -intstyle
+ise -e 3 -l 3 -s 5 -xml usbhost usbhost.ncd -o usbhost.twr usbhost.pcf
+
+
+Design file:              usbhost.ncd
+Physical constraint file: usbhost.pcf
+Device,speed:             xc3s200,-5 (ADVANCED 1.35 2005-01-22)
+Report level:             error report
+
+Environment Variable      Effect 
+--------------------      ------ 
+NONE                      No environment variables were set
+--------------------------------------------------------------------------------
+
+INFO:Timing:2698 - No timing constraints found, doing default enumeration.
+INFO:Timing:2752 - To get complete path coverage, use the unconstrained paths
+   option. All paths that are not constrained will be reported in the
+   unconstrained paths section(s) of the report.
+
+
+Data Sheet report:
+-----------------
+All values displayed in nanoseconds (ns)
+
+Setup/Hold to clock Clock24M
+------------+------------+------------+------------------+--------+
+            |  Setup to  |  Hold to   |                  |  Clock |
+Source      | clk (edge) | clk (edge) |Internal Clock(s) |  Phase |
+------------+------------+------------+------------------+--------+
+Write       |    2.016(R)|    0.154(R)|Clock24M_BUFGP    |   0.000|
+------------+------------+------------+------------------+--------+
+
+Clock Clock24M to Pad
+------------+------------+------------------+--------+
+            | clk (edge) |                  |  Clock |
+Destination | to PAD     |Internal Clock(s) |  Phase |
+------------+------------+------------------+--------+
+Clock12M    |   11.420(R)|Clock24M_BUFGP    |   0.000|
+Clock1K     |    7.291(R)|Clock24M_BUFGP    |   0.000|
+------------+------------+------------------+--------+
+
+Clock to Setup on destination clock Clock24M
+---------------+---------+---------+---------+---------+
+               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
+Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
+---------------+---------+---------+---------+---------+
+Clock24M       |   12.406|    4.527|    5.487|    2.061|
+ResetB         |    5.173|    5.173|         |   72.267|
+---------------+---------+---------+---------+---------+
+
+Clock to Setup on destination clock ResetB
+---------------+---------+---------+---------+---------+
+               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
+Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
+---------------+---------+---------+---------+---------+
+Clock24M       |         |         |    5.483|         |
+ResetB         |         |         |         |   93.764|
+---------------+---------+---------+---------+---------+
+
+Pad to Pad
+---------------+---------------+---------+
+Source Pad     |Destination Pad|  Delay  |
+---------------+---------------+---------+
+ResetB         |dminus         |   10.099|
+ResetB         |dplus          |    9.866|
+---------------+---------------+---------+
+
+Analysis completed Mon Mar 20 11:32:09 2006
+--------------------------------------------------------------------------------
+
+
+
+Peak Memory Usage: 94 MB

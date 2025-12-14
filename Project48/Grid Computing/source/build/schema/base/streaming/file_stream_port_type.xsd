@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI" xmlns:sd="http://www.gridforum.org/namespaces/2003/03/serviceData" xmlns:tns="http://www.globus.org/namespaces/2003/04/base/streaming" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <xsd:element name="start" type="tns:Start"/>
+        <xsd:complexType name="Start"/>
+
+        <xsd:element name="startResponse" type="tns:StartResponse"/>
+        <xsd:complexType name="StartResponse"/>
+
+        <xsd:element name="stop" type="tns:Stop"/>
+        <xsd:complexType name="Stop"/>
+
+        <xsd:element name="stopResponse" type="tns:StopResponse"/>
+        <xsd:complexType name="StopResponse"/>
+
+        <xsd:complexType name="InvalidUrlFault">
+            <xsd:complexContent>
+                <xsd:extension base="ogsi:FaultType">
+                    <xsd:sequence>
+                        <xsd:element name="url" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+
+        <xsd:complexType name="InvalidPathFault">
+            <xsd:complexContent>
+                <xsd:extension base="ogsi:FaultType">
+                    <xsd:sequence>
+                        <xsd:element name="path" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+
+        <xsd:complexType name="FileTransferFault">
+            <xsd:complexContent>
+                <xsd:extension base="ogsi:FaultType">
+                    <xsd:sequence>
+                        <xsd:element name="sourcePath" type="xsd:string"/>
+                        <xsd:element name="destinationUrl" type="xsd:anyURI"/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+
+        <xsd:complexType name="CredentialsFault">
+            <xsd:complexContent>
+                <xsd:extension base="tns:FileTransferFault"/>
+            </xsd:complexContent>
+        </xsd:complexType>
+
+        <xsd:complexType name="FileStreamOptionsType">
+            <xsd:sequence>
+                <xsd:element name="destinationUrl" type="xsd:string"/>
+                <xsd:element name="offset" type="xsd:int"/>
+            </xsd:sequence>
+        </xsd:complexType>
+        <xsd:element name="fileStreamOptionsWrapperType" type="tns:FileStreamOptionsWrapperType">
+            <xsd:complexType name="FileStreamOptionsWrapperType">
+                <xsd:sequence>
+                    <xsd:element name="fileStreamOptions" type="tns:FileStreamOptionsType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+
+        <xsd:complexType name="FileStreamFactoryOptionsType">
+            <xsd:sequence>
+                <xsd:element name="sourcePath" type="xsd:string"/>
+            </xsd:sequence>
+        </xsd:complexType>
+        <xsd:element name="fileStreamFactoryOptionsWrapperType" type="tns:FileStreamFactoryOptionsWrapperType"/>
+
+        <xsd:complexType name="FileStreamFactoryOptionsWrapperType">
+            <xsd:sequence>
+                <xsd:element name="fileStreamFactoryOptions" type="tns:FileStreamFactoryOptionsType"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    <element name="destinationUrl" nillable="false" type="xsd:string"/><element name="done" nillable="false" type="xsd:boolean"/></xsd:schema>

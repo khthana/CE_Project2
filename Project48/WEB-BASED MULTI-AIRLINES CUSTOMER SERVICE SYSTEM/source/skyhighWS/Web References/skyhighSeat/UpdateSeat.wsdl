@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://tempuri.org/skyhighWS/Service1" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://tempuri.org/skyhighWS/Service1" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/skyhighWS/Service1">
+      <s:import namespace="http://www.w3.org/2001/XMLSchema" />
+      <s:element name="UpdateSeat">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateSeatSet">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateSeatResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateSeatResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </types>
+  <message name="UpdateSeatSoapIn">
+    <part name="parameters" element="s0:UpdateSeat" />
+  </message>
+  <message name="UpdateSeatSoapOut">
+    <part name="parameters" element="s0:UpdateSeatResponse" />
+  </message>
+  <portType name="SeatSoap">
+    <operation name="UpdateSeat">
+      <documentation>SkyHigh service for update seat available</documentation>
+      <input message="s0:UpdateSeatSoapIn" />
+      <output message="s0:UpdateSeatSoapOut" />
+    </operation>
+  </portType>
+  <binding name="SeatSoap" type="s0:SeatSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <operation name="UpdateSeat">
+      <soap:operation soapAction="http://tempuri.org/skyhighWS/Service1/UpdateSeat" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="Seat">
+    <port name="SeatSoap" binding="s0:SeatSoap">
+      <soap:address location="http://localhost/skyhighWS/UpdateSeat.asmx" />
+    </port>
+  </service>
+</definitions>

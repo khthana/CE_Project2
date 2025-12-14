@@ -1,0 +1,135 @@
+<script language="javascript" type="text/JavaScript">
+function Check() {
+	var title= document.getElementById("title");
+	var name= document.getElementById("name");
+	var surname = document.getElementById("surname");
+	var username = document.getElementById("username");
+	var password = document.getElementById("password");
+	var position = document.getElementById("position");
+	var email = document.getElementById("email");
+	var telnum = document.getElementById("telnum");
+	var bachelor = document.getElementById("bachelor");
+	var master = document.getElementById("master");
+	var professor = document.getElementById("professor");
+	var education = document.getElementById("education");
+	var research1 = document.getElementById("research1");
+	var research2 = document.getElementById("research2");
+	var research3 = document.getElementById("research3");
+	var research4 = document.getElementById("research4");
+	var research5 = document.getElementById("research5");
+	p=email.value.indexOf('@');
+	if (title.value == ""){
+		alert("กรุณากรอก คำนำหน้า");
+		title.focus();
+		return false;
+	}
+	if (name.value == ""){
+		alert("กรุณากรอก ชื่อ");
+		name.focus();
+		return false;
+	}
+	else if (surname.value == ""){
+		alert("กรุณากรอก นามสกุล");
+		surname.focus();
+		return false;
+	}
+	else if (username.value.length < 6){
+		alert("username ไม่ถูกต้อง");
+		username.focus();
+		return false;
+	}
+	else if (password.value.length < 6){
+		alert("password ไม่ถูกต้อง");
+		password.focus();
+		return false;
+	}
+	else if (position.value==""){
+		alert("กรุณากรอก ตำแหน่ง");
+		position.focus();
+		return false;
+	}
+	else if (email.value==""){
+		alert("กรุณากรอก Email address");
+		email.focus();
+		return false;
+	}
+	else if (telnum.value==""){
+		alert("กรุณากรอก เบอร์โทรศัพท์");
+		telnum.focus();
+		return false;
+	}
+		else if (bachelor.checked == false && master.checked == false && professor.checked == false){
+		alert("กรุณาเลือก ระดับการสอน");
+		bachelor.focus();
+		return false;
+	}
+		else if (education.value==""){
+		alert("กรุณากรอก คุณวุฒิ สาขาวิชา สถานการศึกษา");
+		education.focus();
+		return false;
+	}
+	else if(research1.value==0&&research2.value==0&&research3.value==0&&research4.value==0&&research5.value==0)
+	{
+			alert("กรุณากรอก สาขาวิชาที่ชำนาญ");
+			research1.focus();
+			return false;
+	}
+	else if (p<1 || p==(email.value.length-1)){
+			alert("อีเมลผิด กรุณากรอกใหม่ค่ะ");
+			email.focus();
+			return false;
+	 }
+	//ตรวจสอบงานวิจัยซ้ำ
+	else if(research1.value==research2.value&&research1.value!=""){
+	alert("งานวิจัยซ้ำกัน กรุณากรอกใหม่ค่ะ");
+	research2.focus();
+	return false;
+	}
+	else if(research1.value==research3.value&&research1.value!=""){
+	alert("งานวิจัยซ้ำกัน กรุณากรอกใหม่ค่ะ");
+	research3.focus();
+	return false;
+	}
+	else if(research1.value==research4.value&&research1.value!=""){
+	alert("งานวิจัยซ้ำกัน กรุณากรอกใหม่ค่ะ");
+	research4.focus();
+	return false;
+	}
+	else if(research1.value==research5.value&&research1.value!=""){
+	alert("งานวิจัยซ้ำกัน กรุณากรอกใหม่ค่ะ");
+	research5.focus();
+
+	return false;
+	}
+	else if(research2.value==research3.value&&research2.value!=""){
+	alert("งานวิจัยซ้ำกัน กรุณากรอกใหม่ค่ะ");
+	research3.focus();
+	return false;
+	}
+	else if(research2.value==research4.value&&research2.value!=""){
+	alert("งานวิจัยซ้ำกัน กรุณากรอกใหม่ค่ะ");
+	research4.focus();
+	return false;
+	}
+	else if(research2.value==research5.value&&research2.value!=""){
+	alert("งานวิจัยซ้ำกัน กรุณากรอกใหม่ค่ะ");
+	research5.focus();
+	return false;
+	}
+	else if(research3.value==research4.value&&research3.value!=""){
+	alert("งานวิจัยซ้ำกัน กรุณากรอกใหม่ค่ะ");
+	research4.focus();
+	return false;
+	}
+	else if(research3.value==research5.value&&research3.value!=""){
+	alert("งานวิจัยซ้ำกัน กรุณากรอกใหม่ค่ะ");
+	research5.focus();
+	return false;
+	}
+	else if(research4.value==research5.value&&research4.value!=""){
+	alert("งานวิจัยซ้ำกัน กรุณากรอกใหม่ค่ะ");
+	research5.focus();
+	return false;
+	}
+}
+</script>

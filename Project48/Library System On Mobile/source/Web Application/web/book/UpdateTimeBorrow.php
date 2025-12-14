@@ -1,0 +1,257 @@
+<HTML><HEAD><TITLE>:: ระบบห้องสมุดมือถือ ::</TITLE>
+
+
+<META http-equiv=Content-Type content="text/html; charset=tis-620"><LINK 
+href="webboard/style.css" 
+type=text/css rel=stylesheet>
+
+
+<META content="MSHTML 6.00.2800.1479" name=GENERATOR></HEAD>
+
+<?php
+//กำหนดตัวแปรเพื่อนำไปใช้งาน
+/*เรียกแฟ้มข้อมูล phpConfig.php*/
+include("phpConfig.php");
+
+$tblname = "book";	//ชื่อตาราง
+
+// เริ่มติดต่อฐานข้อมูล
+mysql_connect($hostname, $user, $password) or die("ติดต่อฐานข้อมูลไม่ได้");
+
+	mysql_query("SET NAMES 'tis620'");
+
+// เลือกฐานข้อมูล
+mysql_select_db($dbname) or die("เลือกฐานข้อมูลไม่ได้");
+
+// คำสั่ง SQL และสั่งให้ทำงาน
+
+$value = $_POST['name'];   //จะรับค่าเฉพาะที่มีข้อมูลเท่านั้น
+
+	
+
+	
+
+$sql_Status5 = "select * from  book  where id='$value[$i]'";;	// กำหนดคำสั่ง SQL เพื่อแสดงข้อมูล
+$db_query_search_sql_Status5 = mysql_db_query($dbname, $sql_Status5);
+$result_st = mysql_fetch_array($db_query_search_sql_Status5);
+$status[$i] = $result[status5];
+
+		
+
+		if($status[$i]==2)
+			{
+
+				
+
+
+	print "<meta http-equiv=\"refresh\" content=\"0;URL=display.php\">\n";
+
+
+				
+
+
+				}
+
+
+
+	
+
+
+
+
+
+
+
+
+$sql_search = "select * from  book  where status4 = 1 ";	// กำหนดคำสั่ง SQL เพื่อแสดงข้อมูล
+$db_query_search = mysql_db_query($dbname, $sql_search);
+
+// หาจำนวนเรกคอร์ดข้อมูลในตาราง
+$num_rows_search = mysql_num_rows($db_query_search);
+
+// หาจำนวนฟิลด์ในตาราง
+$num_fields = mysql_num_fields($db_query_search);
+
+
+?>
+<BODY bgColor=#ffffff>
+<TABLE borderColor=#f0f0f0 cellSpacing=0 cellPadding=0 width="100%" align=center 
+border=1>
+  <TBODY>
+   <TR>
+    <TD><BR>
+    [  <A href="index.php" target=_parent>Home</A> ]  [  <A href="library_services.htm" target=_parent>Library Services</A> ] 
+       <TABLE borderColor=black cellSpacing=0 cellPadding=2 width="100%" border=0>
+        <TBODY>
+        <TR>
+	
+
+ <?php  
+ include("dateT.php");
+
+// ต้องการแสดง 20 หัวข้อ ต่อ 1 หน้า
+	$pagesize = 20;
+	
+	$status_admin="";
+//รูปการประกาศข่าว
+$status1 = "webboard/icon_pin.gif ";
+	
+
+
+
+$sql_online = "select status2  from member where login_name='admin'";
+$db_query_online = mysql_db_query ($dbname, $sql_online);
+$result_online = mysql_fetch_array($db_query_online);
+@$status2 = $result_online[status2];
+
+?> <BR>   	
+ </TD></TR></TBODY></TABLE><br><br>
+<IMG 
+      src="webboard/line1.gif"><IMG 
+      src="webboard/line1.gif"><IMG 
+      src="webboard/line1.gif"><IMG 
+      src="webboard/line1.gif"><IMG 
+      src="webboard/line1.gif"><IMG 
+      src="webboard/line1.gif"><IMG 
+      src="webboard/line1.gif"> <BR><BR>
+<TABLE borderColor=#cccccc cellSpacing=0 cellPadding=2 width="100%" border=1>
+  <TBODY>
+  <TR bgColor=#cce9fd>
+ <TD align=middle width="3%"><FONT color=#000000 size=1><B>id</B></FONT></TD>
+    <TD align=middle width="3%"><FONT color=#000000 size=1><B>หมู่ </B></FONT></TD>
+    <TD align=middle width="5%"><FONT color=#000000 size=1><B>รหัส</B></FONT></TD>
+    <TD align=middle width="35%"><FONT color=#000000 size=1><B>ชื่อหนังสือ</B></FONT></TD>
+    <TD align=middle width="20%"><FONT color=#000000 size=1><B>ชื่อผู้แต่ง</B></FONT></TD>
+    <TD align=middle width="10%"><FONT color=#000000 size=1><B>สัมนักพิมพ์ </B></FONT></TD>
+        <TD align=middle width="10%"><FONT color=#000000 size=1><B>กำหนดวันส่งคืน </B></FONT></TD>
+<TD align=middle width="10%"><FONT color=#000000 size=1><B>ยืมโดย</B></FONT></TD>
+</TR>
+
+
+
+
+
+<form name = "edit" action = "addReservAg.php" method="post">
+<?php	
+		
+						
+
+// พิมพ์ส่วนหัวตาราง
+$swap="#cce9fd";
+
+for ($i=0;$i < $num_rows_search;$i++)
+	{
+		
+		
+							$result = mysql_fetch_array($db_query_search);
+							@$catalog = $result[catalog];
+							@$code = $result[code];
+							@$name_book = $result[name_book];
+							@$writer = $result[writer];
+							@$company = $result[company];
+							@$year_print = $result[year_print];
+							@$isbn = $result[isbn];
+							@$price = $result[price];
+							@$name_borrow = $result[name_borrow];
+						  @$return_book = $result[return_book];
+							@$datetime = $result[datetime];
+							@$pic = $result[pic];
+							@$total_borrow = $result[total_borrow];
+							@$datetime = $result[datetime];
+							@$id = $result[id];
+							@$status = $result[status];
+							@$status1 = $result[status];
+							@$status2 = $result[status];
+
+if(($total_borrow >= 1)&&($total_borrow <=5))
+							{
+							$status = "<img src =\"webboard/icon_new.gif \" border =\"0\">";
+							}
+							else if($total_borrow >= 1){
+							$status = " <IMG  src =\" webboard/icon_reply.gif\" border =\"0\">";
+						}
+					else{
+							$status = "<img src =\"webboard/icon_pin.gif \" border =\"0\">";
+							
+							}
+
+		
+	
+
+
+
+ 
+
+
+{
+	if ($id<=9) {$zero="000";}
+	if ($id>=10 and $id<=99) {$zero="00";}
+	if ($id>=100 and $id<=999) {$zero="0";}
+	if ($id>=1000 and $id<=9999) {$zero="";}	
+//แสดงผล
+
+if($swap=="#cce9fd"){
+$swap="#fafafa";
+}
+else
+
+{
+$swap="#cce9fd";
+}
+
+$a = 7;
+$dat=ThaiDate($a);
+print <<<EOT
+
+ <TR bgColor=$swap>
+ <TD align=middle width="3%"><FONT color=#000000 size=1>$status</FONT></TD>
+ 
+    <TD align=middle width="5%"><center><FONT color=#000000 size=1><input type =hidden name=id[] value = $id><input type = hidden  maxLength=300 size=2  name= catalog[]  value =$catalog  >$catalog</FONT></center></TD>
+    <TD align=middle width="4%"><FONT color=#000000 size=1><input type =hidden  maxLength=300  size=2 name=code[] value = $code>$code</FONT></TD>
+    <TD align=middle width="35%"><FONT color=#000000 size=1><input type =hidden  maxLength=300  size=60 name= name_book[]  value = $name_book  >  $name_book </FONT></TD>
+    <TD align=middle width="20%"><FONT color=#000000 size=1><input type =hidden  maxLength=300  size=32 name= writer[]  value =$writer ><br>$writer</FONT></TD>
+    <TD align=middle width="10%"><FONT color=#000000 size=1><input type =hidden  maxLength=300 size=20 name= company[]  value =$company  ><br>$company</FONT></TD>
+	 <TD align=middle width="10%"><FONT color="red" size=1><input type =hidden  maxLength=300 size=20 name= return_book[]  value = $dat  ><br> $dat</FONT></TD>
+   <TD align=middle width="10%"><FONT color=#000000 size=1><input type =hidden  maxLength=300 size=20 name= name_borow[]  value =$name_borrow  ><br> $name_borrow</FONT></TD>
+
+
+ </TR> 
+
+EOT;
+}
+}
+
+	
+
+echo"<input type = submit value = ยืนยัน>";
+
+echo"</form>";
+//end While
+$id=1;
+echo "<Font color=blue> แสดงผลการแก้ไขข้อมูลที่คุณได้ทำการเลือกไว้ </Font>";          //<Font color=black>[".$id."] </Font>
+
+echo "&nbsp;&nbsp;<Font color=blue> จำนวน&nbsp;&nbsp;</font><Font color=black><b>[". $i."]</b></font><Font color=blue>&nbsp; &nbsp;เรกคอร์ด</font>";
+echo "&nbsp;&nbsp;&nbsp;&nbsp;<A Href="."index.php".">กลับไปหน้าแรก </A><br><br>";
+
+mysql_close();	// ปิดการเชื่อมต่อ
+
+?> 
+</center></TD></TR></TBODY></TABLE><br><br><IMG 
+      src="webboard/line1.gif"><IMG 
+      src="webboard/line1.gif"><IMG 
+      src="webboard/line1.gif"><IMG 
+      src="webboard/line1.gif"><IMG 
+      src="webboard/line1.gif"><IMG 
+      src="webboard/line1.gif"><IMG 
+      src="webboard/line1.gif"> <BR><BR>
+				
+<br>
+<TABLE borderColor=black cellSpacing=0 cellPadding=2 width="100%" border=0>
+  <TBODY>
+  <TR>
+ <TD><b></b>
+     &nbsp;<BR><br>
+</TD><tr><td><center><FONT face=Verdana size=2>ระบบห้องสมุดบนมือถือ :: 
+      Powered by  นายปัณณวิช สุวัฒนวนิช กับ นายสุรัช วังรัตนชัย :: 2006 All rights reserved. </FONT></center></td></tr></TR></TBODY></TABLE>
+<P>
+</body></html>

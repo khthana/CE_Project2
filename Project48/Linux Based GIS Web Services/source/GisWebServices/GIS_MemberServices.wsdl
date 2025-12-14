@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://giswebservices" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://giswebservices" xmlns:intf="http://giswebservices" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.2.1
+Built on Aug 08, 2005 (11:49:10 PDT)-->
+
+   <wsdl:message name="renewPasswordResponse">
+
+      <wsdl:part name="renewPasswordReturn" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="listMemberRequest">
+
+      <wsdl:part name="ownID" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="listNewMemberResponse">
+
+      <wsdl:part name="listNewMemberReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="deleteMemberRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="memID" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="activateMemberResponse">
+
+      <wsdl:part name="activateMemberReturn" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="detailAllMemberResponse">
+
+      <wsdl:part name="detailAllMemberReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="permitMemberResponse">
+
+      <wsdl:part name="permitMemberReturn" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="detailMemberRequest">
+
+      <wsdl:part name="memberID" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="detailAllMemberRequest">
+
+      <wsdl:part name="ownerID" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="listNewMemberRequest">
+
+      <wsdl:part name="ownID" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="updateMemberResponse">
+
+      <wsdl:part name="updateMemberReturn" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="activateMemberRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="memID" type="xsd:int"/>
+
+      <wsdl:part name="isActive" type="xsd:boolean"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="insertMemberRequest">
+
+      <wsdl:part name="name" type="xsd:string"/>
+
+      <wsdl:part name="address" type="xsd:string"/>
+
+      <wsdl:part name="phone" type="xsd:string"/>
+
+      <wsdl:part name="email" type="xsd:string"/>
+
+      <wsdl:part name="username" type="xsd:string"/>
+
+      <wsdl:part name="password" type="xsd:string"/>
+
+      <wsdl:part name="ownID" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="deleteMemberResponse">
+
+      <wsdl:part name="deleteMemberReturn" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="detailMemberResponse">
+
+      <wsdl:part name="detailMemberReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="listMemberResponse">
+
+      <wsdl:part name="listMemberReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="updateMemberRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="name" type="xsd:string"/>
+
+      <wsdl:part name="address" type="xsd:string"/>
+
+      <wsdl:part name="phone" type="xsd:string"/>
+
+      <wsdl:part name="email" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="insertMemberResponse">
+
+      <wsdl:part name="insertMemberReturn" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="permitMemberRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="memID" type="xsd:int"/>
+
+      <wsdl:part name="isWritable" type="xsd:boolean"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="renewPasswordRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="oldPassword" type="xsd:string"/>
+
+      <wsdl:part name="newPassword" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="GIS_MemberServices">
+
+      <wsdl:operation name="insertMember" parameterOrder="name address phone email username password ownID">
+
+         <wsdl:input message="impl:insertMemberRequest" name="insertMemberRequest"/>
+
+         <wsdl:output message="impl:insertMemberResponse" name="insertMemberResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="listMember" parameterOrder="ownID">
+
+         <wsdl:input message="impl:listMemberRequest" name="listMemberRequest"/>
+
+         <wsdl:output message="impl:listMemberResponse" name="listMemberResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="listNewMember" parameterOrder="ownID">
+
+         <wsdl:input message="impl:listNewMemberRequest" name="listNewMemberRequest"/>
+
+         <wsdl:output message="impl:listNewMemberResponse" name="listNewMemberResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="detailMember" parameterOrder="memberID">
+
+         <wsdl:input message="impl:detailMemberRequest" name="detailMemberRequest"/>
+
+         <wsdl:output message="impl:detailMemberResponse" name="detailMemberResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="detailAllMember" parameterOrder="ownerID">
+
+         <wsdl:input message="impl:detailAllMemberRequest" name="detailAllMemberRequest"/>
+
+         <wsdl:output message="impl:detailAllMemberResponse" name="detailAllMemberResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deleteMember" parameterOrder="sessionkey memID">
+
+         <wsdl:input message="impl:deleteMemberRequest" name="deleteMemberRequest"/>
+
+         <wsdl:output message="impl:deleteMemberResponse" name="deleteMemberResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateMember" parameterOrder="sessionkey name address phone email">
+
+         <wsdl:input message="impl:updateMemberRequest" name="updateMemberRequest"/>
+
+         <wsdl:output message="impl:updateMemberResponse" name="updateMemberResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="activateMember" parameterOrder="sessionkey memID isActive">
+
+         <wsdl:input message="impl:activateMemberRequest" name="activateMemberRequest"/>
+
+         <wsdl:output message="impl:activateMemberResponse" name="activateMemberResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="permitMember" parameterOrder="sessionkey memID isWritable">
+
+         <wsdl:input message="impl:permitMemberRequest" name="permitMemberRequest"/>
+
+         <wsdl:output message="impl:permitMemberResponse" name="permitMemberResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="renewPassword" parameterOrder="sessionkey oldPassword newPassword">
+
+         <wsdl:input message="impl:renewPasswordRequest" name="renewPasswordRequest"/>
+
+         <wsdl:output message="impl:renewPasswordResponse" name="renewPasswordResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="GIS_MemberServicesSoapBinding" type="impl:GIS_MemberServices">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="insertMember">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="insertMemberRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="insertMemberResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="listMember">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="listMemberRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="listMemberResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="listNewMember">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="listNewMemberRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="listNewMemberResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="detailMember">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="detailMemberRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="detailMemberResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="detailAllMember">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="detailAllMemberRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="detailAllMemberResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deleteMember">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="deleteMemberRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="deleteMemberResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateMember">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="updateMemberRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="updateMemberResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="activateMember">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="activateMemberRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="activateMemberResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="permitMember">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="permitMemberRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="permitMemberResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="renewPassword">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="renewPasswordRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="renewPasswordResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="GIS_MemberServicesService">
+
+      <wsdl:port binding="impl:GIS_MemberServicesSoapBinding" name="GIS_MemberServices">
+
+         <wsdlsoap:address location="http://localhost:8080/GisServer/services/GIS_MemberServices"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

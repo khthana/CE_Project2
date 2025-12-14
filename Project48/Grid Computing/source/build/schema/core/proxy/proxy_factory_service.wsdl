@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://proxy.core.ogsa.globus.org/" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://proxy.core.ogsa.globus.org/" xmlns:intf="http://proxy.core.ogsa.globus.org/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+   <wsdl:message name="removeProxyRequest">
+
+      <wsdl:part name="localServicePath" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="createProxyResponse">
+
+   </wsdl:message>
+
+   <wsdl:message name="createProxyRequest">
+
+      <wsdl:part name="localServicePath" type="xsd:string"/>
+
+      <wsdl:part name="targetEndpoint" type="xsd:string"/>
+
+      <wsdl:part name="schemaLocalFileName" type="xsd:string"/>
+
+      <wsdl:part name="startupClassName" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="removeProxyResponse">
+
+   </wsdl:message>
+
+   <wsdl:portType name="ProxyFactoryPortType">
+
+      <wsdl:operation name="createProxy" parameterOrder="localServicePath targetEndpoint schemaLocalFileName startupClassName">
+
+         <wsdl:input message="intf:createProxyRequest" name="createProxyRequest"/>
+
+         <wsdl:output message="intf:createProxyResponse" name="createProxyResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="removeProxy" parameterOrder="localServicePath">
+
+         <wsdl:input message="intf:removeProxyRequest" name="removeProxyRequest"/>
+
+         <wsdl:output message="intf:removeProxyResponse" name="removeProxyResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="ProxyFactoryServiceSoapBinding" type="intf:ProxyFactoryPortType">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="createProxy">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="createProxyRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://proxy.base.ogsa.globus.org/ProxyFactory" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="createProxyResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://proxy.base.ogsa.globus.org/ProxyFactory" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="removeProxy">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="removeProxyRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://proxy.base.ogsa.globus.org/ProxyFactory" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="removeProxyResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://proxy.base.ogsa.globus.org/ProxyFactory" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="ProxyFactoryPortTypeService">
+
+      <wsdl:port binding="intf:ProxyFactoryServiceSoapBinding" name="ProxyFactoryService">
+
+         <wsdlsoap:address location="http://localhost/ogsa/services/ProxyFactoryService"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

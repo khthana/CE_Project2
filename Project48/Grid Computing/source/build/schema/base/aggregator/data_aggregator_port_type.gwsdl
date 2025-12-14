@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="DataAggregator"
+             xmlns="http://schemas.xmlsoap.org/wsdl/" 
+             targetNamespace="http://www.globus.org/namespaces/2003/09/data_aggregator"
+             xmlns:tns="http://www.globus.org/namespaces/2003/09/data_aggregator"
+             xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI"
+             xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    
+<import location="../../ogsi/ogsi.gwsdl" 
+        namespace="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+
+<types>
+  <xsd:schema targetNamespace="http://www.globus.org/namespaces/2003/09/data_aggregator"
+              xmlns:tns="http://www.globus.org/namespaces/2003/09/data_aggregator"
+              xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI"
+              xmlns:xsd="http://www.w3.org/2001/XMLSchema">	     
+
+    <xsd:complexType name="ServiceDataAggregationSubscriptionElementType">
+      <xsd:sequence>
+        <xsd:element name="ServiceDataAggregationSubscription" 
+                     type="tns:ServiceDataAggregationSubscriptionType"/>
+      </xsd:sequence>
+    </xsd:complexType>
+		
+    <xsd:complexType name="ServiceDataAggregationSubscriptionType">
+      <xsd:sequence>
+        <xsd:element name="serviceDataNames" type="ogsi:QNamesType"/>
+        <xsd:element name="lifetime" type="xsd:int"/>
+      </xsd:sequence>
+    </xsd:complexType> 
+
+    <xsd:complexType name="DataAggregationElementType">
+      <xsd:sequence>
+        <xsd:element name="DataAggregation" type="tns:DataAggregationType"/>
+      </xsd:sequence>
+    </xsd:complexType>
+		
+    <xsd:complexType name="DataAggregationType">
+      <xsd:sequence>
+        <xsd:element name="source" type="ogsi:HandleType"/>
+        <xsd:element name="sink" type="ogsi:HandleType"/>
+        <xsd:element name="params" type="ogsi:ExtensibilityType" 
+                     maxOccurs="unbounded" /> 
+      </xsd:sequence>
+    </xsd:complexType>     	      
+ 
+    <xsd:element name="addDataAggregation" type="tns:DataAggregationElementType"/>
+    <xsd:element name="addDataAggregationResponse" type="xsd:string"/>
+
+    <xsd:element name="removeDataAggregation" type="xsd:string"/>    
+    <xsd:element name="removeDataAggregationResponse"/>
+            
+  </xsd:schema>
+</types>
+
+<message name="AddDataAggregationInputMessage">
+ <part name="parameters" element="tns:addDataAggregation"/>
+</message>
+
+<message name="AddDataAggregationOutputMessage">
+ <part name="parameters" element="tns:addDataAggregationResponse"/>
+</message>
+
+<message name="RemoveDataAggregationInputMessage">
+ <part name="parameters" element="tns:removeDataAggregation"/>
+</message>
+
+<message name="RemoveDataAggregationOutputMessage">
+ <part name="parameters" element="tns:removeDataAggregationResponse"/>
+</message>
+
+<gwsdl:portType name="DataAggregationPortType" extends="ogsi:NotificationSink">
+  <operation name="addDataAggregation">
+    <input message="tns:AddDataAggregationInputMessage"/>
+    <output message="tns:AddDataAggregationOutputMessage"/>
+  </operation>
+  <operation name="removeDataAggregation">
+    <input message="tns:RemoveDataAggregationInputMessage"/>   
+  </operation>    
+</gwsdl:portType>
+
+</definitions>

@@ -1,0 +1,550 @@
+package gis_application;
+
+import java.awt.*;
+
+import javax.swing.*;
+import com.borland.jbcl.layout.XYLayout;
+import com.borland.jbcl.layout.*;
+import javax.swing.BorderFactory;
+import java.awt.Color;
+import java.awt.Font;
+import javax.swing.border.TitledBorder;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.Insets;
+
+public class properties extends JFrame {
+
+
+    MyProfile mp = new MyProfile();
+    MapArgument ma = new MapArgument();
+    int thisLayer=0;
+    int thisIndex=0;
+    String col[];
+    String conx[];
+    String conxx[];
+    int theIndex=0;
+    //public FrmMapStudio ms;
+    Color textC;
+
+
+    JPanel contentPane;
+    XYLayout xYLayout1 = new XYLayout();
+    JLabel jLabel1 = new JLabel();
+    JLabel jLabel2 = new JLabel();
+    JLabel jLabel3 = new JLabel();
+    JTextField ShowFill = new JTextField();
+    JTextField ShowStoke = new JTextField();
+    JButton SetFill = new JButton();
+    JButton SetStoke = new JButton();
+    JLabel jLabel4 = new JLabel();
+    JComboBox chooseLabel = new JComboBox();
+    JLabel jLabel5 = new JLabel();
+  JButton setCText = new JButton();
+    JTextField colorText = new JTextField();
+    JTextField previewText = new JTextField();
+    JLabel jLabel6 = new JLabel();
+    JList lstAttr = new JList();
+    JLabel jLabel7 = new JLabel();
+    JLabel jLabel8 = new JLabel();
+    JComboBox ChooseCon = new JComboBox();
+    JLabel jLabel9 = new JLabel();
+  JLabel jLabel11 = new JLabel();
+    JLabel jLabel12 = new JLabel();
+  JTextField SValue = new JTextField();
+    JButton applyValue = new JButton();
+    JButton SProperties = new JButton();
+    JScrollPane SlstAttr = new JScrollPane();
+    TitledBorder titledBorder1 = new TitledBorder("");
+
+    String fillColor = "rgb(255,255,255)";
+    String stokeColor = "rgb(255,255,255)";
+    String ColorText = "rgb(255,255,255)";
+  JComboBox operator = new JComboBox();
+  JTextField txtSize = new JTextField();
+  TitledBorder titledBorder2 = new TitledBorder("");
+  TitledBorder titledBorder3 = new TitledBorder("");
+  TitledBorder titledBorder4 = new TitledBorder("");
+  TitledBorder titledBorder5 = new TitledBorder("");
+  TitledBorder titledBorder6 = new TitledBorder("");
+  TitledBorder titledBorder7 = new TitledBorder("");
+  TitledBorder titledBorder8 = new TitledBorder("");
+  TitledBorder titledBorder9 = new TitledBorder("");
+  TitledBorder titledBorder10 = new TitledBorder("");
+  TitledBorder titledBorder11 = new TitledBorder("");
+  TitledBorder titledBorder12 = new TitledBorder("");
+  JButton jButton1 = new JButton();
+  TitledBorder titledBorder13 = new TitledBorder("");
+  JTextField txtLayerName = new JTextField();
+
+  public properties() {
+        try {
+            //setDefaultCloseOperation(EXIT_ON_CLOSE);
+            jbInit();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Component initialization.
+     *
+     * @throws java.lang.Exception
+     */
+    private void jbInit() throws Exception {
+        contentPane = (JPanel) getContentPane();
+        contentPane.setLayout(xYLayout1);
+        setSize(new Dimension(650, 620));
+        setTitle("Frame Title");
+        jLabel1.setBorder(titledBorder6);
+        jLabel1.setToolTipText("");
+        jLabel1.setText("Set Color");
+        jLabel1.setVerticalAlignment(SwingConstants.TOP);
+        jLabel2.setBorder(titledBorder5);
+        jLabel2.setText("Set Text");
+        jLabel2.setVerticalAlignment(SwingConstants.TOP);
+        jLabel3.setBorder(titledBorder3);
+        jLabel3.setText("Set Condition");
+        jLabel3.setVerticalAlignment(SwingConstants.TOP);
+        ShowStoke.setBorder(BorderFactory.createLineBorder(Color.black));
+    ShowStoke.setEditable(false);
+    ShowFill.setBorder(BorderFactory.createLineBorder(Color.black));
+    ShowFill.setEditable(false);
+    SetFill.setBackground(Color.white);
+    SetFill.setBorder(titledBorder9);
+    SetFill.setText("Set Fill");
+    SetFill.addActionListener(new properties_SetFill_actionAdapter(this));
+    SetStoke.setBackground(Color.white);
+    SetStoke.setBorder(titledBorder8);
+    SetStoke.setText("Set Stoke");
+    SetStoke.addActionListener(new properties_SetStoke_actionAdapter(this));
+    jLabel4.setFont(new java.awt.Font("Tahoma", Font.PLAIN, 14));
+        jLabel4.setText("Label");
+        jLabel5.setFont(new java.awt.Font("Tahoma", Font.PLAIN, 15));
+        jLabel5.setText("Size");
+    setCText.setBackground(Color.white);
+    setCText.setBorder(titledBorder10);
+    setCText.setText("Color");
+    setCText.addActionListener(new properties_setCText_actionAdapter(this));
+    colorText.setBorder(BorderFactory.createLineBorder(Color.black));
+    colorText.setEditable(false);
+    jLabel6.setBorder(titledBorder7);
+        jLabel6.setText("Preview");
+        jLabel6.setVerticalAlignment(SwingConstants.TOP);
+        previewText.setEditable(false);
+    previewText.addMouseListener(new properties_previewText_mouseAdapter(this));
+    previewText.addActionListener(new properties_previewText_actionAdapter(this));
+    jLabel7.setFont(new java.awt.Font("Tahoma", Font.PLAIN, 14));
+        jLabel7.setText("Attribute");
+        lstAttr.setBorder(BorderFactory.createLoweredBevelBorder());
+    lstAttr.addMouseListener(new properties_lstAttr_mouseAdapter(this));
+    jLabel8.setFont(new java.awt.Font("Tahoma", Font.PLAIN, 14));
+        jLabel8.setText("Condition");
+        jLabel9.setFont(new java.awt.Font("Tahoma", Font.BOLD, 15));
+        jLabel9.setBorder(titledBorder4);
+        jLabel9.setText("Set Value");
+        jLabel9.setVerticalAlignment(SwingConstants.TOP);
+    jLabel11.setFont(new java.awt.Font("Tahoma", Font.PLAIN, 14));
+        jLabel11.setText("Operator");
+        jLabel12.setFont(new java.awt.Font("Tahoma", Font.PLAIN, 14));
+        jLabel12.setText("Value");
+    applyValue.setBackground(Color.white);
+    applyValue.setForeground(SystemColor.desktop);
+    applyValue.setBorder(titledBorder12);
+    applyValue.setActionCommand("Apply this condition");
+    applyValue.setMargin(new Insets(0, 0, 0, 0));
+    applyValue.setText("Apply condition");
+    applyValue.addActionListener(new properties_applyValue_actionAdapter(this));
+    SProperties.setBackground(new Color(232, 255, 254));
+    SProperties.setFont(new java.awt.Font("Dialog", Font.BOLD, 15));
+    SProperties.setForeground(Color.blue);
+    SProperties.setBorder(titledBorder11);
+    SProperties.setText("Set Properties");
+    SProperties.addActionListener(new properties_SProperties_actionAdapter(this));
+    SlstAttr.setBorder(titledBorder1);
+    txtSize.setText("10");
+    contentPane.setBackground(Color.white);
+    contentPane.setBorder(titledBorder2);
+    contentPane.setOpaque(true);
+    jButton1.setBackground(Color.white);
+    jButton1.setForeground(Color.red);
+    jButton1.setBorder(titledBorder13);
+    jButton1.setMargin(new Insets(0, 0, 0, 0));
+    jButton1.setText("remove");
+    jButton1.addActionListener(new properties_jButton1_actionAdapter(this));
+    txtLayerName.setForeground(SystemColor.activeCaption);
+    txtLayerName.setEditable(false);
+    contentPane.add(jLabel11, new XYConstraints(392, 424, 63, 25));
+        contentPane.add(jLabel12, new XYConstraints(392, 464, 58, 29));
+    contentPane.add(SValue, new XYConstraints(457, 464, 104, 25));
+    contentPane.add(operator, new XYConstraints(457, 423, 104, -1));
+    contentPane.add(previewText, new XYConstraints(83, 445, 210, 39));
+    contentPane.add(SProperties, new XYConstraints(40, 519, 297, 46));
+    contentPane.add(jLabel6, new XYConstraints(73, 420, 234, 74));
+    contentPane.add(jLabel4, new XYConstraints(82, 272, 50, 20));
+    contentPane.add(jLabel5, new XYConstraints(82, 331, 56, 27));
+    contentPane.add(applyValue, new XYConstraints(461, 521, 121, 31));
+    contentPane.add(jButton1, new XYConstraints(375, 521, 81, 30));
+    contentPane.add(chooseLabel, new XYConstraints(82, 294, 225, 25));
+    contentPane.add(txtSize, new XYConstraints(165, 333, 142, 29));
+    contentPane.add(setCText, new XYConstraints(73, 378, 129, 26));
+    contentPane.add(colorText, new XYConstraints(228, 378, 79, 26));
+    contentPane.add(jLabel2, new XYConstraints(40, 242, 297, 262));
+    contentPane.add(jLabel9, new XYConstraints(375, 372, 207, 140));
+    contentPane.add(ChooseCon, new XYConstraints(475, 334, 107, 25));
+    contentPane.add(jLabel8, new XYConstraints(375, 327, 92, 32));
+    contentPane.add(SlstAttr, new XYConstraints(375, 113, 208, 202));
+    contentPane.add(jLabel7, new XYConstraints(376, 80, 69, 24));
+    contentPane.add(jLabel3, new XYConstraints(349, 58, 263, 508));
+    contentPane.add(jLabel1, new XYConstraints(40, 58, 297, 173));
+    contentPane.add(SetFill, new XYConstraints(70, 103, 110, 33));
+    contentPane.add(ShowFill, new XYConstraints(217, 103, 91, 33));
+    contentPane.add(ShowStoke, new XYConstraints(217, 163, 91, 33));
+    contentPane.add(SetStoke, new XYConstraints(68, 163, 110, 33));
+    contentPane.add(txtLayerName, new XYConstraints(41, 11, 571, 33));
+    SlstAttr.getViewport().add(lstAttr);
+    ChooseCon.addItem("AND") ;
+    ChooseCon.addItem("OR") ;
+
+    operator.addItem("=") ;
+    operator.addItem("not =") ;
+    operator.addItem("like") ;
+    operator.addItem(">") ;
+    operator.addItem("<") ;
+    operator.addItem("> =") ;
+    operator.addItem("< =") ;
+    operator.addItem("null") ;
+    operator.addItem("not null") ;
+  }
+
+  public void SetFill_actionPerformed(ActionEvent e) {
+      /////////////Test///////////////////
+      Color initialBackground = new Color(250,250,250);
+      final JColorChooser colorChooser = new JColorChooser(
+              initialBackground);
+      colorChooser.updateUI();
+
+      // selected color
+      ActionListener okActionListener = new ActionListener() {
+          public void actionPerformed(ActionEvent actionEvent) {
+              Color newColor = colorChooser.getColor();
+              ///////Keep In Array//////////////
+
+                 fillColor ="rgb("+ newColor.toString().substring(15).replace("]",")").replace("r"," ").replace("g"," ").replace("b"," ").replace("="," ");
+                 //////////////////////////////////
+                 ShowFill.setBackground(colorChooser.getColor());
+          }
+      };
+
+      final JDialog dialog = JColorChooser.createDialog(null,
+              "Change Button Background", true, colorChooser,
+              okActionListener, null);
+  //if use cancel bottom must change "null" to "cancelActionListener"
+
+      Runnable showDialog = new Runnable() {
+          public void run() {
+
+              dialog.setVisible(true);
+          }
+      };
+      SwingUtilities.invokeLater(showDialog);
+  ///////////////////////////////////
+
+  }
+
+  public void callMe(String layerID, int indx, String layername){
+
+    this.setVisible(true) ;
+    txtLayerName.setText(layername);
+    theIndex=indx;
+    thisIndex=indx;
+    thisLayer=Integer.parseInt(layerID);
+    try{
+      CallServices cs=new CallServices("GIS_InformationServices","detailColumn") ;
+      String res = cs.strInvoke(new Object[]{mp.getSessionkey(), thisLayer });
+      System.out.println(res);
+      GisXmlReader gxr = new GisXmlReader(res);
+      int colsize=gxr.child("layer").child("column").count()-1;
+      col   = new String[colsize];
+      conx  = new String[colsize];
+      conxx = new String[colsize];
+      chooseLabel.removeAllItems();
+      chooseLabel.addItem("");
+
+      for (int i=0; i<colsize; i++) {
+        col[i]=gxr.child("layer").child("column",i).attribute("name");
+        conx[i]=ma.layer[thisIndex].getShow(i);
+        conxx[i]="";
+        chooseLabel.addItem(col[i]);
+      }
+
+
+      lstAttr.removeAll();
+      lstAttr.setListData(conx);
+      previewText.setText("Click To Preview");
+
+      ShowFill.setBackground(ma.layer[thisIndex].fill);
+      ShowStoke.setBackground(ma.layer[thisIndex].stroke);
+      colorText.setBackground(ma.layer[thisIndex].text);
+      txtSize.setText(""+ma.layer[thisIndex].txtSize);
+      chooseLabel.setSelectedIndex(ma.layer[thisIndex].chLabel);
+      ChooseCon.setSelectedIndex(ma.layer[thisIndex].chAllOper);
+
+    }catch(Exception e){
+      e.printStackTrace() ;
+    }
+  }
+
+  public void SetStoke_actionPerformed(ActionEvent e) {
+    /////////////Test///////////////////
+    Color initialBackground = new Color(250, 250, 250);
+    final JColorChooser colorChooser = new JColorChooser(
+        initialBackground);
+    colorChooser.updateUI();
+
+  // selected color
+    ActionListener okActionListener = new ActionListener() {
+      public void actionPerformed(ActionEvent actionEvent) {
+        Color newColor = colorChooser.getColor();
+        ///////Keep In Array//////////////
+
+        stokeColor = "rgb(" +
+            newColor.toString().substring(15).replace("]", ")").replace("r", " ").
+            replace("g", " ").replace("b", " ").replace("=", " ");
+        //////////////////////////////////
+        ShowStoke.setBackground(colorChooser.getColor());
+      }
+    };
+
+    final JDialog dialog = JColorChooser.createDialog(null,
+        "Change Button Background", true, colorChooser,
+        okActionListener, null);
+  //if use cancel bottom must change "null" to "cancelActionListener"
+
+    Runnable showDialog = new Runnable() {
+      public void run() {
+
+        dialog.setVisible(true);
+      }
+    };
+    SwingUtilities.invokeLater(showDialog);
+  ///////////////////////////////////
+
+  }
+
+  public void setCText_actionPerformed(ActionEvent e) {
+    /////////////Test///////////////////
+    Color initialBackground = new Color(250, 250, 250);
+    final JColorChooser colorChooser = new JColorChooser(
+        initialBackground);
+    colorChooser.updateUI();
+
+    // selected color
+    ActionListener okActionListener = new ActionListener() {
+      public void actionPerformed(ActionEvent actionEvent) {
+        Color newColor = colorChooser.getColor();
+        textC = newColor;
+        ///////Keep In Array//////////////
+
+        ColorText = "rgb(" +
+            newColor.toString().substring(15).replace("]", ")").replace("r", " ").
+            replace("g", " ").replace("b", " ").replace("=", " ");
+        //////////////////////////////////
+        colorText.setBackground(colorChooser.getColor());
+      }
+    };
+
+    final JDialog dialog = JColorChooser.createDialog(null,
+        "Change Button Background", true, colorChooser,
+        okActionListener, null);
+    //if use cancel bottom must change "null" to "cancelActionListener"
+
+    Runnable showDialog = new Runnable() {
+      public void run() {
+
+        dialog.setVisible(true);
+      }
+    };
+    SwingUtilities.invokeLater(showDialog);
+    ///////////////////////////////////
+
+  }
+
+  public void applyValue_actionPerformed(ActionEvent e) {
+
+    int index = lstAttr.getSelectedIndex() ;
+    if(index>=0){
+      ma.layer[thisIndex].chOper[index]=operator.getSelectedIndex();
+      ma.layer[thisIndex].strOper[index]=(String) operator.getItemAt(operator.getSelectedIndex());
+      ma.layer[thisIndex].value[index]=SValue.getText();
+
+      int attrIndex=ChooseCon.getSelectedIndex();
+      ma.layer[thisIndex].chAllOper=attrIndex;
+      ma.layer[thisIndex].strAllOper=(String)ChooseCon.getItemAt(attrIndex );
+
+      conx[index]=ma.layer[thisIndex].getShow(index);
+      lstAttr.removeAll();
+      lstAttr.setListData(conx);
+
+    }
+  }
+
+  public void SProperties_actionPerformed(ActionEvent e) {
+    ma.layer[thisIndex].fill=ShowFill.getBackground();
+    ma.layer[thisIndex].stroke=ShowStoke.getBackground();
+    ma.layer[thisIndex].text=colorText.getBackground();
+    ma.layer[thisIndex].txtSize=Integer.parseInt(txtSize.getText());
+    ma.layer[thisIndex].chLabel=chooseLabel.getSelectedIndex();
+    int index=chooseLabel.getSelectedIndex();
+    if (index<0) index=0;
+    ma.layer[thisIndex].strLabel=(String)chooseLabel.getItemAt(index);
+    //JOptionPane.showMessageDialog(null,ma.layer[thisIndex].getXml());
+    this.setVisible(false);
+
+
+    //JOptionPane.showMessageDialog(null,xmlxx);
+//    ms.layerXml[theIndex]=xmlxx;
+  }
+
+  public void previewText_actionPerformed(ActionEvent e) {
+       String text = "Click To Preview";
+       previewText.setText(text);
+       previewText.setForeground(textC);
+       Font a = new Font("",0,Integer.parseInt(txtSize.getText()));
+       previewText.setFont(a);
+  }
+
+  public void previewText_mouseClicked(MouseEvent e) {
+    String text = "Click To Preview";
+     previewText.setText(text);
+     previewText.setForeground(textC);
+     Font a = new Font("",0,Integer.parseInt(txtSize.getText()));
+     previewText.setFont(a);
+
+  }
+
+  public void jButton1_actionPerformed(ActionEvent e) {
+    int index = lstAttr.getSelectedIndex();
+    ma.layer[thisIndex].resetCondition(index);
+    conx[index]=col[index];
+    lstAttr.removeAll();
+    lstAttr.setListData(conx);
+  }
+
+  public void lstAttr_mouseClicked(MouseEvent e) {
+    int index=lstAttr.getSelectedIndex();
+    operator.setSelectedIndex(ma.layer[thisIndex].chOper[index]);
+    SValue.setText(ma.layer[thisIndex].value[index]);
+
+  }
+}
+
+class properties_lstAttr_mouseAdapter
+    extends MouseAdapter {
+  private properties adaptee;
+  properties_lstAttr_mouseAdapter(properties adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void mouseClicked(MouseEvent e) {
+    adaptee.lstAttr_mouseClicked(e);
+  }
+}
+
+class properties_jButton1_actionAdapter
+    implements ActionListener {
+  private properties adaptee;
+  properties_jButton1_actionAdapter(properties adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButton1_actionPerformed(e);
+  }
+}
+
+class properties_previewText_actionAdapter
+    implements ActionListener {
+  private properties adaptee;
+  properties_previewText_actionAdapter(properties adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.previewText_actionPerformed(e);
+  }
+}
+
+class properties_previewText_mouseAdapter
+    extends MouseAdapter {
+  private properties adaptee;
+  properties_previewText_mouseAdapter(properties adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void mouseClicked(MouseEvent e) {
+    adaptee.previewText_mouseClicked(e);
+  }
+}
+
+class properties_SProperties_actionAdapter
+    implements ActionListener {
+  private properties adaptee;
+  properties_SProperties_actionAdapter(properties adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.SProperties_actionPerformed(e);
+  }
+}
+
+class properties_applyValue_actionAdapter
+    implements ActionListener {
+  private properties adaptee;
+  properties_applyValue_actionAdapter(properties adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.applyValue_actionPerformed(e);
+  }
+}
+
+class properties_setCText_actionAdapter
+    implements ActionListener {
+  private properties adaptee;
+  properties_setCText_actionAdapter(properties adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.setCText_actionPerformed(e);
+  }
+}
+
+class properties_SetStoke_actionAdapter
+    implements ActionListener {
+  private properties adaptee;
+  properties_SetStoke_actionAdapter(properties adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.SetStoke_actionPerformed(e);
+  }
+}
+
+class properties_SetFill_actionAdapter
+    implements ActionListener {
+  private properties adaptee;
+  properties_SetFill_actionAdapter(properties adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.SetFill_actionPerformed(e);
+  }
+}

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="Counter" targetNamespace="http://ogsa.globus.org/samples/counter" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI" xmlns:tns="http://ogsa.globus.org/samples/counter" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+<import location="../../ogsi/ogsi.gwsdl" namespace="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+
+<types>
+  <xsd:schema targetNamespace="http://ogsa.globus.org/samples/counter" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI" xmlns:tns="http://ogsa.globus.org/samples/counter" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:complexType name="ValueType">
+      <xsd:sequence>
+        <xsd:element name="value" type="xsd:int"/>
+      </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ReturnValueType">
+      <xsd:sequence>
+        <xsd:element name="returnValue" type="xsd:int"/>
+      </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="add" type="tns:ValueType"/>
+    <xsd:element name="addResponse" type="tns:ReturnValueType"/>
+    <xsd:element name="subtract" type="tns:ValueType"/>
+    <xsd:element name="subtractResponse" type="tns:ReturnValueType"/>
+    <xsd:element name="getValue">
+      <xsd:complexType/>
+    </xsd:element>
+    <xsd:element name="getValueResponse" type="tns:ReturnValueType"/>
+  </xsd:schema>
+</types>
+
+<message name="AddInputMessage">
+  <part element="tns:add" name="parameters"/>
+</message>
+<message name="AddOutputMessage">
+  <part element="tns:addResponse" name="parameters"/>
+</message>
+<message name="SubtractInputMessage">
+  <part element="tns:subtract" name="parameters"/>
+</message>
+<message name="SubtractOutputMessage">
+  <part element="tns:subtractResponse" name="parameters"/>
+</message>
+<message name="GetValueInputMessage">
+  <part element="tns:getValue" name="parameters"/>
+</message>
+<message name="GetValueOutputMessage">
+  <part element="tns:getValueResponse" name="parameters"/>
+</message>
+
+<portType name="CounterPortType"><operation name="getValue">
+    <input message="ns4:GetValueInputMessage" xmlns:ns4="http://ogsa.globus.org/samples/counter"/>
+    <output message="ns5:GetValueOutputMessage" xmlns:ns5="http://ogsa.globus.org/samples/counter"/>
+  </operation><operation name="setServiceData">
+    <input message="ns12:SetServiceDataInputMessage" xmlns:ns12="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns13:SetServiceDataOutputMessage" xmlns:ns13="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns14:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns14="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+    <fault message="ns15:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns15="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+    <fault message="ns16:CardinalityViolationFaultMessage" name="CadinalityViolationFault" xmlns:ns16="http://www.gridforum.org/namespaces/2003/03/OGSI"/>  
+    <fault message="ns17:MutabilityViolationFaultMessage" name="MutabilityViolationFault" xmlns:ns17="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns18:ModifiabilityViolationFaultMessage" name="ModifabilityViolationFault" xmlns:ns18="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns19:TypeViolationFaultMessage" name="TypeViolationFault" xmlns:ns19="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns20:IncorrectValueFaultMessage" name="IncorrectValueFault" xmlns:ns20="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns21:PartialFailureFaultMessage" name="PartialFailureFault" xmlns:ns21="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns22:FaultMessage" name="Fault" xmlns:ns22="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="destroy">
+    <input message="ns31:DestroyInputMessage" xmlns:ns31="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns32:DestroyOutputMessage" xmlns:ns32="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns33:ServiceNotDestroyedFaultMessage" name="ServiceNotDestroyedFault" xmlns:ns33="http://www.gridforum.org/namespaces/2003/03/OGSI"/>      
+    <fault message="ns34:FaultMessage" name="Fault" xmlns:ns34="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="requestTerminationAfter">
+    <input message="ns23:RequestTerminationAfterInputMessage" xmlns:ns23="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns24:RequestTerminationAfterOutputMessage" xmlns:ns24="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns25:TerminationTimeUnchangedFaultMessage" name="TerminationTimeUnchangedFault" xmlns:ns25="http://www.gridforum.org/namespaces/2003/03/OGSI"/>    
+    <fault message="ns26:FaultMessage" name="Fault" xmlns:ns26="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="subtract">
+    <input message="ns2:SubtractInputMessage" xmlns:ns2="http://ogsa.globus.org/samples/counter"/>
+    <output message="ns3:SubtractOutputMessage" xmlns:ns3="http://ogsa.globus.org/samples/counter"/>
+  </operation><operation name="add">
+    <input message="ns0:AddInputMessage" xmlns:ns0="http://ogsa.globus.org/samples/counter"/>
+    <output message="ns1:AddOutputMessage" xmlns:ns1="http://ogsa.globus.org/samples/counter"/>
+  </operation><operation name="requestTerminationBefore">
+    <input message="ns27:RequestTerminationBeforeInputMessage" xmlns:ns27="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns28:RequestTerminationBeforeOutputMessage" xmlns:ns28="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns29:TerminationTimeUnchangedFaultMessage" name="TerminationTimeUnchangedFault" xmlns:ns29="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+    <fault message="ns30:FaultMessage" name="Fault" xmlns:ns30="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="findServiceData">
+    <input message="ns6:FindServiceDataInputMessage" xmlns:ns6="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns7:FindServiceDataOutputMessage" xmlns:ns7="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns8:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns8="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns9:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns9="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns10:TargetInvalidFaultMessage" name="TargetInvalidFault" xmlns:ns10="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns11:FaultMessage" name="Fault" xmlns:ns11="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation></portType><gwsdl:portType extends="ogsi:GridService" name="CounterPortType">
+  
+  
+  
+</gwsdl:portType>
+
+</definitions>

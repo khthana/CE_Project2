@@ -1,0 +1,545 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LGaugeDerivedControlsLibrary</name>
+    </assembly>
+    <members>
+        <member name="T:GMS.Instruments.LGauge.MaxMinLinearGauge">
+            <summary>
+            MaxMinLinearGauge is derived from the slider control and adds maximum and minimum 
+            tell-tail needles which indicate the maximum and minimum values displayed by the gauge.
+            </summary>
+        </member>
+        <member name="T:GMS.Instruments.LGauge.Slider">
+            <summary>
+            Slider is derived from the Linear Gauge control.
+            </summary>
+        </member>
+        <member name="M:GMS.Instruments.LGauge.Slider.#ctor">
+            <summary>
+            Initializes a new instance of the Slider class.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Slider.Value">
+            <summary>
+            Gets or sets the slider value.  
+            </summary>
+            <remarks>
+            This Value must be between MinValue and MaxValue.
+            </remarks>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Slider.MaxValue">
+            <summary>
+            Gets or sets the maximum value to be displayed by the Slider control.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Slider.MinValue">
+            <summary>
+            Gets or sets the minimum value to be displayed by the Slider control.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Slider.MajorTickCount">
+            <summary>
+            Gets or Sets the maximum number of tick marks to be allowed.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Slider.MinorTickCount">
+            <summary>
+            Gets or sets the number of minor tick marks between major tick marks.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Slider.MouseControl">
+            <summary>
+            Gets or sets the value indicating whether the slider value can be manipulated with mouse input.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Slider.NeedleStyle">
+            <summary>
+            Gets or sets the value indicating the shape of the Needle.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Slider.NeedleWidth">
+            <summary>
+            Gets or sets the needle width.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Slider.NeedleLength">
+            <summary>
+            Gets or sets the needle length.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Slider.TickColor">
+            <summary>
+            Gets or Sets the tick color.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Slider.NeedleColor">
+            <summary>
+            Gets or Sets the needle color.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Slider.LabelColor">
+            <summary>
+            Gets or Sets the tick color.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Slider.LabelAntiAlias">
+            <summary>
+            Gets or sets a value indicating whether the labels render with antialiasing.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Slider.TickWidth">
+            <summary>
+            Gets or sets the tick width.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Slider.TickBorderType">
+            <summary>
+            Gets or sets the tick border type.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Slider.TickBorderColor">
+            <summary>
+            Gets or Sets the tick border color.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Slider.LabelAlignment">
+            <summary>
+            Gets or sets the label alignment.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Slider.Direction">
+            <summary>
+            Gets or sets the direction of increasing values.
+            </summary>
+        </member>
+        <member name="T:GMS.Instruments.LGauge.Slider.TickAlign">
+            <summary>
+            Enumeration of the Tick alignments
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.LGauge.Slider.TickAlign.Top">
+            <summary>
+            Aligns the tic equivalent to the top of the tics
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.LGauge.Slider.TickAlign.Center">
+            <summary>
+            Aligns the tic at the center of the tics
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.LGauge.Slider.TickAlign.Bottom">
+            <summary>
+            Aligns the tic equivalent to the bottom of the tics
+            </summary>
+        </member>
+        <member name="T:GMS.Instruments.LGauge.Slider.Align">
+            <summary>
+            Enumeration of the label alignment
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.LGauge.Slider.Align.Top">
+            <summary>
+            Aligns the label above the tics
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.LGauge.Slider.Align.Bottom">
+            <summary>
+            Aligns the label below the tics
+            </summary>
+        </member>
+        <member name="M:GMS.Instruments.LGauge.MaxMinLinearGauge.#ctor">
+            <summary>
+            Initializes a new instance of the MaxMinLinearGauge class.
+            </summary>
+        </member>
+        <member name="M:GMS.Instruments.LGauge.MaxMinLinearGauge.Reset">
+            <summary>
+            Gets or sets the minimum value displayed by the control.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.MaxMinLinearGauge.Value">
+            <summary>
+            Gets or sets the value of the needle.  
+            </summary>
+            <remarks>
+            The Value is a number between MinValue and MaxValue.
+            </remarks>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.MaxMinLinearGauge.Maximum">
+            <summary>
+            Gets or sets the maximum value displayed by the control.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.MaxMinLinearGauge.Minimum">
+            <summary>
+            Gets or sets the minimum value displayed by the control.
+            </summary>
+        </member>
+        <member name="T:GMS.Instruments.LGauge.ProgressBarType">
+            <summary>
+            Enumeration for the progress bar type.
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.LGauge.ProgressBarType.Percent">
+            <summary>
+            Progress bar is displayed as a percentage.
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.LGauge.ProgressBarType.Value">
+            <summary>
+            Progress bar is displayed as a value.
+            </summary>
+        </member>
+        <member name="T:GMS.Instruments.LGauge.Decimals">
+            <summary>
+            Enumeration for the number of decimals to use.
+            </summary>
+        </member>
+        <member name="T:GMS.Instruments.LGauge.ProgressBar">
+            <summary>
+            ProgressBar is derived from the Linear Gauge control.
+            </summary>
+        </member>
+        <member name="M:GMS.Instruments.LGauge.ProgressBar.#ctor">
+            <summary>
+            Initializes a new instance of the ProgressBar class.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.LGauge.ProgressBar.Complete">
+            <summary>
+            Occurs when the progress bar is complete.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.ProgressBar.Direction">
+            <summary>
+            Gets or sets the direction of increasing values.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.ProgressBar.Value">
+            <summary>
+            Gets or sets the value of the needle.  
+            </summary>
+            <remarks>
+            The Value is a number between MinValue and MaxValue.
+            </remarks>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.ProgressBar.BarColor">
+            <summary>
+            Gets or sets the color for the progress bar.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.ProgressBar.BarBorderType">
+            <summary>
+            Gets or sets bar border type.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.ProgressBar.BarBorderColor">
+            <summary>
+            Gets or sets the bar border color.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.ProgressBar.BarFillType">
+            <summary>
+            Gets or sets the style of brush used to render the area of the bar.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.ProgressBar.BarHatchStyle">
+            <summary>
+            Gets or sets the hatch style used to render the bar when BarFillType is set to Hatch.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.ProgressBar.CaptionColor">
+            <summary>
+            Gets or sets the caption color.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.ProgressBar.CaptionAntiAlias">
+            <summary>
+            Gets or sets a value indicating whether the caption renders with antialiasing.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.ProgressBar.Text3D">
+            <summary>
+            Creates a 3D-looking text.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.ProgressBar.ForeColor">
+            <summary>
+            Gets or sets the foreground color used to render the bar.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.ProgressBar.Maximum">
+            <summary>
+            Gets or sets the maximum value displayed by the control.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.ProgressBar.Minimum">
+            <summary>
+            Gets or sets the minimum value displayed by the control.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.ProgressBar.Type">
+            <summary>
+            Gets or sets the type of progress bar to use in the control
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.ProgressBar.CaptionFont">
+            <summary>
+            Gets or sets the font.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.ProgressBar.BarPicture">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.ProgressBar.Decimals">
+            <summary>
+            Gets or sets the number of decimals to be displayed.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.ProgressBar.ShowDecimals">
+            <summary>
+            Gets or sets a value indicating whether decimals will be displayed.
+            </summary>
+        </member>
+        <member name="T:GMS.Instruments.LGauge.Tank">
+            <summary>
+            Tank is derived from the Linear Gauge control.
+            </summary>
+        </member>
+        <member name="M:GMS.Instruments.LGauge.Tank.#ctor">
+            <summary>
+            Initializes a new instance of the Tank class.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.LGauge.Tank.Full">
+            <summary>
+            Occurs when the tank is full.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Tank.CaptionMode">
+            <summary>
+            Gets or sets the display mode for the current value.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Tank.FormatString">
+            <summary>
+            Gets or Sets the formating string used for displaying the value.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Tank.Value">
+            <summary>
+            Gets or sets the value of the tank control.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Tank.MaxValue">
+            <summary>
+            Gets or sets the maximum value to be displayed by the this control.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Tank.MinValue">
+            <summary>
+            Gets or sets the minimum value to be displayed by the this control.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Tank.OnColor">
+            <summary>
+            Gets or sets the color of the filled portion of the tank.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Tank.OffColor">
+            <summary>
+            Gets or sets the color of the empty portion of the tank.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Tank.OnBorder">
+            <summary>
+            Gets or sets the on border type.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Tank.OffBorder">
+            <summary>
+            Gets or sets the off border type.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Tank.OnBorderColor">
+            <summary>
+            Gets or sets the on border color.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Tank.OffBorderColor">
+            <summary>
+            Gets or sets the off border color.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Tank.Orientation">
+            <summary>
+            Gets or sets the orientation of the tank.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Tank.TextColor">
+            <summary>
+            Gets or Sets the color of the text displaying the value.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Tank.Text3D">
+            <summary>
+            Creates a 3D-looking text.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Tank.TextAntiAlias">
+            <summary>
+            Gets or sets a value indicating whether the text renders with antialiasing.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Tank.Direction">
+            <summary>
+            Gets or sets the value indicating the direction of increasing values.
+            </summary>
+        </member>
+        <member name="T:GMS.Instruments.LGauge.Tank.CaptionDisplayMode">
+            <summary>
+            Enumeration of the caption display mode.
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.LGauge.Tank.CaptionDisplayMode.None">
+            <summary>
+            No text is displayed.
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.LGauge.Tank.CaptionDisplayMode.Value">
+            <summary>
+            Shows the current value.
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.LGauge.Tank.CaptionDisplayMode.Percentage">
+            <summary>
+            Shows the current percentage.
+            </summary>
+        </member>
+        <member name="T:GMS.Instruments.LGauge.Thermometer">
+            <summary>
+            The Thermometer control is a UserControl which has a contained Linear Gauge control.
+            The Thermometer is a custom control that displays a thermometer.
+            </summary>
+        </member>
+        <member name="M:GMS.Instruments.LGauge.Thermometer.#ctor">
+            <summary>
+            Initializes a new instance of the Thermometer class.
+            </summary>
+        </member>
+        <member name="M:GMS.Instruments.LGauge.Thermometer.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:GMS.Instruments.LGauge.Thermometer.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.LGauge.Thermometer.Slide">
+            <summary>
+            Occurs every time the mouse button is released when using the mouse to alter the value of the control.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.LGauge.Thermometer.Click">
+            <summary>
+            Occurs when the control is clicked.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.LGauge.Thermometer.MouseDown">
+            <summary>
+            Occurs when the mouse is pressed.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.LGauge.Thermometer.MouseEnter">
+            <summary>
+            Occurs whent the mouse enters the visible part of the control.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.LGauge.Thermometer.MouseHover">
+            <summary>
+            Occurs when the mouse remains stationary inside of the control for an amount of time.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.LGauge.Thermometer.MouseLeave">
+            <summary>
+            Occurs whent the mouse leaves the visible part of the control.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.LGauge.Thermometer.MouseMove">
+            <summary>
+            Occurs when the mouse is moved.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.LGauge.Thermometer.MouseUp">
+            <summary>
+            Occurs when a mouse button is released.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Thermometer.BorderType">
+            <summary>
+            Gets or sets the line style used to render the outline of this object.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Thermometer.BorderColor">
+            <summary>
+            Gets or sets the border color.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Thermometer.BorderWidth">
+            <summary>
+            Gets or sets the border width.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Thermometer.Antialias">
+            <summary>
+            Gets or sets a value indicating whether antialiasing will be applied.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Thermometer.LabelAntiAlias">
+            <summary>
+            Gets or sets a value indicating whether the labels render with antialiasing.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Thermometer.Value">
+            <summary>
+            Gets or sets the value of the Thermometer.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Thermometer.BackPicture">
+            <summary>
+            Gets or sets the background Image.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Thermometer.TickColor">
+            <summary>
+            Gets or sets the color of the ticks.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Thermometer.TickWidth">
+            <summary>
+            Gets or sets the tick width.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Thermometer.TickBorderType">
+            <summary>
+            Gets or sets the tick border type.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Thermometer.TickBorderColor">
+            <summary>
+            Gets or Sets the tick border color.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.LGauge.Thermometer.CaptionColor">
+            <summary>
+            Gets or sets the color of the captions.
+            </summary>
+        </member>
+    </members>
+</doc>

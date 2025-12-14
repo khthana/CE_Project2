@@ -1,0 +1,18 @@
+#!/bin/bash
+#compare 2 protocol
+#case same protocol
+if [ $prot1 = $prot2 ]
+then
+	frelation=exact
+#case protocol1 is all
+elif [ $prot1 = all ]
+then
+	frelation=subset
+#case protocol2 is all
+elif [ $prot2 = all ]
+then
+	frelation=superset
+#case protocol not equal
+else
+	frelation=disjoint
+fi

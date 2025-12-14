@@ -1,0 +1,7 @@
+#!/bin/bash
+#call remove LOG Prefix rule
+#argument is chain
+/sbin/iptables -L $1 -n > temp
+source remove temp `cat temp | cut -d' ' -f1`
+rm -f temp
+/sbin/iptables-save > /etc/sysconfig/iptables

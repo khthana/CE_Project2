@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://giswebservices" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://giswebservices" xmlns:intf="http://giswebservices" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.2.1
+Built on Aug 08, 2005 (11:49:10 PDT)-->
+
+   <wsdl:message name="getPinRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="detailInformationResponse">
+
+      <wsdl:part name="detailInformationReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="updateInformationRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="xmlInsert" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getPinResponse">
+
+      <wsdl:part name="getPinReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="insertPinResponse">
+
+      <wsdl:part name="insertPinReturn" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="detailInformationRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="layerID" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="detailColumnResponse">
+
+      <wsdl:part name="detailColumnReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="detailGeomInformationResponse">
+
+      <wsdl:part name="detailGeomInformationReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="insertInformationResponse">
+
+      <wsdl:part name="insertInformationReturn" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="detailGeomInformationRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="layerID" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="detailColumnRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="layerID" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="deleteInformationResponse">
+
+      <wsdl:part name="deleteInformationReturn" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="updateInformationResponse">
+
+      <wsdl:part name="updateInformationReturn" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="deleteInformationRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="layerID" type="xsd:int"/>
+
+      <wsdl:part name="rowID" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="insertPinRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="xmlpin" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="insertInformationRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="xmlInsert" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="GIS_InformationServices">
+
+      <wsdl:operation name="detailInformation" parameterOrder="sessionkey layerID">
+
+         <wsdl:input message="impl:detailInformationRequest" name="detailInformationRequest"/>
+
+         <wsdl:output message="impl:detailInformationResponse" name="detailInformationResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="detailGeomInformation" parameterOrder="sessionkey layerID">
+
+         <wsdl:input message="impl:detailGeomInformationRequest" name="detailGeomInformationRequest"/>
+
+         <wsdl:output message="impl:detailGeomInformationResponse" name="detailGeomInformationResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="detailColumn" parameterOrder="sessionkey layerID">
+
+         <wsdl:input message="impl:detailColumnRequest" name="detailColumnRequest"/>
+
+         <wsdl:output message="impl:detailColumnResponse" name="detailColumnResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="insertInformation" parameterOrder="sessionkey xmlInsert">
+
+         <wsdl:input message="impl:insertInformationRequest" name="insertInformationRequest"/>
+
+         <wsdl:output message="impl:insertInformationResponse" name="insertInformationResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateInformation" parameterOrder="sessionkey xmlInsert">
+
+         <wsdl:input message="impl:updateInformationRequest" name="updateInformationRequest"/>
+
+         <wsdl:output message="impl:updateInformationResponse" name="updateInformationResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deleteInformation" parameterOrder="sessionkey layerID rowID">
+
+         <wsdl:input message="impl:deleteInformationRequest" name="deleteInformationRequest"/>
+
+         <wsdl:output message="impl:deleteInformationResponse" name="deleteInformationResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="insertPin" parameterOrder="sessionkey xmlpin">
+
+         <wsdl:input message="impl:insertPinRequest" name="insertPinRequest"/>
+
+         <wsdl:output message="impl:insertPinResponse" name="insertPinResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getPin" parameterOrder="sessionkey">
+
+         <wsdl:input message="impl:getPinRequest" name="getPinRequest"/>
+
+         <wsdl:output message="impl:getPinResponse" name="getPinResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="GIS_InformationServicesSoapBinding" type="impl:GIS_InformationServices">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="detailInformation">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="detailInformationRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="detailInformationResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="detailGeomInformation">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="detailGeomInformationRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="detailGeomInformationResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="detailColumn">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="detailColumnRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="detailColumnResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="insertInformation">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="insertInformationRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="insertInformationResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateInformation">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="updateInformationRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="updateInformationResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deleteInformation">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="deleteInformationRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="deleteInformationResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="insertPin">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="insertPinRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="insertPinResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getPin">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getPinRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getPinResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="GIS_InformationServicesService">
+
+      <wsdl:port binding="impl:GIS_InformationServicesSoapBinding" name="GIS_InformationServices">
+
+         <wsdlsoap:address location="http://localhost:8080/GisServer/services/GIS_InformationServices"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

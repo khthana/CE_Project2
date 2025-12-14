@@ -1,0 +1,291 @@
+<?xml version="1.0"?>
+<!--
+This file is licensed under the terms of the Globus Toolkit Public
+License, found at http://www.globus.org/toolkit/download/license.html.
+-->
+<!--
+Written by Borja Sotomayor, Sebastien Barre
+-->
+<project default="all" basedir=".">
+
+  <!-- 
+    Give user a chance to override without editing this file (and
+    without typing -D each time it compiles it) by loading in a
+    project-specific build.properties file or a user-specific
+    ${user.home}/build.properties file.
+  -->
+
+  <property file="build.properties"/>
+  <property file="${user.home}/build.properties"/>
+
+  <!-- 
+    Set some properties for the build and lib directory.
+    Note that it is definitely safer to use absolute paths here,
+    since we will be calling GT3 build scripts.
+  -->
+
+  <property name="build.dir" value="${basedir}/build"/>
+  <property name="build.bin" value="${build.dir}/bin"/>
+  <property name="build.lib" value="${build.dir}/lib"/>
+  <property name="build.stubs" value="${build.dir}/stubs"/>
+  <property name="stubs.dest" value="../stubs"/>
+  <property name="build.dest" value="${build.dir}/classes"/>
+  <property name="build.schema" value="${build.dir}/schema"/>
+  <property name="lib.dir" value="${basedir}/lib"/> 
+  <property name="schema.dir" value="${basedir}/schema/${schema.path}"/> 
+
+  <!-- 
+    Set some properties related to the GT3 installation directory.
+  -->
+
+  <property name="build.client" value="${ogsa.root}/build-client.xml"/>
+  <property name="build.services" value="${ogsa.root}/build-services.xml"/>
+  <property name="build.packages" value="${ogsa.root}/build-packages.xml"/>
+  <property name="build.deploy" value="${ogsa.root}/build.xml"/>
+  <property name="schema.origin" value="${ogsa.root}/schema"/>
+  <property file="${ogsa.root}/ogsa.properties"/>
+
+  <!-- 
+    The namespace mappings.
+  -->
+
+  <property name="mapping.file" value="namespace2package.mappings"/>
+
+  <!-- SEBASTIEN
+       Set a useful CLASSPATH.
+       Explicitly exclude the jar files matching the service being built, so
+       that an old version is not picked before the current one.
+   -->
+
+  <path id="classpath">
+    <pathelement location="${java.home}/../lib/tools.jar"/>
+    <pathelement location="./"/>
+    <pathelement location="${build.dest}"/>
+    <fileset dir="${lib.dir}">
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="${ogsa.root}/lib">
+     <!-- BORJA
+          The following line should fix the "why don't my stubs get generated??" problem 
+          when you try to recompile a service that is already deployed -->
+      <include name="*.jar"/>
+      <exclude name="progtutorial_${service.name}-stub.jar"/>    
+    </fileset>
+    <!-- SEBASTIEN
+         IMPORTANT: the following line is commented-out. It would have
+         added the current CLASSPATH value to our classpath ref. If this
+         CLASSPATH actually includes a reference to this service (for 
+         example, if it has been deployed already in OGSA/GT), this
+         outdated reference *will* cause a lot of trouble (part of the
+         stubs won't be generated, the client will pick the ref, etc).
+         So we decided here not to include it, and we make sure this
+         safe value is propagated to the OGSA/GT build scripts we call
+         by using <reference refid="classpath"/> inside <ant>
+    -->
+    <!--
+    <pathelement path="${java.class.path}"/>
+    -->
+  </path>
+
+  <!-- SEBASTIEN
+       Echo info about the package being built.
+  -->
+  <target name="echoPackageInfo">
+    <echo message="package: ${package}"/>
+    <echo message="interface.name: ${interface.name}"/>
+    <echo message="package.dir: ${package.dir}"/>
+    <echo message="schema.dir: ${schema.dir}"/>
+    <echo message="service.name: ${service.name}"/>
+    <echo message="gar.filename: ${gar.filename}"/>
+    <echo message="java.home: ${java.home}"/>
+  </target>
+
+  <!-- SEBASTIEN
+       Create build tree and copy all OGSA/GT3 schema files over so that
+       they can be accessed from our GWSDL files.
+       Explicitly exclude the schema matching the service being built, so
+       that an old version is not copied over.
+  -->
+
+  <target name="createBuildTree">
+    <mkdir dir="${build.dest}"/>
+    <mkdir dir="${build.bin}"/>
+    <!-- BORJA
+         Start out with a new "lib" directory everytime. This avoids unwanted
+         JARs ending up in the GAR file.
+         TODO: Find a better way of making sure that only the service's JARs
+               plus any extra JARs (included in $TUTORIAL_DIR/lib) are included,
+               but not the JARs from previously compiled services.
+      -->
+    <delete dir="${build.lib}"/>
+    <mkdir dir="${build.lib}"/>
+    <mkdir dir="${build.schema}"/>
+    <mkdir dir="${build.stubs}"/>
+  </target>
+
+  <target name="copySchemaFiles" depends="createBuildTree">
+    <copy toDir="${build.schema}">
+      <fileset dir="${schema.origin}">
+        <exclude name="**/progtutorial/${service.name}/**"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- 
+    Copy the service config directory contents to the build tree.
+  -->
+
+  <target name="configDirAvailable">
+    <available file="${package.dir}/config" property="config.dir.present"/>
+  </target>
+  <target name="copyConfigFiles" 
+          depends="configDirAvailable,createBuildTree"
+          if="config.dir.present">
+    <mkdir dir="${build.dest}/${package.dir}/config"/>
+    <copy toDir="${build.dest}/${package.dir}/config">
+      <fileset dir="${package.dir}/config"/>
+    </copy>
+  </target>
+
+  <!-- 
+    Merge the service mappings.
+  -->
+
+  <target name="mappingFileAvailable">
+    <available file="${mapping.file}" property="mapping.file.present"/>
+  </target>
+  <target name="mergeMapping" 
+          depends="mappingFileAvailable" 
+          if="mapping.file.present">
+    <ant antfile="${build.services}" 
+         target="mergePackageMapping">
+         <reference refid="classpath"/>
+    </ant>
+  </target>
+
+  <!-- 
+    Set the environment (i.e., execute the above targets).
+  -->
+
+  <target name="setenv" 
+      depends="echoPackageInfo,createBuildTree,copySchemaFiles,copyConfigFiles,mergeMapping"/>
+
+  <!-- 
+    Generate WSDL files from service GWSDL file.
+  -->
+
+  <target name="checkSchemaUptodate">
+    <uptodate property="schema.uptodate"> 
+      <srcfiles dir="${schema.dir}"/>
+      <mapper type="glob"
+              from="*"
+              to="${build.schema}${file.separator}progtutorial${file.separator}${service.name}${file.separator}*"/>
+    </uptodate>
+  </target>
+
+  <target name="generateWSDLfromGWSDL" depends="setenv,checkSchemaUptodate">
+    <property name="schema.file" value="${interface.name}_service.wsdl"/>
+
+    <copy todir="${build.schema}/progtutorial/${service.name}" 
+          overwrite="false">
+      <fileset dir="${schema.dir}"/>
+    </copy>
+
+    <ant antfile="${build.services}" target="GWSDL2WSDL">
+      <property name="build.schema.dir" value="${schema.path}"/>
+      <property name="wsdl.root" value="${interface.name}"/>
+      <reference refid="classpath"/>
+    </ant>
+
+    <ant antfile="${build.services}" target="generateBinding">
+      <property name="binding.root" value="${interface.name}"/>
+      <property name="build.schema.dir" value="${schema.path}"/>
+      <property name="porttype.wsdl" value="${interface.name}.wsdl"/>
+      <reference refid="classpath"/>
+    </ant>
+  </target>
+
+  <!-- 
+    Generate, compile and jar stubs.
+  -->
+
+  <target name="generateStubs" 
+          depends="generateWSDLfromGWSDL"
+          unless="schema.uptodate">
+    <ant antfile="${build.services}" 
+         target="generateStubs">
+      <property name="schema.file.dir" value="${schema.path}"/>
+      <property name="schema.file" value="${schema.file}"/>
+      <reference refid="classpath"/>
+    </ant>
+  </target>
+
+  <target name="compileStubs" depends="generateStubs">
+    <javac srcdir="${build.stubs}" 
+           destdir="${build.dest}" 
+           debug="${debug}"
+           deprecation="${deprecation}"
+           classpathref="classpath">
+    </javac>
+  </target>
+
+  <target name="jarStubs" depends="compileStubs">
+    <jar jarfile="${build.lib}/progtutorial_${service.name}-stub.jar" basedir="${build.dest}" >
+      <include name="**/stubs/${service.name}/**" />
+    </jar>
+  </target>
+
+  <!-- 
+    Compile and jar service.
+  -->
+
+  <target name="compileService" depends="compileStubs">
+    <javac srcdir="./"
+           includes="${package.dir}/impl/**" 
+           destdir="${build.dest}" 
+           debug="${debug}"
+           deprecation="${deprecation}"
+           classpathref="classpath">
+    </javac>
+  </target>
+
+  <target name="jarService" depends="compileService">
+    <jar jarfile="${build.lib}/${package}.jar" basedir="${build.dest}" >
+      <include name="**/${package.dir}/impl/**" />
+      <include name="**/${package.dir}/config/**" />
+    </jar>
+  </target>
+
+  <!-- 
+    Gar stubs and service, deploy.
+  -->
+
+  <target name="gar" depends="jarStubs,jarService">
+    <copy todir="${build.lib}">
+      <fileset dir="${lib.dir}">
+        <include name="**/*.jar"/>
+      </fileset>
+    </copy>
+    <!-- IMPORTANT: make gar.name is an absolute path -->
+    <ant antfile="${build.packages}" target="makeGar">
+      <property name="gar.name" value="${build.lib}/${gar.filename}.gar"/>
+      <property name="garlib.dir" value="${build.lib}"/>
+      <property name="garserverdeployment.file" value="${package.dir}/server-deploy.wsdd"/>
+      <property name="garschema.origin" value="${build.schema}/${schema.path}"/>
+      <property name="garschema.path" value="${schema.path}"/>
+    </ant>
+  </target>
+
+
+  <!-- 
+    Misc.
+  -->
+
+  <target name="clean">
+    <delete dir="${build.dir}"/>
+  </target>
+  
+  <target name="all" depends="gar"/>
+
+
+</project>

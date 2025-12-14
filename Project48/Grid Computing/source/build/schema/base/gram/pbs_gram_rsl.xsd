@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.globus.org/namespaces/2004/02/rsl/gram/scheduler/pbs"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+            xmlns:rsl="http://www.globus.org/namespaces/2004/02/rsl"
+            xmlns:gram="http://www.globus.org/namespaces/2004/02/rsl/gram"
+            xmlns:scheduler="http://www.globus.org/namespaces/2004/02/rsl/gram/scheduler"
+            xmlns:pbs="http://www.globus.org/namespaces/2004/02/rsl/gram/scheduler/pbs"
+            xmlns="http://www.globus.org/namespaces/2004/02/rsl/gram/scheduler/pbs"
+            elementFormDefault="qualified">
+
+    <xsd:import namespace="http://www.globus.org/namespaces/2004/02/rsl"
+                schemaLocation="rsl.xsd"/>
+
+    <xsd:import namespace="http://www.globus.org/namespaces/2004/02/rsl/gram"
+                schemaLocation="gram_rsl.xsd"/>
+
+    <xsd:import namespace="http://www.globus.org/namespaces/2004/02/rsl/gram/scheduler"
+                schemaLocation="scheduler_gram_rsl.xsd"/>
+
+    <!--=====================================================================-->
+    <!--                   PBS attribute definitions                         -->
+    <!--=====================================================================-->
+
+    <!-- NONE -->
+
+    <!--=====================================================================-->
+    <!--           model groups for PBS attribute collections                -->
+    <!--=====================================================================-->
+
+    <!-- NONE -->
+
+    <!-- PBS job attributes type definition -->
+    <xsd:complexType name="jobType">
+        <xsd:complexContent>
+            <xsd:extension base="scheduler:jobType">
+                <!-- nothing at the moment -->
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <!-- Since nothing is defined in pbs:jobType currently, the
+        <xsd:any namespace="##other"... violates the Unique Particle Attribution
+        constraint.  Use scheduler_rsl.xsd if jobAndAnyType is desired -->
+    <!--
+    <xsd:complexType name="jobAndAnyType">
+        <xsd:complexContent>
+            <xsd:extension base="pbs:jobType">
+                <xsd:sequence>
+                    <xsd:any        namespace="##other"
+                                    minOccurs="0"
+                                    maxOccurs="unbounded"
+                                    processContents="lax"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="job"
+                 type="pbs:jobAndAnyType"
+                 substitutionGroup="rsl:content"/>
+    -->
+    <xsd:element name="job"
+                 type="pbs:jobType"
+                 substitutionGroup="rsl:content"/>
+
+</xsd:schema>

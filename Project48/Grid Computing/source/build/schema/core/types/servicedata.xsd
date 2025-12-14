@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<schema targetNamespace="http://ogsa.globus.org/types/servicedata"
+        xmlns:tns="http://ogsa.globus.org/types/servicedata"
+        xmlns:sd="http://www.gridforum.org/namespaces/2003/03/serviceData"
+        xmlns="http://www.w3.org/2001/XMLSchema"
+        elementFormDefault="qualified">
+        
+  <complexType name="PersistentServiceDataType">
+    <sequence>
+      <any namespace="##any" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+    <attribute name="name" type="QName"/> 
+    <attribute name="mutability" type="sd:MutabilityType"/> 
+    <attribute name="modifiable" type="boolean" default="false"/>
+    <attribute name="notifiable" type="boolean" default="false"/>
+  </complexType>
+</schema>

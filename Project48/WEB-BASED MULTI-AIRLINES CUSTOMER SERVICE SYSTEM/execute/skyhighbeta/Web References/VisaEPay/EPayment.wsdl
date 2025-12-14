@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://tempuri.org/allianceWS/Service1" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://tempuri.org/allianceWS/Service1" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/allianceWS/Service1">
+      <s:element name="Pay">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Part1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Part2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Part3" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Part4" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Last3Digit" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ExpireMonth" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ExpireYear" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PayResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </types>
+  <message name="PaySoapIn">
+    <part name="parameters" element="s0:Pay" />
+  </message>
+  <message name="PaySoapOut">
+    <part name="parameters" element="s0:PayResponse" />
+  </message>
+  <portType name="EPaymentSoap">
+    <operation name="Pay">
+      <documentation>Visa service for payment</documentation>
+      <input message="s0:PaySoapIn" />
+      <output message="s0:PaySoapOut" />
+    </operation>
+  </portType>
+  <binding name="EPaymentSoap" type="s0:EPaymentSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <operation name="Pay">
+      <soap:operation soapAction="http://tempuri.org/allianceWS/Service1/Pay" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="EPayment">
+    <port name="EPaymentSoap" binding="s0:EPaymentSoap">
+      <soap:address location="http://localhost/allianceWS/EPayment.asmx" />
+    </port>
+  </service>
+</definitions>

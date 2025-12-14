@@ -1,0 +1,267 @@
+package barcode_gen;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
+import java.awt.*;
+import RS.RSAlgorithm;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.*;
+import java.util.zip.*;
+import com.borland.internetbeans.IxLink;
+
+/**
+ * <p>Title: </p>
+ *
+ * <p>Description: </p>
+ *
+ * <p>Copyright: Copyright (c) 2006</p>
+ *
+ * <p>Company: </p>
+ *
+ * @author not attributable
+ * @version 1.0
+ */
+public class Frame1 extends JFrame {
+    JPanel contentPane;
+    BorderLayout borderLayout1 = new BorderLayout();
+    JMenuBar jMenuBar1 = new JMenuBar();
+    JMenu jMenuFile = new JMenu();
+    JMenuItem jMenuFileExit = new JMenuItem();
+    JToolBar jToolBar = new JToolBar();
+    JButton jButton1 = new JButton();
+    JButton jButton2 = new JButton();
+    JButton jButton3 = new JButton();
+    ImageIcon image1 = new ImageIcon(barcode_gen.Frame1.class.getResource(
+            "openFile.png"));
+    ImageIcon image2 = new ImageIcon(barcode_gen.Frame1.class.getResource(
+            "closeFile.png"));
+    ImageIcon image3 = new ImageIcon(barcode_gen.Frame1.class.getResource(
+            "help.png"));
+    JSplitPane jSplitPane1 = new JSplitPane();
+    JSplitPane jSplitPane2 = new JSplitPane();
+    JSplitPane jSplitPane3 = new JSplitPane();
+    JSplitPane jSplitPane4 = new JSplitPane();
+    JTextField TextInput = new JTextField();
+    JTextField TextOutput = new JTextField();
+    JButton jButton4 = new JButton();
+    JPanel jPanel1 = new JPanel();
+    IxLink ixLink1 = new IxLink();
+    public Frame1() {
+        try {
+            setDefaultCloseOperation(EXIT_ON_CLOSE);
+            jbInit();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Component initialization.
+     *
+     * @throws java.lang.Exception
+     */
+    private void jbInit() throws Exception {
+        contentPane = (JPanel) getContentPane();
+        contentPane.setLayout(borderLayout1);
+        setSize(new Dimension(400, 300));
+        setTitle("Barcode Gen");
+        jMenuFile.setText("File");
+        jMenuFileExit.setText("Exit");
+        jMenuFileExit.addActionListener(new Frame1_jMenuFileExit_ActionAdapter(this));
+        TextInput.setText("jTextField1");
+        TextOutput.setText("jTextField2");
+        jSplitPane2.setOrientation(JSplitPane.VERTICAL_SPLIT);
+        jSplitPane4.setOrientation(JSplitPane.VERTICAL_SPLIT);
+        jButton4.setText("gen barcode");
+        jButton4.addActionListener(new Frame1_jButton4_actionAdapter(this));
+        jMenuBar1.add(jMenuFile);
+        jMenuFile.add(jMenuFileExit);
+        setJMenuBar(jMenuBar1);
+        jButton1.setIcon(image1);
+        jButton1.setToolTipText("Open File");
+        jButton2.setIcon(image2);
+        jButton2.setToolTipText("Close File");
+        jButton3.setIcon(image3);
+        jButton3.setToolTipText("Help");
+        jToolBar.add(jButton1);
+        jToolBar.add(jButton2);
+        jToolBar.add(jButton3);
+        contentPane.add(jToolBar, java.awt.BorderLayout.NORTH);
+        contentPane.add(jSplitPane1, java.awt.BorderLayout.CENTER);
+        jSplitPane1.add(jSplitPane2, JSplitPane.TOP);
+        jSplitPane1.add(jSplitPane4, JSplitPane.BOTTOM);
+        jSplitPane4.add(TextInput, JSplitPane.TOP);
+        jSplitPane4.add(TextOutput, JSplitPane.BOTTOM);
+        jSplitPane2.add(jButton4, JSplitPane.TOP);
+        jSplitPane2.add(jPanel1, JSplitPane.BOTTOM);
+    }
+
+    /**
+     * File | Exit action performed.
+     *
+     * @param actionEvent ActionEvent
+     */
+    void jMenuFileExit_actionPerformed(ActionEvent actionEvent) {
+        System.exit(0);
+    }
+
+    public void jButton4_actionPerformed(ActionEvent e) {
+        //convert string to byte[]
+        byte[] input = this.TextInput.getText().getBytes();
+
+        // nozip
+        byte[] datain = input;
+        int bytecount = datain.length;
+
+        // zip
+        /*byte[] output = new byte[255];
+
+        Deflater deflate = new Deflater(Deflater.BEST_COMPRESSION);
+        deflate.setInput(input);
+        deflate.finish();
+        int bytecount = deflate.deflate(output);
+        byte[] output2 = new byte[bytecount];
+        for(int i=0;i<output2.length;i++) output2[i] = output[i];
+        byte[] datain = output2;*/
+
+        // gzip
+        /*byte[] datain = new byte[1];
+        try
+        {
+            java.io.ByteArrayOutputStream bytearray = new ByteArrayOutputStream();
+            GZIPOutputStream outgzip = new GZIPOutputStream(bytearray);
+            outgzip.write(input);
+            outgzip.finish();
+            datain = bytearray.toByteArray();
+        }
+        catch(Exception e1)
+        {
+
+            return;
+        }
+        int bytecount = datain.length;*/
+
+        if (datain.length > 223)
+        {
+            TextOutput.setText("Error data size = " + datain.length +
+                               " is over 223 bytes");
+            return;
+        }
+        //calculate redundance
+        int re = 0;
+        while((datain.length+(2*re))>=(re*16)) re++;
+
+        //encoding
+        RS.RSAlgorithm rs = new RS.RSAlgorithm(255, 8, re, 0);
+        for(int i=0;i<datain.length;i++) rs.messageSend.coefficient[i] = (int)datain[i];
+        rs.messageSend.degree = rs.degree(rs.messageSend);
+        rs.calculateGenerator();
+        rs.calculateCodeSend();
+
+        //arrange in bit
+        int bitlen = (rs.codeSend.degree+1)*8;
+        int width = (int)Math.ceil(Math.sqrt((double)bitlen));
+                if (width%2==1) width++;
+        boolean[] bb = new boolean[bitlen];
+        for(int i=0;i<rs.codeSend.degree+1;i++)
+        {
+            bb[i*8+0] = ((rs.codeSend.coefficient[i] >> 0) & 1)>0;
+            bb[i*8+1] = ((rs.codeSend.coefficient[i] >> 1) & 1)>0;
+            bb[i*8+2] = ((rs.codeSend.coefficient[i] >> 2) & 1)>0;
+            bb[i*8+3] = ((rs.codeSend.coefficient[i] >> 3) & 1)>0;
+            bb[i*8+4] = ((rs.codeSend.coefficient[i] >> 4) & 1)>0;
+            bb[i*8+5] = ((rs.codeSend.coefficient[i] >> 5) & 1)>0;
+            bb[i*8+6] = ((rs.codeSend.coefficient[i] >> 6) & 1)>0;
+            bb[i*8+7] = ((rs.codeSend.coefficient[i] >> 7) & 1)>0;
+        }
+
+        // report status
+        int re2 = (int)Math.ceil((double)width*width / 8 / 16);
+        TextOutput.setText("b:"+bitlen+" r:"+re+" w:"+width + " r2:"+re2 + " bytecount:"+bytecount);
+
+        // generate image
+
+        Image im = createImage((width+2)*20,(width+2)*20);
+        Graphics g = im.getGraphics();
+        g.setColor(Color.white);
+        g.fillRect(0,0,(width+2)*20,(width+2)*20);
+
+        g.setColor(Color.BLACK);
+        for(int x=0;x<width+2;x++)
+        {
+            if(x%2==0)g.fillRect(x*20,0*20,20,20);
+            g.fillRect(x*20,(width+1)*20,20,20);
+        }
+        for(int y=0;y<width+2;y++)
+        {
+            g.fillRect(0*20,y*20,20,20);
+            if(y%2==1)g.fillRect((width+1)*20,y*20,20,20);
+        }
+        int index = 0;
+        for(int x=0;x<width;x++)
+            for(int y=0;y<width;y++)
+            {
+                if(index<bb.length)
+                {
+                    if (bb[index] == true) g.fillRect((x + 1) * 20,
+                            (y + 1) * 20, 20, 20);
+                }
+                index++;
+            }
+        g.dispose();
+
+        // save file
+        BufferedImage bi = new BufferedImage((width+2)*20,(width+2)*20,BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = bi.createGraphics();
+        g2.drawImage(im, 0, 0, null);
+
+        g2.dispose();
+        try
+        {
+            ImageIO.write(bi, "jpg", new File("c:\\imageTest.jpg"));
+        }
+        catch(IOException ioe)
+        {
+            System.out.println("write: " + ioe.getMessage());
+        }
+        //Runtime runtime = Runtime.getRuntime();
+        try
+        {
+            Runtime.getRuntime().exec("notepad");
+            //Process p = null;
+            //p = runtime.exec("cmd.com");
+        }
+        catch(IOException ioe)
+                {}
+
+    }
+}
+
+class Frame1_jButton4_actionAdapter implements ActionListener {
+    private Frame1 adaptee;
+    Frame1_jButton4_actionAdapter(Frame1 adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.jButton4_actionPerformed(e);
+    }
+}
+
+
+class Frame1_jMenuFileExit_ActionAdapter implements ActionListener {
+    Frame1 adaptee;
+
+    Frame1_jMenuFileExit_ActionAdapter(Frame1 adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent actionEvent) {
+        adaptee.jMenuFileExit_actionPerformed(actionEvent);
+    }
+}

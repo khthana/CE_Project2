@@ -1,0 +1,57 @@
+package giswebservices;
+
+import java.security.SecureRandom;
+
+public class GIS_UserServices {
+    public GIS_UserServices() {}
+
+    public String login(String username, String password){
+        GisGenerateMD gmd = new GisGenerateMD();
+        String passMD = gmd.genMD(password);
+
+        try{
+            //---create database connection object---
+            GisDBConnect gdb = new GisDBConnect();
+
+            gdb.query("SELECT memid FROM member WHERE username='" + username +
+                      "' AND password='" + passMD +"';") ;
+
+            gdb.getReturn() .next() ;
+
+            int memID = gdb.getReturn().getInt(1);
+
+             //---generate session key
+             char key[] = { 'a','b','c','d','e','f','g','h','i','j','k','l','m',
+                          'n','o','p','q','r','s','t','u','v','w','x','y','z',
+                          '0','1','2','3','4','5','6','7','8','9',
+                          'A','B','C','D','E','F','G','H','I','J','K','L','M',
+                          'N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+             SecureRandom scr = new SecureRandom() ;
+             String sessID = new String("");
+             for (int i=0; i<10; i++){
+                 int rnd =scr.nextInt(62);
+                 sessID+=key[rnd];
+             }
+
+             //---sql command insert to SESSION---
+             gdb.exeSQL("INSERT INTO session (sessid, memid) VALUES('"
+                        + sessID + "', " + memID + ");") ;
+
+
+            return  sessID ;
+
+        }catch(Exception e){
+            return "2" ;
+        }
+    }
+
+    public String logout(String sessID){
+        try{
+            GisDBConnect gdb = new GisDBConnect();
+            gdb.exeSQL("DELETE FROM session WHERE sessid='" + sessID + "';");
+            return sessID;
+        }catch(Exception e){
+            return "2";
+        }
+    }
+}

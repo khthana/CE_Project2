@@ -1,0 +1,481 @@
+package gis_application;
+
+import java.awt.*;
+import javax.swing.*;
+import com.borland.jbcl.layout.XYLayout;
+import com.borland.jbcl.layout.*;
+import javax.swing.Box;
+import javax.swing.BorderFactory;
+import javax.swing.border.TitledBorder;
+import java.awt.Font;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class frmMember
+    extends JFrame {
+  MyProfile mp = new MyProfile() ;
+
+  String activeMember[];
+  int activeMemberId[];
+  String inactiveMember[];
+  int inactiveMemberId[];
+  int selectedId=0;
+
+
+  JPanel contentPane;
+  XYLayout xYLayout1 = new XYLayout();
+  TitledBorder titledBorder1 = new TitledBorder("");
+  JPanel rootPanel = new JPanel();
+  JPanel jPanel2 = new JPanel();
+  XYLayout xYLayout2 = new XYLayout();
+  XYLayout xYLayout3 = new XYLayout();
+  TitledBorder titledBorder2 = new TitledBorder("");
+  TitledBorder titledBorder3 = new TitledBorder("");
+  JLabel jLabel1 = new JLabel();
+  JLabel jLabel2 = new JLabel();
+  JList lstActive = new JList();
+  JScrollPane jScrollPane1 = new JScrollPane();
+  TitledBorder titledBorder4 = new TitledBorder("");
+  TitledBorder titledBorder5 = new TitledBorder("");
+  TitledBorder titledBorder6 = new TitledBorder("");
+  JScrollPane jScrollPane2 = new JScrollPane();
+  JList lstInactive = new JList();
+  JButton cmdInactive = new JButton();
+  JButton cmdActive = new JButton();
+  TitledBorder titledBorder7 = new TitledBorder("");
+  TitledBorder titledBorder8 = new TitledBorder("");
+  JButton cmdView = new JButton();
+  JButton cmdDelete = new JButton();
+  JTextField lblSelectedItem = new JTextField();
+  TitledBorder titledBorder9 = new TitledBorder("");
+  TitledBorder titledBorder10 = new TitledBorder("");
+  TitledBorder titledBorder11 = new TitledBorder("");
+  JLabel jLabel3 = new JLabel();
+  JLabel jLabel4 = new JLabel();
+  JLabel jLabel5 = new JLabel();
+  JLabel jLabel6 = new JLabel();
+  JLabel jLabel7 = new JLabel();
+  JTextField txtName = new JTextField();
+  TitledBorder titledBorder12 = new TitledBorder("");
+  JTextField txtEmail = new JTextField();
+  JTextField txtPhone = new JTextField();
+  JTextArea txtAddress = new JTextArea();
+  TitledBorder titledBorder13 = new TitledBorder("");
+  TitledBorder titledBorder14 = new TitledBorder("");
+  TitledBorder titledBorder15 = new TitledBorder("");
+  TitledBorder titledBorder16 = new TitledBorder("");
+  TitledBorder titledBorder17 = new TitledBorder("");
+  TitledBorder titledBorder18 = new TitledBorder("");
+  TitledBorder titledBorder19 = new TitledBorder("");
+  JTextArea lblOrgname = new JTextArea();
+  JButton cmdWrite = new JButton();
+  JButton cmdRead = new JButton();
+  TitledBorder titledBorder20 = new TitledBorder("");
+  TitledBorder titledBorder21 = new TitledBorder("");
+  public frmMember() {
+    try {
+      //setDefaultCloseOperation(EXIT_ON_CLOSE);
+      jbInit();
+    }
+    catch (Exception exception) {
+      exception.printStackTrace();
+    }
+  }
+
+
+  private void jbInit() throws Exception {
+    contentPane = (JPanel) getContentPane();
+    contentPane.setLayout(xYLayout1);
+    setSize(new Dimension(700, 550));
+    setTitle("Member");
+    contentPane.setBackground(Color.white);
+    contentPane.setOpaque(true);
+    rootPanel.setBackground(Color.white);
+    rootPanel.setBorder(titledBorder3);
+    rootPanel.setOpaque(true);
+    rootPanel.setLayout(xYLayout3);
+    jPanel2.setBackground(Color.white);
+    jPanel2.setBorder(titledBorder2);
+    jPanel2.setOpaque(true);
+    jPanel2.setLayout(xYLayout2);
+    jLabel1.setText("Inctive Member");
+    jLabel2.setText("Active Member");
+    jScrollPane1.getViewport().setBackground(Color.white);
+    jScrollPane1.setBorder(titledBorder6);
+    lstActive.addMouseListener(new frmMember_lstActive_mouseAdapter(this));
+    jScrollPane2.setBorder(titledBorder6);
+    lstInactive.addMouseListener(new frmMember_lstInactive_mouseAdapter(this));
+    cmdInactive.setBackground(Color.white);
+    cmdInactive.setForeground(Color.red);
+    cmdInactive.setBorder(titledBorder7);
+    cmdInactive.setText("Inactivate");
+    cmdInactive.addActionListener(new frmMember_cmdInactive_actionAdapter(this));
+    cmdActive.setBackground(Color.white);
+    cmdActive.setForeground(new Color(0, 162, 0));
+    cmdActive.setBorder(titledBorder8);
+    cmdActive.setText("Activate");
+    cmdActive.addActionListener(new frmMember_cmdActive_actionAdapter(this));
+    cmdView.setBackground(new Color(249, 255, 209));
+    cmdView.setFont(new java.awt.Font("Dialog", Font.BOLD, 14));
+    cmdView.setBorder(titledBorder11);
+    cmdView.setText("View");
+    cmdView.addActionListener(new frmMember_cmdView_actionAdapter(this));
+    cmdDelete.setBackground(new Color(255, 224, 224));
+    cmdDelete.setFont(new java.awt.Font("Dialog", Font.BOLD, 14));
+    cmdDelete.setBorder(titledBorder10);
+    cmdDelete.setText("Removed");
+    cmdDelete.addActionListener(new frmMember_cmdDelete_actionAdapter(this));
+    lblSelectedItem.setBorder(titledBorder9);
+    lblSelectedItem.setEditable(false);
+    lblSelectedItem.setText("member name");
+    lstActive.setForeground(new Color(33, 128, 0));
+    lstInactive.setForeground(Color.red);
+    jLabel3.setText("Name");
+    jLabel4.setText("Address");
+    jLabel5.setText("Phone");
+    jLabel6.setText("Email");
+    jLabel7.setText("Organization Name");
+    txtName.setBorder(titledBorder12);
+    txtEmail.setBorder(titledBorder14);
+    txtPhone.setBorder(titledBorder13);
+    txtAddress.setBorder(titledBorder16);
+    txtAddress.setLineWrap(true);
+    txtAddress.setWrapStyleWord(true);
+    lblOrgname.setForeground(SystemColor.controlDkShadow);
+    lblOrgname.setEditable(false);
+    lblOrgname.setLineWrap(true);
+    lblOrgname.setWrapStyleWord(true);
+    cmdWrite.setBackground(Color.white);
+    cmdWrite.setForeground(Color.blue);
+    cmdWrite.setBorder(titledBorder20);
+    cmdWrite.setText("Writable");
+    cmdWrite.addActionListener(new frmMember_cmdWrite_actionAdapter(this));
+    cmdRead.setBackground(Color.white);
+    cmdRead.setForeground(SystemColor.activeCaption);
+    cmdRead.setBorder(titledBorder21);
+    cmdRead.setText("Readable");
+    cmdRead.addActionListener(new frmMember_cmdRead_actionAdapter(this));
+    rootPanel.add(jLabel2, new XYConstraints(0, 0, -1, -1));
+    jScrollPane1.getViewport().add(lstActive);
+    contentPane.add(rootPanel, new XYConstraints(9, 7, 231, 515));
+    rootPanel.add(cmdDelete, new XYConstraints(113, 444, 102, 53));
+    rootPanel.add(cmdView, new XYConstraints(4, 444, 103, 54));
+    rootPanel.add(cmdActive, new XYConstraints(4, 402, 103, 27));
+    rootPanel.add(cmdInactive, new XYConstraints(113, 402, 102, 27));
+    jScrollPane2.getViewport().add(lstInactive);
+    jPanel2.add(txtName, new XYConstraints(104, 81, 283, 26));
+    jPanel2.add(jLabel3, new XYConstraints(24, 83, 49, 19));
+    jPanel2.add(txtAddress, new XYConstraints(104, 126, 283, 81));
+    jPanel2.add(jLabel4, new XYConstraints(24, 127, -1, -1));
+    jPanel2.add(jLabel5, new XYConstraints(24, 226, -1, -1));
+    jPanel2.add(txtPhone, new XYConstraints(104, 219, 163, 25));
+    jPanel2.add(txtEmail, new XYConstraints(104, 260, 283, -1));
+    jPanel2.add(jLabel6, new XYConstraints(24, 267, -1, -1));
+    jPanel2.add(lblOrgname, new XYConstraints(161, 19, 226, 51));
+    jPanel2.add(jLabel7, new XYConstraints(24, 20, 126, -1));
+    rootPanel.add(jLabel1, new XYConstraints(4, 192, -1, -1));
+    rootPanel.add(lblSelectedItem, new XYConstraints(4, 328, 211, 32));
+    contentPane.add(jPanel2, new XYConstraints(245, 7, 437, 515));
+    rootPanel.add(jScrollPane1, new XYConstraints(4, 20, 211, 167));
+    rootPanel.add(jScrollPane2, new XYConstraints(4, 212, 211, 107));
+    rootPanel.add(cmdWrite, new XYConstraints(4, 370, 102, 25));
+    rootPanel.add(cmdRead, new XYConstraints(113, 370, 101, 24));
+  }
+
+  public void callMe(){
+    try{
+      lstActive.removeAll();
+      lstInactive.removeAll();
+
+      activeMember = new String[1];
+      activeMember[0]="";
+      lstActive.setListData(activeMember);
+      inactiveMember = new String[1];
+      inactiveMember[0]="";
+      lstInactive.setListData(inactiveMember);
+
+      CallServices cs=new CallServices("GIS_MemberServices","listMember") ;
+      String res = cs.strInvoke(new Object[]{mp.getOwnerID()});
+      GisXmlReader gxr= new GisXmlReader(res);
+      int size=0;
+      try{size=gxr.child("member").count();}catch(Exception eb){size=0;}
+      activeMemberId =new int[size];
+      activeMember =new String[size];
+      for (int i=0; i<size;i++){
+        int memidx=Integer.parseInt(gxr.child("member",i).attribute("id"));
+        if (memidx!=mp.getMemberID()){
+          String status="[" + gxr.child("member",i).attribute("status").charAt(0) + "] ";
+          activeMemberId[i] = memidx;
+          activeMember[i] = status+gxr.child("member", i).value();
+        }
+      }
+      lstActive.setListData(activeMember);
+      cs=new CallServices("GIS_MemberServices","listNewMember") ;
+      res = cs.strInvoke(new Object[]{mp.getOwnerID() });
+      gxr= new GisXmlReader(res);
+
+      try{size=gxr.child("member").count();}catch(Exception eb){size=0;}
+      inactiveMemberId =new int[size];
+      inactiveMember =new String[size];
+      for (int i=0; i<size;i++){
+        int memidx=Integer.parseInt(gxr.child("member",i).attribute("id"));
+        if (memidx!=mp.getMemberID()){
+          String status="[" + gxr.child("member",i).attribute("status").charAt(0) + "] ";
+          inactiveMemberId[i] = memidx;
+          inactiveMember[i] = status+gxr.child("member", i).value();
+        }
+      }
+      lstInactive.setListData(inactiveMember);
+
+    }catch(Exception e){
+      e.printStackTrace() ;
+    }
+
+  }
+
+  public void lstActive_mouseClicked(MouseEvent e) {
+    int index = lstActive.getSelectedIndex();
+    selectedId=activeMemberId[index];
+    lblSelectedItem.setText(activeMember[index]) ;
+  }
+
+  public void lstInactive_mouseClicked(MouseEvent e) {
+    int index = lstInactive.getSelectedIndex();
+    selectedId=inactiveMemberId[index];
+    lblSelectedItem.setText(inactiveMember[index]) ;
+
+  }
+
+  public void viewDetail(int id){
+    try{
+      String name ="null";
+      String address ="null";
+      String phone ="null";
+      String email ="null";
+      CallServices cs=new CallServices("GIS_MemberServices","detailMember") ;
+      String res = cs.strInvoke(new Object[]{id});
+      GisXmlReader gxr= new GisXmlReader(res);
+      for (int i=0; i<gxr.child("member").count(); i++){
+        name    = gxr.child("member",i).child("name").value();
+        address = gxr.child("member",i).child("address").value();
+        phone   = gxr.child("member",i).child("phone").value();
+        email   = gxr.child("member",i).child("email").value();
+      }
+      txtName.setText(name) ;
+      txtAddress.setText(address) ;
+      txtPhone.setText(phone) ;
+      txtEmail.setText(email) ;
+
+    }catch(Exception e){
+      e.printStackTrace() ;
+    }
+  }
+
+  public void cmdActive_actionPerformed(ActionEvent e) {
+    try{
+      CallServices cs=new CallServices("GIS_MemberServices","activateMember") ;
+      int res = cs.intInvoke(new Object[]{mp.getSessionkey(),selectedId,true});
+      callMe();
+      if (res>100)
+            JOptionPane.showMessageDialog(null,lblSelectedItem.getText() + "\n is activated",
+                                      "Activate Member",
+                                      JOptionPane.INFORMATION_MESSAGE );
+
+      else JOptionPane.showMessageDialog(null, "Error code: " + res,
+                                      "Activate Member",
+                                      JOptionPane.ERROR_MESSAGE);
+
+    }catch(Exception ea){
+      ea.printStackTrace() ;
+    }
+  }
+
+  public void cmdInactive_actionPerformed(ActionEvent e) {
+    try{
+      CallServices cs=new CallServices("GIS_MemberServices","activateMember") ;
+      int res = cs.intInvoke(new Object[]{mp.getSessionkey(),selectedId,false});
+      callMe();
+      if (res>100)
+            JOptionPane.showMessageDialog(null,lblSelectedItem.getText() + "\n is not activated",
+                                      "Activate Member",
+                                      JOptionPane.INFORMATION_MESSAGE );
+
+      else JOptionPane.showMessageDialog(null,  "nError code: " + res,
+                                      "Activate Member",
+                                      JOptionPane.ERROR_MESSAGE);
+
+    }catch(Exception ea){
+      ea.printStackTrace() ;
+    }
+
+  }
+
+  public void cmdDelete_actionPerformed(ActionEvent e) {
+    try{
+      int confirm =JOptionPane.showConfirmDialog(null,"Do you want to delete this?","Delete Member",JOptionPane.WARNING_MESSAGE);
+      //System.out.println("con="+confirm);
+      if (confirm==0){
+
+        CallServices cs = new CallServices("GIS_MemberServices", "deleteMember");
+        int res = cs.intInvoke(new Object[] {mp.getSessionkey(), selectedId});
+        callMe();
+        if (res > 100)
+          JOptionPane.showMessageDialog(null,
+                                        lblSelectedItem.getText() + "\n is removed",
+                                        "Remove Member",
+                                        JOptionPane.INFORMATION_MESSAGE);
+
+        else
+          JOptionPane.showMessageDialog(null, "nError code: " + res,
+                                        "Remove Member",
+                                        JOptionPane.ERROR_MESSAGE);
+      }
+    }catch(Exception ea){
+      ea.printStackTrace() ;
+    }
+
+  }
+
+  public void cmdView_actionPerformed(ActionEvent e) {
+    viewDetail(selectedId);
+  }
+
+  public void cmdWrite_actionPerformed(ActionEvent e) {
+    try{
+          CallServices cs=new CallServices("GIS_MemberServices","permitMember") ;
+          int res = cs.intInvoke(new Object[]{mp.getSessionkey(),selectedId,true});
+          callMe();
+          if (res>100)
+                JOptionPane.showMessageDialog(null,lblSelectedItem.getText() + "\n can read and write",
+                                          "Permit Member",
+                                          JOptionPane.INFORMATION_MESSAGE );
+
+          else JOptionPane.showMessageDialog(null, "Error code: " + res,
+                                          "Permit Member",
+                                          JOptionPane.ERROR_MESSAGE);
+
+        }catch(Exception ea){
+          ea.printStackTrace() ;
+    }
+  }
+
+  public void cmdRead_actionPerformed(ActionEvent e) {
+    try{
+              CallServices cs=new CallServices("GIS_MemberServices","permitMember") ;
+              int res = cs.intInvoke(new Object[]{mp.getSessionkey(),selectedId,false});
+              callMe();
+              if (res>100)
+                    JOptionPane.showMessageDialog(null,lblSelectedItem.getText() + "\n can read only",
+                                              "Permit Member",
+                                              JOptionPane.INFORMATION_MESSAGE );
+
+              else JOptionPane.showMessageDialog(null, "Error code: " + res,
+                                              "Permit Member",
+                                              JOptionPane.ERROR_MESSAGE);
+
+            }catch(Exception ea){
+              ea.printStackTrace() ;
+    }
+  }
+
+}
+
+class frmMember_cmdRead_actionAdapter
+    implements ActionListener {
+  private frmMember adaptee;
+  frmMember_cmdRead_actionAdapter(frmMember adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdRead_actionPerformed(e);
+  }
+}
+
+class frmMember_cmdWrite_actionAdapter
+    implements ActionListener {
+  private frmMember adaptee;
+  frmMember_cmdWrite_actionAdapter(frmMember adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdWrite_actionPerformed(e);
+  }
+}
+
+class frmMember_cmdView_actionAdapter
+    implements ActionListener {
+  private frmMember adaptee;
+  frmMember_cmdView_actionAdapter(frmMember adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdView_actionPerformed(e);
+  }
+}
+
+class frmMember_cmdDelete_actionAdapter
+    implements ActionListener {
+  private frmMember adaptee;
+  frmMember_cmdDelete_actionAdapter(frmMember adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdDelete_actionPerformed(e);
+  }
+}
+
+class frmMember_lstActive_mouseAdapter
+    extends MouseAdapter {
+  private frmMember adaptee;
+  frmMember_lstActive_mouseAdapter(frmMember adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void mouseClicked(MouseEvent e) {
+    adaptee.lstActive_mouseClicked(e);
+  }
+}
+
+class frmMember_lstInactive_mouseAdapter
+    extends MouseAdapter {
+  private frmMember adaptee;
+  frmMember_lstInactive_mouseAdapter(frmMember adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void mouseClicked(MouseEvent e) {
+    adaptee.lstInactive_mouseClicked(e);
+  }
+}
+
+class frmMember_cmdActive_actionAdapter
+    implements ActionListener {
+  private frmMember adaptee;
+  frmMember_cmdActive_actionAdapter(frmMember adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdActive_actionPerformed(e);
+  }
+}
+
+class frmMember_cmdInactive_actionAdapter
+    implements ActionListener {
+  private frmMember adaptee;
+  frmMember_cmdInactive_actionAdapter(frmMember adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdInactive_actionPerformed(e);
+  }
+}

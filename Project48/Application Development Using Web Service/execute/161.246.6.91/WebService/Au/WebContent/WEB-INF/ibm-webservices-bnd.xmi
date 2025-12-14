@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<com.ibm.etools.webservice.wsbnd:WSBinding xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:com.ibm.etools.webservice.wsbnd="http://www.ibm.com/websphere/appserver/schemas/5.0.2/wsbnd.xmi" xmi:id="WSBinding_1140464051218">
+  <wsdescBindings xmi:id="WSDescBinding_1140464051218" wsDescNameLink="AuService">
+    <pcBindings xmi:id="PCBinding_1140464051218" pcNameLink="Au">
+      <securityRequestReceiverBindingConfig>
+        <encryptionInfos name="Decrypt">
+          <encryptionKey name="de" locatorRef="private-key"/>
+          <encryptionMethod algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/>
+          <keyEncryptionMethod algorithm="http://www.w3.org/2001/04/xmlenc#rsa-1_5"/>
+        </encryptionInfos>
+        <keyLocators name="private-key" classname="com.ibm.wsspi.wssecurity.config.KeyStoreKeyLocator">
+          <keyStore storepass="{xor}NjErOi0wLyw=" path="c:/Enc/interops-enc-receiver.jceks" type="JCEKS"/>
+          <keys alias="interops-private-key" keypass="{xor}NjErOi0wLyw=" name="private"/>
+        </keyLocators>
+      </securityRequestReceiverBindingConfig>
+    </pcBindings>
+  </wsdescBindings>
+</com.ibm.etools.webservice.wsbnd:WSBinding>

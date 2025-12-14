@@ -1,0 +1,38 @@
+package giswebservices;
+
+public class Gis_GetMapServices {
+    public Gis_GetMapServices() {}
+
+    public String requestSVG(String sessionKey, String xmlMapRequst, double posX, double posY, double width, double height){
+        GisGetSvgMap gsm=new GisGetSvgMap();
+        return gsm.requestSVG(sessionKey, xmlMapRequst,posX,posY,width,height, "",0);
+    }
+
+    public String requestNearbySVG(String sessionKey, String xmlMapRequst,int layerID, double posX, double posY, double width, double height,double x,double y,double r){
+        GisGetSvgMap gsm=new GisGetSvgMap();
+        /////////////////////////////////////////////////////
+        double pX1=x-r;
+        double pY1=y+r;
+        double pX2=x+r;
+        double pY2=y+r;
+        double pX3=x+r;
+        double pY3=y-r;
+        double pX4=x-r;
+        double pY4=y-r;
+
+
+        String option="(geom && GeomFromText('POLYGON(("+pX1+" "+pY1+","+pX2+" "+pY2+","+pX3+" "+pY3+","+pX4+" "+pY4+","+pX1+" "+pY1+"))',-1))";
+        //////////////////////////////////////////////////////
+
+        return gsm.requestSVG(sessionKey, xmlMapRequst,posX,posY,width,height, option,layerID);
+    }
+    public String requestNearRestSVG(String sessionKey, String xmlMapRequst,int layerID, double posX, double posY, double width, double height,double x,double y)
+    {
+        GisGetSvgMap gsm=new GisGetSvgMap();
+        String option="Distance('POINT("+x+" "+y+")',geom)<=ALL(SELECT Distance('POINT("+x+" "+y+")',geom) FROM TB_"+layerID+")";
+        return gsm.requestSVG(sessionKey, xmlMapRequst,posX,posY,width,height, option,layerID);
+    }
+
+
+}
+

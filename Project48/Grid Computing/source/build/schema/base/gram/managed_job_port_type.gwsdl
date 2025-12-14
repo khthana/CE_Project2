@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+    name="ManagedJob"
+    
+targetNamespace="http://www.globus.org/namespaces/2003/12/managed_job/managed_job"
+    xmlns:tns="http://www.globus.org/namespaces/2003/12/managed_job/managed_job"
+    xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI"
+    xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions"
+    xmlns:mj-types="http://www.globus.org/namespaces/2003/12/managed_job/types"
+    xmlns:sd="http://www.gridforum.org/namespaces/2003/03/serviceData"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+    <import
+        location="../../ogsi/ogsi.gwsdl"
+        namespace="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <import
+        location="../../base/gram/managed_job_types.wsdl"
+        namespace="http://www.globus.org/namespaces/2003/12/managed_job/types"/>
+    <import
+        location="../../base/streaming/file_stream_port_type.wsdl"
+        namespace="http://www.globus.org/namespaces/2003/04/base/streaming"/>
+
+    <types>
+      <xsd:schema
+          
+xmlns:ogsa-types="http://www.gridforum.org/namespaces/2002/10/gridServices"
+          xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+          xmlns="http://www.w3.org/2001/XMLSchema"
+          
+targetNamespace="http://www.globus.org/namespaces/2003/12/managed_job/managed_job">
+      <xsd:element name="start" type="tns:StartType"/>
+      <xsd:complexType name="StartType"/>
+
+      <xsd:element name="startResponse" type="tns:StartResponseType"/>
+      <xsd:complexType name="StartResponseType">
+        <xsd:sequence>
+          <xsd:element name="jobStatus" type="mj-types:JobStatusType"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:element name="startFault" type="mj-types:FaultType"/>
+    </xsd:schema>
+  </types>
+  <message name="startInputMessage">
+    <part name="parameters" element="tns:start"/>
+  </message>
+  <message name="startOutputMessage">
+    <part name="parameters" element="tns:startResponse"/>
+  </message>
+  <message name="FaultMessage">
+      <part name="fault" element="tns:startFault"/>
+  </message>
+
+  <gwsdl:portType name="ManagedJobPortType"
+                  extends="ogsi:GridService 
+                           ogsi:NotificationSource">
+    <operation name="start">
+      <input message="tns:startInputMessage"/>
+      <output message="tns:startOutputMessage"/>
+      <fault name="startFault" message="tns:FaultMessage"/>
+    </operation>
+    <sd:serviceData name="ManagedJobState" type="mj-types:JobStatusType" 
+minOccurs="1" maxOccurs="1" mutability="mutable"/>
+    <sd:serviceData name="ManagedJobSLA" element="xsd:anyType" minOccurs="1" 
+maxOccurs="1" mutability="mutable"/>
+    <sd:serviceData name="ManagedJobUserIdLocal" element="xsd:string" 
+minOccurs="1" maxOccurs="1" mutability="mutable"/>
+    <sd:serviceData name="UserIdGridCredentials" 
+element="ogsa-types:ExtensibilityType" minOccurs="1" maxOccurs="1" 
+mutability="mutable"/>
+    <sd:serviceData name="stdOutHandle" element="ogsi:HandleType" minOccurs="0" 
+maxOccurs="1" mutability="mutable"/>
+    <sd:serviceData name="stdErrHandle" element="ogsi:HandleType" minOccurs="0" 
+maxOccurs="1" mutability="mutable"/>
+  </gwsdl:portType>
+</definitions>

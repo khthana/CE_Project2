@@ -1,0 +1,82 @@
+dnl Process this file with autoconf to produce a configure script.
+
+AC_INIT(configure.in)
+AM_INIT_AUTOMAKE(anubis, 0.1)
+AM_CONFIG_HEADER(config.h)
+
+AC_ISC_POSIX
+AC_PROG_CC
+AM_PROG_CC_STDC
+AC_HEADER_STDC
+
+AM_PATH_GTK(1.2.0, ,
+            AC_MSG_ERROR(Cannot find GTK: Is gtk-config in path?))
+
+dnl myadd
+AC_CHECK_SIZEOF(int)
+AC_CHECK_SIZEOF(unsigned char)	
+    
+AM_PATH_XML2(2.4.0,
+       [CFLAGS="$CFLAGS $XML_CFLAGS" LIBS="$LIBS $XML_LIBS"],
+       AC_MSG_ERROR(libxml2-2.4.0 not found.))
+AM_PROG_LIBTOOL
+
+dnl --enable-debugmode	
+AC_ARG_ENABLE(debugmode, [  --enable-debugmode	  trun on debuggingmode [default no]],,enable_debugmode=no)
+AC_MSG_CHECKING(whether to enable debuging mode)
+if test x$enable_debugmode = xyes; then
+AC_MSG_RESULT(yes)	     
+AC_DEFINE(DEBUGMODE)	     
+else			     
+AC_MSG_RESULT(no)
+fi
+dnl end --enable-debugmode
+
+dnl --enable-pixtype_int
+AC_ARG_ENABLE(pixtypeint, [  --enable-pixtypeint   trun on pixtypeint mode [default no]],,pixtypeint=no)
+AC_MSG_CHECKING(whether to enable pixtypeint mode)
+if test x$enable_pixtypeint = xyes; then
+AC_MSG_RESULT(yes)	     
+AC_DEFINE(PIX_TYPE_INT)	     
+else			     
+AC_MSG_RESULT(no)
+fi
+dnl end --enable-pixtype_int  
+
+      
+dnl myadd end
+
+	    
+dnl Set PACKAGE_DATA_DIR in config.h.
+if test "x${datadir}" = 'x${prefix}/share'; then
+  if test "x${prefix}" = "xNONE"; then
+    AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR, "${ac_default_prefix}/share/${PACKAGE}")
+  else
+    AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR, "${prefix}/share/${PACKAGE}")
+  fi
+else
+  AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR, "${datadir}/${PACKAGE}")
+fi
+
+dnl Set PACKAGE_SOURCE_DIR in config.h.
+packagesrcdir=`cd $srcdir && pwd`
+AC_DEFINE_UNQUOTED(PACKAGE_SOURCE_DIR, "${packagesrcdir}")
+
+dnl Use -Wall if we have gcc.
+changequote(,)dnl
+if test "x$GCC" = "xyes"; then
+  case " $CFLAGS " in
+  *[\ \	]-Wall[\ \	]*) ;;
+  *) CFLAGS="$CFLAGS -Wall" ;;
+  esac
+fi
+changequote([,])dnl
+
+AC_OUTPUT([
+Makefile
+glade_gui_src/Makefile
+src/Makefile
+src/csu/Makefile
+scripts/Makefile	
+])
+

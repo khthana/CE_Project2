@@ -1,0 +1,52 @@
+package gis_application;
+
+import org.apache.axis.client.Call;
+import javax.xml.namespace.QName;
+
+public class CallServices {
+  String server;
+  Call call;
+  public CallServices() {
+    server = "http://localhost:8080/GisServer/services/";
+  }
+
+  public void setService(String service) throws Exception{
+    try{
+      call = new Call(server + service);
+    }catch(Exception e){
+      throw e;
+    }
+  }
+
+
+  public void setOperation(String operationName) throws Exception{
+    try{
+      call.setOperationName ( new QName(operationName) ) ;
+    }catch(Exception e){
+      throw e;
+    }
+  }
+
+  public int intInvoke(Object[] arguments) throws Exception{
+    int result=0;
+    try{
+      int res = (Integer)call.invoke(arguments);
+    }catch(Exception e){
+      throw e;
+    }
+    return result;
+  }
+
+  public int stringInvoke(Object[] arguments) throws Exception{
+    int result=0;
+    try{
+      String res = (String)call.invoke(arguments);
+    }catch(Exception e){
+      throw e;
+    }
+    return result;
+  }
+
+
+
+}

@@ -1,0 +1,2493 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:s1="http://tempuri.org/AbstractTypes" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://tempuri.org/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://tempuri.org/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="checkPWD">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="user" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="checkPWDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="checkPWDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProfile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="user" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProfileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetProfileResult" type="s0:GeneralUser" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="GeneralUser">
+        <s:complexContent mixed="false">
+          <s:extension base="s0:User" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="User">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Address" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Talephone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Identify" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getPlacemark">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="latitude" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="longitude" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="distance" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getPlacemarkResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getPlacemarkResult" type="s0:ArrayOfPlacemark" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfPlacemark">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Placemark" nillable="true" type="s0:Placemark" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Placemark">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="latitude" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="longitude" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getPlacemark2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getPlacemark2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getPlacemark2Result" type="s0:Placemark" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getAllRes">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="latitude" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="longitude" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="distance" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getAllResResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getAllResResult" type="s0:ArrayOfRestaurant" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfRestaurant">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Restaurant" nillable="true" type="s0:Restaurant" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Restaurant">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ID_restaurant" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Telephone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Position" type="s0:Position" />
+          <s:element minOccurs="0" maxOccurs="1" name="Address" type="s0:Address" />
+          <s:element minOccurs="0" maxOccurs="1" name="Valid" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Reserve" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Position">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Address">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Province" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Amphur" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="District" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Zone" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Zipcode" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Road" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetMapTmg">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetMapTmgResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetMapTmgResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateMap">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="iduser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="map" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateMapResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateMapResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getUserPoint">
+        <s:complexType />
+      </s:element>
+      <s:element name="getUserPointResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getUserPointResult" type="s0:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfAnyType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="anyType" nillable="true" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Building">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="floor" type="s0:ArrayOfAnyType" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="InteriorPoint">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="x" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="y" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Polygon">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="showname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="desc" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="point" type="s0:ArrayOfAnyType" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Floor">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="background" type="s:base64Binary" />
+          <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="polygon" type="s0:ArrayOfAnyType" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Menu">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Cost" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Tenstar" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="UserPoint">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IDUser" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:float" />
+          <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:float" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getTest">
+        <s:complexType />
+      </s:element>
+      <s:element name="getTestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getTestResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getAllMenu">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="id_restaurant" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfMenu">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Menu" nillable="true" type="s0:Menu" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getAllMenuResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getAllMenuResult" type="s0:ArrayOfMenu" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getMapRes">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="latitude" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="longitude" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getMapResResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getMapResResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getRestaurant">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getRestaurantResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getRestaurantResult" type="s0:Restaurant" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getPromotion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="id_restaurant" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Promotion">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Promote" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Reserve" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPromotion">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Promotion" nillable="true" type="s0:Promotion" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getPromotionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getPromotionResult" type="s0:ArrayOfPromotion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="uploadIMG">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="img" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="uploadIMGResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="uploadIMGResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="uploadIMG2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="img" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="uploadIMG2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="uploadIMG2Result" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getBuilding">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="building_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getBuildingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getBuildingResult" type="s0:Building" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="uploadBuilding">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="bd" type="s0:Building" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="uploadBuildingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="uploadBuildingResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="uploadFloor">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fl" type="s0:Floor" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="uploadFloorResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="uploadFloorResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="uploadPolygon">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="poly" type="s0:Polygon" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="uploadPolygonResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="uploadPolygonResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="uploadPoint">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="p" type="s0:InteriorPoint" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="uploadPointResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="uploadPointResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="find_restaurant_P">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="province" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="find_restaurant_PResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="find_restaurant_PResult" type="s0:ArrayOfRestaurant" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="find_restaurant_PA">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="province" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="amphur" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="find_restaurant_PAResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="find_restaurant_PAResult" type="s0:ArrayOfRestaurant" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="find_restaurant_PAD">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="province" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="amphur" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="district" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="find_restaurant_PADResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="find_restaurant_PADResult" type="s0:ArrayOfRestaurant" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="uploadRestaurant">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="res" type="s0:Restaurant" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="uploadRestaurantResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="uploadRestaurantResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insert_res">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="res" type="s0:Restaurant" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insert_resResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="insert_resResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getPicture">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="id_restaurant" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="RMap">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="map" type="s:base64Binary" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfRMap">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RMap" nillable="true" type="s0:RMap" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getPictureResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getPictureResult" type="s0:ArrayOfRMap" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="check_res_PWD">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="user" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="check_res_PWDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="check_res_PWDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="add_book">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="id_identity" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="date_book" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="date_end" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="id_table" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="add_bookResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="add_bookResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="update_book">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="id_identity" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="date_book" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="id_table" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="update_bookResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="update_bookResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="del_book">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="id_identity" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="del_bookResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="del_bookResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_Reserve">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Reserve">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Restaurant" type="s0:Restaurant" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndTime" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Time" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Table" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfReserve">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Reserve" nillable="true" type="s0:Reserve" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="get_ReserveResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="get_ReserveResult" type="s0:ArrayOfReserve" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="find_Building">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="building_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Building2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="lat" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="lon" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfBuilding2">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Building2" nillable="true" type="s0:Building2" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="find_BuildingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="find_BuildingResult" type="s0:ArrayOfBuilding2" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="find_Restaurant">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="find_RestaurantResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="find_RestaurantResult" type="s0:ArrayOfRestaurant" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="find_Placemark">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="find_PlacemarkResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="find_PlacemarkResult" type="s0:ArrayOfPlacemark" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+      <s:element name="GeneralUser" nillable="true" type="s0:GeneralUser" />
+      <s:element name="ArrayOfPlacemark" nillable="true" type="s0:ArrayOfPlacemark" />
+      <s:element name="Placemark" nillable="true" type="s0:Placemark" />
+      <s:element name="ArrayOfRestaurant" nillable="true" type="s0:ArrayOfRestaurant" />
+      <s:element name="int" type="s:int" />
+      <s:element name="ArrayOfAnyType" nillable="true" type="s0:ArrayOfAnyType" />
+      <s:element name="ArrayOfMenu" nillable="true" type="s0:ArrayOfMenu" />
+      <s:element name="base64Binary" nillable="true" type="s:base64Binary" />
+      <s:element name="Restaurant" nillable="true" type="s0:Restaurant" />
+      <s:element name="ArrayOfPromotion" nillable="true" type="s0:ArrayOfPromotion" />
+      <s:element name="Building" nillable="true" type="s0:Building" />
+      <s:element name="ArrayOfRMap" nillable="true" type="s0:ArrayOfRMap" />
+      <s:element name="boolean" type="s:boolean" />
+      <s:element name="ArrayOfReserve" nillable="true" type="s0:ArrayOfReserve" />
+      <s:element name="ArrayOfBuilding2" nillable="true" type="s0:ArrayOfBuilding2" />
+    </s:schema>
+    <s:schema targetNamespace="http://tempuri.org/AbstractTypes">
+      <s:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <s:complexType name="StringArray">
+        <s:complexContent mixed="false">
+          <s:restriction base="soapenc:Array">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="unbounded" name="String" type="s:string" />
+            </s:sequence>
+          </s:restriction>
+        </s:complexContent>
+      </s:complexType>
+    </s:schema>
+  </types>
+  <message name="checkPWDSoapIn">
+    <part name="parameters" element="s0:checkPWD" />
+  </message>
+  <message name="checkPWDSoapOut">
+    <part name="parameters" element="s0:checkPWDResponse" />
+  </message>
+  <message name="GetProfileSoapIn">
+    <part name="parameters" element="s0:GetProfile" />
+  </message>
+  <message name="GetProfileSoapOut">
+    <part name="parameters" element="s0:GetProfileResponse" />
+  </message>
+  <message name="getPlacemarkSoapIn">
+    <part name="parameters" element="s0:getPlacemark" />
+  </message>
+  <message name="getPlacemarkSoapOut">
+    <part name="parameters" element="s0:getPlacemarkResponse" />
+  </message>
+  <message name="getPlacemark2SoapIn">
+    <part name="parameters" element="s0:getPlacemark2" />
+  </message>
+  <message name="getPlacemark2SoapOut">
+    <part name="parameters" element="s0:getPlacemark2Response" />
+  </message>
+  <message name="getAllResSoapIn">
+    <part name="parameters" element="s0:getAllRes" />
+  </message>
+  <message name="getAllResSoapOut">
+    <part name="parameters" element="s0:getAllResResponse" />
+  </message>
+  <message name="GetMapTmgSoapIn">
+    <part name="parameters" element="s0:GetMapTmg" />
+  </message>
+  <message name="GetMapTmgSoapOut">
+    <part name="parameters" element="s0:GetMapTmgResponse" />
+  </message>
+  <message name="UpdateMapSoapIn">
+    <part name="parameters" element="s0:UpdateMap" />
+  </message>
+  <message name="UpdateMapSoapOut">
+    <part name="parameters" element="s0:UpdateMapResponse" />
+  </message>
+  <message name="getUserPointSoapIn">
+    <part name="parameters" element="s0:getUserPoint" />
+  </message>
+  <message name="getUserPointSoapOut">
+    <part name="parameters" element="s0:getUserPointResponse" />
+  </message>
+  <message name="getTestSoapIn">
+    <part name="parameters" element="s0:getTest" />
+  </message>
+  <message name="getTestSoapOut">
+    <part name="parameters" element="s0:getTestResponse" />
+  </message>
+  <message name="getAllMenuSoapIn">
+    <part name="parameters" element="s0:getAllMenu" />
+  </message>
+  <message name="getAllMenuSoapOut">
+    <part name="parameters" element="s0:getAllMenuResponse" />
+  </message>
+  <message name="getMapResSoapIn">
+    <part name="parameters" element="s0:getMapRes" />
+  </message>
+  <message name="getMapResSoapOut">
+    <part name="parameters" element="s0:getMapResResponse" />
+  </message>
+  <message name="getRestaurantSoapIn">
+    <part name="parameters" element="s0:getRestaurant" />
+  </message>
+  <message name="getRestaurantSoapOut">
+    <part name="parameters" element="s0:getRestaurantResponse" />
+  </message>
+  <message name="getPromotionSoapIn">
+    <part name="parameters" element="s0:getPromotion" />
+  </message>
+  <message name="getPromotionSoapOut">
+    <part name="parameters" element="s0:getPromotionResponse" />
+  </message>
+  <message name="uploadIMGSoapIn">
+    <part name="parameters" element="s0:uploadIMG" />
+  </message>
+  <message name="uploadIMGSoapOut">
+    <part name="parameters" element="s0:uploadIMGResponse" />
+  </message>
+  <message name="uploadIMG2SoapIn">
+    <part name="parameters" element="s0:uploadIMG2" />
+  </message>
+  <message name="uploadIMG2SoapOut">
+    <part name="parameters" element="s0:uploadIMG2Response" />
+  </message>
+  <message name="getBuildingSoapIn">
+    <part name="parameters" element="s0:getBuilding" />
+  </message>
+  <message name="getBuildingSoapOut">
+    <part name="parameters" element="s0:getBuildingResponse" />
+  </message>
+  <message name="uploadBuildingSoapIn">
+    <part name="parameters" element="s0:uploadBuilding" />
+  </message>
+  <message name="uploadBuildingSoapOut">
+    <part name="parameters" element="s0:uploadBuildingResponse" />
+  </message>
+  <message name="uploadFloorSoapIn">
+    <part name="parameters" element="s0:uploadFloor" />
+  </message>
+  <message name="uploadFloorSoapOut">
+    <part name="parameters" element="s0:uploadFloorResponse" />
+  </message>
+  <message name="uploadPolygonSoapIn">
+    <part name="parameters" element="s0:uploadPolygon" />
+  </message>
+  <message name="uploadPolygonSoapOut">
+    <part name="parameters" element="s0:uploadPolygonResponse" />
+  </message>
+  <message name="uploadPointSoapIn">
+    <part name="parameters" element="s0:uploadPoint" />
+  </message>
+  <message name="uploadPointSoapOut">
+    <part name="parameters" element="s0:uploadPointResponse" />
+  </message>
+  <message name="find_restaurant_PSoapIn">
+    <part name="parameters" element="s0:find_restaurant_P" />
+  </message>
+  <message name="find_restaurant_PSoapOut">
+    <part name="parameters" element="s0:find_restaurant_PResponse" />
+  </message>
+  <message name="find_restaurant_PASoapIn">
+    <part name="parameters" element="s0:find_restaurant_PA" />
+  </message>
+  <message name="find_restaurant_PASoapOut">
+    <part name="parameters" element="s0:find_restaurant_PAResponse" />
+  </message>
+  <message name="find_restaurant_PADSoapIn">
+    <part name="parameters" element="s0:find_restaurant_PAD" />
+  </message>
+  <message name="find_restaurant_PADSoapOut">
+    <part name="parameters" element="s0:find_restaurant_PADResponse" />
+  </message>
+  <message name="uploadRestaurantSoapIn">
+    <part name="parameters" element="s0:uploadRestaurant" />
+  </message>
+  <message name="uploadRestaurantSoapOut">
+    <part name="parameters" element="s0:uploadRestaurantResponse" />
+  </message>
+  <message name="insert_resSoapIn">
+    <part name="parameters" element="s0:insert_res" />
+  </message>
+  <message name="insert_resSoapOut">
+    <part name="parameters" element="s0:insert_resResponse" />
+  </message>
+  <message name="getPictureSoapIn">
+    <part name="parameters" element="s0:getPicture" />
+  </message>
+  <message name="getPictureSoapOut">
+    <part name="parameters" element="s0:getPictureResponse" />
+  </message>
+  <message name="check_res_PWDSoapIn">
+    <part name="parameters" element="s0:check_res_PWD" />
+  </message>
+  <message name="check_res_PWDSoapOut">
+    <part name="parameters" element="s0:check_res_PWDResponse" />
+  </message>
+  <message name="add_bookSoapIn">
+    <part name="parameters" element="s0:add_book" />
+  </message>
+  <message name="add_bookSoapOut">
+    <part name="parameters" element="s0:add_bookResponse" />
+  </message>
+  <message name="update_bookSoapIn">
+    <part name="parameters" element="s0:update_book" />
+  </message>
+  <message name="update_bookSoapOut">
+    <part name="parameters" element="s0:update_bookResponse" />
+  </message>
+  <message name="del_bookSoapIn">
+    <part name="parameters" element="s0:del_book" />
+  </message>
+  <message name="del_bookSoapOut">
+    <part name="parameters" element="s0:del_bookResponse" />
+  </message>
+  <message name="get_ReserveSoapIn">
+    <part name="parameters" element="s0:get_Reserve" />
+  </message>
+  <message name="get_ReserveSoapOut">
+    <part name="parameters" element="s0:get_ReserveResponse" />
+  </message>
+  <message name="find_BuildingSoapIn">
+    <part name="parameters" element="s0:find_Building" />
+  </message>
+  <message name="find_BuildingSoapOut">
+    <part name="parameters" element="s0:find_BuildingResponse" />
+  </message>
+  <message name="find_RestaurantSoapIn">
+    <part name="parameters" element="s0:find_Restaurant" />
+  </message>
+  <message name="find_RestaurantSoapOut">
+    <part name="parameters" element="s0:find_RestaurantResponse" />
+  </message>
+  <message name="find_PlacemarkSoapIn">
+    <part name="parameters" element="s0:find_Placemark" />
+  </message>
+  <message name="find_PlacemarkSoapOut">
+    <part name="parameters" element="s0:find_PlacemarkResponse" />
+  </message>
+  <message name="checkPWDHttpGetIn">
+    <part name="user" type="s:string" />
+    <part name="pass" type="s:string" />
+  </message>
+  <message name="checkPWDHttpGetOut">
+    <part name="Body" element="s0:string" />
+  </message>
+  <message name="GetProfileHttpGetIn">
+    <part name="user" type="s:string" />
+    <part name="pass" type="s:string" />
+  </message>
+  <message name="GetProfileHttpGetOut">
+    <part name="Body" element="s0:GeneralUser" />
+  </message>
+  <message name="getPlacemarkHttpGetIn">
+    <part name="latitude" type="s:string" />
+    <part name="longitude" type="s:string" />
+    <part name="distance" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="getPlacemarkHttpGetOut">
+    <part name="Body" element="s0:ArrayOfPlacemark" />
+  </message>
+  <message name="getPlacemark2HttpGetIn">
+    <part name="name" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="getPlacemark2HttpGetOut">
+    <part name="Body" element="s0:Placemark" />
+  </message>
+  <message name="getAllResHttpGetIn">
+    <part name="latitude" type="s:string" />
+    <part name="longitude" type="s:string" />
+    <part name="distance" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="getAllResHttpGetOut">
+    <part name="Body" element="s0:ArrayOfRestaurant" />
+  </message>
+  <message name="GetMapTmgHttpGetIn" />
+  <message name="GetMapTmgHttpGetOut">
+    <part name="Body" element="s0:int" />
+  </message>
+  <message name="UpdateMapHttpGetIn">
+    <part name="iduser" type="s:string" />
+    <part name="map" type="s1:StringArray" />
+  </message>
+  <message name="UpdateMapHttpGetOut">
+    <part name="Body" element="s0:int" />
+  </message>
+  <message name="getUserPointHttpGetIn" />
+  <message name="getUserPointHttpGetOut">
+    <part name="Body" element="s0:ArrayOfAnyType" />
+  </message>
+  <message name="getTestHttpGetIn" />
+  <message name="getTestHttpGetOut">
+    <part name="Body" element="s0:string" />
+  </message>
+  <message name="getAllMenuHttpGetIn">
+    <part name="id_restaurant" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="getAllMenuHttpGetOut">
+    <part name="Body" element="s0:ArrayOfMenu" />
+  </message>
+  <message name="getMapResHttpGetIn">
+    <part name="latitude" type="s:string" />
+    <part name="longitude" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="getMapResHttpGetOut">
+    <part name="Body" element="s0:base64Binary" />
+  </message>
+  <message name="getRestaurantHttpGetIn">
+    <part name="name" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="getRestaurantHttpGetOut">
+    <part name="Body" element="s0:Restaurant" />
+  </message>
+  <message name="getPromotionHttpGetIn">
+    <part name="id_restaurant" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="getPromotionHttpGetOut">
+    <part name="Body" element="s0:ArrayOfPromotion" />
+  </message>
+  <message name="uploadIMGHttpGetIn">
+    <part name="userid" type="s:string" />
+    <part name="img" type="s:string" />
+  </message>
+  <message name="uploadIMGHttpGetOut">
+    <part name="Body" element="s0:int" />
+  </message>
+  <message name="uploadIMG2HttpGetIn">
+    <part name="userid" type="s:string" />
+    <part name="img" type="s1:StringArray" />
+  </message>
+  <message name="uploadIMG2HttpGetOut">
+    <part name="Body" element="s0:int" />
+  </message>
+  <message name="getBuildingHttpGetIn">
+    <part name="building_id" type="s:string" />
+  </message>
+  <message name="getBuildingHttpGetOut">
+    <part name="Body" element="s0:Building" />
+  </message>
+  <message name="find_restaurant_PHttpGetIn">
+    <part name="province" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="find_restaurant_PHttpGetOut">
+    <part name="Body" element="s0:ArrayOfRestaurant" />
+  </message>
+  <message name="find_restaurant_PAHttpGetIn">
+    <part name="province" type="s:string" />
+    <part name="amphur" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="find_restaurant_PAHttpGetOut">
+    <part name="Body" element="s0:ArrayOfRestaurant" />
+  </message>
+  <message name="find_restaurant_PADHttpGetIn">
+    <part name="province" type="s:string" />
+    <part name="amphur" type="s:string" />
+    <part name="district" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="find_restaurant_PADHttpGetOut">
+    <part name="Body" element="s0:ArrayOfRestaurant" />
+  </message>
+  <message name="getPictureHttpGetIn">
+    <part name="id_restaurant" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="getPictureHttpGetOut">
+    <part name="Body" element="s0:ArrayOfRMap" />
+  </message>
+  <message name="check_res_PWDHttpGetIn">
+    <part name="user" type="s:string" />
+    <part name="pass" type="s:string" />
+  </message>
+  <message name="check_res_PWDHttpGetOut">
+    <part name="Body" element="s0:string" />
+  </message>
+  <message name="add_bookHttpGetIn">
+    <part name="id_identity" type="s:string" />
+    <part name="date_book" type="s:string" />
+    <part name="date_end" type="s:string" />
+    <part name="id_table" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="add_bookHttpGetOut">
+    <part name="Body" element="s0:boolean" />
+  </message>
+  <message name="update_bookHttpGetIn">
+    <part name="id_identity" type="s:string" />
+    <part name="date_book" type="s:string" />
+    <part name="id_table" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="update_bookHttpGetOut">
+    <part name="Body" element="s0:boolean" />
+  </message>
+  <message name="del_bookHttpGetIn">
+    <part name="id_identity" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="del_bookHttpGetOut">
+    <part name="Body" element="s0:boolean" />
+  </message>
+  <message name="get_ReserveHttpGetIn">
+    <part name="token" type="s:string" />
+  </message>
+  <message name="get_ReserveHttpGetOut">
+    <part name="Body" element="s0:ArrayOfReserve" />
+  </message>
+  <message name="find_BuildingHttpGetIn">
+    <part name="building_name" type="s:string" />
+  </message>
+  <message name="find_BuildingHttpGetOut">
+    <part name="Body" element="s0:ArrayOfBuilding2" />
+  </message>
+  <message name="find_RestaurantHttpGetIn">
+    <part name="name" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="find_RestaurantHttpGetOut">
+    <part name="Body" element="s0:ArrayOfRestaurant" />
+  </message>
+  <message name="find_PlacemarkHttpGetIn">
+    <part name="name" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="find_PlacemarkHttpGetOut">
+    <part name="Body" element="s0:ArrayOfPlacemark" />
+  </message>
+  <message name="checkPWDHttpPostIn">
+    <part name="user" type="s:string" />
+    <part name="pass" type="s:string" />
+  </message>
+  <message name="checkPWDHttpPostOut">
+    <part name="Body" element="s0:string" />
+  </message>
+  <message name="GetProfileHttpPostIn">
+    <part name="user" type="s:string" />
+    <part name="pass" type="s:string" />
+  </message>
+  <message name="GetProfileHttpPostOut">
+    <part name="Body" element="s0:GeneralUser" />
+  </message>
+  <message name="getPlacemarkHttpPostIn">
+    <part name="latitude" type="s:string" />
+    <part name="longitude" type="s:string" />
+    <part name="distance" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="getPlacemarkHttpPostOut">
+    <part name="Body" element="s0:ArrayOfPlacemark" />
+  </message>
+  <message name="getPlacemark2HttpPostIn">
+    <part name="name" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="getPlacemark2HttpPostOut">
+    <part name="Body" element="s0:Placemark" />
+  </message>
+  <message name="getAllResHttpPostIn">
+    <part name="latitude" type="s:string" />
+    <part name="longitude" type="s:string" />
+    <part name="distance" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="getAllResHttpPostOut">
+    <part name="Body" element="s0:ArrayOfRestaurant" />
+  </message>
+  <message name="GetMapTmgHttpPostIn" />
+  <message name="GetMapTmgHttpPostOut">
+    <part name="Body" element="s0:int" />
+  </message>
+  <message name="UpdateMapHttpPostIn">
+    <part name="iduser" type="s:string" />
+    <part name="map" type="s1:StringArray" />
+  </message>
+  <message name="UpdateMapHttpPostOut">
+    <part name="Body" element="s0:int" />
+  </message>
+  <message name="getUserPointHttpPostIn" />
+  <message name="getUserPointHttpPostOut">
+    <part name="Body" element="s0:ArrayOfAnyType" />
+  </message>
+  <message name="getTestHttpPostIn" />
+  <message name="getTestHttpPostOut">
+    <part name="Body" element="s0:string" />
+  </message>
+  <message name="getAllMenuHttpPostIn">
+    <part name="id_restaurant" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="getAllMenuHttpPostOut">
+    <part name="Body" element="s0:ArrayOfMenu" />
+  </message>
+  <message name="getMapResHttpPostIn">
+    <part name="latitude" type="s:string" />
+    <part name="longitude" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="getMapResHttpPostOut">
+    <part name="Body" element="s0:base64Binary" />
+  </message>
+  <message name="getRestaurantHttpPostIn">
+    <part name="name" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="getRestaurantHttpPostOut">
+    <part name="Body" element="s0:Restaurant" />
+  </message>
+  <message name="getPromotionHttpPostIn">
+    <part name="id_restaurant" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="getPromotionHttpPostOut">
+    <part name="Body" element="s0:ArrayOfPromotion" />
+  </message>
+  <message name="uploadIMGHttpPostIn">
+    <part name="userid" type="s:string" />
+    <part name="img" type="s:string" />
+  </message>
+  <message name="uploadIMGHttpPostOut">
+    <part name="Body" element="s0:int" />
+  </message>
+  <message name="uploadIMG2HttpPostIn">
+    <part name="userid" type="s:string" />
+    <part name="img" type="s1:StringArray" />
+  </message>
+  <message name="uploadIMG2HttpPostOut">
+    <part name="Body" element="s0:int" />
+  </message>
+  <message name="getBuildingHttpPostIn">
+    <part name="building_id" type="s:string" />
+  </message>
+  <message name="getBuildingHttpPostOut">
+    <part name="Body" element="s0:Building" />
+  </message>
+  <message name="find_restaurant_PHttpPostIn">
+    <part name="province" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="find_restaurant_PHttpPostOut">
+    <part name="Body" element="s0:ArrayOfRestaurant" />
+  </message>
+  <message name="find_restaurant_PAHttpPostIn">
+    <part name="province" type="s:string" />
+    <part name="amphur" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="find_restaurant_PAHttpPostOut">
+    <part name="Body" element="s0:ArrayOfRestaurant" />
+  </message>
+  <message name="find_restaurant_PADHttpPostIn">
+    <part name="province" type="s:string" />
+    <part name="amphur" type="s:string" />
+    <part name="district" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="find_restaurant_PADHttpPostOut">
+    <part name="Body" element="s0:ArrayOfRestaurant" />
+  </message>
+  <message name="getPictureHttpPostIn">
+    <part name="id_restaurant" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="getPictureHttpPostOut">
+    <part name="Body" element="s0:ArrayOfRMap" />
+  </message>
+  <message name="check_res_PWDHttpPostIn">
+    <part name="user" type="s:string" />
+    <part name="pass" type="s:string" />
+  </message>
+  <message name="check_res_PWDHttpPostOut">
+    <part name="Body" element="s0:string" />
+  </message>
+  <message name="add_bookHttpPostIn">
+    <part name="id_identity" type="s:string" />
+    <part name="date_book" type="s:string" />
+    <part name="date_end" type="s:string" />
+    <part name="id_table" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="add_bookHttpPostOut">
+    <part name="Body" element="s0:boolean" />
+  </message>
+  <message name="update_bookHttpPostIn">
+    <part name="id_identity" type="s:string" />
+    <part name="date_book" type="s:string" />
+    <part name="id_table" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="update_bookHttpPostOut">
+    <part name="Body" element="s0:boolean" />
+  </message>
+  <message name="del_bookHttpPostIn">
+    <part name="id_identity" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="del_bookHttpPostOut">
+    <part name="Body" element="s0:boolean" />
+  </message>
+  <message name="get_ReserveHttpPostIn">
+    <part name="token" type="s:string" />
+  </message>
+  <message name="get_ReserveHttpPostOut">
+    <part name="Body" element="s0:ArrayOfReserve" />
+  </message>
+  <message name="find_BuildingHttpPostIn">
+    <part name="building_name" type="s:string" />
+  </message>
+  <message name="find_BuildingHttpPostOut">
+    <part name="Body" element="s0:ArrayOfBuilding2" />
+  </message>
+  <message name="find_RestaurantHttpPostIn">
+    <part name="name" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="find_RestaurantHttpPostOut">
+    <part name="Body" element="s0:ArrayOfRestaurant" />
+  </message>
+  <message name="find_PlacemarkHttpPostIn">
+    <part name="name" type="s:string" />
+    <part name="token" type="s:string" />
+  </message>
+  <message name="find_PlacemarkHttpPostOut">
+    <part name="Body" element="s0:ArrayOfPlacemark" />
+  </message>
+  <portType name="Service1Soap">
+    <operation name="checkPWD">
+      <input message="s0:checkPWDSoapIn" />
+      <output message="s0:checkPWDSoapOut" />
+    </operation>
+    <operation name="GetProfile">
+      <input message="s0:GetProfileSoapIn" />
+      <output message="s0:GetProfileSoapOut" />
+    </operation>
+    <operation name="getPlacemark">
+      <input message="s0:getPlacemarkSoapIn" />
+      <output message="s0:getPlacemarkSoapOut" />
+    </operation>
+    <operation name="getPlacemark2">
+      <input message="s0:getPlacemark2SoapIn" />
+      <output message="s0:getPlacemark2SoapOut" />
+    </operation>
+    <operation name="getAllRes">
+      <input message="s0:getAllResSoapIn" />
+      <output message="s0:getAllResSoapOut" />
+    </operation>
+    <operation name="GetMapTmg">
+      <input message="s0:GetMapTmgSoapIn" />
+      <output message="s0:GetMapTmgSoapOut" />
+    </operation>
+    <operation name="UpdateMap">
+      <input message="s0:UpdateMapSoapIn" />
+      <output message="s0:UpdateMapSoapOut" />
+    </operation>
+    <operation name="getUserPoint">
+      <input message="s0:getUserPointSoapIn" />
+      <output message="s0:getUserPointSoapOut" />
+    </operation>
+    <operation name="getTest">
+      <input message="s0:getTestSoapIn" />
+      <output message="s0:getTestSoapOut" />
+    </operation>
+    <operation name="getAllMenu">
+      <input message="s0:getAllMenuSoapIn" />
+      <output message="s0:getAllMenuSoapOut" />
+    </operation>
+    <operation name="getMapRes">
+      <input message="s0:getMapResSoapIn" />
+      <output message="s0:getMapResSoapOut" />
+    </operation>
+    <operation name="getRestaurant">
+      <input message="s0:getRestaurantSoapIn" />
+      <output message="s0:getRestaurantSoapOut" />
+    </operation>
+    <operation name="getPromotion">
+      <input message="s0:getPromotionSoapIn" />
+      <output message="s0:getPromotionSoapOut" />
+    </operation>
+    <operation name="uploadIMG">
+      <input message="s0:uploadIMGSoapIn" />
+      <output message="s0:uploadIMGSoapOut" />
+    </operation>
+    <operation name="uploadIMG2">
+      <input message="s0:uploadIMG2SoapIn" />
+      <output message="s0:uploadIMG2SoapOut" />
+    </operation>
+    <operation name="getBuilding">
+      <input message="s0:getBuildingSoapIn" />
+      <output message="s0:getBuildingSoapOut" />
+    </operation>
+    <operation name="uploadBuilding">
+      <input message="s0:uploadBuildingSoapIn" />
+      <output message="s0:uploadBuildingSoapOut" />
+    </operation>
+    <operation name="uploadFloor">
+      <input message="s0:uploadFloorSoapIn" />
+      <output message="s0:uploadFloorSoapOut" />
+    </operation>
+    <operation name="uploadPolygon">
+      <input message="s0:uploadPolygonSoapIn" />
+      <output message="s0:uploadPolygonSoapOut" />
+    </operation>
+    <operation name="uploadPoint">
+      <input message="s0:uploadPointSoapIn" />
+      <output message="s0:uploadPointSoapOut" />
+    </operation>
+    <operation name="find_restaurant_P">
+      <input message="s0:find_restaurant_PSoapIn" />
+      <output message="s0:find_restaurant_PSoapOut" />
+    </operation>
+    <operation name="find_restaurant_PA">
+      <input message="s0:find_restaurant_PASoapIn" />
+      <output message="s0:find_restaurant_PASoapOut" />
+    </operation>
+    <operation name="find_restaurant_PAD">
+      <input message="s0:find_restaurant_PADSoapIn" />
+      <output message="s0:find_restaurant_PADSoapOut" />
+    </operation>
+    <operation name="uploadRestaurant">
+      <input message="s0:uploadRestaurantSoapIn" />
+      <output message="s0:uploadRestaurantSoapOut" />
+    </operation>
+    <operation name="insert_res">
+      <input message="s0:insert_resSoapIn" />
+      <output message="s0:insert_resSoapOut" />
+    </operation>
+    <operation name="getPicture">
+      <input message="s0:getPictureSoapIn" />
+      <output message="s0:getPictureSoapOut" />
+    </operation>
+    <operation name="check_res_PWD">
+      <input message="s0:check_res_PWDSoapIn" />
+      <output message="s0:check_res_PWDSoapOut" />
+    </operation>
+    <operation name="add_book">
+      <input message="s0:add_bookSoapIn" />
+      <output message="s0:add_bookSoapOut" />
+    </operation>
+    <operation name="update_book">
+      <input message="s0:update_bookSoapIn" />
+      <output message="s0:update_bookSoapOut" />
+    </operation>
+    <operation name="del_book">
+      <input message="s0:del_bookSoapIn" />
+      <output message="s0:del_bookSoapOut" />
+    </operation>
+    <operation name="get_Reserve">
+      <input message="s0:get_ReserveSoapIn" />
+      <output message="s0:get_ReserveSoapOut" />
+    </operation>
+    <operation name="find_Building">
+      <input message="s0:find_BuildingSoapIn" />
+      <output message="s0:find_BuildingSoapOut" />
+    </operation>
+    <operation name="find_Restaurant">
+      <input message="s0:find_RestaurantSoapIn" />
+      <output message="s0:find_RestaurantSoapOut" />
+    </operation>
+    <operation name="find_Placemark">
+      <input message="s0:find_PlacemarkSoapIn" />
+      <output message="s0:find_PlacemarkSoapOut" />
+    </operation>
+  </portType>
+  <portType name="Service1HttpGet">
+    <operation name="checkPWD">
+      <input message="s0:checkPWDHttpGetIn" />
+      <output message="s0:checkPWDHttpGetOut" />
+    </operation>
+    <operation name="GetProfile">
+      <input message="s0:GetProfileHttpGetIn" />
+      <output message="s0:GetProfileHttpGetOut" />
+    </operation>
+    <operation name="getPlacemark">
+      <input message="s0:getPlacemarkHttpGetIn" />
+      <output message="s0:getPlacemarkHttpGetOut" />
+    </operation>
+    <operation name="getPlacemark2">
+      <input message="s0:getPlacemark2HttpGetIn" />
+      <output message="s0:getPlacemark2HttpGetOut" />
+    </operation>
+    <operation name="getAllRes">
+      <input message="s0:getAllResHttpGetIn" />
+      <output message="s0:getAllResHttpGetOut" />
+    </operation>
+    <operation name="GetMapTmg">
+      <input message="s0:GetMapTmgHttpGetIn" />
+      <output message="s0:GetMapTmgHttpGetOut" />
+    </operation>
+    <operation name="UpdateMap">
+      <input message="s0:UpdateMapHttpGetIn" />
+      <output message="s0:UpdateMapHttpGetOut" />
+    </operation>
+    <operation name="getUserPoint">
+      <input message="s0:getUserPointHttpGetIn" />
+      <output message="s0:getUserPointHttpGetOut" />
+    </operation>
+    <operation name="getTest">
+      <input message="s0:getTestHttpGetIn" />
+      <output message="s0:getTestHttpGetOut" />
+    </operation>
+    <operation name="getAllMenu">
+      <input message="s0:getAllMenuHttpGetIn" />
+      <output message="s0:getAllMenuHttpGetOut" />
+    </operation>
+    <operation name="getMapRes">
+      <input message="s0:getMapResHttpGetIn" />
+      <output message="s0:getMapResHttpGetOut" />
+    </operation>
+    <operation name="getRestaurant">
+      <input message="s0:getRestaurantHttpGetIn" />
+      <output message="s0:getRestaurantHttpGetOut" />
+    </operation>
+    <operation name="getPromotion">
+      <input message="s0:getPromotionHttpGetIn" />
+      <output message="s0:getPromotionHttpGetOut" />
+    </operation>
+    <operation name="uploadIMG">
+      <input message="s0:uploadIMGHttpGetIn" />
+      <output message="s0:uploadIMGHttpGetOut" />
+    </operation>
+    <operation name="uploadIMG2">
+      <input message="s0:uploadIMG2HttpGetIn" />
+      <output message="s0:uploadIMG2HttpGetOut" />
+    </operation>
+    <operation name="getBuilding">
+      <input message="s0:getBuildingHttpGetIn" />
+      <output message="s0:getBuildingHttpGetOut" />
+    </operation>
+    <operation name="find_restaurant_P">
+      <input message="s0:find_restaurant_PHttpGetIn" />
+      <output message="s0:find_restaurant_PHttpGetOut" />
+    </operation>
+    <operation name="find_restaurant_PA">
+      <input message="s0:find_restaurant_PAHttpGetIn" />
+      <output message="s0:find_restaurant_PAHttpGetOut" />
+    </operation>
+    <operation name="find_restaurant_PAD">
+      <input message="s0:find_restaurant_PADHttpGetIn" />
+      <output message="s0:find_restaurant_PADHttpGetOut" />
+    </operation>
+    <operation name="getPicture">
+      <input message="s0:getPictureHttpGetIn" />
+      <output message="s0:getPictureHttpGetOut" />
+    </operation>
+    <operation name="check_res_PWD">
+      <input message="s0:check_res_PWDHttpGetIn" />
+      <output message="s0:check_res_PWDHttpGetOut" />
+    </operation>
+    <operation name="add_book">
+      <input message="s0:add_bookHttpGetIn" />
+      <output message="s0:add_bookHttpGetOut" />
+    </operation>
+    <operation name="update_book">
+      <input message="s0:update_bookHttpGetIn" />
+      <output message="s0:update_bookHttpGetOut" />
+    </operation>
+    <operation name="del_book">
+      <input message="s0:del_bookHttpGetIn" />
+      <output message="s0:del_bookHttpGetOut" />
+    </operation>
+    <operation name="get_Reserve">
+      <input message="s0:get_ReserveHttpGetIn" />
+      <output message="s0:get_ReserveHttpGetOut" />
+    </operation>
+    <operation name="find_Building">
+      <input message="s0:find_BuildingHttpGetIn" />
+      <output message="s0:find_BuildingHttpGetOut" />
+    </operation>
+    <operation name="find_Restaurant">
+      <input message="s0:find_RestaurantHttpGetIn" />
+      <output message="s0:find_RestaurantHttpGetOut" />
+    </operation>
+    <operation name="find_Placemark">
+      <input message="s0:find_PlacemarkHttpGetIn" />
+      <output message="s0:find_PlacemarkHttpGetOut" />
+    </operation>
+  </portType>
+  <portType name="Service1HttpPost">
+    <operation name="checkPWD">
+      <input message="s0:checkPWDHttpPostIn" />
+      <output message="s0:checkPWDHttpPostOut" />
+    </operation>
+    <operation name="GetProfile">
+      <input message="s0:GetProfileHttpPostIn" />
+      <output message="s0:GetProfileHttpPostOut" />
+    </operation>
+    <operation name="getPlacemark">
+      <input message="s0:getPlacemarkHttpPostIn" />
+      <output message="s0:getPlacemarkHttpPostOut" />
+    </operation>
+    <operation name="getPlacemark2">
+      <input message="s0:getPlacemark2HttpPostIn" />
+      <output message="s0:getPlacemark2HttpPostOut" />
+    </operation>
+    <operation name="getAllRes">
+      <input message="s0:getAllResHttpPostIn" />
+      <output message="s0:getAllResHttpPostOut" />
+    </operation>
+    <operation name="GetMapTmg">
+      <input message="s0:GetMapTmgHttpPostIn" />
+      <output message="s0:GetMapTmgHttpPostOut" />
+    </operation>
+    <operation name="UpdateMap">
+      <input message="s0:UpdateMapHttpPostIn" />
+      <output message="s0:UpdateMapHttpPostOut" />
+    </operation>
+    <operation name="getUserPoint">
+      <input message="s0:getUserPointHttpPostIn" />
+      <output message="s0:getUserPointHttpPostOut" />
+    </operation>
+    <operation name="getTest">
+      <input message="s0:getTestHttpPostIn" />
+      <output message="s0:getTestHttpPostOut" />
+    </operation>
+    <operation name="getAllMenu">
+      <input message="s0:getAllMenuHttpPostIn" />
+      <output message="s0:getAllMenuHttpPostOut" />
+    </operation>
+    <operation name="getMapRes">
+      <input message="s0:getMapResHttpPostIn" />
+      <output message="s0:getMapResHttpPostOut" />
+    </operation>
+    <operation name="getRestaurant">
+      <input message="s0:getRestaurantHttpPostIn" />
+      <output message="s0:getRestaurantHttpPostOut" />
+    </operation>
+    <operation name="getPromotion">
+      <input message="s0:getPromotionHttpPostIn" />
+      <output message="s0:getPromotionHttpPostOut" />
+    </operation>
+    <operation name="uploadIMG">
+      <input message="s0:uploadIMGHttpPostIn" />
+      <output message="s0:uploadIMGHttpPostOut" />
+    </operation>
+    <operation name="uploadIMG2">
+      <input message="s0:uploadIMG2HttpPostIn" />
+      <output message="s0:uploadIMG2HttpPostOut" />
+    </operation>
+    <operation name="getBuilding">
+      <input message="s0:getBuildingHttpPostIn" />
+      <output message="s0:getBuildingHttpPostOut" />
+    </operation>
+    <operation name="find_restaurant_P">
+      <input message="s0:find_restaurant_PHttpPostIn" />
+      <output message="s0:find_restaurant_PHttpPostOut" />
+    </operation>
+    <operation name="find_restaurant_PA">
+      <input message="s0:find_restaurant_PAHttpPostIn" />
+      <output message="s0:find_restaurant_PAHttpPostOut" />
+    </operation>
+    <operation name="find_restaurant_PAD">
+      <input message="s0:find_restaurant_PADHttpPostIn" />
+      <output message="s0:find_restaurant_PADHttpPostOut" />
+    </operation>
+    <operation name="getPicture">
+      <input message="s0:getPictureHttpPostIn" />
+      <output message="s0:getPictureHttpPostOut" />
+    </operation>
+    <operation name="check_res_PWD">
+      <input message="s0:check_res_PWDHttpPostIn" />
+      <output message="s0:check_res_PWDHttpPostOut" />
+    </operation>
+    <operation name="add_book">
+      <input message="s0:add_bookHttpPostIn" />
+      <output message="s0:add_bookHttpPostOut" />
+    </operation>
+    <operation name="update_book">
+      <input message="s0:update_bookHttpPostIn" />
+      <output message="s0:update_bookHttpPostOut" />
+    </operation>
+    <operation name="del_book">
+      <input message="s0:del_bookHttpPostIn" />
+      <output message="s0:del_bookHttpPostOut" />
+    </operation>
+    <operation name="get_Reserve">
+      <input message="s0:get_ReserveHttpPostIn" />
+      <output message="s0:get_ReserveHttpPostOut" />
+    </operation>
+    <operation name="find_Building">
+      <input message="s0:find_BuildingHttpPostIn" />
+      <output message="s0:find_BuildingHttpPostOut" />
+    </operation>
+    <operation name="find_Restaurant">
+      <input message="s0:find_RestaurantHttpPostIn" />
+      <output message="s0:find_RestaurantHttpPostOut" />
+    </operation>
+    <operation name="find_Placemark">
+      <input message="s0:find_PlacemarkHttpPostIn" />
+      <output message="s0:find_PlacemarkHttpPostOut" />
+    </operation>
+  </portType>
+  <binding name="Service1Soap" type="s0:Service1Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <operation name="checkPWD">
+      <soap:operation soapAction="http://tempuri.org/checkPWD" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetProfile">
+      <soap:operation soapAction="http://tempuri.org/GetProfile" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getPlacemark">
+      <soap:operation soapAction="http://tempuri.org/getPlacemark" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getPlacemark2">
+      <soap:operation soapAction="http://tempuri.org/getPlacemark2" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getAllRes">
+      <soap:operation soapAction="http://tempuri.org/getAllRes" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetMapTmg">
+      <soap:operation soapAction="http://tempuri.org/GetMapTmg" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="UpdateMap">
+      <soap:operation soapAction="http://tempuri.org/UpdateMap" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getUserPoint">
+      <soap:operation soapAction="http://tempuri.org/getUserPoint" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getTest">
+      <soap:operation soapAction="http://tempuri.org/getTest" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getAllMenu">
+      <soap:operation soapAction="http://tempuri.org/getAllMenu" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getMapRes">
+      <soap:operation soapAction="http://tempuri.org/getMapRes" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getRestaurant">
+      <soap:operation soapAction="http://tempuri.org/getRestaurant" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getPromotion">
+      <soap:operation soapAction="http://tempuri.org/getPromotion" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="uploadIMG">
+      <soap:operation soapAction="http://tempuri.org/uploadIMG" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="uploadIMG2">
+      <soap:operation soapAction="http://tempuri.org/uploadIMG2" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getBuilding">
+      <soap:operation soapAction="http://tempuri.org/getBuilding" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="uploadBuilding">
+      <soap:operation soapAction="http://tempuri.org/uploadBuilding" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="uploadFloor">
+      <soap:operation soapAction="http://tempuri.org/uploadFloor" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="uploadPolygon">
+      <soap:operation soapAction="http://tempuri.org/uploadPolygon" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="uploadPoint">
+      <soap:operation soapAction="http://tempuri.org/uploadPoint" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="find_restaurant_P">
+      <soap:operation soapAction="http://tempuri.org/find_restaurant_P" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="find_restaurant_PA">
+      <soap:operation soapAction="http://tempuri.org/find_restaurant_PA" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="find_restaurant_PAD">
+      <soap:operation soapAction="http://tempuri.org/find_restaurant_PAD" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="uploadRestaurant">
+      <soap:operation soapAction="http://tempuri.org/uploadRestaurant" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="insert_res">
+      <soap:operation soapAction="http://tempuri.org/insert_res" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="getPicture">
+      <soap:operation soapAction="http://tempuri.org/getPicture" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="check_res_PWD">
+      <soap:operation soapAction="http://tempuri.org/check_res_PWD" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="add_book">
+      <soap:operation soapAction="http://tempuri.org/add_book" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="update_book">
+      <soap:operation soapAction="http://tempuri.org/update_book" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="del_book">
+      <soap:operation soapAction="http://tempuri.org/del_book" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="get_Reserve">
+      <soap:operation soapAction="http://tempuri.org/get_Reserve" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="find_Building">
+      <soap:operation soapAction="http://tempuri.org/find_Building" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="find_Restaurant">
+      <soap:operation soapAction="http://tempuri.org/find_Restaurant" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="find_Placemark">
+      <soap:operation soapAction="http://tempuri.org/find_Placemark" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="Service1HttpGet" type="s0:Service1HttpGet">
+    <http:binding verb="GET" />
+    <operation name="checkPWD">
+      <http:operation location="/checkPWD" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="GetProfile">
+      <http:operation location="/GetProfile" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getPlacemark">
+      <http:operation location="/getPlacemark" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getPlacemark2">
+      <http:operation location="/getPlacemark2" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getAllRes">
+      <http:operation location="/getAllRes" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="GetMapTmg">
+      <http:operation location="/GetMapTmg" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="UpdateMap">
+      <http:operation location="/UpdateMap" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getUserPoint">
+      <http:operation location="/getUserPoint" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getTest">
+      <http:operation location="/getTest" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getAllMenu">
+      <http:operation location="/getAllMenu" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getMapRes">
+      <http:operation location="/getMapRes" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getRestaurant">
+      <http:operation location="/getRestaurant" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getPromotion">
+      <http:operation location="/getPromotion" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="uploadIMG">
+      <http:operation location="/uploadIMG" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="uploadIMG2">
+      <http:operation location="/uploadIMG2" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getBuilding">
+      <http:operation location="/getBuilding" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="find_restaurant_P">
+      <http:operation location="/find_restaurant_P" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="find_restaurant_PA">
+      <http:operation location="/find_restaurant_PA" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="find_restaurant_PAD">
+      <http:operation location="/find_restaurant_PAD" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getPicture">
+      <http:operation location="/getPicture" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="check_res_PWD">
+      <http:operation location="/check_res_PWD" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="add_book">
+      <http:operation location="/add_book" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="update_book">
+      <http:operation location="/update_book" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="del_book">
+      <http:operation location="/del_book" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="get_Reserve">
+      <http:operation location="/get_Reserve" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="find_Building">
+      <http:operation location="/find_Building" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="find_Restaurant">
+      <http:operation location="/find_Restaurant" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="find_Placemark">
+      <http:operation location="/find_Placemark" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="Service1HttpPost" type="s0:Service1HttpPost">
+    <http:binding verb="POST" />
+    <operation name="checkPWD">
+      <http:operation location="/checkPWD" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="GetProfile">
+      <http:operation location="/GetProfile" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getPlacemark">
+      <http:operation location="/getPlacemark" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getPlacemark2">
+      <http:operation location="/getPlacemark2" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getAllRes">
+      <http:operation location="/getAllRes" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="GetMapTmg">
+      <http:operation location="/GetMapTmg" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="UpdateMap">
+      <http:operation location="/UpdateMap" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getUserPoint">
+      <http:operation location="/getUserPoint" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getTest">
+      <http:operation location="/getTest" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getAllMenu">
+      <http:operation location="/getAllMenu" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getMapRes">
+      <http:operation location="/getMapRes" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getRestaurant">
+      <http:operation location="/getRestaurant" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getPromotion">
+      <http:operation location="/getPromotion" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="uploadIMG">
+      <http:operation location="/uploadIMG" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="uploadIMG2">
+      <http:operation location="/uploadIMG2" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getBuilding">
+      <http:operation location="/getBuilding" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="find_restaurant_P">
+      <http:operation location="/find_restaurant_P" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="find_restaurant_PA">
+      <http:operation location="/find_restaurant_PA" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="find_restaurant_PAD">
+      <http:operation location="/find_restaurant_PAD" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="getPicture">
+      <http:operation location="/getPicture" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="check_res_PWD">
+      <http:operation location="/check_res_PWD" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="add_book">
+      <http:operation location="/add_book" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="update_book">
+      <http:operation location="/update_book" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="del_book">
+      <http:operation location="/del_book" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="get_Reserve">
+      <http:operation location="/get_Reserve" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="find_Building">
+      <http:operation location="/find_Building" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="find_Restaurant">
+      <http:operation location="/find_Restaurant" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="find_Placemark">
+      <http:operation location="/find_Placemark" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+  </binding>
+  <service name="Service1">
+    <port name="Service1Soap" binding="s0:Service1Soap">
+      <soap:address location="http://localhost/WebserviceCenter/Service1.asmx" />
+    </port>
+    <port name="Service1HttpGet" binding="s0:Service1HttpGet">
+      <http:address location="http://localhost/WebserviceCenter/Service1.asmx" />
+    </port>
+    <port name="Service1HttpPost" binding="s0:Service1HttpPost">
+      <http:address location="http://localhost/WebserviceCenter/Service1.asmx" />
+    </port>
+  </service>
+</definitions>

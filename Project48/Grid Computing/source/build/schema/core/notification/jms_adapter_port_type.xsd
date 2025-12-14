@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://ogsa.globus.org/core/notification" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI" xmlns:tns="http://ogsa.globus.org/core/notification" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:complexType name="EmptyType"/>
+    
+    <xsd:element name="start">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element name="jmsTopicFactoryName" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>    
+    </xsd:element>
+    <xsd:element name="startResponse" type="tns:EmptyType"/>
+    
+    <xsd:element name="stop" type="tns:EmptyType"/>
+    <xsd:element name="stopResponse" type="tns:EmptyType"/>
+
+    <xsd:element name="jmsToOgsa">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element name="jmsTopicName" type="xsd:string"/>
+          <xsd:element name="ogsaTopicName" type="xsd:string"/>
+          <xsd:element name="jmsToOgsaConverterClassName" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>    
+    </xsd:element>
+    <xsd:element name="jmsToOgsaResponse" type="tns:EmptyType"/>
+
+    <xsd:element name="ogsaToJMS">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element name="ogsaSourceUrlString" type="xsd:string"/>
+          <xsd:element name="ogsaTopicName" type="xsd:string"/>
+          <xsd:element name="jmsTopicName" type="xsd:string"/>
+          <xsd:element name="ogssaToJMSConverterClassName" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>    
+    </xsd:element>
+    <xsd:element name="ogsaToJMSResponse" type="tns:EmptyType"/>
+        
+  </xsd:schema>

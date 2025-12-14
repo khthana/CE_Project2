@@ -1,0 +1,7 @@
+#!/bin/bash
+#get target function field from rule
+#argument1 is file (redirect firewall rule)
+#argument2 is rule number
+rule=`expr $2 + 2`
+#get target function field from file
+targ=`cat $1 | grep -n ' ' | grep -m 1 $rule: | cut -d':' -f2 |cut -b1- | cut -d' ' -f1`

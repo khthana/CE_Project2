@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://giswebservices" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://giswebservices" xmlns:intf="http://giswebservices" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.2.1
+Built on Aug 08, 2005 (11:49:10 PDT)-->
+
+   <wsdl:message name="activateOwnerRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="ownID" type="xsd:int"/>
+
+      <wsdl:part name="isActive" type="xsd:boolean"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="detailOwnerRequest">
+
+      <wsdl:part name="ownerID" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="insertOwnerRequest">
+
+      <wsdl:part name="name" type="xsd:string"/>
+
+      <wsdl:part name="address" type="xsd:string"/>
+
+      <wsdl:part name="phone" type="xsd:string"/>
+
+      <wsdl:part name="email" type="xsd:string"/>
+
+      <wsdl:part name="website" type="xsd:string"/>
+
+      <wsdl:part name="username" type="xsd:string"/>
+
+      <wsdl:part name="password" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="updateOwnerResponse">
+
+      <wsdl:part name="updateOwnerReturn" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="deleteOwnerResponse">
+
+      <wsdl:part name="deleteOwnerReturn" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="searchOwnerResponse">
+
+      <wsdl:part name="searchOwnerReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="activateOwnerResponse">
+
+      <wsdl:part name="activateOwnerReturn" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="updateOwnerRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="name" type="xsd:string"/>
+
+      <wsdl:part name="address" type="xsd:string"/>
+
+      <wsdl:part name="phone" type="xsd:string"/>
+
+      <wsdl:part name="email" type="xsd:string"/>
+
+      <wsdl:part name="website" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="deleteOwnerRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="ownID" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="insertOwnerResponse">
+
+      <wsdl:part name="insertOwnerReturn" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="listOwnerResponse">
+
+      <wsdl:part name="listOwnerReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="detailOwnerResponse">
+
+      <wsdl:part name="detailOwnerReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="listNewOwnerResponse">
+
+      <wsdl:part name="listNewOwnerReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="listOwnerRequest">
+
+   </wsdl:message>
+
+   <wsdl:message name="listNewOwnerRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="searchOwnerRequest">
+
+      <wsdl:part name="name" type="xsd:string"/>
+
+      <wsdl:part name="address" type="xsd:string"/>
+
+      <wsdl:part name="phone" type="xsd:string"/>
+
+      <wsdl:part name="email" type="xsd:string"/>
+
+      <wsdl:part name="website" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="GIS_OwnerServices">
+
+      <wsdl:operation name="insertOwner" parameterOrder="name address phone email website username password">
+
+         <wsdl:input message="impl:insertOwnerRequest" name="insertOwnerRequest"/>
+
+         <wsdl:output message="impl:insertOwnerResponse" name="insertOwnerResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="listOwner">
+
+         <wsdl:input message="impl:listOwnerRequest" name="listOwnerRequest"/>
+
+         <wsdl:output message="impl:listOwnerResponse" name="listOwnerResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchOwner" parameterOrder="name address phone email website">
+
+         <wsdl:input message="impl:searchOwnerRequest" name="searchOwnerRequest"/>
+
+         <wsdl:output message="impl:searchOwnerResponse" name="searchOwnerResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="detailOwner" parameterOrder="ownerID">
+
+         <wsdl:input message="impl:detailOwnerRequest" name="detailOwnerRequest"/>
+
+         <wsdl:output message="impl:detailOwnerResponse" name="detailOwnerResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateOwner" parameterOrder="sessionkey name address phone email website">
+
+         <wsdl:input message="impl:updateOwnerRequest" name="updateOwnerRequest"/>
+
+         <wsdl:output message="impl:updateOwnerResponse" name="updateOwnerResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deleteOwner" parameterOrder="sessionkey ownID">
+
+         <wsdl:input message="impl:deleteOwnerRequest" name="deleteOwnerRequest"/>
+
+         <wsdl:output message="impl:deleteOwnerResponse" name="deleteOwnerResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="listNewOwner" parameterOrder="sessionkey">
+
+         <wsdl:input message="impl:listNewOwnerRequest" name="listNewOwnerRequest"/>
+
+         <wsdl:output message="impl:listNewOwnerResponse" name="listNewOwnerResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="activateOwner" parameterOrder="sessionkey ownID isActive">
+
+         <wsdl:input message="impl:activateOwnerRequest" name="activateOwnerRequest"/>
+
+         <wsdl:output message="impl:activateOwnerResponse" name="activateOwnerResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="GIS_OwnerServicesSoapBinding" type="impl:GIS_OwnerServices">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="insertOwner">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="insertOwnerRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="insertOwnerResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="listOwner">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="listOwnerRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="listOwnerResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchOwner">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="searchOwnerRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="searchOwnerResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="detailOwner">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="detailOwnerRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="detailOwnerResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateOwner">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="updateOwnerRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="updateOwnerResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="deleteOwner">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="deleteOwnerRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="deleteOwnerResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="listNewOwner">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="listNewOwnerRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="listNewOwnerResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="activateOwner">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="activateOwnerRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="activateOwnerResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://giswebservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="GIS_OwnerServicesService">
+
+      <wsdl:port binding="impl:GIS_OwnerServicesSoapBinding" name="GIS_OwnerServices">
+
+         <wsdlsoap:address location="http://localhost:8080/GisServer/services/GIS_OwnerServices"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

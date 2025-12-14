@@ -1,0 +1,34 @@
+#!/bin/bash
+#check anomaly of 2 rules (using relation of 2 rules and target of 2 rules)
+anomaly=NOANOMALY
+#case relation not disjoint
+if [ $relation != disjoint ]
+then
+	#case relation is correlated and target function not equal
+	if [ $relation = correlated ] && [ $targ1 != $targ2 ]
+	then
+		anomaly=CORRELATION
+	#case relation is superset
+	elif [ $relation = superset ]
+	then
+		#case target function is equal (relation is superset)
+		if [ $targ1 = $targ2 ]
+		then
+			anomaly=REDUNDANCY
+		#case target function not equal (relation is superset)
+		else
+			anomaly=GENERALIZATION
+		fi
+	#case relation is exact or subset
+	elif [ $relation = exact ] || [ $relation = subset ]
+	then
+		#case target function is equal (relation is exact or subset)
+		if [ $targ1 = $targ2 ]
+		then
+			anomaly=REDUNDANCY
+		#case target function not equal (relation is exact or subset)
+		else
+			anomaly=SHADOWING
+		fi
+	fi
+fi

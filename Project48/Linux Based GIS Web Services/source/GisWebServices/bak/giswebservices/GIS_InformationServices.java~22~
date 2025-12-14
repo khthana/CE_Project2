@@ -1,0 +1,602 @@
+package giswebservices;
+
+import java.util.LinkedList;
+
+public class GIS_InformationServices {
+    public GIS_InformationServices() {
+    }
+
+    //************************************************ DETAIL INFO
+    public String detailInformation(String sessionkey, int layerID) {
+
+        String sqlstr;
+        int level = 7;
+        long memid = 0;
+
+        //------------to update session
+        try{
+            GisDBConnect gdbs=new GisDBConnect();
+            gdbs.exeSQL("UPDATE session SET time=60 WHERE sessID='"+sessionkey+"' ");
+        }catch(Exception e){}
+
+        try{ // try check level of member
+            GisDBConnect gdb = new GisDBConnect() ;
+            sqlstr = "SELECT ownid, memid, level FROM sessionview ";
+            sqlstr+= "WHERE sessid='"+sessionkey+"';";
+            gdb.query(sqlstr);
+            while (gdb.getReturn().next() ){
+                level=gdb.getReturn().getInt("level");
+                memid=gdb.getReturn().getInt("memid");
+            }
+        }catch(Exception e){return "3";} //Must login before call this services
+
+        if (level<7) sqlstr="SELECT lid, lname FROM layerview WHERE memid=" + memid + " AND lid=" + layerID;
+        else sqlstr="SELECT lid, lname FROM publiclayerview WHERE lid=" + layerID;
+
+        String lname= new String("");
+
+        try{// check about accessible layer of member
+            GisDBConnect gdb = new GisDBConnect() ;
+            gdb.query(sqlstr);
+            gdb.getReturn().next();
+            int lid=0;
+            lid=gdb.getReturn().getInt("lid");
+            lname=gdb.getReturn().getString("lname") ;
+            if (lid!=layerID) return "26";
+        }catch(Exception e){
+            return "26";
+        }
+
+        // get column header
+        LinkedList columnList = new LinkedList();
+        LinkedList datatypeList = new LinkedList();
+        String column[] = new String[1]; column[0]="";
+        String datatype[]= new String[1]; datatype[0]="";
+
+        int size=0;
+        String tbname="tb_"+layerID;
+        try{
+            GisDBConnect gdb = new GisDBConnect() ;
+
+            sqlstr="SELECT  colname, datatype FROM columnview WHERE tbname='" + tbname + "' ";
+            gdb.query(sqlstr);
+
+            while (gdb.getReturn().next()){
+                columnList.add(gdb.getReturn().getString("colname"));
+                datatypeList.add(gdb.getReturn().getString("datatype"));
+                size++;
+            }
+            column = new String[size];
+            datatype = new String[size];
+            for (int i=0; i<size; i++){
+                column[i]=(String)columnList.get(i);
+                datatype[i]=(String)datatypeList.get(i);
+            }
+        }catch(Exception e){
+            return "26";
+        }
+
+        // get data
+        try{
+            GisDBConnect gdb = new GisDBConnect() ;
+            String allcol=" ";
+            for (int i=0; i<size; i++)  allcol+= " , " +column[i];
+
+            sqlstr  = "SELECT id " + allcol ;
+            sqlstr += " FROM " + tbname;
+            gdb.query(sqlstr);
+
+            String xmlstr="<?xml version=\"1.0\"?>\r\n";
+            xmlstr += "<information>\r\n";
+            xmlstr += "  <layer id='"+layerID+"' name='"+lname+"'>\r\n";
+
+            int i=0;
+            while (gdb.getReturn().next()){
+                int id=gdb.getReturn().getInt("id");
+                xmlstr += "    <row id='"+id+"'>\r\n";
+                for (int j=0; j<size; j++){
+                    String name=column[j];
+                    String val =gdb.getReturn().getString(name) ;
+                    xmlstr += "      <data name='"+name+"'>"+val+"</data>\r\n";
+                }
+                xmlstr += "      <data name='geom'>null</data>\r\n";
+                xmlstr += "    </row>\r\n";
+                i++;
+            }
+
+            xmlstr += "  </layer>\r\n";
+            xmlstr += "</information>\r\n";
+            return xmlstr;
+        }catch(Exception e){
+            return "26"+sqlstr;
+        }
+
+    }
+
+    //************************************************ DETAIL INFO
+    public String detailGeomInformation(String sessionkey, int layerID) {
+        try{
+            GisDBConnect gdbs=new GisDBConnect();
+            gdbs.exeSQL("UPDATE session SET time=60 WHERE sessID='"+sessionkey+"' ");
+        }catch(Exception e){}
+
+
+        String sqlstr;
+        int level = 7;
+        long memid = 0;
+        try{ // try check level of member
+            GisDBConnect gdb = new GisDBConnect() ;
+            sqlstr = "SELECT ownid, memid, level FROM sessionview ";
+            sqlstr+= "WHERE sessid='"+sessionkey+"';";
+            gdb.query(sqlstr);
+            while (gdb.getReturn().next() ){
+                level=gdb.getReturn().getInt("level");
+                memid=gdb.getReturn().getInt("memid");
+            }
+        }catch(Exception e){return "3";} //Must login before call this services
+
+        if (level<7) sqlstr="SELECT lid, lname FROM layerview WHERE memid=" + memid + " AND lid=" + layerID;
+        else sqlstr="SELECT lid, lname FROM publiclayerview WHERE lid=" + layerID;
+
+        String lname= new String("");
+
+        try{// check about accessible layer of member
+            GisDBConnect gdb = new GisDBConnect() ;
+            gdb.query(sqlstr);
+            gdb.getReturn().next();
+            int lid=0;
+            lid=gdb.getReturn().getInt("lid");
+            lname=gdb.getReturn().getString("lname") ;
+            if (lid!=layerID) return "26";
+        }catch(Exception e){
+            return "26";
+        }
+
+        // get column header
+        LinkedList columnList = new LinkedList();
+        LinkedList datatypeList = new LinkedList();
+        String column[] = new String[1]; column[0]="";
+        String datatype[]= new String[1]; datatype[0]="";
+
+        int size=0;
+        String tbname="tb_"+layerID;
+        try{
+            GisDBConnect gdb = new GisDBConnect() ;
+
+            sqlstr="SELECT  colname, datatype FROM columnview WHERE tbname='" + tbname + "' ";
+            gdb.query(sqlstr);
+
+            while (gdb.getReturn().next()){
+                columnList.add(gdb.getReturn().getString("colname"));
+                datatypeList.add(gdb.getReturn().getString("datatype"));
+                size++;
+            }
+            column = new String[size];
+            datatype = new String[size];
+            for (int i=0; i<size; i++){
+                column[i]=(String)columnList.get(i);
+                datatype[i]=(String)datatypeList.get(i);
+            }
+        }catch(Exception e){
+            return "26.5";
+        }
+
+        // get data
+        try{
+            GisDBConnect gdb = new GisDBConnect() ;
+            String allcol=" ";
+            for (int i=0; i<size; i++)  allcol+= " , " +column[i];
+
+            sqlstr  = "SELECT id " + allcol ;
+            sqlstr += ", ASTEXT(geom) as geom FROM " + tbname;
+            gdb.query(sqlstr);
+
+            String xmlstr="<?xml version=\"1.0\"?>\r\n";
+            xmlstr += "<information>\r\n";
+            xmlstr += "  <layer id='"+layerID+"' name='"+lname+"'>\r\n";
+
+            int i=0;
+            while (gdb.getReturn().next()){
+                int id=gdb.getReturn().getInt("id");
+                xmlstr += "    <row id='"+id+"'>\r\n";
+                for (int j=0; j<size; j++){
+                    String name=column[j];
+                    String val =gdb.getReturn().getString(name) ;
+                    xmlstr += "      <data name='"+name+"'>"+val+"</data>\r\n";
+                }
+                String geom =gdb.getReturn().getString("geom") ;
+                xmlstr += "      <data name='geom'>"+geom+"</data>\r\n";
+                xmlstr += "    </row>\r\n";
+                i++;
+            }
+
+            xmlstr += "  </layer>\r\n";
+            xmlstr += "</information>\r\n";
+            return xmlstr;
+        }catch(Exception e){
+            return "26.6 "+sqlstr;
+        }
+
+    }
+    //************************************************ DETAIL HEADER
+     public String detailColumn(String sessionkey, int layerID) {
+         try{
+            GisDBConnect gdbs=new GisDBConnect();
+            gdbs.exeSQL("UPDATE session SET time=60 WHERE sessID='"+sessionkey+"' ");
+        }catch(Exception e){}
+
+
+         String sqlstr;
+         int level = 7;
+         long memid = 0;
+         try{ // try check level of member
+             GisDBConnect gdb = new GisDBConnect() ;
+             sqlstr = "SELECT ownid, memid, level FROM sessionview ";
+             sqlstr+= "WHERE sessid='"+sessionkey+"';";
+             gdb.query(sqlstr);
+             while (gdb.getReturn().next() ){
+                 level=gdb.getReturn().getInt("level");
+                 memid=gdb.getReturn().getInt("memid");
+             }
+         }catch(Exception e){return "3";} //Must login before call this services
+
+         if (level<7) sqlstr="SELECT lid, lname FROM layerview WHERE memid=" + memid + " AND lid=" + layerID;
+         else sqlstr="SELECT lid, lname FROM publiclayerview WHERE lid=" + layerID;
+
+         String lname= new String("");
+
+         try{// check about accessible layer of member
+             GisDBConnect gdb = new GisDBConnect() ;
+             gdb.query(sqlstr);
+             gdb.getReturn().next();
+             int lid=0;
+             lid=gdb.getReturn().getInt("lid");
+             lname=gdb.getReturn().getString("lname") ;
+             if (lid!=layerID) return "26";
+         }catch(Exception e){
+             return "26";
+         }
+
+         // get column header
+         LinkedList columnList = new LinkedList();
+         LinkedList datatypeList = new LinkedList();
+         String column[] = new String[1]; column[0]="";
+         String datatype[]= new String[1]; datatype[0]="";
+
+         int size=0;
+         String tbname="tb_"+layerID;
+         try{
+             GisDBConnect gdb = new GisDBConnect() ;
+
+             sqlstr="SELECT  colname, datatype FROM columnview WHERE tbname='" + tbname + "' ";
+             gdb.query(sqlstr);
+
+             while (gdb.getReturn().next()){
+                 columnList.add(gdb.getReturn().getString("colname"));
+                 datatypeList.add(gdb.getReturn().getString("datatype"));
+                 size++;
+             }
+             column = new String[size];
+             datatype = new String[size];
+
+             for (int i=0; i<size; i++){
+                 column[i]=(String)columnList.get(i);
+                 datatype[i]=(String)datatypeList.get(i);
+             }
+
+
+
+         }catch(Exception e){
+             return "26.5";
+         }
+
+         // get column
+         try{
+             String xmlstr="<?xml version=\"1.0\"?>\r\n";
+             xmlstr += "<information>\r\n";
+             xmlstr += "  <layer id='"+layerID+"' name='"+lname+"'>\r\n";
+
+             xmlstr += "    <column name='id' datatype='Integer' />\r\n";
+             for (int i=0; i<size; i++){
+                 xmlstr += "    <column name='" + column[i] +
+                         "' datatype='" + datatype[i] + "' />\r\n";
+             }
+             xmlstr += "    <column name='geom' datatype='geometry' />\r\n";
+             xmlstr += "  </layer>\r\n";
+             xmlstr += "</information>\r\n";
+             return xmlstr;
+         }catch(Exception e){
+             return "26.6 "+sqlstr;
+         }
+
+     }
+
+
+    //************************************************ INSERT INFO
+    public int insertInformation(String sessionkey, String xmlInsert){
+        try{
+            GisDBConnect gdbs=new GisDBConnect();
+            gdbs.exeSQL("UPDATE session SET time=60 WHERE sessID='"+sessionkey+"' ");
+        }catch(Exception e){}
+
+
+        int memid=0;
+        int res=0;
+        try{
+            GisDBConnect gdb = new GisDBConnect();
+            gdb.query("SELECT memid, ownid, level FROM sessionview WHERE sessid='"+sessionkey+"'");
+            gdb.getReturn().next();
+            int level = gdb.getReturn().getInt("level") ;
+            //int ownid = gdb.getReturn().getInt("ownid") ;
+            memid = gdb.getReturn().getInt("memid") ;
+            if (level>4) return 6;
+        }catch(Exception e){
+            return 6;
+        }
+
+        try{
+            GisDBConnect gdb = new GisDBConnect();
+            GisXmlReader gxr=new GisXmlReader(xmlInsert) ;
+            String layerid=gxr.child("layer").attribute("id");
+            String sqlstr = "SELECT tbname FROM writableview ";
+            sqlstr += " WHERE memid="+memid+ " AND lid=" + layerid;
+            gdb.query(sqlstr);
+            gdb.getReturn().next();
+            String tbname = gdb.getReturn().getString("tbname") ;
+
+
+            int nrow = gxr.child("layer").child("row").count();
+
+            gdb.exeSQL("BEGIN");
+            for (int r=0; r<nrow; r++){
+                int nattr=gxr.child("layer").child("row",r).child("attribute").count();
+                LinkedList lstcol= new LinkedList();
+                LinkedList lstdata= new LinkedList();
+                String geom="null";
+                for (int a=0; a<nattr; a++){
+                    try{
+                        String colname = gxr.child("layer").child("row", r).
+                                         child("attribute", a).attribute("name");
+                        String value = gxr.child("layer").child("row",
+                                       r).child("attribute", a).value();
+                        if (colname.compareToIgnoreCase("id")!=0 && colname.compareToIgnoreCase("geom")!=0) {
+                            lstcol.add(colname);
+                            lstdata.add(value);
+                        }
+                        if (colname.compareToIgnoreCase("geom")==0) geom=value;
+                    }catch(Exception ee){}
+                }//-------attr
+                int csize = lstcol.size();
+                String columnname[] = new String[csize];
+                String values[] = new String[csize];
+                for (int i=0; i<csize; i++){
+                    columnname[i]=(String)lstcol.get(i);
+                    values[i]=(String)lstdata.get(i);
+                }
+                //-----------call insert
+                res=insertInfo(tbname,columnname,values,geom);
+            }//-----------row
+            gdb.exeSQL("END");
+            return res;
+        }catch(Exception e){
+            return 27;
+        }
+    }
+
+    private int insertInfo(String tablename, String[] columnnames, String[] datas, String geom){
+
+
+        try{
+            GisDBConnect gdb = new GisDBConnect() ;
+            int size=columnnames.length;
+            String columns=("");
+            String values =("");
+            for (int i=0; i<size-1; i++){
+                columns += columnnames[i]+", ";
+                values  += " '" +datas[i]+"', ";
+            }
+            columns += columnnames[size-1]+" ";
+            values  += " '" +datas[size-1]+"' ";
+            if (geom.length() >10){
+                columns += ", geom ";
+                values += ", GeomFromText('" + geom + "', -1) ";
+            }
+            String sqlstr ="";
+            sqlstr += "INSERT INTO " + tablename + " ";
+            sqlstr += "(" + columns + ") ";
+            sqlstr += "VALUES (" + values + ") ";
+            gdb.exeSQL(sqlstr);
+
+            return 101;
+        }catch(Exception e){
+            return 14;
+        }
+
+    }
+
+    //************************************************ UPDATE INFO
+     public int updateInformation(String sessionkey, String xmlInsert){
+         try{
+            GisDBConnect gdbs=new GisDBConnect();
+            gdbs.exeSQL("UPDATE session SET time=60 WHERE sessID='"+sessionkey+"' ");
+        }catch(Exception e){}
+
+
+         int memid=0;
+         int res=0;
+         try{
+             GisDBConnect gdb = new GisDBConnect();
+             gdb.query("SELECT memid, ownid, level FROM sessionview WHERE sessid='"+sessionkey+"'");
+             gdb.getReturn().next();
+             int level = gdb.getReturn().getInt("level") ;
+             //int ownid = gdb.getReturn().getInt("ownid") ;
+             memid = gdb.getReturn().getInt("memid") ;
+             if (level>4) return 6;
+         }catch(Exception e){
+             return 6;
+         }
+
+         try{
+             GisDBConnect gdb = new GisDBConnect();
+             GisXmlReader gxr=new GisXmlReader(xmlInsert) ;
+             String layerid=gxr.child("layer").attribute("id");
+             String sqlstr = "SELECT tbname FROM writableview ";
+             sqlstr += " WHERE memid="+memid+ " AND lid=" + layerid;
+             gdb.query(sqlstr);
+             gdb.getReturn().next();
+             String tbname = gdb.getReturn().getString("tbname") ;
+
+
+             int nrow = gxr.child("layer").child("row").count();
+
+             gdb.exeSQL("BEGIN");
+             for (int r=0; r<nrow; r++){
+                 int rowID=Integer.parseInt(gxr.child("layer").child("row",r).attribute("id"));
+                 int nattr=gxr.child("layer").child("row",r).child("attribute").count();
+                 LinkedList lstcol= new LinkedList();
+                 LinkedList lstdata= new LinkedList();
+                 String geom="null";
+                 for (int a=0; a<nattr; a++){
+                     try{
+                         String colname = gxr.child("layer").child("row", r).
+                                          child("attribute", a).attribute("name");
+                         String value = gxr.child("layer").child("row",
+                                        r).child("attribute", a).value();
+                         if (colname.compareToIgnoreCase("id")!=0 && colname.compareToIgnoreCase("geom")!=0) {
+                             lstcol.add(colname);
+                             lstdata.add(value);
+                         }
+                         if (colname.compareToIgnoreCase("geom")==0) geom=value;
+                     }catch(Exception ee){}
+                 }//-------attr
+                 int csize = lstcol.size();
+                 String columnname[] = new String[csize];
+                 String values[] = new String[csize];
+                 for (int i=0; i<csize; i++){
+                     columnname[i]=(String)lstcol.get(i);
+                     values[i]=(String)lstdata.get(i);
+                 }
+                 //-----------call insert
+                 res=updateInfo(tbname,rowID,columnname,values,geom);
+             }//-----------row
+             gdb.exeSQL("END");
+             return res;
+         }catch(Exception e){
+             return 28;
+         }
+     }
+
+
+     private int updateInfo(String tablename,int id, String[] columnnames, String[] datas, String geom){
+          try{
+              GisDBConnect gdb = new GisDBConnect() ;
+              int size=columnnames.length;
+              String set=("");
+              for (int i=0; i<size-1; i++){
+                  set += " "+columnnames[i]+"='"+datas[i]+"', ";
+              }
+              set += " "+columnnames[size-1]+"='"+datas[size-1]+"' ";
+              if (geom.length() >10){
+                  set+=", geom=GeomFromText('" + geom + "', -1) ";
+              }
+              String sqlstr ="";
+              sqlstr += "UPDATE " + tablename + " ";
+              sqlstr += "SET " + set + " ";
+              sqlstr += "WHERE id=" + id + " ";
+              gdb.exeSQL(sqlstr);
+
+              return 101;
+          }catch(Exception e){
+              return 14;
+          }
+
+      }
+
+    //************************************************ DELETE INFO
+    public int deleteInformation(String sessionkey, int layerID, int rowID){
+        try{
+            GisDBConnect gdbs=new GisDBConnect();
+            gdbs.exeSQL("UPDATE session SET time=60 WHERE sessID='"+sessionkey+"' ");
+        }catch(Exception e){}
+
+
+         int memid=0;
+         int res=0;
+         try{
+             GisDBConnect gdb = new GisDBConnect();
+             gdb.query("SELECT memid, ownid, level FROM sessionview WHERE sessid='"+sessionkey+"'");
+             gdb.getReturn().next();
+             int level = gdb.getReturn().getInt("level") ;
+             //int ownid = gdb.getReturn().getInt("ownid") ;
+             memid = gdb.getReturn().getInt("memid") ;
+             if (level>4) return 6;
+         }catch(Exception e){
+             return 6;
+         }
+
+         try{
+             GisDBConnect gdb = new GisDBConnect();
+             String sqlstr = "SELECT tbname FROM writableview ";
+             sqlstr += " WHERE memid="+memid+ " AND lid=" + layerID;
+             gdb.query(sqlstr);
+             gdb.getReturn().next();
+             String tbname = gdb.getReturn().getString("tbname") ;
+             sqlstr = "DELETE FROM " + tbname + " WHERE id="+rowID;
+             gdb.exeSQL(sqlstr);
+             return 101;
+         }catch(Exception e){
+             return 29;
+         }
+     }
+
+     //******************************************************* ADD PIN
+    public int insertPin(String sessionkey, String xmlpin){
+        try{
+            GisDBConnect gdbs=new GisDBConnect();
+            gdbs.exeSQL("UPDATE session SET time=60 WHERE sessID='"+sessionkey+"' ");
+        }catch(Exception e){}
+
+        int memid=44;
+        try{
+            GisDBConnect gdb = new GisDBConnect();
+            gdb.query("SELECT memid FROM session WHERE sessid='"+sessionkey+"'");
+            gdb.getReturn().next();
+            memid = gdb.getReturn().getInt("memid") ;
+        }catch(Exception e){
+            //return 6;
+        }
+
+        try{
+            GisDBConnect gdb = new GisDBConnect();
+            GisXmlReader gxr = new GisXmlReader(xmlpin);
+            gdb.exeSQL("BEGIN");
+            int ipset =gxr.child("pinset").count();
+            for (int i=0; i<ipset; i++){
+                String pset = gxr.child("pset").attribute("pset");
+                int jpin = gxr.child("pset").child("pin").count();
+                for (int j=0; j<jpin; j++){
+                    String pname=gxr.child("pset").child("pin").attribute("pname");
+                    String px=gxr.child("pset").child("pin").attribute("px");
+                    String py=gxr.child("pset").child("pin").attribute("py");
+                    String pclass=gxr.child("pset").child("pin").attribute("pclass");
+                    String sqlstr = " INSERT INTO pinmap (pname, pset, pclass, px, py, memid) ";
+                    sqlstr += " VALUES ( '" + pname +"' ";
+                    sqlstr += " , '" + pset +"' ";
+                    sqlstr += " , '" + pclass +"' ";
+                    sqlstr += " , " + px +" ";
+                    sqlstr += " , " + py +" ";
+                    sqlstr += " , " + memid +" ); ";
+                    gdb.exeSQL(sqlstr);
+                }//for j
+            }//for i
+            gdb.exeSQL("END");
+            return 101;
+        }catch(Exception e){
+            return 14;
+        }
+
+
+    }
+
+
+}

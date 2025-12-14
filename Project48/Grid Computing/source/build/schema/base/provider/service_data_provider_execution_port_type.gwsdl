@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="ServiceDataProviderExecution"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             targetNamespace="http://www.globus.org/namespaces/2003/04/service_data_provider_execution"
+             xmlns:tns="http://www.globus.org/namespaces/2003/04/service_data_provider_execution"
+             xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        
+<types>
+  <xsd:schema targetNamespace="http://www.globus.org/namespaces/2003/04/service_data_provider_execution"
+              xmlns:tns="http://www.globus.org/namespaces/2003/04/service_data_provider_execution"
+              xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions"
+              xmlns:xsd="http://www.w3.org/2001/XMLSchema">	     
+
+    <xsd:complexType name="ServiceDataProvidersElement">
+      <xsd:sequence>
+        <xsd:element name="ServiceDataProviders" type="tns:ServiceDataProviderEnumType" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+	
+    <xsd:complexType name="ServiceDataProviderEnumType">
+        <xsd:sequence>
+          <xsd:element name="providerName" type="xsd:string" />
+          <xsd:element name="providerDesc" type="xsd:string" />
+          <xsd:element name="providerImpl" type="xsd:string" />
+          <xsd:element name="defaultArgs" type="xsd:string" />
+          <xsd:element name="async" type="xsd:boolean" />		
+        </xsd:sequence>
+    </xsd:complexType>	  	   
+
+    <xsd:element name="enumProviders" type="xsd:boolean"/>           
+    <xsd:element name="enumProvidersResponse" type="tns:ServiceDataProvidersElement"/>
+    	  
+	<xsd:complexType name="ServiceDataProviderExecutionElement">
+	  <xsd:sequence>
+            <xsd:element name="ServiceDataProviderExecution" type="tns:ServiceDataProviderExecutionType"/>
+	  </xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="ServiceDataProviderExecutionType">
+            <xsd:sequence>
+              <xsd:element name="serviceDataProviderName" type="xsd:string" />
+              <xsd:element name="serviceDataProviderImpl" type="xsd:string" />
+              <xsd:element name="serviceDataProviderArgs" type="xsd:string" />
+              <xsd:element name="serviceDataName" type="xsd:QName" />
+              <xsd:element name="refreshFrequency" type="xsd:int" />
+              <xsd:element name="async" type="xsd:boolean" />	
+            </xsd:sequence>
+	</xsd:complexType>
+    	        
+    <xsd:element name="executeProvider" type="tns:ServiceDataProviderExecutionElement"/>
+    <xsd:element name="executeProviderResponse"/>
+            
+  </xsd:schema>
+</types>
+
+<message name="ServiceDataProviderExecutionInputMessage">
+ <part name="parameters" element="tns:executeProvider"/>
+</message>
+
+<message name="ServiceDataProviderExecutionOutputMessage">
+ <part name="parameters" element="tns:executeProviderResponse"/>
+</message>
+
+<message name="ServiceDataProviderEnumInputMessage">
+ <part name="parameters" element="tns:enumProviders"/>
+</message>
+
+<message name="ServiceDataProviderEnumOutputMessage">
+ <part name="parameters" element="tns:enumProvidersResponse"/>
+</message>
+
+<gwsdl:portType name="ServiceDataProviderExecutionPortType">
+  <operation name="executeProvider">
+    <input message="tns:ServiceDataProviderExecutionInputMessage"/>  
+  </operation>  
+  <operation name="enumProviders">
+    <input message="tns:ServiceDataProviderEnumInputMessage"/>
+    <output message="tns:ServiceDataProviderEnumOutputMessage"/>
+  </operation>    
+</gwsdl:portType>
+
+</definitions>

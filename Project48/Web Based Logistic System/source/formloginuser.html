@@ -1,0 +1,80 @@
+<HTML>
+<HEAD>
+<TITLE>Login</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-874">
+</HEAD>
+<BODY BGCOLOR=#FFFFFF LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0>
+<!-- ImageReady Slices (Login.psd) -->
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<TABLE WIDTH=247 BORDER=0 align="center" CELLPADDING=0 CELLSPACING=0>
+  <TR> 
+    <TD height="27" colspan="3"> <div align="center"><IMG SRC="images/Login_01.gif" WIDTH=25 HEIGHT=27 ALT=""><IMG SRC="images/Login_02.gif" WIDTH=100 HEIGHT=27 ALT=""><img src="images/Login_03.gif" width=118 height=27 alt=""><IMG SRC="images/Login_04.gif" WIDTH=32 HEIGHT=27 ALT=""></div></TD>
+  </TR>
+  <TR> 
+    <TD height="15" colspan="3"> <div align="center"><IMG SRC="images/Login_05.gif" WIDTH=31 HEIGHT=15 ALT=""><img src="images/Login_06.gif" width=105 height=15 alt=""><IMG SRC="images/Login_07.gif" WIDTH=107 HEIGHT=15 ALT=""><IMG SRC="images/Login_08.gif" WIDTH=32 HEIGHT=15 ALT=""></div></TD>
+  </TR>
+  <TR> 
+    <TD width="7%" height="120" valign="top" bgcolor="#FFCC00"> <div align="center"><br>
+      </div></TD>
+    <TD width="86%" valign="top" bgcolor="#FFFFCC" ><form name="form1" method="post" action="formloginuser.php" >
+        <blockquote> 
+          <div align="center"><font size="1" face="Microsoft Sans Serif, MS Sans Serif, sans-serif"><strong>Username: 
+            </strong></font> <strong><font face="Microsoft Sans Serif, MS Sans Serif, sans-serif"> 
+            <input type="text" name="user_name">
+            <br>
+            <font size="1">Password</font></font></strong>: <font face="Microsoft Sans Serif, MS Sans Serif, sans-serif"> 
+            <input type="password" name="password">
+            <br>
+            <input type="hidden" name="type" value="2">
+            <br>
+            <input type="submit" name="Submit" value="ตกลง">
+            </font></div>
+        </blockquote>
+      </form></TD>
+    <TD width="7%" valign="top" bgcolor="#FFCC00"><div align="center"><br>
+      </div></TD>
+  </TR>
+  <TR> 
+    <TD colspan="3"> <div align="center"><IMG SRC="images/Login_12.gif" WIDTH=31  ALT=""><IMG SRC="images/Login_13.gif" WIDTH=105 HEIGHT=16 ALT=""><IMG SRC="images/Login_14.gif" WIDTH=107 HEIGHT=16 ALT=""><IMG SRC="images/Login_15.gif" WIDTH=32 HEIGHT=16 ALT=""></div></TD>
+  </TR>
+  <TR> 
+    <TD colspan="3"> <div align="center"><IMG SRC="images/Login_16.gif" WIDTH=31 HEIGHT=18 ALT=""><IMG SRC="images/Login_17.gif" WIDTH=105 HEIGHT=18 ALT=""><IMG SRC="images/Login_18.gif" WIDTH=107 HEIGHT=18 ALT=""><IMG SRC="images/Login_19.gif" WIDTH=32 HEIGHT=18 ALT=""></div></TD>
+  </TR>
+  <TR>
+    <TD colspan="3"><?
+$username=$_POST[user_name];
+$password=$_POST[password];
+if($username=="" or $password=="")
+{
+	print("ท่านกรอกข้อมูลไม่ถูกต้อง");
+exit();
+}else{
+include "connect.php";
+$sql="select * from user where id_user='$username' and password='$password'";
+$result=mysql_db_query($dbname,$sql);
+
+if($result){
+	session_start();
+	$array=mysql_fetch_array($result);
+	$name=$array[name];
+	$lname=$array[sername];
+	$sess_userid=$username;
+	$_SESSION[sess_name]=$name;
+	$_SESSION[sess_lname]=$lname;
+	$_SESSION[session_id]=$session_id;
+	print"<meta http-equiv=\"refresh\" content=\"0;url=about.php\">";       exit();
+	
+	}
+	else{
+	print("ไม่อนุญาติให้ใช้งานในส่วนนี้เนื่องจาก<br>");
+	print("ท่านกรอกข้อมูลไม่ถูกต้อง");
+}
+}
+
+?></TD>
+  </TR>
+</TABLE>
+<!-- End ImageReady Slices -->
+</BODY>
+</HTML>

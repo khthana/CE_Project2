@@ -1,0 +1,348 @@
+package giswebservices;
+
+public class GIS_LayerServices {
+    public GIS_LayerServices() {}
+
+    //*********************************************************** INSERT LAYER
+    public int insertLayer(String sessionkey,String name, boolean isPublic, String geomType,
+                           String xmlTable){
+
+        GisDBConnect gdb;
+        int id=0;
+        String sqlstr = new String();
+
+        //----------------------------------- check authen
+        try{
+              gdb=new GisDBConnect();
+              gdb.query("SELECT ownid, level FROM sessionview WHERE sessid='"+sessionkey+"'");
+              gdb.getReturn().next();
+              id = gdb.getReturn().getInt("ownid") ;
+              int level = gdb.getReturn().getInt("level") ;
+              if (level>2) return 5;
+        }catch(Exception e){
+              //return 3;
+        }
+
+        //------------------------------- check layer integrity
+        try{
+            gdb=new GisDBConnect();
+            boolean hasThisLayer=false;
+            sqlstr = "SELECT * FROM layer WHERE ";
+            sqlstr+= " LOWER(name)='"+name.toLowerCase()+"' AND ";
+            sqlstr+= " ownid="+id;
+            while (gdb.getReturn().next() ){
+                hasThisLayer=true;
+            }
+            if (hasThisLayer==true) return 9;
+
+        }catch(Exception e){
+              //return 9;
+        }
+
+
+        //------------------------------ create layer
+        try{
+            gdb=new GisDBConnect();
+            int isPub=0;
+            if (isPublic==true) isPub=1;
+
+            gdb.exeSQL("BEGIN") ;
+            //---sql command insert to LAYER---
+            sqlstr = "INSERT INTO LAYER";
+            sqlstr += "(name, public, geomtype, ownID)";
+            sqlstr += "VALUES ('";
+            sqlstr += name + "', " + isPub + ", '" + geomType + "', " + id + ");" ;
+
+            gdb.exeSQL(sqlstr) ;
+
+            //---get LID---
+            gdb.query("SELECT last_value FROM layer_seq;");
+            gdb.getReturn().next() ;
+            int layerID =  gdb.getReturn().getInt("last_value") ;
+
+            gdb.query("SELECT tbname, geomtype FROM LAYER WHERE LID=" + layerID + " ;");
+            gdb.getReturn().next() ;
+            String tbname = gdb.getReturn().getString(1) ;
+            String geomtype = gdb.getReturn().getString(2) ;
+            String seqnum = tbname+"_seq";
+
+            //---read xml---
+            GisXmlReader gxr = new GisXmlReader(xmlTable) ;
+
+            gdb.exeSQL("create sequence " + seqnum + " minvalue 1001;");
+
+            sqlstr="CREATE TABLE " + tbname + " ( ID int default nextval('" + seqnum + "') , ";
+            for (int i=0; i<gxr.child("attribute").count() ; i++){
+                sqlstr += gxr.child("attribute",i).value()   + " " + gxr.child("attribute",i).attribute("datatype")   + " , ";
+            }
+
+            sqlstr +=" PRIMARY KEY (ID) );";
+
+            gdb.exeSQL(sqlstr) ;
+
+            sqlstr = "SELECT AddGeometryColumn ('GISWSDB','" + tbname.toLowerCase()   +"' , 'geom' , -1 , '" + geomtype.toUpperCase()  + "' , 2) ;";
+            gdb.exeSQL(sqlstr) ;
+            gdb.exeSQL("END") ;
+
+            return layerID;
+        }catch (Exception e){
+            return 16 ;
+        }
+    }
+
+    //************************************************************** LIST LAYER
+
+     public String listLayer (String sessionkey){
+         String listlayer = new String() ;
+         listlayer = searchLayer(sessionkey,"");
+         return listlayer;
+     }
+
+    //************************************************************* SEARCH LAYER
+     public String searchLayer (String sessionkey, String likeName){
+        //int ownID=0;
+        int memID=0;
+        int level=7;
+        String sqlstr = new String("");
+        String xmllayer=new String("");
+        String option = new String("");
+        if (likeName.length()>0) option=" AND lower(lname) LIKE '%" + likeName.toLowerCase()  + "%' ";
+
+        //----------------------------------- check authen
+        try{
+              GisDBConnect gdb=new GisDBConnect();
+              gdb.query("SELECT memid,ownid, level FROM sessionview WHERE sessid='"+sessionkey+"'");
+              gdb.getReturn().next();
+              //ownID = gdb.getReturn().getInt("ownid") ;
+              memID = gdb.getReturn().getInt("memid") ;
+              level = gdb.getReturn().getInt("level") ;
+        }catch(Exception e){
+              level=7;
+        }
+
+        //----------------------------------- estabish condition to query
+        if (level<7) sqlstr="SELECT * FROM layerview WHERE memid=" + memID;
+        else sqlstr="SELECT * FROM publiclayerview WHERE 1 ";
+        sqlstr += option ;
+
+        //----------------------------------- query
+       try{
+            xmllayer += "<?xml version=\"1.0\"?>\r\n";
+            xmllayer += "<listlayer>\r\n";
+
+            GisDBConnect gdb=new GisDBConnect();
+            GisDBConnect gdbx=new GisDBConnect();
+            gdb.query(sqlstr);
+            while (gdb.getReturn().next() ){
+                try{
+                    int lid = gdb.getReturn().getInt("lid");
+                    String lname = gdb.getReturn().getString("lname");
+                    String owner = gdb.getReturn().getString("ownname");
+                    String tbname = gdb.getReturn().getString("tbname");
+                    String geomtype = gdb.getReturn().getString("geomtype");
+                    xmllayer += "  <layer id='"+lid+"' name='"+lname+"' owner='"+owner+"' geomtype='"+geomtype+"' >\r\n";
+                    gdbx.query("SELECT * FROM columnview WHERE tbname='"+tbname.toLowerCase()+"' ;") ;
+                    xmllayer += "    <attribute datatype='integer'>id</attribute>\r\n";
+                    while (gdbx.getReturn().next()){
+                        String columnname=gdbx.getReturn().getString("colname");
+                        String datatype=gdbx.getReturn().getString("datatype");
+                        xmllayer += "    <attribute datatype='"+datatype+"'>"+columnname+"</attribute>\r\n";
+                    }
+                }catch(Exception e){
+
+                }
+                xmllayer += "  </layer>\r\n";
+            }
+            xmllayer += "</listlayer>\r\n";
+            return xmllayer;
+        }catch (Exception e){}
+
+        return sqlstr;
+
+     }
+
+     //********************************************************* DELETE LAYER
+    public int deleteLayer(String sessionkey, int layerID){
+        int level=7;
+        int ownid=0;
+        GisDBConnect gdb;
+
+         //-------------- check is logging in owner
+         try{
+             gdb = new GisDBConnect();
+             gdb.query("SELECT level,ownid FROM sessionview WHERE sessid='"+sessionkey+"'");
+             gdb.getReturn().next();
+             level = gdb.getReturn().getInt("level") ;
+             ownid = gdb.getReturn().getInt("ownid") ;
+             if (level>2) return 5;
+         }catch(Exception e){
+             return 4;
+         }
+
+         try{
+              String sqlstr=new String("");
+              String tbname="null";
+
+
+
+              sqlstr += "SELECT tbname FROM layer WHERE lid="+layerID+" AND ownid="+ownid;
+              tbname = gdb.getReturn().getString("tbname") ;
+
+              if (tbname.toLowerCase().indexOf("tb_")>0){
+
+                  sqlstr = "DELETE FROM layer WHERE lid=" + layerID + " AND ownid=" + ownid;
+                  gdb.exeSQL(sqlstr);
+
+                  gdb.exeSQL("BEGIN");
+                  sqlstr = "DROP SEQUENCE " + tbname + "_seq ";
+                  gdb.exeSQL(sqlstr);
+
+                  sqlstr = "DROP TABLE " + tbname;
+                  gdb.exeSQL(sqlstr);
+                  gdb.exeSQL("END");
+              }
+           }catch(Exception e){
+               return 16;
+           }
+
+        return layerID;
+    }
+
+    //******************************************************** UPDATE LAYER
+    public int updateLayer(String sessionkey, int layerID, String layerName){
+         int level=7;
+         int ownid=0;
+         GisDBConnect gdb;
+
+          //-------------- check is logging in root
+          try{
+              gdb = new GisDBConnect();
+              gdb.query("SELECT level,ownid FROM sessionview WHERE sessid='"+sessionkey+"'");
+              gdb.getReturn().next();
+              level = gdb.getReturn().getInt("level") ;
+              ownid = gdb.getReturn().getInt("ownid") ;
+              if (level>2) return 5;
+          }catch(Exception e){
+              return 4;
+          }
+
+          //-------------- check for real owner
+          try{
+              gdb = new GisDBConnect();
+              gdb.query("SELECT ownid FROM layer WHERE lid=" + layerID);
+              gdb.getReturn().next();
+              int ownerx=1;
+              ownerx=gdb.getReturn().getInt("ownid") ;
+              if (ownid!=ownerx) return 11;
+          }catch(Exception e){
+              return 11;
+          }
+
+          //------------- continue update
+          try{
+               String sqlstr = "UPDATE layer ";
+               sqlstr+=" SET name='" + layerName + "' ";
+               sqlstr+=" WHERE lid=" + layerID + " AND ownid=" + ownid;
+               gdb.exeSQL(sqlstr);
+
+            }catch(Exception e){
+                return 15;
+            }
+
+         return layerID;
+     }
+
+     //******************************************************** PUBLIC LAYER
+    public int publicLayer(String sessionkey, int layerID, boolean isPublic){
+         int level=7;
+         int ownid=0;
+         GisDBConnect gdb;
+
+          //-------------- check is logging in root
+          try{
+              gdb = new GisDBConnect();
+              gdb.query("SELECT level,ownid FROM sessionview WHERE sessid='"+sessionkey+"'");
+              gdb.getReturn().next();
+              level = gdb.getReturn().getInt("level") ;
+              ownid = gdb.getReturn().getInt("ownid") ;
+              if (level>2) return 5;
+          }catch(Exception e){
+              return 4;
+          }
+
+          //-------------- check for real owner
+          try{
+              gdb = new GisDBConnect();
+              gdb.query("SELECT ownid FROM layer WHERE lid=" + layerID);
+              gdb.getReturn().next();
+              int ownerx=1;
+              ownerx=gdb.getReturn().getInt("ownid") ;
+              if (ownid!=ownerx) return 11;
+          }catch(Exception e){
+              return 11;
+          }
+
+          int pub=0;
+          if(isPublic==true) pub=1;
+          //------------- continue update
+          try{
+               String sqlstr = "UPDATE layer ";
+               sqlstr+=" SET public=" + pub;
+               sqlstr+=" WHERE lid=" + layerID + " AND ownid=" + ownid;
+               gdb.exeSQL(sqlstr);
+
+            }catch(Exception e){
+                return 15;
+            }
+
+         return layerID;
+     }
+
+     //*********************************************** LIST MY LAYER
+     public String listMyLayer(String sessionkey){
+         int level=7;
+         int ownid=0;
+         GisDBConnect gdb;
+
+          //-------------- check is logging in owner
+          try{
+              gdb = new GisDBConnect();
+              gdb.query("SELECT level,ownid FROM sessionview WHERE sessid='"+sessionkey+"'");
+              gdb.getReturn().next();
+              level = gdb.getReturn().getInt("level") ;
+              ownid = gdb.getReturn().getInt("ownid") ;
+              if (level>2) return "5";
+          }catch(Exception e){
+              return "4";
+          }
+
+          //-------------- continue
+          try{
+              gdb = new GisDBConnect();
+              String xmllayer=new String("");
+              xmllayer += "<?xml version=\"1.0\"?>\r\n";
+              xmllayer += "<listlayer>\r\n";
+              String sqlstr= "SELECT * FROM layer WHERE ownid=" + ownid +" ORDER BY name";
+              gdb.query(sqlstr);
+              while (gdb.getReturn().next() ){
+                  try {
+                      int lid = gdb.getReturn().getInt("lid");
+                      int pub = gdb.getReturn().getInt("public");
+                      String lname = gdb.getReturn().getString("name");
+                      String geomtype = gdb.getReturn().getString("geomtype");
+                      String status = "private";
+                      if (pub==1) status="public";
+                      xmllayer += "  <layer id='"+lid+"' status='"+status+"' geomtype='"+geomtype+"' >"+lname+"</layer>\r\n";
+                  } catch (Exception e) {
+
+                  }
+              }
+
+              xmllayer += "</listlayer>\r\n";
+              return xmllayer;
+          }catch(Exception e){
+              return "25";
+          }
+     }
+
+}

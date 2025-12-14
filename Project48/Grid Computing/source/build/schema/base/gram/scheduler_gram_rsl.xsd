@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.globus.org/namespaces/2004/02/rsl/gram/scheduler"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+            xmlns:rsl="http://www.globus.org/namespaces/2004/02/rsl"
+            xmlns:gram="http://www.globus.org/namespaces/2004/02/rsl/gram"
+            xmlns:scheduler="http://www.globus.org/namespaces/2004/02/rsl/gram/scheduler"
+            xmlns="http://www.globus.org/namespaces/2004/02/rsl/gram/scheduler"
+            elementFormDefault="qualified">
+
+    <xsd:import namespace="http://www.globus.org/namespaces/2004/02/rsl"
+                schemaLocation="rsl.xsd"/>
+
+    <xsd:import namespace="http://www.globus.org/namespaces/2004/02/rsl/gram"
+                schemaLocation="gram_rsl.xsd"/>
+
+    <!--=====================================================================-->
+    <!--                   scheduler attribute definitions                         -->
+    <!--=====================================================================-->
+
+    <xsd:element name="emailAddress" type="rsl:stringType">
+        <xsd:annotation>
+            <xsd:documentation>
+                Set the email address to receive notifications. See the
+                emailOnAll, emailOnNone, emailOnAbort, emailOnExecution,
+                and emailOnTermination attributes.
+                ValidWhen: GLOBUS_GRAM_JOB_SUBMIT
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:element name="emailOnAll" type="rsl:booleanType">
+        <xsd:annotation>
+            <xsd:documentation>
+                Send email to the address specified in the emailAddress
+                attribute for all situations that the scheduler supports email
+                notifications.
+                Values: true, false
+                ValidWhen: GLOBUS_GRAM_JOB_SUBMIT
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:element name="emailOnNone" type="rsl:booleanType">
+        <xsd:annotation>
+            <xsd:documentation>
+                Never send email notifications for any reason.
+                Values: true, false
+                ValidWhen: GLOBUS_GRAM_JOB_SUBMIT
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:element name="emailOnAbort" type="rsl:booleanType">
+        <xsd:annotation>
+            <xsd:documentation>
+                Send email to the address specified in the emailAddress
+                attribute if the job is aborted (i.e. terminates abnormally) by
+                the scheduler.
+                Values: true, false
+                ValidWhen: GLOBUS_GRAM_JOB_SUBMIT
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:element name="emailOnExecution" type="rsl:booleanType">
+        <xsd:annotation>
+            <xsd:documentation>
+                Send email to the address specified in the emailAddress
+                attribute when the job begins execution or when it is
+                checkpointed (if checkpointing is supported).
+                Values: true, false
+                ValidWhen: GLOBUS_GRAM_JOB_SUBMIT
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:element name="emailOnTermination" type="rsl:booleanType">
+        <xsd:annotation>
+            <xsd:documentation>
+                Send email to the address specified in the emailAddress
+                attribute when the job terminates.
+                Values: true, false
+                ValidWhen: GLOBUS_GRAM_JOB_SUBMIT
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+
+    <!--=====================================================================-->
+    <!--           model groups for scheduler attribute collections                -->
+    <!--=====================================================================-->
+
+    <!-- attributes directly related to the running of the executable -->
+    <xsd:group name="requiredEmailNotificationAttributes">
+        <xsd:sequence>
+            <xsd:element    ref="scheduler:emailAddress"
+                            minOccurs="1"
+                            maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:group>
+
+    <xsd:group name="absoluteEmailNotificationAttributes">
+        <xsd:sequence>
+            <xsd:element    ref="scheduler:emailOnAll"
+                            minOccurs="0"
+                            maxOccurs="1"/>
+            <xsd:element    ref="scheduler:emailOnNone"
+                            minOccurs="0"
+                            maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:group>
+
+    <xsd:group name="specificEmailNotificationAttributes">
+        <xsd:sequence>
+            <xsd:element    ref="scheduler:emailOnAbort"
+                            minOccurs="0"
+                            maxOccurs="1"/>
+            <xsd:element    ref="scheduler:emailOnExecution"
+                            minOccurs="0"
+                            maxOccurs="1"/>
+            <xsd:element    ref="scheduler:emailOnTermination"
+                            minOccurs="0"
+                            maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:group>
+
+
+    <!-- scheduler job attributes type definition -->
+    <xsd:complexType name="jobType">
+        <xsd:complexContent>
+            <xsd:extension base="gram:jobType">
+                <xsd:sequence>
+                    <xsd:group
+                        ref="scheduler:requiredEmailNotificationAttributes"
+                        minOccurs="1"
+                        maxOccurs="1"/>
+                    <xsd:choice>
+                        <xsd:group
+                            ref="scheduler:absoluteEmailNotificationAttributes"
+                            minOccurs="0"
+                            maxOccurs="1"/>
+                        <xsd:group
+                            ref="scheduler:specificEmailNotificationAttributes"
+                            minOccurs="0"
+                            maxOccurs="1"/>
+                    </xsd:choice>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="jobAndAnyType">
+        <xsd:complexContent>
+            <xsd:extension base="scheduler:jobType">
+                <xsd:sequence>
+                    <xsd:any        namespace="##other"
+                                    minOccurs="0"
+                                    maxOccurs="unbounded"
+                                    processContents="lax"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+
+    <xsd:element name="job"
+                 type="scheduler:jobAndAnyType"
+                 substitutionGroup="rsl:content"/>
+
+</xsd:schema>

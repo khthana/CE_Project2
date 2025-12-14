@@ -1,0 +1,194 @@
+package gis_application;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import com.borland.jbcl.layout.XYLayout;
+import com.borland.jbcl.layout.*;
+import java.awt.Font;
+import javax.swing.BorderFactory;
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
+import java.awt.Color;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.border.TitledBorder;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class frmAppOrg extends JFrame {
+    JPanel contentPane;
+    XYLayout xYLayout1 = new XYLayout();
+
+    JLabel jLabel3 = new JLabel();
+    JLabel jLabel4 = new JLabel();
+    JLabel jLabel5 = new JLabel();
+    JLabel jLabel6 = new JLabel();
+    JLabel jLabel7 = new JLabel();
+    JLabel jLabel8 = new JLabel();
+    JLabel jLabel9 = new JLabel();
+    JTextField txtName = new JTextField();
+    JTextField txtUsername = new JTextField();
+    JTextField txtPhone = new JTextField();
+    JTextField txtEmail = new JTextField();
+    JPasswordField txtPassword0 = new JPasswordField();
+    JPasswordField txtPassword1 = new JPasswordField();
+    JTextArea txtAddress = new JTextArea();
+    Border border1 = BorderFactory.createLineBorder(UIManager.getColor(
+            "inactiveCaption"), 1);
+    JButton appButt = new JButton();
+  TitledBorder titledBorder1 = new TitledBorder("");
+  TitledBorder titledBorder2 = new TitledBorder("");
+  TitledBorder titledBorder3 = new TitledBorder("");
+  TitledBorder titledBorder4 = new TitledBorder("");
+  TitledBorder titledBorder5 = new TitledBorder("");
+  TitledBorder titledBorder6 = new TitledBorder("");
+  TitledBorder titledBorder7 = new TitledBorder("");
+  TitledBorder titledBorder8 = new TitledBorder("");
+  JTextField txtWebsite = new JTextField();
+  JLabel jLabel1 = new JLabel();
+
+  public frmAppOrg() {
+        try {
+            //setDefaultCloseOperation(EXIT_ON_CLOSE);
+            jbInit();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Component initialization.
+     *
+     * @throws java.lang.Exception
+     */
+    private void jbInit() throws Exception {
+        contentPane = (JPanel) getContentPane();
+        contentPane.setLayout(xYLayout1);
+        setSize(new Dimension(400, 480));
+        setTitle("Apply for Organization");
+    jLabel3.setText("Name");
+        jLabel4.setText("Username");
+        jLabel5.setText("Password");
+        jLabel6.setText("Confirm Password");
+        jLabel7.setText("Address");
+        jLabel8.setText("Phone");
+        jLabel9.setText("E-mail");
+    txtPassword0.setForeground(Color.red);
+    txtPassword0.setBorder(titledBorder4);
+    txtPassword1.setForeground(Color.pink);
+    txtPassword1.setBorder(titledBorder5);
+    txtAddress.setBackground(Color.white);
+        txtAddress.setBorder(titledBorder6);
+    txtAddress.setLineWrap(true);
+    appButt.setBackground(Color.white);
+    appButt.setBorder(titledBorder1);
+    appButt.setText("Apply");
+    appButt.addActionListener(new frmAppOrg_appButt_actionAdapter(this));
+    txtName.setBorder(titledBorder2);
+    txtUsername.setBorder(titledBorder3);
+    txtPhone.setBorder(titledBorder7);
+    txtEmail.setBorder(titledBorder8);
+    contentPane.setBackground(Color.white);
+    contentPane.setOpaque(true);
+    txtWebsite.setBorder(titledBorder8);
+    jLabel1.setText("Website");
+    contentPane.add(appButt, new XYConstraints(225, 360, 150, 29));
+    contentPane.add(txtName, new XYConstraints(151, 16, 228, 26));
+    contentPane.add(txtAddress, new XYConstraints(151, 133, 228, 108));
+    contentPane.add(jLabel3, new XYConstraints(19, 19, 51, 23));
+    contentPane.add(jLabel4, new XYConstraints(19, 44, 76, 23));
+    contentPane.add(jLabel5, new XYConstraints(19, 76, 65, 22));
+    contentPane.add(jLabel6, new XYConstraints(19, 104, 123, 21));
+    contentPane.add(jLabel7, new XYConstraints(19, 142, 65, 20));
+    contentPane.add(jLabel8, new XYConstraints(19, 251, 53, 20));
+    contentPane.add(txtUsername, new XYConstraints(151, 45, 184, 26));
+    contentPane.add(txtPassword0, new XYConstraints(151, 75, 184, 26));
+    contentPane.add(txtPassword1, new XYConstraints(151, 104, 184, 25));
+    contentPane.add(jLabel9, new XYConstraints(20, 282, 47, 19));
+    contentPane.add(txtEmail, new XYConstraints(151, 277, 228, 29));
+    contentPane.add(txtPhone, new XYConstraints(151, 246, 228, 27));
+    contentPane.add(txtWebsite, new XYConstraints(151, 312, 228, -1));
+    contentPane.add(jLabel1, new XYConstraints(19, 314, -1, -1));
+    //char a=9829; //heart
+    char a=8226; //bullet
+    txtPassword0.setEchoChar(a);
+    txtPassword1.setEchoChar(a);
+
+  }
+
+  public void callMe(){
+    this.setVisible(true) ;
+  }
+
+  public void appButt_actionPerformed(ActionEvent e) {
+    String errmsg="";
+    boolean correctArg=true;
+    String pass0 = String.valueOf(txtPassword0.getPassword());
+    String pass1 = String.valueOf(txtPassword1.getPassword());
+    if (txtName.getText().length()<4) {errmsg+= "please insert your name longer than this \n"; correctArg=false;}
+    if (txtUsername.getText().length()<4) {errmsg+= "please insert your username longer than this \n"; correctArg=false;}
+    if (txtPassword0.getPassword().length <6) {errmsg+= "please insert your password longer than this \n"; correctArg=false;}
+    if (pass0.indexOf(pass1)!=0) {errmsg+= "both passwords are not the same \n"; correctArg=false;}
+    if (txtAddress.getText().length()<8) {errmsg+= "please insert your address longer than this \n"; correctArg=false;}
+    if (txtPhone.getText().length()<9) {errmsg+= "please insert your phone longer than this \n"; correctArg=false;}
+    if (txtEmail.getText().indexOf("@")<0 || txtEmail.getText().indexOf(".")<0) {errmsg+= "please insert valid email \n"; correctArg=false;}
+    if (txtWebsite.getText().indexOf("http:")<0 || txtEmail.getText().indexOf(".")<0) {errmsg+= "please insert valid website \n"; correctArg=false;}
+
+    if (correctArg==false){
+      JOptionPane.showMessageDialog(null,errmsg,"details are invalid" ,JOptionPane.WARNING_MESSAGE);
+    }else
+    try{
+      CallServices cs = new CallServices("GIS_OwnerServices", "insertOwner");
+      int res = cs.intInvoke(new Object[] {txtName.getText(),
+                             txtAddress.getText(),
+                             txtPhone.getText(), txtEmail.getText(),
+                             txtWebsite.getText(),
+                             txtUsername.getText(), pass0});
+      if (res>100) {
+        JOptionPane.showMessageDialog(null, "ownid=" + res,
+                                      "Apply for organization complete",
+                                      JOptionPane.INFORMATION_MESSAGE);
+        txtName.setText("") ;
+        txtAddress.setText("") ;
+        txtPhone.setText("") ;
+        txtWebsite.setText("") ;
+        txtEmail.setText("") ;
+        txtUsername.setText("") ;
+        txtPassword0.setText("") ;
+        txtPassword1.setText("") ;
+
+      }
+      else {
+        errmsg="ERROR CODE: "+res;
+        JOptionPane.showMessageDialog(null, errmsg,
+                                      "Apply for organization uncomplete",
+                                      JOptionPane.ERROR_MESSAGE);
+      }
+    }catch(Exception ea){
+      ea.printStackTrace();
+    }
+
+  }
+
+
+}
+
+class frmAppOrg_appButt_actionAdapter
+    implements ActionListener {
+  private frmAppOrg adaptee;
+  frmAppOrg_appButt_actionAdapter(frmAppOrg adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.appButt_actionPerformed(e);
+  }
+}

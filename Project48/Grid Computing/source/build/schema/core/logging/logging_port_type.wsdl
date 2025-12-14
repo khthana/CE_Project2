@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="OgsiLogging" targetNamespace="http://ogsa.globus.org/core/logging" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI" xmlns:sd="http://www.gridforum.org/namespaces/2003/03/serviceData" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://ogsa.globus.org/core/logging" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ******************************************************************************* -->
+  <!--                            Grid Service Imports                                 -->
+  <!-- ******************************************************************************* -->
+  <import location="../../ogsi/ogsi.gwsdl" namespace="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  
+  
+  <!-- ******************************************************************************* -->
+  <!--                                Types                                            -->
+  <!-- ******************************************************************************* -->
+  
+  <types>
+    
+    <xsd:schema targetNamespace="http://ogsa.globus.org/core/logging" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI" xmlns:sd="http://www.gridforum.org/namespaces/2003/03/serviceData" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://ogsa.globus.org/core/logging" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      
+    
+      <!-- ================================================================ -->
+      <!--             Message Elements                                     -->
+      <!-- ================================================================ -->
+      <xsd:element name="setLogBufferSize">
+          <xsd:complexType>
+              <xsd:sequence>
+                    <xsd:element name="size" type="xsd:int"/>
+                </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>        
+
+      <xsd:element name="setLogBufferSizeResponse">
+          <xsd:complexType/>
+      </xsd:element>
+      
+      <xsd:element name="loadPersistentAttributes">
+          <xsd:complexType/>
+      </xsd:element>
+      
+      <xsd:element name="loadPersistentAttributesResponse">
+          <xsd:complexType/>
+      </xsd:element>
+      
+      <xsd:element name="saveTransientAttributes">
+          <xsd:complexType/>
+      </xsd:element>
+              
+      <xsd:element name="saveTransientAttributesResponse">
+          <xsd:complexType/>
+      </xsd:element>
+      
+      <xsd:element name="changeGroupPersistentAttribute">
+          <xsd:complexType>
+              <xsd:sequence>
+                    <xsd:element name="gla" type="tns:GroupLogAttribute"/>
+                </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+              
+      <xsd:element name="changeGroupPersistentAttributeResponse">
+          <xsd:complexType/>
+      </xsd:element>
+              
+      <xsd:element name="changeGroupTransientAttribute">
+          <xsd:complexType>
+              <xsd:sequence>
+                  <xsd:element name="gla" type="tns:GroupLogAttribute"/>
+                </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+              
+      <xsd:element name="changeGroupTransientAttributeResponse">
+          <xsd:complexType/>
+      </xsd:element>
+              
+      <xsd:element name="removePersistentAttribute">
+          <xsd:complexType>
+              <xsd:sequence>
+                    <xsd:element name="name" type="xsd:string"/>
+                </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+      
+      <xsd:element name="removePersistentAttributeResponse">
+          <xsd:complexType/>
+      </xsd:element>
+              
+      <xsd:element name="setPersistentAttribute">
+          <xsd:complexType>
+              <xsd:sequence>
+                  <xsd:element name="aLogAttributeElement" type="tns:LogAttributeElement"/>
+                </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+              
+      <xsd:element name="setPersistentAttributeResponse">
+          <xsd:complexType/>
+      </xsd:element>
+              
+      <xsd:element name="removeTransientAttribute">
+          <xsd:complexType>
+              <xsd:sequence>
+                  <xsd:element name="name" type="xsd:string"/>
+                </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+      
+      <xsd:element name="removeTransientAttributeResponse">
+          <xsd:complexType/>
+      </xsd:element>
+              
+      <xsd:element name="setTransientAttribute">
+          <xsd:complexType>
+              <xsd:sequence>
+                    <xsd:element name="aLogAttributeElement" type="tns:LogAttributeElement"/>
+                </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+      
+      <xsd:element name="setTransientAttributeResponse">
+          <xsd:complexType/>
+      </xsd:element>
+              
+      <xsd:complexType name="GroupLogAttribute">
+          <xsd:sequence>
+              <xsd:element name="group" nillable="true" type="xsd:string"/>
+              <xsd:element name="destination" nillable="true" type="xsd:string"/>
+                <xsd:element name="level" nillable="true" type="xsd:string"/>
+          </xsd:sequence>
+      </xsd:complexType>
+              
+      <xsd:complexType name="LogAttributeElement">
+          <xsd:sequence>
+                <xsd:element name="attributeName" nillable="true" type="xsd:string"/>
+                <xsd:element name="destination" nillable="true" type="xsd:string"/>
+                <xsd:element name="level" nillable="true" type="xsd:string"/>
+                <xsd:element maxOccurs="1" minOccurs="0" name="groupName" nillable="true" type="xsd:string"/>
+          </xsd:sequence>
+      </xsd:complexType>
+     
+      
+      <!-- ================================================================ -->
+      <!--            logMessage complex type                               -->
+      <!-- ================================================================ -->
+      <xsd:element name="logMessageElement" type="tns:LogMessageElement"/>
+      <xsd:complexType name="LogMessageElement">
+        <xsd:sequence>
+          <xsd:element name="level" type="xsd:string"/>
+          <xsd:element name="message" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+               
+      <!-- ================================================================ -->
+      <!--             Fault Types                                          -->
+      <!-- ================================================================ -->
+      <xsd:element name="invalidDestinationFaultElement" type="tns:InvalidDestinationFaultElement"/>
+      <xsd:complexType name="InvalidDestinationFaultElement">
+        <xsd:complexContent>
+          <xsd:extension base="ogsi:FaultType"/>
+        </xsd:complexContent>
+      </xsd:complexType>
+
+      <xsd:element name="invalidLevelFaultElement" type="tns:InvalidLevelFaultElement"/>
+      <xsd:complexType name="InvalidLevelFaultElement">
+        <xsd:complexContent>
+          <xsd:extension base="ogsi:FaultType"/>
+        </xsd:complexContent>
+      </xsd:complexType>
+      
+   <xsd:element name="invalidLogBuffSizeFaultElement" type="tns:InvalidLogBuffSizeFaultElement"/>
+      <xsd:complexType name="InvalidLogBuffSizeFaultElement">
+        <xsd:complexContent>
+          <xsd:extension base="ogsi:FaultType"/>
+        </xsd:complexContent>
+      </xsd:complexType>
+      
+
+	<xsd:element name="unGroupedFaultElement" type="tns:UnGroupedFaultElement"/>
+      <xsd:complexType name="UnGroupedFaultElement">
+        <xsd:complexContent>
+          <xsd:extension base="ogsi:FaultType"/>
+        </xsd:complexContent>
+      </xsd:complexType>
+
+      <xsd:element name="unableToPersistFaultElement" type="tns:UnableToPersistFaultElement"/>
+      <xsd:complexType name="UnableToPersistFaultElement">
+        <xsd:complexContent>
+          <xsd:extension base="ogsi:FaultType"/>
+        </xsd:complexContent>
+      </xsd:complexType>
+          
+      <xsd:element name="unknownNameFaultElement" type="tns:UnknownNameFaultElement"/>
+      <xsd:complexType name="UnknownNameFaultElement">
+        <xsd:complexContent>
+          <xsd:extension base="ogsi:FaultType"/>
+        </xsd:complexContent>
+      </xsd:complexType>
+       
+      <xsd:element name="unknownGroupNameFaultElement" type="tns:UnknownGroupNameFaultElement"/>
+      <xsd:complexType name="UnknownGroupNameFaultElement">
+        <xsd:complexContent>
+          <xsd:extension base="ogsi:FaultType"/>
+        </xsd:complexContent>
+      </xsd:complexType>
+  
+    </xsd:schema>
+  
+  </types>
+  
+  <!-- ******************************************************************************* -->
+  <!--                               Messages                                          -->
+  <!-- ******************************************************************************* -->
+  <message name="changeGroupPersistentAttributeResponse">
+       <part element="tns:changeGroupPersistentAttributeResponse" name="parameters"/>
+  </message>
+
+  <message name="removePersistentAttributeResponse">
+      <part element="tns:removePersistentAttributeResponse" name="parameters"/>
+  </message>
+
+  <message name="removePersistentAttributeRequest">
+       <part element="tns:removePersistentAttribute" name="parameters"/>
+  </message>
+
+  <message name="setTransientAttributeRequest">
+      <part element="tns:setTransientAttribute" name="parameters"/>
+  </message>
+
+  <message name="loadPersistentAttributesRequest">
+      <part element="tns:loadPersistentAttributes" name="parameters"/>
+  </message>
+
+  <message name="changeGroupTransientAttributeRequest">
+      <part element="tns:changeGroupTransientAttribute" name="parameters"/>
+  </message>
+
+  <message name="loadPersistentAttributesResponse">
+     <part element="tns:loadPersistentAttributesResponse" name="parameters"/>
+  </message>
+
+  <message name="saveTransientAttributesRequest">
+      <part element="tns:saveTransientAttributes" name="parameters"/>
+  </message>
+
+  <message name="setLogBufferSizeRequest">
+      <part element="tns:setLogBufferSize" name="parameters"/>
+  </message>
+
+  <message name="setPersistentAttributeRequest">
+      <part element="tns:setPersistentAttribute" name="parameters"/>
+  </message>
+
+  <message name="setTransientAttributeResponse">
+      <part element="tns:setTransientAttributeResponse" name="parameters"/>
+  </message>
+
+  <message name="changeGroupTransientAttributeResponse">
+      <part element="tns:changeGroupTransientAttributeResponse" name="parameters"/>
+  </message>
+
+  <message name="removeTransientAttributeRequest">
+      <part element="tns:removeTransientAttribute" name="parameters"/>
+  </message>
+
+  <message name="setLogBufferSizeResponse">
+      <part element="tns:setLogBufferSizeResponse" name="parameters"/>
+  </message>
+
+  <message name="setPersistentAttributeResponse">
+      <part element="tns:setPersistentAttributeResponse" name="parameters"/>
+  </message>
+
+  <message name="removeTransientAttributeResponse">
+      <part element="tns:removeTransientAttributeResponse" name="parameters"/>
+  </message>
+
+  <message name="changeGroupPersistentAttributeRequest">
+      <part element="tns:changeGroupPersistentAttribute" name="parameters"/>
+  </message>
+
+  <message name="saveTransientAttributesResponse">
+      <part element="tns:saveTransientAttributesResponse" name="parameters"/>
+  </message>
+  
+
+  <!-- ======================================================= -->
+  <!--           fault messages                                -->
+  <!-- ======================================================= -->
+  <message name="invalidDestinationFaultMessage">
+      <part element="tns:invalidDestinationFaultElement" name="fault"/>
+  </message>
+  <message name="invalidLevelFaultMessage">
+      <part element="tns:invalidLevelFaultElement" name="fault"/>
+  </message>
+
+  <message name="invalidLogBuffSizeFaultMessage">
+      <part element="tns:invalidLogBuffSizeFaultElement" name="fault"/>
+  </message>
+
+  <message name="unGroupedFaultMessage">
+      <part element="tns:unGroupedFaultElement" name="fault"/>
+  </message>
+
+
+  <message name="unableToPersistFaultMessage">
+      <part element="tns:unableToPersistFaultElement" name="fault"/>
+  </message>
+  
+  <message name="unknownNameFaultMessage">
+      <part element="tns:unknownNameFaultElement" name="fault"/>
+  </message>
+  
+  <message name="unknownGroupNameFaultMessage">
+      <part element="tns:unknownGroupNameFaultElement" name="fault"/>
+  </message>
+
+
+  <!-- ******************************************************************************* -->
+  <!--                        OgsiLoggingportType                                  -->
+  <!-- ******************************************************************************* -->
+  
+  <portType name="OgsiLoggingPortType"><operation name="removeTransientAttribute">
+          <input message="ns24:removeTransientAttributeRequest" name="removeTransientAttributeRequest" xmlns:ns24="http://ogsa.globus.org/core/logging"/>
+          <output message="ns25:removeTransientAttributeResponse" name="removeTransientAttributeResponse" xmlns:ns25="http://ogsa.globus.org/core/logging"/>
+          <fault message="ns26:unknownNameFaultMessage" name="UnknownNameFault" xmlns:ns26="http://ogsa.globus.org/core/logging"/> 
+      </operation><operation name="changeGroupTransientAttribute">
+          <input message="ns11:changeGroupTransientAttributeRequest" name="changeGroupTransientAttributeRequest" xmlns:ns11="http://ogsa.globus.org/core/logging"/>
+          <output message="ns12:changeGroupTransientAttributeResponse" name="changeGroupTransientAttributeResponse" xmlns:ns12="http://ogsa.globus.org/core/logging"/>
+          <fault message="ns13:unknownGroupNameFaultMessage" name="UnknownGroupNameFault" xmlns:ns13="http://ogsa.globus.org/core/logging"/> 
+          <fault message="ns14:unGroupedFaultMessage" name="UnGroupedFault" xmlns:ns14="http://ogsa.globus.org/core/logging"/> 
+      </operation><operation name="subscribe">
+    <input message="ns34:SubscribeInputMessage" xmlns:ns34="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns35:SubscribeOutputMessage" xmlns:ns35="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns36:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns36="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns37:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns37="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns38:TargetInvalidFaultMessage" name="TargetInvalidFault" xmlns:ns38="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns39:FaultMessage" name="Fault" xmlns:ns39="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="setPersistentAttribute">
+          <input message="ns19:setPersistentAttributeRequest" name="setPersistentAttributeRequest" xmlns:ns19="http://ogsa.globus.org/core/logging"/>
+          <output message="ns20:setPersistentAttributeResponse" name="setPersistentAttributeResponse" xmlns:ns20="http://ogsa.globus.org/core/logging"/>
+          <fault message="ns21:invalidDestinationFaultMessage" name="InvalidDestinationFault" xmlns:ns21="http://ogsa.globus.org/core/logging"/> 
+          <fault message="ns22:invalidLevelFaultMessage" name="InvalidLevelFault" xmlns:ns22="http://ogsa.globus.org/core/logging"/> 
+          <fault message="ns23:unableToPersistFaultMessage" name="UnableToPersistFault" xmlns:ns23="http://ogsa.globus.org/core/logging"/> 
+      </operation><operation name="setServiceData">
+    <input message="ns75:SetServiceDataInputMessage" xmlns:ns75="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns76:SetServiceDataOutputMessage" xmlns:ns76="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns77:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns77="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+    <fault message="ns78:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns78="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+    <fault message="ns79:CardinalityViolationFaultMessage" name="CadinalityViolationFault" xmlns:ns79="http://www.gridforum.org/namespaces/2003/03/OGSI"/>  
+    <fault message="ns80:MutabilityViolationFaultMessage" name="MutabilityViolationFault" xmlns:ns80="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns81:ModifiabilityViolationFaultMessage" name="ModifabilityViolationFault" xmlns:ns81="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns82:TypeViolationFaultMessage" name="TypeViolationFault" xmlns:ns82="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns83:IncorrectValueFaultMessage" name="IncorrectValueFault" xmlns:ns83="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns84:PartialFailureFaultMessage" name="PartialFailureFault" xmlns:ns84="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns85:FaultMessage" name="Fault" xmlns:ns85="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="findServiceData">
+    <input message="ns69:FindServiceDataInputMessage" xmlns:ns69="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns70:FindServiceDataOutputMessage" xmlns:ns70="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns71:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns71="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns72:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns72="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns73:TargetInvalidFaultMessage" name="TargetInvalidFault" xmlns:ns73="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns74:FaultMessage" name="Fault" xmlns:ns74="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="setTransientAttribute">
+          <input message="ns27:setTransientAttributeRequest" name="setTransientAttributeRequest" xmlns:ns27="http://ogsa.globus.org/core/logging"/>
+          <output message="ns28:setTransientAttributeResponse" name="setTransientAttributeResponse" xmlns:ns28="http://ogsa.globus.org/core/logging"/>
+          <fault message="ns29:invalidDestinationFaultMessage" name="InvalidDestinationFault" xmlns:ns29="http://ogsa.globus.org/core/logging"/> 
+          <fault message="ns30:invalidLevelFaultMessage" name="InvalidLevelFault" xmlns:ns30="http://ogsa.globus.org/core/logging"/> 
+      </operation><operation name="removePersistentAttribute">
+          <input message="ns15:removePersistentAttributeRequest" name="removePersistentAttributeRequest" xmlns:ns15="http://ogsa.globus.org/core/logging"/>
+          <output message="ns16:removePersistentAttributeResponse" name="removePersistentAttributeResponse" xmlns:ns16="http://ogsa.globus.org/core/logging"/>
+          <fault message="ns17:unableToPersistFaultMessage" name="UnableToPersistFault" xmlns:ns17="http://ogsa.globus.org/core/logging"/> 
+          <fault message="ns18:unknownNameFaultMessage" name="UnknownNameFault" xmlns:ns18="http://ogsa.globus.org/core/logging"/> 
+      </operation><operation name="setLogBufferSize">
+          <input message="ns31:setLogBufferSizeRequest" name="setLogBufferSizeRequest" xmlns:ns31="http://ogsa.globus.org/core/logging"/>
+          <output message="ns32:setLogBufferSizeResponse" name="setLogBufferSizeResponse" xmlns:ns32="http://ogsa.globus.org/core/logging"/>
+          <fault message="ns33:invalidLogBuffSizeFaultMessage" name="InvalidLogBuffSizeFault" xmlns:ns33="http://ogsa.globus.org/core/logging"/> 
+      </operation><operation name="destroy">
+    <input message="ns94:DestroyInputMessage" xmlns:ns94="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns95:DestroyOutputMessage" xmlns:ns95="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns96:ServiceNotDestroyedFaultMessage" name="ServiceNotDestroyedFault" xmlns:ns96="http://www.gridforum.org/namespaces/2003/03/OGSI"/>      
+    <fault message="ns97:FaultMessage" name="Fault" xmlns:ns97="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="requestTerminationBefore">
+    <input message="ns90:RequestTerminationBeforeInputMessage" xmlns:ns90="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns91:RequestTerminationBeforeOutputMessage" xmlns:ns91="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns92:TerminationTimeUnchangedFaultMessage" name="TerminationTimeUnchangedFault" xmlns:ns92="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+    <fault message="ns93:FaultMessage" name="Fault" xmlns:ns93="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="saveTransientAttributes">
+          <input message="ns3:saveTransientAttributesRequest" name="saveTransientAttributesRequest" xmlns:ns3="http://ogsa.globus.org/core/logging"/>
+          <output message="ns4:saveTransientAttributesResponse" name="saveTransientAttributesResponse" xmlns:ns4="http://ogsa.globus.org/core/logging"/>
+          <fault message="ns5:unableToPersistFaultMessage" name="UnableToPersistFault" xmlns:ns5="http://ogsa.globus.org/core/logging"/>
+      </operation><operation name="loadPersistentAttributes">
+          <input message="ns0:loadPersistentAttributesRequest" name="loadPersistentAttributesRequest" xmlns:ns0="http://ogsa.globus.org/core/logging"/>
+          <output message="ns1:loadPersistentAttributesResponse" name="loadPersistentAttributesResponse" xmlns:ns1="http://ogsa.globus.org/core/logging"/>
+          <fault message="ns2:unableToPersistFaultMessage" name="UnableToPersistFault" xmlns:ns2="http://ogsa.globus.org/core/logging"/>
+      </operation><operation name="requestTerminationAfter">
+    <input message="ns86:RequestTerminationAfterInputMessage" xmlns:ns86="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns87:RequestTerminationAfterOutputMessage" xmlns:ns87="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns88:TerminationTimeUnchangedFaultMessage" name="TerminationTimeUnchangedFault" xmlns:ns88="http://www.gridforum.org/namespaces/2003/03/OGSI"/>    
+    <fault message="ns89:FaultMessage" name="Fault" xmlns:ns89="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="changeGroupPersistentAttribute">
+          <input message="ns6:changeGroupPersistentAttributeRequest" name="changeGroupPersistentAttributeRequest" xmlns:ns6="http://ogsa.globus.org/core/logging"/>
+          <output message="ns7:changeGroupPersistentAttributeResponse" name="changeGroupPersistentAttributeResponse" xmlns:ns7="http://ogsa.globus.org/core/logging"/>
+          <fault message="ns8:unableToPersistFaultMessage" name="UnableToPersistFault" xmlns:ns8="http://ogsa.globus.org/core/logging"/> 
+          <fault message="ns9:unknownGroupNameFaultMessage" name="UnknownGroupNameFault" xmlns:ns9="http://ogsa.globus.org/core/logging"/> 
+          <fault message="ns10:unGroupedFaultMessage" name="UnGroupedFault" xmlns:ns10="http://ogsa.globus.org/core/logging"/> 
+
+      </operation></portType><gwsdl:portType extends="ogsi:NotificationSource ogsi:GridService" name="OgsiLoggingPortType">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+   
+   <sd:serviceData maxOccurs="unbounded" minOccurs="1" modifiable="false" mutability="mutable" name="TransientAttributes" nillable="false" type="tns:LogAttributeElement"/>
+    <sd:serviceData maxOccurs="unbounded" minOccurs="1" modifiable="false" mutability="mutable" name="PersistentAttributes" nillable="false" type="tns:LogAttributeElement"/>
+    <sd:serviceData maxOccurs="1" minOccurs="1" modifiable="false" mutability="mutable" name="LogBufferSize" nillable="false" type="xsd:int"/>
+    <sd:serviceData maxOccurs="unbounded" minOccurs="1" modifiable="false" mutability="mutable" name="LogMessages" nillable="false" type="tns:LogMessageElement"/>
+   
+                      
+  </gwsdl:portType>
+
+</definitions>

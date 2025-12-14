@@ -1,0 +1,179 @@
+===================================================================
+RELEASE NOTE for Nokia Multimedia Converter 2.0 (25.11.2003)
+===================================================================
+For product support and the latest release notes, please visit in
+Nokia's Developer Home at http://www.forum.nokia.com/
+
+
+Product Description:
+====================
+Nokia Multimedia Converter is a tool for converting common
+multimedia files (AVI, WAV, MPEG, MP3 etc.) into standard 3GPP/AMR
+formats for use in mobile phone applications such as MMS
+(Multimedia Messaging).
+
+
+Features:
+=========
+- Converts common multimedia files to 3GPP/AMR format files
+    + Video: H.263 (profile 0)
+    + Audio: AMR (AMR-NB and AMR-WB) 
+- Console and graphical tool options for converting files
+- Playback common multimedia and 3GPP/AMR format files on PC
+  (graphical version only)
+
+
+New Features:
+=============
+- Support for 128kbps bit stream H.263 video
+- New improved user interface
+- Improved AMR-WB encoder
+
+
+Enhancements:
+=============
+Several major bugs fixed:
+
+Fixed problems for graphical and console tool:
+      First second of the audio is left out in the converted file.
+
+      When converting NIM files with graphical or console version
+      of MMC, frame rate is dropped to 7,5 although default is 15.
+      Changing frame rate conversion parameters doesn't have any
+      effect on this.
+
+      There is no audio included in converted file if original file
+      is of type NIM.
+
+      AMR-WB encoder was vastly improved: "empty output file for
+      certain wav-files"-bug was fixed.
+
+
+Fixed problems for graphical conversion/viewing tool:
+      In some cases the system hangs after a large file is
+      converted and new file is selected for editing
+
+      MMC GUI sometimes sets Windows Wave output volume to zero.
+
+
+Fixed problems for Console conversion tool:
+      When converting a big video file (>650 MB) with command
+      line MMC, it prints superfluous characters (pp 20) when
+      video encoding starts. Percent indicator jumps to next row
+      from its correct place. After video encoding program prints
+      out text: "dct: 0.000000 ms (0 calls)" that doesn't appear
+      when converting smaller files.
+
+Installer:
+     Installer now includes Java runtime environment and doesn't
+     require pre-installed JRE.
+
+     Uninstaller now cleans up the registry values the application
+     creates and uses.
+
+
+System Requirements:
+====================
+- Microsoft Windows 2000 with SP3 or Windows XP with SP1.
+- At least 500MHz Pentium class PC with 256MB RAM, 64K colors,
+  60MB disk space and soundcard.
+- User Documentation is in PDF format, so Adobe Acrobat Reader
+  Software is required, which can be obtained at:
+  http://www.adobe.com/prodindex/acrobat/readstep.html.
+
+
+Compatibility Issues:
+=====================
+- Note that video and audio support may differ between terminals
+
+
+Known Problems:
+===============
+common problems for graphical and console tool:
+      For some video codecs (e.g. DivX 5.0) MMC doesn't recognize
+      the codec (UI states "unknown" but still plays
+      and converts video correctly.
+
+      Pre-processing MPEG-1 videos takes a lot of time. 
+      UI may appear to hang during pre-processing. 
+      Sound track may not be converted at all.
+      Use other formats as input if possible.
+
+      Canceling conversion when start time value is not
+      0 may cause meaningless error messages to appear.
+      Setting start time value other than 0 may cause
+      playback of DivX 5 to fail. 
+      Using video editing software to create the
+      clip of proper length is recommended. 
+
+      Combination of XviD and AC3 codecs may not work
+      as expected. If possible, avoid this combination
+      as input format.
+
+      Small max file size values (ca. 5kB) may cause 
+      "File Access Errors" during the conversion. This problem
+      affects MPEG-1 video codec.
+
+      Frame rate and intra period settings do not always
+      affect file size as expected. Small changes usually
+      won't affect file size at all
+
+
+Graphical conversion/viewing tool:
+      When setting starting time at the end of an input file the
+      program will crash when using quicktime codecs.
+
+      Converter will crash without warning when sound card is
+      missing
+
+      When opening Apple Quicktime files in MMC "Audio format is
+      not supported. Only video can be converted." message is
+      shown to user.
+
+      When sound card is disabled MMC crashes after trying to
+      convert video or audio file.
+
+      One can insert 0 to Max. file size box. Small values (e.g.
+      0-20 kB) don't have any effect when converting large video files.
+
+      Size of MP3s encoded using variable bit rate is shown incorrectly
+      in the GUI.
+
+      MMC GUI sometimes sets Windows Wave output volume to zero.
+
+
+Console conversion tool:
+      When inserting big (e.g. 50) values to intra perioid in
+      command line version, MMC only prints out help text and
+      doesn't show any message. Using parameter -intra in command
+      line version of MMC doesn't work. User can choose to have
+      intra perioid only from 0 to 9. Intra perioid values of 10
+      or bigger are ignored even though 15 is the default value.
+      MMC doesn't give any error message, it only prints the
+      command line help.
+
+      When choosing relatively small bit rate value (e.g. 10.000)
+      in console version of MMC, the output file isn't encoded
+      properly. Video jams every 4-8 seconds for 1-2 seconds and
+      then plays normally 4-8 seconds. In other words: frames
+      aren't placed regularly. The bigger the audio rate the
+      longer the smooth video playback time and shorter the
+      jamming time. Audio plays continuosly in any case.
+
+      When converting video-clips bitrate option -br is not checked
+      for validity. If -br value is invalid, soundtrack will not
+      convert correctly.
+
+      Using option -i crashes the converter.
+
+      Command line converter doesn't accept .3gp-files as input.
+
+
+Futher Info:
+============
+http://www.forum.nokia.com/
+
+
+Copyright © 2002 - 2003 Nokia Corporation. All rights reserved.
+Nokia and Nokia Connecting People are registered trademarks of
+Nokia Corporation.

@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions name="OgsiManagement"
+                  targetNamespace="http://ogsa.globus.org/core/management"
+                  xmlns:tns="http://ogsa.globus.org/core/management"       
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+                  xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI"
+                  xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions"
+                  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" 
+                  xmlns:apachesoap="http://xml.apache.org/xml-soap" 
+                  xmlns:sd="http://www.gridforum.org/namespaces/2003/03/serviceData"
+                  xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+
+  <!-- ******************************************************************************* -->
+  <!--                            Grid Service Imports                                 -->
+  <!-- ******************************************************************************* -->
+  <import location="../../ogsi/ogsi.gwsdl"
+          namespace="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+         
+
+  <!-- ******************************************************************************* -->
+  <!--                                Types                                            -->
+  <!-- ******************************************************************************* -->
+  <types>
+    
+    <xsd:schema targetNamespace="http://ogsa.globus.org/core/management"
+                xmlns:tns="http://ogsa.globus.org/core/management"       
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+       
+	<xsd:simpleType name="ContainerStateSimpleType">
+    	<xsd:restriction base="xsd:string">
+      		<xsd:enumeration value="active"/>
+      		<xsd:enumeration value="shutdown"/>
+      	</xsd:restriction>
+ 	</xsd:simpleType>                                                               
+  	
+  	<xsd:complexType name="ContainerStateType">
+    	<xsd:sequence>
+      		<xsd:element name="containerState" type="tns:ContainerStateSimpleType"/>
+    	</xsd:sequence>
+  	</xsd:complexType>            
+
+      <!-- ================================================================ -->
+      <!--            Number of Services complex type                       -->
+      <!-- ================================================================ -->
+      <xsd:complexType name="NumberServicesElementType">
+        <xsd:sequence>
+          <xsd:element name="numberAvailableServices" type="xsd:int"/>
+          <xsd:element name="numberDeployedServices" type="xsd:int"/>
+          <xsd:element name="numberActiveServices" type="xsd:int"/>
+          <xsd:element name="numberDeactiveServices" type="xsd:int"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    
+      <!-- ================================================================ -->
+      <!--            Wrapped Message Elements                              -->
+      <!-- ================================================================ -->
+      <xsd:element name="invalidStateFaultElement" type="tns:InvalidStateFaultType"/>
+      <xsd:complexType name="InvalidStateFaultType">
+        <xsd:complexContent>
+          <xsd:extension base="ogsi:FaultType"/>
+        </xsd:complexContent>
+      </xsd:complexType>
+ 
+      <xsd:element name="endService">
+          <xsd:complexType>
+              <xsd:sequence>
+           <xsd:element name="aHandle" type="ogsi:HandleType"/>
+              </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="endServiceResponse">
+          <xsd:complexType/>
+      </xsd:element>
+
+      <xsd:element name="endServiceForce">
+          <xsd:complexType>
+              <xsd:sequence>
+           <xsd:element name="aHandle" type="ogsi:HandleType"/>
+              </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="endServiceForceResponse">
+          <xsd:complexType/>
+      </xsd:element>
+
+      <xsd:element name="activateService">
+          <xsd:complexType>
+              <xsd:sequence>
+           <xsd:element name="aHandle" type="ogsi:HandleType"/>
+              </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="activateServiceResponse">
+        <xsd:complexType/>
+      </xsd:element>
+
+      <xsd:element name="deactivateService">
+          <xsd:complexType>
+              <xsd:sequence>
+           <xsd:element name="aHandle" type="ogsi:HandleType"/>
+              </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deactivateServiceResponse">
+          <xsd:complexType/>
+      </xsd:element>
+      
+      <xsd:element name="shutdown">
+      	<xsd:complexType>
+        	<xsd:sequence>
+          		<xsd:element name="hard" type="xsd:boolean"/>
+        	</xsd:sequence>
+      	</xsd:complexType>
+	</xsd:element>
+    <xsd:element name="shutdownResponse">
+    	<xsd:complexType/>
+    </xsd:element>
+
+      <!-- ================================================================ -->
+      <!--             Fault Types                                          -->
+      <!-- ================================================================ -->
+      <xsd:element name="unknownHandleFaultElement" type="tns:UnknownHandleFaultType"/>
+      <xsd:complexType name="UnknownHandleFaultType">
+        <xsd:complexContent>
+          <xsd:extension base="ogsi:FaultType"/>
+        </xsd:complexContent>
+      </xsd:complexType>
+      
+     <xsd:element name="hardShutdownNotAllowedFaultElement" type="tns:HardShutdownNotAllowedFaultType"/>
+     <xsd:complexType name="HardShutdownNotAllowedFaultType">
+       <xsd:complexContent>
+         <xsd:extension base="ogsi:FaultType"/>
+       </xsd:complexContent>
+     </xsd:complexType>
+      
+    </xsd:schema>
+  
+  </types>
+  
+
+
+
+  <!-- ******************************************************************************* -->
+  <!--                               Messages                                          -->
+  <!-- ******************************************************************************* -->
+    
+  <message name="endServiceRequest">
+    <part name="parameters" element="tns:endService"/>
+  </message>
+
+  <message name="endServiceResponse">
+    <part name="parameters" element="tns:endServiceResponse"/>
+  </message>
+  
+  <message name="endServiceForceRequest">
+    <part name="parameters" element="tns:endServiceForce"/>
+  </message>
+  <message name="endServiceForceResponse">
+    <part name="parameters" element="tns:endServiceForceResponse"/>
+  </message>
+
+  <message name="activateServiceRequest">
+      <part name="parameters" element="tns:activateService"/>
+  </message>
+  <message name="activateServiceResponse">
+    <part name="parameters" element="tns:activateServiceResponse"/>
+  </message>
+
+  <message name="deactivateServiceRequest">
+      <part name="parameters" element="tns:deactivateService"/>
+  </message>
+  <message name="deactivateServiceResponse">
+    <part name="parameters" element="tns:deactivateServiceResponse"/>
+  </message>
+
+  <message name="shutdownRequestMessage">
+  	 <part name="parameters" element="tns:shutdown"/>
+  </message>
+  <message name="shutdownResponseMessage">
+    <part name="parameters" element="tns:shutdownResponse"/>
+  </message>
+  
+  <!-- ======================================================= -->
+  <!--           fault messages                                -->
+  <!-- ======================================================= -->
+  <message name="UnknownHandleFaultMessage">
+      <part name="fault" element="tns:unknownHandleFaultElement"/>
+  </message>
+  <message name="InvalidStateFaultMessage">
+      <part name="fault" element="tns:invalidStateFaultElement"/>
+  </message>
+  <message name="HardShutdownNotAllowedFaultMessage">
+  	<part name="fault" element="tns:hardShutdownNotAllowedFaultElement"/>
+  </message>
+
+  <!-- ******************************************************************************* -->
+  <!--                        OgsiManagement portType                                  -->
+  <!-- ******************************************************************************* -->
+  
+  <gwsdl:portType name="OgsiManagementPortType" extends="ogsi:NotificationSource ogsi:ServiceGroup">
+      <operation name="endService">
+          <input message="tns:endServiceRequest"   name="endServiceRequest"/>
+          <output message="tns:endServiceResponse" name="endServiceResponse"/>
+          <fault name="UnknownHandleFault"       message="tns:UnknownHandleFaultMessage"/> 
+          <fault name="InvalidHandleFault"       message="ogsi:InvalidHandleFaultMessage"/> 
+          <fault name="ServiceNotDestroyedFault" message="ogsi:ServiceNotDestroyedFaultMessage"/>
+      </operation>
+      <operation name="endServiceForce">
+          <input message="tns:endServiceForceRequest"   name="endServiceForceRequest"/>
+          <output message="tns:endServiceForceResponse" name="endServiceForceResponse"/>
+          <fault name="UnknownHandleFault"       message="tns:UnknownHandleFaultMessage"/> 
+          <fault name="InvalidHandleFault"       message="ogsi:InvalidHandleFaultMessage"/> 
+      </operation>
+      <operation name="activateService">
+          <input message="tns:activateServiceRequest"   name="activateServiceRequest"/>
+          <output message="tns:activateServiceResponse" name="activateServiceResponse"/>
+          <fault name="UnknownHandleFault"       message="tns:UnknownHandleFaultMessage"/> 
+          <fault name="InvalidHandleFault"       message="ogsi:InvalidHandleFaultMessage"/> 
+          <fault name="InvalidStateFault"        message="tns:InvalidStateFaultMessage"/> 
+      </operation>
+      <operation name="deactivateService">
+          <input message="tns:deactivateServiceRequest"   name="deactivateServiceRequest"/>
+          <output message="tns:deactivateServiceResponse" name="deactivateServiceResponse"/>
+          <fault name="UnknownHandleFault"       message="tns:UnknownHandleFaultMessage"/> 
+          <fault name="InvalidHandleFault"       message="ogsi:InvalidHandleFaultMessage"/> 
+          <fault name="InvalidStateFault"        message="tns:InvalidStateFaultMessage"/> 
+      </operation>
+      <operation name="shutdown">
+    	 <input message="tns:shutdownRequestMessage"/>
+    	 <output message="tns:shutdownResponseMessage"/>
+    	 <fault name="HardShutdownNotAllowedFault"        message="tns:HardShutdownNotAllowedFaultMessage"/> 
+  	  </operation>    
+      
+      <sd:serviceData name="numberServices"
+                      type="tns:NumberServicesElementType"
+                      minOccurs="1"
+                      maxOccurs="1"
+                      mutability="mutable"
+                      modifiable="false"
+                      nillable="false"/>
+                      
+       <sd:serviceData name="ContainerState"
+                 type="tns:ContainerStateType"
+                 maxOccurs="1"
+                 minOccurs="1"
+                 modifiable="true"
+                 mutability="mutable">
+       </sd:serviceData>
+              
+  </gwsdl:portType>
+
+     
+</wsdl:definitions>

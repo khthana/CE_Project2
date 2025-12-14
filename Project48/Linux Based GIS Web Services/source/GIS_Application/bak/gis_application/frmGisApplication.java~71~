@@ -1,0 +1,318 @@
+package gis_application;
+
+import java.awt.*;
+import javax.swing.*;
+import com.borland.jbcl.layout.XYLayout;
+import com.borland.jbcl.layout.*;
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import java.awt.Color;
+import javax.swing.border.TitledBorder;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.Dimension;
+import javax.swing.Box;
+
+public class frmGisApplication
+    extends JFrame {
+  //load form
+  frmAppMember frmAppMember= new frmAppMember();
+  frmMyProfile frmMyProfile = new frmMyProfile();
+  frmAppOrg frmAppOrg = new frmAppOrg();
+  FrmMap frmMap = new FrmMap();
+
+  //jbuilder load
+  JPanel contentPane;
+  XYLayout xYLayout1 = new XYLayout();
+  JPanel jPanel1 = new JPanel();
+  TitledBorder titledBorder1 = new TitledBorder("");
+  JPanel jPanel2 = new JPanel();
+  JPanel jPanel3 = new JPanel();
+  JPanel jPanel4 = new JPanel();
+  JPanel jPanel5 = new JPanel();
+  JPanel jPanel6 = new JPanel();
+  JPanel jPanel7 = new JPanel();
+  JPanel jPanel8 = new JPanel();
+  XYLayout xYLayout2 = new XYLayout();
+  JTextField txtUsername = new JTextField();
+  XYLayout xYLayout3 = new XYLayout();
+  JLabel jLabel1 = new JLabel();
+  JLabel jLabel2 = new JLabel();
+  JLabel jLabel3 = new JLabel();
+  JButton cmdSignIn = new JButton();
+  JButton cmdSignOut = new JButton();
+  JLabel jLabel4 = new JLabel();
+  XYLayout xYLayout4 = new XYLayout();
+  JButton cmdOwnerSignup = new JButton();
+  JButton txtMemberSignUp = new JButton();
+  JButton cmdMapOrg = new JButton();
+  XYLayout xYLayout5 = new XYLayout();
+  XYLayout xYLayout6 = new XYLayout();
+  JButton cmdMap = new JButton();
+  JPasswordField txtPassword = new JPasswordField();
+  TitledBorder titledBorder2 = new TitledBorder("");
+  TitledBorder titledBorder3 = new TitledBorder("");
+  TitledBorder titledBorder4 = new TitledBorder("");
+  TitledBorder titledBorder5 = new TitledBorder("");
+  Component glue1 = Box.createGlue();
+  JLabel imgOrg = new JLabel(new ImageIcon("image/organization.jpg"));
+  JLabel imgMap = new JLabel(new ImageIcon("image/globe.jpg"));
+  TitledBorder titledBorder6 = new TitledBorder("");
+
+
+  public frmGisApplication() {
+    try {
+      setDefaultCloseOperation(EXIT_ON_CLOSE);
+      jbInit();
+    }
+    catch (Exception exception) {
+      exception.printStackTrace();
+    }
+  }
+
+  /**
+   * Component initialization.
+   *
+   * @throws java.lang.Exception
+   */
+  private void jbInit() throws Exception {
+    contentPane = (JPanel) getContentPane();
+    contentPane.setLayout(xYLayout1);
+    setSize(new Dimension(510, 420));
+    setTitle("GIS Application (ce.kmitl)");
+    contentPane.setBackground(Color.white);
+    contentPane.setBorder(titledBorder1);
+    contentPane.setOpaque(true);
+    jPanel1.setBackground(Color.white);
+    jPanel1.setBorder(titledBorder1);
+    jPanel1.setOpaque(true);
+    jPanel1.setLayout(xYLayout2);
+    jPanel2.setBackground(Color.white);
+    jPanel2.setBorder(titledBorder1);
+    jPanel2.setMinimumSize(new Dimension(321, 81));
+    jPanel2.setOpaque(true);
+    jPanel2.setPreferredSize(new Dimension(320, 81));
+    jPanel2.setLayout(xYLayout3);
+    jPanel3.setBackground(Color.white);
+    jPanel3.setBorder(titledBorder1);
+    jPanel3.setOpaque(true);
+    jPanel3.setLayout(xYLayout4);
+    jPanel7.setBackground(Color.white);
+    jPanel7.setBorder(titledBorder1);
+    jPanel7.setOpaque(true);
+    jPanel7.setLayout(xYLayout5);
+    jPanel8.setBackground(Color.white);
+    jPanel8.setBorder(titledBorder1);
+    jPanel8.setOpaque(true);
+    jPanel8.setLayout(xYLayout6);
+    jLabel1.setForeground(UIManager.getColor(
+        "FormattedTextField.selectionBackground"));
+    jLabel1.setText("SIGN IN");
+    jLabel2.setText("username");
+    jLabel3.setText("password");
+    cmdSignIn.setBackground(Color.white);
+    cmdSignIn.setBorder(titledBorder4);
+    cmdSignIn.setText("sign in");
+    cmdSignIn.addActionListener(new frmGisApplication_cmdSignIn_actionAdapter(this));
+    cmdSignOut.setBackground(Color.white);
+    cmdSignOut.setBorder(titledBorder2);
+    cmdSignOut.setText("sign out");
+    cmdSignOut.addActionListener(new frmGisApplication_cmdSignOut_actionAdapter(this));
+    jLabel4.setForeground(UIManager.getColor("EditorPane.selectionBackground"));
+    jLabel4.setText("SIGN UP");
+    cmdOwnerSignup.setBackground(Color.white);
+    cmdOwnerSignup.setBorder(titledBorder2);
+    cmdOwnerSignup.setText("Organization");
+    cmdOwnerSignup.addActionListener(new
+        frmGisApplication_cmdOwnerSignup_actionAdapter(this));
+    txtMemberSignUp.setBackground(Color.white);
+    txtMemberSignUp.setBorder(titledBorder3);
+    txtMemberSignUp.setText("Member");
+    txtMemberSignUp.addActionListener(new
+        frmGisApplication_txtMemberSignUp_actionAdapter(this));
+    cmdMapOrg.setBackground(Color.white);
+    cmdMapOrg.setBorder(titledBorder6);
+    cmdMapOrg.setText("Map Organizer");
+    cmdMapOrg.addActionListener(new frmGisApplication_cmdMapOrg_actionAdapter(this));
+    cmdMap.setBackground(Color.white);
+    cmdMap.setBorder(titledBorder6);
+    cmdMap.setOpaque(true);
+    cmdMap.setText("Map Viewer");
+    cmdMap.addActionListener(new frmGisApplication_cmdMap_actionAdapter(this));
+    txtPassword.setEchoChar('o');
+    txtPassword.setForeground(Color.red);
+    imgOrg.setBackground(Color.white);
+    jPanel7.add(cmdMapOrg, new XYConstraints(1, 101, 223, 23));
+    jPanel7.add(glue1, new XYConstraints(57, 40, -1, -1));
+    jPanel7.add(imgOrg, new XYConstraints(30, 0, 165, 99));
+    contentPane.add(jPanel4, new XYConstraints( -35, 266, -1, -1));
+    contentPane.add(jPanel5, new XYConstraints( -8, 258, -1, -1));
+    contentPane.add(jPanel6, new XYConstraints( -31, 268, -1, -1));
+    jPanel2.add(jLabel1, new XYConstraints(1, 0, 51, 24));
+    contentPane.add(jPanel1, new XYConstraints(2, 0, 483, 148));
+    contentPane.add(jPanel3, new XYConstraints(324, 147, 161, 86));
+    jPanel3.add(jLabel4, new XYConstraints(5, 3, -1, -1));
+    jPanel2.add(jLabel3, new XYConstraints(1, 50, -1, -1));
+    jPanel2.add(txtUsername, new XYConstraints(80, 24, 114, 22));
+    jPanel2.add(jLabel2, new XYConstraints(1, 26, -1, -1));
+    jPanel2.add(cmdSignIn, new XYConstraints(212, 24, 97, 22));
+    jPanel2.add(cmdSignOut, new XYConstraints(212, 49, 97, 21));
+    contentPane.add(jPanel8, new XYConstraints(239, 232, 246, 137));
+    jPanel2.add(txtPassword, new XYConstraints(80, 49, 113, 21));
+    contentPane.add(jPanel7, new XYConstraints(2, 232, 238, 137));
+    contentPane.add(jPanel2, new XYConstraints(2, 147, 323, 86));
+    jPanel8.add(cmdMap, new XYConstraints(1, 101, 228, 23));
+    jPanel3.add(cmdOwnerSignup, new XYConstraints(2, 24, 142, 22));
+    jPanel3.add(txtMemberSignUp, new XYConstraints(2, 49, 142, 20));
+    jPanel8.add(imgMap, new XYConstraints(51, 3, 129, 96));
+    //char a=9829; //heart
+    char a=8226; //bullet
+    txtPassword.setEchoChar(a);
+  }
+
+  public void cmdSignIn_actionPerformed(ActionEvent e) {
+    try{
+      CallServices cs = new CallServices("GIS_UserServices","login");
+      String password=String.valueOf(txtPassword.getPassword())  ;
+      txtPassword.setText("");
+      String username=txtUsername.getText();
+      String sessionkey=cs.strInvoke(new Object[]{ username,password }) ;
+      MyProfile mp = new MyProfile(sessionkey);
+      //JOptionPane.showMessageDialog(null,"sessionkey="+sessionkey,"log in success" ,JOptionPane.INFORMATION_MESSAGE);
+      /*System.out.println(mp.getMemberID() );
+      System.out.println(mp.getOwnerID()  );
+      System.out.println(mp.getName() );
+      System.out.println(mp.getOwnername());
+
+      System.out.println(mp.getAddress());
+      System.out.println(mp.getPhone());
+      System.out.println(mp.getEmail());
+      System.out.println(mp.getSessionkey());
+      System.out.println(mp.getPlayroll());*/
+      if (sessionkey.length()>2)
+            JOptionPane.showMessageDialog(null, "Sign in complete",
+                                      "sign in",
+                                      JOptionPane.INFORMATION_MESSAGE );
+
+          else {
+            JOptionPane.showMessageDialog(null, "Sign in uncomplete",
+                                          "sign in",
+                                          JOptionPane.ERROR_MESSAGE);
+            mp.resetProfile() ;
+          }
+
+
+    }catch (Exception err){
+      err.printStackTrace() ;
+    }
+  }
+
+  public void cmdSignOut_actionPerformed(ActionEvent e) {
+    try{
+          MyProfile mp = new MyProfile();
+          CallServices cs = new CallServices("GIS_UserServices","logout");
+          String sessionkey=cs.strInvoke(new Object[]{ mp.getSessionkey() }) ;
+          if (sessionkey.length()>2)
+            JOptionPane.showMessageDialog(null, "Sign out complete",
+                                      "sign out",
+                                      JOptionPane.INFORMATION_MESSAGE );
+
+          else JOptionPane.showMessageDialog(null, "Sign out uncomplete",
+                                      "sign out",
+                                      JOptionPane.ERROR_MESSAGE);
+          mp.resetProfile() ;
+
+        }catch (Exception err){
+          err.printStackTrace() ;
+    }
+  }
+
+  public void txtMemberSignUp_actionPerformed(ActionEvent e) {
+    frmAppMember.callMe() ;
+  }
+
+  public void cmdOwnerSignup_actionPerformed(ActionEvent e) {
+    frmAppOrg.callMe() ;
+  }
+
+  public void cmdMapOrg_actionPerformed(ActionEvent e) {
+    frmMyProfile.callMe() ;
+  }
+
+  public void cmdMap_actionPerformed(ActionEvent e) {
+    frmMap.setLocation(200,100);
+    frmMap.setVisible(true);
+  }
+}
+
+class frmGisApplication_cmdMap_actionAdapter
+    implements ActionListener {
+  private frmGisApplication adaptee;
+  frmGisApplication_cmdMap_actionAdapter(frmGisApplication adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdMap_actionPerformed(e);
+  }
+}
+
+class frmGisApplication_cmdMapOrg_actionAdapter
+    implements ActionListener {
+  private frmGisApplication adaptee;
+  frmGisApplication_cmdMapOrg_actionAdapter(frmGisApplication adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdMapOrg_actionPerformed(e);
+  }
+}
+
+class frmGisApplication_cmdOwnerSignup_actionAdapter
+    implements ActionListener {
+  private frmGisApplication adaptee;
+  frmGisApplication_cmdOwnerSignup_actionAdapter(frmGisApplication adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdOwnerSignup_actionPerformed(e);
+  }
+}
+
+class frmGisApplication_txtMemberSignUp_actionAdapter
+    implements ActionListener {
+  private frmGisApplication adaptee;
+  frmGisApplication_txtMemberSignUp_actionAdapter(frmGisApplication adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.txtMemberSignUp_actionPerformed(e);
+  }
+}
+
+class frmGisApplication_cmdSignIn_actionAdapter
+    implements ActionListener {
+  private frmGisApplication adaptee;
+  frmGisApplication_cmdSignIn_actionAdapter(frmGisApplication adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdSignIn_actionPerformed(e);
+  }
+}
+
+class frmGisApplication_cmdSignOut_actionAdapter
+    implements ActionListener {
+  private frmGisApplication adaptee;
+  frmGisApplication_cmdSignOut_actionAdapter(frmGisApplication adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdSignOut_actionPerformed(e);
+  }
+}

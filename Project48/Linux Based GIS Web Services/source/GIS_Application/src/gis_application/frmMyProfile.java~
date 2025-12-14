@@ -1,0 +1,100 @@
+package gis_application;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import java.awt.Font;
+import com.borland.jbcl.layout.XYLayout;
+import com.borland.jbcl.layout.*;
+import javax.swing.BorderFactory;
+import java.awt.SystemColor;
+import java.awt.Color;
+import javax.swing.UIManager;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.Border;
+import javax.swing.JTextField;
+import javax.swing.JTextArea;
+import javax.swing.JButton;
+
+public class frmMyProfile extends JFrame {
+    JPanel contentPane;
+    XYLayout xYLayout1 = new XYLayout();
+    TitledBorder titledBorder1 = new TitledBorder("");
+    TitledBorder titledBorder2 = new TitledBorder("");
+    Border border1 = BorderFactory.createLineBorder(Color.black, 2);
+    JLabel jLabel2 = new JLabel();
+    JLabel jLabel3 = new JLabel();
+    JLabel jLabel4 = new JLabel();
+    JLabel jLabel5 = new JLabel();
+    JLabel jLabel6 = new JLabel();
+    JLabel jLabel7 = new JLabel();
+    JLabel jLabel8 = new JLabel();
+    JTextField txtName = new JTextField();
+    JTextField txtPhone = new JTextField();
+    JTextField txtEmail = new JTextField();
+    JTextField lblOwnerName = new JTextField();
+    JTextField lblPlayRole = new JTextField();
+    JTextArea txtAddress = new JTextArea();
+    Border border2 = BorderFactory.createLineBorder(UIManager.getColor(
+            "Desktop.background"), 2);
+    JButton UpdButt = new JButton();
+    JButton OrgButt = new JButton();
+    JLabel jLabel1 = new JLabel();
+    public frmMyProfile() {
+        try {
+            setDefaultCloseOperation(EXIT_ON_CLOSE);
+            jbInit();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Component initialization.
+     *
+     * @throws java.lang.Exception
+     */
+    private void jbInit() throws Exception {
+        border2 = BorderFactory.createLineBorder(UIManager.getColor(
+                "inactiveCaption"), 1);
+        contentPane = (JPanel) getContentPane();
+        contentPane.setLayout(xYLayout1);
+        setSize(new Dimension(400, 550));
+        setTitle("Frame Title");
+        contentPane.setBorder(null);
+        jLabel2.setBorder(BorderFactory.createLoweredBevelBorder());
+        jLabel3.setText("Play Role");
+        jLabel4.setText("Name");
+        jLabel5.setText("Address");
+        jLabel6.setText("Phone");
+        jLabel7.setText("E-mail");
+        jLabel8.setText("From Organization");
+        lblOwnerName.setEditable(false);
+        lblPlayRole.setEditable(false);
+        txtAddress.setBorder(border2);
+        UpdButt.setText("Update");
+        OrgButt.setText("Organization");
+        jLabel1.setFont(new java.awt.Font("Tahoma", Font.BOLD, 18));
+        jLabel1.setBorder(BorderFactory.createRaisedBevelBorder());
+        jLabel1.setText("  My Profile");
+        contentPane.add(jLabel3, new XYConstraints(34, 77, 48, 20));
+        contentPane.add(jLabel4, new XYConstraints(34, 129, 38, 19));
+        contentPane.add(jLabel5, new XYConstraints(34, 185, 40, 17));
+        contentPane.add(txtName, new XYConstraints(87, 127, 143, 26));
+        contentPane.add(lblPlayRole, new XYConstraints(87, 76, 142, 26));
+        contentPane.add(jLabel8, new XYConstraints(34, 432, 92, 18));
+        contentPane.add(lblOwnerName, new XYConstraints(126, 429, 137, 25));
+        contentPane.add(jLabel7, new XYConstraints(34, 385, 49, 15));
+        contentPane.add(txtEmail, new XYConstraints(87, 380, 144, 24));
+        contentPane.add(jLabel6, new XYConstraints(34, 337, 36, 16));
+        contentPane.add(txtPhone, new XYConstraints(87, 334, 143, 25));
+        contentPane.add(txtAddress, new XYConstraints(87, 182, 142, 122));
+        contentPane.add(jLabel2, new XYConstraints(12, 53, 263, 419));
+        contentPane.add(jLabel1, new XYConstraints(0, 0, 400, 29));
+        contentPane.add(OrgButt, new XYConstraints(297, 438, 85, 34));
+        contentPane.add(UpdButt, new XYConstraints(298, 377, 85, 33));
+    }
+}

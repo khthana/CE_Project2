@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="Ping"
+  targetNamespace="http://ogsa.globus.org/core/ping"
+  xmlns:tns="http://ogsa.globus.org/core/ping"
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI"
+  xmlns:sd="http://www.gridforum.org/namespaces/2003/03/serviceData"
+  xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions"
+  xmlns:ping_types="http://ogsa.globus.org/core/ping"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+
+<import location="../../ogsi/ogsi.gwsdl"
+        namespace="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+
+<types>
+  	<xsd:schema targetNamespace="http://ogsa.globus.org/core/ping"
+          xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+          xmlns:tns="http://ogsa.globus.org/core/ping"
+          attributeFormDefault="qualified"
+          elementFormDefault="qualified">
+          
+  		<xsd:element name="ping">
+     		<xsd:complexType/>
+    	</xsd:element>
+ 
+    	<xsd:element name="pingResponse">
+      		<xsd:complexType/>
+    	</xsd:element>
+ 
+  	</xsd:schema>
+</types>
+
+<message name="pingRequestMessage">
+  <part name="parameters" element="tns:ping"/>
+</message>
+<message name="pingResponseMessage">
+  <part name="parameters" element="tns:pingResponse"/>
+</message>
+
+<gwsdl:portType name="pingServicePortType" extends="ogsi:GridService">
+  <operation name="ping">
+    <input message="tns:pingRequestMessage"/>
+    <output message="tns:pingResponseMessage"/>
+  </operation>
+</gwsdl:portType>
+
+</definitions>

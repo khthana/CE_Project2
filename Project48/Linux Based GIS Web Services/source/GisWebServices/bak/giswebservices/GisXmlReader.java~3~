@@ -1,0 +1,75 @@
+package giswebservices;
+
+import java.io.*;
+import java.util.List;
+
+import org.jdom.*;
+import org.jdom.input.SAXBuilder;
+
+public class GisXmlReader {
+
+    private Element myElem;
+    private int numChildren;
+
+    private GisXmlReader(){}
+
+    public GisXmlReader(String xmldoc) throws Exception{
+        try {
+
+            SAXBuilder builder = new SAXBuilder();
+            Reader stringReader=new StringReader(xmldoc);
+            builder.setIgnoringElementContentWhitespace(true);
+            Document doc = builder.build(stringReader);
+
+            myElem = doc.getRootElement() ;
+        }catch(Exception e){
+            throw new Exception(e.toString(),e);
+        }
+
+    }
+
+    public GisXmlReader child(String name){
+        return child(name,0);
+    }
+
+    public GisXmlReader child(String name,int item){
+        try{
+            GisXmlReader gxr = new GisXmlReader();
+            List children = myElem.getChildren(name);
+            gxr.myElem = (Element) children.get(item);
+            gxr.numChildren = children.size();
+            return gxr;
+        }catch(Exception e){
+            return null;
+        }
+    }
+
+    public int count(){
+        try{
+            return numChildren;
+        }catch(Exception e){
+            return 0;
+        }
+    }
+
+    public String value(){
+        try{
+            String res=myElem.getText();
+            return res;
+        }catch(Exception e){
+            return "";
+        }
+    }
+
+    public String attribute(String attr){
+        try{
+            String res=myElem.getAttributeValue(attr);
+            return res;
+        }catch(Exception e){
+            return "";
+        }
+
+   }
+
+
+}

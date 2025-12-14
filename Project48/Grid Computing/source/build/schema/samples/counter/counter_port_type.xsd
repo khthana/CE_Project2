@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://ogsa.globus.org/samples/counter" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI" xmlns:tns="http://ogsa.globus.org/samples/counter" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:complexType name="ValueType">
+      <xsd:sequence>
+        <xsd:element name="value" type="xsd:int"/>
+      </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ReturnValueType">
+      <xsd:sequence>
+        <xsd:element name="returnValue" type="xsd:int"/>
+      </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="add" type="tns:ValueType"/>
+    <xsd:element name="addResponse" type="tns:ReturnValueType"/>
+    <xsd:element name="subtract" type="tns:ValueType"/>
+    <xsd:element name="subtractResponse" type="tns:ReturnValueType"/>
+    <xsd:element name="getValue">
+      <xsd:complexType/>
+    </xsd:element>
+    <xsd:element name="getValueResponse" type="tns:ReturnValueType"/>
+  </xsd:schema>

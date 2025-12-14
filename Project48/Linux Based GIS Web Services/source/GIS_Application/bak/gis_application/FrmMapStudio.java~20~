@@ -1,0 +1,1927 @@
+package gis_application;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+import java.io.*;
+import java.awt.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JLabel;
+import com.borland.jbcl.layout.XYLayout;
+import com.borland.jbcl.layout.*;
+import javax.swing.JTextArea;
+import javax.swing.JEditorPane;
+
+///////////Color////////////
+import javax.swing.JColorChooser;
+////////////////////////////
+
+import javax.swing.JDialog;
+
+import java.awt.SystemColor;
+import java.awt.Color;
+
+import org.apache.batik.swing.JSVGScrollPane;
+
+import org.apache.batik.swing.JSVGCanvas;
+import org.apache.batik.swing.gvt.GVTTreeRendererAdapter;
+import org.apache.batik.swing.gvt.GVTTreeRendererEvent;
+import org.apache.batik.swing.svg.SVGDocumentLoaderAdapter;
+import org.apache.batik.swing.svg.SVGDocumentLoaderEvent;
+import org.apache.batik.swing.svg.GVTTreeBuilderAdapter;
+import org.apache.batik.swing.svg.GVTTreeBuilderEvent;
+import org.apache.batik.swing.gvt.AbstractImageZoomInteractor;
+import org.apache.batik.swing.gvt.AbstractZoomInteractor;
+import org.apache.batik.swing.gvt.AbstractPanInteractor;
+import javax.swing.JButton;
+
+import org.apache.axis.client.Call;
+import javax.xml.namespace.QName;
+import javax.swing.JButton;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseMotionAdapter;
+import org.apache.batik.swing.JSVGScrollPane;
+import javax.swing.UIManager;
+import javax.swing.BorderFactory;
+import javax.swing.border.TitledBorder;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.ButtonGroup;
+import javax.swing.JTable;
+import javax.swing.Box;
+import javax.swing.JTextPane;
+import javax.swing.JTextField;
+import javax.swing.*;
+
+import java.util.*;
+import java.awt.Font;
+import javax.swing.filechooser.*;
+import javax.swing.border.Border;
+import javax.swing.border.BevelBorder;
+import java.awt.Insets;
+
+/**
+ * <p>Title: </p>
+ *
+ * <p>Description: </p>
+ *
+ * <p>Copyright: Copyright (c) 2549</p>
+ *
+ * <p>Company: </p>
+ *
+ * @author not attributable
+ * @version 1.0
+ */
+public class FrmMapStudio extends JFrame {
+  ///////////////Call new Page//////////////////
+  properties frame = new properties();
+  //////////////////////////////////////////////
+
+    MyProfile mp = new MyProfile();
+    //properties prop = new properties() ;
+    String selectedLayer[];
+    String IDLayer[];
+    String fillColorLayer[];
+    String stokeColorLayer[];
+    String setVisible[];
+
+    public String layerXml[];
+
+    String fillFind = "rgb(0,0,0)";
+    String stokeFind = "rgb(255,255,255)";
+
+    String res;
+    String ButtZoom;
+    String PL[];
+    String PD[];
+    double PX[];
+    double PY[];
+    int PN = 0;
+    String TempP;
+
+
+
+
+
+    JPanel contentPane;
+    JMenuBar jMenuBar1 = new JMenuBar();
+    JMenu jMenuFile = new JMenu();
+    JMenu jMenuHelp = new JMenu();
+    JMenuItem jMenuHelpAbout = new JMenuItem();
+    JLabel statusBar = new JLabel();
+    XYLayout xYLayout1 = new XYLayout();
+    XYLayout xYLayout2 = new XYLayout();
+
+    JPanel svgPane = new JPanel();
+    JSVGCanvas svgCanvas = new JSVGCanvas();
+    JButton callService = new JButton();
+    TitledBorder titledBorder1 = new TitledBorder("");
+    ButtonGroup buttonGroup1 = new ButtonGroup();
+    JTable jTable1 = new JTable();
+    ButtonGroup buttonGroup2 = new ButtonGroup();
+    JTable jTable2 = new JTable();
+    java.awt.Component hstrut1 = Box.createHorizontalStrut(8);
+
+    JTextField PosX = new JTextField();
+    JButton GPosition = new JButton();
+    JLabel jLabel1 = new JLabel();
+
+    int CheckClick = 0;
+    double resultX;
+    double resultY;
+    JTextField PosY = new JTextField();
+    JList jList1 = new JList();
+    JLabel FindPos = new JLabel();
+    JList showLayer = new JList();
+  TitledBorder titledBorder2 = new TitledBorder("");
+    JLabel jLabel3 = new JLabel();
+    JList SVLayer = new JList();
+    JButton Vis = new JButton();
+    JButton Hid = new JButton();
+    JLabel jLabel5 = new JLabel();
+    JLabel jLabel4 = new JLabel();
+    JLabel jLabel6 = new JLabel();
+    JTextField StartX = new JTextField();
+    JTextArea jTextArea1 = new JTextArea();
+    JTextArea jTextArea2 = new JTextArea();
+    JTextField StartY = new JTextField();
+    JTextArea jTextArea3 = new JTextArea();
+    JTextField width = new JTextField();
+    JTextArea jTextArea4 = new JTextArea();
+    JTextField height = new JTextField();
+    JScrollPane showLayerS = new JScrollPane(showLayer);
+    JScrollPane SVLayerS = new JScrollPane(SVLayer);
+    JToggleButton zoomIn = new JToggleButton();
+    JToggleButton zoomOut = new JToggleButton();
+    JButton VF = new JButton();
+    JToggleButton moveB = new JToggleButton();
+
+    int checkZ = 0;
+    int checkC = 0;
+    int checkP = 0;
+
+    int checkTemp=0;
+
+
+
+    JLabel jLabel7 = new JLabel();
+    JList KPin = new JList();
+    JScrollPane SKPin = new JScrollPane(KPin);
+    JTextField txtDP = new JTextField();
+  JButton addDetial = new JButton();
+    JButton addPin = new JButton();
+    JButton delPin = new JButton();
+    JMenuItem jMenuItem1 = new JMenuItem();
+    JMenuItem menuOpen = new JMenuItem();
+    JMenuItem menuSave = new JMenuItem();
+    JList FindjList = new JList();
+    JScrollPane SFindjList = new JScrollPane(FindjList);
+    JTabbedPane jTabbedPane1 = new JTabbedPane();
+    JPanel NearBy = new JPanel();
+    JTextArea jTextArea5 = new JTextArea();
+    JTextField jTextField1 = new JTextField();
+    JTextArea jTextArea6 = new JTextArea();
+    JButton jButton1 = new JButton();
+    JTextField jTextField2 = new JTextField();
+    JTextArea jTextArea7 = new JTextArea();
+    JTextField jTextField3 = new JTextField();
+    XYLayout xYLayout3 = new XYLayout();
+    JPanel jPanel2 = new JPanel();
+    XYLayout xYLayout4 = new XYLayout();
+    JLabel jLabel9 = new JLabel();
+    JLabel jLabel10 = new JLabel();
+    JTextField PosiX = new JTextField();
+    JTextField PosiY = new JTextField();
+    JButton jButton2 = new JButton();
+    JLabel jLabel11 = new JLabel();
+    Border border1 = BorderFactory.createLineBorder(UIManager.getColor(
+            "textHighlight"), 2);
+    JButton FillButt = new JButton();
+    JButton StokeButt = new JButton();
+    JButton PosPin = new JButton();
+    JMenu jMenu1 = new JMenu();
+    JMenuItem jMenuItem2 = new JMenuItem();
+    JTextField SHFill = new JTextField();
+    JTextField SHStoke = new JTextField();
+  JButton posPin2 = new JButton();
+  JButton jButton3 = new JButton();
+  TitledBorder titledBorder3 = new TitledBorder("");
+  TitledBorder titledBorder4 = new TitledBorder("");
+  TitledBorder titledBorder5 = new TitledBorder("");
+  TitledBorder titledBorder6 = new TitledBorder("");
+  TitledBorder titledBorder7 = new TitledBorder("");
+  public FrmMapStudio() {
+        try {
+            //setDefaultCloseOperation(EXIT_ON_CLOSE);
+            jbInit();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Component initialization.
+     *
+     * @throws java.lang.Exception
+     */
+    private void jbInit() throws Exception {
+        border1 = BorderFactory.createLineBorder(Color.white, 2);
+        contentPane = (JPanel) getContentPane();
+        contentPane.setLayout(xYLayout1);
+        setSize(new Dimension(1000, 680));
+        setTitle("Frame Title");
+        svgPane.setBackground(new Color(168, 0, 0));
+        svgPane.setLayout(xYLayout2);
+        callService.setText("call service");
+
+        contentPane.setMinimumSize(new Dimension(800, 600));
+        contentPane.setPreferredSize(new Dimension(500, 415));
+
+        svgCanvas.setBorder(BorderFactory.createLoweredBevelBorder());
+        svgCanvas.addMouseListener(new FrmMapStudio_svgCanvas_mouseAdapter(this));
+        jTable1.setBounds(new Rectangle(283, 246, 0, 0));
+        jTable2.setBounds(new Rectangle(310, 255, 0, 0));
+        hstrut1.setBounds(new Rectangle(311, 134, 8, 0));
+    zoomOut.setMargin(new Insets(0, 0, 0, 0));
+    zoomOut.setText("Zoom In/Out");
+        zoomOut.addActionListener(new FrmMapStudio_zoomOut_actionAdapter(this));
+        PosX.setText("X = \" \"");
+
+        GPosition.setText("Get Position");
+        GPosition.addActionListener(new FrmMapStudio_GPosition_actionAdapter(this));
+        jLabel1.setBackground(UIManager.getColor("CheckBox.background"));
+        jLabel1.setBorder(BorderFactory.createEtchedBorder());
+        jLabel1.setOpaque(true);
+        jLabel1.setToolTipText("");
+        jLabel1.setVerifyInputWhenFocusTarget(false);
+        jLabel1.setText("Position");
+        jLabel1.setVerticalAlignment(SwingConstants.TOP);
+        PosY.setText("Y = \" \"");
+        jList1.setBounds(new Rectangle(260, 232, 0, 0));
+        FindPos.setBorder(titledBorder5);
+        FindPos.setText("Find");
+        FindPos.setVerticalAlignment(SwingConstants.TOP);
+        showLayer.setBorder(BorderFactory.createLineBorder(Color.black));
+    jLabel3.setBorder(BorderFactory.createLoweredBevelBorder());
+        jLabel3.setText("Visible Layer");
+        jLabel3.setVerticalAlignment(SwingConstants.TOP);
+        SVLayer.setBorder(BorderFactory.createLineBorder(Color.black));
+        Vis.setText("Visible");
+        Vis.addActionListener(new FrmMapStudio_Vis_actionAdapter(this));
+        Hid.setText("Hidden");
+        Hid.addActionListener(new FrmMapStudio_Hid_actionAdapter(this));
+        jLabel5.setBorder(titledBorder3);
+        jLabel5.setText("Color Layer");
+        jLabel5.setVerticalAlignment(SwingConstants.TOP);
+        jLabel4.setBackground(new Color(49, 106, 197));
+        jLabel4.setBorder(BorderFactory.createEtchedBorder());
+        jLabel4.setText("Set Visible");
+        jLabel4.setVerticalAlignment(SwingConstants.TOP);
+        jLabel6.setBorder(BorderFactory.createEtchedBorder());
+        jLabel6.setText("Set ViewBox");
+        jLabel6.setVerticalAlignment(SwingConstants.TOP);
+        StartX.setText("691233.448514923");
+        jTextArea1.setBackground(SystemColor.control);
+        jTextArea1.setFont(new java.awt.Font("Dialog", Font.PLAIN, 10));
+        jTextArea1.setText("Start X");
+        jTextArea2.setBackground(SystemColor.control);
+        jTextArea2.setFont(new java.awt.Font("Dialog", Font.PLAIN, 10));
+        jTextArea2.setText("Start Y");
+        jTextArea3.setBackground(SystemColor.control);
+        jTextArea3.setFont(new java.awt.Font("Dialog", Font.PLAIN, 10));
+        jTextArea3.setText("Width");
+        width.setText("1814.34961213078");
+        jTextArea4.setBackground(SystemColor.control);
+        jTextArea4.setFont(new java.awt.Font("Dialog", Font.PLAIN, 10));
+        jTextArea4.setText("Heigh");
+        height.setText("1217.95208938536");
+        StartY.setText("1518982.90543618");
+    zoomIn.setMargin(new Insets(0, 0, 0, 0));
+    zoomIn.setText("Capture");
+        zoomIn.addActionListener(new FrmMapStudio_zoomIn_actionAdapter(this));
+    VF.setMargin(new Insets(0, 0, 0, 0));
+    VF.setText("viewFull");
+        VF.addActionListener(new FrmMapStudio_VF_actionAdapter(this));
+    moveB.setMargin(new Insets(0, 0, 0, 0));
+    moveB.setText("move");
+        moveB.addActionListener(new FrmMapStudio_moveB_actionAdapter(this));
+        jLabel7.setBorder(BorderFactory.createLoweredBevelBorder());
+        jLabel7.setToolTipText("");
+        jLabel7.setText("Pin");
+        jLabel7.setVerticalAlignment(SwingConstants.TOP);
+        KPin.setBorder(BorderFactory.createLineBorder(Color.black));
+    addDetial.setMargin(new Insets(0, 0, 0, 0));
+    addDetial.setText("Add");
+        addDetial.addActionListener(new FrmMapStudio_addDetial_actionAdapter(this));
+    addPin.setMargin(new Insets(0, 0, 0, 0));
+    addPin.setText("Add Pin");
+        addPin.addActionListener(new FrmMapStudio_addPin_actionAdapter(this));
+    delPin.setMargin(new Insets(0, 0, 0, 0));
+    delPin.setText("Delete Pin");
+        delPin.addActionListener(new FrmMapStudio_delPin_actionAdapter(this));
+        jMenuItem1.setText("Exit");
+        menuOpen.setText("Open");
+        menuOpen.addActionListener(new FrmMapStudio_menuOpen_actionAdapter(this));
+       // menuOpen.addMouseListener(new FrmMapStudio_menuOpen_mouseAdapter(this));
+        menuSave.setText("Save");
+        menuSave.addActionListener(new FrmMapStudio_menuSave_actionAdapter(this)); // contentPane.add(showLayer, new XYConstraints(573, 47, 112, 231));
+        jTextArea5.setBackground(SystemColor.control);
+        jTextArea5.setFont(new java.awt.Font("Dialog", Font.PLAIN, 10));
+        jTextArea5.setText("Range");
+        jTextField1.setText("0.0");
+        jTextArea6.setBackground(SystemColor.control);
+        jTextArea6.setFont(new java.awt.Font("Dialog", Font.PLAIN, 10));
+        jTextArea6.setText("Position Y");
+        jButton1.setText("Find");
+        jButton1.addActionListener(new FrmMapStudio_jButton1_actionAdapter(this));
+        jTextField2.setText("0.0");
+        jTextArea7.setBackground(SystemColor.control);
+        jTextArea7.setFont(new java.awt.Font("Dialog", Font.PLAIN, 10));
+        jTextArea7.setText("Position X");
+        jTextField3.setText("0.0");
+        NearBy.setLayout(xYLayout3);
+        jPanel2.setLayout(xYLayout4);
+        jLabel9.setFont(new java.awt.Font("Tahoma", Font.PLAIN, 10));
+        jLabel9.setText("Latitude");
+        jLabel10.setFont(new java.awt.Font("Tahoma", Font.PLAIN, 10));
+        jLabel10.setText("Longitude");
+        PosiX.setText("0.0");
+        PosiY.setText("0.0");
+        jButton2.setText("Find");
+        jButton2.addActionListener(new FrmMapStudio_jButton2_actionAdapter(this));
+        jLabel11.setBackground(UIManager.getColor("textHighlight"));
+        jLabel11.setBorder(BorderFactory.createEtchedBorder());
+        jLabel11.setText("Set Color");
+        jLabel11.setVerticalAlignment(SwingConstants.TOP);
+    FillButt.setBackground(Color.white);
+    FillButt.setMargin(new Insets(0, 0, 0, 0));
+    FillButt.setText("Fill");
+        FillButt.addActionListener(new FrmMapStudio_FillButt_actionAdapter(this));
+    StokeButt.setBackground(Color.white);
+    StokeButt.setMargin(new Insets(0, 0, 0, 0));
+    StokeButt.setText("Stoke");
+        StokeButt.addActionListener(new FrmMapStudio_StokeButt_actionAdapter(this));
+    PosPin.setMargin(new Insets(0, 0, 0, 0));
+    PosPin.setText("Pos Pin");
+        PosPin.addActionListener(new FrmMapStudio_PosiButt_actionAdapter(this));
+        FindjList.setBorder(BorderFactory.createLoweredBevelBorder());
+        jMenu1.setText("Credit");
+        jMenuItem2.setText("Show Credit");
+        jMenuItem2.addActionListener(new FrmMapStudio_jMenuItem2_actionAdapter(this));
+        SHFill.setBorder(BorderFactory.createRaisedBevelBorder());
+        SHFill.setEditable(false);
+        SHStoke.setBorder(BorderFactory.createRaisedBevelBorder());
+        SHStoke.setEditable(false);
+    posPin2.setText("posPin");
+    posPin2.addActionListener(new FrmMapStudio_posPin2_actionAdapter(this));
+    jButton3.setBackground(Color.white);
+    jButton3.setBorder(titledBorder4);
+    jButton3.setText("Properties");
+    jButton3.addActionListener(new FrmMapStudio_jButton3_actionAdapter(this));
+    jPanel2.setBorder(titledBorder7);
+    contentPane.add(svgPane, new XYConstraints(87, 51, -1, -1));
+        statusBar.setText(" ");
+        jMenuFile.setText("File");
+        jMenuHelp.setText("Help");
+        jMenuHelpAbout.setText("About");
+        jMenuHelpAbout.addActionListener(new
+                                         FrmMapStudio_jMenuHelpAbout_ActionAdapter(this));
+        callService.setText("Call Map");
+        callService.addActionListener(new FrmMapStudio_callService_actionAdapter(this));
+        jMenuBar1.add(jMenuFile);
+        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(jMenuHelp);
+        jMenuHelp.add(jMenuHelpAbout);
+        setJMenuBar(jMenuBar1);
+
+        contentPane.add(statusBar, new XYConstraints(0, 286, 400, -1));
+    svgCanvas.add(jTable1);
+        svgCanvas.add(jTable2);
+        svgCanvas.add(hstrut1);
+        svgCanvas.add(jList1);
+    contentPane.add(PosX, new XYConstraints(352, 505, 184, 22));
+        contentPane.add(PosY, new XYConstraints(352, 534, 184, 22));
+        contentPane.add(GPosition, new XYConstraints(418, 562, 118, 17));
+        contentPane.add(jLabel1, new XYConstraints(346, 480, 198, 104)); // contentPane.add(SVLayer, new XYConstraints(577, 338, 108, 226));
+        contentPane.add(Vis, new XYConstraints(703, 367, 65, 30));
+        contentPane.add(Hid, new XYConstraints(702, 418, 66, 30));
+        contentPane.add(jLabel4, new XYConstraints(695, 338, 80, 141));
+    contentPane.add(SVLayerS, new XYConstraints(577, 338, 108, 226));
+        contentPane.add(callService, new XYConstraints(14, 6, 101, 17));
+    jMenuFile.add(menuOpen);
+        jMenuFile.add(menuSave);
+        jMenuFile.addSeparator();
+        jMenuFile.add(jMenuItem1);
+        contentPane.add(jTextArea2, new XYConstraints(22, 546, 34, 24));
+        contentPane.add(jTextArea1, new XYConstraints(22, 501, 34, 23));
+        contentPane.add(StartX, new XYConstraints(57, 499, 113, 25));
+        contentPane.add(StartY, new XYConstraints(57, 541, 113, 24));
+        contentPane.add(width, new XYConstraints(210, 499, 117, 25));
+        contentPane.add(jTextArea3, new XYConstraints(177, 501, 31, 22));
+        contentPane.add(jLabel6, new XYConstraints(12, 481, 327, 104));
+        contentPane.add(jTextArea4, new XYConstraints(177, 544, 32, 24));
+        contentPane.add(height, new XYConstraints(210, 542, 117, 24));
+        contentPane.add(jLabel3, new XYConstraints(561, 313, 224, 272));
+        NearBy.add(jTextArea7, new XYConstraints(3, 20, -1, -1));
+        NearBy.add(jTextArea6, new XYConstraints(3, 50, -1, -1));
+        NearBy.add(jTextArea5, new XYConstraints(3, 82, -1, -1));
+        NearBy.add(jTextField2, new XYConstraints(59, 49, 95, -1));
+        NearBy.add(jTextField1, new XYConstraints(59, 19, 95, -1));
+        NearBy.add(jTextField3, new XYConstraints(59, 80, 95, -1));
+        NearBy.add(jButton1, new XYConstraints(101, 104, -1, 19));
+    contentPane.add(SHFill, new XYConstraints(917, 153, 29, 24));
+        contentPane.add(SHStoke, new XYConstraints(936, 160, 28, 24));
+    jTabbedPane1.add(jPanel2, "Nearest");
+    jPanel2.add(jButton2, new XYConstraints(88, 98, 69, 19));
+    jTabbedPane1.add(NearBy, "NearBy");
+    contentPane.add(FillButt, new XYConstraints(906, 79, 67, 28));
+        contentPane.add(SFindjList, new XYConstraints(814, 48, 78, 157));
+        jMenu1.add(jMenuItem2);
+        contentPane.add(StokeButt, new XYConstraints(906, 113, 67, 30));
+        contentPane.add(jTabbedPane1, new XYConstraints(807, 215, 173, 159));
+    contentPane.add(FindPos, new XYConstraints(799, 25, 185, 355));
+    contentPane.add(jLabel11, new XYConstraints(900, 48, 78, 146));
+    NearBy.add(posPin2, new XYConstraints(23, 104, 64, 19));
+    contentPane.add(jLabel5, new XYConstraints(561, 25, 223, 271));
+    contentPane.add(jLabel7, new XYConstraints(799, 384, 185, 201));
+    contentPane.add(jButton3, new XYConstraints(573, 257, 200, 27));
+    contentPane.add(showLayerS, new XYConstraints(573, 47, 200, 201));
+    contentPane.add(svgCanvas, new XYConstraints(12, 35, 532, 435));
+    contentPane.add(callService, new XYConstraints(14, 6, 140, 25));
+    contentPane.add(moveB, new XYConstraints(198, 6, 79, 25));
+    contentPane.add(zoomIn, new XYConstraints(282, 6, 78, 25));
+    contentPane.add(zoomOut, new XYConstraints(365, 6, 95, 25));
+    contentPane.add(VF, new XYConstraints(464, 6, 79, 25));
+    jPanel2.add(PosPin, new XYConstraints(1, 98, 78, 19));
+    jPanel2.add(jLabel9, new XYConstraints(4, 0, 67, 20));
+    jPanel2.add(PosiX, new XYConstraints(52, 22, 106, 20));
+    jPanel2.add(PosiY, new XYConstraints(52, 61, 105, 21));
+    jPanel2.add(jLabel10, new XYConstraints(4, 42, 62, 18));
+    contentPane.add(addPin, new XYConstraints(888, 405, 85, 22));
+    contentPane.add(delPin, new XYConstraints(888, 438, 85, -1));
+    contentPane.add(txtDP, new XYConstraints(805, 552, 104, 25));
+    contentPane.add(addDetial, new XYConstraints(915, 551, 58, 25));
+    contentPane.add(SKPin, new XYConstraints(805, 405, 79, 139));
+  }
+
+    /**
+     * File | Exit action performed.
+     *
+     * @param actionEvent ActionEvent
+     */
+    void jMenuFileExit_actionPerformed(ActionEvent actionEvent) {
+        System.exit(0);
+    }
+
+    /**
+     * Help | About action performed.
+     *
+     * @param actionEvent ActionEvent
+     */
+    void jMenuHelpAbout_actionPerformed(ActionEvent actionEvent) {
+        Frame1_AboutBox dlg = new Frame1_AboutBox(this);
+        Dimension dlgSize = dlg.getPreferredSize();
+        Dimension frmSize = getSize();
+        Point loc = getLocation();
+        dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x,
+                        (frmSize.height - dlgSize.height) / 2 + loc.y);
+        dlg.setModal(true);
+        dlg.pack();
+        dlg.setVisible(true);
+    }
+
+    private String genXmlReq(){
+            String xmlreq ="<maprequest xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'> \n";
+            for (int j=0;j <IDLayer.length;j++)
+            {
+                xmlreq+=layerXml[j];
+            }
+            xmlreq += "</maprequest> \n";
+
+            JOptionPane.showMessageDialog(null,xmlreq);
+            return xmlreq;
+    }
+
+    public void callService_actionPerformed(ActionEvent actionEvent) {
+        //////////Click Cal Services Buttom/////////////////
+
+        //////////////////Keep Value ViewBox///////////////////////
+        String posX = StartX.getText().toString();
+        String posY = StartY.getText().toString();
+        String Width = width.getText().toString();
+        String Height = height.getText().toString();
+
+        double posXX = Double.parseDouble(posX);
+        double posYY = Double.parseDouble(posY);
+        double widthX = Double.parseDouble(Width);
+        double heightY = Double.parseDouble(Height);
+
+       // int posXX = Integer.parseInt(posX);
+
+        System.out.println(posXX+" , "+posYY+" , "+widthX+" , "+heightY);
+
+
+        //////////////////End keep value///////////////////////////
+
+       // String xmlreq = xmltxt.getText();
+
+        try {
+
+            ///////////////////Write XML//////////////////////////////
+            String xmlreq = genXmlReq();
+
+            ////////////////////End Write/////////////////////////////
+            CallServices cs = new CallServices("Gis_GetMapServices","requestSVG");
+            res =cs.strInvoke(new Object[] {mp.getSessionkey(),xmlreq,posXX,posYY,widthX,heightY });
+            //res = (String) call.invoke(new Object[] {"mf2TWJhyyq",xmlreq,posXX,posYY,widthX,heightY});
+            for (int i = 0; i<IDLayer.length ; i++ )
+            {
+                res = res.replace("<g mapid='"+IDLayer[i]+"' visibility='visible' >","<g mapid='"+IDLayer[i]+"' visibility='"+setVisible[i]+"' >");
+            }
+
+               PrintWriter woutx = new PrintWriter("map.svg");
+               woutx.write(res);
+               woutx.close();
+               svgCanvas.setURI("file:map.svg");
+
+           //svgCanvas.setURI(f.toURL().toString());
+
+            //System.out.println( res);
+            ////////////////Show Table/////////////////////////
+
+           // showTable.setGridColor(Color.red);
+            //Dont't make,Comming soon
+
+        /*    ////////////////End Table//////////////////////////
+            ///Test Shoe xmlreq//
+            System.out.println(xmlreq);
+            System.out.println("aaa");
+            /////////////////////*/
+
+
+       } catch (Exception ea) {
+           System.out.print(ea.getStackTrace());
+       }
+       svgCanvas.setEnableZoomInteractor(false);
+       svgCanvas.setEnableImageZoomInteractor(false);
+       svgCanvas.setEnableResetTransformInteractor(false);
+       svgCanvas.setEnablePanInteractor(false);
+
+   }
+
+
+    public void GPosition_actionPerformed(ActionEvent e) {
+        CheckClick = 1;
+    }
+
+    public void svgCanvas_mouseClicked(MouseEvent e) {
+        ////////////////////Find Position/////////////////////////
+        //////////////////Keep Value ViewBox///////////////////////
+        String posX = StartX.getText().toString();
+        String posY = StartY.getText().toString();
+        String Width = width.getText().toString();
+        String Height = height.getText().toString();
+
+        double posXX = Double.parseDouble(posX);
+        double posYY = Double.parseDouble(posY);
+        double widthX = Double.parseDouble(Width);
+        double heightY = Double.parseDouble(Height);
+
+        if(CheckClick == 1)
+        {
+            double posXXX = e.getX();
+            double posYYY = e.getY();
+            double maxX = svgCanvas.getWidth();
+            double maxY = (heightY*maxX)/widthX;
+
+            //691233.448514923 -1518982.90543618 1814.34961213078 1217.95208938536
+            double XX = widthX/maxX;
+            double YY = heightY/maxY;
+            resultX = (posXXX * XX)+posXX;
+            resultY = posYY-(posYYY * YY);
+
+            PosX.setText("X = \""+resultX+"\"");
+            PosY.setText("Y = \""+resultY+"\"");
+            PosiX.setText(resultX+"");
+            PosiY.setText(resultY+"");
+            jTextField1.setText(resultX+"");
+            jTextField2.setText(resultY+"");
+            CheckClick =0;
+        }
+        if(CheckClick == 2)
+        {
+             double posXXX = e.getX();
+             double posYYY = e.getY();
+             double maxX = svgCanvas.getWidth();
+             double maxY = (heightY*maxX)/widthX;
+
+             //691233.448514923 -1518982.90543618 1814.34961213078 1217.95208938536
+             double XX = widthX/maxX;
+             double YY = heightY/maxY;
+             resultX = (posXXX * XX)+posXX ;
+             resultY = -posYY +(posYYY * YY);
+             PX[PN] = resultX;
+             PY[PN] = resultY;
+             /////////////Show List////////////////////////////
+                Vector v = new Vector();
+                 int j;
+                 for (j = 0; j < KPin.getModel().getSize(); j++) {
+                     v.addElement(KPin.getModel().getElementAt(j));
+                 }
+
+
+
+                 v.addElement(PL[PN]);
+                 KPin.setListData(v);
+             /////////////End Show/////////////////////////////
+
+             ///////////////Show Pin In Map/////////////////////////////////////
+             String tempRes = "";
+             tempRes +="<g id ='Pin'>\n";
+             for (int i=0;i<PL.length;i++)
+             {
+                 if(PL[i] !=" ")
+                 {
+
+                    tempRes += "<polygon pinid ='"+(i + 1)+"' points='"+PX[i]+","+PY[i]+" "+(PX[i]-20)+","+(PY[i]-36)+" "+PX[i]+","+(PY[i]-56)+" "+(PX[i]+20)+","+(PY[i]-36)+"' style='fill:red;stroke-width:2;stroke:red' />\n";
+                 }
+             }
+             tempRes +="</g>\n";
+             tempRes +="</svg>\n";
+
+             int position = res.indexOf("</svg>");
+             String temp = res.substring(0,position-1);
+             temp += tempRes;
+             TempP = temp;
+             res = temp;
+
+             //////////////////Write///////////////////
+             try
+             {
+
+                     PrintWriter woutx = new PrintWriter("map.svg");
+                     woutx.write(temp);
+                     woutx.close();
+                     svgCanvas.setURI("file:map.svg");
+
+
+             }catch(Exception ea) {
+                 System.out.print(ea.getStackTrace());
+             }
+
+             //////////////////////////////////////////
+
+             ////////////////End Show Pin///////////////////////////////////////
+             CheckClick = 0;
+             PN++;
+
+        }
+    }
+
+
+    public void jComboBox1_actionPerformed(ActionEvent e) {
+        System.out.println();
+    }
+
+    public void setSelectedLayer(String[] ChLayer)
+    {
+        ///////////////////////Clear List1//////////////////////
+       int a1 =1;
+
+       while(a1 != 0)
+       {
+           int i;
+           Vector v = new Vector();
+           for (i = 0; i < showLayer.getModel().getSize(); i++) {
+
+               if (showLayer.getModel().getElementAt(i).toString() != "") {
+                   v.clear();
+               }
+           }
+           if (i == showLayer.getModel().getSize())
+           {a1 = 0;}
+           showLayer.setListData(v);
+       }
+       ///////////////////////End Clear///////////////////////
+       ///////////////////////Clear List2//////////////////////
+       int a2 =1;
+
+       while(a2 != 0)
+       {
+           int i;
+           Vector v = new Vector();
+           for (i = 0; i < SVLayer.getModel().getSize(); i++) {
+
+               if (SVLayer.getModel().getElementAt(i).toString() != "") {
+                   v.clear();
+               }
+           }
+           if (i == SVLayer.getModel().getSize())
+           {a2 = 0;}
+           SVLayer.setListData(v);
+       }
+       ///////////////////////End Clear///////////////////////
+       ///////////////////////Clear List3//////////////////////
+       int a3 =1;
+
+       while(a3 != 0)
+       {
+           int i;
+           Vector v = new Vector();
+           for (i = 0; i < KPin.getModel().getSize(); i++) {
+
+               if (KPin.getModel().getElementAt(i).toString() != "") {
+                   v.clear();
+               }
+           }
+           if (i == KPin.getModel().getSize())
+           {a3 = 0;}
+           KPin.setListData(v);
+       }
+       ///////////////////////End Clear///////////////////////
+       ///////////////////////Clear List4//////////////////////
+       int a4 =1;
+
+       while(a4 != 0)
+       {
+           int i;
+           Vector v = new Vector();
+           for (i = 0; i < FindjList.getModel().getSize(); i++) {
+
+               if (FindjList.getModel().getElementAt(i).toString() != "") {
+                   v.clear();
+               }
+           }
+           if (i == FindjList.getModel().getSize())
+           {a4 = 0;}
+           FindjList.setListData(v);
+       }
+       ///////////////////////End Clear///////////////////////
+
+
+
+        SHFill.setBackground(Color.BLACK);
+        SHStoke.setBackground(Color.white);
+        selectedLayer = ChLayer;
+        fillColorLayer = new String[selectedLayer.length];
+
+        stokeColorLayer = new String[selectedLayer.length];
+
+        setVisible = new String[selectedLayer.length];
+        PL = new String[20];
+        for (int i =0;i<20;i++)
+        {
+            PL[i] = " ";
+        }
+        PD = new String[20];
+        for (int i =0;i<20;i++)
+        {
+            PD[i] = " ";
+        }
+
+        PX = new double[20];
+        PY = new double[20];
+
+        for (int i=0 ; i<selectedLayer.length ; i++)
+        {
+            /////////////////////////////////////////////
+            Vector v = new Vector();
+            for (int j = 0; j <showLayer.getModel().getSize(); j++) {
+                v.addElement(showLayer.getModel().getElementAt(j));
+            }
+
+            v.addElement(selectedLayer[i]);
+            showLayer.setListData(v);
+            //////////////////////////////////////////////
+            Vector v1 = new Vector();
+            for (int j = 0; j <SVLayer.getModel().getSize(); j++) {
+                v1.addElement(SVLayer.getModel().getElementAt(j));
+            }
+
+            v1.addElement(selectedLayer[i]);
+            SVLayer.setListData(v1);
+            //////////////////////////////////////////////
+            Vector v2 = new Vector();
+           for (int j = 0; j <FindjList.getModel().getSize(); j++) {
+               v2.addElement(FindjList.getModel().getElementAt(j));
+           }
+
+           v2.addElement(selectedLayer[i]);
+           FindjList.setListData(v2);
+           //////////////////////////////////////////////
+
+
+        }
+
+        for (int i=0 ; i<selectedLayer.length ; i++)
+        {
+            setVisible[i] = "visible";
+        }
+
+        layerXml=new String[selectedLayer.length];
+        for (int i=0; i<selectedLayer.length ; i++){
+          layerXml[i] = "<layer id='"+IDLayer[i]+"' fill='white' stroke='black' > </layer>";
+        }
+
+
+    }
+
+    public void setIDLayer(String[] IDL)
+    {
+       IDLayer = IDL;
+       ///////////Test////////////////////////
+       for(int i = 0;i<IDLayer.length;i++)
+       {
+           System.out.println(IDLayer[i]);
+       }
+       ///////////////////////////////////////
+
+
+
+    }
+
+    public void Fill_actionPerformed(ActionEvent e) {
+
+    /*    ///////////////Find Index///////////////
+        System.out.println(showLayer.getSelectedIndex());
+        showLayer.getSelectedIndex();
+        ////////////////////////////////////////*/
+
+        /////////////Test///////////////////
+        Color initialBackground = new Color(250,250,250);
+        final JColorChooser colorChooser = new JColorChooser(
+                initialBackground);
+        colorChooser.updateUI();
+
+    // selected color
+        ActionListener okActionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                Color newColor = colorChooser.getColor();
+                ///////Keep In Array//////////////
+
+                    fillColorLayer[showLayer.getSelectedIndex()] = "rgb(" +
+                            newColor.toString().substring(15).replace("]", ")").
+                            replace("r", " ").replace("g", " ").replace("b",
+                            " ").replace("=", " ");
+                    //////////////////////////////////
+                    //Color initialBackground = ; /////////Show Value/////////////////
+               // System.out.println("rgb("+newColor.toString().substring(15).replace("]",")").replace("r"," ").replace("g"," ").replace("b"," ").replace("="," "));
+
+            }
+        };
+
+        final JDialog dialog = JColorChooser.createDialog(null,
+                "Change Button Background", true, colorChooser,
+                okActionListener, null);
+    //if use cancel bottom must change "null" to "cancelActionListener"
+
+        Runnable showDialog = new Runnable() {
+            public void run() {
+
+                dialog.setVisible(true);
+            }
+        };
+        SwingUtilities.invokeLater(showDialog);
+    ///////////////////////////////////
+
+
+    }
+
+    public void Stoke_actionPerformed(ActionEvent e) {
+        /////////////Test///////////////////
+        Color initialBackground = new Color(250,250,250);
+        final JColorChooser colorChooser = new JColorChooser(
+                initialBackground);
+        colorChooser.updateUI();
+
+    // selected color
+        ActionListener okActionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                Color newColor = colorChooser.getColor();
+                ///////Keep In //////////////
+
+                    stokeColorLayer[showLayer.getSelectedIndex()] = "rgb(" +
+                            newColor.toString().
+                            substring(15).replace("]", ")").replace("r", " ").replace("g", " ").
+                                                replace("b", " ").replace("=", " "); /////////Show Value/////////////////
+               // System.out.println(newColor.toString().substring(15).replace("]"," "));
+
+            }
+        };
+
+        final JDialog dialog = JColorChooser.createDialog(null,
+                "Change Button Background", true, colorChooser,
+                okActionListener, null);
+    //if use cancel bottom must change "null" to "cancelActionListener"
+
+        Runnable showDialog = new Runnable() {
+            public void run() {
+
+                dialog.setVisible(true);
+            }
+        };
+        SwingUtilities.invokeLater(showDialog);
+    ///////////////////////////////////
+
+
+    }
+
+    public void Vis_actionPerformed(ActionEvent e) {
+        setVisible[SVLayer.getSelectedIndex()] = "visible";
+        try
+        {
+            for (int i = 0; i < IDLayer.length; i++) {
+                res = res.replace("<g mapid='" + IDLayer[i] +
+                                  "' visibility='hidden' >",
+                                  "<g mapid='" + IDLayer[i] + "' visibility='" +
+                                  setVisible[i] + "' >");
+            }
+
+               PrintWriter woutx = new PrintWriter("map.svg");
+               woutx.write(res);
+               woutx.close();
+               svgCanvas.setURI("file:map.svg");
+
+
+        }
+        catch(Exception ea){
+                System.out.print(ea.getStackTrace());
+        }
+
+    }
+
+    public void Hid_actionPerformed(ActionEvent e) {
+        setVisible[SVLayer.getSelectedIndex()] = "hidden";
+        try
+        {
+            for (int i = 0; i < IDLayer.length; i++) {
+                res = res.replace("<g mapid='" + IDLayer[i] +
+                                  "' visibility='visible' >",
+                                  "<g mapid='" + IDLayer[i] + "' visibility='" +
+                                  setVisible[i] + "' >");
+                System.out.println("DEBUG :ID "+IDLayer[i]+" STATUS "+setVisible[i]);
+            }
+            System.out.println(res);
+               PrintWriter woutx = new PrintWriter("map.svg");
+               woutx.write(res);
+               woutx.close();
+               svgCanvas.setURI("file:map.svg");
+
+
+        }
+        catch(Exception ea){
+            System.out.print(ea.getStackTrace());
+        }
+
+    }
+
+     public void zoomIn_actionPerformed(ActionEvent e) {
+        if (checkC == 1)
+        {zoomOut.setSelected(false);}
+        if (checkP == 1)
+        {moveB.setSelected(false);}
+        if (checkZ == 0)
+        {
+            svgCanvas.getInteractors().add(new ZoomInteractor());
+            svgCanvas.getInteractors().add(new ImageZoomInteractor());
+            svgCanvas.getInteractors().add(new PanInteractor());
+            ButtZoom = "zoomin";
+            checkZ =1;
+        }else{
+            zoomIn.setSelected(false);
+            ButtZoom = "stop";
+            checkZ = 0;
+        }
+    }
+
+    public void zoomOut_actionPerformed(ActionEvent e) {
+        if (checkZ == 1)
+        {zoomIn.setSelected(false);}
+        if (checkP == 1)
+        {moveB.setSelected(false);}
+        if (checkC == 0)
+        {
+            svgCanvas.getInteractors().add(new ZoomInteractor());
+            svgCanvas.getInteractors().add(new ImageZoomInteractor());
+            svgCanvas.getInteractors().add(new PanInteractor());
+            ButtZoom = "zoomout";
+            checkC =1;
+        }else{
+            zoomOut.setSelected(false);
+            ButtZoom = "stop";
+            checkC = 0;
+        }
+
+
+    }
+
+    public void VF_actionPerformed(ActionEvent e) {
+        if (checkZ == 1)
+        {zoomIn.setSelected(false);}
+        if (checkC == 1)
+        {zoomOut.setSelected(false);}
+        if (checkP == 1)
+        {moveB.setSelected(false);}
+        svgCanvas.setURI("file:map.svg");
+    }
+
+    public void moveB_actionPerformed(ActionEvent e) {
+        if (checkZ == 1)
+        {
+            zoomIn.setSelected(false);
+        }
+        if (checkC == 1)
+        {
+            zoomOut.setSelected(false);
+        }
+
+        if (checkP == 0) {
+            svgCanvas.getInteractors().add(new ZoomInteractor());
+            svgCanvas.getInteractors().add(new ImageZoomInteractor());
+            svgCanvas.getInteractors().add(new PanInteractor());
+            ButtZoom = "pan";
+            checkP = 1;
+        } else {
+            moveB.setSelected(false);
+            ButtZoom = "stop";
+            checkP = 0;
+        }
+
+    }
+
+    public void addPin_actionPerformed(ActionEvent e) {
+        PL[PN]="Pin"+(PN+1);
+
+        CheckClick = 2;
+    }
+
+    public void delPin_actionPerformed(ActionEvent e) {
+        String cTemp = KPin.getSelectedValue().toString();
+        //////////////Del In List/////////////////////////////
+        Vector v = new Vector();
+        for (int i = 0; i < KPin.getModel().getSize(); i++) {
+            if (KPin.getSelectedValue() != KPin.getModel().getElementAt(i)) {
+                v.addElement(KPin.getModel().getElementAt(i));
+            }
+        }
+         KPin.setListData(v);
+
+        //////////////////////////////////////////////////////
+        for (int i=0;i<PN;i++)
+        {
+            if(PL[i] == cTemp)
+            {
+                PL[i] = " ";
+                PX[i] = 0;
+                PY[i] = 0;
+            }
+        }
+
+        ///////////////Show Pin In Map/////////////////////////////////////
+            String tempRes = "";
+            tempRes +="<g id ='Pin'>\n";
+            for (int i=0;i<PN;i++)
+            {
+                if(PL[i] !=" ")
+                {
+
+                   tempRes += "<polygon pinid ='"+(i + 1)+"' points='"+PX[i]+","+PY[i]+" "+(PX[i]-20)+","+(PY[i]-36)+" "+PX[i]+","+(PY[i]-56)+" "+(PX[i]+20)+","+(PY[i]-36)+"' style='fill:blue;stroke-width:2;stroke:black' />\n";
+                }
+            }
+            tempRes +="</g>\n";
+            tempRes +="</svg>\n";
+
+            int position = res.indexOf("</svg>");
+            String temp = res.substring(0,position-1);
+            temp += tempRes;
+            res = temp;
+            //////////////////Write///////////////////
+            try
+            {
+
+                    PrintWriter woutx = new PrintWriter("map.svg");
+                    woutx.write(res);
+                    woutx.close();
+                    svgCanvas.setURI("file:map.svg");
+
+            }catch(Exception ea) {
+                System.out.print(ea.getStackTrace());
+            }
+
+            //////////////////////////////////////////
+
+            ////////////////End Show Pin///////////////////////////////////////
+
+
+    }
+
+    public void addDetial_actionPerformed(ActionEvent e) {
+        String tempTxt = txtDP.getText();
+        String tempL = KPin.getSelectedValue().toString();
+        System.out.println(tempTxt+","+tempL);
+        int num = 0;
+        for (int i=0;i<20;i++)
+        {
+           if (PL[i] == tempL)
+           {
+               System.out.println(PL[i]+" I ="+i);
+               num = i;
+           }
+        }
+        PD[num] = tempTxt;
+        System.out.println(PD[num]);
+
+        ///////////////Show Pin In Map/////////////////////////////////////
+            String tempRes = "";
+            tempRes +="<g id ='DPin'>\n";
+            for (int i=0;i<PN;i++)
+            {
+                if(PL[i] !=" ")
+                {
+                   if(PD[i] != " ")
+                   {
+                       tempRes += "<text id ='" + (i + 1) + "' x='" +
+                               (PX[i] - 25) + "' y='" + (PY[i] - 60) +
+                               "' style='text-anchor:middle;font-size:30;font-family:Arial;fill:black'>" +
+                               PD[i] + "</text>\n";
+                   }
+                }
+            }
+            tempRes +="</g>\n";
+            tempRes +="</svg>\n";
+
+            int position = TempP.indexOf("</svg>");
+            String temp = TempP.substring(0,position-1);
+            temp += tempRes;
+            System.out.println(temp);
+            res = temp;
+            //////////////////Write///////////////////
+            try
+            {
+
+                    PrintWriter woutx = new PrintWriter("map.svg");
+                    woutx.write(res);
+                    woutx.close();
+                    svgCanvas.setURI("file:map.svg");
+
+
+            }catch(Exception ea) {
+                System.out.print(ea.getStackTrace());
+            }
+
+            //////////////////////////////////////////
+
+            ////////////////End Show Pin///////////////////////////////////////
+
+    }
+
+
+
+    public void menuOpen_actionPerformed(ActionEvent e) {
+        if(e.getSource() == menuOpen)
+        {
+            /////////////OPEN MAP FILE////////////////////////////////////////////
+            FileDialog d = new FileDialog(new Frame(), "OPEN FILE",
+                                          FileDialog.LOAD);
+            d.setDirectory(".");
+            d.setVisible(true);
+
+
+            File fileOpen = new File(d.getDirectory()+d.getFile());
+
+            svgCanvas.setURI("file:"+fileOpen);
+            /////////////////////////////////////////////////////////////////////
+        }
+
+    }
+
+    public void menuSave_actionPerformed(ActionEvent e) {
+
+        if(e.getSource() == menuSave)
+        {
+            /////////////SAVE MAP FILE///////////////////////////////////////////
+            FileDialog d = new FileDialog(new Frame(), "SAVE FILE",
+                                          FileDialog.SAVE);
+            d.setDirectory(".");
+            d.setVisible(true);
+            if (d.getFile() ==  null) {
+                // no file selected
+                } else {
+                        File fileSave = new File(d.getDirectory()+d.getFile());
+                        //////////////////Write///////////////////
+                        try {
+                            PrintWriter woutx = new PrintWriter(fileSave);
+                            woutx.write(res);
+                            woutx.close();
+
+
+                        } catch (Exception ea) {
+                            System.out.print(ea.getStackTrace());
+                        }
+
+                        //////////////////////////////////////////
+
+                }
+
+
+            /////////////////////////////////////////////////////////////////////
+        }
+
+
+    }
+
+    public void jButton1_actionPerformed(ActionEvent e) {
+        //////////////////Keep Value ViewBox///////////////////////
+        String posX = StartX.getText().toString();
+        String posY = StartY.getText().toString();
+        String Width = width.getText().toString();
+        String Height = height.getText().toString();
+
+    //*********************************************//
+        double posXX = Double.parseDouble(posX);
+        double posYY = Double.parseDouble(posY);
+        double widthX = Double.parseDouble(Width);
+        double heightY = Double.parseDouble(Height);
+    //********************************************//
+
+    //////////////////End keep value///////////////////////////
+
+        /////////////////Get Value/////////////
+        String tfx = jTextField1.getText();
+        String tfy = jTextField2.getText();
+        String tfr = jTextField3.getText();
+        ///////////////////////////////////////
+        //*************************************//
+        double DFX = Double.parseDouble(tfx);
+        double DFY = Double.parseDouble(tfy);
+        double DFR = Double.parseDouble(tfr);
+        //************************************//
+        int Index = 0;
+
+        int GLayerIndex = FindjList.getSelectedIndex();
+        String GLayer = "0";
+        for (int i = 0; i < IDLayer.length; i++) {
+            GLayer = IDLayer[GLayerIndex];
+        }
+        //***************************************//
+        int GL = Integer.parseInt(GLayer);
+        //**************************************//
+        /////////////////////TEST///////////////////////////////////////////////////////////////////////////////
+        try {
+
+            ///////////////////Write XML//////////////////////////////
+            String xmlreq = genXmlReq();
+
+            ////////////////////End Write/////////////////////////////
+            /*Call call = new Call(
+                    "http://localhost:8080/GisServer/services/Gis_GetMapServices");
+            call.setOperationName(new QName("requestNearbySVG"));
+            res = (String) call.invoke(new Object[] {"mf2TWJhyyq", xmlreq, GL,
+                                       posXX, posYY, widthX, heightY, DFX, DFY, DFR});*/
+
+            CallServices cs = new CallServices("Gis_GetMapServices","requestNearbySVG");
+            if(checkTemp == 0)
+            {
+              res = cs.strInvoke(new Object[] {mp.getSessionkey(), xmlreq, GL,
+                                 posXX, posYY, widthX, heightY, DFX, DFY, DFR,
+                                 fillFind, stokeFind});
+            }else{
+              ////////////////Find Form Pin////////////////////////////////
+               String tt = KPin.getSelectedValue().toString();
+               for(int i=0;i<PL.length;i++)
+               {
+                   if(PL[i] == tt)
+                   {
+                       Index = i;
+                   }
+               }
+
+               res = cs.strInvoke(new Object[] {mp.getSessionkey(), xmlreq, GL,
+                               posXX, posYY, widthX, heightY, PX[Index],-PY[Index], DFR,
+                               fillFind, stokeFind});
+                checkTemp=0;
+            }
+            for (int i = 0; i < IDLayer.length; i++) {
+                     res = res.replace("<g mapid='" + IDLayer[i] + "' visibility='visible' >",
+                                  "<g mapid='" + IDLayer[i] + "' visibility='" +
+                                  setVisible[i] + "' >");
+            }
+            ///////////////Create Pin In Map/////////////////////////////////////
+            String tempRes = "";
+            tempRes +="<g id ='Pin'>\n";
+            for (int i=0;i<PL.length;i++)
+             {
+                 if(PL[i] !=" ")
+                 {
+
+                    tempRes += "<polygon pinid ='"+(i + 1)+"' points='"+PX[i]+","+PY[i]+" "+(PX[i]-20)+","+(PY[i]-36)+" "+PX[i]+","+(PY[i]-56)+" "+(PX[i]+20)+","+(PY[i]-36)+"' style='fill:red;stroke-width:2;stroke:red' />\n";
+                 }
+             }
+
+            tempRes +="</g>\n";
+            tempRes +="<g id ='DPin'>\n";
+            for (int i=0;i<PN;i++)
+            {
+                if(PL[i] !=" ")
+                {
+                   if(PD[i] != " ")
+                   {
+                       tempRes += "<text id ='" + (i + 1) + "' x='" +
+                               (PX[i] - 25) + "' y='" + (PY[i] - 60) +
+                               "' style='text-anchor:middle;font-size:30;font-family:Arial;fill:black'>" +
+                               PD[i] + "</text>\n";
+                   }
+                }
+            }
+            tempRes +="</g>\n";
+            tempRes +="</svg>\n";
+            //////////////////////End Create Pin////////////////////////////////////////
+            int position = res.indexOf("</svg>");
+            String temp = res.substring(0,position-1);
+            temp += tempRes;
+
+            res = temp;
+
+            PrintWriter woutx = new PrintWriter("map.svg");
+            woutx.write(res);
+            woutx.close();
+            svgCanvas.setURI("file:map.svg");
+
+
+        } catch (Exception ea) {
+            System.out.print(ea.getStackTrace());
+        }
+
+    }
+
+    public void jButton2_actionPerformed(ActionEvent e) {
+        //////////////////Keep Value ViewBox///////////////////////
+        String posX = StartX.getText().toString();
+        String posY = StartY.getText().toString();
+        String Width = width.getText().toString();
+        String Height = height.getText().toString();
+
+    //*********************************************//
+        double posXX = Double.parseDouble(posX);
+        double posYY = Double.parseDouble(posY);
+        double widthX = Double.parseDouble(Width);
+        double heightY = Double.parseDouble(Height);
+    //********************************************//
+    int Index=0;
+    //////////////////End keep value///////////////////////////
+
+    /////////////////Get Value/////////////
+        String tfx = PosiX.getText();
+        String tfy = PosiY.getText();
+
+    ///////////////////////////////////////
+    //*************************************//
+        double DFX = Double.parseDouble(tfx);
+        double DFY = Double.parseDouble(tfy);
+
+
+    //************************************//
+
+        int GLayerIndex = FindjList.getSelectedIndex();
+        String GLayer = "0";
+        for (int i = 0; i < IDLayer.length; i++) {
+            GLayer = IDLayer[GLayerIndex];
+        }
+    //***************************************//
+        int GL = Integer.parseInt(GLayer);
+    //**************************************//
+    /////////////////////TEST///////////////////////////////////////////////////////////////////////////////
+        try {
+
+            ///////////////////Write XML//////////////////////////////
+            String xmlreq = genXmlReq();
+
+            ////////////////////End Write/////////////////////////////
+            /*Call call = new Call(
+                    "http://localhost:8080/GisServer/services/Gis_GetMapServices");
+            call.setOperationName(new QName("requestNearRestSVG"));*/
+
+            CallServices cs = new CallServices("Gis_GetMapServices","requestNearRestSVG");
+
+
+            if(checkTemp == 0)
+            {
+              res =cs.strInvoke(new Object[] {mp.getSessionkey(),xmlreq,
+                                           GL,posXX, posYY, widthX, heightY, DFX,DFY,fillFind,stokeFind});
+            }else
+            {
+                ////////////////Find Form Pin////////////////////////////////
+                String tt = KPin.getSelectedValue().toString();
+                for(int i=0;i<PL.length;i++)
+                {
+                    if(PL[i] == tt)
+                    {
+                        Index = i;
+                    }
+                }
+                res =cs.strInvoke(new Object[] {mp.getSessionkey(),xmlreq,GL,posXX, posYY,
+                                  widthX, heightY,PX[Index],-PY[Index],fillFind,stokeFind});
+                //res = (String) call.invoke(new Object[] {"mf2TWJhyyq", xmlreq,GL,posXX, posYY, widthX, heightY,PX[Index],-PY[Index]});
+                checkTemp=0;
+                ////////////////////////////////////////////////////////////
+            }
+            for (int i = 0; i < IDLayer.length; i++) {
+                System.out.println("ID =" + IDLayer[i] + " Vis = " + setVisible[i]);
+
+                res = res.replace("<g mapid='" + IDLayer[i] + "' visibility='visible' >",
+                                  "<g mapid='" + IDLayer[i] + "' visibility='" +
+                                  setVisible[i] + "' >");
+            }
+            ///////////////Create Pin In Map/////////////////////////////////////
+            String tempRes = "";
+            tempRes +="<g id ='Pin'>\n";
+            for (int i=0;i<PL.length;i++)
+             {
+                 if(PL[i] !=" ")
+                 {
+
+                    tempRes += "<polygon pinid ='"+(i + 1)+"' points='"+PX[i]+","+PY[i]+" "+(PX[i]-20)+","+(PY[i]-36)+" "+PX[i]+","+(PY[i]-56)+" "+(PX[i]+20)+","+(PY[i]-36)+"' style='fill:red;stroke-width:2;stroke:red' />\n";
+                 }
+             }
+
+            tempRes +="</g>\n";
+            tempRes +="<g id ='DPin'>\n";
+            for (int i=0;i<PN;i++)
+            {
+                if(PL[i] !=" ")
+                {
+                   if(PD[i] != " ")
+                   {
+                       tempRes += "<text id ='" + (i + 1) + "' x='" +
+                               (PX[i] - 25) + "' y='" + (PY[i] - 60) +
+                               "' style='text-anchor:middle;font-size:30;font-family:Arial;fill:black'>" +
+                               PD[i] + "</text>\n";
+                   }
+                }
+            }
+            tempRes +="</g>\n";
+            tempRes +="</svg>\n";
+            //////////////////////End Create Pin////////////////////////////////////////
+            int position = res.indexOf("</svg>");
+            String temp = res.substring(0,position-1);
+            temp += tempRes;
+
+            res = temp;
+
+            PrintWriter woutx = new PrintWriter("map.svg");
+            woutx.write(res);
+            woutx.close();
+            svgCanvas.setURI("file:map.svg");
+
+        } catch (Exception ea) {
+            System.out.print(ea.getStackTrace());
+        }
+
+    }
+
+    public void FillButt_actionPerformed(ActionEvent e) {
+
+        /////////////Test///////////////////
+        Color initialBackground = new Color(250,250,250);
+        final JColorChooser colorChooser = new JColorChooser(
+                initialBackground);
+        colorChooser.updateUI();
+
+        // selected color
+        ActionListener okActionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                Color newColor = colorChooser.getColor();
+                ///////Keep In Array//////////////
+
+                   fillFind ="rgb("+ newColor.toString().substring(15).replace("]",")").replace("r"," ").replace("g"," ").replace("b"," ").replace("="," ");
+                   //////////////////////////////////
+
+                   Color initialBackground = FillButt.getBackground();
+                   SHFill.setBackground(colorChooser.getColor());
+
+
+            }
+        };
+
+        final JDialog dialog = JColorChooser.createDialog(null,
+                "Change Button Background", true, colorChooser,
+                okActionListener, null);
+    //if use cancel bottom must change "null" to "cancelActionListener"
+
+        Runnable showDialog = new Runnable() {
+            public void run() {
+
+                dialog.setVisible(true);
+            }
+        };
+        SwingUtilities.invokeLater(showDialog);
+    ///////////////////////////////////
+
+
+    }
+
+    public void StokeButt_actionPerformed(ActionEvent e) {
+
+        /////////////Test///////////////////
+        Color initialBackground = new Color(250,250,250);
+        final JColorChooser colorChooser = new JColorChooser(
+                initialBackground);
+        colorChooser.updateUI();
+
+    // selected color
+        ActionListener okActionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                Color newColor = colorChooser.getColor();
+                ///////Keep In //////////////
+
+                    stokeFind = "rgb(" +
+                                newColor.toString().substring(15).replace("]", ")").
+                                replace("r", " ").replace("g", " ").replace("b", " ").
+                                replace("=", " ");
+                    //////////////////////////////////
+                    SHStoke.setBackground(colorChooser.getColor());
+
+
+
+
+            }
+       };
+
+       final JDialog dialog = JColorChooser.createDialog(null,
+               "Change Button Background", true, colorChooser,
+               okActionListener, null);
+   //if use cancel bottom must change "null" to "cancelActionListener"
+
+       Runnable showDialog = new Runnable() {
+           public void run() {
+
+               dialog.setVisible(true);
+           }
+       };
+       SwingUtilities.invokeLater(showDialog);
+   ///////////////////////////////////
+
+
+    }
+
+    public void PosiButt_actionPerformed(ActionEvent e) {
+        checkTemp =1;
+    }
+
+    public void jMenuItem2_actionPerformed(ActionEvent e) {
+
+
+    Component source = (Component) e.getSource();
+        JOptionPane optionPane = new JOptionPane("Mr.Ratchata  Kajornwongwattana\nMr.Rattachai  Chawuthai",
+            JOptionPane.INFORMATION_MESSAGE, JOptionPane.CLOSED_OPTION);
+        JDialog dialog = optionPane.createDialog(source,
+            "Create Program");
+        dialog.setVisible(true);
+
+    }
+
+  public void posPin2_actionPerformed(ActionEvent e) {
+         checkTemp =1;
+  }
+
+  public void jButton3_actionPerformed(ActionEvent e) {
+
+      frame.setVisible(true);
+ //      frame.ms=this;
+
+      int index=showLayer.getSelectedIndex();
+      frame.callMe(IDLayer[index],index) ;
+
+  }
+
+  class ZoomInteractor extends AbstractZoomInteractor {
+        public boolean startInteraction(InputEvent ie) {
+            if (ButtZoom.equals("zoomin")) {
+
+                return true;
+            } else {
+                return false;
+            }
+        }
+      }
+
+      class ImageZoomInteractor extends AbstractImageZoomInteractor {
+          public boolean startInteraction(InputEvent ie) {
+              if (ButtZoom.equals("zoomout")) {
+
+                  return true;
+              } else {
+                  return false;
+              }
+          }
+      }
+
+      class PanInteractor extends AbstractPanInteractor {
+          public boolean startInteraction(InputEvent ie) {
+              if (ButtZoom.equals("pan")) {
+                  return true;
+              } else {
+                  return false;
+              }
+          }
+      }
+}
+
+class FrmMapStudio_jButton3_actionAdapter
+    implements ActionListener {
+  private FrmMapStudio adaptee;
+  FrmMapStudio_jButton3_actionAdapter(FrmMapStudio adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButton3_actionPerformed(e);
+  }
+}
+
+class FrmMapStudio_posPin2_actionAdapter
+    implements ActionListener {
+  private FrmMapStudio adaptee;
+  FrmMapStudio_posPin2_actionAdapter(FrmMapStudio adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.posPin2_actionPerformed(e);
+  }
+}
+
+class FrmMapStudio_PosiButt_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_PosiButt_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.PosiButt_actionPerformed(e);
+    }
+}
+
+
+class FrmMapStudio_StokeButt_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_StokeButt_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.StokeButt_actionPerformed(e);
+    }
+}
+
+
+class FrmMapStudio_FillButt_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_FillButt_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.FillButt_actionPerformed(e);
+    }
+}
+
+
+class FrmMapStudio_jButton2_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_jButton2_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.jButton2_actionPerformed(e);
+    }
+}
+
+
+class FrmMapStudio_jButton1_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_jButton1_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.jButton1_actionPerformed(e);
+    }
+}
+
+
+class FrmMapStudio_menuOpen_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_menuOpen_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.menuOpen_actionPerformed(e);
+    }
+}
+
+
+class FrmMapStudio_jMenuItem2_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_jMenuItem2_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.jMenuItem2_actionPerformed(e);
+    }
+}
+
+
+class FrmMapStudio_menuSave_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_menuSave_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.menuSave_actionPerformed(e);
+    }
+}
+
+
+class FrmMapStudio_addDetial_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_addDetial_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.addDetial_actionPerformed(e);
+    }
+}
+
+
+class FrmMapStudio_delPin_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_delPin_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.delPin_actionPerformed(e);
+    }
+}
+
+
+class FrmMapStudio_addPin_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_addPin_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.addPin_actionPerformed(e);
+    }
+}
+
+
+class FrmMapStudio_moveB_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_moveB_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.moveB_actionPerformed(e);
+    }
+}
+
+
+class FrmMapStudio_VF_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_VF_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.VF_actionPerformed(e);
+    }
+}
+
+
+class FrmMapStudio_zoomOut_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_zoomOut_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.zoomOut_actionPerformed(e);
+    }
+}
+
+
+class FrmMapStudio_zoomIn_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_zoomIn_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.zoomIn_actionPerformed(e);
+    }
+}
+
+
+class FrmMapStudio_Hid_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_Hid_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.Hid_actionPerformed(e);
+    }
+}
+
+
+class FrmMapStudio_Vis_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_Vis_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.Vis_actionPerformed(e);
+    }
+}
+
+class FrmMapStudio_svgCanvas_mouseAdapter extends MouseAdapter {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_svgCanvas_mouseAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void mouseClicked(MouseEvent e) {
+        adaptee.svgCanvas_mouseClicked(e);
+    }
+}
+
+
+class FrmMapStudio_GPosition_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_GPosition_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.GPosition_actionPerformed(e);
+    }
+}
+
+
+class FrmMapStudio_callService_actionAdapter implements ActionListener {
+    private FrmMapStudio adaptee;
+    FrmMapStudio_callService_actionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent actionEvent) {
+        adaptee.callService_actionPerformed(actionEvent);
+    }
+}
+
+
+class FrmMapStudio_jMenuFileExit_ActionAdapter implements ActionListener {
+    FrmMapStudio adaptee;
+
+    FrmMapStudio_jMenuFileExit_ActionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent actionEvent) {
+        adaptee.jMenuFileExit_actionPerformed(actionEvent);
+    }
+}
+
+
+class FrmMapStudio_jMenuHelpAbout_ActionAdapter implements ActionListener {
+    FrmMapStudio adaptee;
+
+    FrmMapStudio_jMenuHelpAbout_ActionAdapter(FrmMapStudio adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent actionEvent) {
+        adaptee.jMenuHelpAbout_actionPerformed(actionEvent);
+    }
+}
+

@@ -1,0 +1,14 @@
+#!/bin/bash
+#get source ipaddress field from rule
+#argument1 is file (redirect firewall rule)
+#argument2 is rule number
+rule=`expr $2 + 2`
+#get source ipaddress field from file
+src=`cat $1 | grep -n ' ' | grep -m 1 $rule: | cut -d':' -f2 |cut -b21- | cut -d' ' -f1`
+srcaddr=`echo $src | cut -d'/' -f1`
+srcmask=`echo $src | cut -d'/' -f2`
+#case source ipaddress is host
+if [ $srcaddr = $srcmask ]
+then
+	srcmask=32
+fi

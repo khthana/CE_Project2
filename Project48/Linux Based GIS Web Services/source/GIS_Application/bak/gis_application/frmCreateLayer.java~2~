@@ -1,0 +1,77 @@
+package gis_application;
+
+import java.awt.*;
+import javax.swing.*;
+import com.borland.jbcl.layout.XYLayout;
+import com.borland.jbcl.layout.*;
+import javax.swing.BorderFactory;
+import javax.swing.border.TitledBorder;
+
+public class frmCreateLayer
+    extends JFrame {
+  JPanel contentPane;
+  XYLayout xYLayout1 = new XYLayout();
+  JPanel jPanel1 = new JPanel();
+  TitledBorder titledBorder1 = new TitledBorder("");
+  JTextField txtLayerName = new JTextField();
+  XYLayout xYLayout2 = new XYLayout();
+  JComboBox cmbGeomtype = new JComboBox();
+  TitledBorder titledBorder2 = new TitledBorder("");
+  TitledBorder titledBorder3 = new TitledBorder("");
+  JLabel jLabel1 = new JLabel();
+  JLabel jLabel2 = new JLabel();
+  JPanel jPanel2 = new JPanel();
+  XYLayout xYLayout3 = new XYLayout();
+  TitledBorder titledBorder4 = new TitledBorder("");
+  JButton cmdCreateLayer = new JButton();
+  TitledBorder titledBorder5 = new TitledBorder("");
+  JLabel jLabel3 = new JLabel();
+
+  public frmCreateLayer() {
+    try {
+      //setDefaultCloseOperation(EXIT_ON_CLOSE);
+      jbInit();
+    }
+    catch (Exception exception) {
+      exception.printStackTrace();
+    }
+  }
+
+  /**
+   * Component initialization.
+   *
+   * @throws java.lang.Exception
+   */
+  private void jbInit() throws Exception {
+    contentPane = (JPanel) getContentPane();
+    contentPane.setLayout(xYLayout1);
+    setSize(new Dimension(400, 460));
+    setTitle("Frame Title");
+    contentPane.setBackground(Color.white);
+    contentPane.setOpaque(true);
+    jPanel1.setBackground(Color.white);
+    jPanel1.setBorder(titledBorder1);
+    jPanel1.setOpaque(true);
+    jPanel1.setLayout(xYLayout2);
+    txtLayerName.setBorder(titledBorder2);
+    cmbGeomtype.setBorder(null);
+    jLabel1.setText("Layer Name");
+    jLabel2.setText("Geometry type");
+    jPanel2.setBackground(Color.white);
+    jPanel2.setBorder(titledBorder4);
+    jPanel2.setOpaque(true);
+    jPanel2.setLayout(xYLayout3);
+    cmdCreateLayer.setBackground(Color.white);
+    cmdCreateLayer.setBorder(titledBorder5);
+    cmdCreateLayer.setText("Create New Layer");
+    jLabel3.setText("Attributes list");
+    jPanel1.add(txtLayerName, new XYConstraints(110, 10, 235, 27));
+    jPanel1.add(jLabel1, new XYConstraints(4, 13, -1, -1));
+    jPanel1.add(cmbGeomtype, new XYConstraints(110, 44, 235, 25));
+    jPanel1.add(jLabel2, new XYConstraints(4, 50, -1, -1));
+    contentPane.add(jPanel1, new XYConstraints(10, 10, 366, 90));
+    contentPane.add(jPanel2, new XYConstraints(10, 104, 366, 288));
+    jPanel2.add(jLabel3, new XYConstraints(5, 4, -1, -1));
+    contentPane.add(cmdCreateLayer, new XYConstraints(229, 399, 147, 31));
+  }
+}

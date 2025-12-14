@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://WS" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:intf="http://WS" xmlns:impl="http://WS">
+  <wsdl:types>
+    <schema elementFormDefault="qualified" targetNamespace="http://WS" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://WS" xmlns:intf="http://WS" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <element name="getCourseAll">
+    <complexType>
+     <sequence/>
+    </complexType>
+   </element>
+   <element name="getCourseAllResponse">
+    <complexType>
+     <sequence>
+      <element name="getCourseAllReturn" nillable="true" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="buyClass">
+    <complexType>
+     <sequence>
+      <element name="ClassID" type="xsd:int"/>
+      <element name="Email" nillable="true" type="xsd:string"/>
+      <element name="ReceiveID" nillable="true" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="buyClassResponse">
+    <complexType>
+     <sequence>
+      <element name="buyClassReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="reservation">
+    <complexType>
+     <sequence>
+      <element name="ClassID" type="xsd:int"/>
+      <element name="Email" nillable="true" type="xsd:string"/>
+      <element name="Name" nillable="true" type="xsd:string"/>
+      <element name="Surname" nillable="true" type="xsd:string"/>
+      <element name="PhoneNo" nillable="true" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="reservationResponse">
+    <complexType>
+     <sequence>
+      <element name="reservationReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getCourse">
+    <complexType>
+     <sequence>
+      <element name="Subject" nillable="true" type="xsd:string"/>
+      <element name="Period" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getCourseResponse">
+    <complexType>
+     <sequence>
+      <element name="getCourseReturn" nillable="true" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getCourseFromEmail">
+    <complexType>
+     <sequence>
+      <element name="Email" nillable="true" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getCourseFromEmailResponse">
+    <complexType>
+     <sequence>
+      <element name="getCourseFromEmailReturn" nillable="true" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cancel">
+    <complexType>
+     <sequence>
+      <element name="ClassID" type="xsd:int"/>
+      <element name="Email" nillable="true" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cancelResponse">
+    <complexType>
+     <sequence>
+      <element name="cancelReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+  </wsdl:types>
+  <wsdl:message name="getCourseFromEmailRequest">
+    <wsdl:part name="parameters" element="intf:getCourseFromEmail"/>
+  </wsdl:message>
+  <wsdl:message name="buyClassResponse">
+    <wsdl:part name="parameters" element="intf:buyClassResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getCourseAllResponse">
+    <wsdl:part name="parameters" element="intf:getCourseAllResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getCourseAllRequest">
+    <wsdl:part name="parameters" element="intf:getCourseAll"/>
+  </wsdl:message>
+  <wsdl:message name="getCourseFromEmailResponse">
+    <wsdl:part name="parameters" element="intf:getCourseFromEmailResponse"/>
+  </wsdl:message>
+  <wsdl:message name="cancelRequest">
+    <wsdl:part name="parameters" element="intf:cancel"/>
+  </wsdl:message>
+  <wsdl:message name="reservationRequest">
+    <wsdl:part name="parameters" element="intf:reservation"/>
+  </wsdl:message>
+  <wsdl:message name="getCourseRequest">
+    <wsdl:part name="parameters" element="intf:getCourse"/>
+  </wsdl:message>
+  <wsdl:message name="buyClassRequest">
+    <wsdl:part name="parameters" element="intf:buyClass"/>
+  </wsdl:message>
+  <wsdl:message name="getCourseResponse">
+    <wsdl:part name="parameters" element="intf:getCourseResponse"/>
+  </wsdl:message>
+  <wsdl:message name="reservationResponse">
+    <wsdl:part name="parameters" element="intf:reservationResponse"/>
+  </wsdl:message>
+  <wsdl:message name="cancelResponse">
+    <wsdl:part name="parameters" element="intf:cancelResponse"/>
+  </wsdl:message>
+  <wsdl:portType name="Neo">
+    <wsdl:operation name="getCourseAll">
+      <wsdl:input name="getCourseAllRequest" message="intf:getCourseAllRequest"/>
+      <wsdl:output name="getCourseAllResponse" message="intf:getCourseAllResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="buyClass">
+      <wsdl:input name="buyClassRequest" message="intf:buyClassRequest"/>
+      <wsdl:output name="buyClassResponse" message="intf:buyClassResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="reservation">
+      <wsdl:input name="reservationRequest" message="intf:reservationRequest"/>
+      <wsdl:output name="reservationResponse" message="intf:reservationResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="getCourse">
+      <wsdl:input name="getCourseRequest" message="intf:getCourseRequest"/>
+      <wsdl:output name="getCourseResponse" message="intf:getCourseResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="getCourseFromEmail">
+      <wsdl:input name="getCourseFromEmailRequest" message="intf:getCourseFromEmailRequest"/>
+      <wsdl:output name="getCourseFromEmailResponse" message="intf:getCourseFromEmailResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="cancel">
+      <wsdl:input name="cancelRequest" message="intf:cancelRequest"/>
+      <wsdl:output name="cancelResponse" message="intf:cancelResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NeoSoapBinding" type="intf:Neo">
+    <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getCourseAll">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="getCourseAllRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getCourseAllResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buyClass">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="buyClassRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="buyClassResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="reservation">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="reservationRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="reservationResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCourse">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="getCourseRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getCourseResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCourseFromEmail">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="getCourseFromEmailRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getCourseFromEmailResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancel">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="cancelRequest">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cancelResponse">
+        <wsdlsoap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="NeoService">
+    <wsdl:port name="Neo" binding="intf:NeoSoapBinding">
+      <wsdlsoap:address location="http://localhost:9080/Neo/services/Neo"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

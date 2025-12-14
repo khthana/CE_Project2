@@ -1,0 +1,739 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s1="http://tempuri.org/AbstractTypes" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="hello">
+        <s:complexType />
+      </s:element>
+      <s:element name="helloResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="helloResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="checkReserv">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="useTime" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="reservTime" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="endTime" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="covers" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="cardID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="lastname" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="age" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="sex" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="province" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="postcode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="telephone" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="shopID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="shopName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="checkReservResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="checkReservResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="updateMenu">
+        <s:complexType />
+      </s:element>
+      <s:element name="updateMenuResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="updateMenuResult" type="tns:ArrayOfMenu" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfMenu">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="menu" nillable="true" type="tns:menu" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="menu">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="MenuID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Cost" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Other" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Picture" type="s:base64Binary" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="updateMenuAll">
+        <s:complexType />
+      </s:element>
+      <s:element name="updateMenuAllResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="updateMenuAllResult" type="tns:ArrayOfMenu" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="updatePromotion">
+        <s:complexType />
+      </s:element>
+      <s:element name="updatePromotionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="updatePromotionResult" type="tns:ArrayOfPromotion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfPromotion">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="promotion" nillable="true" type="tns:promotion" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="promotion">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="PromotionID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="PromotionName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Discription" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BeginTime" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndTime" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="updatePromotionAll">
+        <s:complexType />
+      </s:element>
+      <s:element name="updatePromotionAllResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="updatePromotionAllResult" type="tns:ArrayOfPromotion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cancelReserv">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="tableID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="reservTime" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="endTime" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cancelReservResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="cancelReservResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getMenuPictureAll">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="img" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getMenuPictureAllResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="getMenuPictureAllResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+      <s:element name="int" type="s:int" />
+      <s:element name="ArrayOfMenu" nillable="true" type="tns:ArrayOfMenu" />
+      <s:element name="ArrayOfPromotion" nillable="true" type="tns:ArrayOfPromotion" />
+      <s:element name="boolean" type="s:boolean" />
+    </s:schema>
+    <s:schema targetNamespace="http://tempuri.org/AbstractTypes">
+      <s:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <s:complexType name="StringArray">
+        <s:complexContent mixed="false">
+          <s:restriction base="soapenc:Array">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="unbounded" name="String" type="s:string" />
+            </s:sequence>
+          </s:restriction>
+        </s:complexContent>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="helloSoapIn">
+    <wsdl:part name="parameters" element="tns:hello" />
+  </wsdl:message>
+  <wsdl:message name="helloSoapOut">
+    <wsdl:part name="parameters" element="tns:helloResponse" />
+  </wsdl:message>
+  <wsdl:message name="checkReservSoapIn">
+    <wsdl:part name="parameters" element="tns:checkReserv" />
+  </wsdl:message>
+  <wsdl:message name="checkReservSoapOut">
+    <wsdl:part name="parameters" element="tns:checkReservResponse" />
+  </wsdl:message>
+  <wsdl:message name="updateMenuSoapIn">
+    <wsdl:part name="parameters" element="tns:updateMenu" />
+  </wsdl:message>
+  <wsdl:message name="updateMenuSoapOut">
+    <wsdl:part name="parameters" element="tns:updateMenuResponse" />
+  </wsdl:message>
+  <wsdl:message name="updateMenuAllSoapIn">
+    <wsdl:part name="parameters" element="tns:updateMenuAll" />
+  </wsdl:message>
+  <wsdl:message name="updateMenuAllSoapOut">
+    <wsdl:part name="parameters" element="tns:updateMenuAllResponse" />
+  </wsdl:message>
+  <wsdl:message name="updatePromotionSoapIn">
+    <wsdl:part name="parameters" element="tns:updatePromotion" />
+  </wsdl:message>
+  <wsdl:message name="updatePromotionSoapOut">
+    <wsdl:part name="parameters" element="tns:updatePromotionResponse" />
+  </wsdl:message>
+  <wsdl:message name="updatePromotionAllSoapIn">
+    <wsdl:part name="parameters" element="tns:updatePromotionAll" />
+  </wsdl:message>
+  <wsdl:message name="updatePromotionAllSoapOut">
+    <wsdl:part name="parameters" element="tns:updatePromotionAllResponse" />
+  </wsdl:message>
+  <wsdl:message name="cancelReservSoapIn">
+    <wsdl:part name="parameters" element="tns:cancelReserv" />
+  </wsdl:message>
+  <wsdl:message name="cancelReservSoapOut">
+    <wsdl:part name="parameters" element="tns:cancelReservResponse" />
+  </wsdl:message>
+  <wsdl:message name="getMenuPictureAllSoapIn">
+    <wsdl:part name="parameters" element="tns:getMenuPictureAll" />
+  </wsdl:message>
+  <wsdl:message name="getMenuPictureAllSoapOut">
+    <wsdl:part name="parameters" element="tns:getMenuPictureAllResponse" />
+  </wsdl:message>
+  <wsdl:message name="helloHttpGetIn" />
+  <wsdl:message name="helloHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="checkReservHttpGetIn">
+    <wsdl:part name="useTime" type="s:string" />
+    <wsdl:part name="reservTime" type="s:string" />
+    <wsdl:part name="endTime" type="s:string" />
+    <wsdl:part name="covers" type="s:string" />
+    <wsdl:part name="cardID" type="s:string" />
+    <wsdl:part name="name" type="s:string" />
+    <wsdl:part name="lastname" type="s:string" />
+    <wsdl:part name="age" type="s:string" />
+    <wsdl:part name="sex" type="s:string" />
+    <wsdl:part name="address" type="s:string" />
+    <wsdl:part name="province" type="s:string" />
+    <wsdl:part name="postcode" type="s:string" />
+    <wsdl:part name="telephone" type="s:string" />
+    <wsdl:part name="email" type="s:string" />
+    <wsdl:part name="shopID" type="s:string" />
+    <wsdl:part name="shopName" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="checkReservHttpGetOut">
+    <wsdl:part name="Body" element="tns:int" />
+  </wsdl:message>
+  <wsdl:message name="updateMenuHttpGetIn" />
+  <wsdl:message name="updateMenuHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfMenu" />
+  </wsdl:message>
+  <wsdl:message name="updateMenuAllHttpGetIn" />
+  <wsdl:message name="updateMenuAllHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfMenu" />
+  </wsdl:message>
+  <wsdl:message name="updatePromotionHttpGetIn" />
+  <wsdl:message name="updatePromotionHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfPromotion" />
+  </wsdl:message>
+  <wsdl:message name="updatePromotionAllHttpGetIn" />
+  <wsdl:message name="updatePromotionAllHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfPromotion" />
+  </wsdl:message>
+  <wsdl:message name="cancelReservHttpGetIn">
+    <wsdl:part name="tableID" type="s:string" />
+    <wsdl:part name="reservTime" type="s:string" />
+    <wsdl:part name="endTime" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="cancelReservHttpGetOut">
+    <wsdl:part name="Body" element="tns:boolean" />
+  </wsdl:message>
+  <wsdl:message name="getMenuPictureAllHttpGetIn">
+    <wsdl:part name="userid" type="s:string" />
+    <wsdl:part name="img" type="s1:StringArray" />
+  </wsdl:message>
+  <wsdl:message name="getMenuPictureAllHttpGetOut">
+    <wsdl:part name="Body" element="tns:int" />
+  </wsdl:message>
+  <wsdl:message name="helloHttpPostIn" />
+  <wsdl:message name="helloHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="checkReservHttpPostIn">
+    <wsdl:part name="useTime" type="s:string" />
+    <wsdl:part name="reservTime" type="s:string" />
+    <wsdl:part name="endTime" type="s:string" />
+    <wsdl:part name="covers" type="s:string" />
+    <wsdl:part name="cardID" type="s:string" />
+    <wsdl:part name="name" type="s:string" />
+    <wsdl:part name="lastname" type="s:string" />
+    <wsdl:part name="age" type="s:string" />
+    <wsdl:part name="sex" type="s:string" />
+    <wsdl:part name="address" type="s:string" />
+    <wsdl:part name="province" type="s:string" />
+    <wsdl:part name="postcode" type="s:string" />
+    <wsdl:part name="telephone" type="s:string" />
+    <wsdl:part name="email" type="s:string" />
+    <wsdl:part name="shopID" type="s:string" />
+    <wsdl:part name="shopName" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="checkReservHttpPostOut">
+    <wsdl:part name="Body" element="tns:int" />
+  </wsdl:message>
+  <wsdl:message name="updateMenuHttpPostIn" />
+  <wsdl:message name="updateMenuHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfMenu" />
+  </wsdl:message>
+  <wsdl:message name="updateMenuAllHttpPostIn" />
+  <wsdl:message name="updateMenuAllHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfMenu" />
+  </wsdl:message>
+  <wsdl:message name="updatePromotionHttpPostIn" />
+  <wsdl:message name="updatePromotionHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfPromotion" />
+  </wsdl:message>
+  <wsdl:message name="updatePromotionAllHttpPostIn" />
+  <wsdl:message name="updatePromotionAllHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfPromotion" />
+  </wsdl:message>
+  <wsdl:message name="cancelReservHttpPostIn">
+    <wsdl:part name="tableID" type="s:string" />
+    <wsdl:part name="reservTime" type="s:string" />
+    <wsdl:part name="endTime" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="cancelReservHttpPostOut">
+    <wsdl:part name="Body" element="tns:boolean" />
+  </wsdl:message>
+  <wsdl:message name="getMenuPictureAllHttpPostIn">
+    <wsdl:part name="userid" type="s:string" />
+    <wsdl:part name="img" type="s1:StringArray" />
+  </wsdl:message>
+  <wsdl:message name="getMenuPictureAllHttpPostOut">
+    <wsdl:part name="Body" element="tns:int" />
+  </wsdl:message>
+  <wsdl:portType name="Service1Soap">
+    <wsdl:operation name="hello">
+      <wsdl:input message="tns:helloSoapIn" />
+      <wsdl:output message="tns:helloSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="checkReserv">
+      <wsdl:input message="tns:checkReservSoapIn" />
+      <wsdl:output message="tns:checkReservSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="updateMenu">
+      <wsdl:input message="tns:updateMenuSoapIn" />
+      <wsdl:output message="tns:updateMenuSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="updateMenuAll">
+      <wsdl:input message="tns:updateMenuAllSoapIn" />
+      <wsdl:output message="tns:updateMenuAllSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="updatePromotion">
+      <wsdl:input message="tns:updatePromotionSoapIn" />
+      <wsdl:output message="tns:updatePromotionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="updatePromotionAll">
+      <wsdl:input message="tns:updatePromotionAllSoapIn" />
+      <wsdl:output message="tns:updatePromotionAllSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="cancelReserv">
+      <wsdl:input message="tns:cancelReservSoapIn" />
+      <wsdl:output message="tns:cancelReservSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getMenuPictureAll">
+      <wsdl:input message="tns:getMenuPictureAllSoapIn" />
+      <wsdl:output message="tns:getMenuPictureAllSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="Service1HttpGet">
+    <wsdl:operation name="hello">
+      <wsdl:input message="tns:helloHttpGetIn" />
+      <wsdl:output message="tns:helloHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="checkReserv">
+      <wsdl:input message="tns:checkReservHttpGetIn" />
+      <wsdl:output message="tns:checkReservHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="updateMenu">
+      <wsdl:input message="tns:updateMenuHttpGetIn" />
+      <wsdl:output message="tns:updateMenuHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="updateMenuAll">
+      <wsdl:input message="tns:updateMenuAllHttpGetIn" />
+      <wsdl:output message="tns:updateMenuAllHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="updatePromotion">
+      <wsdl:input message="tns:updatePromotionHttpGetIn" />
+      <wsdl:output message="tns:updatePromotionHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="updatePromotionAll">
+      <wsdl:input message="tns:updatePromotionAllHttpGetIn" />
+      <wsdl:output message="tns:updatePromotionAllHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="cancelReserv">
+      <wsdl:input message="tns:cancelReservHttpGetIn" />
+      <wsdl:output message="tns:cancelReservHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getMenuPictureAll">
+      <wsdl:input message="tns:getMenuPictureAllHttpGetIn" />
+      <wsdl:output message="tns:getMenuPictureAllHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="Service1HttpPost">
+    <wsdl:operation name="hello">
+      <wsdl:input message="tns:helloHttpPostIn" />
+      <wsdl:output message="tns:helloHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="checkReserv">
+      <wsdl:input message="tns:checkReservHttpPostIn" />
+      <wsdl:output message="tns:checkReservHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="updateMenu">
+      <wsdl:input message="tns:updateMenuHttpPostIn" />
+      <wsdl:output message="tns:updateMenuHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="updateMenuAll">
+      <wsdl:input message="tns:updateMenuAllHttpPostIn" />
+      <wsdl:output message="tns:updateMenuAllHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="updatePromotion">
+      <wsdl:input message="tns:updatePromotionHttpPostIn" />
+      <wsdl:output message="tns:updatePromotionHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="updatePromotionAll">
+      <wsdl:input message="tns:updatePromotionAllHttpPostIn" />
+      <wsdl:output message="tns:updatePromotionAllHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="cancelReserv">
+      <wsdl:input message="tns:cancelReservHttpPostIn" />
+      <wsdl:output message="tns:cancelReservHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getMenuPictureAll">
+      <wsdl:input message="tns:getMenuPictureAllHttpPostIn" />
+      <wsdl:output message="tns:getMenuPictureAllHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Service1Soap" type="tns:Service1Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="hello">
+      <soap:operation soapAction="http://tempuri.org/hello" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="checkReserv">
+      <soap:operation soapAction="http://tempuri.org/checkReserv" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateMenu">
+      <soap:operation soapAction="http://tempuri.org/updateMenu" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateMenuAll">
+      <soap:operation soapAction="http://tempuri.org/updateMenuAll" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updatePromotion">
+      <soap:operation soapAction="http://tempuri.org/updatePromotion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updatePromotionAll">
+      <soap:operation soapAction="http://tempuri.org/updatePromotionAll" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelReserv">
+      <soap:operation soapAction="http://tempuri.org/cancelReserv" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMenuPictureAll">
+      <soap:operation soapAction="http://tempuri.org/getMenuPictureAll" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Service1Soap12" type="tns:Service1Soap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="hello">
+      <soap12:operation soapAction="http://tempuri.org/hello" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="checkReserv">
+      <soap12:operation soapAction="http://tempuri.org/checkReserv" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateMenu">
+      <soap12:operation soapAction="http://tempuri.org/updateMenu" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateMenuAll">
+      <soap12:operation soapAction="http://tempuri.org/updateMenuAll" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updatePromotion">
+      <soap12:operation soapAction="http://tempuri.org/updatePromotion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updatePromotionAll">
+      <soap12:operation soapAction="http://tempuri.org/updatePromotionAll" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelReserv">
+      <soap12:operation soapAction="http://tempuri.org/cancelReserv" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMenuPictureAll">
+      <soap12:operation soapAction="http://tempuri.org/getMenuPictureAll" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Service1HttpGet" type="tns:Service1HttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="hello">
+      <http:operation location="/hello" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="checkReserv">
+      <http:operation location="/checkReserv" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateMenu">
+      <http:operation location="/updateMenu" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateMenuAll">
+      <http:operation location="/updateMenuAll" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updatePromotion">
+      <http:operation location="/updatePromotion" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updatePromotionAll">
+      <http:operation location="/updatePromotionAll" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelReserv">
+      <http:operation location="/cancelReserv" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMenuPictureAll">
+      <http:operation location="/getMenuPictureAll" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Service1HttpPost" type="tns:Service1HttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="hello">
+      <http:operation location="/hello" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="checkReserv">
+      <http:operation location="/checkReserv" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateMenu">
+      <http:operation location="/updateMenu" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateMenuAll">
+      <http:operation location="/updateMenuAll" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updatePromotion">
+      <http:operation location="/updatePromotion" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updatePromotionAll">
+      <http:operation location="/updatePromotionAll" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelReserv">
+      <http:operation location="/cancelReserv" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMenuPictureAll">
+      <http:operation location="/getMenuPictureAll" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service1">
+    <wsdl:port name="Service1Soap" binding="tns:Service1Soap">
+      <soap:address location="http://127.0.0.1/webservicerestaurant/service1.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Service1Soap12" binding="tns:Service1Soap12">
+      <soap12:address location="http://127.0.0.1/webservicerestaurant/service1.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Service1HttpGet" binding="tns:Service1HttpGet">
+      <http:address location="http://127.0.0.1/webservicerestaurant/service1.asmx" />
+    </wsdl:port>
+    <wsdl:port name="Service1HttpPost" binding="tns:Service1HttpPost">
+      <http:address location="http://127.0.0.1/webservicerestaurant/service1.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

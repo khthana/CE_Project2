@@ -1,0 +1,136 @@
+package gis_application;
+
+import java.awt.Color;
+import javax.swing.JOptionPane;
+
+public class MapArgument {
+
+  public static int Size;
+  public int index;
+  public static LayerElement layer[];
+
+  public MapArgument() {
+  }
+
+  public void setDefault(String layerIDs[]){
+    Size=layerIDs.length;
+    layer=new LayerElement[Size];
+    for (int i=0; i<Size; i++){
+      int lid=Integer.parseInt(layerIDs[i]);
+      layer[i] = new LayerElement(lid);
+      System.out.println(layer[i].layerId+"<<");
+    }
+  }
+
+  public int size(){
+    return Size;
+  }
+
+  public String getXml(){
+    String xmlreq ="<maprequest xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'> \n";
+            for (int j=0;j <Size;j++)
+            {
+                xmlreq+=layer[j].getXml();
+            }
+            xmlreq += "</maprequest> \n";
+
+            JOptionPane.showMessageDialog(null,xmlreq);
+            return xmlreq;
+
+  }
+
+}
+
+class LayerElement{
+  MyProfile mp =new MyProfile();
+  public  int size;
+  public  String layerXml;
+  public  Color fill;
+  public  Color stroke;
+  public  Color text;
+  public  int txtSize;
+  public  int chLabel; public  String strLabel;
+  public  int chAllOper; public String strAllOper;
+  public  int layerId;
+  public  String column[];
+  public  int chOper[];
+  public  String strOper[];
+  public  String value[];
+
+
+  public LayerElement(int layId){
+    layerId=layId;
+    fill = new Color(1.0f, 1.0f, 1.0f);
+    stroke = new Color(0, 0, 0);
+    text = new Color(0f, 0f, 1.0f);
+    layerXml="<layer id='"+layId+"' fill='white' stroke='black' > </layer>";
+    txtSize=10;
+    chLabel=0;
+    chAllOper=0;
+    strLabel="";
+    strAllOper="AND";
+
+
+    try{
+      CallServices cs=new CallServices("GIS_InformationServices","detailColumn") ;
+      String res = cs.strInvoke(new Object[]{mp.getSessionkey(), layId });
+
+      GisXmlReader gxr = new GisXmlReader(res);
+      size=gxr.child("layer").child("column").count();
+      column = new String[size];
+      chOper = new int[size];
+      value = new String[size];
+      strOper=new String[size];
+
+      for (int i=0; i<size; i++){
+        column[i]=gxr.child("layer").child("column",i).attribute("name");
+        chOper[i]=0;
+        value[i]="";
+        strOper[i]="#";
+      }
+    }catch(Exception e){
+      e.printStackTrace() ;
+    }
+
+
+  }
+
+  public String getShow(int index){
+    return column[index] + strOper[index] + value[index];
+  }
+
+  private String getCondition(int index){
+      strOper[index] = strOper[index].replaceAll(">", "mo");
+      strOper[index] = strOper[index].replaceAll("<", "le");
+      strOper[index] = strOper[index].replaceAll("=", "eq");
+      String res=  "    <condition name='" + column[index] +
+          "' operator='" + strOper[index] + "'>" + value[index] + "</condition>\n";
+      return res;
+  }
+
+  public String rgbConvert(Color color){
+      String strColor = "rgb("+color.getRed()+","+color.getGreen()+","+color.getBlue()+")";
+      return strColor;
+  }
+
+  public void resetCondition(int index){
+    strOper[index]="#";
+  }
+
+  public String getXml(){
+    String fillColor=rgbConvert(fill);
+    String strokeColor=rgbConvert(stroke);
+    String textColor=rgbConvert(text);
+    String xml= "  <layer id='"+layerId+"' fill='"+fillColor+
+        "' stroke='"+strokeColor+
+        "'   showcolumn='"+strLabel+
+        "' operator='"+strAllOper+
+        "' textcolor='"+textColor+"' textsize='"+txtSize +"' >\n";
+    for (int i=0; i<size ; i++){
+      if (strOper[i].indexOf("#")<0) xml+= getCondition(i);
+    }
+    xml+="   </layer>\n";
+
+    return xml;
+    }
+  }

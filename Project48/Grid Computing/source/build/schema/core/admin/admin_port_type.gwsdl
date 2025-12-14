@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="Admin"
+  targetNamespace="http://ogsa.globus.org/core/admin"
+  xmlns:tns="http://ogsa.globus.org/core/admin"
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI"
+  xmlns:sd="http://www.gridforum.org/namespaces/2003/03/serviceData"
+  xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions"
+  xmlns:admin_types="http://ogsa.globus.org/core/admin"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+
+<import location="../../ogsi/ogsi.gwsdl"
+        namespace="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+<import location="admin_types.wsdl"
+        namespace="http://ogsa.globus.org/core/admin"/>
+<types>
+  <schema targetNamespace="http://ogsa.globus.org/core/admin"
+          xmlns="http://www.w3.org/2001/XMLSchema" 
+          attributeFormDefault="qualified"
+          elementFormDefault="qualified">
+    <element name="shutdown">
+      <complexType>
+        <sequence>
+          <element name="hard" type="boolean"/>
+        </sequence>
+      </complexType>
+    </element>
+    <element name="shutdownResponse">
+      <complexType/>
+    </element>
+  
+  <element name="setActivity">
+        <complexType>
+            <sequence>
+                <element name="activity" type="string"/>
+            </sequence>
+        </complexType>
+    </element>
+<element name="setActivityResponse">
+    <complexType/>
+</element>
+
+  <element name="ping">
+        <complexType/>
+    </element>
+    <element name="pingResponse">
+      <complexType/>
+    </element>
+  </schema>
+</types>
+
+<message name="shutdownRequestMessage">
+  <part name="parameters" element="tns:shutdown"/>
+</message>
+<message name="shutdownResponseMessage">
+  <part name="parameters" element="tns:shutdownResponse"/>
+</message>
+<message name="setActivityRequestMessage">
+    <part name="parameters" element="tns:setActivity"/>
+</message>
+<message name="setActivityResponseMessage">
+    <part name="parameters" element="tns:setActivityResponse"/>
+</message>
+
+<message name="pingRequestMessage">
+  <part name="parameters" element="tns:ping"/>
+</message>
+<message name="pingResponseMessage">
+  <part name="parameters" element="tns:pingResponse"/>
+</message>
+
+<gwsdl:portType name="AdminServicePortType" extends="ogsi:GridService">
+  <operation name="shutdown">
+    <input message="tns:shutdownRequestMessage"/>
+    <output message="tns:shutdownResponseMessage"/>
+  </operation>
+  <operation name="setActivity">
+    <input message="tns:setActivityRequestMessage"/>
+    <output message="tns:setActivityResponseMessage"/>
+  </operation>
+  <operation name="ping">
+    <input message="tns:pingRequestMessage"/>
+    <output message="tns:pingResponseMessage"/>
+  </operation>
+
+ <sd:serviceData name="Activity"
+                 type="admin_types:UHEActivityType"
+                 maxOccurs="1"
+                 minOccurs="1"
+                 modifiable="true"
+                 mutability="mutable">
+ </sd:serviceData>
+
+</gwsdl:portType>
+
+</definitions>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.globus.org/namespaces/2004/02/progtutorial/MatrixService" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://www.globus.org/namespaces/2004/02/progtutorial/MatrixService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<xsd:complexType name="ArrayOfInteger">
+		<xsd:complexContent>
+			<xsd:restriction base="soapenc:Array">
+				<xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="xsd:int[]"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="multiplyMatrix">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="value1" type="tns:ArrayOfInteger"/>
+				<xsd:element name="value2" type="tns:ArrayOfInteger"/>
+				<xsd:element name="value3" type="xsd:int"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="multiplyMatrixResponse">
+		<xsd:complexType/>
+	</xsd:element>
+
+	<xsd:element name="getValue">
+		<xsd:complexType/>
+	</xsd:element>
+	<xsd:element name="getValueResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="value" type="xsd:int"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

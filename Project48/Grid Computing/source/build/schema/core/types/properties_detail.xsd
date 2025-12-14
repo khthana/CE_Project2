@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<schema targetNamespace="http://ogsa.globus.org/types/properties"
+        xmlns:tns="http://ogsa.globus.org/types/properties"
+        xmlns="http://www.w3.org/2001/XMLSchema"
+        elementFormDefault="qualified">
+
+  <complexType name="PropertiesDetailElementType">
+    <sequence>
+      <element name="propertiesDetail" type="tns:PropertiesDetailType"/>
+    </sequence>
+  </complexType>
+
+  <complexType name="PropertiesDetailType">
+    <sequence>
+      <element name="name" type="string" minOccurs="0" maxOccurs="1"/>
+      <element name="timeout" type="dateTime" minOccurs="0" maxOccurs="1"/>
+      <element name="portType" type="QName" minOccurs="0" maxOccurs="1"/>
+      <element name="state" type="tns:StateType" minOccurs="0" maxOccurs="1"/>
+      <element name="propertiesLifecycle" type="tns:LifeCycleType" minOccurs="0" maxOccurs="1"/>
+      <element name="deploymentLifecycle" type="tns:LifeCycleType" minOccurs="0" maxOccurs="1"/>
+      <element name="schemaPath" type="string" minOccurs="0" maxOccurs="1"/>
+      <element name="activateOnStartup" type="boolean" minOccurs="0" maxOccurs="1"/>
+      <element name="endpoint" type="string" minOccurs="0" maxOccurs="1"/>
+      <element name="handle" type="string" minOccurs="0" maxOccurs="1"/>
+      <element name="deactivation" type="long" minOccurs="0" maxOccurs="1"/>
+      <element name="registry" type="string" minOccurs="0" maxOccurs="1"/>
+      <element name="factory" type="tns:FactoryDetailType" minOccurs="0" maxOccurs="1"/>
+    </sequence>
+  </complexType>
+
+  <simpleType name="LifeCycleType">
+    <restriction base="string">
+      <enumeration value="PERSISTENT"/>
+      <enumeration value="TRANSIENT"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="StateType">
+    <restriction base="string">
+      <enumeration value="ACTIVE"/>
+      <enumeration value="INACTIVE"/>
+    </restriction>
+  </simpleType>
+
+  <complexType name="FactoryDetailType">
+    <sequence>
+      <element name="instancePortType" type="QName" minOccurs="0" maxOccurs="1"/>
+      <element name="instanceSchemaPath" type="string" minOccurs="0" maxOccurs="1"/>
+      <element name="instanceLifeCycle" type="tns:LifeCycleType" minOccurs="0" maxOccurs="1"/>
+      <element name="instanceDeactivation" type="long" minOccurs="0" maxOccurs="1"/>
+      <element name="instanceRegistry" type="string" minOccurs="0" maxOccurs="1"/>
+    </sequence>
+  </complexType>
+</schema>

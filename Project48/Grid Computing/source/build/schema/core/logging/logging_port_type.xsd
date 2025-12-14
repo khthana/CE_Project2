@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://ogsa.globus.org/core/logging" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI" xmlns:sd="http://www.gridforum.org/namespaces/2003/03/serviceData" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://ogsa.globus.org/core/logging" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      
+    
+      <!-- ================================================================ -->
+      <!--             Message Elements                                     -->
+      <!-- ================================================================ -->
+      <xsd:element name="setLogBufferSize">
+          <xsd:complexType>
+              <xsd:sequence>
+                    <xsd:element name="size" type="xsd:int"/>
+                </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>        
+
+      <xsd:element name="setLogBufferSizeResponse">
+          <xsd:complexType/>
+      </xsd:element>
+      
+      <xsd:element name="loadPersistentAttributes">
+          <xsd:complexType/>
+      </xsd:element>
+      
+      <xsd:element name="loadPersistentAttributesResponse">
+          <xsd:complexType/>
+      </xsd:element>
+      
+      <xsd:element name="saveTransientAttributes">
+          <xsd:complexType/>
+      </xsd:element>
+              
+      <xsd:element name="saveTransientAttributesResponse">
+          <xsd:complexType/>
+      </xsd:element>
+      
+      <xsd:element name="changeGroupPersistentAttribute">
+          <xsd:complexType>
+              <xsd:sequence>
+                    <xsd:element name="gla" type="tns:GroupLogAttribute"/>
+                </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+              
+      <xsd:element name="changeGroupPersistentAttributeResponse">
+          <xsd:complexType/>
+      </xsd:element>
+              
+      <xsd:element name="changeGroupTransientAttribute">
+          <xsd:complexType>
+              <xsd:sequence>
+                  <xsd:element name="gla" type="tns:GroupLogAttribute"/>
+                </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+              
+      <xsd:element name="changeGroupTransientAttributeResponse">
+          <xsd:complexType/>
+      </xsd:element>
+              
+      <xsd:element name="removePersistentAttribute">
+          <xsd:complexType>
+              <xsd:sequence>
+                    <xsd:element name="name" type="xsd:string"/>
+                </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+      
+      <xsd:element name="removePersistentAttributeResponse">
+          <xsd:complexType/>
+      </xsd:element>
+              
+      <xsd:element name="setPersistentAttribute">
+          <xsd:complexType>
+              <xsd:sequence>
+                  <xsd:element name="aLogAttributeElement" type="tns:LogAttributeElement"/>
+                </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+              
+      <xsd:element name="setPersistentAttributeResponse">
+          <xsd:complexType/>
+      </xsd:element>
+              
+      <xsd:element name="removeTransientAttribute">
+          <xsd:complexType>
+              <xsd:sequence>
+                  <xsd:element name="name" type="xsd:string"/>
+                </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+      
+      <xsd:element name="removeTransientAttributeResponse">
+          <xsd:complexType/>
+      </xsd:element>
+              
+      <xsd:element name="setTransientAttribute">
+          <xsd:complexType>
+              <xsd:sequence>
+                    <xsd:element name="aLogAttributeElement" type="tns:LogAttributeElement"/>
+                </xsd:sequence>
+          </xsd:complexType>
+      </xsd:element>
+      
+      <xsd:element name="setTransientAttributeResponse">
+          <xsd:complexType/>
+      </xsd:element>
+              
+      <xsd:complexType name="GroupLogAttribute">
+          <xsd:sequence>
+              <xsd:element name="group" nillable="true" type="xsd:string"/>
+              <xsd:element name="destination" nillable="true" type="xsd:string"/>
+                <xsd:element name="level" nillable="true" type="xsd:string"/>
+          </xsd:sequence>
+      </xsd:complexType>
+              
+      <xsd:complexType name="LogAttributeElement">
+          <xsd:sequence>
+                <xsd:element name="attributeName" nillable="true" type="xsd:string"/>
+                <xsd:element name="destination" nillable="true" type="xsd:string"/>
+                <xsd:element name="level" nillable="true" type="xsd:string"/>
+                <xsd:element maxOccurs="1" minOccurs="0" name="groupName" nillable="true" type="xsd:string"/>
+          </xsd:sequence>
+      </xsd:complexType>
+     
+      
+      <!-- ================================================================ -->
+      <!--            logMessage complex type                               -->
+      <!-- ================================================================ -->
+      <xsd:element name="logMessageElement" type="tns:LogMessageElement"/>
+      <xsd:complexType name="LogMessageElement">
+        <xsd:sequence>
+          <xsd:element name="level" type="xsd:string"/>
+          <xsd:element name="message" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+               
+      <!-- ================================================================ -->
+      <!--             Fault Types                                          -->
+      <!-- ================================================================ -->
+      <xsd:element name="invalidDestinationFaultElement" type="tns:InvalidDestinationFaultElement"/>
+      <xsd:complexType name="InvalidDestinationFaultElement">
+        <xsd:complexContent>
+          <xsd:extension base="ogsi:FaultType"/>
+        </xsd:complexContent>
+      </xsd:complexType>
+
+      <xsd:element name="invalidLevelFaultElement" type="tns:InvalidLevelFaultElement"/>
+      <xsd:complexType name="InvalidLevelFaultElement">
+        <xsd:complexContent>
+          <xsd:extension base="ogsi:FaultType"/>
+        </xsd:complexContent>
+      </xsd:complexType>
+      
+   <xsd:element name="invalidLogBuffSizeFaultElement" type="tns:InvalidLogBuffSizeFaultElement"/>
+      <xsd:complexType name="InvalidLogBuffSizeFaultElement">
+        <xsd:complexContent>
+          <xsd:extension base="ogsi:FaultType"/>
+        </xsd:complexContent>
+      </xsd:complexType>
+      
+
+	<xsd:element name="unGroupedFaultElement" type="tns:UnGroupedFaultElement"/>
+      <xsd:complexType name="UnGroupedFaultElement">
+        <xsd:complexContent>
+          <xsd:extension base="ogsi:FaultType"/>
+        </xsd:complexContent>
+      </xsd:complexType>
+
+      <xsd:element name="unableToPersistFaultElement" type="tns:UnableToPersistFaultElement"/>
+      <xsd:complexType name="UnableToPersistFaultElement">
+        <xsd:complexContent>
+          <xsd:extension base="ogsi:FaultType"/>
+        </xsd:complexContent>
+      </xsd:complexType>
+          
+      <xsd:element name="unknownNameFaultElement" type="tns:UnknownNameFaultElement"/>
+      <xsd:complexType name="UnknownNameFaultElement">
+        <xsd:complexContent>
+          <xsd:extension base="ogsi:FaultType"/>
+        </xsd:complexContent>
+      </xsd:complexType>
+       
+      <xsd:element name="unknownGroupNameFaultElement" type="tns:UnknownGroupNameFaultElement"/>
+      <xsd:complexType name="UnknownGroupNameFaultElement">
+        <xsd:complexContent>
+          <xsd:extension base="ogsi:FaultType"/>
+        </xsd:complexContent>
+      </xsd:complexType>
+  
+    <element name="TransientAttributes" nillable="false" type="tns:LogAttributeElement"/><element name="PersistentAttributes" nillable="false" type="tns:LogAttributeElement"/><element name="LogBufferSize" nillable="false" type="xsd:int"/><element name="LogMessages" nillable="false" type="tns:LogMessageElement"/></xsd:schema>

@@ -1,0 +1,307 @@
+package gis_application;
+
+import java.awt.*;
+
+import javax.swing.*;
+import com.borland.jbcl.layout.XYLayout;
+import com.borland.jbcl.layout.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+//import javax.xml.namespace.QName;
+//import org.apache.axis.client.Call;
+import javax.swing.BorderFactory;
+
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.border.TitledBorder;
+
+public class FrmMap extends JFrame {
+    MyProfile mp = new MyProfile();
+    String KeepName[];
+    String KeepID[];
+    String KeepOrg[];
+
+    JPanel contentPane;
+    XYLayout xYLayout1 = new XYLayout();
+    JButton SMap = new JButton();
+    FrmMapStudio frame = new FrmMapStudio();
+    JButton VList = new JButton();
+    JList theList = new JList();
+
+    JList jList5 = new JList();
+    JButton Add = new JButton();
+    JButton Del = new JButton();
+
+    JScrollPane JListSP1 = new JScrollPane(theList);
+    JScrollPane JListSP2 = new JScrollPane(jList5);
+  TitledBorder titledBorder1 = new TitledBorder("");
+  TitledBorder titledBorder2 = new TitledBorder("");
+  TitledBorder titledBorder3 = new TitledBorder("");
+  TitledBorder titledBorder4 = new TitledBorder("");
+  TitledBorder titledBorder5 = new TitledBorder("");
+  TitledBorder titledBorder6 = new TitledBorder("");
+  public FrmMap() {
+
+        try {
+
+            //setDefaultCloseOperation(EXIT_ON_CLOSE);
+            jbInit();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Component initialization.
+     *
+     * @throws java.lang.Exception
+     */
+    private void jbInit() throws Exception {
+        contentPane = (JPanel) getContentPane();
+        contentPane.setLayout(xYLayout1);
+        setSize(new Dimension(600, 520));
+        setTitle("Frame Title");
+    SMap.setBackground(Color.white);
+    SMap.setBorder(titledBorder3);
+    SMap.setText("Show Map");
+        SMap.addActionListener(new FrmMap_showmap_actionAdapter(this));
+    VList.setBackground(Color.white);
+    VList.setBorder(titledBorder2);
+    VList.setText("List Map layer");
+        VList.addActionListener(new FrmMap_VList_actionAdapter(this));
+    Add.setBackground(Color.white);
+    Add.setForeground(Color.blue);
+    Add.setBorder(titledBorder4);
+    Add.setText("Choose this selected layer");
+        Add.addActionListener(new FrmMap_Add_actionAdapter(this));
+    Del.setBackground(Color.white);
+    Del.setForeground(Color.red);
+    Del.setText("Discard this selected layer");
+        Del.addActionListener(new FrmMap_Del_actionAdapter(this));
+    theList.setBackground(new Color(255, 242, 242));
+    theList.setBorder(BorderFactory.createLoweredBevelBorder());
+    jList5.setBackground(new Color(249, 255, 242));
+    jList5.setBorder(BorderFactory.createLoweredBevelBorder());
+    contentPane.setBackground(SystemColor.controlLtHighlight);
+    contentPane.setBorder(titledBorder1);
+    contentPane.setOpaque(true);
+    JListSP1.getViewport().setBackground(new Color(230, 230, 230));
+    JListSP1.setBorder(titledBorder6);
+    JListSP2.setBorder(titledBorder5);
+    contentPane.add(SMap, new XYConstraints(347, 450, 228, 32));
+    contentPane.add(Add, new XYConstraints(59, 229, 225, 32));
+    contentPane.add(Del, new XYConstraints(322, 229, 203, 32));
+    contentPane.add(JListSP1, new XYConstraints(15, 46, 560, 175));
+    contentPane.add(JListSP2, new XYConstraints(15, 270, 560, 174));
+    contentPane.add(VList, new XYConstraints(15, 6, 273, 27));
+  }
+
+    public void showmap_actionPerformed(ActionEvent actionEvent) {
+
+        //   System.out.println(jList5.getModel().getSize());
+        /////////Keep Layer name In Array//////////////////
+        String CLayer[];
+        String ID[];
+        CLayer = new String[jList5.getModel().getSize()];
+        for (int i = 0; i < jList5.getModel().getSize(); i++) {
+            CLayer[i] = jList5.getModel().getElementAt(i).toString();
+        }
+        ID = new String[CLayer.length];
+        for (int i = 0;i < CLayer.length; i++)
+        {
+            for (int j =0; j< KeepID.length;j++)
+            {
+                if(CLayer[i]==KeepName[j])
+                {
+                    ID[i] = KeepID[j];
+                    System.out.println("nan");
+                }
+            }
+        }
+        //System.out.println("nan"+CLayer.length);
+        /////////////////End Keep//////////////////////////
+        //for (int a=0; a<ID.length;a++) System.out.println(ID[a]);
+        frame.setIDLayer(ID);
+        frame.setSelectedLayer(CLayer);
+        frame.setVisible(true);
+    }
+
+    public void VList_actionPerformed(ActionEvent actionEvent) {
+
+        ///////////////////////Clear List1//////////////////////
+        int aa =1;
+
+        while(aa != 0)
+        {
+            int i;
+            Vector v = new Vector();
+            for (i = 0; i < theList.getModel().getSize(); i++) {
+
+                if (theList.getModel().getElementAt(i).toString() != "") {
+                    v.clear();
+                }
+            }
+            if (i == theList.getModel().getSize())
+            {aa = 0;}
+            theList.setListData(v);
+        }
+        ///////////////////////End Clear///////////////////////
+        ///////////////////////Clear List2//////////////////////
+        int aa2 =1;
+
+        while(aa2 != 0)
+        {
+            int i;
+            Vector v = new Vector();
+            for (i = 0; i < jList5.getModel().getSize(); i++) {
+
+                if (jList5.getModel().getElementAt(i).toString() != "") {
+                    v.clear();
+                }
+            }
+            if (i == jList5.getModel().getSize())
+            {aa2 = 0;}
+            jList5.setListData(v);
+        }
+        ///////////////////////End Clear///////////////////////
+
+        try {
+            /////////////////Check Can See/////////////////////////////
+            CallServices cs = new CallServices("GIS_LayerServices","listLayer");
+            String resV =cs.strInvoke(new Object[] {mp.getSessionkey() });
+
+            /////////////////End Check/////////////////////////////////
+            System.out.println(resV);
+            //////////////////Keep Table Name/////////////////////////
+            GisXmlReader gxr = new GisXmlReader(resV);
+
+            /////Create Array///////////
+
+            KeepName = new String[gxr.child("layer").count()];
+            KeepID = new String[gxr.child("layer").count()];
+            KeepOrg = new String[gxr.child("layer").count()];
+            ////////////////////////////
+
+            for (int i = 0; i < gxr.child("layer").count(); i++) {
+                KeepID[i] = gxr.child("layer", i).attribute("id");
+                KeepName[i] = gxr.child("layer", i).attribute("name");
+                KeepOrg[i] = gxr.child("layer", i).attribute("owner");
+            }
+            int y = 0;
+            //      System.out.println(theList.getModel().getSize());
+            //       System.out.println(gxr.child("layer").count());
+            while (y < gxr.child("layer").count()) {
+                //           JCheckBox cb=null;
+                //           cb=new JCheckBox(KeepName[y],true);
+                KeepName[y]="- "+KeepName[y] + "  of [" + KeepOrg[y] + "]";
+                String ohm =KeepName[y] ;
+                Vector v = new Vector();
+
+                for (int i = 0; i < theList.getModel().getSize(); i++) {
+                    v.addElement(theList.getModel().getElementAt(i));
+                }
+                v.addElement(ohm);
+                theList.setListData(v);
+
+                y++;
+            }
+
+            /*      JCheckBox view1 = new JCheckBox();
+                  view1.setText("View1");
+                  jComboBox1.addItem("view1");
+                  jComboBox1.addItem("view2");
+                  jComboBox1.addItem("view3");
+
+
+                 for (int i = 0; i < gxr.child("layer").count(); i++) {
+                     System.out.println(KeepID[i]);
+                 }*/
+
+        } catch (Exception ea) {
+            System.out.print(ea.getStackTrace());
+        }
+
+    }
+
+    public void Add_actionPerformed(ActionEvent e) {
+        int check = 1;
+        Vector v = new Vector();
+        for (int i = 0; i < jList5.getModel().getSize(); i++) {
+            v.addElement(jList5.getModel().getElementAt(i));
+
+            if (theList.getSelectedValue() == jList5.getModel().getElementAt(i)) {
+                check = 0;
+                System.out.println(theList.getSelectedValue()+" = "+jList5.getModel().getElementAt(i));
+            }
+            else
+            { System.out.println(theList.getSelectedValue()+" != "+jList5.getModel().getElementAt(i));}
+        }
+        if (check == 1) {
+            v.addElement(theList.getSelectedValue());
+            jList5.setListData(v);
+        }
+
+    }
+
+    public void Del_actionPerformed(ActionEvent e) {
+        Vector v = new Vector();
+        for (int i = 0; i < jList5.getModel().getSize(); i++) {
+            if (jList5.getSelectedValue() != jList5.getModel().getElementAt(i)) {
+                v.addElement(jList5.getModel().getElementAt(i));
+
+            }
+
+        }
+         jList5.setListData(v);
+    }
+
+}
+
+
+class FrmMap_Del_actionAdapter implements ActionListener {
+    private FrmMap adaptee;
+    FrmMap_Del_actionAdapter(FrmMap adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.Del_actionPerformed(e);
+    }
+}
+
+
+class FrmMap_Add_actionAdapter implements ActionListener {
+    private FrmMap adaptee;
+    FrmMap_Add_actionAdapter(FrmMap adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        adaptee.Add_actionPerformed(e);
+    }
+}
+
+
+class FrmMap_VList_actionAdapter implements ActionListener {
+    private FrmMap adaptee;
+    FrmMap_VList_actionAdapter(FrmMap adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent actionEvent) {
+        adaptee.VList_actionPerformed(actionEvent);
+    }
+}
+
+
+class FrmMap_showmap_actionAdapter implements ActionListener {
+    private FrmMap adaptee;
+    FrmMap_showmap_actionAdapter(FrmMap adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    public void actionPerformed(ActionEvent actionEvent) {
+        adaptee.showmap_actionPerformed(actionEvent);
+    }
+}

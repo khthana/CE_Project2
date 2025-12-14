@@ -1,0 +1,372 @@
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function Check(){
+//left selector
+var selectL1 = document.getElementById("selectL1");
+var selectL2 = document.getElementById("selectL2");
+var selectL3 = document.getElementById("selectL3");
+var selectL4 = document.getElementById("selectL4");
+var selectL5 = document.getElementById("selectL5");
+var selectL6 = document.getElementById("selectL6");
+var selectL7 = document.getElementById("selectL7");
+//right selector
+var selectR1 = document.getElementById("selectR1");
+var selectR2 = document.getElementById("selectR2");
+var selectR3 = document.getElementById("selectR3");
+var selectR4 = document.getElementById("selectR4");
+var selectR5 = document.getElementById("selectR5");
+var selectR6 = document.getElementById("selectR6");
+var selectR7 = document.getElementById("selectR7");
+//course_ID
+var course_ID1 = document.getElementById("course_ID1");
+var course_ID2 = document.getElementById("course_ID2");
+var course_ID3 = document.getElementById("course_ID3");
+var course_ID4 = document.getElementById("course_ID4");
+var course_ID5 = document.getElementById("course_ID5");
+var course_ID6 = document.getElementById("course_ID6");
+var course_ID7 = document.getElementById("course_ID7");
+		//check no input
+		if(selectL1.selectedIndex==""&&selectL2.selectedIndex==""&&selectL3.selectedIndex==""&&selectL4.selectedIndex==""&&selectL5.selectedIndex==""&&selectL6.selectedIndex==""&&selectL7.selectedIndex==""
+			&&selectR1.selectedIndex==""&&selectR2.selectedIndex==""&&selectR3.selectedIndex==""&&selectR4.selectedIndex==""&&selectR5.selectedIndex==""&&selectR6.selectedIndex==""&&selectR7.selectedIndex=="")
+			{	
+			alert("ไม่มีรายการวิชาที่เปลี่ยนค่ะ");
+			selectL1.focus();
+			return false;
+			}
+		//check if left selector have value then right selector must have value 
+		else if (selectL1.selectedIndex != "" && selectR1.selectedIndex == "" ){
+		alert("กรุณาเลือก วิชาใหม่");
+		selectR1.focus();
+		return false;
+	}
+	else if (selectL2.selectedIndex != "" && selectR2.selectedIndex == "" ){
+		alert("กรุณาเลือก วิชาใหม่");
+		selectR2.focus();
+		return false;
+	}
+	else if (selectL3.selectedIndex != "" && selectR3.selectedIndex == "" ){
+		alert("กรุณาเลือก วิชาใหม่");
+		selectR3.focus();
+		return false;
+	}
+	else if (selectL4.selectedIndex != "" && selectR4.selectedIndex == "" ){
+		alert("กรุณาเลือก วิชาใหม่");
+		selectR4.focus();
+		return false;
+	}
+	else if (selectL5.selectedIndex != "" && selectR5.selectedIndex == "" ){
+		alert("กรุณาเลือก วิชาใหม่");
+		selectR5.focus();
+		return false;
+	}
+	else if (selectL6.selectedIndex != "" && selectR6.selectedIndex == "" ){
+		alert("กรุณาเลือก วิชาใหม่");
+		selectR6.focus();
+		return false;
+	}
+	else if (selectL7.selectedIndex != "" && selectR7.selectedIndex == "" ){
+		alert("กรุณาเลือก วิชาใหม่");
+		selectR7.focus();
+		return false;
+	}
+	//check if right selector have value then left selector must have value 
+	else if (selectR1.selectedIndex != "" && selectL1.selectedIndex == "" ){
+		alert("กรุณาเลือก วิชาเดิม");
+		selectL1.focus();
+		return false;
+	}
+	else if (selectR2.selectedIndex != "" && selectL2.selectedIndex == "" ){
+		alert("กรุณาเลือก วิชาเดิม");
+		selectL2.focus();
+		return false;
+	}
+	else if (selectR3.selectedIndex != "" && selectL3.selectedIndex == "" ){
+		alert("กรุณาเลือก วิชาเดิม");
+		selectL3.focus();
+		return false;
+	}
+	else if (selectR4.selectedIndex != "" && selectL4.selectedIndex == "" ){
+		alert("กรุณาเลือก วิชาเดิม");
+		selectL4.focus();
+		return false;
+	}
+	else if (selectR5.selectedIndex != "" && selectL5.selectedIndex == "" ){
+		alert("กรุณาเลือก วิชาเดิม");
+		selectL5.focus();
+		return false;
+	}
+	else if (selectR6.selectedIndex != "" && selectL6.selectedIndex == "" ){
+		alert("กรุณาเลือก วิชาเดิม");
+		selectL6.focus();
+		return false;
+	}
+	else if (selectR7.selectedIndex != "" && selectL7.selectedIndex == "" ){
+		alert("กรุณาเลือก วิชาเดิม");
+		selectL7.focus();
+		return false;
+	}
+		
+		//ตรวจสอบวิชาเดิมซ้ำ
+	else if(selectL1.selectedIndex==selectL2.selectedIndex&&selectL1.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL2.focus();
+	return false;
+	}
+	else if(selectL1.selectedIndex==selectL3.selectedIndex&&selectL1.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL3.focus();
+	return false;
+	}
+	else if(selectL1.selectedIndex==selectL4.selectedIndex&&selectL1.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL4.focus();
+	return false;
+	}
+	else if(selectL1.selectedIndex==selectL5.selectedIndex&&selectL1.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL5.focus();
+	return false;
+	}
+	else if(selectL1.selectedIndex==selectL6.selectedIndex&&selectL1.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL6.focus();
+	return false;
+	}
+	else if(selectL1.selectedIndex==selectL7.selectedIndex&&selectL1.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL7.focus();
+	return false;
+	}
+	else if(selectL2.selectedIndex==selectL3.selectedIndex&&selectL2.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL3.focus();
+	return false;
+	}
+	else if(selectL2.selectedIndex==selectL4.selectedIndex&&selectL2.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL4.focus();
+	return false;
+	}
+	else if(selectL2.selectedIndex==selectL5.selectedIndex&&selectL2.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL5.focus();
+	return false;
+	}
+	else if(selectL2.selectedIndex==selectL6.selectedIndex&&selectL2.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL6.focus();
+	return false;
+	}
+	else if(selectL2.selectedIndex==selectL7.selectedIndex&&selectL2.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL7.focus();
+	return false;
+	}
+	else if(selectL3.selectedIndex==selectL4.selectedIndex&&selectL3.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL4.focus();
+	return false;
+	}
+	else if(selectL3.selectedIndex==selectL5.selectedIndex&&selectL3.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL5.focus();
+	return false;
+	}
+	else if(selectL3.selectedIndex==selectL6.selectedIndex&&selectL3.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL6.focus();
+	return false;
+	}
+	else if(selectL3.selectedIndex==selectL7.selectedIndex&&selectL3.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL7.focus();
+	return false;
+	}
+	else if(selectL4.selectedIndex==selectL5.selectedIndex&&selectL4.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL5.focus();
+	return false;
+	}
+	else if(selectL4.selectedIndex==selectL6.selectedIndex&&selectL4.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL6.focus();
+	return false;
+	}
+	else if(selectL4.selectedIndex==selectL7.selectedIndex&&selectL4.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL7.focus();
+	return false;
+	}
+	else if(selectL5.selectedIndex==selectL6.selectedIndex&&selectL5.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL6.focus();
+	return false;
+	}
+	else if(selectL5.selectedIndex==selectL7.selectedIndex&&selectL5.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL7.focus();
+	return false;
+	}
+	else if(selectL6.selectedIndex==selectL7.selectedIndex&&selectL6.selectedIndex!=""){
+	alert("วิชาเดิมซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectL7.focus();
+	return false;
+	}
+	//ตรวจสอบวิชาใหม่ซ้ำ
+	else if(selectR1.selectedIndex==selectR2.selectedIndex&&selectR1.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR2.focus();
+	return false;
+	}
+	else if(selectR1.selectedIndex==selectR3.selectedIndex&&selectR1.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR3.focus();
+	return false;
+	}
+	else if(selectR1.selectedIndex==selectR4.selectedIndex&&selectR1.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR4.focus();
+	return false;
+	}
+	else if(selectR1.selectedIndex==selectR5.selectedIndex&&selectR1.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR5.focus();
+	return false;
+	}
+	else if(selectR1.selectedIndex==selectR6.selectedIndex&&selectR1.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR6.focus();
+	return false;
+	}
+	else if(selectR1.selectedIndex==selectR7.selectedIndex&&selectR1.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR7.focus();
+	return false;
+	}
+	else if(selectR2.selectedIndex==selectR3.selectedIndex&&selectR2.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR3.focus();
+	return false;
+	}
+	else if(selectR2.selectedIndex==selectR4.selectedIndex&&selectR2.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR4.focus();
+	return false;
+	}
+	else if(selectR2.selectedIndex==selectR5.selectedIndex&&selectR2.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR5.focus();
+	return false;
+	}
+	else if(selectR2.selectedIndex==selectR6.selectedIndex&&selectR2.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR6.focus();
+	return false;
+	}
+	else if(selectR2.selectedIndex==selectR7.selectedIndex&&selectR2.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR7.focus();
+	return false;
+	}
+	else if(selectR3.selectedIndex==selectR4.selectedIndex&&selectR3.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR4.focus();
+	return false;
+	}
+	else if(selectR3.selectedIndex==selectR5.selectedIndex&&selectR3.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR5.focus();
+	return false;
+	}
+	else if(selectR3.selectedIndex==selectR6.selectedIndex&&selectR3.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR6.focus();
+	return false;
+	}
+	else if(selectR3.selectedIndex==selectR7.selectedIndex&&selectR3.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR7.focus();
+	return false;
+	}
+	else if(selectR4.selectedIndex==selectR5.selectedIndex&&selectR4.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR5.focus();
+	return false;
+	}
+	else if(selectR4.selectedIndex==selectR6.selectedIndex&&selectR4.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR6.focus();
+	return false;
+	}
+	else if(selectR4.selectedIndex==selectR7.selectedIndex&&selectR4.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR7.focus();
+	return false;
+	}
+	else if(selectR5.selectedIndex==selectR6.selectedIndex&&selectR5.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR6.focus();
+	return false;
+	}
+	else if(selectR5.selectedIndex==selectR7.selectedIndex&&selectR5.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR7.focus();
+	return false;
+	}
+	else if(selectR6.selectedIndex==selectR7.selectedIndex&&selectR6.selectedIndex!=""){
+	alert("วิชาใหม่ซ้ำกัน กรุณาเลือกใหม่ค่ะ");
+	selectR7.focus();
+	return false;
+	}
+	//ตรวจสอบความสมบูรณ์ของวิชาใหม่ว่ามีครบทุกฟิลหรือไม่
+	else if(selectR1.selectedIndex!=""&& course_ID1.value=="")
+			{	alert ("วิชาใหม่ ไม่สมบูรณ์ กรุณาเลือกใหม่ค่ะ");
+				selectR1.focus();
+				return false;
+			}
+			else if(selectR2.selectedIndex!=""&& course_ID2.value=="")
+			{	alert ("วิชาใหม่ ไม่สมบูรณ์ กรุณาเลือกใหม่ค่ะ");
+				selectR2.focus();
+				return false;
+			}
+			else if(selectR3.selectedIndex!=""&& course_ID3.value=="")
+			{	alert ("วิชาใหม่ ไม่สมบูรณ์ กรุณาเลือกใหม่ค่ะ");
+				selectR3.focus();
+				return false;
+			}
+			else if(selectR4.selectedIndex!=""&& course_ID4.value=="")
+			{	alert ("วิชาใหม่ ไม่สมบูรณ์ กรุณาเลือกใหม่ค่ะ");
+				selectR4.focus();
+				return false;
+			}
+			else if(selectR5.selectedIndex!=""&& course_ID5.value=="")
+			{	alert ("วิชาใหม่ ไม่สมบูรณ์ กรุณาเลือกใหม่ค่ะ");
+				selectR5.focus();
+				return false;
+			}
+			else if(selectR6.selectedIndex!=""&& course_ID6.value=="")
+			{	alert ("วิชาใหม่ ไม่สมบูรณ์ กรุณาเลือกใหม่ค่ะ");
+				selectR6.focus();
+				return false;
+			}
+			else if(selectR7.selectedIndex!=""&& course_ID7.value=="")
+			{	alert ("วิชาใหม่ ไม่สมบูรณ์ กรุณาเลือกใหม่ค่ะ");
+				selectR7.focus();
+				return false;
+			}
+}//function
+
+function MM_openBrWindow(theURL,winName,features,selObj) { //v2.0
+  var pos ;
+  if(selObj.options.name=="selectR1"){pos="1";form1.course_ID1.value="";form1.learn_start1.value="";form1.learn_day1.value="";form1.learn_time1.value="";form1.register_value1.value=""; }
+  else if(selObj.options.name=="selectR2"){pos="2";form1.course_ID2.value="";form1.learn_start2.value="";form1.learn_day2.value="";form1.learn_time2.value="";form1.register_value2.value="";}
+  else if(selObj.options.name=="selectR3"){pos="3";form1.course_ID3.value="";form1.learn_start3.value="";form1.learn_day3.value="";form1.learn_time3.value="";form1.register_value3.value="";}
+  else if(selObj.options.name=="selectR4"){pos="4";form1.course_ID4.value="";form1.learn_start4.value="";form1.learn_day4.value="";form1.learn_time4.value="";form1.register_value4.value="";}
+  else if(selObj.options.name=="selectR5"){pos="5";form1.course_ID5.value="";form1.learn_start5.value="";form1.learn_day5.value="";form1.learn_time5.value="";form1.register_value5.value="";}
+  else if(selObj.options.name=="selectR6"){pos="6";form1.course_ID6.value="";form1.learn_start6.value="";form1.learn_day6.value="";form1.learn_time6.value="";form1.register_value6.value="";}
+  else if(selObj.options.name=="selectR7"){pos="7";form1.course_ID7.value="";form1.learn_start7.value="";form1.learn_day7.value="";form1.learn_time7.value="";form1.register_value7.value="";}
+  if (selObj.options[selObj.selectedIndex].value!=""){
+  window.open(theURL+"?subject_ID="+selObj.options[selObj.selectedIndex].value+"&&edit=1&&pos="+pos,winName,features);
+  }
+ }//-->
+</script>

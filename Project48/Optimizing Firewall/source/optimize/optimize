@@ -1,0 +1,137 @@
+#!/bin/bash
+#main program
+#argument1 is what to do remove, log, reorder
+#argument2 is Chain in firewall all, input, output, forward
+#case argument1 is remove
+if ( [ $1 ] && [ $1 = REMOVE ] ) || ( [ $1 ] && [ $1 = remove ] )
+then
+	#case argument2 is all
+	if ( [ $2 ] && [ $2 = ALL ] ) || ( [ $2 ] && [ $2 = all ] )
+	then
+		rm -f removereport
+		echo Removing Rule Chain INPUT
+		source moverule INPUT
+		echo Removing Rule Chain OUTPUT
+		source moverule OUTPUT
+		echo Removing Rule Chain FORWARD
+		source moverule FORWARD
+	#case argument2 is input
+	elif ( [ $2 ] && [ $2 = INPUT ] ) || ( [ $2 ] && [ $2 = input ] )
+	then
+		echo Removing Rule Chain INPUT
+		rm -f removereport
+		source moverule INPUT
+	#case argument2 is output
+	elif ( [ $2 ] && [ $2 = OUTPUT ] ) || ( [ $2 ] && [ $2 = output ] )
+	then
+		echo Removing Rule Chain OUTPUT
+		rm -f removereport
+		source moverule OUTPUT
+	#case argument2 is forward
+	elif ( [ $2 ] && [ $2 = FORWARD ] ) || ( [ $2 ] && [ $2 = forward ] )
+	then
+		echo Removing Rule Chain FORWARD
+		rm -f removereport
+		source moverule FORWARD
+	#case no argument2
+	else
+		echo "Wrong option 2 ( all , forward , input , output )"
+	fi
+#case argument1 is log
+elif ( [ $1 ] && [ $1 = LOG ] ) || ( [ $1 ] && [ $1 = log ] )
+then 
+	#case argument2 is all
+	if ( [ $2 ] && [ $2 = ALL ] ) || ( [ $2 ] && [ $2 = all ] )
+	then
+		echo Adding LOG Prefix to Chain INPUT
+		source cadd INPUT
+		echo Adding LOG Prefix to Chain OUTPUT
+		source cadd OUTPUT
+		echo Adding LOG Prefix to Chain FORWARD
+		source cadd FORWARD
+		cat /var/log/messages >> /var/log/messages.1
+		echo " " > /var/log/messages
+	#case argument2 is input
+	elif ( [ $2 ] && [ $2 = INPUT ] ) || ( [ $2 ] && [ $2 = input ] )
+	then
+		echo Adding LOG Prefix to Chain INPUT
+		source cadd INPUT
+		cat /var/log/messages >> /var/log/messages.1
+		echo " " > /var/log/messages
+	#case argument2 is output
+	elif ( [ $2 ] && [ $2 = OUTPUT ] ) || ( [ $2 ] && [ $2 = output ] )
+	then
+		echo Adding LOG Prefix to Chain OUTPUT
+		source cadd OUTPUT
+		cat /var/log/messages >> /var/log/messages.1
+		echo " " > /var/log/messages
+	#case argument2 is forward
+	elif ( [ $2 ] && [ $2 = FORWARD ] ) || ( [ $2 ] && [ $2 = forward ] )
+	then
+		echo Adding LOG Prefix to Chain FORWARD
+		source cadd FORWARD
+		cat /var/log/messages >> /var/log/messages.1
+		echo " " > /var/log/messages
+	#case no argument2
+	else
+		echo "Wrong option 2 ( all , forward , input , output )"
+	fi
+#case argument1 is reorder
+elif ( [ $1 ] && [ $1 = REORDER ] ) || ( [ $1 ] && [ $1 = reorder ] )
+then 
+	#case argument2 is all
+	if ( [ $2 ] && [ $2 = ALL ] ) || ( [ $2 ] && [ $2 = all ] )
+	then
+		echo Removing LOG Prefix from Chain INPUT
+		source cremove INPUT
+		echo Calculate Traffic of Chain INPUT
+		source caltraffic INPUT
+		echo Reordering Rule Chain INPUT
+		source reorder INPUT
+		echo Removing LOG Prefix from Chain OUTPUT
+		source cremove OUTPUT
+		echo Calculate Traffic of Chain OUTPUT
+		source caltraffic OUTPUT
+		echo Reordering Rule Chain OUTPUT
+		source reorder OUTPUT
+		echo Removing LOG Prefix from Chain FORWARD
+		source cremove FORWARD
+		echo Calculate Traffic of Chain FORWARD
+		source caltraffic FORWARD
+		echo Reordering Rule Chain FORWARD
+		source reorder FORWARD
+	#case argument2 is input
+	elif ( [ $2 ] && [ $2 = INPUT ] ) || ( [ $2 ] && [ $2 = input ] )
+	then
+		echo Removing LOG Prefix from Chain INPUT
+		source cremove INPUT
+		echo Calculate Traffic of Chain INPUT
+		source caltraffic INPUT
+		echo Reordering Rule Chain INPUT
+		source reorder INPUT
+	#case argument2 is output
+	elif ( [ $2 ] && [ $2 = OUTPUT ] ) || ( [ $2 ] && [ $2 = output ] )
+	then
+		echo Removing LOG Prefix from Chain OUTPUT
+		source cremove OUTPUT
+		echo Calculate Traffic of Chain OUTPUT
+		source caltraffic OUTPUT
+		echo Reordering Rule Chain OUTPUT
+		source reorder OUTPUT
+	#case argument2 is forward
+	elif ( [ $2 ] && [ $2 = FORWARD ] ) || ( [ $2 ] && [ $2 = forward ] )
+	then
+		echo Removing LOG Prefix from Chain FORWARD
+		source cremove FORWARD
+		echo Calculate Traffic of Chain FORWARD
+		source caltraffic FORWARD
+		echo Reordering Rule Chain FORWARD
+		source reorder FORWARD
+	#case no argument2
+	else
+		echo "Wrong option 2 ( all , forward , input , output )"
+	fi
+#case no argument1
+else
+	echo "Wrong option 1 ( remove , log , reorder )"
+fi

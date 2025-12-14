@@ -1,0 +1,162 @@
+#!/bin/bash
+#remove rule that not execute from chain
+#argument is chain
+/sbin/iptables -L $1 -n > temp
+source rulecount `cat temp | cut -d' ' -f1`
+ruleinsert=$max
+/sbin/service iptables stop
+echo '*************************' >> removereport
+echo $1 >> removereport
+echo '*************************' >> removereport
+#check anomaly and remove rule from chain
+while [ $ruleinsert -gt 0 ]
+do
+	#get rule information from chain before remove
+	source getprot temp $ruleinsert
+	prot1=$prot
+	sport1=$sport
+	dport1=$dport
+	source getsrc temp $ruleinsert
+	srcaddr1=$srcaddr
+	srcmask1=$srcmask
+	source getdst temp $ruleinsert
+	dstaddr1=$dstaddr
+	dstmask1=$dstmask
+	source gettarg temp $ruleinsert
+	targ1=$targ
+	/sbin/iptables -L $1 -n  > temp1
+	flag=0
+	source rulecount `cat temp1 | cut -d' ' -f1`
+	count=1
+	#check anomaly of rule in old chain and new chain
+	while [ $flag = 0 ]
+	do
+		if [ $max = 0 ]
+		then
+			flag=1
+		elif [ $count = $max ]
+		then 
+			flag=2
+		else
+			relation=undetermined
+			#get information from new chain rule
+			#get each field and check relation of rule
+			source getprot temp1 $count
+			prot2=$prot
+			sport2=$sport
+			dport2=$dport
+			source cmpprot
+			source chkrelation
+			source cmpport $sport1 $sport2
+			source chkrelation
+			source cmpport $dport1 $dport2
+			source chkrelation
+			source getsrc temp1 $count
+			srcaddr2=$srcaddr
+			srcmask2=$srcmask
+			source cmpip $srcaddr1 $srcmask1 $srcaddr2 $srcmask2
+			source chkrelation
+			source getdst temp1 $count
+			dstaddr2=$dstaddr
+			dstmask2=$dstmask
+			source cmpip $dstaddr1 $dstmask1 $dstaddr2 $dstmask2
+			source chkrelation
+			source gettarg temp1 $count
+			targ2=$targ
+			#check anomaly of rule
+			source chkanomaly
+			#case anomaly is noanomaly
+			if [ $anomaly = NOANOMALY ]
+			then
+				count=`expr $count + 1`
+			#case anomaly is correlation
+			elif [ $anomaly = CORRELATION ]
+			then
+				flag=2
+			#case anomaly is shadowing
+			elif [ $anomaly = SHADOWING ]
+			then
+				#case target function rule1 is log (anomaly is shadowing)
+				if [ $targ1 != LOG ]
+				then
+					/sbin/iptables -D $1 $count
+					max=`expr $max - 1`
+					/sbin/iptables -L $1 -n > temp1
+					echo ---------------------------------------------------------------- >> removereport
+					echo Rule target = $targ1   protocol = $prot1 >> removereport
+					echo source = $srcaddr1/$srcmask1   destination = $dstaddr1/$dstmask1 >> removereport
+					echo source port = $sport1   destination port = $dport1 >> removereport
+					echo $anomaly >> removereport
+					echo Rule target = $targ2   protocol = $prot2 >> removereport
+					echo source = $srcaddr2/$srcmask2   destination = $dstaddr2/$dstmask2 >> removereport
+					echo source port = $sport2   destination port = $dport2 >> removereport
+					echo >> movereport
+					echo Rule target = $targ2   protocol = $prot2 >> removereport
+					echo source = $srcaddr2/$srcmask2   destination = $dstaddr2/$dstmask2 REMOVED>> removereport
+					echo source port = $sport2   destination port = $dport2 >> removereport
+					echo ---------------------------------------------------------------- >> removereport
+				#case target function rule1 not log (anomaly is shadowing)
+				else
+					flag=2
+				fi
+			#case anomaly is generalization
+			elif [ $anomaly = GENERALIZATION ]
+			then
+				flag=2
+			#case anomaly is redundancy
+			else
+				#case relation is superset (anomaly is redundancy)
+				if [ $relation = superset ]
+				then
+					flag=3
+					echo ---------------------------------------------------------------- >> removereport
+					echo Rule target = $targ1   protocol = $prot1 >> removereport
+					echo source = $srcaddr1/$srcmask1   destination = $dstaddr1/$dstmask1 >> removereport
+					echo source port = $sport1   destination port = $dport1 >> removereport
+					echo $anomaly >> removereport
+					echo Rule target = $targ2   protocol = $prot2 >> removereport
+					echo source = $srcaddr2/$srcmask2   destination = $dstaddr2/$dstmask2 >> removereport
+					echo source port = $sport2   destination port = $dport2 >> removereport
+					echo >> removereport
+					echo Rule target = $targ1   protocol = $prot1 >> removereport
+					echo source = $srcaddr1/$srcmask1   destination = $dstaddr1/$dstmask1 REMOVED>> removereport
+					echo source port = $sport1   destination port = $dport1 >> removereport
+					echo ---------------------------------------------------------------- >> removereport
+				#case another relation (anomaly is redundancy)
+				else
+					/sbin/iptables -D $1 $count
+					max=`expr $max - 1`
+					/sbin/iptables -L $1 -n > temp1
+					echo ---------------------------------------------------------------- >> removereport
+					echo Rule target = $targ1   protocol = $prot1 >> removereport
+					echo source = $srcaddr1/$srcmask1   destination = $dstaddr1/$dstmask1 >> removereport
+					echo source port = $sport1   destination port = $dport1 >> removereport
+					echo $anomaly >> removereport
+					echo Rule target = $targ2   protocol = $prot2 >> removereport	
+					echo source = $srcaddr2/$srcmask2   destination = $dstaddr2/$dstmask2 >> removereport
+					echo source port = $sport2   destination port = $dport2 >> removereport
+					echo >> removereport
+					echo Rule target = $targ2   protocol = $prot2 >> removereport
+					echo source = $srcaddr2/$srcmask2   destination = $dstaddr2/$dstmask2 REMOVED>> removereport
+					echo source port = $sport2   destination port = $dport2 >> removereport
+					echo ---------------------------------------------------------------- >> removereport
+				fi
+			fi
+		fi
+	done
+	#case flag is 2 insert rule
+	if [ $flag = 2 ]
+	then
+		source insertrule temp $ruleinsert 1
+	#case flag is 1 append rule
+	elif [ $flag = 1 ]
+	then
+		source appendrule temp $ruleinsert
+	fi
+	flag=0
+	ruleinsert=`expr $ruleinsert - 1`
+done
+rm -f temp1
+rm -f temp
+/sbin/iptables-save > /etc/sysconfig/iptables
+/sbin/service iptables start

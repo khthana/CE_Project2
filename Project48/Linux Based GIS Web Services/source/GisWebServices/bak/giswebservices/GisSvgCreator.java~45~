@@ -1,0 +1,134 @@
+package giswebservices;
+
+public class GisSvgCreator {
+    String header = new String("");
+
+    String svgTag= new String("");
+    String thdTag = new String("");
+    String textTag= new String("");
+
+    String svg = new String("");
+    String thd = new String("");
+    String text = new String("");
+
+    double strokeWidth=1.0;
+    double radian = 4.0;
+
+    public GisSvgCreator() {
+        header = new String("<?xml version=\"1.0\" standalone=\"no\"?>\r\n");
+        header+="<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>\r\n";
+        header+="<svg  xmlns:xlink='http://www.w3.org/1999/xlink' contentScriptType='text/ecmascript' zoomAndPan='magnify' contentStyleType='text/css' viewBox='691233.448514923 -1518982.90543618 1814.34961213078 1217.95208938536' preserveAspectRatio='xMidYMin meet' version=\"1.0\">\r\n";
+        header+="  <defs>\r\n";
+        header+="  </defs>\r\n";
+    }
+
+    public void setHeader(double viewX, double viewY, double width, double height){
+        viewY*=-1;
+        header = new String("<?xml version='1.0' standalone='no'?>\r\n");
+        header+="<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>\r\n";
+        header+="<svg  xmlns:xlink='http://www.w3.org/1999/xlink' contentScriptType='text/ecmascript' zoomAndPan='magnify' contentStyleType='text/css' viewBox='"+ viewX +" "+viewY+" "+ width +" "+height+"' preserveAspectRatio='xMinYMin meet' version='1.0'>\r\n";
+        header+="  <defs>\r\n";
+        header+="  </defs>\r\n";
+
+        strokeWidth = width/1000;
+        radian = strokeWidth*2;
+    }
+
+    /////////////////////////////////////////////// end ///////////////////
+    public void endSvgTag(String id){
+        String theSvg = new String("");
+        theSvg  = "    <g mapid='"+id+"' visibility='visible' >\r\n";
+        theSvg += svg;
+        theSvg += "    </g>\r\n";
+
+        svgTag += theSvg;
+        svg="";
+    }
+
+    public void endTextTag(String id){
+        String theText = new String("");
+        theText  = "    <g textid='"+id+"' visibility='visible' >\r\n";
+        theText += text;
+        theText += "    </g>\r\n";
+
+        textTag += theText;
+        text="";
+    }
+
+
+    public void setAllianceTag(String id, String thdSvg){
+        String theInfo = new String("");
+        theInfo  = "    <g id='"+id+"' visibility='visible' >\r\n";
+        theInfo += thdSvg;
+        theInfo += "    </g>\r\n";
+
+        thdTag += theInfo;
+        //thd="";
+    }
+
+    ///////////////////////////////////////// SVG ////////////////////////////
+    public void setGeomPolygon(int id, String geom, String fill, String stroke){
+        //svg +="      <polygon id='"+id+"' fill='"+fill+"' stroke='"+stroke+"' stroke-width='0.1' points='"+ geom.replace('M',' ')  +"' />\r\n";
+        String geoms[]=geom.split("M");
+        for (int i=1; i<geoms.length;i++)
+            svg +="      <polygon id='"+id+"' fill='"+fill+"' stroke='"+stroke+"' stroke-width='"+(strokeWidth/2)+"' points='"+ geoms[i] +"' />\r\n";
+    }
+
+    public void setGeomLine(int id, String geom, String fill, String stroke){
+        if(fill.indexOf("white")==0 || fill.indexOf("rgb(255,255,255)")==0) fill="none";
+        svg +="      <path id='"+id+"' fill='"+fill+"' stroke='"+stroke+"' stroke-width='"+strokeWidth+"' d=\""+ geom+" \"/>\r\n";
+    }
+
+    public void setGeomPoint(int id, String geom, String fill, String stroke){
+
+        svg +="      <circle id='"+id+"' fill='"+fill+"' stroke='"+stroke+"' stroke-width='"+(strokeWidth/4)+"' "+geom+" r='"+radian+"' />\r\n";
+    }
+
+   /////////////////////////////////////// text //////////////////////////////
+    public void setText(int id, String columnName, String x, String y, String color, double size){
+        if (color.length()<3) color="black";
+        if (size<=0) size=10;
+        columnName=columnName.replaceAll("&","and");
+        text +="       <text id='"+id+"' x='"+x +"' y='-"+y+"' style='text-anchor:middle;font-size:"+size+";font-family:Arial' fill='"+color+"'>"+columnName+"</text>\r\n";
+    }
+
+    ///////////////////////////////////// infomation /////////////////////////
+    public void setInfo(String attribute, String value){
+        //info = "  <attribute name='"+attribute+"' >"+value+"</attribute>\r\n";
+    }
+
+    public String getSVG(){
+        String svgdoc = new String("");
+        svgdoc += header;
+
+        svgdoc += "\n\n";
+
+        svgdoc += "<g id='map'>\r\n";
+        svgdoc += svgTag;
+        svgdoc += "</g>\r\n";
+
+        svgdoc += "\n\n";
+
+        svgdoc += "<g id='alliance map'>\r\n";
+        svgdoc += thdTag;
+        svgdoc += "</g>\r\n";
+
+        svgdoc += "<g id='text'>\r\n";
+        svgdoc += textTag;
+        svgdoc += "</g>\r\n";
+
+        svgdoc += "\n\n";
+
+
+
+        svgdoc += "\n\n";
+        svgdoc += "</svg>\r\n";
+
+        return svgdoc;
+    }
+
+   /* public void setGeomTag(String geom, String color){
+       //svgtag+="<polygon points=\""+ geom.replace('-',' ').replace('M',' ')  +"\" style=\""+color+"stroke-width:1\"/>\r\n";
+   }*/
+
+}

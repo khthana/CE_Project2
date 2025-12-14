@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="TopService" targetNamespace="http://ogsa.globus.org/samples/gwsdl/top" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:base="http://ogsa.globus.org/samples/gwsdl/base" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:sd="http://www.gridforum.org/namespaces/2003/03/serviceData" xmlns:servicedata="http://ogsa.globus.org/samples/gwsdl/top" xmlns:tns="http://ogsa.globus.org/samples/gwsdl/top" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+             
+<import location="base_port_types.gwsdl" namespace="http://ogsa.globus.org/samples/gwsdl/base"/>
+
+<types>
+  <xsd:schema targetNamespace="http://ogsa.globus.org/samples/gwsdl/top" xmlns:base="http://ogsa.globus.org/samples/gwsdl/base" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:sd="http://www.gridforum.org/namespaces/2003/03/serviceData" xmlns:servicedata="http://ogsa.globus.org/samples/gwsdl/top" xmlns:tns="http://ogsa.globus.org/samples/gwsdl/top" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:element name="topOp1">
+      <xsd:complexType>  
+        <xsd:sequence>
+          <xsd:element name="param" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="topOp1Response">
+      <xsd:complexType/>  
+    </xsd:element>
+    <xsd:element name="topOp2">
+      <xsd:complexType>  
+        <xsd:sequence>
+          <xsd:element name="param" type="xsd:int"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="topOp2Response">
+      <xsd:complexType/>  
+    </xsd:element>
+    <xsd:complexType name="TopServiceDataType">  
+      <xsd:sequence>
+        <xsd:element name="topServiceData" type="xsd:string"/>  
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:schema>
+</types>
+
+<message name="TopOp1InputMessage">
+  <part element="tns:topOp1" name="parameters"/>
+</message>
+<message name="TopOp1OutputMessage">
+  <part element="tns:topOp1Response" name="parameters"/>
+</message>
+<message name="TopOp2InputMessage">
+  <part element="tns:topOp2" name="parameters"/>
+</message>
+<message name="TopOp2OutputMessage">
+  <part element="tns:topOp2Response" name="parameters"/>
+</message>
+
+<portType name="TopPortType"><operation name="mid2Op">
+    <input message="ns8:Mid2OpInputMessage" xmlns:ns8="http://ogsa.globus.org/samples/gwsdl/base"/>
+    <output message="ns9:Mid2OpOutputMessage" xmlns:ns9="http://ogsa.globus.org/samples/gwsdl/base"/>
+  </operation><operation name="baseOp">
+    <input message="ns10:BaseOpInputMessage" xmlns:ns10="http://ogsa.globus.org/samples/gwsdl/base"/>
+    <output message="ns11:BaseOpOutputMessage" xmlns:ns11="http://ogsa.globus.org/samples/gwsdl/base"/>
+  </operation><operation name="mid1Op">
+    <input message="ns4:Mid1OpInputMessage" xmlns:ns4="http://ogsa.globus.org/samples/gwsdl/base"/>
+    <output message="ns5:Mid1OpOutputMessage" xmlns:ns5="http://ogsa.globus.org/samples/gwsdl/base"/>
+  </operation><operation name="topOp2">
+    <input message="ns2:TopOp2InputMessage" xmlns:ns2="http://ogsa.globus.org/samples/gwsdl/top"/>
+    <output message="ns3:TopOp2OutputMessage" xmlns:ns3="http://ogsa.globus.org/samples/gwsdl/top"/>
+  </operation><operation name="topOp1">
+    <input message="ns0:TopOp1InputMessage" xmlns:ns0="http://ogsa.globus.org/samples/gwsdl/top"/>
+    <output message="ns1:TopOp1OutputMessage" xmlns:ns1="http://ogsa.globus.org/samples/gwsdl/top"/>
+  </operation></portType><gwsdl:portType extends="base:Mid1PortType base:Mid2PortType" name="TopPortType">
+  
+  
+  <sd:serviceData maxOccurs="unbounded" minOccurs="9" mutability="mutable" name="TopService" type="servicedata:TopServiceDataType">
+    <sd:documentation>
+        Top service data test. 
+    </sd:documentation>
+  </sd:serviceData>
+  <sd:staticServiceDataValues>
+    <tns:topServiceData>
+      Top Data
+    </tns:topServiceData>
+  </sd:staticServiceDataValues>
+
+</gwsdl:portType>
+
+</definitions>

@@ -1,0 +1,84 @@
+#!/bin/bash
+#append rule in firewall
+#argument1 is file (redirect firewall rule)
+#argument2 is rule number (in old firewall)
+chain=`cat $1 | grep -n ' ' | grep -m 1 1: | cut -d':' -f2 | cut -d' ' -f2`
+#get rule information
+source getsrc $1 $2
+source getdst $1 $2
+source getprot $1 $2
+source gettarg $1 $2
+#append rule 16 case
+if [ $sport = all ] && [ $dport = all ]
+then
+	if [ $srcmask = 0 ]  && [ $dstmask = 0 ]
+	then
+		/sbin/iptables -A $chain -p $prot -j $targ
+	fi
+	if [ $srcmask = 0 ] && [ $dstmask != 0 ]
+	then
+		/sbin/iptables -A $chain -d $dst -p $prot -j $targ
+	fi
+	if [ $srcmask != 0 ] && [ $dstmask = 0 ]
+	then
+		/sbin/iptables -A $chain -s $src -p $prot -j $targ
+	fi
+	if [ $srcmask != 0 ] && [ $dstmask != 0 ]
+	then
+		/sbin/iptables -A $chain -s $src -d $dst -p $prot -j $targ
+	fi
+elif [ $sport = all ] && [ $dport != all ]
+then
+	if [ $srcmask = 0 ]  && [ $dstmask = 0 ]
+	then
+		/sbin/iptables -A $chain -p $prot --dport $dport -j $targ
+	fi
+	if [ $srcmask = 0 ] && [ $dstmask != 0 ]
+	then
+		/sbin/iptables -A $chain -d $dst -p $prot --dport $dport -j $targ
+	fi
+	if [ $srcmask != 0 ] && [ $dstmask = 0 ]
+	then
+		/sbin/iptables -A $chain -s $src -p $prot --dport $dport -j $targ
+	fi
+	if [ $srcmask != 0 ] && [ $dstmask != 0 ]
+	then
+		/sbin/iptables -A $chain -s $src -d $dst -p $prot --dport $dport -j $targ
+	fi
+elif [ $sport != all ] && [ $dport = all ]
+then
+	if [ $srcmask = 0 ]  && [ $dstmask = 0 ]
+	then
+		/sbin/iptables -A $chain -p $prot --sport $sport -j $targ
+	fi
+	if [ $srcmask = 0 ] && [ $dstmask != 0 ]
+	then
+		/sbin/iptables -A $chain -d $dst -p $prot --sport $sport -j $targ
+	fi
+	if [ $srcmask != 0 ] && [ $dstmask = 0 ]
+	then
+		/sbin/iptables -A $chain -s $src -p $prot --sport $sport -j $targ
+	fi
+	if [ $srcmask != 0 ] && [ $dstmask != 0 ]
+	then
+		/sbin/iptables -A $chain -s $src -d $dst -p $prot --sport $sport -j $targ
+	fi
+elif [ $sport != all ] && [ $dport != all ]
+then
+	if [ $srcmask = 0 ]  && [ $dstmask = 0 ]
+	then
+		/sbin/iptables -A $chain -p $prot --sport $sport --dport $dport -j $targ
+	fi
+	if [ $srcmask = 0 ] && [ $dstmask != 0 ]
+	then
+		/sbin/iptables -A $chain -d $dst -p $prot --sport $sport --dport $dport -j $targ
+	fi
+	if [ $srcmask != 0 ] && [ $dstmask = 0 ]
+	then
+		/sbin/iptables -A $chain -s $src -p $prot --sport $sport --dport $dport -j $targ
+	fi
+	if [ $srcmask != 0 ] && [ $dstmask != 0 ]
+	then
+		/sbin/iptables -A $chain -s $src -d $dst -p $prot --sport $sport --dport $dport -j $targ
+	fi
+fi

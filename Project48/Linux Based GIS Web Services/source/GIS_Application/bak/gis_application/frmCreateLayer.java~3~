@@ -1,0 +1,250 @@
+package gis_application;
+
+import java.awt.*;
+import javax.swing.*;
+import com.borland.jbcl.layout.XYLayout;
+import com.borland.jbcl.layout.*;
+import javax.swing.BorderFactory;
+import javax.swing.border.TitledBorder;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+
+public class frmCreateLayer
+    extends JFrame {
+  //my
+  int attrNum =1;
+  String attrName[];
+  String datatype[];
+  //jbuilder
+  JPanel contentPane;
+  XYLayout xYLayout1 = new XYLayout();
+  JPanel jPanel1 = new JPanel();
+  TitledBorder titledBorder1 = new TitledBorder("");
+  JTextField txtLayerName = new JTextField();
+  XYLayout xYLayout2 = new XYLayout();
+  JComboBox cmbGeomtype = new JComboBox();
+  TitledBorder titledBorder2 = new TitledBorder("");
+  TitledBorder titledBorder3 = new TitledBorder("");
+  JLabel jLabel1 = new JLabel();
+  JLabel jLabel2 = new JLabel();
+  JPanel jPanel2 = new JPanel();
+  XYLayout xYLayout3 = new XYLayout();
+  TitledBorder titledBorder4 = new TitledBorder("");
+  JButton cmdCreateLayer = new JButton();
+  TitledBorder titledBorder5 = new TitledBorder("");
+  JLabel jLabel3 = new JLabel();
+  JList lstAttr = new JList();
+  JScrollPane jScrollPane1 = new JScrollPane();
+  TitledBorder titledBorder6 = new TitledBorder("");
+  JPanel padPanel = new JPanel();
+  TitledBorder titledBorder7 = new TitledBorder("");
+  JButton cmdAdd = new JButton();
+  XYLayout xYLayout4 = new XYLayout();
+  JButton cmdSub = new JButton();
+  JButton cmdNumAttr = new JButton();
+  JTextField lblNumAttr = new JTextField();
+  TitledBorder titledBorder8 = new TitledBorder("");
+  JLabel jLabel4 = new JLabel();
+  JLabel jLabel5 = new JLabel();
+  JTextField txtAttrName = new JTextField();
+  JTextField txtDatatype = new JTextField();
+  JButton jButton1 = new JButton();
+  TitledBorder titledBorder9 = new TitledBorder("");
+  public frmCreateLayer() {
+    try {
+      //setDefaultCloseOperation(EXIT_ON_CLOSE);
+      jbInit();
+    }
+    catch (Exception exception) {
+      exception.printStackTrace();
+    }
+  }
+
+  /**
+   * Component initialization.
+   *
+   * @throws java.lang.Exception
+   */
+  private void jbInit() throws Exception {
+    contentPane = (JPanel) getContentPane();
+    contentPane.setLayout(xYLayout1);
+    setSize(new Dimension(400, 460));
+    setTitle("Frame Title");
+    contentPane.setBackground(Color.white);
+    contentPane.setOpaque(true);
+    jPanel1.setBackground(Color.white);
+    jPanel1.setBorder(titledBorder1);
+    jPanel1.setOpaque(true);
+    jPanel1.setLayout(xYLayout2);
+    txtLayerName.setBorder(titledBorder2);
+    cmbGeomtype.setBorder(null);
+    jLabel1.setText("Layer Name");
+    jLabel2.setText("Geometry type");
+    jPanel2.setBackground(Color.white);
+    jPanel2.setBorder(titledBorder4);
+    jPanel2.setOpaque(true);
+    jPanel2.setLayout(xYLayout3);
+    cmdCreateLayer.setBackground(Color.white);
+    cmdCreateLayer.setBorder(titledBorder5);
+    cmdCreateLayer.setText("Create New Layer");
+    jLabel3.setText("Attributes list");
+    lstAttr.setBackground(new Color(247, 242, 255));
+    lstAttr.addMouseListener(new frmCreateLayer_lstAttr_mouseAdapter(this));
+    jScrollPane1.setBorder(titledBorder6);
+    padPanel.setBackground(new Color(245, 245, 245));
+    padPanel.setOpaque(true);
+    padPanel.setLayout(xYLayout4);
+    cmdAdd.setBackground(new Color(250, 250, 250));
+    cmdAdd.setMargin(new Insets(0, 0, 0, 0));
+    cmdAdd.setText("+");
+    cmdAdd.addActionListener(new frmCreateLayer_cmdAdd_actionAdapter(this));
+    cmdSub.setBackground(new Color(250, 250, 250));
+    cmdSub.setMargin(new Insets(0, 0, 0, 0));
+    cmdSub.setText("-");
+    cmdSub.addActionListener(new frmCreateLayer_cmdSub_actionAdapter(this));
+    cmdNumAttr.setBackground(Color.white);
+    cmdNumAttr.setMargin(new Insets(0, 0, 0, 0));
+    cmdNumAttr.setText("Attributes");
+    cmdNumAttr.addActionListener(new frmCreateLayer_cmdNumAttr_actionAdapter(this));
+    lblNumAttr.setEnabled(false);
+    lblNumAttr.setBorder(titledBorder8);
+    lblNumAttr.setText("1");
+    jLabel4.setForeground(Color.gray);
+    jLabel4.setText("Attribute Name");
+    jLabel5.setForeground(Color.gray);
+    jLabel5.setText("Datatype");
+    jButton1.setBackground(Color.white);
+    jButton1.setForeground(Color.blue);
+    jButton1.setBorder(titledBorder9);
+    jButton1.setText("Apply");
+    jButton1.addActionListener(new frmCreateLayer_jButton1_actionAdapter(this));
+    jPanel1.add(txtLayerName, new XYConstraints(110, 10, 235, 27));
+    jPanel1.add(jLabel1, new XYConstraints(4, 13, -1, -1));
+    jPanel1.add(cmbGeomtype, new XYConstraints(110, 44, 235, 25));
+    jPanel1.add(jLabel2, new XYConstraints(4, 50, -1, -1));
+    contentPane.add(jPanel1, new XYConstraints(10, 10, 366, 90));
+    contentPane.add(jPanel2, new XYConstraints(10, 104, 366, 288));
+    jPanel2.add(jLabel3, new XYConstraints(5, 4, -1, -1));
+    contentPane.add(cmdCreateLayer, new XYConstraints(229, 399, 147, 31));
+    jPanel2.add(padPanel, new XYConstraints(140, 6, 204, 41));
+    padPanel.add(cmdAdd, new XYConstraints(78, 7, 24, 14));
+    jPanel2.add(jScrollPane1, new XYConstraints(140, 55, 205, 199));
+    jPanel2.add(jLabel4, new XYConstraints(5, 68, -1, -1));
+    jScrollPane1.getViewport().add(lstAttr);
+    padPanel.add(lblNumAttr, new XYConstraints(13, 7, 47, 30));
+    padPanel.add(cmdSub, new XYConstraints(78, 25, 24, 13));
+    padPanel.add(cmdNumAttr, new XYConstraints(109, 7, 86, 28));
+    jPanel2.add(txtAttrName, new XYConstraints(5, 91, 120, 23));
+    jPanel2.add(txtDatatype, new XYConstraints(6, 145, 118, 22));
+    jPanel2.add(jLabel5, new XYConstraints(6, 123, -1, -1));
+    jPanel2.add(jButton1, new XYConstraints(6, 185, 117, 26));
+    cmbGeomtype.addItem("POINT");
+    cmbGeomtype.addItem("MULTIPOINT");
+    cmbGeomtype.addItem("LINESTRING");
+    cmbGeomtype.addItem("MULTILINESTRING");
+    cmbGeomtype.addItem("POLYGON");
+    cmbGeomtype.addItem("MULTIPOLYGON");
+
+    initNumAttr();
+  }
+
+  public void cmdAdd_actionPerformed(ActionEvent e) {
+    attrNum++;
+    lblNumAttr.setText(""+attrNum);
+  }
+
+  public void cmdSub_actionPerformed(ActionEvent e) {
+    if(attrNum>1)attrNum--;
+    lblNumAttr.setText(""+attrNum);
+  }
+
+  public void initNumAttr(){
+    attrName=new String[attrNum];
+    datatype=new String[attrNum];
+    for (int i=0; i<attrNum; i++){
+      attrName[i]="attributeName_"+i;
+      datatype[i]="varchar(20)";
+    }
+    lstAttr.removeAll();
+    lstAttr.setListData(attrName);
+  }
+
+  public void cmdNumAttr_actionPerformed(ActionEvent e) {
+    initNumAttr();
+  }
+
+  public void lstAttr_mouseClicked(MouseEvent e) {
+    int index = lstAttr.getSelectedIndex();
+    txtAttrName.setText(attrName[index]);
+    txtDatatype.setText(datatype[index]);
+  }
+
+  public void jButton1_actionPerformed(ActionEvent e) {
+    int index = lstAttr.getSelectedIndex();
+    attrName[index]=txtAttrName.getText();
+    datatype[index]=txtDatatype.getText();
+  }
+}
+
+class frmCreateLayer_jButton1_actionAdapter
+    implements ActionListener {
+  private frmCreateLayer adaptee;
+  frmCreateLayer_jButton1_actionAdapter(frmCreateLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.jButton1_actionPerformed(e);
+  }
+}
+
+class frmCreateLayer_lstAttr_mouseAdapter
+    extends MouseAdapter {
+  private frmCreateLayer adaptee;
+  frmCreateLayer_lstAttr_mouseAdapter(frmCreateLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void mouseClicked(MouseEvent e) {
+    adaptee.lstAttr_mouseClicked(e);
+  }
+}
+
+class frmCreateLayer_cmdNumAttr_actionAdapter
+    implements ActionListener {
+  private frmCreateLayer adaptee;
+  frmCreateLayer_cmdNumAttr_actionAdapter(frmCreateLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdNumAttr_actionPerformed(e);
+  }
+}
+
+class frmCreateLayer_cmdSub_actionAdapter
+    implements ActionListener {
+  private frmCreateLayer adaptee;
+  frmCreateLayer_cmdSub_actionAdapter(frmCreateLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdSub_actionPerformed(e);
+  }
+}
+
+class frmCreateLayer_cmdAdd_actionAdapter
+    implements ActionListener {
+  private frmCreateLayer adaptee;
+  frmCreateLayer_cmdAdd_actionAdapter(frmCreateLayer adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdAdd_actionPerformed(e);
+  }
+}

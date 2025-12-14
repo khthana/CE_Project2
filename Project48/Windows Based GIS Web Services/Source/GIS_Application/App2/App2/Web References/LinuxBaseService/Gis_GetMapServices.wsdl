@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:intf="http://giswebservices" xmlns:impl="http://giswebservices" targetNamespace="http://giswebservices" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types />
+  <wsdl:message name="requestNearestSVGRequest">
+    <wsdl:part name="sessionKey" type="xsd:string" />
+    <wsdl:part name="xmlMapRequst" type="xsd:string" />
+    <wsdl:part name="layerID" type="xsd:int" />
+    <wsdl:part name="posX" type="xsd:double" />
+    <wsdl:part name="posY" type="xsd:double" />
+    <wsdl:part name="width" type="xsd:double" />
+    <wsdl:part name="height" type="xsd:double" />
+    <wsdl:part name="currentLadtitude" type="xsd:double" />
+    <wsdl:part name="currentLongitude" type="xsd:double" />
+    <wsdl:part name="xFill" type="xsd:string" />
+    <wsdl:part name="xStroke" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getSvgGRequest">
+    <wsdl:part name="sessionKey" type="xsd:string" />
+    <wsdl:part name="xmlMapRequst" type="xsd:string" />
+    <wsdl:part name="posX" type="xsd:double" />
+    <wsdl:part name="posY" type="xsd:double" />
+    <wsdl:part name="width" type="xsd:double" />
+    <wsdl:part name="height" type="xsd:double" />
+  </wsdl:message>
+  <wsdl:message name="requestSVGRequest">
+    <wsdl:part name="sessionKey" type="xsd:string" />
+    <wsdl:part name="xmlMapRequst" type="xsd:string" />
+    <wsdl:part name="posX" type="xsd:double" />
+    <wsdl:part name="posY" type="xsd:double" />
+    <wsdl:part name="width" type="xsd:double" />
+    <wsdl:part name="height" type="xsd:double" />
+  </wsdl:message>
+  <wsdl:message name="getSvgGResponse">
+    <wsdl:part name="getSvgGReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="requestNearbySVGRequest">
+    <wsdl:part name="sessionKey" type="xsd:string" />
+    <wsdl:part name="xmlMapRequst" type="xsd:string" />
+    <wsdl:part name="layerID" type="xsd:int" />
+    <wsdl:part name="posX" type="xsd:double" />
+    <wsdl:part name="posY" type="xsd:double" />
+    <wsdl:part name="width" type="xsd:double" />
+    <wsdl:part name="height" type="xsd:double" />
+    <wsdl:part name="currentLadtitude" type="xsd:double" />
+    <wsdl:part name="currentLongitude" type="xsd:double" />
+    <wsdl:part name="radian" type="xsd:double" />
+    <wsdl:part name="xFill" type="xsd:string" />
+    <wsdl:part name="xStroke" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="requestNearbySVGResponse">
+    <wsdl:part name="requestNearbySVGReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="requestNearestSVGResponse">
+    <wsdl:part name="requestNearestSVGReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="requestSVGResponse">
+    <wsdl:part name="requestSVGReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:portType name="Gis_GetMapServices">
+    <wsdl:operation name="requestSVG" parameterOrder="sessionKey xmlMapRequst posX posY width height">
+      <wsdl:input name="requestSVGRequest" message="impl:requestSVGRequest" />
+      <wsdl:output name="requestSVGResponse" message="impl:requestSVGResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="requestNearbySVG" parameterOrder="sessionKey xmlMapRequst layerID posX posY width height currentLadtitude currentLongitude radian xFill xStroke">
+      <wsdl:input name="requestNearbySVGRequest" message="impl:requestNearbySVGRequest" />
+      <wsdl:output name="requestNearbySVGResponse" message="impl:requestNearbySVGResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="requestNearestSVG" parameterOrder="sessionKey xmlMapRequst layerID posX posY width height currentLadtitude currentLongitude xFill xStroke">
+      <wsdl:input name="requestNearestSVGRequest" message="impl:requestNearestSVGRequest" />
+      <wsdl:output name="requestNearestSVGResponse" message="impl:requestNearestSVGResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getSvgG" parameterOrder="sessionKey xmlMapRequst posX posY width height">
+      <wsdl:input name="getSvgGRequest" message="impl:getSvgGRequest" />
+      <wsdl:output name="getSvgGResponse" message="impl:getSvgGResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Gis_GetMapServicesSoapBinding" type="impl:Gis_GetMapServices">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="requestSVG">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="requestSVGRequest">
+        <wsdlsoap:body use="encoded" namespace="http://giswebservices" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="requestSVGResponse">
+        <wsdlsoap:body use="encoded" namespace="http://giswebservices" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="requestNearbySVG">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="requestNearbySVGRequest">
+        <wsdlsoap:body use="encoded" namespace="http://giswebservices" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="requestNearbySVGResponse">
+        <wsdlsoap:body use="encoded" namespace="http://giswebservices" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="requestNearestSVG">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="requestNearestSVGRequest">
+        <wsdlsoap:body use="encoded" namespace="http://giswebservices" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="requestNearestSVGResponse">
+        <wsdlsoap:body use="encoded" namespace="http://giswebservices" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSvgG">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getSvgGRequest">
+        <wsdlsoap:body use="encoded" namespace="http://giswebservices" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="getSvgGResponse">
+        <wsdlsoap:body use="encoded" namespace="http://giswebservices" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Gis_GetMapServicesService">
+    <wsdl:port name="Gis_GetMapServices" binding="impl:Gis_GetMapServicesSoapBinding">
+      <wsdlsoap:address location="http://161.246.6.214:8080/GisServer/services/Gis_GetMapServices" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

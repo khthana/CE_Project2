@@ -1,0 +1,629 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AGaugeDerivedSampleLibrary</name>
+    </assembly>
+    <members>
+        <member name="T:GMS.Instruments.AGauge.AmpMeter">
+            <summary>
+            The AmpMeter control is a UserControl which has a contained AGauge control and
+            is configured to display a typical ampere meter.  It includes two Annular region 
+            objects to indicate warning and danger levels.  The control also exposes events
+            which are triggered when the gauge's Value reaches a warning value or danger level.
+            </summary>
+        </member>
+        <member name="M:GMS.Instruments.AGauge.AmpMeter.#ctor">
+            <summary>
+            Initializes a new instance of the AmpMeter class.
+            </summary>
+        </member>
+        <member name="M:GMS.Instruments.AGauge.AmpMeter.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:GMS.Instruments.AGauge.AmpMeter.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AmpMeter.Warning">
+            <summary>
+            Occurs when the needle value enters the warning zone.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AmpMeter.Danger">
+            <summary>
+            Occurs when the needle value enters the danger zone.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AmpMeter.Safe">
+            <summary>
+            Occurs when the needle value enters the safe zone.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AmpMeter.Turn">
+            <summary>
+            Occurs when the mouse is used to update the needle value.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AmpMeter.Click">
+            <summary>
+            Occurs when the control is clicked.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AmpMeter.MouseDown">
+            <summary>
+            Occurs when the mouse is pressed.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AmpMeter.MouseEnter">
+            <summary>
+            Occurs whent the mouse enters the visible part of the control.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AmpMeter.MouseHover">
+            <summary>
+            Occurs when the mouse remains stationary inside of the control for an amount of time.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AmpMeter.MouseLeave">
+            <summary>
+            Occurs whent the mouse leaves the visible part of the control.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AmpMeter.MouseMove">
+            <summary>
+            Occurs when the mouse is moved.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AmpMeter.MouseUp">
+            <summary>
+            Occurs when a mouse button is released.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AmpMeter.BorderType">
+            <summary>
+            Gets or sets the line style used to render the outline of this object.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AmpMeter.BorderColor">
+            <summary>
+            Gets or sets the border color.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AmpMeter.BorderWidth">
+            <summary>
+            Gets or sets the border width.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AmpMeter.TextAntiAlias">
+            <summary>
+            Gets or sets a value indicating whether the text renders with antialiasing.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AmpMeter.NeedleColor">
+            <summary>
+            Gets or sets the needle color.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AmpMeter.WarningValue">
+            <summary>
+            Gets or sets the warning value displayed by the gauge. 
+            The Warning event will be fired when the gauge's Value exceeds the WarningValue.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AmpMeter.DangerValue">
+            <summary>
+            Gets or sets the danger value displayed by the gauge. 
+            The Danger event will be fired when the gauge's Value exceeds the DangerValue.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AmpMeter.Value">
+            <summary>
+            Gets or sets the needle value displayed by the gauge. 
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AmpMeter.MouseControl">
+            <summary>
+            Gets or sets a value which enables mouse input to the needle.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AmpMeter.Caption">
+            <summary>
+            Gets or sets the caption displayed by the gauge.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AmpMeter.AntiAlias">
+            <summary>
+            Gets or sets a value indicating whether the control will apply antialiasing.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AmpMeter.CaptionFont">
+            <summary>
+            Gets or sets the caption font.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AmpMeter.LabelFont">
+            <summary>
+            Gets or sets the label font.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AmpMeter.MinorTickDelta">
+            <summary>
+            Gets or sets the minor tick delta.
+            </summary>
+        </member>
+        <member name="T:GMS.Instruments.AGauge.AnalogClock">
+            <summary>
+            The AnalogClock control is a UserControl which has a contained AGauge control and
+            is configured to display a typical analog clock which is updated by the system clock.  
+            It uses regular system time updates to display the hours, minutes and seconds. 
+            </summary>
+        </member>
+        <member name="M:GMS.Instruments.AGauge.AnalogClock.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AnalogClock.Click">
+            <summary>
+            Occurs when the control is clicked.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AnalogClock.MouseDown">
+            <summary>
+            Occurs when a mouse button is pressed.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AnalogClock.MouseEnter">
+            <summary>
+            Occurs whent the mouse enters the visible part of the control.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AnalogClock.MouseHover">
+            <summary>
+            Occurs when the mouse remains stationary inside of the control for an amount of time.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AnalogClock.MouseLeave">
+            <summary>
+            Occurs whent the mouse leaves the visible part of the control.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AnalogClock.MouseMove">
+            <summary>
+            Occurs when the mouse is moved.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AnalogClock.MouseUp">
+            <summary>
+            Occurs when a mouse button is released.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AnalogClock.LabelRotated">
+            <summary>
+            Gets or sets the orientation style of the labels.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AnalogClock.TickColor">
+            <summary>
+            Gets or sets the color of the ticks.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AnalogClock.LabelColor">
+            <summary>
+            Gets or sets the color of the clock labels.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AnalogClock.FaceColor">
+            <summary>
+            Gets or sets the color of the clock face.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AnalogClock.NeedleColor">
+            <summary>
+            Gets or sets the color of the needles.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AnalogClock.AntiAlias">
+            <summary>
+            Gets or sets a value indicating whether the control will apply antialiasing.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AnalogClock.BorderType">
+            <summary>
+            Gets or sets the line style used to render the outline of this object.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AnalogClock.BorderColor">
+            <summary>
+            Gets or sets the border color.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AnalogClock.BorderWidth">
+            <summary>
+            Gets or sets the border width.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AnalogClock.LabelAntiAlias">
+            <summary>
+            Gets or sets a value indicating whether the label renders with antialiasing.
+            </summary>
+        </member>
+        <member name="T:GMS.Instruments.AGauge.AutomobileGauges">
+            <summary>
+            The AutomobileGauges control is a UserControl which has an embedded AGauge control and
+            is configured to display any of six typical automobile gauges. 
+            </summary>
+        </member>
+        <member name="M:GMS.Instruments.AGauge.AutomobileGauges.#ctor">
+            <summary>
+            Initializes a new instance of the AutomobileGauges class.
+            </summary>
+        </member>
+        <member name="M:GMS.Instruments.AGauge.AutomobileGauges.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AutomobileGauges.Turn">
+            <summary>
+            Occurs whent the mouse is used to update the needle value.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AutomobileGauges.Click">
+            <summary>
+            Occurs when the control is clicked.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AutomobileGauges.MouseDown">
+            <summary>
+            Occurs when the mouse is pressed.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AutomobileGauges.MouseEnter">
+            <summary>
+            Occurs whent the mouse enters the visible part of the control.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AutomobileGauges.MouseHover">
+            <summary>
+            Occurs when the mouse remains stationary inside of the control for an amount of time.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AutomobileGauges.MouseLeave">
+            <summary>
+            Occurs whent the mouse leaves the visible part of the control.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AutomobileGauges.MouseMove">
+            <summary>
+            Occurs when the mouse is moved.
+            </summary>
+        </member>
+        <member name="E:GMS.Instruments.AGauge.AutomobileGauges.MouseUp">
+            <summary>
+            Occurs when a mouse button is released.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AutomobileGauges.BorderType">
+            <summary>
+            Gets or sets the line style used to render the outline of this object.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AutomobileGauges.BorderColor">
+            <summary>
+            Gets or sets the border color.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AutomobileGauges.BorderWidth">
+            <summary>
+            Gets or sets the border width.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AutomobileGauges.BackColor">
+            <summary>
+            Gets or sets the color of the BackGround.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AutomobileGauges.NeedleColor">
+            <summary>
+            Gets or sets the color of the Needle.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AutomobileGauges.GaugeType">
+            <summary>
+            Gets or sets the type of instrument to be displayed.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AutomobileGauges.Value">
+            <summary>
+            Gets or sets the value displayed by the needle within the instrument.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AutomobileGauges.MouseControl">
+            <summary>
+            Gets or sets a value which enables mouse input to the needle.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AutomobileGauges.TickColor">
+            <summary>
+            Gets or sets the color of the tick marks.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AutomobileGauges.CaptionColor">
+            <summary>
+            Gets or sets the caption color for the selected gauge.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.AutomobileGauges.AntiAlias">
+            <summary>
+            Gets or sets a value indicating whether antialiasing will be applied.
+            </summary>
+        </member>
+        <member name="T:GMS.Instruments.AGauge.Compass">
+            <summary>
+            The Compass control is derived from AGauge, but is not a conventional angular gauge, most 
+            gauges use needles to indicate their values over a stationary set of tick marks.  Instead, the 
+            Compass control uses a stationary marker next to a rotating set of tick marks to indicate the 
+            compass heading.
+            </summary>
+        </member>
+        <member name="M:GMS.Instruments.AGauge.Compass.#ctor">
+            <summary>
+            Initializes a new instance of the Compass class.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.Compass.LabelAntiAlias">
+            <summary>
+            Gets or sets a value indicating whether the text renders with antialiasing.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.Compass.Heading">
+            <summary>
+            Gets or sets the compass heading value.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.Compass.MouseControl">
+            <summary>
+            Gets or sets whether the compass heading can be manipulated with mouse input.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.Compass.TickColor">
+            <summary>
+            Gets or sets the color used to draw the tick marks.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.Compass.LabelColor">
+            <summary>
+            Gets or Sets the color used to draw the tick labels.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.Compass.BackfaceColor">
+            <summary>
+            Gets or Sets the color used to draw the compass backface.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.Compass.MarkerColor">
+            <summary>
+            Gets or Sets the color used to draw the heading marker.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.Compass.MarkerBorderType">
+            <summary>
+            Gets or sets the heading marker border type.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.Compass.MarkerBorderColor">
+            <summary>
+            Gets or sets the heading marker border color.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.Compass.Style">
+            <summary>
+            Gets or Sets the compass style.
+            </summary>
+        </member>
+        <member name="T:GMS.Instruments.AGauge.MaxMinGauge">
+            <summary>
+            MaxMinGauge is derived from the SimpleAngularGauge control and adds 
+            maximum and minimum tell-tail needles which indicate the maximum and 
+            minimum extents that the gauges primary needle has traveled.
+            </summary>
+        </member>
+        <member name="T:GMS.Instruments.AGauge.SimpleAngularGauge">
+            <summary>
+            SimpleAngularGauge is derived from the AGauge control and is designed to rapidly 
+            configure an angular gauge by providing short cuts to the most commonly used features 
+            of AGauge.
+            </summary>
+        </member>
+        <member name="M:GMS.Instruments.AGauge.SimpleAngularGauge.#ctor">
+            <summary>
+            Initializes a new instance of the SimpleAngularGauge class.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.LabelRotated">
+            <summary>
+            Gets or sets the orientation style of the labels.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.LabelAntiAlias">
+            <summary>
+            Gets or sets a value indicating whether the label renders with antialiasing.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.Value">
+            <summary>
+            Gets or sets the value of the needle.  The Value is a number between MinValue and MaxValue.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.MaxValue">
+            <summary>
+            Gets or sets the maximum value displayed by the gauge.  
+            Note that the Tick objects automatically adjust their interval to accomodate the Max / Min values.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.MinValue">
+            <summary>
+            Gets or sets the minimum value displayed by the gauge.  
+            Note that the Tick objects automatically adjust their interval to accomodate the Max / Min values.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.WarningValue">
+            <summary>
+            Gets or sets the warning value displayed by the gauge.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.DangerValue">
+            <summary>
+            Gets or sets the danger value displayed by the gauge.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.MajorTickCount">
+            <summary>
+            Gets or Sets the maximum number of tick marks to be allowed when automatically calculating the tick interval.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.MinorTickCount">
+            <summary>
+            Gets or Sets the number of minor tick marks between major tick marks.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.MouseControl">
+            <summary>
+            Gets or sets whether the needle value can be manipulated with mouse input.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.NeedleStyle">
+            <summary>
+            Gets or sets a value indicating the shape of the Needle.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.NeedleColor">
+            <summary>
+            Gets or Sets the color used to draw the Needle.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.NeedleWidth">
+            <summary>
+            Gets or sets the needle width.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.NeedleBorderType">
+            <summary>
+            Gets or sets the needle bordertype.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.NeedleBorderColor">
+            <summary>
+            Gets or sets the needle border color.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.TickColor">
+            <summary>
+            Gets or Sets the color used to draw the tick marks.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.TickWidth">
+            <summary>
+            Gets or sets the tick width.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.Direction">
+            <summary>
+            Gets or Sets the direction of increasing values displayed.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.Scale">
+            <summary>
+            Gets or sets the size of the scale.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.SimpleAngularGauge.Origin">
+            <summary>
+            Gets or sets the position for the center of the scale.  
+            Note that the control may need to be stretched to see the full scale for some of the positions.
+            </summary>
+        </member>
+        <member name="M:GMS.Instruments.AGauge.MaxMinGauge.#ctor">
+            <summary>
+            Initializes a new instance of the MaxMinGauge class.
+            </summary>
+        </member>
+        <member name="M:GMS.Instruments.AGauge.MaxMinGauge.Reset">
+            <summary>
+            Resets the maximum and minimum needle values.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.MaxMinGauge.Value">
+            <summary>
+            Gets or sets the value of the needle.  The Value is a number between MinValue and MaxValue.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.MaxMinGauge.Maximum">
+            <summary>
+            Gets or sets the value indicating the maximum extent traveled by the primary needle.
+            </summary>
+        </member>
+        <member name="P:GMS.Instruments.AGauge.MaxMinGauge.Minimum">
+            <summary>
+            Gets or sets the value indicating the minimum extent traveled by the primary needle.
+            </summary>
+        </member>
+        <member name="T:GMS.Instruments.AGauge.OriginLocation">
+            <summary>
+            Enumeration for the orogin location.
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.AGauge.OriginLocation.Center">
+            <summary>
+            Displays the origin in the center control.
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.AGauge.OriginLocation.Top">
+            <summary>
+            Displays the origin at the top of the control.
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.AGauge.OriginLocation.Bottom">
+            <summary>
+            Displays the origin at the bottom of the control.
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.AGauge.OriginLocation.Left">
+            <summary>
+            Displays the origin on the left side of the control.
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.AGauge.OriginLocation.Right">
+            <summary>
+            Displays the origin on the right side of the control.
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.AGauge.OriginLocation.LowerLeft">
+            <summary>
+            Displays the origin at the lower left corner of the control.
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.AGauge.OriginLocation.LowerRight">
+            <summary>
+            Displays the origin at the lower right corner of the control.
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.AGauge.OriginLocation.UpperLeft">
+            <summary>
+            Displays the origin at the upper left corner of the control.
+            </summary>
+        </member>
+        <member name="F:GMS.Instruments.AGauge.OriginLocation.UpperRight">
+            <summary>
+            Displays the origin at the upper right corner of the control.
+            </summary>
+        </member>
+    </members>
+</doc>

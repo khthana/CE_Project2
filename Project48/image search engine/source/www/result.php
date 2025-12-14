@@ -1,0 +1,33 @@
+<html>
+<head>
+<title>Untitled Document</title>
+</head>
+
+<body>
+
+<?php
+$rootdir = "C:/AppServ/www/"; 
+$limitfile=1000000; 
+$a="$rootdir/".$uploadfile_name;
+
+if ($job) {
+if (empty($uploadfile_size)) {
+echo "Cannot search, please check your file";
+} elseif (file_exists($a)) {
+echo "Same file exist, please change file name";
+} elseif($uploadfile_size>$limitfile) {
+echo "Your file is too big, please reduce size";
+} else {
+copy($uploadfile,$a);
+header("Location: /cgi-bin/show.py?filename=$uploadfile_name");
+echo " You have upload $uploadfile_name size $uploadfile_size b";
+}
+}
+?>
+
+<?php
+echo "$uploadfile_name";
+?>
+
+</body>
+</html>

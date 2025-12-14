@@ -1,0 +1,397 @@
+<?php
+/*เรียกแฟ้มข้อมูล phpConfig.php*/
+include("phpConfig.php");
+
+$id=$id;
+	// เริ่มติดต่อฐานข้อมูล
+	mysql_connect($hostname, $user, $password) or die("ติดต่อฐานข้อมูลไม่ได้");
+
+		mysql_query("SET NAMES 'tis620'");
+
+	// เลือกฐานข้อมูล
+	mysql_select_db($dbname) or die("เลือกฐานข้อมูลไม่ได้");
+	
+	$sql = "select * from book where id = '$id'";
+	$db_query = mysql_db_query ($dbname, $sql);
+	
+	$nums_rows = mysql_num_rows($db_query);
+		
+	if ($nums_rows < 1 )
+		{
+			echo ("<font color=\"red\">ไม่มีข้อมูลแสดง1</font>");
+			exit;
+		}	// จบ if
+
+
+	for ($i=0;$i<$nums_rows;$i++)	// เริ่มรับข้อมูลจากฟิลด์ต่าง ๆ ในตาราง question1
+		{
+			$result = mysql_fetch_array($db_query);
+							$catalog = $result[catalog];
+							$code = $result[code];
+							$name_book = $result[name_book];
+							$writer = $result[writer];
+							$company = $result[company];
+							$year_print = $result[year_print];
+							$isbn = $result[isbn];
+							$price = $result[price];
+							$name_borrow = $result[name_borrow];
+						    $return_book = $result[return_book];
+							$datetime = $result[datetime];
+							$pic = $result[pic];
+							$name_borrow = $result[total_borrow];
+							$datetime = $result[datetime];
+							$id = $result[id];
+							$status = $result[status];
+							$status1 = $result[status];
+							$status2 = $result[status];
+		}
+
+	$image1 = "image1.gif";
+	$image2 = "image2.gif";
+	
+?>
+
+
+<HTML><HEAD><TITLE>:ระบบห้องสมุดงบนมือถือ::</TITLE>
+<META 
+content=freewebboard,freeguestbook,freepoll,freescript,PHP,devforum,thai,ฟรีเว็บบอร์ด,ฟรีสมุดเยี่ยม,ฟรีโพลล์ 
+name=keywords>
+<META 
+content="Thai PHP Developer Freewebboard Freeguestbook Freepoll FreescriptPHP devforum เว็บบอร์ดฟรีที่ดีที่สุดในประเทศ" 
+name=description>
+<META http-equiv=Content-Type content="text/html; charset=tis-620"><LINK 
+href="webboard/style.css" 
+type=text/css rel=stylesheet>
+<SCRIPT language=JavaScript>
+<!--
+function MM_jumpMenu(targ,selObj,restore){ //v3.0
+  eval(targ+".location='"+selObj.options[selObj.selectedIndex].value+"'");
+  if (restore) selObj.selectedIndex=0;
+}
+//-->
+</SCRIPT>
+<STYLE type=text/css>A:link {
+	FONT-SIZE: x-small; COLOR: #005ca2; FONT-FAMILY: "MS Sans Serif", "Microsoft Sans Serif"; TEXT-DECORATION: underline
+}
+A:visited {
+	FONT-SIZE: x-small; COLOR: green; FONT-FAMILY: "MS Sans Serif", "Microsoft Sans Serif"; TEXT-DECORATION: underline
+}
+A:active {
+	FONT-SIZE: x-small; COLOR: #0099ff; FONT-FAMILY: "MS Sans Serif", "Microsoft Sans Serif"; TEXT-DECORATION: none
+}
+A:hover {
+	FONT-SIZE: x-small; COLOR: #0099ff; FONT-FAMILY: "MS Sans Serif", "Microsoft Sans Serif"; TEXT-DECORATION: none
+}
+TD {
+	FONT-SIZE: x-small; FONT-FAMILY: "MS Sans Serif", "Microsoft Sans Serif"
+}
+INPUT {
+	BORDER-RIGHT: 1px solid; BORDER-TOP: 1px solid; FONT-SIZE: 10pt; BORDER-LEFT: 1px solid; BORDER-BOTTOM: 1px solid; FONT-FAMILY: "MS Sans Serif", "Microsoft Sans Serif"
+}
+TEXTAREA {
+	BORDER-RIGHT: 1px solid; BORDER-TOP: 1px solid; FONT-SIZE: x-small; BORDER-LEFT: 1px solid; BORDER-BOTTOM: 1px solid; FONT-FAMILY: "MS Sans Serif", "Microsoft Sans Serif"
+}
+</STYLE>
+
+<META content="MSHTML 6.00.2800.1458" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff>
+<SCRIPT 
+src="webboard/photo2mobileJS.js"></SCRIPT>
+
+
+
+
+
+<CENTER><FONT face="Ms sans serif" color=red 
+size=3><B><?php echo ""; ?></B></FONT></CENTER><BR>
+<TABLE borderColor=#f0f0f0 cellSpacing=0 cellPadding=0 width="80%" align=center 
+bgColor=#f0f0f0 border=1>
+  <TBODY>
+  <TR>
+    <TD bgColor=#ffffff>
+      <P><FONT face="Ms sans serif" size=2><B>รายละเอียด</B></FONT></P>
+      <BLOCKQUOTE>
+        <P><?php echo " <b>ชื่อหนังสือ</b>-$name_book";?> </P></BLOCKQUOTE></TD></TR>
+ 
+
+
+
+ <TR>
+    <TD bgColor=#f0f0f0><FONT face="Ms sans serif" size=2>โดย :<?php 
+		if (($q_email == "") &&($q_tell=="")&&($q_icq==""))
+			{	
+				echo " $q_name  เมื่อ: [$q_date] ip: [$q_ip]";
+			}
+		
+			
+			
+			
+		else
+			{ 
+				echo " <a href='mailto:$q_email'>$q_name</a> เมื่อ: [$q_date] เบอร์โทรศัพท์: [$q_tell] icq: [$q_icq] ip: [$q_ip]";
+			}	// จบ if
+	?>   </FONT></TD></TR></TBODY></TABLE><BR>
+
+
+<?php
+	$sql1 = "select * from answer1 where a_qid = '$q_id'";
+	$db_query1 = mysql_db_query ($dbname, $sql1);
+
+	if (!$db_query1)
+		{
+			echo ("เอ็กซิคิวต์คำสั่ง SQL ไม่ได้");
+			exit;
+		}	// จบ if
+
+	$num_rows1 = mysql_num_rows($db_query1);
+		
+	if ($num_rows1 != 0 )
+		{
+			for ($i=0;$i<$num_rows1;$i++)	// รับค่าข้อมูลจากฟิลด์ต่าง ๆ ในตาราง Answer
+			{
+				$result1 = mysql_fetch_array($db_query1);
+				$a_message = $result1[a_message];
+				$a_email = $result1[a_email];
+				$a_name = $result1[a_name];
+				$a_date = $result1[a_datetime];
+				$a_tell=$result1[a_tell];
+				$a_ip=$result1[a_ip];
+				$a_icq=$result1[a_icq];
+				echo "<br><div align=\"center\">\n";
+				echo "<table border=0 width=80% cellspacing=0 cellpadding=5 bgcolor=#F0F0F0>\n";
+				echo "<tr><td width=100%><strong>&nbsp; <u> ความคิดเห็นที่ ". ($i+1) ."</u></strong><br>\n";
+				echo "<blockquote><font color=#000099> $a_message ";					
+				echo "</font></blockquote>";
+				echo "<strong>&nbsp; โดย : </strong> <font color=\"#808000\">";
+				
+				
+				
+				if (($a_email == "") &&($a_tell=="")&&($a_icq==""))
+			{	
+				echo " $a_name  เมื่อ: [$a_date] ip: [$a_ip]";
+			}
+		else
+			{ 
+				echo " <a href='mailto:$a_email'>$a_name</a> เมื่อ: [$a_date] เบอร์โทรศัพท์: [$a_tell] icq: [$a_icq] ip: [$a_ip]";
+			}	// จบ if
+				echo "</font></td>\n</tr>\n</table>\n</div>";
+			}	// จบ for
+	}	// จบ if
+
+?>
+
+
+
+<CENTER></CENTER>
+<FORM name=addcomment onsubmit="return check()" action=addcomment.php
+method=post encType=multipart/form-data><INPUT type=hidden value=tips name=user> 
+<INPUT type=hidden value=765 name=id> 
+<TABLE borderColor=#999999 width="75%" align=center bgColor=#999999>
+  <TBODY>
+  <TR>
+    <TD>
+      <DIV align=center><FONT face="Verdana, Arial, Helvetica, sans-serif" 
+      color=#ffffff size=4><B>ตอบกลับ</B></FONT></DIV></TD></TR>
+  <TR>
+    <TD bgColor=#ffffff><BR>
+      <TABLE width="95%" align=center border=0>
+        <TBODY>
+       
+        <TR>
+          <TD>จาก :</TD>
+          <TD><INPUT maxLength=50 size=50 name=a_name> * </TD></TR>
+        <TR>
+          <TD>E-mail :</TD>
+          <TD><INPUT maxLength=50 size=50 name=a_email></TD><td><input type=hidden name="q_id" value="<?php echo "$q_id"; ?>"></td></TR>
+       <TR>
+          <TD>icq :</TD>
+          <TD><INPUT maxLength=50 size=50 name=a_icq> * </TD></TR>
+		  <TR>
+          <TD>phone :</TD>
+          <TD><INPUT maxLength=50 size=50 name=a_tell> * </TD></TR>
+<TR>
+          <TD>ภาพประกอบ :</TD>
+		 
+<TD><INPUT type=file  name=picture size = 36></TD></tr>
+        <TR>
+        <TR>
+          <TD>รายละเอียด : 
+            <TABLE cellSpacing=0 cellPadding=5 width=100 border=0>
+              <TBODY>
+              <TR>
+                <TD><A href="javascript:emoticon(':D')"><IMG 
+                  title="Very Happy" height=15 alt="Very Happy" 
+                  src="webboard/icon_biggrin.gif" 
+                  width=15 border=0></A></TD>
+                <TD><A href="javascript:emoticon(':)')"><IMG title=Smile 
+                  height=15 alt=Smile 
+                  src="webboard/icon_smile.gif" 
+                  width=15 border=0></A></TD>
+                <TD><A href="javascript:emoticon(':(')"><IMG title=Sad 
+                  height=15 alt=Sad 
+                  src="webboard/icon_sad.gif" 
+                  width=15 border=0></A></TD>
+                <TD><A href="javascript:emoticon(':o:')"><IMG title=Surprised 
+                  height=15 alt=Surprised 
+                  src="webboard/icon_surprised.gif" 
+                  width=15 border=0></A></TD></TR>
+              <TR>
+                <TD><A href="javascript:emoticon(':shock:')"><IMG 
+                  title=Shocked height=15 alt=Shocked 
+                  src="webboard/icon_eek.gif" 
+                  width=15 border=0></A></TD>
+                <TD><A href="javascript:emoticon(':~')"><IMG title=Confused 
+                  height=15 alt=Confused 
+                  src="webboard/icon_confused.gif" 
+                  width=15 border=0></A></TD>
+                <TD><A href="javascript:emoticon('8)')"><IMG title=Cool 
+                  height=15 alt=Cool 
+                  src="webboard/icon_cool.gif" 
+                  width=15 border=0></A></TD>
+                <TD><A href="javascript:emoticon(':lol:')"><IMG title=Laughing 
+                  height=15 alt=Laughing 
+                  src="webboard/icon_lol.gif" 
+                  width=15 border=0></A></TD></TR>
+              <TR>
+                <TD><A href="javascript:emoticon(':x')"><IMG title=Mad 
+                  height=15 alt=Mad 
+                  src="webboard/icon_mad.gif" 
+                  width=15 border=0></A></TD>
+                <TD><A href="javascript:emoticon(':P')"><IMG title=Razz 
+                  height=15 alt=Razz 
+                  src="webboard/icon_razz.gif" 
+                  width=15 border=0></A></TD>
+                <TD><A href="javascript:emoticon(':oops:')"><IMG 
+                  title=Embarassed height=15 alt=Embarassed 
+                  src="webboard/icon_redface.gif" 
+                  width=15 border=0></A></TD>
+                <TD><A href="javascript:emoticon(':cry:')"><IMG 
+                  title="Crying or Very sad" height=15 alt="Crying or Very sad" 
+                  src="webboard/icon_cry.gif" 
+                  width=15 border=0></A></TD></TR>
+              <TR>
+                <TD><A href="javascript:emoticon(':evil:')"><IMG 
+                  title="Evil or Very Mad" height=15 alt="Evil or Very Mad" 
+                  src="webboard/icon_evil.gif" 
+                  width=15 border=0></A></TD>
+                <TD><A href="javascript:emoticon(':twisted:')"><IMG 
+                  title="Twisted Evil" height=15 alt="Twisted Evil" 
+                  src="webboard/icon_twisted.gif" 
+                  width=15 border=0></A></TD>
+                <TD><A href="javascript:emoticon(':roll:')"><IMG 
+                  title="Rolling Eyes" height=15 alt="Rolling Eyes" 
+                  src="webboard/icon_rolleyes.gif" 
+                  width=15 border=0></A></TD>
+                <TD><A href="javascript:emoticon(':wink:')"><IMG title=Wink 
+                  height=15 alt=Wink 
+                  src="webboard/icon_wink.gif" 
+                  width=15 border=0></A></TD></TR>
+              <TR>
+                <TD><A href="javascript:emoticon(':!:')"><IMG 
+                  title=Exclamation height=15 alt=Exclamation 
+                  src="webboard/icon_exclaim.gif" 
+                  width=15 border=0></A></TD>
+                <TD><A href="javascript:emoticon(':?:')"><IMG title=Question 
+                  height=15 alt=Question 
+                  src="webboard/icon_question.gif" 
+                  width=15 border=0></A></TD>
+                <TD><A href="javascript:emoticon(':idea:')"><IMG title=Idea 
+                  height=15 alt=Idea 
+                  src="webboard/icon_idea.gif" 
+                  width=15 border=0></A></TD>
+                <TD><A href="javascript:emoticon(':arrow:')"><IMG title=Arrow 
+                  height=15 alt=Arrow 
+                  src="webboard/icon_arrow.gif" 
+                  width=15 border=0></A></TD></TR></TBODY></TABLE></TD>
+          <TD><TEXTAREA name=a_message rows=8 cols=50></TEXTAREA> * <BR>
+            <TABLE borderColor=#000000 cellSpacing=0 cellPadding=0 width=200 
+            border=1>
+              <TBODY>
+              <TR vAlign=center align=middle>
+                <TD>
+                  <DIV align=center><A 
+                  href="javascript:emoticon('<b></b>')"><IMG alt=ตัวหนา 
+                  src="webboard/icon_bold.gif" 
+                  border=0></A> </DIV></TD>
+                <TD>
+                  <DIV align=center><A 
+                  href="javascript:emoticon('<i></i>')"><IMG alt=ตัวเอียง 
+                  src="webboard/icon_italic.gif" 
+                  border=0></A></DIV></TD>
+                <TD>
+                  <DIV align=center><A 
+                  href="javascript:emoticon('<u></u>')"><IMG alt=ตัวขีดเส้นใต้ 
+                  src="webboard/icon_underline.gif" 
+                  border=0></A></DIV></TD>
+                <TD>
+                  <DIV align=center><A 
+                  onclick="open_windows('help.htm','add','width=350,height=480')" 
+                  href="#"><IMG 
+                  alt=Help 
+                  src="webboard/icon_help.gif" 
+                  border=0></A></DIV></TD></TR></TBODY></TABLE><BR></TD></TR>
+        <TR>
+          <TD>&nbsp;</TD>
+          <TD><INPUT type=submit value="Post Message" name=B1> * <INPUT type=reset value=Clear name=B2> [ <A 
+            href="list.php" 
+            target=_blank>แจ้งปัญหาการใช้งานเว็บบอร์ด</A> ] <BR>กรุณา Click Post 
+            Message เพียงครั้งเดียว <BR><BR></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD bgColor=#f0f0f0><FONT face=Verdana size=2>Board v.5.02 beta <B>:: 
+      Powered by : </B><A href="http://www.samharv.cjb.net/" 
+      target=_blank>3How Team</A> ฟรีเว็บบอร์ด สมุดเยี่ยม โพลล์ PHPScript<BR>&copy; 
+      2002-2004 All rights reserved. </FONT><FONT color=white size=1><A 
+      href="http://t.extreme-dm.com/?login=212cafe" target=_blank><IMG height=1 
+      alt="" 
+      src="webboard/i.gif" 
+      width=1 border=0></A>
+      <SCRIPT language=javascript1.2><!--
+EXs=screen;EXw=EXs.width;navigator.appName!="Netscape"?
+EXb=EXs.colorDepth:EXb=EXs.pixelDepth;//-->
+</SCRIPT>
+
+      <SCRIPT language=javascript><!--
+EXd=document;EXw?"":EXw="na";EXb?"":EXb="na";
+EXd.write("<img src=\"http://t0.extreme-dm.com",
+"/0.gif?tag=212cafe&j=y&srw="+EXw+"&srb="+EXb+"&",
+"l="+escape(EXd.referrer)+"\" height=1 width=1>");//-->
+</SCRIPT>
+      <NOSCRIPT><IMG height=1 alt="" 
+      src="webboard/0.gif" 
+      width=1></NOSCRIPT> </FONT></TD></TR></TBODY></TABLE></FORM>
+<SCRIPT language=JavaScript>
+<!--
+function check()
+{
+      var v2 = document.addcomment.a_name.value;
+      var v3 = document.addcomment.a_message.value;
+      
+if (v2.length==0)
+           {
+          alert("กรุณาใส่ชื่อผู้ตอบด้วยครับ");
+           document.addcomment.a_name.focus();    
+           return false;
+           }
+        else if (v3.length==0)
+           {
+            alert("กรุณาใส่รายละเอียดด้วยครับ");
+            document.addcomment.a_messagel.focus();                 
+           return false;
+           }
+        else
+           return true;
+}
+
+function emoticon(what)
+{
+	document.addcomment.a_message.value = document.addcomment.elements.a_message.value+" "+what;
+	document.addcomment.a_message.focus();
+}
+
+function open_windows(theURL,winName,features) { //v2.0
+  window.open(theURL,winName,features);
+}
+
+//-->
+</SCRIPT>
+</BODY></HTML>

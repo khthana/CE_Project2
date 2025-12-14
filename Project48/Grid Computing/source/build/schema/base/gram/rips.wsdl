@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="ResourceInformationProvider" targetNamespace="http://www.globus.org/namespaces/2003/04/rips" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI" xmlns:provider="http://www.globus.org/namespaces/2003/04/service_data_provider_execution" xmlns:tns="http://www.globus.org/namespaces/2003/04/rips" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+<types>
+  <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.globus.org/namespaces/2003/04/rips" xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions" xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI" xmlns:provider="http://www.globus.org/namespaces/2003/04/service_data_provider_execution" xmlns:tns="http://www.globus.org/namespaces/2003/04/rips" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<xsd:simpleType name="GramStatusType">
+            <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="Pending"/>
+                <xsd:enumeration value="Active"/>
+                <xsd:enumeration value="Failed"/>
+                <xsd:enumeration value="Done"/>
+                <xsd:enumeration value="Suspended"/>
+                <xsd:enumeration value="Invalid"/>
+            </xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="JobType">
+            <xsd:attribute name="jobID" type="xsd:string"/>
+            <xsd:attribute name="username" type="xsd:string"/>	
+            <xsd:sequence>
+                <xsd:element name="jobname" type="xsd:string"/>
+                <xsd:element name="count" type="xsd:string"/>
+                <xsd:element name="requesteddmemory" type="xsd:string"/>			
+                <xsd:element name="requestedtime" type="xsd:string"/>	
+                <xsd:element name="elapsedtime" type="xsd:string"/>				
+                <xsd:element name="status" type="xsd:string"/>
+                <xsd:element name="gramStatus" type="tns:GramStatusType"/>			 
+            </xsd:sequence>
+	</xsd:complexType>
+
+        <xsd:complexType name="JobElement">
+            <xsd:sequence>
+                <xsd:element name="Job" type="tns:JobType"/>
+            </xsd:sequence>
+        </xsd:complexType> 
+
+	<xsd:complexType name="QueueType">
+            <xsd:sequence>
+                <xsd:element name="totalnodes" type="xsd:string"/>
+                <xsd:element name="freenodes" type="xsd:string"/>
+                <xsd:element name="maxtime" type="xsd:string"/>			
+                <xsd:element name="maxCPUtime" type="xsd:string"/>	
+                <xsd:element name="maxCount" type="xsd:string"/>				
+                <xsd:element name="maxReqNodes" type="xsd:string"/>
+                <xsd:element name="maxRunningJobs" type="xsd:string"/>
+                <xsd:element name="maxJobsInQueue" type="xsd:string"/>
+                <xsd:element name="maxTotalMemory" type="xsd:string"/>
+                <xsd:element name="maxSingleMemory" type="xsd:string"/>
+                <xsd:element name="whenActive" type="xsd:string"/>
+                <xsd:element name="status" type="xsd:string"/>
+                <xsd:element name="dispatchType" type="xsd:string"/>
+            </xsd:sequence>
+	</xsd:complexType>
+
+        <xsd:complexType name="QueueElement">
+            <xsd:sequence>
+                <xsd:element name="Queue" type="tns:QueueType"/>
+            </xsd:sequence>
+        </xsd:complexType> 
+	
+	<xsd:complexType name="SchedulerType">
+            <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" name="Queues" type="tns:QueueType"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" name="Jobs" type="tns:JobType"/>
+            </xsd:sequence>
+        </xsd:complexType>
+
+    <xsd:element name="Scheduler" type="tns:SchedulerType"/>
+	
+  </xsd:schema>
+</types>
+    
+<import location="../../ogsi/ogsi.gwsdl" namespace="http://www.gridforum.org/namespaces/2003/03/OGSI"/>   
+<import location="../../base/provider/service_data_provider_execution_port_type.gwsdl" namespace="http://www.globus.org/namespaces/2003/04/service_data_provider_execution"/>
+
+<portType name="ResourceInformationProviderServicePortType"><operation name="enumProviders">
+    <input message="ns36:ServiceDataProviderEnumInputMessage" xmlns:ns36="http://www.globus.org/namespaces/2003/04/service_data_provider_execution"/>
+    <output message="ns37:ServiceDataProviderEnumOutputMessage" xmlns:ns37="http://www.globus.org/namespaces/2003/04/service_data_provider_execution"/>
+  </operation><operation name="subscribe">
+    <input message="ns0:SubscribeInputMessage" xmlns:ns0="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns1:SubscribeOutputMessage" xmlns:ns1="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns2:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns2="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns3:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns3="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns4:TargetInvalidFaultMessage" name="TargetInvalidFault" xmlns:ns4="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns5:FaultMessage" name="Fault" xmlns:ns5="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="executeProvider">
+    <input message="ns35:ServiceDataProviderExecutionInputMessage" xmlns:ns35="http://www.globus.org/namespaces/2003/04/service_data_provider_execution"/>  
+  </operation><operation name="setServiceData">
+    <input message="ns12:SetServiceDataInputMessage" xmlns:ns12="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns13:SetServiceDataOutputMessage" xmlns:ns13="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns14:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns14="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+    <fault message="ns15:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns15="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+    <fault message="ns16:CardinalityViolationFaultMessage" name="CadinalityViolationFault" xmlns:ns16="http://www.gridforum.org/namespaces/2003/03/OGSI"/>  
+    <fault message="ns17:MutabilityViolationFaultMessage" name="MutabilityViolationFault" xmlns:ns17="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns18:ModifiabilityViolationFaultMessage" name="ModifabilityViolationFault" xmlns:ns18="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns19:TypeViolationFaultMessage" name="TypeViolationFault" xmlns:ns19="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns20:IncorrectValueFaultMessage" name="IncorrectValueFault" xmlns:ns20="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns21:PartialFailureFaultMessage" name="PartialFailureFault" xmlns:ns21="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns22:FaultMessage" name="Fault" xmlns:ns22="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="destroy">
+    <input message="ns31:DestroyInputMessage" xmlns:ns31="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns32:DestroyOutputMessage" xmlns:ns32="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns33:ServiceNotDestroyedFaultMessage" name="ServiceNotDestroyedFault" xmlns:ns33="http://www.gridforum.org/namespaces/2003/03/OGSI"/>      
+    <fault message="ns34:FaultMessage" name="Fault" xmlns:ns34="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="requestTerminationAfter">
+    <input message="ns23:RequestTerminationAfterInputMessage" xmlns:ns23="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns24:RequestTerminationAfterOutputMessage" xmlns:ns24="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns25:TerminationTimeUnchangedFaultMessage" name="TerminationTimeUnchangedFault" xmlns:ns25="http://www.gridforum.org/namespaces/2003/03/OGSI"/>    
+    <fault message="ns26:FaultMessage" name="Fault" xmlns:ns26="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="requestTerminationBefore">
+    <input message="ns27:RequestTerminationBeforeInputMessage" xmlns:ns27="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns28:RequestTerminationBeforeOutputMessage" xmlns:ns28="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns29:TerminationTimeUnchangedFaultMessage" name="TerminationTimeUnchangedFault" xmlns:ns29="http://www.gridforum.org/namespaces/2003/03/OGSI"/> 
+    <fault message="ns30:FaultMessage" name="Fault" xmlns:ns30="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation><operation name="findServiceData">
+    <input message="ns6:FindServiceDataInputMessage" xmlns:ns6="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <output message="ns7:FindServiceDataOutputMessage" xmlns:ns7="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns8:ExtensibilityNotSupportedFaultMessage" name="ExtensibilityNotSupportedFault" xmlns:ns8="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns9:ExtensibilityTypeFaultMessage" name="ExtensibilityTypeFault" xmlns:ns9="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns10:TargetInvalidFaultMessage" name="TargetInvalidFault" xmlns:ns10="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+    <fault message="ns11:FaultMessage" name="Fault" xmlns:ns11="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+  </operation></portType><gwsdl:portType extends="ogsi:NotificationSource                          provider:ServiceDataProviderExecutionPortType" name="ResourceInformationProviderServicePortType"/>
+	        
+</definitions>

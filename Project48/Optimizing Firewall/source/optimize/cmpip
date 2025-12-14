@@ -1,0 +1,53 @@
+#!/bin/bash
+#compare 2 ipaddress using ip and subnetmask
+#argument1, argument3 is ipaddress
+#argument2, argument4 is subnetmask
+addr1=$1
+mask1=$2
+addr2=$3
+mask2=$4
+#subnetmask is equal
+if [ $mask1 = $mask2 ]
+then
+	if [ $mask1 = 0 ]
+	then
+		frelation=exact
+	else
+		match=`./compare $addr1 $addr2 $mask1`
+		if [ $match = match ]
+		then
+			frelation=exact
+		else
+			frelation=disjoint
+		fi
+	fi
+#subnetmask1 less than subnetmask2 (use subnetmask1 to compare)
+elif [ $mask1 -lt $mask2 ]
+then
+	if [ $mask1 = 0 ]
+	then
+		frelation=subset
+	else
+		match=`./compare $addr1 $addr2 $mask1`
+		if [ $match = match ]
+		then
+			frelation=subset
+		else
+			frelation=disjoint
+		fi
+	fi
+#subnetmask1 greater than subnetmask2 (use subnetmask2 to compare)
+else
+	if [ $mask2 = 0 ]
+	then
+		frelation=superset
+	else
+		match=`./compare $addr1 $addr2 $mask2`
+		if [ $match = match ]
+		then
+			frelation=superset
+		else
+			frelation=disjoint
+		fi
+	fi
+fi

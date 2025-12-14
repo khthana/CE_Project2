@@ -1,0 +1,26 @@
+using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using System.Collections.Generic;
+
+public partial class WebRest_User_Create : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+    }
+    protected void ButtonCreate_Click(object sender, EventArgs e)
+    {
+        CS.Service1 app = new CS.Service1();
+        app = new CS.Service1();
+        app.applyGeneralUser(TextBoxgName.Text, TextBoxgAddress.Text, TextBoxgTelephone.Text, TextBoxgIdentitycard.Text, TextBoxgUsername.Text, TextBoxgPassword.Text);
+        Labelcreate.Text = "Success Register";
+    }
+}

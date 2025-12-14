@@ -1,0 +1,183 @@
+package gis_application;
+
+import java.awt.*;
+import javax.swing.*;
+import com.borland.jbcl.layout.XYLayout;
+import com.borland.jbcl.layout.*;
+import javax.swing.border.TitledBorder;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class frmData
+    extends JFrame {
+  String data[];
+  String column[];
+  String columnname[];
+  int currId;
+  int size;
+
+  JPanel contentPane;
+  XYLayout xYLayout1 = new XYLayout();
+  TitledBorder titledBorder1 = new TitledBorder("");
+  TitledBorder titledBorder2 = new TitledBorder("");
+  JLabel jLabel1 = new JLabel();
+  JTextField lblID = new JTextField();
+  JScrollPane jScrollPane1 = new JScrollPane();
+  TitledBorder titledBorder3 = new TitledBorder("");
+  JScrollPane jScrollPane2 = new JScrollPane();
+  TitledBorder titledBorder4 = new TitledBorder("");
+  JButton cmdApply = new JButton();
+  JLabel jLabel2 = new JLabel();
+  JButton cmdUpdate = new JButton();
+  JButton cmdInsert = new JButton();
+  JTextArea txtData = new JTextArea();
+  JList lstColumn = new JList();
+  TitledBorder titledBorder5 = new TitledBorder("");
+  TitledBorder titledBorder6 = new TitledBorder("");
+  TitledBorder titledBorder7 = new TitledBorder("");
+
+  public frmData() {
+    try {
+      //setDefaultCloseOperation(EXIT_ON_CLOSE);
+      jbInit();
+    }
+    catch (Exception exception) {
+      exception.printStackTrace();
+    }
+  }
+
+  /**
+   * Component initialization.
+   *
+   * @throws java.lang.Exception
+   */
+  private void jbInit() throws Exception {
+    contentPane = (JPanel) getContentPane();
+    contentPane.setLayout(xYLayout1);
+    setSize(new Dimension(400, 550));
+    setTitle("Frame Title");
+    contentPane.setBackground(Color.white);
+    contentPane.setBorder(titledBorder1);
+    contentPane.setOpaque(true);
+    jLabel1.setText("ID :");
+    lblID.setBackground(Color.white);
+    lblID.setEditable(false);
+    jScrollPane1.setBorder(titledBorder3);
+    jScrollPane2.setBorder(titledBorder4);
+    cmdApply.setBackground(Color.white);
+    cmdApply.setForeground(Color.blue);
+    cmdApply.setBorder(titledBorder5);
+    cmdApply.setText("Apply this data");
+    cmdApply.addActionListener(new frmData_cmdApply_actionAdapter(this));
+    jLabel2.setText("Data:");
+    cmdUpdate.setBackground(Color.white);
+    cmdUpdate.setForeground(SystemColor.activeCaption);
+    cmdUpdate.setBorder(titledBorder7);
+    cmdUpdate.setText("Update");
+    cmdInsert.setBackground(Color.white);
+    cmdInsert.setForeground(SystemColor.activeCaption);
+    cmdInsert.setBorder(titledBorder6);
+    cmdInsert.setText("Insert");
+    txtData.setBackground(new Color(255, 255, 247));
+    txtData.setText("data");
+    txtData.setLineWrap(true);
+    txtData.setWrapStyleWord(true);
+    lstColumn.setBackground(new Color(247, 255, 255));
+    lstColumn.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    lstColumn.addMouseListener(new frmData_lstColumn_mouseAdapter(this));
+    contentPane.add(jLabel1, new XYConstraints(7, 5, 43, 28));
+    contentPane.add(lblID, new XYConstraints(44, 9, 97, -1));
+    contentPane.add(jScrollPane2, new XYConstraints(7, 275, 370, 186));
+    jScrollPane2.getViewport().add(txtData);
+    contentPane.add(jLabel2, new XYConstraints(8, 258, 53, 14));
+    contentPane.add(cmdApply, new XYConstraints(7, 466, 369, 22));
+    contentPane.add(jScrollPane1, new XYConstraints(7, 44, 371, 210));
+    jScrollPane1.getViewport().add(lstColumn);
+    contentPane.add(cmdInsert, new XYConstraints(7, 494, 176, 23));
+    contentPane.add(cmdUpdate, new XYConstraints(209, 494, 166, 23));
+  }
+
+
+
+  public void callMeAsInsert(int id,String col[], String dat[]){
+    cmdApply.setVisible(true) ;
+    cmdUpdate.setVisible(false) ;
+    cmdInsert.setVisible(true) ;
+    txtData.setEditable(true);
+    callMe(id,col,dat);
+  }
+
+  public void callMeAsUpdate(int id,String col[], String dat[]){
+    cmdApply.setVisible(true) ;
+    cmdUpdate.setVisible(true) ;
+    cmdInsert.setVisible(false) ;
+    txtData.setEditable(true);
+    callMe(id,col,dat);
+  }
+
+  public void callMeAsView(int id,String col[], String dat[]){
+    cmdApply.setVisible(false) ;
+    cmdUpdate.setVisible(false) ;
+    cmdInsert.setVisible(false) ;
+    txtData.setEditable(false);
+    callMe(id,col,dat);
+  }
+
+  private void callMe(int id,String col[], String dat[]){
+    this.setVisible(true);
+    size = col.length;
+    column = new String[size];
+    columnname=new String[size];
+    data = new String[size];
+    currId=id;
+    for (int i=0; i<size; i++){
+      column[i]=col[i];
+      columnname[i]="["+column[i]+"]: " + dat[i];
+      data[i]=dat[i];
+    }
+    lstColumn.removeAll();
+    lstColumn.setListData(columnname);
+    lblID.setText(""+id);
+  }
+
+  public void lstColumn_mouseClicked(MouseEvent e) {
+    int index=lstColumn.getSelectedIndex();
+    columnname[index]="["+column[index]+"]: " + data[index];
+    lstColumn.removeAll();
+    lstColumn.setListData(columnname);
+
+    txtData.setText(data[index]);
+  }
+
+  public void cmdApply_actionPerformed(ActionEvent e) {
+    int index=lstColumn.getSelectedIndex();
+    data[index]=txtData.getText();
+  }
+
+}
+
+class frmData_cmdApply_actionAdapter
+    implements ActionListener {
+  private frmData adaptee;
+  frmData_cmdApply_actionAdapter(frmData adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdApply_actionPerformed(e);
+  }
+}
+
+class frmData_lstColumn_mouseAdapter
+    extends MouseAdapter {
+  private frmData adaptee;
+  frmData_lstColumn_mouseAdapter(frmData adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void mouseClicked(MouseEvent e) {
+    adaptee.lstColumn_mouseClicked(e);
+  }
+}

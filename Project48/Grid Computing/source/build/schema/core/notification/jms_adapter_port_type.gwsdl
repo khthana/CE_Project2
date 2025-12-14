@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="JMSAdapter"
+    targetNamespace="http://ogsa.globus.org/core/notification"
+    xmlns:tns="http://ogsa.globus.org/core/notification"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:ogsi="http://www.gridforum.org/namespaces/2003/03/OGSI"
+    xmlns:gwsdl="http://www.gridforum.org/namespaces/2003/03/gridWSDLExtensions"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+<import location="../../ogsi/ogsi.gwsdl" namespace="http://www.gridforum.org/namespaces/2003/03/OGSI"/>
+
+<types>
+  <xsd:schema targetNamespace="http://ogsa.globus.org/core/notification"
+              xmlns:tns="http://ogsa.globus.org/core/notification"
+              xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:complexType name="EmptyType"/>
+    
+    <xsd:element name="start">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element name="jmsTopicFactoryName" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>    
+    </xsd:element>
+    <xsd:element name="startResponse" type="tns:EmptyType"/>
+    
+    <xsd:element name="stop" type="tns:EmptyType"/>
+    <xsd:element name="stopResponse" type="tns:EmptyType"/>
+
+    <xsd:element name="jmsToOgsa">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element name="jmsTopicName" type="xsd:string"/>
+          <xsd:element name="ogsaTopicName" type="xsd:string"/>
+          <xsd:element name="jmsToOgsaConverterClassName" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>    
+    </xsd:element>
+    <xsd:element name="jmsToOgsaResponse" type="tns:EmptyType"/>
+
+    <xsd:element name="ogsaToJMS">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element name="ogsaSourceUrlString" type="xsd:string"/>
+          <xsd:element name="ogsaTopicName" type="xsd:string"/>
+          <xsd:element name="jmsTopicName" type="xsd:string"/>
+          <xsd:element name="ogssaToJMSConverterClassName" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>    
+    </xsd:element>
+    <xsd:element name="ogsaToJMSResponse" type="tns:EmptyType"/>
+        
+  </xsd:schema>
+</types>
+
+<message name="startInputMessage">
+  <part name="parameters" element="tns:start"/>
+</message>
+<message name="startOutputMessage">
+  <part name="parameters" element="tns:startResponse"/>
+</message>
+
+<message name="stopInputMessage">
+  <part name="parameters" element="tns:stop"/>
+</message>
+<message name="stopOutputMessage">
+  <part name="parameters" element="tns:stopResponse"/>
+</message>
+
+<message name="jmsToOgsaInputMessage">
+  <part name="parameters" element="tns:jmsToOgsa"/>
+</message>
+<message name="jmsToOgsaOutputMessage">
+  <part name="parameters" element="tns:jmsToOgsaResponse"/>
+</message>
+
+<message name="ogsaToJMSInputMessage">
+  <part name="parameters" element="tns:ogsaToJMS"/>
+</message>
+<message name="ogsaToJMSOutputMessage">
+  <part name="parameters" element="tns:ogsaToJMSResponse"/>
+</message>
+
+<gwsdl:portType name="JMSAdapterPortType" extends="ogsi:NotificationSource">
+  <operation name="start">
+    <input message="tns:startInputMessage"/>
+    <output message="tns:startOutputMessage"/>
+  </operation>
+  <operation name="stop">
+    <input message="tns:stopInputMessage"/>
+    <output message="tns:stopOutputMessage"/>
+  </operation>
+  <operation name="jmsToOgsa">
+    <input message="tns:jmsToOgsaInputMessage"/>
+    <output message="tns:jmsToOgsaOutputMessage"/>
+  </operation>
+  <operation name="ogsaToJMS">
+    <input message="tns:ogsaToJMSInputMessage"/>
+    <output message="tns:ogsaToJMSOutputMessage"/>
+  </operation>
+</gwsdl:portType>
+
+</definitions>

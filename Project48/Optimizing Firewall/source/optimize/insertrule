@@ -1,0 +1,85 @@
+#!/bin/bash
+#insert rule in firewall
+#argument1 is file (redirect firewall rule)
+#argument2 is rule number (in old firewall)
+#argument3 is rule number to insert (in new firewall)
+chain=`cat $1 | grep -n ' ' | grep -m 1 1: | cut -d':' -f2 | cut -d' ' -f2`
+#get rule infornation
+source getsrc $1 $2
+source getdst $1 $2
+source getprot $1 $2
+source gettarg $1 $2
+#insert rule 16 case
+if [ $sport = all ] && [ $dport = all ]
+then
+	if [ $srcmask = 0 ]  && [ $dstmask = 0 ]
+	then
+		/sbin/iptables -I $chain $3 -p $prot -j $targ
+	fi
+	if [ $srcmask = 0 ] && [ $dstmask != 0 ]
+	then
+		/sbin/iptables -I $chain $3 -d $dst -p $prot -j $targ
+	fi
+	if [ $srcmask != 0 ] && [ $dstmask = 0 ]
+	then
+		/sbin/iptables -I $chain $3 -s $src -p $prot -j $targ
+		fi
+	if [ $srcmask != 0 ] && [ $dstmask != 0 ]
+	then
+		/sbin/iptables -I $chain $3 -s $src -d $dst -p $prot -j $targ
+	fi
+elif [ $sport = all ] && [ $dport != all ]
+then
+	if [ $srcmask = 0 ]  && [ $dstmask = 0 ]
+	then
+		/sbin/iptables -I $chain $3 -p $prot --dport $dport -j $targ
+	fi
+	if [ $srcmask = 0 ] && [ $dstmask != 0 ]
+	then
+		/sbin/iptables -I $chain $3 -d $dst -p $prot --dport $dport -j $targ
+	fi
+	if [ $srcmask != 0 ] && [ $dstmask = 0 ]
+	then
+		/sbin/iptables -I $chain $3 -s $src -p $prot --dport $dport -j $targ
+	fi
+	if [ $srcmask != 0 ] && [ $dstmask != 0 ]
+	then
+		/sbin/iptables -I $chain $3 -s $src -d $dst -p $prot --dport $dport -j $targ
+	fi
+elif [ $sport != all ] && [ $dport = all ]
+then
+	if [ $srcmask = 0 ]  && [ $dstmask = 0 ]
+	then
+		/sbin/iptables -I $chain $3 -p $prot --sport $sport -j $targ
+	fi
+	if [ $srcmask = 0 ] && [ $dstmask != 0 ]
+	then
+		/sbin/iptables -I $chain $3 -d $dst -p $prot --sport $sport -j $targ
+	fi
+	if [ $srcmask != 0 ] && [ $dstmask = 0 ]
+	then
+		/sbin/iptables -I $chain $3 -s $src -p $prot --sport $sport -j $targ
+	fi
+	if [ $srcmask != 0 ] && [ $dstmask != 0 ]
+	then
+		/sbin/iptables -I $chain $3 -s $src -d $dst -p $prot --sport $sport -j $targ
+	fi
+elif [ $sport != all ] && [ $dport != all ]
+then
+	if [ $srcmask = 0 ]  && [ $dstmask = 0 ]
+	then
+		/sbin/iptables -I $chain $3 -p $prot --sport $sport --dport $dport -j $targ
+	fi
+	if [ $srcmask = 0 ] && [ $dstmask != 0 ]
+	then
+		/sbin/iptables -I $chain $3 -d $dst -p $prot --sport $sport --dport $dport -j $targ
+	fi
+	if [ $srcmask != 0 ] && [ $dstmask = 0 ]
+	then
+		/sbin/iptables -I $chain $3 -s $src -p $prot --sport $sport --dport $dport -j $targ
+	fi
+	if [ $srcmask != 0 ] && [ $dstmask != 0 ]
+	then
+		/sbin/iptables -I $chain $3 -s $src -d $dst -p $prot --sport $sport --dport $dport -j $targ
+	fi
+fi

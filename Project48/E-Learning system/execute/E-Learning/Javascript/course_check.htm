@@ -1,0 +1,76 @@
+<script language="javascript" type="text/JavaScript">
+function Check() {
+	var course_NO= document.getElementById("course_NO");
+	var subject_name = document.getElementById("subject_name");
+	var dayStart = document.getElementById("dayStart");
+	var monthStart = document.getElementById("monthStart");
+	var yearStart = document.getElementById("yearStart");
+	var mon = document.getElementById("mon");
+	var tue = document.getElementById("tue");
+	var wed = document.getElementById("wed");
+	var thu = document.getElementById("thu");
+	var fri = document.getElementById("fri");
+	var sat = document.getElementById("sat");
+	var sun = document.getElementById("sun");
+	var time = document.getElementById("time");
+	var dayLast = document.getElementById("dayLast");
+	var monthLast = document.getElementById("monthLast");
+	var yearLast = document.getElementById("yearLast");
+	var teacher_ID = document.getElementById("teacher_ID");
+	if (course_NO.value == ""){
+		alert("ไม่มีเลขที่ คอร์ส");
+		course_NO.focus();
+		return false;
+	}
+	 else if (subject_name.value == ""){
+		alert("ไม่มีชื่อ วิชา");
+		subject_name.focus();
+		return false;
+	}
+	else if (dayStart.selectedIndex == 0 || dayStart.selectedIndex == ""){
+		alert("กรุณาเลือก วันที่เริ่มเรียน");
+		dayStart.focus();
+		return false;
+	}
+	else if (monthStart.selectedIndex == 0 || monthStart.selectedIndex == ""){
+		alert("กรุณาเลือก เดือนที่เริ่มเรียน");
+		monthStart.focus();
+		return false;
+	}
+	else if (yearStart.selectedIndex == 0 || yearStart.selectedIndex == ""){
+		alert("กรุณาเลือก ปีที่เริ่มเรียน");
+		yearStart.focus();
+		return false;
+	}
+	else if (mon.checked == false && tue.checked == false && wed.checked == false && thu.checked == false && fri.checked == false && sat.checked == false && sun.checked == false){
+		alert("กรุณาเลือก วันเรียน");
+		 mon.focus();
+		return false;
+	}
+		 else if (time.value == "00.00-00.00"){
+		alert("กรุณากรอก เวลาเรียน");
+		time.focus();
+		return false;
+	}
+	else if (dayLast.selectedIndex == 0 || dayLast.selectedIndex == ""){
+		alert("กรุณาเลือก วันสุดท้ายที่เรียน");
+		dayLast.focus();
+		return false;
+	}
+	else if (monthLast.selectedIndex == 0 || monthLast.selectedIndex == ""){
+		alert("กรุณาเลือก เดือนสุดท้ายที่เรียน");
+		monthLast.focus();
+		return false;
+	}
+	else if (yearLast.selectedIndex == 0 || yearLast.selectedIndex == ""){
+		alert("กรุณาเลือก ปีสุดท้ายที่เรียน");
+		yearLast.focus();
+		return false;
+	}
+	else if (teacher_ID.selectedIndex == 0 || teacher_ID.selectedIndex == ""){
+		alert("กรุณาเลือก อาจารย์ผู้สอน");
+		teacher_ID.focus();
+		return false;
+		}
+}
+</script>

@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://WS" xmlns:impl="http://WS" xmlns:intf="http://WS" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://WS" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://WS" xmlns:intf="http://WS" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <element name="getCourseAll">
+    <complexType>
+     <sequence/>
+    </complexType>
+   </element>
+   <element name="getCourseAllResponse">
+    <complexType>
+     <sequence>
+      <element name="getCourseAllReturn" nillable="true" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="buyClass">
+    <complexType>
+     <sequence>
+      <element name="ClassID" type="xsd:int"/>
+      <element name="Email" nillable="true" type="xsd:string"/>
+      <element name="ReceiveID" nillable="true" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="buyClassResponse">
+    <complexType>
+     <sequence>
+      <element name="buyClassReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="reservation">
+    <complexType>
+     <sequence>
+      <element name="ClassID" type="xsd:int"/>
+      <element name="Email" nillable="true" type="xsd:string"/>
+      <element name="Name" nillable="true" type="xsd:string"/>
+      <element name="Surname" nillable="true" type="xsd:string"/>
+      <element name="PhoneNo" nillable="true" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="reservationResponse">
+    <complexType>
+     <sequence>
+      <element name="reservationReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getCourse">
+    <complexType>
+     <sequence>
+      <element name="Subject" nillable="true" type="xsd:string"/>
+      <element name="Period" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getCourseResponse">
+    <complexType>
+     <sequence>
+      <element name="getCourseReturn" nillable="true" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getCourseFromEmail">
+    <complexType>
+     <sequence>
+      <element name="Email" nillable="true" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getCourseFromEmailResponse">
+    <complexType>
+     <sequence>
+      <element name="getCourseFromEmailReturn" nillable="true" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cancel">
+    <complexType>
+     <sequence>
+      <element name="ClassID" type="xsd:int"/>
+      <element name="Email" nillable="true" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cancelResponse">
+    <complexType>
+     <sequence>
+      <element name="cancelReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="getCourseFromEmailRequest">
+
+      <wsdl:part element="intf:getCourseFromEmail" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="buyClassResponse">
+
+      <wsdl:part element="intf:buyClassResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getCourseFromEmailResponse">
+
+      <wsdl:part element="intf:getCourseFromEmailResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getCourseAllResponse">
+
+      <wsdl:part element="intf:getCourseAllResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getCourseAllRequest">
+
+      <wsdl:part element="intf:getCourseAll" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cancelRequest">
+
+      <wsdl:part element="intf:cancel" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="reservationRequest">
+
+      <wsdl:part element="intf:reservation" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getCourseRequest">
+
+      <wsdl:part element="intf:getCourse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getCourseResponse">
+
+      <wsdl:part element="intf:getCourseResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="buyClassRequest">
+
+      <wsdl:part element="intf:buyClass" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="reservationResponse">
+
+      <wsdl:part element="intf:reservationResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cancelResponse">
+
+      <wsdl:part element="intf:cancelResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="ApplyPhysic">
+
+      <wsdl:operation name="getCourseAll">
+
+         <wsdl:input message="intf:getCourseAllRequest" name="getCourseAllRequest"/>
+
+         <wsdl:output message="intf:getCourseAllResponse" name="getCourseAllResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="buyClass">
+
+         <wsdl:input message="intf:buyClassRequest" name="buyClassRequest"/>
+
+         <wsdl:output message="intf:buyClassResponse" name="buyClassResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="reservation">
+
+         <wsdl:input message="intf:reservationRequest" name="reservationRequest"/>
+
+         <wsdl:output message="intf:reservationResponse" name="reservationResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getCourse">
+
+         <wsdl:input message="intf:getCourseRequest" name="getCourseRequest"/>
+
+         <wsdl:output message="intf:getCourseResponse" name="getCourseResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getCourseFromEmail">
+
+         <wsdl:input message="intf:getCourseFromEmailRequest" name="getCourseFromEmailRequest"/>
+
+         <wsdl:output message="intf:getCourseFromEmailResponse" name="getCourseFromEmailResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cancel">
+
+         <wsdl:input message="intf:cancelRequest" name="cancelRequest"/>
+
+         <wsdl:output message="intf:cancelResponse" name="cancelResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="ApplyPhysicSoapBinding" type="intf:ApplyPhysic">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="getCourseAll">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getCourseAllRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getCourseAllResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="buyClass">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="buyClassRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="buyClassResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="reservation">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="reservationRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="reservationResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getCourse">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getCourseRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getCourseResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getCourseFromEmail">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getCourseFromEmailRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getCourseFromEmailResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cancel">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cancelRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cancelResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="ApplyPhysicService">
+
+      <wsdl:port binding="intf:ApplyPhysicSoapBinding" name="ApplyPhysic">
+
+         <wsdlsoap:address location="http://localhost:9080/ApplyPhysic/services/ApplyPhysic"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

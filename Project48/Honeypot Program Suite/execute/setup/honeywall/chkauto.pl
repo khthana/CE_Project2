@@ -1,0 +1,521 @@
+#!/usr/bin/perl
+
+use DBI;
+use Term::ReadKey;
+#=====================[define_variable]====================
+$check_user = 0;
+$check_group = 0;
+$check_owner = 0;
+$check_pass = 0;
+$check_mode = 0;
+$pass_old = `cat /root/shadow_old | grep root |cut -d \':\' -f 2`;
+chop($pass_old);
+#print("pass_old = ",$pass_old,"\n");
+
+#=====================[define_DMZ]=====================
+$ip_webserver = '172.16.144.129';
+$ip_ftpserver = '172.16.144.130';
+$host_name = 'darly';
+
+#=====================[define_snort]=====================
+$host_snort = 'logserver';
+$db_snort = 'snort';
+$table_snort = 'acid_event';
+$user_snort = 'snort';
+$password_snort = 'honeypot';
+
+#=====================[define_samhain]=====================
+$host_samhain = 'logserver';
+$db_samhain = 'samhain';
+$table_samhain = 'log';
+$user_samhain = 'samhain';
+$password_samhain = 'honeypot';
+
+#=====================[define_cage]=======================
+$host_cage = 'logserver';
+$db_cage = 'cage';
+$table_cage = 'information';
+$user_cage = 'cage';
+$password_cage = 'honeypot';
+
+#====================[define_s2i]=======================
+$ipsrc;
+$ipdst;
+$ipcage;
+$dbh1;
+$qip_dst;
+$upcage;
+$iptble=1;
+
+#====================[do job check Integrity]========================
+open_dbi_snort();
+query_ipsrc();
+$row = query_match($ipsrc,$ipdst);
+close_dbi_snort();
+open_dbi_cage();
+read_config();
+open_dbi_samhain();
+query_dbi_samhain();
+query_dbi_cage();
+check_cage();
+
+if ($ipdst eq $ip_webserver)
+{
+	if ($row eq 1)
+	#if (($row  1) && ($row lt 3))
+	{
+		$chostname = 'www';
+		$addrule = 1;
+		query_ipdst($chostname);
+		update_cage($ipcage);
+		addiptablesCMD($ipsrc,$ipcage);
+	}
+}
+
+if ($ipdst eq $ip_ftpserver)
+{
+	if ($row eq 1)
+	{
+		$chostname = 'ftp';
+		$addrule = 1;
+		query_ipdst($chostname);
+		update_cage($ipcage);		
+		addiptablesCMD($ipsrc,$ipcage);
+	}
+}
+
+close_dbi_samhain();
+close_dbi_cage();
+
+#==================[End Main Function]=======================
+
+#=====================[read_config_file]=======================
+
+sub read_config
+{
+	if(open(file, "/root/cage.conf"))
+	{	
+	#read line from file
+		my $line = <file>;
+		my $count = 0;
+		#read line until end of file
+		while($count lt 6)
+		{
+			$count++;
+			chop($line);
+			@word = split(/=/,$line);
+			if($count eq 1)
+			{
+				$name = $word[1];
+			}
+			if($count eq 2)
+			{
+				$user_limit = $word[1];
+				if($user_limit ne 24)
+				{	
+					$check_user = 1 ;
+				}
+			}
+			if($count eq 3)
+			{
+				$group_limit = $word[1];
+				if($group_limit ne 0)
+				{	
+					$check_owner = 1 ;
+				}
+			}
+			if($count eq 4)
+			{
+				$owner = $word[1];
+				if($owner ne "")
+				{	
+					$check_owner = 1 ;
+				}
+			}
+			if($count eq 5)
+			{
+				if($word[1] eq "Yes")
+				{
+					$check_pass = 1;
+				}
+			}
+			if($count eq 6)
+			{
+				$mode = $word[1];
+				if($mode ne "")
+				{	
+					$check_mode = 1 ;
+				}
+			}		
+			$line = <file>;
+		}
+	}
+	else
+	{
+		print("cannot open file\n");
+	}
+}
+
+#=====================[open_dbi_samhain]=======================
+sub open_dbi_samhain
+{
+	$dbh_samhain = DBI->connect("dbi:mysql:$db_samhain:$host_samhain","$user_samhain","$password_samhain") or err_trap("Cannot connect to database");
+	$drh_samhain = DBI->install_driver("mysql");
+	@databases_samhain = DBI->data_sources("mysql");
+	#print("open samhain OK\n");
+}
+#=====================[query_dbi_samhain]======================
+sub query_dbi_samhain
+{
+	$sth_samhain = $dbh_samhain->prepare("select * from $table_samhain where path like \'/etc/passwd%'");
+	if(!$sth_samhain) 
+	{
+		die "Error:" . $dbh_samhain->errstr . "\n"
+	}	
+	if(!$sth_samhain->execute) 
+	{
+		die "Error:" . $sth_samhain->errstr . "\n";
+	}
+	#print("query samhain OK\n");
+}
+
+
+#=======================[open_dbi_cage]=======================
+sub open_dbi_cage
+{
+	$dbh_cage = DBI->connect("dbi:mysql:$db_cage:$host_cage","$user_cage","$password_cage") or err_trap("Cannot connect to database");
+	$drh_cage = DBI->install_driver("mysql");
+	@databases_cage = DBI->data_sources("mysql");
+	#print("open cage OK\n");
+}
+#=======================[query_dbi_cage]=====================
+sub query_dbi_cage
+{
+	$sth_cage = $dbh_cage->prepare("select * from $table_cage where cname = \'$name\' ");
+	if(!$sth_cage) 
+	{
+		die "Error:" . $dbh_cage->errstr . "\n"
+	}
+	if(!$sth_cage->execute) 
+	{
+		die "Error:" . $sth_cage->errstr . "\n";
+	}
+	print("dbi_cage\n");
+	$ref_cage = $sth_cage->fetchrow_hashref;
+	$path = $ref_cage->{'cpath'}.'/cage/';
+	$ip = $ref_cage->{'cip'};
+	my $cname = $ref_cage->{'cname'};
+	$cmd = '/usr/bin/ssh root@'.$cname.' cat /etc/shadow | grep root | cut -d \':\' -f 2';
+	$pass_new = `$cmd`;
+	chop($pass_new);
+	#print($pass_new,"\n");
+	$cmd2 = '/usr/bin/ssh root@'.$cname.' cat /etc/passwd | wc -l';
+	$user_current = `$cmd2`;
+	chop($user_current);
+	$cmd3 = '/usr/bin/ssh root@'.$cname.' cat /etc/group | grep root | cut -d \':\' -f 4';
+	$group_current = `$cmd3`;
+	#print("cmd3 = ",$cmd3,"\n");
+}
+#=====================[close_dbi_samhain]======================
+sub close_dbi_samhain
+{
+	$sth_samhain->finish;
+	$dbh_samhain->disconnect or err_trap("Cannot disconnect from the database");
+}
+
+#=====================[close_dbi_cage]======================
+sub close_dbi_cage
+{
+	$sth_cage->finish;
+	$dbh_cage->disconnect or err_trap("Cannot disconnect from the database");
+}
+
+#=====================[close_dbi_snort]======================
+sub close_dbi_snort
+{
+ 	$sth_snort->finish;
+	$dbh_snort->disconnect or err_trap("Cannot disconnect from the database");
+ 
+}#end: close_dbi 
+#=====================[check_cage]==================
+sub check_cage
+{
+	print("check_cage.......\n");
+	if($check_user)
+	{
+		if($user_current > $user_limit)
+ 		{
+			print("check_user........\n");
+			query_new_cage();
+			my $cmd_start = 'ssh root@'.$host_name.' vmware-cmd -q '.$path_chg.$name_chg.'/'.$name_chg.'.vmx start&';
+			print("start new cage = ",$cmd_start,"\n");
+			`$cmd_start`;
+			addiptablesCMD($ipsrc,$ipcage_chg);
+ 			my $cmd_suspend = 'ssh root@'.$host_name.' vmware-cmd -q '.$path.$name.'/'.$name.'.vmx suspend hard &';
+			print("cmd_suspend = ",$cmd_suspend,"\n");
+  			`$cmd_suspend`;
+			update_cage_suspend($name);
+		}
+	}
+	elsif($check_pass)
+	{
+		if($pass_old ne $pass_new)
+ 		{
+			print("check_pass........\n");
+			query_new_cage();
+			my $cmd_start = 'ssh root@'.$host_name.' vmware-cmd -q '.$path_chg.$name_chg.'/'.$name_chg.'.vmx start&';
+			print("start new cage = ",$cmd_start,"\n");
+			`$cmd_start`;
+			addiptablesCMD($ipsrc,$ipcage_chg);
+			$get_pass = 'scp root@'.$name_chg.':/etc/shadow'.' '.'/root/shadow_old';
+			print ($get_pass,"\n");
+			`$get_pass`;
+			$get_conf = 'scp root@'.$host_name.':'.$path_chg.$name_chg.'/'.'cage.conf /root';
+			print ($get_conf,"\n");
+			`$get_conf`;
+ 			my $cmd_suspend = 'ssh root@'.$host_name.' vmware-cmd -q '.$path.$name.'/'.$name.'.vmx suspend hard &';
+			print("cmd_suspend = ",$cmd_suspend,"\n");
+  			`$cmd_suspend`;
+			update_cage_suspend($name);
+		}
+	}
+	elsif($check_group)
+	{
+		
+		print("chk_group\n");
+	}
+	elsif($check_owner or $check_mode)
+	{
+		print("chk_own\n");
+		samhain_check();
+	}
+#	print("check_cage OK\n");
+}
+#=====================[pattern_match]==================
+sub samhain_check
+{	
+	$stop = 1;
+	while(($ref_samhain = $sth_samhain->fetchrow_hashref) and $stop)
+	{
+# 		$ref_samhain = $sth_samhain->fetchrow_hashref;
+		if($check_owner)
+		{	
+			print("check owner\n");
+  			if($ref_samhain->{'owner_new'} ne $ref_samhain->{'owner_old'})
+ 			{
+				$sth_samhain2 = $dbh_samhain->prepare("update $table_samhain set flag = 1 where log_host = \'$hostname\'");
+				if(!$sth_samhain2)
+				{
+					die "Error:" . $dbh_samhain->errstr . "\n"
+				}	
+				if(!$sth_samhain2->execute()) 
+				{
+					die "Error:" . $sth_samhain2->errstr . "\n";
+				}
+				$sth_samhain2->finish;
+
+				query_new_cage();
+				my $cmd_start = 'ssh root@'.$host_name.' vmware-cmd -q '.$path_chg.$name_chg.'/'.$name_chg.'.vmx start&';
+				print("start new cage = ",$cmd_start,"\n");
+				`$cmd_start`;
+				addiptablesCMD($ipsrc,$ipcage_chg);
+ 				my $cmd = 'ssh root@'.$host_name.' vmware-cmd -q '.$path.$name.'/'.$name.'.vmx suspend hard &';
+  				`$cmd`;
+			        update_cage_suspend($name);
+				
+				#$sth_cage2 = $dbh_cage->prepare("select cname, cpath from $table_cage where chostname = \'$hostname\'");
+				#if(!$sth_cage) 
+				#{
+				#	die "Error:" . $dbh_cage->errstr . "\n"
+				#}
+				#if(!$sth_cage->execute()) 
+				#{
+				#	die "Error:" . $sth_cage->errstr . "\n";
+				#}
+				$stop = 0;
+			}	
+		}
+		if($check_mode)
+		{
+			if($ref_samhain->{'mode_old'} ne "" or $ref_samhain->{'mode_new'} ne "")
+			{
+				if($ref_samhain->{'mode_old'} ne $ref_samhain->{'mode_new'})
+				{	
+					$sth_samhain3 = $dbh_samhain->prepare("update $table_samhain set flag = 1 where log_host = \'$hostname\'");
+					if(!$sth_samhain3)
+					{
+						die "Error:" . $dbh_samhain->errstr . "\n"
+					}	
+					if(!$sth_samhain3->execute()) 
+					{
+						die "Error:" . $sth_samhain2->errstr . "\n";
+					}
+					$sth_samhain3->finish;
+					
+					query_new_cage();
+					my $cmd_start = 'ssh root@'.$host_name.' vmware-cmd -q '.$path_chg.$name_chg.'/'.$name_chg.'.vmx start&';
+					print("start new cage = ",$cmd_start,"\n");
+					`$cmd_start`;
+					addiptablesCMD($ipsrc,$ipcage_chg);
+					my $cmd = 'ssh root@'.$host_name.' vmware-cmd -q '.$path.$name.'/'.$name.'.vmx suspend hard &';
+#	  				`$cmd`;
+					update_cage_suspend($name);
+ 					$stop = 0;
+				}
+			}
+		}
+	}
+}
+
+
+#=====================[err_trap]=======================
+sub err_trap
+{
+ 	my $error_message = shift(@_);
+ 
+ 	die "$error_message\nERROR: $DBI::err ($DBI::errstr)\n";
+}#end: err_trap
+
+sub open_dbi_snort
+{
+ 	$dbh_snort = DBI->connect("dbi:mysql:$db_snort:$host_snort","$user_snort","$password_snort") or err_trap("Cannot connect to database");
+ 	$drh = DBI->install_driver("mysql");
+ 	@databases = DBI->data_sources("mysql");
+ 	#print("open snort OK\n");
+}#end: open_dbi_snort
+
+
+#################### Query DB #####################
+sub query_ipsrc
+{
+	$table = 'acid_event';
+ 	$sth_snort = $dbh_snort->prepare("select inet_ntoa(ip_src) AS ip_src,inet_ntoa(ip_dst) AS ip_dst, timestamp from $table where sig_priority = '1' order by 'timestamp' DESC limit 0,1");
+
+ 	if(!$sth_snort) {
+		die "Error:" . $dbh_snort->errstr . "\n"
+ 	}
+	if(!$sth_snort->execute) {
+		die "Error:" . $sth_snort->errstr . "\n";
+ 	}
+	my $ref = $sth_snort->fetchrow_hashref;
+	$ipsrc=$ref->{'ip_src'};
+	$ipdst=$ref->{'ip_dst'};
+		 
+}
+
+sub query_match
+{
+	$src = shift(@_);
+	$dst = shift(@_);
+	printf("ipsrc = %s\n",$src);
+	printf("ipdst = %s\n",$dst);
+	$sth_snort_match = $dbh_snort->prepare("select distinct inet_ntoa(ip_src), inet_ntoa(ip_dst),timestamp from $table where inet_ntoa(ip_src)= \"$src\" and inet_ntoa(ip_dst) = \"$dst\" and sig_priority = '1' order by 'timestamp' DESC");
+	$sth_snort_match->execute();
+	$count = $sth_snort_match->rows();
+	print "row = $count\n";
+ 	if(!$sth_snort_match) {
+		die "Error:" . $dbh_snort->errstr . "\n"
+ 	}
+	if(!$sth_snort_match->execute) {
+		die "Error:" . $sth_snort_match->errstr . "\n";
+ 	}
+	$sth_snort_match->finish;
+	return $count;
+}
+
+sub query_ipdst
+{
+	my $host = shift(@_);
+	my $table = 'information';
+ 	my $sth_ipdst = $dbh_cage->prepare("select cip from $table where chostname = \'$host\' and cstate = 'stop' ");
+
+	if(!$sth_ipdst) {
+		die "Error:" . $dbh_cage->errstr . "\n"
+	}
+	if(!$sth_ipdst->execute) {
+		die "Error:" . $sth_ipdst->errstr . "\n";
+	}
+ 	my $ref = $sth_ipdst->fetchrow_hashref;
+	$ipcage=$ref->{'cip'};
+	$sth_ipdst->finish;
+}
+
+
+sub update_cage 
+{
+	my $ip_cage = shift(@_);
+	my $table = 'information';
+ 	my $sth_update = $dbh_cage->prepare("update `$table` set cstate = 'start' where cip = '$ip_cage' ");
+
+	if(!$sth_update) {
+		die "Error:" . $dbh_cage->errstr . "\n"
+	}
+	if(!$sth_update->execute) {
+		die "Error:" . $sth_update->errstr . "\n";
+	}
+ 	$sth_update->finish;
+}
+
+sub update_cage_suspend
+{
+	my $name_cage = shift(@_);
+	my $table = 'information';
+ 	my $sth_update = $dbh_cage->prepare("update `$table` set cstate = 'suspend' where cname = '$name_cage' ");
+
+	if(!$sth_update) {
+		die "Error:" . $dbh_cage->errstr . "\n"
+	}
+	if(!$sth_update->execute) {
+		die "Error:" . $sth_update->errstr . "\n";
+	}
+ 	$sth_update->finish;
+}
+
+##################### End Query #######################
+
+sub addiptablesCMD
+{
+	my $src = shift(@_);
+	my $dst = shift(@_);
+	
+	if ($chg_ip eq 1)
+	{
+	  if ($chg_ip_fin ne 0) 
+	  {
+		`iptables -F -t nat`;
+		print("iptables -F -t nat\n");
+		`iptables-restore < /root/iptable.rule`;
+		`iptables -t nat -A PREROUTING -s $src/32 -i eth0  -j DNAT --to-destination $dst`; 
+		printf("NEW!! iptables -t nat -A PREROUTING -s %s/32 -i eth0 -j DNAT --to-destination %s\n",$src,$dst); 
+		$chg_ip_fin = 0;
+	  }
+ 	}
+	
+	elsif ($addrule eq 1)
+	{
+	#Add iptables rule
+	`iptables -t nat -A PREROUTING -s $src/32 -i eth0 -j DNAT --to-destination $dst`; 
+	printf("iptables -t nat -A PREROUTING -s %s/32 -i eth0 -j DNAT --to-destination %s\n",$src,$dst); 
+	}
+}
+
+sub query_new_cage
+{
+	my $sth_new_cage = $dbh_cage->prepare("select * from information where chostname = 'ftp' and cstate = 'stop'");
+	if(!$sth_new_cage) 
+	{
+		die "Error:" . $dbh_cage->errstr . "\n"
+	}
+	if(!$sth_new_cage->execute) 
+	{
+		die "Error:" . $sth_new_cage->errstr . "\n";
+	}
+
+	my $ref_cage = $sth_new_cage->fetchrow_hashref;
+	$name_chg = $ref_cage->{'cname'};
+	$path_chg = $ref_cage->{'cpath'}.'/cage/';
+	$ipcage_chg = $ref_cage->{'cip'};
+	$chg_ip = 1;
+	update_cage($ipcage_chg);
+	#printf("name_chg = %s,path_chg = %s,ipcage_chg = %s\n",$name_chg,$path_chg,$ipcage_chg);
+}

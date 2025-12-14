@@ -1,0 +1,122 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1A898C20-A947-421A-B419-B291AB3140D0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>W</RootNamespace>
+    <AssemblyName>W</AssemblyName>
+    <ApplicationIcon>W.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Tester\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\..\..\..\..\Inetpub\wwwroot\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>false</RegisterForComInterop>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DrawAble.cs" />
+    <Compile Include="Enum.cs" />
+    <Compile Include="FloatMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FloatMenu.Designer.cs">
+      <DependentUpon>FloatMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Imager.cs" />
+    <Compile Include="Network\Frame.cs" />
+    <Compile Include="IDrawSetting.cs" />
+    <Compile Include="IMenu.cs" />
+    <Compile Include="IPlugin.cs" />
+    <Compile Include="Network\INetwork.cs" />
+    <Compile Include="Network\Network.cs" />
+    <Compile Include="Setting\Setting.cs" />
+    <Compile Include="Shape\Circle.cs" />
+    <Compile Include="Shape\Image.cs" />
+    <Compile Include="Shape\Rubber.cs" />
+    <Compile Include="Shape\Text.cs" />
+    <Compile Include="Shape\Line.cs" />
+    <Compile Include="Shape\Point.cs" />
+    <Compile Include="Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Setting\ObjectFormSetting.cs" />
+    <Compile Include="Shape\Polygon.cs" />
+    <Compile Include="Shape\Rectangle.cs" />
+    <Compile Include="User\HostUser.cs" />
+    <Compile Include="User\RemoteUser.cs" />
+    <Compile Include="User\User.cs" />
+    <Compile Include="W.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="W.Designer.cs">
+      <DependentUpon>W.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WPlugins.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FloatMenu.resx">
+      <DependentUpon>FloatMenu.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="W.resx">
+      <DependentUpon>W.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\W.ico" />
+    <None Include="Resources\Circle_.tif" />
+    <None Include="Resources\Circle_x.tif" />
+    <None Include="Resources\Font_.tif" />
+    <None Include="Resources\Font_x.tif" />
+    <None Include="Resources\Line_x.tif" />
+    <None Include="Resources\Point_.tif" />
+    <None Include="Resources\Polygon_.tif" />
+    <None Include="Resources\Polygon_x.tif" />
+    <None Include="Resources\Rect_.tif" />
+    <None Include="Resources\Rect_x.tif" />
+    <None Include="Resources\Rubber_.tif" />
+    <None Include="Resources\Rubber_x.tif" />
+    <None Include="Resources\Line_.tif" />
+    <None Include="Resources\Point_x.tif" />
+    <None Include="Resources\Image_.tif" />
+    <None Include="Resources\Image_x.tif" />
+    <None Include="Resources\Whiteboard.JPG" />
+    <Content Include="W.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

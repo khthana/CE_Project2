@@ -1,0 +1,17 @@
+chdir("/root") or die "error chdir /root: $!";
+mkdir("./isagmq") or die "error mkdir /IsagMQ: $!";
+chdir("./isagmq") or die "error chdir /IsagMQ: $!";
+#mkdir("./exampleca,0770") or die "error mkdir /exampleca: $!";
+#chdir("./exampleca") or die "error chdir /exampleca: $!";
+#mkdir("./certs") or die "error mkdir /certs: $!";
+ use IO::File;
+$fh = IO::File->new("serial.txt","w") or die " $!\n";
+print $fh "01";
+$fh->close();
+$fh2 = IO::File->new("index.txt","w") or die " $!\n";
+$fh2->close();
+system("cp /root/IsagMQsetup/openssl.cnf /root/isagmq/openssl.cnf");
+#system("setenv OPENSSL_CONF /root/isagmq/openssl.cnf");
+system("openssl req -x509 -config /root/isagmq/openssl.cnf -newkey rsa -out rootcert.pem -outform PEM");
+print "create CRL\n";
+system("openssl ca -gencrl -out example.crl");

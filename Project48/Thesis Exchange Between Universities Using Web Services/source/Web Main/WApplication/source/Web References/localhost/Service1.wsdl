@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://tempuri.org/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://tempuri.org/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:import namespace="http://www.w3.org/2001/XMLSchema" />
+      <s:element name="data">
+        <s:complexType />
+      </s:element>
+      <s:element name="dataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="dataResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WithOneString">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="X1" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WithOneStringResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WithOneStringResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Mname">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="aa" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MnameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MnameResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="test">
+        <s:complexType />
+      </s:element>
+      <s:element name="testResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="testResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </types>
+  <message name="dataSoapIn">
+    <part name="parameters" element="s0:data" />
+  </message>
+  <message name="dataSoapOut">
+    <part name="parameters" element="s0:dataResponse" />
+  </message>
+  <message name="WithOneStringSoapIn">
+    <part name="parameters" element="s0:WithOneString" />
+  </message>
+  <message name="WithOneStringSoapOut">
+    <part name="parameters" element="s0:WithOneStringResponse" />
+  </message>
+  <message name="MnameSoapIn">
+    <part name="parameters" element="s0:Mname" />
+  </message>
+  <message name="MnameSoapOut">
+    <part name="parameters" element="s0:MnameResponse" />
+  </message>
+  <message name="testSoapIn">
+    <part name="parameters" element="s0:test" />
+  </message>
+  <message name="testSoapOut">
+    <part name="parameters" element="s0:testResponse" />
+  </message>
+  <portType name="Service1Soap">
+    <operation name="data">
+      <input message="s0:dataSoapIn" />
+      <output message="s0:dataSoapOut" />
+    </operation>
+    <operation name="data">
+      <input name="WithOneString" message="s0:WithOneStringSoapIn" />
+      <output name="WithOneString" message="s0:WithOneStringSoapOut" />
+    </operation>
+    <operation name="Mname">
+      <input message="s0:MnameSoapIn" />
+      <output message="s0:MnameSoapOut" />
+    </operation>
+    <operation name="test">
+      <input message="s0:testSoapIn" />
+      <output message="s0:testSoapOut" />
+    </operation>
+  </portType>
+  <binding name="Service1Soap" type="s0:Service1Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <operation name="data">
+      <soap:operation soapAction="http://tempuri.org/data" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="data">
+      <soap:operation soapAction="http://tempuri.org/WithOneString" style="document" />
+      <input name="WithOneString">
+        <soap:body use="literal" />
+      </input>
+      <output name="WithOneString">
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="Mname">
+      <soap:operation soapAction="http://tempuri.org/Mname" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="test">
+      <soap:operation soapAction="http://tempuri.org/test" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="Service1">
+    <port name="Service1Soap" binding="s0:Service1Soap">
+      <soap:address location="http://localhost/WService/Service1.asmx" />
+    </port>
+  </service>
+</definitions>

@@ -1,0 +1,135 @@
+#!/bin/bash
+#reorder rule in chain (order by traffic)
+#argument is chain
+/sbin/iptables -L $1 -n > temp
+source rulecount `cat traffic`
+max=`expr $max + 2`
+sort -n traffic > traffic1
+ruleinsert=$max
+/sbin/service iptables stop
+#check anomaly and reorder rule in chain (order by traffic)
+while [ $ruleinsert -gt 0 ]
+do
+	#get rule information from rule before reorder (order by traffic)
+	num=`cat traffic1 | grep -n . | grep -m 1 $ruleinsert: | cut -d'.' -f2`
+	source getprot temp $num
+	prot1=$prot
+	sport1=$sport
+	dport1=$dport
+	source getsrc temp $num
+	srcaddr1=$srcaddr
+	srcmask1=$srcmask
+	source getdst temp $num
+	dstaddr1=$dstaddr
+	dstmask1=$dstmask
+	source gettarg temp $num
+	targ1=$targ
+	/sbin/iptables -L $1 -n  > temp1
+	flag=0
+	source rulecount `cat temp1 | cut -d' ' -f1`
+	count=1
+	#check anomaly of rule in old chain and new chain
+	while [ $flag = 0 ]
+	do
+		if [ $max = 0 ]
+		then
+			flag=1
+		else
+			relation=undetermined
+			#get information from new chain rule
+			#get each field and check relation of rule
+			source getprot temp1 $count
+			prot2=$prot
+			sport2=$sport
+			dport2=$dport
+			source cmpprot
+			source chkrelation
+			source cmpport $sport1 $sport2
+			source chkrelation
+			source cmpport $dport1 $dport2
+			source chkrelation
+			source getsrc temp1 $count
+			srcaddr2=$srcaddr
+			srcmask2=$srcmask
+			source cmpip $srcaddr1 $srcmask1 $srcaddr2 $srcmask2
+			source chkrelation
+			source getdst temp1 $count
+			dstaddr2=$dstaddr
+			dstmask2=$dstmask
+			source cmpip $dstaddr1 $dstmask1 $dstaddr2 $dstmask2
+			source chkrelation
+			source gettarg temp1 $count
+			targ2=$targ
+			#check anomaly of rule
+			source chkanomaly
+			#case anomaly is noanomaly
+			if [ $anomaly = NOANOMALY ]
+			then
+				if [ $count = $max ]
+				then 
+					flag=1
+				else
+					count=`expr $count + 1`
+				fi
+			#case anomaly is correlation
+			elif [ $anomaly = CORRELATION ]
+			then
+				#case target function is drop (anomaly is correlation)
+				if [ $targ1 = DROP ]
+				then
+					flag=2
+				#another case (anomaly is correlation)
+				else
+					count=`expr $count + 1`
+				fi
+			#case anomaly is shadowing
+			elif [ $anomaly = SHADOWING ]
+			then
+				#case relation is exact (anomaly is shadowing)
+				#target function is drop or log (anomaly is shadowing)
+				if ( [ $relation = exact ] && [ $targ1 = DROP ] ) || ( [ $relation = exact ] && [ $targ1 = LOG ] )
+				then
+					flag=2
+				#another case (anomaly is shadowing)
+				else
+					count=`expr $count + 1`
+				fi
+			#case anomaly is generalization
+			elif [ $anomaly = GENERALIZATION ]
+			then
+				flag=2
+			#case anomaly is redundancy
+			else
+				#case relation is superset (anomaly is redundancy)
+				if [ $relation = superset ]
+				then
+					flag=2
+				#another case (anomaly is redundancy)
+				else
+					count=`expr $count + 1`
+				fi
+			fi
+		fi
+	if [ $count -gt $max ] && [ $flag = 0 ]
+	then
+		flag=1
+	fi
+	done
+	#case flag is 2 insert rule
+	if [ $flag = 2 ]
+	then
+		source insertrule temp $num $count
+	#case flag is 1 append rule
+	elif [ $flag = 1 ]
+	then
+		source appendrule temp $num
+	fi
+	flag=0
+	ruleinsert=`expr $ruleinsert - 1`
+done
+rm -f temp1
+rm -f temp
+rm -f traffic
+rm -f traffic1
+/sbin/iptables-save > /etc/sysconfig/iptables
+/sbin/service iptables start

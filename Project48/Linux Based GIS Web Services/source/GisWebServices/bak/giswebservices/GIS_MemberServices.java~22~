@@ -1,0 +1,367 @@
+package giswebservices;
+
+public class GIS_MemberServices {
+    public GIS_MemberServices() {}
+
+    public int insertMember(String name, String address,
+                           String phone, String email,
+                           String username, String password,
+                           int ownID){
+
+        //---------------------- password must be more than 23 chars
+        if (password.length()<6) return 23;
+
+        //---------------------- check has ownid
+        try{
+            GisDBConnect gdb=new GisDBConnect();
+            gdb.query("SELECT name FROM owner WHERE ownid="+ownID);
+            gdb.getReturn().next();
+            String memname="NuLl";
+            memname=gdb.getReturn().getString("name");
+            if (memname.indexOf("NuLl")==0) return 21;
+        }catch(Exception e){
+          return 21;
+        }
+
+
+        //---------------------- check username
+        try{
+            GisDBConnect gdb=new GisDBConnect();
+            gdb.query("SELECT username FROM member WHERE LOWER(username)='"+username.toLowerCase()+"'");
+            gdb.getReturn().next();
+            String usr="";
+            usr=gdb.getReturn().getString("username");
+            if (usr.length()>2) return 24;
+        }catch(Exception e){
+
+        }
+
+
+        try{
+            //---create database connection object---
+            GisDBConnect gdb = new GisDBConnect();
+            GisGenerateMD gmd = new GisGenerateMD();
+
+            String passMD = gmd.genMD(password);
+
+
+
+            String sqlstr = new String();
+
+            //---sql command insert to MEMBER---
+            sqlstr = "INSERT INTO MEMBER";
+            sqlstr += "(name, address, phone, email,  username, password, level, ownID)";
+            sqlstr += "VALUES ('";
+            sqlstr += name + "', '" + address + "', '" + phone + "', '" + email + "', '" ;
+            sqlstr += username + "', '" + passMD + "', " ;
+            sqlstr += 5 + ", " + ownID + ");" ;
+
+            gdb.exeSQL(sqlstr) ;
+
+
+            //---sql command get current sequence---
+            sqlstr = "SELECT last_value from member_seq;";
+            gdb.query(sqlstr) ;
+            gdb.getReturn() .next() ;
+
+            int memID = gdb.getReturn().getInt(1);
+
+            return  memID ;
+
+        }catch(Exception e){
+            return 0 ;
+        }
+    }
+
+    //********************************************************************** LIST MEMBER
+    public String listMember (int ownID){
+
+        try{
+            String xmlRes = new String("<?xml version=\"1.0\"?>\r\n");
+            xmlRes += "<memberlist>\r\n";
+
+            GisDBConnect gdb = new GisDBConnect();
+
+            gdb.query("SELECT memid, name FROM member WHERE ownid="+ownID+" AND active=1;");
+            while (gdb.getReturn().next() ){
+                int id=gdb.getReturn().getInt("memid");
+                String memname=gdb.getReturn().getString("name");
+                xmlRes += "  <member id='"+id+"'>"+memname+"</member>\r\n";
+
+            }
+            xmlRes += "</memberlist>\r\n";
+            return xmlRes;
+        }catch(Exception e){
+            return "0";
+        }
+
+    }
+
+    //********************************************************************** LIST NEW MEMBER
+    public String listNewMember (int ownID){
+
+        try{
+            String xmlRes = new String("<?xml version=\"1.0\"?>\r\n");
+            xmlRes += "<memberlist>\r\n";
+
+            GisDBConnect gdb = new GisDBConnect();
+
+            gdb.query("SELECT memid, name FROM member WHERE ownid="+ownID+" AND active=0;");
+            while (gdb.getReturn().next() ){
+                int id=gdb.getReturn().getInt("memid");
+                String memname=gdb.getReturn().getString("name");
+                xmlRes += "  <member id='"+id+"'>"+memname+"</member>\r\n";
+
+            }
+            xmlRes += "</memberlist>\r\n";
+            return xmlRes;
+        }catch(Exception e){
+            return "0";
+        }
+
+    }
+
+    //********************************************************************** DETAIL MEMBER
+
+    public String detailMember (int memberID){
+
+        try{
+            String xmlRes = new String("<?xml version=\"1.0\"?>\r\n");
+            xmlRes += "<memberdetail>\r\n";
+
+            GisDBConnect gdb = new GisDBConnect();
+
+            gdb.query("SELECT * FROM member WHERE memid=" + memberID);
+            while (gdb.getReturn().next() ){
+                int memid=gdb.getReturn().getInt("memid");
+                xmlRes += ("  <member id='"+memid+"'>\r\n");
+                xmlRes += ("    <name>"+gdb.getReturn().getString("name")+"</name>\r\n");
+                xmlRes += ("    <address>"+gdb.getReturn().getString("address")+"</address>\r\n");
+                xmlRes += ("    <phone>"+gdb.getReturn().getString("phone")+"</phone>\r\n");
+                xmlRes += ("    <email>"+gdb.getReturn().getString("email")+"</email>\r\n");
+                xmlRes += ("  </member>\r\n");
+            }
+            xmlRes += "</memberdetail>\r\n";
+            return xmlRes;
+        }catch(Exception e){
+            return "7";
+        }
+    }
+
+    //********************************************************************** DETAIL ALL MEMBER
+
+    public String detailAllMember (int ownerID){
+
+        try{
+            String xmlRes = new String("<?xml version=\"1.0\"?>\r\n");
+            xmlRes += "<memberdetail>\r\n";
+
+            GisDBConnect gdb = new GisDBConnect();
+
+            gdb.query("SELECT * FROM member WHERE ownid=" + ownerID);
+            while (gdb.getReturn().next() ){
+                int memid=gdb.getReturn().getInt("memid");
+                xmlRes += ("  <member id='"+memid+"'>\r\n");
+                xmlRes += ("    <name>"+gdb.getReturn().getString("name")+"</name>\r\n");
+                xmlRes += ("    <address>"+gdb.getReturn().getString("address")+"</address>\r\n");
+                xmlRes += ("    <phone>"+gdb.getReturn().getString("phone")+"</phone>\r\n");
+                xmlRes += ("    <email>"+gdb.getReturn().getString("email")+"</email>\r\n");
+                xmlRes += ("  </member>\r\n");
+            }
+            xmlRes += "</memberdetail>\r\n";
+            return xmlRes;
+        }catch(Exception e){
+            return "7";
+        }
+    }
+
+
+    //********************************************************************** DELETE MEMBER
+     public int deleteMember(String sessionkey, int memID){
+         int level=7;
+         int ownid=5;
+         GisDBConnect gdb;
+
+            //-------------- check is logging in root
+          try{
+               gdb = new GisDBConnect();
+               gdb.query("SELECT level, ownid FROM sessionview WHERE sessid='"+sessionkey+"'");
+               gdb.getReturn().next();
+               level = gdb.getReturn().getInt("level") ;
+               ownid = gdb.getReturn().getInt("ownid") ;
+               if (level>2) return 5;
+            }catch(Exception e){
+                return 5;
+            }
+
+            //-------------------- start delete
+            try{
+                String sqlstr=new String("");
+                sqlstr = "DELETE FROM member WHERE level>2 AND memid="+memID + " AND ownid=" + ownid ;
+                if (level==0) sqlstr = "DELETE FROM member WHERE level>2 AND memid="+memID ;
+                gdb.exeSQL(sqlstr);
+            }catch(Exception e){
+                return 16;
+            }
+            return memID;
+      }
+
+      //************************************************************** UPDATE MEMBER
+      public int updateMember(String sessionkey,String name, String address,
+                              String phone, String email){
+
+          int memid=0;
+          int level=7;
+          GisDBConnect gdb;
+
+          //-------------- check is logging in
+          try{
+              gdb = new GisDBConnect();
+              gdb.query("SELECT memid, level FROM sessionview WHERE sessid='"+sessionkey+"'");
+              gdb.getReturn().next();
+              memid = gdb.getReturn().getInt("memid") ;
+              level = gdb.getReturn().getInt("level") ;
+              if (level>5) return 5;
+          }catch(Exception e){
+              return 3;
+          }
+
+          //-------------- update
+          try{
+              String sqlstr=new String("");
+              sqlstr += "UPDATE member SET ";
+              if(name.length() >0) sqlstr += "name='" + name + "', ";
+              if(address.length() >0) sqlstr += "address='" + address + "', ";
+              if(phone.length() >0) sqlstr += "phone='" + phone + "', ";
+              if(email.length() >0) sqlstr += "email='" + email + "', ";
+              sqlstr += "memid=" + memid + " ";
+              sqlstr += "WHERE memid=" + memid;
+              gdb.exeSQL(sqlstr);
+           }catch(Exception e){
+               return 15;
+           }
+          return memid;
+      }
+
+      //************************************************************ PERMIT MEMBER
+      public int activateMember(String sessionkey,int memID,boolean isActive){
+
+          int level=7;
+          int active=0;
+          int ownid=0;
+          if (isActive==true) active=1;
+          GisDBConnect gdb;
+
+          //-------------- check is logging in
+          try{
+              gdb = new GisDBConnect();
+              gdb.query("SELECT ownid,level FROM sessionview WHERE sessid='"+sessionkey+"'");
+              gdb.getReturn().next();
+              level = gdb.getReturn().getInt("level") ;
+              ownid = gdb.getReturn().getInt("ownid") ;
+              if (level>2) return 5;
+          }catch(Exception e){
+              return 3;
+          }
+
+          //-------------- update
+          try{
+
+              String sqlstr=new String("");;
+
+              sqlstr = "UPDATE member SET ";
+              sqlstr += "active=" + active + " ";
+              sqlstr += "WHERE memid=" + memID + " AND level>3 ";
+              if (level==2) sqlstr += " AND ownid" + ownid;
+              gdb.exeSQL(sqlstr);
+
+           }catch(Exception e){
+               return 17;
+           }
+
+          return memID;
+      }
+
+      //************************************************************ PERMIT MEMBER
+      public int permitMember(String sessionkey,int memID,boolean isWritable){
+
+          int level=7;
+          int canwrite=5;
+          int ownid=0;
+          if (isWritable==true) canwrite=4;
+          GisDBConnect gdb;
+
+          //-------------- check is logging in
+          try{
+              gdb = new GisDBConnect();
+              gdb.query("SELECT ownid,level FROM sessionview WHERE sessid='"+sessionkey+"'");
+              gdb.getReturn().next();
+              level = gdb.getReturn().getInt("level") ;
+              ownid = gdb.getReturn().getInt("ownid") ;
+              if (level>2) return 5;
+          }catch(Exception e){
+              return 3;
+          }
+
+          //-------------- update
+          try{
+
+              String sqlstr=new String("");;
+
+              sqlstr = "UPDATE member SET ";
+              sqlstr += "level=" + canwrite + " ";
+              sqlstr += "WHERE memid=" + memID + " AND level>3 ";
+              if (level==2) sqlstr += " AND ownid" + ownid;
+              gdb.exeSQL(sqlstr);
+
+           }catch(Exception e){
+               return 17;
+           }
+
+          return memID;
+      }
+
+      //********************************************************************* RENEW PASSWORD
+
+       public int renewPassword(String sessionkey, String oldPassword, String newPassword){
+           int id=0;
+           boolean canRenew=false;
+           GisDBConnect gdb;
+           GisGenerateMD gmd = new GisGenerateMD();
+           String oldPassMD=gmd.genMD(oldPassword) ;
+           gmd = new GisGenerateMD();
+           String newPassMD=gmd.genMD(newPassword) ;
+
+           //-------------- check is logging in
+           try{
+               gdb = new GisDBConnect();
+               gdb.query("SELECT memid FROM session WHERE sessid='"+sessionkey+"'");
+               gdb.getReturn().next();
+               id = gdb.getReturn().getInt("memid") ;
+           }catch(Exception e){
+               return 3;
+           }
+
+           //---------------- check old password
+           try{
+               gdb.query("SELECT memid FROM member WHERE memid="+id +" AND password='" + oldPassMD + "'");
+               gdb.getReturn().next();
+               int idx = gdb.getReturn().getInt("memid") ;
+               if (id==idx) canRenew=true;
+           }catch(Exception e){
+               return 13;
+           }
+
+           //---------------- change password
+           try{
+               if (canRenew==true)
+                   gdb.exeSQL("UPDATE member SET password='"+newPassMD+"' WHERE memid=" + id);
+           }catch(Exception e){
+               return 17;
+           }
+
+           return id; //success
+      }
+
+
+}

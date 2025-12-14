@@ -1,0 +1,2063 @@
+Release 7.1i Map H.38
+Xilinx Mapping Report File for Design 'usbhost'
+
+Design Information
+------------------
+Command Line   : C:/Xilinx/bin/nt/map.exe -ise
+c:\project\usbhost_v1\USBHost_v1.ise -intstyle ise -p xc3s200-tq144-5 -cm area
+-pr b -k 4 -c 100 -o usbhost_map.ncd usbhost.ngd usbhost.pcf 
+Target Device  : xc3s200
+Target Package : tq144
+Target Speed   : -5
+Mapper Version : spartan3 -- $Revision: 1.26.6.3 $
+Mapped Date    : Mon Mar 20 11:31:07 2006
+
+Design Summary
+--------------
+Number of errors:      0
+Number of warnings:    4
+Logic Utilization:
+  Total Number Slice Registers:       588 out of   3,840   15%
+    Number used as Flip Flops:                   524
+    Number used as Latches:                       64
+  Number of 4 input LUTs:           1,067 out of   3,840   27%
+Logic Distribution:
+  Number of occupied Slices:                          744 out of   1,920   38%
+    Number of Slices containing only related logic:     744 out of     744  100%
+    Number of Slices containing unrelated logic:          0 out of     744    0%
+      *See NOTES below for an explanation of the effects of unrelated logic
+Total Number 4 input LUTs:          1,320 out of   3,840   34%
+  Number used as logic:              1,067
+  Number used as a route-thru:         253
+  Number of bonded IOBs:               10 out of      97   10%
+  Number of Block RAMs:                3 out of      12   25%
+  Number of GCLKs:                     3 out of       8   37%
+
+Total equivalent gate count for design:  210,363
+Additional JTAG gate count for IOBs:  480
+Peak Memory Usage:  120 MB
+
+NOTES:
+
+   Related logic is defined as being logic that shares connectivity - e.g. two
+   LUTs are "related" if they share common inputs.  When assembling slices,
+   Map gives priority to combine logic that is related.  Doing so results in
+   the best timing performance.
+
+   Unrelated logic shares no connectivity.  Map will only begin packing
+   unrelated logic into a slice once 99% of the slices are occupied through
+   related logic packing.
+
+   Note that once logic distribution reaches the 99% level through related
+   logic packing, this does not mean the device is completely utilized.
+   Unrelated logic packing will then begin, continuing until all usable LUTs
+   and FFs are occupied.  Depending on your timing budget, increased levels of
+   unrelated logic packing may adversely affect the overall timing performance
+   of your design.
+
+Table of Contents
+-----------------
+Section 1 - Errors
+Section 2 - Warnings
+Section 3 - Informational
+Section 4 - Removed Logic Summary
+Section 5 - Removed Logic
+Section 6 - IOB Properties
+Section 7 - RPMs
+Section 8 - Guide Report
+Section 9 - Area Group Summary
+Section 10 - Modular Design Summary
+Section 11 - Timing Report
+Section 12 - Configuration String Information
+Section 13 - Additional Device Resource Counts
+
+Section 1 - Errors
+------------------
+
+Section 2 - Warnings
+--------------------
+WARNING:LIT:243 - Logical network Read has no load.
+WARNING:LIT:374 - The above warning message base_net_load_rule is repeated 9
+   more times for the following (max. 5 shown):
+   u_datamem/almost_empty,
+   u_datamem/almost_full,
+   u_datamem/BU2/U0/memblk/tmp_ram_rd_en,
+   u_Protocol/u_TDQue_out/dout<0>,
+   u_Protocol/u_TDQue_out/BU2/U0/memblk/tmp_ram_rd_en
+   To see the details of these warning messages, please use the -detail switch.
+WARNING:LIT:175 - Clock buffer is designated to drive clock loads. BUFGMUX
+   symbol "physical_group_ResetB_BUFGP/ResetB_BUFGP/BUFG" (output
+   signal=ResetB_BUFGP) has a mix of clock and non-clock loads. Some of the
+   non-clock loads are (maximum of 5 listed):
+   Pin PRE of u_datamem/BU2/U0/inblk/rd_rst_fb
+   Pin PRE of u_datamem/BU2/U0/inblk/wr_rst_int_1
+   Pin PRE of u_datamem/BU2/U0/inblk/rd_rst_reg
+   Pin PRE of u_datamem/BU2/U0/inblk/wr_rst_reg
+   Pin CLR of u_Physical/BUS_EOP_delay
+WARNING:LIT:175 - Clock buffer is designated to drive clock loads. BUFGMUX
+   symbol "physical_group_u_ClockDiv/rClock12M/u_ClockDiv/rClock12M_BUFG"
+   (output signal=u_ClockDiv/rClock12M) has a mix of clock and non-clock loads.
+   Some of the non-clock loads are (maximum of 5 listed):
+   Pin D of u_ClockDiv/rClock12M
+   Pin CE of u_Protocol/packet_0
+   Pin CE of u_Protocol/packet_1
+   Pin CE of u_Protocol/packet_2
+   Pin CE of u_Protocol/packet_3
+
+Section 3 - Informational
+-------------------------
+INFO:MapLib:562 - No environment variables are currently set.
+INFO:MapLib:535 - The following Virtex BUFG(s) is/are being retargetted to
+   Virtex2 BUFGMUX(s) with input tied to I0 and Select pin tied to constant 0:
+   BUFGP symbol "Clock24M_BUFGP" (output signal=Clock24M_BUFGP),
+   BUFGP symbol "ResetB_BUFGP" (output signal=ResetB_BUFGP),
+   BUFG symbol "u_ClockDiv/rClock12M_BUFG" (output signal=u_ClockDiv/rClock12M)
+INFO:LIT:244 - All of the single ended outputs in this design are using slew
+   rate limited output drivers. The delay on speed critical single ended outputs
+   can be dramatically reduced by designating them as fast outputs in the
+   schematic.
+
+Section 4 - Removed Logic Summary
+---------------------------------
+ 338 block(s) removed
+  52 block(s) optimized away
+ 350 signal(s) removed
+
+Section 5 - Removed Logic
+-------------------------
+
+The trimmed logic report below shows the logic removed from your design due to
+sourceless or loadless signals, and VCC or ground connections.  If the removal
+of a signal or symbol results in the subsequent removal of an additional signal
+or symbol, the message explaining that second removal will be indented.  This
+indentation will be repeated as a chain of related logic is removed.
+
+To quickly locate the original cause for the removal of a chain of logic, look
+above the place where that logic is listed in the trimming report, then locate
+the lines that are least indented (begin at the leftmost edge).
+
+The signal "u_datamem/almost_empty" is sourceless and has been removed.
+The signal "u_datamem/full" is sourceless and has been removed.
+ Sourceless block
+"u_datamem/BU2/U0/flblk/thrmod/aflogic/almost_full_i_ClkEn_INV1_INV_0" (BUF)
+removed.
+  The signal "u_datamem/BU2/U0/flblk/thrmod/aflogic/almost_full_i_N0" is
+sourceless and has been removed.
+   Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aflogic/almost_full_i" (FF)
+removed.
+    The signal "u_datamem/almost_full" is sourceless and has been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/flogic/FULL_NONREG_i1" (ROM)
+removed.
+  The signal "u_datamem/BU2/U0/flblk/thrmod/flogic/FULL_NONREG_i1/O" is sourceless
+and has been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aflogic/_n00001" (ROM) removed.
+  The signal "u_datamem/BU2/U0/flblk/thrmod/aflogic/_n00001/O" is sourceless and
+has been removed.
+The signal "u_datamem/BU2/debug_rd_pntr_w<6>" is sourceless and has been
+removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aflogic/caf2/dout_i103" (ROM)
+removed.
+  The signal "u_datamem/BU2/CHOICE202" is sourceless and has been removed.
+   Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aflogic/caf2/dout_i119" (ROM)
+removed.
+    The signal "u_datamem/BU2/U0/flblk/thrmod/aflogic/caf2/dout_i119/O" is
+sourceless and has been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aflogic/caf1/dout_i103" (ROM)
+removed.
+  The signal "u_datamem/BU2/CHOICE243" is sourceless and has been removed.
+   Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aflogic/caf1/dout_i119" (ROM)
+removed.
+    The signal "u_datamem/BU2/U0/flblk/thrmod/aflogic/comp_af1" is sourceless and
+has been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/flogic/comp1/dout_i76" (ROM)
+removed.
+  The signal "u_datamem/BU2/U0/flblk/thrmod/flogic/comp1/dout_i76/O" is sourceless
+and has been removed.
+The signal "u_datamem/BU2/debug_rd_pntr_w<5>" is sourceless and has been
+removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/flogic/comp1/dout_i103" (ROM)
+removed.
+  The signal "u_datamem/BU2/CHOICE161" is sourceless and has been removed.
+   Sourceless block "u_datamem/BU2/U0/flblk/thrmod/flogic/comp1/dout_i104" (ROM)
+removed.
+    The signal "u_datamem/BU2/CHOICE162" is sourceless and has been removed.
+     Sourceless block "u_datamem/BU2/U0/flblk/thrmod/flogic/comp1/dout_i119" (ROM)
+removed.
+      The signal "u_datamem/BU2/U0/flblk/thrmod/flogic/comp1/dout_i119/O" is
+sourceless and has been removed.
+The signal "u_datamem/BU2/debug_rd_pntr_w<4>" is sourceless and has been
+removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aflogic/caf2/dout_i8" (ROM)
+removed.
+  The signal "u_datamem/BU2/CHOICE168" is sourceless and has been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aflogic/caf1/dout_i8" (ROM)
+removed.
+  The signal "u_datamem/BU2/U0/flblk/thrmod/aflogic/caf1/dout_i8/O" is sourceless
+and has been removed.
+The signal "u_datamem/BU2/debug_rd_pntr_w<3>" is sourceless and has been
+removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/flogic/comp1/dout_i8" (ROM)
+removed.
+  The signal "u_datamem/BU2/CHOICE127" is sourceless and has been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aflogic/caf1/dout_i35" (ROM)
+removed.
+  The signal "u_datamem/BU2/CHOICE220" is sourceless and has been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aflogic/caf2/dout_i35" (ROM)
+removed.
+  The signal "u_datamem/BU2/CHOICE179" is sourceless and has been removed.
+The signal "u_datamem/BU2/debug_rd_pntr_w<2>" is sourceless and has been
+removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/flogic/comp1/dout_i17" (ROM)
+removed.
+  The signal "u_datamem/BU2/CHOICE132" is sourceless and has been removed.
+The signal "u_datamem/BU2/debug_rd_pntr_w<1>" is sourceless and has been
+removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aflogic/caf2/dout_i76" (ROM)
+removed.
+  The signal "u_datamem/BU2/CHOICE191" is sourceless and has been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/flogic/comp1/dout_i26" (ROM)
+removed.
+  The signal "u_datamem/BU2/CHOICE137" is sourceless and has been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aflogic/caf1/dout_i76" (ROM)
+removed.
+  The signal "u_datamem/BU2/CHOICE232" is sourceless and has been removed.
+The signal "u_datamem/BU2/debug_rd_pntr_w<0>" is sourceless and has been
+removed.
+The signal "u_datamem/BU2/debug_wr_pntr_plus1_w<6>" is sourceless and has been
+removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_6_rt"
+(ROM) removed.
+  The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_6_rt"
+is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<6>_xor" (XOR) removed.
+    The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count__n0000<
+6>" is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_6" (FF)
+removed.
+The signal "u_datamem/BU2/debug_wr_pntr_plus1_w<5>" is sourceless and has been
+removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_5_rt"
+(ROM) removed.
+  The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_5_rt"
+is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<5>cy" (MUX) removed.
+    The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<5>_cyo" is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<5>_xor" (XOR) removed.
+    The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count__n0000<
+5>" is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_5" (FF)
+removed.
+The signal "u_datamem/BU2/debug_wr_pntr_plus1_w<4>" is sourceless and has been
+removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_4_rt"
+(ROM) removed.
+  The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_4_rt"
+is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<4>cy" (MUX) removed.
+    The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<4>_cyo" is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<4>_xor" (XOR) removed.
+    The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count__n0000<
+4>" is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_4" (FF)
+removed.
+The signal "u_datamem/BU2/debug_wr_pntr_plus1_w<3>" is sourceless and has been
+removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_3_rt"
+(ROM) removed.
+  The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_3_rt"
+is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<3>cy" (MUX) removed.
+    The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<3>_cyo" is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<3>_xor" (XOR) removed.
+    The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count__n0000<
+3>" is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_3" (FF)
+removed.
+The signal "u_datamem/BU2/debug_wr_pntr_plus1_w<2>" is sourceless and has been
+removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_2_rt"
+(ROM) removed.
+  The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_2_rt/O"
+is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_2_rt/LU
+T1_L_BUF" (BUF) removed.
+    The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_2_rt"
+is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<2>cy" (MUX) removed.
+      The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<2>_cyo" is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<2>_xor" (XOR) removed.
+      The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count__n0000<
+2>" is sourceless and has been removed.
+       Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_2" (FF)
+removed.
+The signal "u_datamem/BU2/debug_wr_pntr_plus1_w<1>" is sourceless and has been
+removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_1_rt"
+(ROM) removed.
+  The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_1_rt/O"
+is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_1_rt/LU
+T1_L_BUF" (BUF) removed.
+    The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_1_rt"
+is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<1>cy" (MUX) removed.
+      The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<1>_cyo" is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<1>_xor" (XOR) removed.
+      The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count__n0000<
+1>" is sourceless and has been removed.
+       Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_1" (FF)
+removed.
+The signal "u_datamem/BU2/debug_wr_pntr_plus1_w<0>" is sourceless and has been
+removed.
+ Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<0>lut_INV_0" (BUF) removed.
+  The signal "u_datamem/BU2/N10" is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus1/bin_cnt_top/bld_bin_cnt/count_0" (FF)
+removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<0>cy" (MUX) removed.
+    The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus1/bin_
+cnt_top/bld_bin_cnt/count__n0000<0>_cyo" is sourceless and has been removed.
+The signal "u_datamem/BU2/debug_wr_pntr_plus2_w<6>" is sourceless and has been
+removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_6_rt"
+(ROM) removed.
+  The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_6_rt"
+is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<6>_xor" (XOR) removed.
+    The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<
+6>" is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_6" (FF)
+removed.
+The signal "u_datamem/BU2/debug_wr_pntr_plus2_w<5>" is sourceless and has been
+removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_5_rt"
+(ROM) removed.
+  The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_5_rt"
+is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<5>cy" (MUX) removed.
+    The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<5>_cyo" is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<5>_xor" (XOR) removed.
+    The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<
+5>" is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_5" (FF)
+removed.
+The signal "u_datamem/BU2/debug_wr_pntr_plus2_w<4>" is sourceless and has been
+removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_4_rt"
+(ROM) removed.
+  The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_4_rt"
+is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<4>cy" (MUX) removed.
+    The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<4>_cyo" is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<4>_xor" (XOR) removed.
+    The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<
+4>" is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_4" (FF)
+removed.
+The signal "u_datamem/BU2/debug_wr_pntr_plus2_w<3>" is sourceless and has been
+removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_3_rt"
+(ROM) removed.
+  The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_3_rt"
+is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<3>cy" (MUX) removed.
+    The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<3>_cyo" is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<3>_xor" (XOR) removed.
+    The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<
+3>" is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_3" (FF)
+removed.
+The signal "u_datamem/BU2/debug_wr_pntr_plus2_w<2>" is sourceless and has been
+removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_2_rt"
+(ROM) removed.
+  The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_2_rt/O"
+is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_2_rt/LU
+T1_L_BUF" (BUF) removed.
+    The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_2_rt"
+is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<2>cy" (MUX) removed.
+      The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<2>_cyo" is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<2>_xor" (XOR) removed.
+      The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<
+2>" is sourceless and has been removed.
+       Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_2" (FF)
+removed.
+The signal "u_datamem/BU2/debug_wr_pntr_plus2_w<1>" is sourceless and has been
+removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_1_rt"
+(ROM) removed.
+  The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_1_rt/O"
+is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_1_rt/LU
+T1_L_BUF" (BUF) removed.
+    The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_1_rt"
+is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<1>cy" (MUX) removed.
+      The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<1>_cyo" is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<1>_xor" (XOR) removed.
+      The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<
+1>" is sourceless and has been removed.
+       Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_1" (FF)
+removed.
+The signal "u_datamem/BU2/debug_wr_pntr_plus2_w<0>" is sourceless and has been
+removed.
+ Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<0>lut_INV_0" (BUF) removed.
+  The signal "u_datamem/BU2/N9" is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_0" (FF)
+removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<0>cy" (MUX) removed.
+    The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<0>_cyo" is sourceless and has been removed.
+The signal "u_datamem/BU2/U0/flblk/thrmod/aelogic/comp_ae2" is sourceless and
+has been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aelogic/_n00001" (ROM) removed.
+  The signal "u_datamem/BU2/U0/flblk/thrmod/aelogic/_n00001/O" is sourceless and
+has been removed.
+The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<
+2>" is sourceless and has been removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_2" (FF)
+removed.
+  The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count<2>" is
+sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_2_rt"
+(ROM) removed.
+    The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_2_rt/O"
+is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_2_rt/LU
+T1_L_BUF" (BUF) removed.
+      The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_2_rt"
+is sourceless and has been removed.
+       Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<2>cy" (MUX) removed.
+        The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<2>_cyo" is sourceless and has been removed.
+         Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<3>cy" (MUX) removed.
+          The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<3>_cyo" is sourceless and has been removed.
+           Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<4>cy" (MUX) removed.
+            The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<4>_cyo" is sourceless and has been removed.
+             Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<5>cy" (MUX) removed.
+              The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<5>_cyo" is sourceless and has been removed.
+               Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<6>_xor" (XOR) removed.
+                The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<
+6>" is sourceless and has been removed.
+                 Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_6" (FF)
+removed.
+                  The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count<6>" is
+sourceless and has been removed.
+                   Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_6_rt"
+(ROM) removed.
+                    The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_6_rt"
+is sourceless and has been removed.
+             Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<5>_xor" (XOR) removed.
+              The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<
+5>" is sourceless and has been removed.
+               Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_5" (FF)
+removed.
+                The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count<5>" is
+sourceless and has been removed.
+                 Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_5_rt"
+(ROM) removed.
+                  The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_5_rt"
+is sourceless and has been removed.
+           Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<4>_xor" (XOR) removed.
+            The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<
+4>" is sourceless and has been removed.
+             Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_4" (FF)
+removed.
+              The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count<4>" is
+sourceless and has been removed.
+               Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_4_rt"
+(ROM) removed.
+                The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_4_rt"
+is sourceless and has been removed.
+         Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<3>_xor" (XOR) removed.
+          The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<
+3>" is sourceless and has been removed.
+           Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_3" (FF)
+removed.
+            The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count<3>" is
+sourceless and has been removed.
+             Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_3_rt"
+(ROM) removed.
+              The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_3_rt"
+is sourceless and has been removed.
+       Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<2>_xor" (XOR) removed.
+The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<
+2>" is sourceless and has been removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_2" (FF)
+removed.
+  The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count<2>" is
+sourceless and has been removed.
+   Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aelogic/cae2/dout_i35" (ROM)
+removed.
+    The signal "u_datamem/BU2/CHOICE302" is sourceless and has been removed.
+     Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aelogic/cae2/dout_i119" (ROM)
+removed.
+   Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_2_rt"
+(ROM) removed.
+    The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_2_rt/O"
+is sourceless and has been removed.
+The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count__n0000<1>" is
+sourceless and has been removed.
+The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<
+3>" is sourceless and has been removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_3" (FF)
+removed.
+  The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count<3>" is
+sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_3_rt"
+(ROM) removed.
+    The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_3_rt"
+is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<3>cy" (MUX) removed.
+      The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<3>_cyo" is sourceless and has been removed.
+       Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<4>cy" (MUX) removed.
+        The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<4>_cyo" is sourceless and has been removed.
+         Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<5>cy" (MUX) removed.
+          The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<5>_cyo" is sourceless and has been removed.
+           Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<6>_xor" (XOR) removed.
+            The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<
+6>" is sourceless and has been removed.
+             Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_6" (FF)
+removed.
+              The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count<6>" is
+sourceless and has been removed.
+               Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aelogic/cae2/dout_i103" (ROM)
+removed.
+                The signal "u_datamem/BU2/CHOICE325" is sourceless and has been removed.
+               Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_6_rt"
+(ROM) removed.
+                The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_6_rt"
+is sourceless and has been removed.
+         Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<5>_xor" (XOR) removed.
+          The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<
+5>" is sourceless and has been removed.
+           Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_5" (FF)
+removed.
+            The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count<5>" is
+sourceless and has been removed.
+             Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_5_rt"
+(ROM) removed.
+              The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_5_rt"
+is sourceless and has been removed.
+       Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<4>_xor" (XOR) removed.
+        The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<
+4>" is sourceless and has been removed.
+         Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_4" (FF)
+removed.
+          The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count<4>" is
+sourceless and has been removed.
+           Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_4_rt"
+(ROM) removed.
+            The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_4_rt"
+is sourceless and has been removed.
+           Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aelogic/cae2/dout_i8" (ROM)
+removed.
+            The signal "u_datamem/BU2/U0/flblk/thrmod/aelogic/cae2/dout_i8/O" is sourceless
+and has been removed.
+     Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<3>_xor" (XOR) removed.
+The signal "u_datamem/BU2/N12" is sourceless and has been removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_0" (FF)
+removed.
+  The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count<0>" is
+sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<0>lut_INV_0" (BUF) removed.
+   Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aelogic/cae2/dout_i76" (ROM)
+removed.
+    The signal "u_datamem/BU2/CHOICE314" is sourceless and has been removed.
+ Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<0>cy" (MUX) removed.
+  The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<0>_cyo" is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<1>cy" (MUX) removed.
+    The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<1>_cyo" is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<2>cy" (MUX) removed.
+      The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<2>_cyo" is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<2>_xor" (XOR) removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_rd_cntr_plus2/bin_
+cnt_top/bld_bin_cnt/count__n0000<1>_xor" (XOR) removed.
+    The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<
+1>" is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_1" (FF)
+removed.
+      The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count<1>" is
+sourceless and has been removed.
+       Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_1_rt"
+(ROM) removed.
+        The signal
+"u_datamem/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/count_1_rt/O"
+is sourceless and has been removed.
+The signal "u_datamem/BU2/N13" is sourceless and has been removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_0" (FF)
+removed.
+  The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count<0>" is
+sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<0>lut_INV_0" (BUF) removed.
+ Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<0>cy" (MUX) removed.
+  The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<0>_cyo" is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<1>cy" (MUX) removed.
+    The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<1>_cyo" is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cntr_plus3/bin_
+cnt_top/bld_bin_cnt/count__n0000<1>_xor" (XOR) removed.
+    The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<
+1>" is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_1" (FF)
+removed.
+      The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count<1>" is
+sourceless and has been removed.
+       Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_1_rt"
+(ROM) removed.
+        The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_1_rt/O"
+is sourceless and has been removed.
+         Sourceless block
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_1_rt/LU
+T1_L_BUF" (BUF) removed.
+          The signal
+"u_datamem/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/count_1_rt"
+is sourceless and has been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/wrx/_n0015<5>" is sourceless and has
+been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmp<5>" is sourceless and has
+been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/_n0015<5>" is sourceless and has
+been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmp_5" (FF) removed.
+  The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmp<5>" is sourceless and has
+been removed.
+   Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmpx_5" (FF) removed.
+    The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmpx<5>" is sourceless and
+has been removed.
+     Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/Mxor__n0008_Result1" (ROM)
+removed.
+      The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/_n0016<4>" is sourceless and has
+been removed.
+       Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/PNTR_B_4" (FF) removed.
+     Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/Mxor__n0007_Result1" (ROM)
+removed.
+      The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/_n0028<0>" is sourceless and has
+been removed.
+       Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/PNTR_B_5" (FF) removed.
+       Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/Mxor__n0010_Xo<1>1" (ROM)
+removed.
+        The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/Mxor__n0010_Xo<1>1/O" is
+sourceless and has been removed.
+     Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/Mxor__n0012_Result1" (ROM)
+removed.
+      The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/Mxor__n0010_Xo<0>" is sourceless
+and has been removed.
+       Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/Mxor__n0012_Result2" (ROM)
+removed.
+        The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/_n0016<0>" is sourceless and has
+been removed.
+         Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/PNTR_B_0" (FF) removed.
+       Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/PNTR_B_3" (FF) removed.
+The signal "u_datamem/BU2/U0/flblk/thrmod/aelogic/almost_empty_i_N0" is
+sourceless and has been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aelogic/almost_empty_i" (FF)
+removed.
+The signal "u_datamem/BU2/CHOICE86" is sourceless and has been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aelogic/cae1/dout_i119" (ROM)
+removed.
+  The signal "u_datamem/BU2/U0/flblk/thrmod/aelogic/cae1/dout_i119/O" is
+sourceless and has been removed.
+The signal "u_datamem/BU2/CHOICE91" is sourceless and has been removed.
+The signal "u_datamem/BU2/CHOICE96" is sourceless and has been removed.
+The signal "u_datamem/BU2/CHOICE121" is sourceless and has been removed.
+The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count__n0000<2>" is
+sourceless and has been removed.
+The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count__n0000<3>" is
+sourceless and has been removed.
+The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count__n0000<4>" is
+sourceless and has been removed.
+The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count__n0000<5>" is
+sourceless and has been removed.
+The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count__n0000<6>" is
+sourceless and has been removed.
+The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_to
+p/bld_bin_cnt/count__n0000<5>_cyo" is sourceless and has been removed.
+ Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_to
+p/bld_bin_cnt/count__n0000<6>_xor" (XOR) removed.
+The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_6_rt" is
+sourceless and has been removed.
+The signal "u_datamem/BU2/N14" is sourceless and has been removed.
+ Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_to
+p/bld_bin_cnt/count__n0000<0>cy" (MUX) removed.
+  The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_to
+p/bld_bin_cnt/count__n0000<0>_cyo" is sourceless and has been removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_to
+p/bld_bin_cnt/count__n0000<1>cy" (MUX) removed.
+    The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_to
+p/bld_bin_cnt/count__n0000<1>_cyo" is sourceless and has been removed.
+     Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_to
+p/bld_bin_cnt/count__n0000<2>cy" (MUX) removed.
+      The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_to
+p/bld_bin_cnt/count__n0000<2>_cyo" is sourceless and has been removed.
+       Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_to
+p/bld_bin_cnt/count__n0000<3>cy" (MUX) removed.
+        The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_to
+p/bld_bin_cnt/count__n0000<3>_cyo" is sourceless and has been removed.
+         Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_to
+p/bld_bin_cnt/count__n0000<4>cy" (MUX) removed.
+          The signal
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_to
+p/bld_bin_cnt/count__n0000<4>_cyo" is sourceless and has been removed.
+           Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_to
+p/bld_bin_cnt/count__n0000<5>cy" (MUX) removed.
+           Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_to
+p/bld_bin_cnt/count__n0000<5>_xor" (XOR) removed.
+         Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_to
+p/bld_bin_cnt/count__n0000<4>_xor" (XOR) removed.
+       Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_to
+p/bld_bin_cnt/count__n0000<3>_xor" (XOR) removed.
+     Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_to
+p/bld_bin_cnt/count__n0000<2>_xor" (XOR) removed.
+   Sourceless block
+"u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_to
+p/bld_bin_cnt/count__n0000<1>_xor" (XOR) removed.
+The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_1_rt" is
+sourceless and has been removed.
+The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_2_rt" is
+sourceless and has been removed.
+The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_3_rt" is
+sourceless and has been removed.
+The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_4_rt" is
+sourceless and has been removed.
+The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_5_rt" is
+sourceless and has been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmpx<0>" is sourceless and
+has been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmpx<1>" is sourceless and
+has been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/Mxor__n0011_Result1" (ROM)
+removed.
+  The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/Mxor__n0011_Result1/O" is
+sourceless and has been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmpx<2>" is sourceless and
+has been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmpx<4>" is sourceless and
+has been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmpx<6>" is sourceless and
+has been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/PNTR_B_6" (FF) removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmpx<3>" is sourceless and
+has been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/_n0015<4>" is sourceless and has
+been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmp_4" (FF) removed.
+  The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmp<4>" is sourceless and has
+been removed.
+   Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmpx_4" (FF) removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/_n0015<3>" is sourceless and has
+been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmp_3" (FF) removed.
+  The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmp<3>" is sourceless and has
+been removed.
+   Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmpx_3" (FF) removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/_n0015<2>" is sourceless and has
+been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmp_2" (FF) removed.
+  The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmp<2>" is sourceless and has
+been removed.
+   Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmpx_2" (FF) removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/_n0015<1>" is sourceless and has
+been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmp_1" (FF) removed.
+  The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmp<1>" is sourceless and has
+been removed.
+   Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmpx_1" (FF) removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/_n0015<0>" is sourceless and has
+been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmp_0" (FF) removed.
+  The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmp<0>" is sourceless and has
+been removed.
+   Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmpx_0" (FF) removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmp<6>" is sourceless and has
+been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmpx_6" (FF) removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/wrx/_n0016<0>" is sourceless and has
+been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/wrx/_n0016<4>" is sourceless and has
+been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/wrx/_n0025<0>" is sourceless and has
+been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/wrx/_n0015<4>" is sourceless and has
+been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/wrx/_n0015<3>" is sourceless and has
+been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/wrx/_n0015<2>" is sourceless and has
+been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/wrx/_n0015<1>" is sourceless and has
+been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/wrx/_n0015<0>" is sourceless and has
+been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmp<6>" is sourceless and has
+been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmp<0>" is sourceless and has
+been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmp<1>" is sourceless and has
+been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmp<2>" is sourceless and has
+been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmp<3>" is sourceless and has
+been removed.
+The signal "u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmp<4>" is sourceless and has
+been removed.
+The signal "u_datamem/BU2/CHOICE120" is sourceless and has been removed.
+ Sourceless block "u_datamem/BU2/U0/flblk/thrmod/aelogic/cae1/dout_i104" (ROM)
+removed.
+The signal "u_datamem/BU2/U0/flblk/thrmod/aelogic/cae1/dout_i76/O" is sourceless
+and has been removed.
+The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_1_rt/O" is
+sourceless and has been removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_1_rt/LUT1_L_B
+UF" (BUF) removed.
+The signal
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_2_rt/O" is
+sourceless and has been removed.
+ Sourceless block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_2_rt/LUT1_L_B
+UF" (BUF) removed.
+The signal "u_Protocol/u_TDQue_out/almost_empty" is sourceless and has been
+removed.
+ Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aelogic/_n0000111_G" (ROM) removed.
+  The signal "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aelogic/_n0000111_G/O" is
+sourceless and has been removed.
+ Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aelogic/_n0000111_F" (ROM) removed.
+  The signal "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aelogic/_n0000111_F/O" is
+sourceless and has been removed.
+The signal "u_Protocol/u_TDQue_out/dout<0>" is sourceless and has been removed.
+The signal "u_Protocol/u_TDQue_out/almost_full" is sourceless and has been
+removed.
+ Sourceless block "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/_n0000128"
+(ROM) removed.
+  The signal "u_Protocol/u_TDQue_out/BU2/CHOICE232" is sourceless and has been
+removed.
+   Sourceless block "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/_n0000267"
+(ROM) removed.
+    The signal "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/_n0000267/O" is
+sourceless and has been removed.
+The signal "u_Protocol/u_TDQue_out/BU2/debug_wr_pntr_plus2_w<5>" is sourceless
+and has been removed.
+ Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_5_rt" (ROM) removed.
+  The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_5_rt" is sourceless and has been removed.
+   Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/gen_wr_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<5>_xor" (XOR) removed.
+    The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count__n0000<5>" is sourceless and has been removed.
+     Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_5" (FF) removed.
+ Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/_n0000175_SW0" (ROM)
+removed.
+  The signal "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/_n0000175_SW0/O"
+is sourceless and has been removed.
+The signal "u_Protocol/u_TDQue_out/BU2/debug_wr_pntr_plus2_w<4>" is sourceless
+and has been removed.
+ Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/_n0000243_SW0" (ROM)
+removed.
+  The signal "u_Protocol/u_TDQue_out/BU2/N697" is sourceless and has been removed.
+   Sourceless block "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/_n0000251"
+(ROM) removed.
+    The signal "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/_n0000251/O" is
+sourceless and has been removed.
+ Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_4_rt" (ROM) removed.
+  The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_4_rt/O" is sourceless and has been removed.
+The signal "u_Protocol/u_TDQue_out/BU2/debug_wr_pntr_plus2_w<3>" is sourceless
+and has been removed.
+ Sourceless block "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/_n0000201"
+(ROM) removed.
+  The signal "u_Protocol/u_TDQue_out/BU2/CHOICE257" is sourceless and has been
+removed.
+ Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_3_rt" (ROM) removed.
+  The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_3_rt/O" is sourceless and has been removed.
+The signal "u_Protocol/u_TDQue_out/BU2/debug_wr_pntr_plus2_w<2>" is sourceless
+and has been removed.
+ Sourceless block "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/_n0000237"
+(ROM) removed.
+  The signal "u_Protocol/u_TDQue_out/BU2/CHOICE269" is sourceless and has been
+removed.
+ Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_2_rt" (ROM) removed.
+  The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_2_rt/O" is sourceless and has been removed.
+The signal "u_Protocol/u_TDQue_out/BU2/debug_wr_pntr_plus2_w<1>" is sourceless
+and has been removed.
+ Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_1_rt" (ROM) removed.
+  The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_1_rt/O" is sourceless and has been removed.
+The signal "u_Protocol/u_TDQue_out/BU2/debug_wr_pntr_plus2_w<0>" is sourceless
+and has been removed.
+ Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/gen_wr_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<0>lut_INV_0" (BUF) removed.
+  The signal "u_Protocol/u_TDQue_out/BU2/N12" is sourceless and has been removed.
+   Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_0" (FF) removed.
+   Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/gen_wr_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<0>cy" (MUX) removed.
+    The signal
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/gen_wr_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<0>_cyo" is sourceless and has been
+removed.
+     Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/gen_wr_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<1>cy" (MUX) removed.
+      The signal
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/gen_wr_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<1>_cyo" is sourceless and has been
+removed.
+       Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/gen_wr_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<2>cy" (MUX) removed.
+        The signal
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/gen_wr_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<2>_cyo" is sourceless and has been
+removed.
+         Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/gen_wr_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<3>cy" (MUX) removed.
+          The signal
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/gen_wr_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<3>_cyo" is sourceless and has been
+removed.
+           Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/gen_wr_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<4>cy" (MUX) removed.
+            The signal
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/gen_wr_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<4>_cyo" is sourceless and has been
+removed.
+           Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/gen_wr_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<4>_xor" (XOR) removed.
+            The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count__n0000<4>" is sourceless and has been removed.
+             Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_4" (FF) removed.
+         Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/gen_wr_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<3>_xor" (XOR) removed.
+          The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count__n0000<3>" is sourceless and has been removed.
+           Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_3" (FF) removed.
+       Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/gen_wr_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<2>_xor" (XOR) removed.
+        The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count__n0000<2>" is sourceless and has been removed.
+         Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_2" (FF) removed.
+     Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/gen_wr_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<1>_xor" (XOR) removed.
+      The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count__n0000<1>" is sourceless and has been removed.
+       Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/gen_wr_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_1" (FF) removed.
+The signal
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/bld_rd_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<1>_cyo" is sourceless and has been
+removed.
+ Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/bld_rd_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<2>cy" (MUX) removed.
+  The signal
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/bld_rd_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<2>_cyo" is sourceless and has been
+removed.
+   Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/bld_rd_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<3>_xor" (XOR) removed.
+    The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count__n0000<3>" is sourceless and has been removed.
+     Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_3" (FF) removed.
+      The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count<3>" is sourceless and has been removed.
+       Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aelogic/c5/dout_i53" (ROM) removed.
+        The signal "u_Protocol/u_TDQue_out/BU2/CHOICE329" is sourceless and has been
+removed.
+         Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aelogic/c5/dout_i95" (ROM) removed.
+          The signal "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aelogic/comp_ae2" is
+sourceless and has been removed.
+       Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_3_rt" (ROM) removed.
+        The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_3_rt/O" is sourceless and has been removed.
+   Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/bld_rd_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<3>cy" (MUX) removed.
+    The signal
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/bld_rd_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<3>_cyo" is sourceless and has been
+removed.
+     Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/bld_rd_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<4>_xor" (XOR) removed.
+      The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count__n0000<4>" is sourceless and has been removed.
+       Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_4" (FF) removed.
+        The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count<4>" is sourceless and has been removed.
+         Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_4_rt" (ROM) removed.
+          The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_4_rt/O" is sourceless and has been removed.
+     Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/bld_rd_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<4>cy" (MUX) removed.
+      The signal
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/bld_rd_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<4>_cyo" is sourceless and has been
+removed.
+       Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/bld_rd_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<5>_xor" (XOR) removed.
+        The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count__n0000<5>" is sourceless and has been removed.
+         Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_5" (FF) removed.
+          The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count<5>" is sourceless and has been removed.
+           Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_5_rt" (ROM) removed.
+            The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_5_rt" is sourceless and has been removed.
+           Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aelogic/c5/dout_i26" (ROM) removed.
+            The signal "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aelogic/c5/dout_i26/O" is
+sourceless and has been removed.
+ Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/bld_rd_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<2>_xor" (XOR) removed.
+  The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count__n0000<2>" is sourceless and has been removed.
+   Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_2" (FF) removed.
+    The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count<2>" is sourceless and has been removed.
+     Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aelogic/c5/dout_i80" (ROM) removed.
+      The signal "u_Protocol/u_TDQue_out/BU2/CHOICE340" is sourceless and has been
+removed.
+     Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_2_rt" (ROM) removed.
+      The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_2_rt/O" is sourceless and has been removed.
+The signal "u_Protocol/u_TDQue_out/BU2/U0/flblk/ram_rd_en_i1" is sourceless and
+has been removed.
+The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count__n0000<1>" is sourceless and has been removed.
+ Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_1" (FF) removed.
+  The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count<1>" is sourceless and has been removed.
+   Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_1_rt" (ROM) removed.
+    The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_1_rt/O" is sourceless and has been removed.
+The signal "u_Protocol/u_TDQue_out/BU2/N13" is sourceless and has been removed.
+ Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count_0" (FF) removed.
+  The signal
+"u_Protocol/u_TDQue_out/BU2/U0/cntblk/bld_rd_cntr_plus2/bin_cnt_top/bld_bin_cnt/
+count<0>" is sourceless and has been removed.
+   Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/bld_rd_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<0>lut_INV_0" (BUF) removed.
+ Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/bld_rd_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<0>cy" (MUX) removed.
+  The signal
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/bld_rd_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<0>_cyo" is sourceless and has been
+removed.
+   Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/bld_rd_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<1>_xor" (XOR) removed.
+   Sourceless block
+"u_Protocol/u_TDQue_out/BU2/tdque2_fifo_generator_v2_0_ss_1_U0/cntblk/bld_rd_cnt
+r_plus2/bin_cnt_top/bld_bin_cnt/count__n0000<1>cy" (MUX) removed.
+The signal "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/elogic/comp2out" is
+sourceless and has been removed.
+ Sourceless block "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aelogic/_n0000111"
+(MUX) removed.
+  The signal "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aelogic/_n0000" is
+sourceless and has been removed.
+   Sourceless block
+"u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aelogic/almost_empty_i" (FF)
+removed.
+The signal "u_Protocol/u_TDQue_out/BU2/CHOICE205" is sourceless and has been
+removed.
+The signal "u_Protocol/u_TDQue_out/BU2/CHOICE228" is sourceless and has been
+removed.
+The signal "u_Protocol/u_TDQue_out/BU2/CHOICE227" is sourceless and has been
+removed.
+ Sourceless block "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/_n0000101"
+(ROM) removed.
+The signal "u_Protocol/u_TDQue_out/BU2/CHOICE247" is sourceless and has been
+removed.
+The signal "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/_n000059/O" is
+sourceless and has been removed.
+The signal "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/_n000032_SW0/O"
+is sourceless and has been removed.
+The signal "u_Protocol/u_fifo1bit/almost_full" is sourceless and has been
+removed.
+The signal "u_Protocol/u_fifo1bit/BU2/debug_ram_rd_en" is sourceless and has
+been removed.
+The signal "u_Protocol/u_fifo1bit/BU2/debug_ram_wr_en" is sourceless and has
+been removed.
+The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/almost_full_i_N0"
+is sourceless and has been removed.
+ Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/almost_full_i" (FF) removed.
+The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount__n0000<5>" is sourceless and has been removed.
+ Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_5" (FF) removed.
+  The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount<5>" is sourceless and has been removed.
+   Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/_n00381" (ROM) removed.
+    The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/_n00381/O" is
+sourceless and has been removed.
+   Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_5_rt" (ROM) removed.
+    The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_5_rt/O" is sourceless and has been removed.
+The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/wpremod/RAM_WR_EN1" is sourceless
+and has been removed.
+ Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_6" (FF) removed.
+  The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount<6>" is sourceless and has been removed.
+   Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/_n00391" (ROM) removed.
+    The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/_n00391/O" is
+sourceless and has been removed.
+   Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_6_rt" (ROM) removed.
+    The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_6_rt/O" is sourceless and has been removed.
+ Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_7" (FF) removed.
+  The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount<7>" is sourceless and has been removed.
+   Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_7_rt" (ROM) removed.
+    The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_7_rt/O" is sourceless and has been removed.
+ Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_9" (FF) removed.
+  The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount<9>" is sourceless and has been removed.
+   Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/_n00401" (ROM) removed.
+    The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/_n00401/O" is
+sourceless and has been removed.
+   Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_9_rt" (ROM) removed.
+    The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_9_rt/O" is sourceless and has been removed.
+ Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_8" (FF) removed.
+  The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount<8>" is sourceless and has been removed.
+   Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_8_rt" (ROM) removed.
+    The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_8_rt/O" is sourceless and has been removed.
+ Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_0" (FF) removed.
+  The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount<0>" is sourceless and has been removed.
+   Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<0>lut_INV_0" (BUF) removed.
+    The signal "u_Protocol/u_fifo1bit/BU2/N13" is sourceless and has been removed.
+     Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<0>cy" (MUX) removed.
+      The signal
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<0>_cyo" is sourceless and has been
+removed.
+       Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<1>cy" (MUX) removed.
+        The signal
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<1>_cyo" is sourceless and has been
+removed.
+         Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<2>cy" (MUX) removed.
+          The signal
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<2>_cyo" is sourceless and has been
+removed.
+           Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<3>cy" (MUX) removed.
+            The signal
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<3>_cyo" is sourceless and has been
+removed.
+             Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<4>cy" (MUX) removed.
+              The signal
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<4>_cyo" is sourceless and has been
+removed.
+               Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<5>cy" (MUX) removed.
+                The signal
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<5>_cyo" is sourceless and has been
+removed.
+                 Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<6>cy" (MUX) removed.
+                  The signal
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<6>_cyo" is sourceless and has been
+removed.
+                   Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<7>cy" (MUX) removed.
+                    The signal
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<7>_cyo" is sourceless and has been
+removed.
+                     Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<8>cy" (MUX) removed.
+                      The signal
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<8>_cyo" is sourceless and has been
+removed.
+                       Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<9>_xor" (XOR) removed.
+                        The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount__n0000<9>" is sourceless and has been removed.
+                     Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<8>_xor" (XOR) removed.
+                      The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount__n0000<8>" is sourceless and has been removed.
+                   Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<7>_xor" (XOR) removed.
+                    The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount__n0000<7>" is sourceless and has been removed.
+                 Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<6>_xor" (XOR) removed.
+                  The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount__n0000<6>" is sourceless and has been removed.
+               Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<5>_xor" (XOR) removed.
+             Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<4>_xor" (XOR) removed.
+              The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount__n0000<4>" is sourceless and has been removed.
+               Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_4" (FF) removed.
+                The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount<4>" is sourceless and has been removed.
+                 Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_4_rt" (ROM) removed.
+                  The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_4_rt/O" is sourceless and has been removed.
+           Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<3>_xor" (XOR) removed.
+            The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount__n0000<3>" is sourceless and has been removed.
+             Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_3" (FF) removed.
+              The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount<3>" is sourceless and has been removed.
+               Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/_n00371" (ROM) removed.
+                The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/_n00371/O" is
+sourceless and has been removed.
+               Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_3_rt" (ROM) removed.
+                The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_3_rt/O" is sourceless and has been removed.
+         Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<2>_xor" (XOR) removed.
+          The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount__n0000<2>" is sourceless and has been removed.
+           Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_2" (FF) removed.
+            The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount<2>" is sourceless and has been removed.
+             Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_2_rt" (ROM) removed.
+              The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_2_rt/O" is sourceless and has been removed.
+       Sourceless block
+"u_Protocol/u_fifo1bit/BU2/fifo1bit_fifo_generator_v2_0_as_1_U0/cntblk/bld_wr_cn
+tr_plus3/bin_cnt_top/bld_bin_cnt/count__n0000<1>_xor" (XOR) removed.
+        The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount__n0000<1>" is sourceless and has been removed.
+         Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_1" (FF) removed.
+          The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount<1>" is sourceless and has been removed.
+           Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/_n00361" (ROM) removed.
+            The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/_n00361/O" is
+sourceless and has been removed.
+           Sourceless block
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_1_rt" (ROM) removed.
+            The signal
+"u_Protocol/u_fifo1bit/BU2/U0/cntblk/bld_wr_cntr_plus3/bin_cnt_top/bld_bin_cnt/c
+ount_1_rt/O" is sourceless and has been removed.
+The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/_n0010" is
+sourceless and has been removed.
+ Sourceless block "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/mcy1"
+(MUX) removed.
+  The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/carrynet<1>"
+is sourceless and has been removed.
+   Sourceless block "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/mcy2"
+(MUX) removed.
+    The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/carrynet<2>"
+is sourceless and has been removed.
+     Sourceless block "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/mcy3"
+(MUX) removed.
+      The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/carrynet<3>"
+is sourceless and has been removed.
+       Sourceless block "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/mcy4"
+(MUX) removed.
+        The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/comp_af2" is
+sourceless and has been removed.
+         Sourceless block "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/_n00001"
+(ROM) removed.
+          The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/_n00001/O" is
+sourceless and has been removed.
+The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/_n0010" is
+sourceless and has been removed.
+ Sourceless block "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/mcy1"
+(MUX) removed.
+  The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/carrynet<1>"
+is sourceless and has been removed.
+   Sourceless block "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/mcy2"
+(MUX) removed.
+    The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/carrynet<2>"
+is sourceless and has been removed.
+     Sourceless block "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/mcy3"
+(MUX) removed.
+      The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/carrynet<3>"
+is sourceless and has been removed.
+       Sourceless block "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/mcy4"
+(MUX) removed.
+        The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/comp_af1" is
+sourceless and has been removed.
+The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/_n00361/O" is
+sourceless and has been removed.
+The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/_n00371/O" is
+sourceless and has been removed.
+The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/_n00381/O" is
+sourceless and has been removed.
+The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/_n00391/O" is
+sourceless and has been removed.
+The signal "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/_n00401/O" is
+sourceless and has been removed.
+Unused block "u_Protocol/u_TDQue_out/BU2/U0/flblk/ram_rd_en_i1_1" (ROM) removed.
+Unused block "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/_n0000175"
+(ROM) removed.
+Unused block "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/_n000032" (ROM)
+removed.
+Unused block "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/_n000032_SW0"
+(ROM) removed.
+Unused block "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/_n000059" (ROM)
+removed.
+Unused block "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/_n000095" (ROM)
+removed.
+Unused block "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/aflogic/almost_full_i"
+(FF) removed.
+Unused block "u_Protocol/u_TDQue_out/BU2/U0/flblk/thrmod/elogic/c5/dout_i95"
+(ROM) removed.
+Unused block "u_Protocol/u_TDQue_out/GND" (ZERO) removed.
+Unused block "u_Protocol/u_TDQue_out/VCC" (ONE) removed.
+Unused block "u_Protocol/u_fifo1bit/BU2/U0/flblk/rpremod/RAM_RD_EN1" (ROM)
+removed.
+Unused block
+"u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/almost_full_i_ClkEn_INV1_INV_
+0" (BUF) removed.
+Unused block "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/_n00361"
+(ROM) removed.
+Unused block "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/_n00371"
+(ROM) removed.
+Unused block "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/_n00381"
+(ROM) removed.
+Unused block "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/_n00391"
+(ROM) removed.
+Unused block "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/_n00401"
+(ROM) removed.
+Unused block "u_Protocol/u_fifo1bit/BU2/U0/flblk/wpremod/RAM_WR_EN1" (ROM)
+removed.
+Unused block "u_Protocol/u_fifo1bit/BU2/U0/flblk/wpremod/RAM_WR_EN1_1" (ROM)
+removed.
+Unused block "u_Protocol/u_fifo1bit/GND" (ZERO) removed.
+Unused block "u_Protocol/u_fifo1bit/VCC" (ONE) removed.
+Unused block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_1_rt" (ROM)
+removed.
+Unused block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_2_rt" (ROM)
+removed.
+Unused block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_3_rt" (ROM)
+removed.
+Unused block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_4_rt" (ROM)
+removed.
+Unused block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_5_rt" (ROM)
+removed.
+Unused block
+"u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_6_rt" (ROM)
+removed.
+Unused block "u_datamem/BU2/U0/flblk/clkmod/rdx/Mxor__n0000_Result1" (ROM)
+removed.
+Unused block "u_datamem/BU2/U0/flblk/clkmod/rdx/Mxor__n0001_Result1" (ROM)
+removed.
+Unused block "u_datamem/BU2/U0/flblk/clkmod/rdx/Mxor__n0002_Result1" (ROM)
+removed.
+Unused block "u_datamem/BU2/U0/flblk/clkmod/rdx/Mxor__n0003_Result1" (ROM)
+removed.
+Unused block "u_datamem/BU2/U0/flblk/clkmod/rdx/Mxor__n0004_Result1" (ROM)
+removed.
+Unused block "u_datamem/BU2/U0/flblk/clkmod/rdx/Mxor__n0005_Result1" (ROM)
+removed.
+Unused block "u_datamem/BU2/U0/flblk/clkmod/rdx/PNTR_B_1" (FF) removed.
+Unused block "u_datamem/BU2/U0/flblk/clkmod/rdx/PNTR_B_2" (FF) removed.
+Unused block "u_datamem/BU2/U0/flblk/clkmod/rdx/pntr_tmp_6" (FF) removed.
+Unused block
+"u_datamem/BU2/U0/flblk/thrmod/aelogic/almost_empty_i_ClkEn_INV1_INV_0" (BUF)
+removed.
+Unused block "u_datamem/BU2/U0/flblk/thrmod/aelogic/cae1/dout_i103" (ROM)
+removed.
+Unused block "u_datamem/BU2/U0/flblk/thrmod/aelogic/cae1/dout_i17" (ROM)
+removed.
+Unused block "u_datamem/BU2/U0/flblk/thrmod/aelogic/cae1/dout_i26" (ROM)
+removed.
+Unused block "u_datamem/BU2/U0/flblk/thrmod/aelogic/cae1/dout_i76" (ROM)
+removed.
+Unused block "u_datamem/BU2/U0/flblk/thrmod/aelogic/cae1/dout_i8" (ROM) removed.
+Unused block "u_datamem/BU2/U0/flblk/thrmod/flogic/RAM_FULL_i" (FF) removed.
+Unused block "u_datamem/GND" (ZERO) removed.
+Unused block "u_datamem/VCC" (ONE) removed.
+Unused block "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf1/mfirst0"
+(MUX) removed.
+Unused block "u_Protocol/u_fifo1bit/BU2/U0/flblk/thrmod/aflogic/caf2/mfirst0"
+(MUX) removed.
+
+Optimized Block(s):
+TYPE 		BLOCK
+GND 		XST_GND
+VCC 		XST_VCC
+GND 		u_Protocol/u_TDQue_out/BU2/XST_GND
+VCC 		u_Protocol/u_TDQue_out/BU2/XST_VCC
+GND 		u_Protocol/u_fifo1bit/BU2/XST_GND
+VCC 		u_Protocol/u_fifo1bit/BU2/XST_VCC
+FDCE 		u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_0
+   optimized to 0
+FDCE 		u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_1
+   optimized to 0
+FDCE 		u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_2
+   optimized to 0
+FDCE 		u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_3
+   optimized to 0
+FDCE 		u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_4
+   optimized to 0
+FDCE 		u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_5
+   optimized to 0
+FDCE 		u_datamem/BU2/U0/cntblk/gen_wr_cntr/bin_cnt_top/bld_bin_cnt/count_6
+   optimized to 0
+LUT2 		u_datamem/BU2/U0/flblk/clkmod/wrx/Mxor__n0000_Result1
+LUT2 		u_datamem/BU2/U0/flblk/clkmod/wrx/Mxor__n0001_Result1
+LUT2 		u_datamem/BU2/U0/flblk/clkmod/wrx/Mxor__n0002_Result1
+LUT2 		u_datamem/BU2/U0/flblk/clkmod/wrx/Mxor__n0003_Result1
+LUT2 		u_datamem/BU2/U0/flblk/clkmod/wrx/Mxor__n0004_Result1
+LUT2 		u_datamem/BU2/U0/flblk/clkmod/wrx/Mxor__n0005_Result1
+LUT2 		u_datamem/BU2/U0/flblk/clkmod/wrx/Mxor__n0007_Result1
+LUT3 		u_datamem/BU2/U0/flblk/clkmod/wrx/Mxor__n0008_Result1
+LUT4_L 		u_datamem/BU2/U0/flblk/clkmod/wrx/Mxor__n0010_Xo<1>1
+LOCALBUF 		u_datamem/BU2/U0/flblk/clkmod/wrx/Mxor__n0010_Xo<1>1/LUT4_L_BUF
+LUT2_L 		u_datamem/BU2/U0/flblk/clkmod/wrx/Mxor__n0011_Result1
+LOCALBUF 		u_datamem/BU2/U0/flblk/clkmod/wrx/Mxor__n0011_Result1/LUT2_L_BUF
+LUT4 		u_datamem/BU2/U0/flblk/clkmod/wrx/Mxor__n0012_Result1
+LUT4 		u_datamem/BU2/U0/flblk/clkmod/wrx/Mxor__n0012_Result2
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/PNTR_B_0
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/PNTR_B_1
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/PNTR_B_2
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/PNTR_B_3
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/PNTR_B_4
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/PNTR_B_5
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/PNTR_B_6
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmp_0
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmp_1
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmp_2
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmp_3
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmp_4
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmp_5
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmp_6
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmpx_0
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmpx_1
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmpx_2
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmpx_3
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmpx_4
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmpx_5
+   optimized to 0
+FD 		u_datamem/BU2/U0/flblk/clkmod/wrx/pntr_tmpx_6
+   optimized to 0
+LUT2 		u_datamem/BU2/U0/flblk/wpremod/RAM_WR_EN1
+GND 		u_datamem/BU2/XST_GND
+VCC 		u_datamem/BU2/XST_VCC
+INV
+		u_datamem/BU2/datamem_fifo_generator_v2_0_as_1_U0/cntblk/gen_wr_cntr/bin_cnt_t
+op/bld_bin_cnt/count__n0000<0>lut_INV_0
+
+To enable printing of redundant blocks removed and signals merged, set the
+detailed map report option and rerun map.
+
+Section 6 - IOB Properties
+--------------------------
+
++------------------------------------------------------------------------------------------------------------------------+
+| IOB Name                           | Type    | Direction | IO Standard | Drive    | Slew | Reg (s)  | Resistor | IOB   |
+|                                    |         |           |             | Strength | Rate |          |          | Delay |
++------------------------------------------------------------------------------------------------------------------------+
+| Clock12M                           | IOB     | OUTPUT    | LVCMOS25    | 12       | SLOW |          |          |       |
+| Clock1K                            | IOB     | OUTPUT    | LVCMOS25    | 12       | SLOW |          |          |       |
+| Clock24M                           | IOB     | INPUT     | LVCMOS25    |          |      |          |          |       |
+| ResetB                             | IOB     | INPUT     | LVCMOS25    |          |      |          |          |       |
+| Write                              | IOB     | INPUT     | LVCMOS25    |          |      |          |          |       |
+| dminus                             | IOB     | BIDIR     | LVCMOS25    | 12       | SLOW |          |          |       |
+| dplus                              | IOB     | BIDIR     | LVCMOS25    | 12       | SLOW |          |          |       |
+| status_connect                     | IOB     | OUTPUT    | LVCMOS25    | 12       | SLOW |          |          |       |
+| status_full                        | IOB     | OUTPUT    | LVCMOS25    | 12       | SLOW |          |          |       |
+| status_low                         | IOB     | OUTPUT    | LVCMOS25    | 12       | SLOW |          |          |       |
++------------------------------------------------------------------------------------------------------------------------+
+
+Section 7 - RPMs
+----------------
+
+Section 8 - Guide Report
+------------------------
+Guide not run on this design.
+
+Section 9 - Area Group Summary
+------------------------------
+No area groups were found in this design.
+
+Section 10 - Modular Design Summary
+-----------------------------------
+Modular Design not used for this design.
+
+Section 11 - Timing Report
+--------------------------
+This design was not run using timing mode.
+
+Section 12 - Configuration String Details
+--------------------------
+Use the "-detail" map option to print out Configuration Strings
+
+Section 13 - Additional Device Resource Counts
+----------------------------------------------
+Number of JTAG Gates for IOBs = 10
+Number of Equivalent Gates for Design = 210,363
+Number of RPM Macros = 0
+Number of Hard Macros = 0
+DCIRESETs = 0
+CAPTUREs = 0
+BSCANs = 0
+STARTUPs = 0
+DCMs = 0
+GCLKs = 3
+ICAPs = 0
+18X18 Multipliers = 0
+Block RAMs = 3
+Total Registers (Flops & Latches in Slices & IOBs) not driven by LUTs = 276
+IOB Dual-Rate Flops not driven by LUTs = 0
+IOB Dual-Rate Flops = 0
+IOB Slave Pads = 0
+IOB Master Pads = 0
+IOB Latches not driven by LUTs = 0
+IOB Latches = 0
+IOB Flip Flops not driven by LUTs = 0
+IOB Flip Flops = 0
+Unbonded IOBs = 0
+Bonded IOBs = 10
+XORs = 337
+CARRY_INITs = 291
+CARRY_SKIPs = 0
+CARRY_MUXes = 539
+Shift Registers = 0
+Static Shift Registers = 0
+Dynamic Shift Registers = 0
+16x1 ROMs = 0
+16x1 RAMs = 0
+32x1 RAMs = 0
+Dual Port RAMs = 0
+MUXFs = 66
+MULT_ANDs = 0
+4 input LUTs used as Route-Thrus = 253
+4 input LUTs = 1067
+Slice Latches not driven by LUTs = 64
+Slice Latches = 64
+Slice Flip Flops not driven by LUTs = 275
+Slice Flip Flops = 524
+SliceMs = 0
+SliceLs = 744
+Slices = 744
+F6 Muxes = 0
+F5 Muxes = 66
+F8 Muxes = 0
+F7 Muxes = 0
+Xilinx Core fifo_generator_v2_0, Coregen 7.1i = 6
+Number of LUT signals with 4 loads = 8
+Number of LUT signals with 3 loads = 15
+Number of LUT signals with 2 loads = 135
+Number of LUT signals with 1 load = 866
+NGM Average fanout of LUT = 1.68
+NGM Maximum fanout of LUT = 32
+NGM Average fanin for LUT = 3.3037
+Number of LUT symbols = 1067

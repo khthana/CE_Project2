@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>Hidden information</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+<link href="smf.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style0 {
+	                   font-family: "MS Sans Serif";
+					   font-size: 14px;
+					   color:#006699;
+					   scrollbar-face-color: #0099FF;
+					   scrollbar-highlight-color: #006699; 
+					   scrollbar-shadow-color: #006699; 
+					   scrollbar-arrow-color: #FFFFFF;
+					   scrollbar-track-color: #FFFFFF; 
+					   scrollbar-darkshadow-color: #009900;
+        }
+		a:link {
+	color: #F58227;
+	text-decoration: none;
+}
+a:visited {
+	text-decoration: none;
+	color: #006699;
+}
+
+-->
+</style>
+</HEAD>
+<BODY class="style0">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;หมายถึง Hacker จะแอบเข้ามาดูข้อมูลที่อยู่ใน 
+Hidden Field ที่ web master ชอบใช้ในการเขียน Web Application วิธีการดูก็ง่าย ๆ 
+คือ Right Click Mouse ที่หน้าจอใน IE แล้วเลือก View source ก็สามารถเห็นข้อมูลที่โดยปกติ 
+IE จะไปแสดงบนจอภาพซึ่ง Hacker สามารถใช้ข้อมูลเหล่านี้ ให้เป็นประโยชน์ในการโจมตี 
+Web server ของเรา ปัญหาก็คือ ในความเข้าใจของ web master โดยปกติคิดว่าข้อมูลใน 
+Hidden Field จะไม่มีใครเห็น และจะไม่ถูกแก้ไขจากฝั่ง Client แต่ Hacker สามารถแก้ไขข้อมูลใน 
+Hidden Field จะฝั่ง Client และส่งกลับมาประมวลผลในฝั่ง Server ได้ ทำให้ข้อมูลที่เรารับกลับเข้ามาจากฝั่ง 
+Client เกิดความผิดพลาด ยกตัวอย่างเช่น การทำ e-commerce web site ขายสินค้าผ่าน 
+Internet พวก Hacker สามารถเข้ามาแก้ไขข้อมูลราคาสินค้าของเราให้ต่ำลงได้เวลาสั่งซื้อสินค้า 
+ทำให้ web application คำนวณราคาผิดพลาด ส่งผลต่อยอดขายที่ไม่ถูกต้อง ซึ่งต้องใช้เวลาในการตรวจสอบกันพอสมควร 
+<br>
+ตัวอย่าง form <font color="#CC6600"><br>
+<font color="#FF0000">&lt;form name=&quot;form2&quot; method=&quot;post&quot; 
+action=&quot;javack.php&quot;&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input name=&quot;price&quot; 
+type=&quot;hidden&quot; id=&quot;price&quot; value=&quot;5000&quot;&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;style2&quot;&gt;ซื้อจำนวน&lt;/span&gt; 
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input name=&quot;textfield&quot; 
+type=&quot;text&quot; size=&quot;16&quot; maxlength=&quot;16&quot; &gt; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;style2&quot;&gt;ตัว&lt;/span&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;input type=&quot;submit&quot; name=&quot;Submit&quot; 
+value=&quot;Submit&quot;&gt;<br>
+&lt;/form&gt;</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </font>ซึ่งการทำ Hidden Manipulation 
+นั้นทำได้โดยการแก้ไข input ที่มี type เป็น hidden field โดยการแก้ไขค่า value =”x”ให้น้อยลงจากราคาปกติตามที่ 
+Hacker ต้องการ ซึ่งเมื่อทำการแก้ค่าแล้วสิ่งต่อไปก็เป็นการส่งค่าที่ทำการเปลี่ยนนั้นไปประมวลผลทาง 
+Server การเปลี่ยน ในส่วนของ form ที่ทำการส่งformนั้นไปยังฝั่งServerซึ่งส่วนที่ทำหน้าที่นี้คือ 
+action = “www.example.com/javack.php” เท่านี้ก็เป็นการส่งหน้า page นี้ไปยัง Server 
+ได้แล้วซึ่งถ้า website นั้นไม่มีการป้องกันการทำ Hidden Manipulation เอาไว้สิ่งที่ได้ทำไปก็จะได้ผล<br>
+</BODY>
+</HTML>

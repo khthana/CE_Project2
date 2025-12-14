@@ -1,0 +1,19 @@
+#!/bin/bash
+#compare 2 port number
+#argument1, argument2 is port number
+#case same port number
+if [ $1 = $2 ]
+then
+	frelation=exact
+#case argument1 is all
+elif [ $1 = all ]
+then
+	frelation=subset
+#case argument2 is all
+elif [ $2 = all ]
+then
+	frelation=superset
+#case port number not equal
+else
+	frelation=disjoint
+fi

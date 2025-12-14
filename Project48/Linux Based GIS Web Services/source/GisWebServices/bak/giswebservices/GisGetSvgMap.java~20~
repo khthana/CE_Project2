@@ -1,0 +1,306 @@
+package giswebservices;
+
+public class GisGetSvgMap {
+    public GisGetSvgMap(){}
+
+    public String requestSVG(String sessionKey, String xmlMapRequest, double posX, double posY, double width, double height , String options, int layerID){
+        return requestSVG(sessionKey, xmlMapRequest, posX, posY, width, height , options, layerID, "white", "black");
+    }
+    public String requestSVG(String sessionKey, String xmlMapRequest, double posX, double posY, double width, double height , String options, int layerID, String fillX, String strokeX){
+        try{
+            GisDBConnect gdbs=new GisDBConnect();
+            gdbs.exeSQL("UPDATE session SET time=60 WHERE sessID='"+sessionKey+"' ");
+        }catch(Exception e){}
+
+
+        try{ // try authen
+            GisSvgCreator gsc = new GisSvgCreator();
+            GisXmlReader gxr = new GisXmlReader(xmlMapRequest);
+            GisDBConnect gdb = new GisDBConnect() ;
+
+            gsc.setHeader(posX, posY, width, height) ;
+            String sqlstr;
+            boolean isSecond=false;
+
+            /////////////////Create Position Polygon////////////////////////
+            double pX1=posX;
+            double pY1=posY;
+            double pX2=posX+width;
+            double pY2=posY;
+            double pX3=posX+width;
+            double pY3=posY-height;
+            double pX4=posX;
+            double pY4=posY-height;
+
+
+            String viewbox="(geom && GeomFromText('POLYGON(("+pX1+" "+pY1+","+pX2+" "+pY2+","+pX3+" "+pY3+","+pX4+" "+pY4+","+pX1+" "+pY1+"))',-1) AND ";
+            //////////////////End create////////////////////////////////////
+            if(options.length()>5) options = " AND "+options;
+            if(fillX.length()<3) fillX="red";
+            if(strokeX.length()<3) strokeX="black";
+            //check session and getlevel
+            int level = 7;
+            long memid = 0;
+            try{ // try chkkey
+                sqlstr = "SELECT ownid, memid, level FROM sessionview ";
+                sqlstr+= "WHERE sessid='"+sessionKey+"';";
+                gdb.query(sqlstr);
+                while (gdb.getReturn().next() ){
+                    level=gdb.getReturn().getInt("level");
+                    memid=gdb.getReturn().getInt("memid");
+                }
+            }catch(Exception e){return "3";} //Must login before call this services
+
+            try{ // try big layer   1
+                for(int i=0; i<gxr.child("layer").count(); i++){
+                    try{ // try layer  2
+                        String oper = gxr.child("layer",i).attribute("operator");
+                        if(oper.equals("")) oper="AND";
+
+                        String showcolumn = gxr.child("layer",i).attribute("showcolumn") ;
+                        if (showcolumn.equals("")) showcolumn="null";
+
+                        String fill = gxr.child("layer",i).attribute("fill") ;
+                        if (fill.equals("")) fill="white";
+
+                        String stroke = gxr.child("layer",i).attribute("stroke") ;
+                        if (stroke.equals("")) stroke="black";
+
+                        String textcolor = gxr.child("layer",i).attribute("textcolor") ;
+                        if (fill.equals("")) fill="black";
+
+                        int textsize=10;
+                        try{textsize = Integer.parseInt(gxr.child("layer", i).attribute("textsize"));}catch(Exception et){textsize=10;}
+
+                        String init = "FALSE";
+                        if (!oper.toUpperCase().trim().equals("OR") ) {
+                            init= "TRUE";
+                            oper= "AND";
+                        }
+                        String lid = gxr.child("layer", i).attribute("id");
+
+                        String chkLayer=new String("");
+                        if(level<7) chkLayer = "SELECT tbname, geomtype FROM layerview WHERE memid=" + memid + " AND lid=" + lid;
+                        else chkLayer = "SELECT tbname, geomtype FROM publiclayerview WHERE lid=" + lid;
+
+                        String geomtype = new String("") ;
+                        String tbname = new String("null");
+
+                        gdb.query(chkLayer);
+                        while (gdb.getReturn().next()) {
+                            tbname = gdb.getReturn().getString("tbname");
+                            geomtype=gdb.getReturn().getString("geomtype");
+                        }
+
+                        //add third party here +++++++++++++++++++++++++++++
+                        //++++++++++++++++++++++++++++++++++++++++++++++++++
+                        //++++++++++++++++++++++++++++++++++++++++++++++++++
+                        ThirdPartyCall tpc = new ThirdPartyCall();
+                        tpc.tryToCallThirdParty(lid,geomtype,posX, posY,  height, width,fill,stroke,showcolumn,textcolor,textsize);
+
+                        String where = new String(" "+ init) ;
+                        try{
+                            for (int j = 0;
+                                         j < gxr.child("layer", i).child("condition").
+                                         count(); j++) { // for where
+
+                                String attr = gxr.child("layer",
+                                              i).child("condition", j).
+                                              attribute("name");
+                                String operj = gxr.child("layer",
+                                               i).child("condition", j).
+                                               attribute("operator").
+                                               toLowerCase();
+                                String value = gxr.child("layer",
+                                               i).child("condition", j).value();
+
+                                String operuse = "=";
+                                if (operj.indexOf("eq") >= 0)
+                                    operuse = "=";
+                                if (operj.indexOf("le") >= 0)
+                                    operuse = "<";
+                                if (operj.indexOf("mo") >= 0)
+                                    operuse = ">";
+                                if (operj.indexOf("eq") >= 0 &&
+                                    operj.indexOf("le") >= 0)
+                                    operuse = "<=";
+                                if (operj.indexOf("eq") >= 0 &&
+                                    operj.indexOf("le") >= 0)
+                                    operuse = ">=";
+                                if (operj.indexOf("not") >= 0)
+                                    operuse = "!=";
+                                if (operj.indexOf("like") >= 0) {
+                                    operuse = "LIKE";
+                                    value = "%" + value + "%";
+                                }
+                                if (operj.indexOf("like") >= 0 &&
+                                    operj.indexOf("not") >= 0) {
+                                    operuse = "NOT LIKE";
+                                    value = "%" + value + "%";
+                                }
+                                value = "'" + value + "'";
+                                if (operj.indexOf("null") >= 0) {
+                                    operuse = "IS NULL";
+                                    value = "";
+                                }
+                                if (operj.indexOf("not") >= 0 &&
+                                    operj.indexOf("null") >= 0) {
+                                    operuse = "IS NOT NULL";
+                                    value = "";
+                                }
+
+                                where += " " + oper + " ( " + attr + " " +
+                                        operuse + " " + value + " ) ";
+                            } // end for where
+                        }catch (Exception e){where = " (TRUE) ";}
+
+                        //create svg
+                        GisDBConnect gdcsvg= new GisDBConnect();
+
+                        if (tbname.indexOf("null")<0){
+                            try{  // try select svg
+                                if (geomtype.indexOf("POINT") >= 0) {
+                                    try {
+                                        String option=new String("") ;
+                                        //These 2 lines may have problem. *************** PROBLEM
+                                        //if (layerID.length()<2) option=options;
+                                        int intLid=Integer.parseInt(lid);
+                                        if (layerID==intLid) option=options;
+
+                                        sqlstr = "SELECT id, assvg(geom,0,15) as geom FROM " +
+                                                tbname + " WHERE "+viewbox+" (" + where + ") " + option;
+                                        gdcsvg.query(sqlstr);
+
+                                        while (gdcsvg.getReturn().next() ){
+                                            gsc.setGeomPoint(gdcsvg.getReturn().getInt("id"),gdcsvg.getReturn().getString("geom"),fill,stroke);
+                                        }
+
+                                        //maybe have problem
+
+                                        /*if (!showcolumn.toLowerCase().trim().equals("null") ){
+                                            try{
+                                                sqlstr ="SELECT id, assvg(geom,0,15) as geom,  x(centroid(geom)) as x," +
+                                                        " y(centroid(geom)) as y ," +showcolumn + " as text FROM " +
+                                                        tbname + " WHERE "+viewbox+" (" + where +")" + option;
+                                                gdcsvg.query(sqlstr);
+                                            }catch(Exception e){}
+                                        }*/
+
+                                        //add new
+                                        if (!showcolumn.toLowerCase().trim().equals("null") ){
+                                            try{
+                                                sqlstr ="SELECT id, x(centroid(geom)) as x," +
+                                                        " y(centroid(geom)) as y ," +showcolumn + " as text FROM " +
+                                                        tbname + " WHERE "+viewbox+" (" + where +")) " + option;
+
+                                                gdcsvg.query(sqlstr);
+                                                while (gdcsvg.getReturn().next() ){
+                                                    String showText = gdcsvg.getReturn().getString("text");
+                                                    String txtX = gdcsvg.getReturn().getString("x");
+                                                    String txtY = gdcsvg.getReturn().getString("y");
+                                                    if (showText.equalsIgnoreCase("null")==false)
+                                                        gsc.setText(gdcsvg.getReturn().getInt("id"),showText, txtX, txtY, textcolor, textsize);
+                                                }
+
+                                            }catch(Exception e){}
+                                        }
+
+                                    } catch (Exception e) {}
+
+                                }//point
+
+                                if (geomtype.indexOf("LINE") >= 0) {
+                                    try {
+                                        String option=new String("") ;
+                                        //if (layerID.length()<2) option=options;
+                                        int intLid=Integer.parseInt(lid);
+                                        if (layerID==intLid) option=options;
+
+
+                                        //for ohm  "(your condition) AND "
+                                        /*sqlstr = "SELECT id, assvg(geom,0,15) as geom FROM " +
+                                                tbname + " WHERE *(viewbox&&geom=1 AND) *  (" + where + ") " + option   HAVING ;*/
+                                        /*sqlstr = "SELECT id, assvg(geom,0,15) as geom FROM " +
+                                                tbname + " WHERE (" + where + ") " + option;*/
+
+                                       sqlstr = "SELECT id, assvg(geom,0,15) as geom FROM " +
+                                                tbname + " WHERE "+viewbox+" (" + where + ")) " + option;
+                                        gdcsvg.query(sqlstr);
+
+                                        while (gdcsvg.getReturn().next() ){
+                                            gsc.setGeomLine(gdcsvg.getReturn().getInt("id"),gdcsvg.getReturn().getString("geom"),fill,stroke);
+                                        }
+
+
+                                    } catch (Exception e) {}
+
+                                }//line
+                                if (geomtype.indexOf("POLYGON") >= 0) {
+                                    try {
+                                        String option=new String("") ;
+                                        //if (layerID.length()<2) option=options;
+                                        int intLid=Integer.parseInt(lid);
+                                        if (isSecond==true) option=options;
+
+                                        if (layerID==intLid)
+                                            if (isSecond==false){
+                                                isSecond = true;
+                                                String temp=fill;
+                                                showcolumn="null";
+                                                i--;
+                                            }
+                                            else {
+                                                isSecond = false;
+                                                fill=fillX;
+                                                stroke=strokeX;
+                                            }
+
+                                        sqlstr = "SELECT id, assvg(geom,0,15) as geom FROM " +
+                                                //tbname + " WHERE  (" + where + ") " + option;
+                                                tbname + " WHERE "+viewbox+" (" + where + ")) " + option;
+                                        //if (intLid==10003 && isSecond==false) return sqlstr;
+                                        gdcsvg.query(sqlstr);
+
+                                        while (gdcsvg.getReturn().next() ){
+                                            gsc.setGeomPolygon(gdcsvg.getReturn().getInt("id"),gdcsvg.getReturn().getString("geom"),fill,stroke);
+                                        }
+
+                                        if (!showcolumn.toLowerCase().trim().equals("null") ){
+                                            try{
+                                                sqlstr ="SELECT id, x(centroid(geom)) as x," +
+                                                        " y(centroid(geom)) as y ," +showcolumn + " as text FROM " +
+                                                        tbname + " WHERE "+viewbox+" (" + where +")) " + option;
+
+                                                gdcsvg.query(sqlstr);
+                                                while (gdcsvg.getReturn().next() ){
+                                                    String showText = gdcsvg.getReturn().getString("text");
+                                                    String txtX = gdcsvg.getReturn().getString("x");
+                                                    String txtY = gdcsvg.getReturn().getString("y");
+                                                    if (showText.equalsIgnoreCase("null")==false)
+                                                        gsc.setText(gdcsvg.getReturn().getInt("id"),showText, txtX, txtY, textcolor, textsize);
+                                                }
+
+                                            }catch(Exception e){}
+                                        }
+                                    } catch (Exception e) {}
+                                }//polygon
+                            }catch(Exception e){return "select";} // try select svg
+                        }//if tbname
+
+                        gsc.endSvgTag(lid);
+                        gsc.endTextTag(lid);
+                        gsc.endInfoTag(lid);
+                    }catch(Exception e){ return "layer 2";}  // end try layer 2;
+                }
+
+
+            }catch(Exception e){ return "layer 1";} // end try layer 1
+
+            gsc.getSVG() ;
+           return gsc.getSVG();
+           //return "a";
+        }catch(Exception e){
+            return "b";
+        }
+    }
+}

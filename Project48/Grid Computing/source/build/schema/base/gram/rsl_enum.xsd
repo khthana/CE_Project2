@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.globus.org/namespaces/2004/02/rsl/enum"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+            xmlns:rsl="http://www.globus.org/namespaces/2004/02/rsl"
+            xmlns:enum="http://www.globus.org/namespaces/2004/02/rsl/enum"
+            xmlns="http://www.globus.org/namespaces/2004/02/rsl/enum"
+            elementFormDefault="qualified">
+
+    <xsd:import namespace="http://www.globus.org/namespaces/2004/02/rsl"
+                schemaLocation="rsl.xsd"/>
+
+    <!-- !!! BEGIN DO NOT CHANGE !!! -->
+    <!-- enumeration base types -->
+    <xsd:complexType name="enumerationValueType">
+        <xsd:choice>
+            <xsd:any    namespace="##any"
+                        minOccurs="1"
+                        maxOccurs="1"
+                        processContents="lax"/>
+        </xsd:choice>
+    </xsd:complexType>
+
+    <xsd:complexType name="enumerationElementType">
+        <xsd:choice>
+            <xsd:element name="enumerationValue"
+                         type="enum:enumerationValueType"/>
+        </xsd:choice>
+    </xsd:complexType>
+
+    <xsd:complexType name="enumerationType">
+        <xsd:sequence>
+            <xsd:element name="enumeration" type="enum:enumerationElementType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- GRAM RSL ENUMERATIONS -->
+
+    <!-- jobRun types -->
+    <xsd:complexType name="jobRunEnumerationValueType">
+        <xsd:complexContent>
+            <xsd:restriction base="enum:enumerationValueType">
+                <xsd:choice>
+                    <xsd:element ref="rsl:substitutionRef"/>
+                    <xsd:element name="mpi"/>
+                    <xsd:element name="single"/>
+                    <xsd:element name="multiple"/>
+                    <xsd:element name="condor"/>
+                </xsd:choice>
+            </xsd:restriction>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="jobRunEnumerationElementType">
+        <xsd:complexContent>
+            <xsd:restriction base="enum:enumerationElementType">
+                <xsd:choice>
+                    <xsd:element name="enumerationValue"
+                                 type="enum:jobRunEnumerationValueType"/>
+                </xsd:choice>
+            </xsd:restriction>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="jobRunEnumerationType">
+        <xsd:complexContent>
+            <xsd:restriction base="enum:enumerationType">
+                <xsd:sequence>
+                    <xsd:element name="enumeration"
+                                 type="enum:jobRunEnumerationElementType"/>
+                </xsd:sequence>
+            </xsd:restriction>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <!-- gram myjob types types -->
+    <xsd:complexType name="gramMyJobEnumerationValueType">
+        <xsd:complexContent>
+            <xsd:restriction base="enum:enumerationValueType">
+                <xsd:choice>
+                    <xsd:element ref="rsl:substitutionRef"/>
+                    <xsd:element name="collective"/>
+                    <xsd:element name="independent"/>
+                </xsd:choice>
+            </xsd:restriction>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="gramMyJobEnumerationElementType">
+        <xsd:complexContent>
+            <xsd:restriction base="enum:enumerationElementType">
+                <xsd:choice>
+                    <xsd:element name="enumerationValue"
+                                 type="enum:gramMyJobEnumerationValueType"/>
+                </xsd:choice>
+            </xsd:restriction>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="gramMyJobEnumerationType">
+        <xsd:complexContent>
+            <xsd:restriction base="enum:enumerationType">
+                <xsd:sequence>
+                    <xsd:element   name="enumeration"
+                                   type="enum:gramMyJobEnumerationElementType"/>
+                </xsd:sequence>
+            </xsd:restriction>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+
+    <!-- !!! END DO NOT CHANGE !!! -->
+
+    <!-- ADD USER-DEFINED ENUMERATIONS BELOW --> 
+
+</xsd:schema>

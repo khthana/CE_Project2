@@ -1,0 +1,81 @@
+package giswebservices;
+
+
+import java.io.File;
+import org.w3c.dom.Document;
+import org.w3c.dom.*;
+import java.io.*;
+
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+//import org.xml.sax.SAXException;
+//import org.xml.sax.SAXParseException;
+
+public class GisXmlReader {
+    private DocumentBuilderFactory docBuilderFactory;
+    private DocumentBuilder docBuilder;
+    private Document doc;
+    private NodeList listOfParent;
+
+    public GisXmlReader() throws Exception{
+        try{
+            docBuilderFactory = DocumentBuilderFactory.newInstance();
+            docBuilder = docBuilderFactory.newDocumentBuilder();
+        }catch(Exception e){
+            throw e;
+        }
+    }
+
+    public GisXmlReader(String xmldoc) throws Exception{
+        try {
+            docBuilderFactory = DocumentBuilderFactory.newInstance();
+            docBuilder = docBuilderFactory.newDocumentBuilder();
+            readXmlDoc(xmldoc);
+        }catch(Exception e){
+            throw e;
+        }
+
+    }
+
+    public void readXmlDoc(String xmldoc) throws Exception{
+        try {
+            PrintWriter wout = new PrintWriter("xmldoc.xml");
+            wout.write(xmldoc);
+            wout.close();
+            doc = docBuilder.parse(new File("xmldoc.xml"));
+            doc.getDocumentElement().normalize();
+        }catch(Exception e){
+            throw e;
+        }
+
+
+    }
+
+    public String getRootName(){
+        return doc.getDocumentElement().getNodeName();
+    }
+
+    public void setParent(String parentName){
+        listOfParent = doc.getElementsByTagName(parentName);
+    }
+
+    public int countParent(){
+        return listOfParent.getLength();
+    }
+
+    public String getNodeValue(String nodeName, int item){
+
+        Node childNode = listOfParent.item(item);
+        if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+            Element childElement = (Element) childNode;
+            NodeList childList = childElement.getElementsByTagName(nodeName);
+            Element childNameElement = (Element) childList.item(0);
+
+            NodeList nodeValue = childNameElement.getChildNodes();
+            return ((Node) nodeValue.item(0)).getNodeValue().trim();
+          }
+
+        return "";
+    }
+}

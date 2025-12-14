@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://tempuri.org/allianceWS/SQBooking" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://tempuri.org/allianceWS/SQBooking" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/allianceWS/SQBooking">
+      <s:import namespace="http://www.w3.org/2001/XMLSchema" />
+      <s:element name="Booking">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BookedFlightSet">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="BookedDetailsString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BookingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BookingResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelFlight">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BookRef" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelFlightResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CancelFlightResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangeFlight">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BookRef" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangeFlightResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ChangeFlightResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PaymentUpdate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BookRef" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PaymentUpdateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PaymentUpdateResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateSeat">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateSeatSet">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateSeatResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateSeatResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </types>
+  <message name="BookingSoapIn">
+    <part name="parameters" element="s0:Booking" />
+  </message>
+  <message name="BookingSoapOut">
+    <part name="parameters" element="s0:BookingResponse" />
+  </message>
+  <message name="CancelFlightSoapIn">
+    <part name="parameters" element="s0:CancelFlight" />
+  </message>
+  <message name="CancelFlightSoapOut">
+    <part name="parameters" element="s0:CancelFlightResponse" />
+  </message>
+  <message name="ChangeFlightSoapIn">
+    <part name="parameters" element="s0:ChangeFlight" />
+  </message>
+  <message name="ChangeFlightSoapOut">
+    <part name="parameters" element="s0:ChangeFlightResponse" />
+  </message>
+  <message name="PaymentUpdateSoapIn">
+    <part name="parameters" element="s0:PaymentUpdate" />
+  </message>
+  <message name="PaymentUpdateSoapOut">
+    <part name="parameters" element="s0:PaymentUpdateResponse" />
+  </message>
+  <message name="UpdateSeatSoapIn">
+    <part name="parameters" element="s0:UpdateSeat" />
+  </message>
+  <message name="UpdateSeatSoapOut">
+    <part name="parameters" element="s0:UpdateSeatResponse" />
+  </message>
+  <portType name="SQServicesSoap">
+    <operation name="Booking">
+      <documentation>SQ service for booking flight</documentation>
+      <input message="s0:BookingSoapIn" />
+      <output message="s0:BookingSoapOut" />
+    </operation>
+    <operation name="CancelFlight">
+      <documentation>SQ service for cancel flight</documentation>
+      <input message="s0:CancelFlightSoapIn" />
+      <output message="s0:CancelFlightSoapOut" />
+    </operation>
+    <operation name="ChangeFlight">
+      <documentation>SQ service for change flight</documentation>
+      <input message="s0:ChangeFlightSoapIn" />
+      <output message="s0:ChangeFlightSoapOut" />
+    </operation>
+    <operation name="PaymentUpdate">
+      <documentation>SQ service for payment update</documentation>
+      <input message="s0:PaymentUpdateSoapIn" />
+      <output message="s0:PaymentUpdateSoapOut" />
+    </operation>
+    <operation name="UpdateSeat">
+      <documentation>SQservice for update seat available</documentation>
+      <input message="s0:UpdateSeatSoapIn" />
+      <output message="s0:UpdateSeatSoapOut" />
+    </operation>
+  </portType>
+  <binding name="SQServicesSoap" type="s0:SQServicesSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <operation name="Booking">
+      <soap:operation soapAction="http://tempuri.org/allianceWS/SQBooking/Booking" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CancelFlight">
+      <soap:operation soapAction="http://tempuri.org/allianceWS/SQBooking/CancelFlight" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ChangeFlight">
+      <soap:operation soapAction="http://tempuri.org/allianceWS/SQBooking/ChangeFlight" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="PaymentUpdate">
+      <soap:operation soapAction="http://tempuri.org/allianceWS/SQBooking/PaymentUpdate" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="UpdateSeat">
+      <soap:operation soapAction="http://tempuri.org/allianceWS/SQBooking/UpdateSeat" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="SQServices">
+    <port name="SQServicesSoap" binding="s0:SQServicesSoap">
+      <soap:address location="http://localhost/allianceWS/SQServices.asmx" />
+    </port>
+  </service>
+</definitions>

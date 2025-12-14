@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://samples.ogsa.globus.org/ArraySample" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:gridservicesoapbinding="http://www.gridforum.org/namespaces/2003/03/OGSI/bindings" xmlns:impl="http://samples.ogsa.globus.org/ArraySample" xmlns:intf="http://samples.ogsa.globus.org/ArraySample" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns1="http://array.samples.ogsa.globus.org" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><wsdl:import location="../../ogsi/ogsi_bindings.wsdl" namespace="http://www.gridforum.org/namespaces/2003/03/OGSI/bindings"/>
+ <wsdl:types>
+  <schema targetNamespace="http://samples.ogsa.globus.org/ArraySample" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="Next">
+    <complexType/>
+   </element>
+   <element name="NextResponse">
+    <complexType>
+     <sequence>
+      <element name="NextReturn" type="tns1:Tuple"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+  <schema targetNamespace="http://xml.apache.org/xml-soap" xmlns="http://www.w3.org/2001/XMLSchema">
+   <complexType name="Vector">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:anyType"/>
+    </sequence>
+   </complexType>
+  </schema>
+  <schema targetNamespace="http://array.samples.ogsa.globus.org" xmlns="http://www.w3.org/2001/XMLSchema">
+   <complexType name="ResultField">
+    <sequence>
+     <element name="name" nillable="true" type="xsd:string"/>
+     <element name="type" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="Tuple">
+    <sequence>
+     <element name="eofFlag" type="xsd:boolean"/>
+     <element name="rows" nillable="true" type="apachesoap:Vector"/>
+     <element maxOccurs="unbounded" name="fields" nillable="true" type="tns1:ResultField"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="NextResponse">
+
+      <wsdl:part element="impl:NextResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="NextRequest">
+
+      <wsdl:part element="impl:Next" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="ArraySamplePortType">
+
+      <wsdl:operation name="Next">
+
+         <wsdl:input message="impl:NextRequest" name="NextRequest"/>
+
+         <wsdl:output message="impl:NextResponse" name="NextResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="ArraySampleServiceSoapBinding" type="impl:ArraySamplePortType">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="Next">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="NextRequest">
+
+            <wsdlsoap:body namespace="http://samples.ogsa.globus.org/ArraySample" use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="NextResponse">
+
+            <wsdlsoap:body namespace="http://samples.ogsa.globus.org/ArraySample" use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="ArraySampleService">
+
+      <wsdl:port binding="impl:ArraySampleServiceSoapBinding" name="ArraySampleService">
+
+         <wsdlsoap:address location="http://localhost/ogsa/services/ArraySampleService"/>
+
+      </wsdl:port>
+
+   <wsdl:port binding="gridservicesoapbinding:GridServiceSOAPBinding" name="GridServiceSOAPBindingPort"><wsdlsoap:address location="http://localhost/ogsa/services/ArraySampleService"/></wsdl:port></wsdl:service>
+
+</wsdl:definitions>

@@ -1,0 +1,329 @@
+package gis_application;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import com.borland.jbcl.layout.XYLayout;
+import com.borland.jbcl.layout.*;
+import java.awt.Font;
+import javax.swing.BorderFactory;
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
+import java.awt.Color;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.border.TitledBorder;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.SystemColor;
+
+public class frmMyProfile extends JFrame {
+    int selectedOwnid=0;
+    MyProfile mp= new MyProfile();
+    frmOwner frmOwner = new frmOwner();
+    frmLayer frmLayer = new frmLayer();
+
+    JPanel contentPane;
+    XYLayout xYLayout1 = new XYLayout();
+
+    JLabel jLabel3 = new JLabel();
+    JLabel jLabel4 = new JLabel();
+    JLabel jLabel5 = new JLabel();
+    JLabel jLabel6 = new JLabel();
+    JLabel jLabel7 = new JLabel();
+    JLabel jLabel8 = new JLabel();
+    JLabel jLabel9 = new JLabel();
+    JTextField txtName = new JTextField();
+  JTextField txtPhone = new JTextField();
+    JTextField txtEmail = new JTextField();
+    JPasswordField txtPassword0 = new JPasswordField();
+    JPasswordField txtPassword1 = new JPasswordField();
+    JTextArea txtAddress = new JTextArea();
+    Border border1 = BorderFactory.createLineBorder(UIManager.getColor(
+            "inactiveCaption"), 1);
+    JButton appButt = new JButton();
+  JLabel jLabel1 = new JLabel();
+  TitledBorder titledBorder1 = new TitledBorder("");
+  TitledBorder titledBorder2 = new TitledBorder("");
+  TitledBorder titledBorder3 = new TitledBorder("");
+  TitledBorder titledBorder4 = new TitledBorder("");
+  TitledBorder titledBorder5 = new TitledBorder("");
+  TitledBorder titledBorder6 = new TitledBorder("");
+  TitledBorder titledBorder7 = new TitledBorder("");
+  TitledBorder titledBorder8 = new TitledBorder("");
+  JButton cmdOrg = new JButton();
+  JTextField txtOrgname = new JTextField();
+  JTextField txtPlayroll = new JTextField();
+  JLabel jLabel2 = new JLabel();
+  TitledBorder titledBorder9 = new TitledBorder("");
+  JPanel jPanel1 = new JPanel();
+  XYLayout xYLayout2 = new XYLayout();
+  TitledBorder titledBorder10 = new TitledBorder("");
+  JPasswordField txtPasswordx = new JPasswordField();
+  JButton cmdPassChange = new JButton();
+  TitledBorder titledBorder11 = new TitledBorder("");
+  JLabel jLabel10 = new JLabel();
+  JButton cmdLayerView = new JButton();
+  TitledBorder titledBorder12 = new TitledBorder("");
+  public frmMyProfile() {
+        try {
+            //setDefaultCloseOperation(EXIT_ON_CLOSE);
+            jbInit();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Component initialization.
+     *
+     * @throws java.lang.Exception
+     */
+    private void jbInit() throws Exception {
+        contentPane = (JPanel) getContentPane();
+        contentPane.setLayout(xYLayout1);
+        setSize(new Dimension(500, 600));
+        setTitle("My Profile");
+    jLabel3.setText("Name");
+    jLabel4.setForeground(Color.gray);
+    jLabel4.setText("Old Password");
+    jLabel5.setForeground(Color.red);
+    jLabel5.setText("New Password");
+    jLabel6.setForeground(Color.red);
+    jLabel6.setText("Confirm New Password");
+        jLabel7.setText("Address");
+        jLabel8.setText("Phone");
+        jLabel9.setText("E-mail");
+    txtPassword0.setForeground(Color.red);
+    txtPassword0.setBorder(titledBorder4);
+    txtPassword1.setForeground(Color.pink);
+    txtPassword1.setBorder(titledBorder5);
+    txtAddress.setBackground(Color.white);
+        txtAddress.setBorder(titledBorder6);
+    txtAddress.setLineWrap(true);
+    appButt.setBackground(Color.white);
+    appButt.setBorder(titledBorder1);
+    appButt.setText("Update My Profile");
+    appButt.addActionListener(new frmMyProfile_appButt_actionAdapter(this));
+    jLabel1.setText("Organization");
+    txtName.setBorder(titledBorder2);
+    txtPhone.setBorder(titledBorder7);
+    txtEmail.setBorder(titledBorder8);
+    contentPane.setBackground(Color.white);
+    contentPane.setOpaque(true);
+    cmdOrg.setBackground(Color.white);
+    cmdOrg.setBorder(titledBorder9);
+    cmdOrg.setOpaque(true);
+    cmdOrg.setText("Organization");
+    cmdOrg.addActionListener(new frmMyProfile_cmdOrg_actionAdapter(this));
+    txtOrgname.setEditable(false);
+    txtPlayroll.setEditable(false);
+    jLabel2.setText("Playroll");
+    jPanel1.setBackground(Color.white);
+    jPanel1.setBorder(titledBorder10);
+    jPanel1.setOpaque(true);
+    jPanel1.setLayout(xYLayout2);
+    txtPasswordx.setForeground(Color.gray);
+    cmdPassChange.setBackground(Color.white);
+    cmdPassChange.setBorder(titledBorder11);
+    cmdPassChange.setText("Renew Password");
+    cmdPassChange.addActionListener(new
+                                    frmMyProfile_cmdPassChange_actionAdapter(this));
+    jLabel10.setText("Renew Password");
+    cmdLayerView.setBackground(Color.white);
+    cmdLayerView.setBorder(titledBorder12);
+    cmdLayerView.setText("View Layer");
+    cmdLayerView.addActionListener(new frmMyProfile_cmdLayerView_actionAdapter(this));
+    contentPane.add(jLabel3, new XYConstraints(15, 44, 51, 23));
+    contentPane.add(jLabel1, new XYConstraints(15, 16, -1, -1));
+    contentPane.add(txtOrgname, new XYConstraints(147, 10, 322, 28));
+    contentPane.add(jLabel7, new XYConstraints(14, 79, 65, 20));
+    contentPane.add(jLabel8, new XYConstraints(14, 188, 53, 20));
+    contentPane.add(appButt, new XYConstraints(318, 282, 150, 29));
+    contentPane.add(txtPlayroll, new XYConstraints(146, 240, 322, 26));
+    contentPane.add(cmdOrg, new XYConstraints(146, 282, 149, 29));
+    contentPane.add(jLabel9, new XYConstraints(15, 212, 47, 19));
+    contentPane.add(jLabel2, new XYConstraints(15, 238, -1, -1));
+    jPanel1.add(txtPassword1, new XYConstraints(218, 96, 184, 26));
+    jPanel1.add(txtPassword0, new XYConstraints(218, 64, 184, -1));
+    jPanel1.add(txtPasswordx, new XYConstraints(218, 28, 184, 29));
+    jPanel1.add(cmdPassChange, new XYConstraints(218, 134, 184, -1));
+    jPanel1.add(jLabel10, new XYConstraints(14, 2, 136, 23));
+    jPanel1.add(jLabel4, new XYConstraints(33, 34, 153, 23));
+    jPanel1.add(jLabel5, new XYConstraints(33, 70, 126, 22));
+    jPanel1.add(jLabel6, new XYConstraints(33, 101, 174, 21));
+    contentPane.add(jPanel1, new XYConstraints(10, 386, 458, 178));
+    contentPane.add(cmdLayerView, new XYConstraints(318, 321, 150, -1));
+    contentPane.add(txtName, new XYConstraints(147, 37, 322, -1));
+    contentPane.add(txtPhone, new XYConstraints(146, 180, 322, 32));
+    contentPane.add(txtEmail, new XYConstraints(146, 210, 322, 30));
+    contentPane.add(txtAddress, new XYConstraints(146, 69, -1, 113));
+    char a=9829; //heart
+    char b=8226; //bullet
+    txtPassword0.setEchoChar(b);
+    txtPassword1.setEchoChar(b);
+    txtPasswordx.setEchoChar(b);
+
+  }
+
+  public void callMe(){
+    this.setVisible(true) ;
+    try{
+      txtPlayroll.setText(mp.getPlayroll() ) ;
+      txtName.setText(mp.getName() ) ;
+      txtAddress.setText(mp.getAddress() ) ;
+      txtPhone.setText(mp.getPhone() ) ;
+      txtEmail.setText(mp.getEmail() ) ;
+      txtOrgname.setText(mp.getOwnername()) ;
+
+      txtPasswordx.setText("");
+      txtPassword0.setText("");
+      txtPassword1.setText("");
+
+      if (mp.getPlayroll().toLowerCase().indexOf("gis")>=0 ||
+          mp.getPlayroll().toLowerCase().indexOf("map")>=0 )
+        cmdOrg.setVisible(true);
+      else cmdOrg.setVisible(false);
+
+      if (mp.getPlayroll().toLowerCase().indexOf("gis")>=0 ||
+          mp.getPlayroll().toLowerCase().indexOf("map")>=0 ||
+          mp.getPlayroll().toLowerCase().indexOf("wri")>=0)
+        cmdLayerView.setVisible(true);
+      else cmdLayerView.setVisible(false);
+
+    }catch(Exception e){
+      e.printStackTrace() ;
+    }
+
+  }
+
+  public void appButt_actionPerformed(ActionEvent e) {
+    String errmsg="";
+    boolean correctArg=true;
+    if (txtName.getText().length()<6) {errmsg+= "please insert your name longer than this \n"; correctArg=false;}
+    if (txtAddress.getText().length()<8) {errmsg+= "please insert your address longer than this \n"; correctArg=false;}
+    if (txtPhone.getText().length()<9) {errmsg+= "please insert your phone longer than this \n"; correctArg=false;}
+    if (txtEmail.getText().length()<6) {errmsg+= "please insert your email longer than this \n"; correctArg=false;}
+      else if (txtEmail.getText().indexOf("@")<0 || txtEmail.getText().indexOf(".")<0) {errmsg+= "please insert valid email \n"; correctArg=false;}
+
+    if (correctArg==false){
+      JOptionPane.showMessageDialog(null,errmsg,"details are invalid" ,JOptionPane.WARNING_MESSAGE);
+    }else {
+      try{
+        CallServices cs = new CallServices("GIS_MemberServices", "updateMember");
+        int res = cs.intInvoke(new Object[] {mp.getSessionkey() , txtName.getText()
+                               , txtAddress.getText(), txtPhone.getText()
+                               , txtEmail.getText()});
+        if (res>100) JOptionPane.showMessageDialog(null,"memid="+res,"Update this profile complete" ,JOptionPane.INFORMATION_MESSAGE);
+        else JOptionPane.showMessageDialog(null,"err no "+res,"error" ,JOptionPane.ERROR_MESSAGE);
+
+      }catch(Exception ea){
+        ea.printStackTrace();
+      }
+    }
+  }
+
+  public void cmdPassChange_actionPerformed(ActionEvent e) {
+    String errmsg="";
+    boolean correctArg=true;
+    String passx = String.valueOf(txtPasswordx.getPassword());
+    String pass0 = String.valueOf(txtPassword0.getPassword());
+    String pass1 = String.valueOf(txtPassword1.getPassword());
+    if (txtPasswordx.getPassword().length <6) {errmsg+= "please insert your old password longer than this \n"; correctArg=false;}
+    if (txtPassword0.getPassword().length <6) {errmsg+= "please insert your new password longer than this \n"; correctArg=false;}
+    if (pass0.indexOf(pass1)!=0) {errmsg+= "both new passwords are not the same \n"; correctArg=false;}
+    if (correctArg==false){
+      JOptionPane.showMessageDialog(null,errmsg,"Aguememts of changing password may not correct" ,JOptionPane.WARNING_MESSAGE);
+    }else {
+      try{
+        CallServices cs = new CallServices("GIS_MemberServices", "renewPassword");
+        int res = cs.intInvoke(new Object[] {mp.getSessionkey(),passx, pass0});
+        if (res>100) {
+          JOptionPane.showMessageDialog(null, "memid=" + res,
+                                        "password change complete",
+                                        JOptionPane.INFORMATION_MESSAGE);
+        txtPasswordx.setText("") ;
+        txtPassword0.setText("") ;
+        txtPassword1.setText("") ;
+
+        }
+        else JOptionPane.showMessageDialog(null,"err no "+res,"error" ,JOptionPane.ERROR_MESSAGE);
+
+      }catch(Exception ea){
+        ea.printStackTrace();
+      }
+    }
+  }
+
+  public void cmdOrg_actionPerformed(ActionEvent e) {
+    if (mp.getPlayroll().toLowerCase().indexOf("gis")>=0) {
+      frmOwner.callMe();
+      frmOwner.setRootPanel(true);
+    }
+    if (mp.getPlayroll().toLowerCase().indexOf("map")>=0) {
+      frmOwner.setVisible(true) ;
+      frmOwner.viewDetail(mp.getOwnerID());
+      frmOwner.setRootPanel(false);
+    }
+  }
+
+  public void cmdLayerView_actionPerformed(ActionEvent e) {
+    frmLayer.callMe();
+  }
+}
+
+class frmMyProfile_cmdLayerView_actionAdapter
+    implements ActionListener {
+  private frmMyProfile adaptee;
+  frmMyProfile_cmdLayerView_actionAdapter(frmMyProfile adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdLayerView_actionPerformed(e);
+  }
+}
+
+class frmMyProfile_cmdOrg_actionAdapter
+    implements ActionListener {
+  private frmMyProfile adaptee;
+  frmMyProfile_cmdOrg_actionAdapter(frmMyProfile adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdOrg_actionPerformed(e);
+  }
+}
+
+class frmMyProfile_cmdPassChange_actionAdapter
+    implements ActionListener {
+  private frmMyProfile adaptee;
+  frmMyProfile_cmdPassChange_actionAdapter(frmMyProfile adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.cmdPassChange_actionPerformed(e);
+  }
+}
+
+class frmMyProfile_appButt_actionAdapter
+    implements ActionListener {
+  private frmMyProfile adaptee;
+  frmMyProfile_appButt_actionAdapter(frmMyProfile adaptee) {
+    this.adaptee = adaptee;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    adaptee.appButt_actionPerformed(e);
+  }
+}
+

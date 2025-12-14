@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetCapabilities">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetCapabilitiesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCapabilitiesResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMap">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="request" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMapResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMapResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateMap">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="request" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateMapResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CreateMapResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Find">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="layer" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="FindResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FindResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FindAddress">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="street" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="district" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="province" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="postcode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FindAddressResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FindAddressResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FindNearby">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="Lat" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="Long" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="radius" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="request" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="showText" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FindNearbyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FindNearbyResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FindNearest">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="latitude" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="longtitude" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="layer" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FindNearestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FindNearestResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CalculateDistance">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="beginLat" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="beginLong" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="endLat" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="endLong" type="s:double" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CalculateDistanceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CalculateDistanceResult" type="s:double" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConvertAddressToCoordinate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="street" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="district" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="province" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="postcode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConvertAddressToCoordinateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConvertAddressToCoordinateResult" type="tns:ArrayOfDouble" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDouble">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="double" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetXml">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="kk">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetXmlResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetXmlResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetCapabilitiesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCapabilities" />
+  </wsdl:message>
+  <wsdl:message name="GetCapabilitiesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCapabilitiesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMapSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMap" />
+  </wsdl:message>
+  <wsdl:message name="GetMapSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMapResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateMapSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateMap" />
+  </wsdl:message>
+  <wsdl:message name="CreateMapSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateMapResponse" />
+  </wsdl:message>
+  <wsdl:message name="FindSoapIn">
+    <wsdl:part name="parameters" element="tns:Find" />
+  </wsdl:message>
+  <wsdl:message name="FindSoapOut">
+    <wsdl:part name="parameters" element="tns:FindResponse" />
+  </wsdl:message>
+  <wsdl:message name="FindAddressSoapIn">
+    <wsdl:part name="parameters" element="tns:FindAddress" />
+  </wsdl:message>
+  <wsdl:message name="FindAddressSoapOut">
+    <wsdl:part name="parameters" element="tns:FindAddressResponse" />
+  </wsdl:message>
+  <wsdl:message name="FindNearbySoapIn">
+    <wsdl:part name="parameters" element="tns:FindNearby" />
+  </wsdl:message>
+  <wsdl:message name="FindNearbySoapOut">
+    <wsdl:part name="parameters" element="tns:FindNearbyResponse" />
+  </wsdl:message>
+  <wsdl:message name="FindNearestSoapIn">
+    <wsdl:part name="parameters" element="tns:FindNearest" />
+  </wsdl:message>
+  <wsdl:message name="FindNearestSoapOut">
+    <wsdl:part name="parameters" element="tns:FindNearestResponse" />
+  </wsdl:message>
+  <wsdl:message name="CalculateDistanceSoapIn">
+    <wsdl:part name="parameters" element="tns:CalculateDistance" />
+  </wsdl:message>
+  <wsdl:message name="CalculateDistanceSoapOut">
+    <wsdl:part name="parameters" element="tns:CalculateDistanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConvertAddressToCoordinateSoapIn">
+    <wsdl:part name="parameters" element="tns:ConvertAddressToCoordinate" />
+  </wsdl:message>
+  <wsdl:message name="ConvertAddressToCoordinateSoapOut">
+    <wsdl:part name="parameters" element="tns:ConvertAddressToCoordinateResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetXmlSoapIn">
+    <wsdl:part name="parameters" element="tns:GetXml" />
+  </wsdl:message>
+  <wsdl:message name="GetXmlSoapOut">
+    <wsdl:part name="parameters" element="tns:GetXmlResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ServiceSoap">
+    <wsdl:operation name="GetCapabilities">
+      <wsdl:input message="tns:GetCapabilitiesSoapIn" />
+      <wsdl:output message="tns:GetCapabilitiesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMap">
+      <wsdl:input message="tns:GetMapSoapIn" />
+      <wsdl:output message="tns:GetMapSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateMap">
+      <wsdl:input message="tns:CreateMapSoapIn" />
+      <wsdl:output message="tns:CreateMapSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Find">
+      <wsdl:input message="tns:FindSoapIn" />
+      <wsdl:output message="tns:FindSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FindAddress">
+      <wsdl:input message="tns:FindAddressSoapIn" />
+      <wsdl:output message="tns:FindAddressSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FindNearby">
+      <wsdl:input message="tns:FindNearbySoapIn" />
+      <wsdl:output message="tns:FindNearbySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FindNearest">
+      <wsdl:input message="tns:FindNearestSoapIn" />
+      <wsdl:output message="tns:FindNearestSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CalculateDistance">
+      <wsdl:input message="tns:CalculateDistanceSoapIn" />
+      <wsdl:output message="tns:CalculateDistanceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ConvertAddressToCoordinate">
+      <wsdl:input message="tns:ConvertAddressToCoordinateSoapIn" />
+      <wsdl:output message="tns:ConvertAddressToCoordinateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetXml">
+      <wsdl:input message="tns:GetXmlSoapIn" />
+      <wsdl:output message="tns:GetXmlSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ServiceSoap" type="tns:ServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetCapabilities">
+      <soap:operation soapAction="http://tempuri.org/GetCapabilities" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMap">
+      <soap:operation soapAction="http://tempuri.org/GetMap" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateMap">
+      <soap:operation soapAction="http://tempuri.org/CreateMap" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Find">
+      <soap:operation soapAction="http://tempuri.org/Find" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindAddress">
+      <soap:operation soapAction="http://tempuri.org/FindAddress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindNearby">
+      <soap:operation soapAction="http://tempuri.org/FindNearby" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindNearest">
+      <soap:operation soapAction="http://tempuri.org/FindNearest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CalculateDistance">
+      <soap:operation soapAction="http://tempuri.org/CalculateDistance" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConvertAddressToCoordinate">
+      <soap:operation soapAction="http://tempuri.org/ConvertAddressToCoordinate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetXml">
+      <soap:operation soapAction="http://tempuri.org/GetXml" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ServiceSoap12" type="tns:ServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetCapabilities">
+      <soap12:operation soapAction="http://tempuri.org/GetCapabilities" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMap">
+      <soap12:operation soapAction="http://tempuri.org/GetMap" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateMap">
+      <soap12:operation soapAction="http://tempuri.org/CreateMap" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Find">
+      <soap12:operation soapAction="http://tempuri.org/Find" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindAddress">
+      <soap12:operation soapAction="http://tempuri.org/FindAddress" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindNearby">
+      <soap12:operation soapAction="http://tempuri.org/FindNearby" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindNearest">
+      <soap12:operation soapAction="http://tempuri.org/FindNearest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CalculateDistance">
+      <soap12:operation soapAction="http://tempuri.org/CalculateDistance" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConvertAddressToCoordinate">
+      <soap12:operation soapAction="http://tempuri.org/ConvertAddressToCoordinate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetXml">
+      <soap12:operation soapAction="http://tempuri.org/GetXml" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service">
+    <wsdl:port name="ServiceSoap" binding="tns:ServiceSoap">
+      <soap:address location="http://161.246.6.191/WebSite5/Service.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ServiceSoap12" binding="tns:ServiceSoap12">
+      <soap12:address location="http://161.246.6.191/WebSite5/Service.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

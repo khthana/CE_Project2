@@ -1,0 +1,38 @@
+#!/bin/bash
+#check relation of 2 rules (using relation each field of 2 rules)
+#case field relation is exact
+if [ $frelation = exact ]
+then
+	#case relation is undetermined
+	if [ $relation = undetermined ]
+	then
+		relation=exact
+	fi
+#case field relation is superset
+elif [ $frelation = superset ]
+then
+	#case relation is subset or correlated
+	if [ $relation = subset ] || [ $relation = correlated ]
+	then
+		relation=correlated
+	#case relation not disjoint
+	elif [ $relation != disjoint ]
+	then
+		relation=superset
+	fi
+#case field relation is subset
+elif [ $frelation = subset ]
+then
+	#case relation is superset or correlated
+	if [ $relation = superset ] || [ $relation = correlated ]
+	then
+		relation=correlated
+	#case relation not disjoint
+	elif [ $relation != disjoint ]
+	then
+		relation=subset
+	fi
+#case field relation is disjoint
+else
+	relation=disjoint
+fi

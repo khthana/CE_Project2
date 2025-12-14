@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.globus.org/namespaces/2004/02/rsl/gram/scheduler/condor"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+            xmlns:rsl="http://www.globus.org/namespaces/2004/02/rsl"
+            xmlns:gram="http://www.globus.org/namespaces/2004/02/rsl/gram"
+            xmlns:scheduler="http://www.globus.org/namespaces/2004/02/rsl/gram/scheduler"
+            xmlns:condor="http://www.globus.org/namespaces/2004/02/rsl/gram/scheduler/condor"
+            xmlns="http://www.globus.org/namespaces/2004/02/rsl/gram/scheduler/condor"
+            elementFormDefault="qualified">
+
+    <xsd:import namespace="http://www.globus.org/namespaces/2004/02/rsl"
+                schemaLocation="rsl.xsd"/>
+
+    <xsd:import namespace="http://www.globus.org/namespaces/2004/02/rsl/gram"
+                schemaLocation="gram_rsl.xsd"/>
+
+    <xsd:import namespace="http://www.globus.org/namespaces/2004/02/rsl/gram/scheduler"
+                schemaLocation="scheduler_gram_rsl.xsd"/>
+
+    <!--=====================================================================-->
+    <!--                  Condor attribute definitions                       -->
+    <!--=====================================================================-->
+
+    <xsd:element name="condorOs" type="rsl:stringType">
+        <xsd:annotation>
+            <xsd:documentation>
+                Represents the OpSys "requirement" of a Condor job.
+                Values: any string
+                ValidWhen: GLOBUS_GRAM_JOB_SUBMIT
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:element name="condorArch" type="rsl:stringType">
+        <xsd:annotation>
+            <xsd:documentation>
+                Represents the Arch "requirement" of a Condor job.
+                Values: any string
+                ValidWhen: GLOBUS_GRAM_JOB_SUBMIT
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:element name="condorSubmit" type="rsl:hashtableType">
+        <xsd:annotation>
+            <xsd:documentation>
+                Used to override existing for or pass custom attributes to
+                the condor backend
+                Values: array of name/value pairs
+                ValidWhen: GLOBUS_GRAM_JOB_SUBMIT
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+
+    <!--=====================================================================-->
+    <!--          model groups for Condor attribute collections              -->
+    <!--=====================================================================-->
+
+    <xsd:group name="requirementsAttributes">
+        <xsd:sequence>
+            <xsd:element    ref="condor:condorOs"
+                            minOccurs="0"
+                            maxOccurs="1"/>
+            <xsd:element    ref="condor:condorArch"
+                            minOccurs="0"
+                            maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:group>
+
+    <xsd:group name="customAttributes">
+        <xsd:sequence>
+            <xsd:element    ref="condor:condorSubmit"
+                            minOccurs="0"
+                            maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:group>
+
+
+    <!-- Condor job attributes type definition -->
+    <xsd:complexType name="jobType">
+        <xsd:complexContent>
+            <xsd:extension base="scheduler:jobType">
+                <xsd:sequence>
+                    <xsd:group ref="condor:requirementsAttributes"
+                               minOccurs="0"
+                               maxOccurs="1"/>
+                    <xsd:group ref="condor:customAttributes"
+                               minOccurs="0"
+                               maxOccurs="1"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:element name="job"
+                 type="condor:jobType"
+                 substitutionGroup="rsl:content"/>
+
+</xsd:schema>

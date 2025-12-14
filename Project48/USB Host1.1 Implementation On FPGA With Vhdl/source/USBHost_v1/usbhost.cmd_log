@@ -1,0 +1,6 @@
+xst -intstyle ise -ifn __projnav/usbhost.xst -ofn usbhost.syr
+ngdbuild -intstyle ise -dd "c:\project\usbhost_v1/_ngo" -i  -p xc3s200-tq144-5 usbhost.ngc usbhost.ngd
+map -intstyle ise -p xc3s200-tq144-5 -cm area -pr b -k 4 -c 100 -o usbhost_map.ncd usbhost.ngd usbhost.pcf
+par -w -intstyle ise -ol std -t 1 usbhost_map.ncd usbhost.ncd usbhost.pcf
+trce -intstyle ise -e 3 -l 3 -s 5 -xml usbhost usbhost.ncd -o usbhost.twr usbhost.pcf
+bitgen -intstyle ise -f usbhost.ut usbhost.ncd

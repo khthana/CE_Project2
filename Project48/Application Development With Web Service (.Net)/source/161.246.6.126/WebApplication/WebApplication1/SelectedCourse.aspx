@@ -1,0 +1,92 @@
+<%@ Page language="c#" Codebehind="SelectedCourse.aspx.cs" AutoEventWireup="false" Inherits="WebApplication1.SelectedCourse" Transaction="Supported"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<HTML>
+	<HEAD>
+		<title>WebForm2</title>
+		<meta content="Microsoft Visual Studio .NET 7.1" name="GENERATOR">
+		<meta content="C#" name="CODE_LANGUAGE">
+		<meta content="JavaScript" name="vs_defaultClientScript">
+		<meta content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
+		<meta http-equiv="Content-Type" content="text/html;">
+		<style>TD { FONT-SIZE: 8pt; COLOR: black; FONT-FAMILY: verdana,arial }
+		</style>
+	</HEAD>
+	<body MS_POSITIONING="GridLayout">
+		<asp:Label id="Label4" style="Z-INDEX: 113; LEFT: 264px; POSITION: absolute; TOP: 8px" runat="server"
+			Width="368px" ForeColor="#C0C0FF" Font-Bold="True" Font-Size="30pt" Font-Italic="True">Select Course</asp:Label>
+		<table>
+			<tr>
+				<td>
+					<form id="Form1" method="post" runat="server">
+						<FONT face="Tahoma">
+							<asp:textbox id="TextBox1" style="Z-INDEX: 101; LEFT: 24px; POSITION: absolute; TOP: 16px" runat="server"
+								Visible="False"></asp:textbox>
+							<asp:datagrid id=DataGrid1 style="Z-INDEX: 102; LEFT: 24px; POSITION: absolute; TOP: 136px" runat="server" GridLines="Horizontal" CellPadding="3" BorderWidth="1px" BorderColor="#E7E7FF" BackColor="White" AllowSorting="True" Width="950" DataSource="<%# dataSet3 %>" AutoGenerateColumns="False" BorderStyle="None">
+								<FooterStyle ForeColor="#4A3C8C" BackColor="#B5C7DE"></FooterStyle>
+								<SelectedItemStyle Font-Bold="True" ForeColor="#F7F7F7" BackColor="#738A9C"></SelectedItemStyle>
+								<AlternatingItemStyle BackColor="#F7F7F7"></AlternatingItemStyle>
+								<ItemStyle ForeColor="#4A3C8C" BackColor="#E7E7FF"></ItemStyle>
+								<HeaderStyle Font-Size="12pt" Font-Names="verdana" Font-Bold="True" ForeColor="#F7F7F7" BackColor="#4A3C8C"></HeaderStyle>
+								<Columns>
+									<asp:TemplateColumn HeaderText="Contract">
+										<HeaderTemplate>
+											<FONT face="Tahoma" color=#ffffff></FONT>
+										</HeaderTemplate>
+										<ItemTemplate>
+											<asp:checkbox id="CheckBox1" runat="server" Width="20px" ForeColor="White"></asp:checkbox>
+										</ItemTemplate>
+									</asp:TemplateColumn>
+									<asp:BoundColumn DataField="id" HeaderText="ลำดับ" HeaderStyle-ForeColor=#ffffff>
+										<HeaderStyle Width="30"></HeaderStyle>
+									</asp:BoundColumn>
+									<asp:BoundColumn DataField="ClassID" HeaderText="รหัสวิชา" HeaderStyle-ForeColor=#ffffff>
+										<HeaderStyle Width="50"></HeaderStyle>
+									</asp:BoundColumn>
+									<asp:BoundColumn DataField="Subject" HeaderText="วิชา" HeaderStyle-ForeColor=#ffffff>
+										<HeaderStyle Width="50"></HeaderStyle>
+									</asp:BoundColumn>
+									<asp:BoundColumn DataField="School" HeaderText="สถาบัน" HeaderStyle-ForeColor=#ffffff>
+										<HeaderStyle Width="70px"></HeaderStyle>
+									</asp:BoundColumn>
+									<asp:BoundColumn DataField="StartDate" HeaderText="วันที่เริ่ม" HeaderStyle-ForeColor=#ffffff>
+										<HeaderStyle Width="120"></HeaderStyle>
+									</asp:BoundColumn>
+									<asp:BoundColumn DataField="FinishDate" HeaderText="วันสุดท้าย" HeaderStyle-ForeColor=#ffffff>
+										<HeaderStyle Width="120"></HeaderStyle>
+									</asp:BoundColumn>
+									<asp:BoundColumn DataField="StartTime" HeaderText="เวลาเริ่มเรียน" HeaderStyle-ForeColor=#ffffff>
+										<HeaderStyle Width="100"></HeaderStyle>
+									</asp:BoundColumn>
+									<asp:BoundColumn DataField="FinishTime" HeaderText="เวลาเลิกเรียน" HeaderStyle-ForeColor=#ffffff>
+										<HeaderStyle Width="100"></HeaderStyle>
+									</asp:BoundColumn>
+									<asp:BoundColumn DataField="CourseDate" HeaderText="วันเรียน" HeaderStyle-ForeColor=#ffffff>
+										<HeaderStyle Width="100"></HeaderStyle>
+									</asp:BoundColumn>
+									<asp:BoundColumn DataField="Teacher" HeaderText="ผู้สอน" HeaderStyle-ForeColor=#ffffff>
+										<HeaderStyle Width="70"></HeaderStyle>
+									</asp:BoundColumn>
+									<asp:BoundColumn DataField="Area" HeaderText="สาขา" HeaderStyle-ForeColor=#ffffff>
+										<HeaderStyle Width="70px"></HeaderStyle>
+									</asp:BoundColumn>
+									<asp:BoundColumn DataField="TotalSeat" HeaderText="ที่นั่งทั้งหมด" HeaderStyle-ForeColor=#ffffff>
+										<HeaderStyle Width="120px"></HeaderStyle>
+									</asp:BoundColumn>
+									<asp:BoundColumn DataField="AvailableSeat" HeaderText="ที่นั่งที่เหลือ" HeaderStyle-ForeColor=#ffffff>
+										<HeaderStyle Width="120px"></HeaderStyle>
+									</asp:BoundColumn>
+									<asp:BoundColumn DataField="Cost" HeaderText="ราคา" HeaderStyle-ForeColor=#ffffff>
+										<HeaderStyle Width="100px"></HeaderStyle>
+									</asp:BoundColumn>
+									<asp:BoundColumn DataField="Period" HeaderText="ช่วงเวลา" HeaderStyle-ForeColor=#ffffff>
+										<HeaderStyle Width="100px"></HeaderStyle>
+									</asp:BoundColumn>
+								</Columns>
+								<PagerStyle HorizontalAlign="Right" ForeColor="#4A3C8C" BackColor="#E7E7FF" Mode="NumericPages"></PagerStyle>
+							</asp:datagrid><asp:button id="Button2" style="Z-INDEX: 104; LEFT: 24px; POSITION: absolute; TOP: 64px" runat="server"
+								Width="152px" Height="32px" Text="ยืนยันคอร์สที่เลือก"></asp:button></FONT></form>
+				</td>
+			</tr>
+		</table>
+	</body>
+</HTML>

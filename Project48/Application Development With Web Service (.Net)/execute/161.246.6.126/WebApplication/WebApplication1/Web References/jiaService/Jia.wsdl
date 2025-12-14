@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://WS" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://WS" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema xmlns:impl="http://WS" xmlns:intf="http://WS" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://WS">
+      <xsd:element name="getCourseAll">
+        <xsd:complexType>
+          <xsd:sequence />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getCourseAllResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="getCourseAllReturn" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="buyClass">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="ClassID" type="xsd:int" />
+            <xsd:element name="Email" nillable="true" type="xsd:string" />
+            <xsd:element name="ReceiveID" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="buyClassResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="buyClassReturn" type="xsd:boolean" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="reservation">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="ClassID" type="xsd:int" />
+            <xsd:element name="Email" nillable="true" type="xsd:string" />
+            <xsd:element name="Name" nillable="true" type="xsd:string" />
+            <xsd:element name="Surname" nillable="true" type="xsd:string" />
+            <xsd:element name="PhoneNo" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="reservationResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="reservationReturn" type="xsd:boolean" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getCourse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Subject" nillable="true" type="xsd:string" />
+            <xsd:element name="Period" type="xsd:int" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getCourseResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="getCourseReturn" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getCourseFromEmail">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Email" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getCourseFromEmailResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="getCourseFromEmailReturn" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="cancel">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="ClassID" type="xsd:int" />
+            <xsd:element name="Email" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="cancelResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="cancelReturn" type="xsd:boolean" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="getCourseFromEmailRequest">
+    <wsdl:part name="parameters" element="tns:getCourseFromEmail" />
+  </wsdl:message>
+  <wsdl:message name="buyClassResponse">
+    <wsdl:part name="parameters" element="tns:buyClassResponse" />
+  </wsdl:message>
+  <wsdl:message name="getCourseFromEmailResponse">
+    <wsdl:part name="parameters" element="tns:getCourseFromEmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="getCourseAllResponse">
+    <wsdl:part name="parameters" element="tns:getCourseAllResponse" />
+  </wsdl:message>
+  <wsdl:message name="getCourseAllRequest">
+    <wsdl:part name="parameters" element="tns:getCourseAll" />
+  </wsdl:message>
+  <wsdl:message name="cancelRequest">
+    <wsdl:part name="parameters" element="tns:cancel" />
+  </wsdl:message>
+  <wsdl:message name="reservationRequest">
+    <wsdl:part name="parameters" element="tns:reservation" />
+  </wsdl:message>
+  <wsdl:message name="getCourseRequest">
+    <wsdl:part name="parameters" element="tns:getCourse" />
+  </wsdl:message>
+  <wsdl:message name="getCourseResponse">
+    <wsdl:part name="parameters" element="tns:getCourseResponse" />
+  </wsdl:message>
+  <wsdl:message name="buyClassRequest">
+    <wsdl:part name="parameters" element="tns:buyClass" />
+  </wsdl:message>
+  <wsdl:message name="reservationResponse">
+    <wsdl:part name="parameters" element="tns:reservationResponse" />
+  </wsdl:message>
+  <wsdl:message name="cancelResponse">
+    <wsdl:part name="parameters" element="tns:cancelResponse" />
+  </wsdl:message>
+  <wsdl:portType name="Jia">
+    <wsdl:operation name="getCourseAll">
+      <wsdl:input name="getCourseAllRequest" message="tns:getCourseAllRequest" />
+      <wsdl:output name="getCourseAllResponse" message="tns:getCourseAllResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="buyClass">
+      <wsdl:input name="buyClassRequest" message="tns:buyClassRequest" />
+      <wsdl:output name="buyClassResponse" message="tns:buyClassResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="reservation">
+      <wsdl:input name="reservationRequest" message="tns:reservationRequest" />
+      <wsdl:output name="reservationResponse" message="tns:reservationResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getCourse">
+      <wsdl:input name="getCourseRequest" message="tns:getCourseRequest" />
+      <wsdl:output name="getCourseResponse" message="tns:getCourseResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getCourseFromEmail">
+      <wsdl:input name="getCourseFromEmailRequest" message="tns:getCourseFromEmailRequest" />
+      <wsdl:output name="getCourseFromEmailResponse" message="tns:getCourseFromEmailResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="cancel">
+      <wsdl:input name="cancelRequest" message="tns:cancelRequest" />
+      <wsdl:output name="cancelResponse" message="tns:cancelResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="JiaSoapBinding" type="tns:Jia">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <wsdl:operation name="getCourseAll">
+      <soap:operation soapAction="" />
+      <wsdl:input name="getCourseAllRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getCourseAllResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buyClass">
+      <soap:operation soapAction="" />
+      <wsdl:input name="buyClassRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="buyClassResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="reservation">
+      <soap:operation soapAction="" />
+      <wsdl:input name="reservationRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="reservationResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCourse">
+      <soap:operation soapAction="" />
+      <wsdl:input name="getCourseRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getCourseResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCourseFromEmail">
+      <soap:operation soapAction="" />
+      <wsdl:input name="getCourseFromEmailRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getCourseFromEmailResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancel">
+      <soap:operation soapAction="" />
+      <wsdl:input name="cancelRequest">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="cancelResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="JiaService">
+    <wsdl:port name="Jia" binding="tns:JiaSoapBinding">
+      <soap:address location="http://localhost:9080/Jia/services/Jia" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

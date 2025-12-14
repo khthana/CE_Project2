@@ -1,0 +1,49 @@
+package giswebservices;
+
+public class Gis_GetMapServices {
+    public Gis_GetMapServices() {}
+
+    public String requestSVG(String sessionKey, String xmlMapRequst, double posX, double posY, double width, double height){
+
+        GisGetSvgMap gsm=new GisGetSvgMap();
+        return gsm.requestSVG(sessionKey, xmlMapRequst,posX,posY,width,height, "",0);
+    }
+
+    public String requestNearbySVG(String sessionKey, String xmlMapRequst,int layerID, double posX, double posY, double width, double height,double currentLadtitude,double currentLongitude,double radian, String xFill, String xStroke){
+        GisGetSvgMap gsm=new GisGetSvgMap();
+        /////////////////////////////////////////////////////
+        double pX1=currentLadtitude-radian;
+        double pY1=currentLongitude+radian;
+        double pX2=currentLadtitude+radian;
+        double pY2=currentLongitude+radian;
+        double pX3=currentLadtitude+radian;
+        double pY3=currentLongitude-radian;
+        double pX4=currentLadtitude-radian;
+        double pY4=currentLongitude-radian;
+
+
+        String option="(geom && GeomFromText('POLYGON(("+pX1+" "+pY1+","+pX2+" "+pY2+","+pX3+" "+pY3+","+pX4+" "+pY4+","+pX1+" "+pY1+"))',-1))";
+        //////////////////////////////////////////////////////
+
+        return gsm.requestSVG(sessionKey, xmlMapRequst,posX,posY,width,height, option,layerID, xFill, xStroke);
+    }
+    public String requestNearestSVG(String sessionKey, String xmlMapRequst,int layerID, double posX, double posY, double width, double height,double currentLadtitude,double currentLongitude, String xFill, String xStroke)
+    {
+        GisGetSvgMap gsm=new GisGetSvgMap();
+        String option="Distance('POINT("+currentLadtitude+" "+currentLongitude+")',geom)<=ALL(SELECT Distance('POINT("+currentLadtitude+" "+currentLongitude+")',geom) FROM TB_"+layerID+")";
+        return gsm.requestSVG(sessionKey, xmlMapRequst,posX,posY,width,height, option,layerID, xFill, xStroke);
+    }
+
+    public String getSvgG(String sessionKey, String xmlMapRequst, double posX, double posY, double width, double height){
+        GisGetSvgMap gsm=new GisGetSvgMap();
+        String svg= gsm.requestSVG(sessionKey, xmlMapRequst,posX,posY,width,height, "",0);
+        int start = svg.indexOf("</defs>") + 10;
+        int end = svg.indexOf("</svg>") - 2;
+        svg=svg.substring(start,end);
+        //svg= "<g>\r\n" + svg + "</g>\r\n";
+        return svg;
+    }
+
+
+}
+
