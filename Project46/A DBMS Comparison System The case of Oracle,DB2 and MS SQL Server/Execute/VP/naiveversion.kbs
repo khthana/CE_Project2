@@ -1,0 +1,424 @@
+RUNTIME;
+BKCOLOR = 3;
+ACTIONS
+COLOR = 14
+DISPLAY "                       
+
+
+
+
+
+
+																			 					   DBMS Comparison System 
+													     
+														 										 ( Oracle, DB2, SQL Server)"
+COLOR = 10
+DISPLAY "														 										 
+														 										     Naive User Version"
+COLOR = 15								
+DISPLAY "
+					
+													 	 										 Press  Enter to continue
+
+      ~"
+    CLS
+	COLOR = 1
+	FIND budget
+	DISPLAY "
+	"
+	FIND cpu
+	DISPLAY "
+	"	
+	FIND read
+	DISPLAY "
+	"
+	FIND change
+	DISPLAY "
+	"
+	FIND pot
+	DISPLAY "
+	"
+	FIND manage
+	DISPLAY "
+	"
+	FIND pri
+	DISPLAY "
+	"
+	FIND tsp
+	DISPLAY "
+	"
+	FIND plat
+	DISPLAY "
+	"
+	CLS
+	FIND result
+	DISPLAY "Out Of Specification :"
+	FIND spec1
+	FIND spec2
+	FIND spec3
+	FIND spec4
+	FIND spec5
+	FIND spec6
+	FIND spec7
+	FIND price
+	FIND none;
+	
+RULE 1	 if  budget > 0
+	THEN	bud = (budget/cpu)
+			z = 1
+	ELSE	bud = 0
+			z = 1;								
+
+RULE 2	 if  read = 1
+	THEN	con = 5
+			zr = 1;
+RULE 3	 if  read = 2
+	THEN	con = 10
+			zr = 1;
+			
+RULE 4	 if  change = Rarely
+	THEN	bak = 5
+			zc = 1;
+RULE 5	 if  change = Often
+	THEN	bak = 10
+			zc = 1;
+			
+
+RULE 6	if  pot = 1
+	THEN	ava = 2
+			zp = 1;
+RULE 7	if  pot = 2
+	THEN	ava = 5
+			zp = 1;
+RULE 8	if  pot = 3
+	THEN	ava = 7
+			zp = 1;
+RULE 9	if  pot = 4
+	THEN	ava = 10
+			zp = 1;
+
+RULE 10	 if  manage = Automatic
+	THEN	man = 10
+			zm = 1;
+RULE 11	 if  manage = Manual
+	THEN	man = 5
+			zm = 1;
+
+RULE 12	 if  tsp = 1
+	THEN	tool = 3
+			zt = 1;
+RULE  13	 if  tsp = 2
+	THEN	tool = 6
+			zt = 1;
+RULE  14	 if  tsp = 3
+	THEN	tool = 10
+			zt = 1;
+
+RULE 15	 if  pri = 1
+	THEN	sec = 4
+			zv = 1;
+RULE  16	 if  pri = 2
+	THEN	sec = 7
+			zv = 1;
+RULE  17	 if  pri = 3
+	THEN	sec = 10
+			zv = 1;
+			
+
+RULE 18 if   z = 1
+		AND  zr = 1
+		AND  zp =1
+		AND  zm =1
+		AND  zt = 1
+		AND zv = 1
+		AND zc = 1
+        THEN	  
+			OOc=(10-con)
+			Oc = (@ABS(OOc))
+			OOs=(9-sec)
+			Os = (@ABS(OOs))
+			OOb=(9-bak)
+			Ob = (@ABS(OOb))
+			OOa=(8-ava)
+			Oa = (@ABS(OOa))
+			OOm=(7-man)
+			Om = (@ABS(OOm))
+			OOt=(8-tool)
+			Ot = (@ABS(OOt))		
+            sumO=(Oc+Os+Ob+Oa+Om+Ot)
+
+			DDc=(8-con)
+			Dc = (@ABS(DDc))
+			DDs=(9-sec)
+			Ds = (@ABS(DDs))
+			DDb=(8-bak)
+			Db = (@ABS(DDb))
+			DDa=(7-ava)
+			Da = (@ABS(DDa))
+			DDm=(9-man)
+			Dm = (@ABS(DDm))
+			DDt=(9-tool)
+			Dt = (@ABS(DDt))		
+            sumD=(Dc+Ds+Db+Da+Dm+Dt)
+
+			SSc=((7-con))
+			Sc = (@ABS(SSc))
+			SSs=(7-sec)
+			Ss = (@ABS(SSs))
+			SSb=(6-bak)
+			Sb = (@ABS(SSb))
+			SSa=(6-ava)
+			Sa = (@ABS(SSa))
+			SSm=(5-man)
+			Sm = (@ABS(SSm))
+			SSt=(5-tool)
+			St = (@ABS(SSt))		
+            sumS=(Sc+Ss+Sb+Sa+Sm+St);
+
+
+			
+            
+RULE 19 if sumO < (sumD)
+	     AND sumO < (sumS)
+	     THEN choose = O;
+RULE 20 if sumD <= (sumO)
+	     AND sumD < (sumS)
+	     THEN choose = D;
+RULE 21 if sumS <= (sumO)
+	     AND sumS <= (sumD)
+	     THEN choose = S; 
+	                
+RULE 22 if DDc < 0
+		AND choose = D
+		 THEN spec1 =1
+		 DISPLAY "Concurrency";
+RULE 23 if DDs < 0	 
+		AND choose = D
+		 THEN spec2 = 1
+		 DISPLAY "Security"; 
+RULE 24 if DDb < 0
+		AND choose = D
+		 THEN spec3 = 1
+		 DISPLAY "Backup Recovery"; 
+RULE 25 if DDa < 0
+		AND choose = D
+		 THEN spec4 =1
+		 DISPLAY "Availability";
+RULE 26 if DDt < 0
+		AND choose = D
+		 THEN spec5 =1
+		 DISPLAY "Tool Support";
+RULE 26_1 if DDm < 0
+		AND choose = D
+		 THEN spec6 =1
+		 DISPLAY "Manageablity";
+		 	
+RULE 27 if SSc < 0
+		AND choose = S
+		 THEN spec1 =1
+		 DISPLAY "Concurrency";
+RULE 28 if SSs < 0	 
+		AND choose = S
+		 THEN spec2 = 1
+		 DISPLAY "Security"; 
+RULE 29 if SSb < 0
+		AND choose = S
+		 THEN spec3 = 1
+		 DISPLAY "Backup Recovery"; 
+RULE 30 if SSa < 0
+		AND choose = S
+		 THEN spec4 =1
+		 DISPLAY "Availability";
+RULE 31 if SSt < 0
+		AND choose = S
+		 THEN spec5 =1
+		 DISPLAY "Tool Support";
+RULE 32 if SSm < 0
+		AND choose = S
+		 THEN spec6 =1
+		 DISPLAY "Manageablity";	
+		 
+RULE 33 if OOc < 0
+		AND choose =  O
+		 THEN spec1 =1
+		 DISPLAY "Concurrency";
+RULE 34 if OOs < 0	 
+		AND choose = O
+		 THEN spec2 = 1
+		 DISPLAY "Security"; 
+RULE 35 if OOb < 0
+		AND choose = O
+		 THEN spec3 = 1
+		 DISPLAY "Backup Recovery"; 
+RULE 36 if OOa < 0
+		AND choose = O
+		 THEN spec4 =1
+		 DISPLAY "Availability";
+RULE 37 if OOt < 0
+		AND choose = O
+		 THEN spec5 =1
+		 DISPLAY "Tool Support";
+RULE 38 if OOm < 0
+		AND choose = O
+		 THEN spec6 =1
+		 DISPLAY "Manageablity";			 		 	 		 
+	  		 		 		 		 
+
+RULE 39  if  choose = D
+		AND plat = 3
+		THEN  show = 1;			
+		
+RULE 40  if  choose = S
+		AND plat = 3
+		THEN  show = 1;	
+			
+RULE 41  if  choose = S
+		AND plat <> 1
+		AND plat <> 3
+		AND sumD <= (sumO)
+		THEN  show = 2;
+		
+RULE 42  if  choose = S
+		AND plat <> 1
+		AND plat <> 3
+		AND sumO < (sumD)
+		THEN  show = 1;
+		
+			           
+
+RULE 43 if choose = O
+	     THEN result = O
+	     COLOR = 14
+	DISPLAY "   			
+	
+	
+	
+	
+	
+																			  		     			 	 		RESULT	
+		
+																										   Recommended DBMS : Oracle
+			"
+		COLOR = 15;
+			
+RULE 44 if choose = D
+	    THEN result = D
+	    COLOR = 14
+	DISPLAY "   			
+	
+	
+	
+	
+	
+																			  		     			 	 		RESULT	
+		
+																										   Recommended DBMS : DB2
+			"
+		COLOR = 15;
+			
+RULE 45 if choose = S
+	     THEN result = S
+	     COLOR = 14
+	DISPLAY "   			
+	
+	
+	
+
+	
+	
+																			  		     			 	 		 RESULT	
+		
+																										 Recommended DBMS : SQL Server
+			"
+		COLOR = 15;			
+							
+RULE 46 if bud = 0
+	THEN 	price = 1
+	COLOR = 12
+	DISPLAY "Price : Because You didn't Fill The Price !!";
+																										
+RULE 47 if result = O 
+	AND		bud < 40000
+	THEN	price = 1
+	COLOR = 10
+	DISPLAY "Price (Oracle : 40000$ per CPU )";
+RULE 48 if result = D 
+	AND		bud < 25000
+	THEN	price = 1
+	COLOR = 10
+	DISPLAY "Price (DB2 : 25000$ per CPU )";
+RULE 49 if result = S 
+	AND		bud < 20000
+	THEN	price = 1
+	COLOR = 10
+	DISPLAY "Price (SQL Server : 20000$ per CPU)";						
+
+
+			
+		 
+RULE 50 if show = 1 
+	THEN	spec7 = 1
+	COLOR = 14
+	DISPLAY "Platform (Oracle Can Support Your Platform)";
+RULE 51 if show = 2 
+	THEN	spec7 = 1
+	COLOR = 14
+	DISPLAY "Platform (DB2 Can Support Your Platform)";
+	
+RULE 52 if spec1 <> 1
+		AND spec2 <> 1
+		AND spec3 <> 1
+		AND spec4 <> 1
+		AND spec5 <> 1
+		AND spec6 <> 1
+		AND spec7 <> 1
+		AND price <> 1
+		AND show <> 1
+		THEN none = 1
+		COLOR = 10
+		DISPLAY "None";
+
+
+ASK read: "Characteristic Of Operation?
+			1 = Read - Only
+			2 = Read - Write" ;  
+CHOICES read: 1, 2;
+
+ASK change: "How often data changed?";
+CHOICES change: Rarely,Often;
+
+ASK pot: "Period of Job Time Per Day?
+		1 = 1-6 Hours
+		2 = 7-12 Hours
+		3 = 13-18 Hours
+		4 = 19-24 Hours" ;
+CHOICES pot: 1,2,3,4;
+
+ASK manage: "How To Manage Database?" ;  
+CHOICES manage: Automatic,Manual;
+
+ASK pri: "How many privilege per database?
+		1 = None
+		2 = Some
+		3 = Much" ;  
+CHOICES pri: 1, 2,3;
+
+ASK tsp: "Tool Support?
+		1 = None
+		2 = Little
+		3 = Much" ;  
+CHOICES tsp: 1,2,3;
+
+ASK budget: "How Much Budget Do You Have? : Dollar Currency";
+
+ASK cpu: "How many CPU do You Have?";
+CHOICES cpu: 1,2,4,8,16,32;
+
+ASK plat: "What platform used?
+		1 = Windows-based	         
+		2 = AIX-based
+		3 = Compaq Tru64 UNIX
+		4 = HP-UX
+		5 = Linux
+		6 = Sun Solaris";                
+CHOICES plat: 1, 2, 3, 4, 5, 6;

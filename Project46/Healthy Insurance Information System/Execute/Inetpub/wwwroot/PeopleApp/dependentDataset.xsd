@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema id="dependentDataset" targetNamespace="http://www.tempuri.org/dependentDataset.xsd" xmlns:mstns="http://www.tempuri.org/dependentDataset.xsd" xmlns="http://www.tempuri.org/dependentDataset.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:element name="dependentDataset" msdata:IsDataSet="true" msdata:Locale="th-TH">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="DEPENDENT">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="PID" type="xs:string" />
+              <xs:element name="FPID" type="xs:string" minOccurs="0" />
+              <xs:element name="MPID" type="xs:string" minOccurs="0" />
+              <xs:element name="PID_SELECT" type="xs:string" minOccurs="0" />
+              <xs:element name="FLAG" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:DEPENDENT" />
+      <xs:field xpath="mstns:PID" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

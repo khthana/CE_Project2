@@ -1,0 +1,1248 @@
+package apc1;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.applet.*;
+import com.borland.jbcl.layout.*;
+import javax.swing.*;
+/**
+ * <p>Title: </p>
+ * <p>Description: </p>
+ * <p>Copyright: Copyright (c) 2004</p>
+ * <p>Company: </p>
+ * @author unascribed
+ * @version 1.0
+ */
+
+public class Applet1 extends Applet {
+  private int rxc,x1,x2,y11,y12,y21,y22,y31,y32,y41,y42,y51,y52,y61,y62,y71,y72,y81,y82;
+  private double  xPut,xLtx,xGtx,xGrx,xLrx,xPin,xFSPL,aaa;
+  private int x[]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+  private int y[]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+  private String name1[]={"Orinico red(8 dBm)","Orinoco black(15 dBm)","AirBridge (11-17 dBm)",
+                          "BreezeNET Pro.11 (4 dBm)","BreezeNET Pro.11 (17 dBm)","BreezeNET DS.11 (-4-14 dBm)",
+                          "BreezeACCESS II xU-I/ID (10 dBm)","BreezeACCESS II xU-I/ID (17 dBm)",
+                          "BreezeACCESS II xU-A/E (2 dBm)","BreezeACCESS II xU-A/E (26 dBm)",
+                          "BreezeACCESS XL xU-E (28 dBm)","BreezeACCESS OFDM SU (28 dBm)",
+                          "BreezeACCESS OFDM AU (28 dBm)","BreezeACCESS OFDM AU-HP (25 dBm)",
+                          "Cisco Aironet 350 (0-20 dBm)","Linksys WAP11 (18 dBm)","Linksys WET11 (20 dBm)",
+                          "Linksys WRT54G (15 dBm)","Proxim Tsunami MP.11 HP(15 dBm)","Proxim Tsunami MP.11 LP(8 dBm)",
+                          "Proxim Tsunami MP.11a Indoor(5-15 dBm)","Proxim Tsunami MP.11a Outdoor(5-15 dBm)",
+                          "Proxim Tsunami MP.11a ISM(5-15 dBm)","Proxim Tsunami MP2001 (10 dBm)","Proxim Tsunami MP2002/2003 (12 dBm)",
+                          "Wi-LAN AWE 120-58 (21dBm)","Wi-LAN Libra 3000 AP (22 dBm)","Wi-LAN Libra 3000 CPE (17 dBm)"};
+  private String name2[]={"RG223","RG213","LowLoss","C2FCP","1/2\"","7/8\""};
+  private String name3[]={"RG223","RG213","LowLoss","C2FCP","1/2\"","7/8\""};
+  private String name4[]={"Orinoco pigtail","Other pigtail"};
+  private String name5[]={"VP165/24","VP270/24","VP470/24","VP870/24","CA27/24","SP45/24","SP60/24",
+                          "VO6/24","2VS8/24","3VS9/24","4VS10/24","6VS11/24","VP160/34","VP460/34",
+                          "VP660/34","VP860/34","SP45/34","SP60/34","CPA2230/34","CPA3320/34",
+                          "VP250/51","VP450/74","CPA2230/54","CPA3320/54","SP45/54","SP60/54","SP45/57"};
+  private boolean isStandalone = false;
+  private XYLayout xYLayout1 = new XYLayout();
+  private Component component1;
+  private JTextField Put = new JTextField();
+  private JTextField Ltx = new JTextField();
+  private JTextField Gtx = new JTextField();
+  private JTextArea PutERP = new JTextArea();
+  private JLabel jLabel1 = new JLabel();
+  private JLabel jLabel2 = new JLabel();
+  private JLabel jLabel3 = new JLabel();
+  private JLabel jLabel4 = new JLabel();
+  private JLabel jLabel5 = new JLabel();
+  private JLabel jLabel6 = new JLabel();
+  private JLabel jLabel7 = new JLabel();
+  private JLabel jLabel8 = new JLabel();
+  private JComboBox jComboBox1 = new JComboBox(name5);
+  private JLabel jLabel9 = new JLabel();
+  private JLabel jLabel11 = new JLabel();
+  private JTextField f = new JTextField();
+  private JTextField margin = new JTextField();
+  private JLabel jLabel13 = new JLabel();
+  private JTextField Grx = new JTextField();
+  private JLabel jLabel14 = new JLabel();
+  private JTextField Lrx = new JTextField();
+  private JLabel jLabel15 = new JLabel();
+  private JLabel jLabel16 = new JLabel();
+  private JLabel jLabel17 = new JLabel();
+  private JLabel jLabel19 = new JLabel();
+  private JButton jButton1 = new JButton();
+  private JPanel jPanel1 = new JPanel();
+  private JPanel jPanel2 = new JPanel();
+  private JLabel jLabel21 = new JLabel();
+  private XYLayout xYLayout2 = new XYLayout();
+  private JComboBox Cable1 = new JComboBox(name2);
+  private JComboBox Cable2 = new JComboBox(name3);
+  private JComboBox adapter = new JComboBox(name4);
+  private JTextField m1 = new JTextField();
+  private JTextField m2 = new JTextField();
+  private JLabel jLabel22 = new JLabel();
+  private JLabel jLabel23 = new JLabel();
+  private JTextArea mt1 = new JTextArea();
+  private JTextArea mt2 = new JTextArea();
+  private JTextArea at1 = new JTextArea();
+  private JTextArea cls = new JTextArea();
+  private JLabel jLabel24 = new JLabel();
+  private JLabel jLabel25 = new JLabel();
+  private JLabel jLabel26 = new JLabel();
+  private JLabel jLabel27 = new JLabel();
+  private JLabel jLabel28 = new JLabel();
+  private JButton jButton3 = new JButton();
+  private JButton jButton4 = new JButton();
+  private JLabel jLabel29 = new JLabel();
+  private JComboBox jComboBox5 = new JComboBox(name1);
+  private XYLayout xYLayout3 = new XYLayout();
+  private JLabel jLabel30 = new JLabel();
+  private JLabel jLabel31 = new JLabel();
+  private JTextField Bandwidth1 = new JTextField();
+  private JTextField Bandwidth2 = new JTextField();
+  private JTextField Bandwidth3 = new JTextField();
+  private JTextField Bandwidth4 = new JTextField();
+  private JTextField Bandwidth5 = new JTextField();
+  private JTextField Bandwidth6 = new JTextField();
+  private JTextField Bandwidth7 = new JTextField();
+  private JTextField Bandwidth8 = new JTextField();
+  private JTextField RXsens1 = new JTextField();
+  private JTextField RXsens2 = new JTextField();
+  private JTextField RXsens3 = new JTextField();
+  private JTextField RXsens4 = new JTextField();
+  private JTextField RXsens5 = new JTextField();
+  private JTextField RXsens6 = new JTextField();
+  private JTextField RXsens7 = new JTextField();
+  private JTextField RXsens8 = new JTextField();
+  private JLabel jLabel32 = new JLabel();
+  private JLabel jLabel33 = new JLabel();
+  private JLabel jLabel34 = new JLabel();
+  private JLabel jLabel35 = new JLabel();
+  private JLabel jLabel36 = new JLabel();
+  private JLabel jLabel37 = new JLabel();
+  private JLabel jLabel38 = new JLabel();
+  private JLabel jLabel39 = new JLabel();
+  private JLabel jLabel40 = new JLabel();
+  private JLabel jLabel41 = new JLabel();
+  private JLabel jLabel42 = new JLabel();
+  private JLabel jLabel43 = new JLabel();
+  private JLabel jLabel44 = new JLabel();
+  private JLabel jLabel45 = new JLabel();
+  private JLabel jLabel46 = new JLabel();
+  private JLabel jLabel47 = new JLabel();
+  private JLabel jLabel48 = new JLabel();
+  private JLabel jLabel49 = new JLabel();
+  private JLabel jLabel50 = new JLabel();
+  private JLabel jLabel51 = new JLabel();
+  private JLabel jLabel52 = new JLabel();
+  private JLabel jLabel53 = new JLabel();
+  private JLabel jLabel54 = new JLabel();
+  private JLabel jLabel55 = new JLabel();
+  //Get a parameter value
+  public String getParameter(String key, String def) {
+    return isStandalone ? System.getProperty(key, def) :
+      (getParameter(key) != null ? getParameter(key) : def);
+  }
+
+  //Construct the applet
+  public Applet1() {
+  }
+  //Initialize the applet
+  public void init() {
+    try {
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+  //Component initialization
+  private void jbInit() throws Exception {
+    component1 = Box.createHorizontalStrut(8);
+    xYLayout1.setWidth(675);
+    xYLayout1.setHeight(729);
+    this.setLayout(xYLayout1);
+    PutERP.setText("0");
+    jLabel1.setText("Put=");
+    jLabel2.setText("Ltx=");
+    jLabel3.setText("Gtx=");
+    jLabel4.setText("Put(ERP)=");
+    jLabel5.setText("dBm");
+    jLabel6.setText("dB");
+    jLabel7.setText("dBi");
+    jLabel8.setText("dBm");
+    jLabel9.setText("f=");
+    jLabel11.setText("margin=");
+    f.setText("2450");
+    margin.setText("5            ");
+    jLabel13.setText("Grx=");
+    Grx.setText("0");
+    jLabel14.setText("Lrx=");
+    Lrx.setText("0 ");
+    jLabel15.setText("dBm");
+    jLabel16.setText("dB");
+    jLabel17.setText("Mhz");
+    jLabel19.setText("dB");
+    jButton1.setText("Plot Graph");
+    jButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton1_actionPerformed(e);
+      }
+    });
+    jPanel1.setBorder(BorderFactory.createEtchedBorder());
+    jPanel1.setLayout(xYLayout2);
+    jPanel2.setBorder(BorderFactory.createEtchedBorder());
+    jPanel2.setLayout(xYLayout3);
+    jLabel21.setText("Cable Loss Calculator(@2450 Mhz)");
+    m1.setText("         ");
+    m1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        m1_actionPerformed(e);
+      }
+    });
+    m2.setText("          ");
+    m2.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        m2_actionPerformed(e);
+      }
+    });
+    jLabel22.setText("m");
+    jLabel23.setText("m");
+    mt1.setText("            ");
+    mt2.setText("             ");
+    at1.setText("          ");
+    cls.setText("         ");
+    jLabel24.setText("Cable Loss Sum=");
+    jLabel25.setText("dB");
+    jLabel26.setText("dB");
+    jLabel27.setText("dB");
+    jLabel28.setText("dB");
+    jButton3.setText("Apply A");
+    jButton3.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton3_actionPerformed(e);
+      }
+    });
+    jButton4.setText("Apply B");
+    jButton4.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton4_actionPerformed(e);
+      }
+    });
+    jLabel29.setText("AP Configuration (RX)");
+    jLabel30.setText("Bandwidth:");
+    jLabel31.setText("RXsens:");
+    Bandwidth1.setText("             ");
+    Bandwidth2.setText("          ");
+    Bandwidth3.setText("           ");
+    Bandwidth4.setText("             ");
+    Bandwidth5.setText("            ");
+    Bandwidth6.setText("            ");
+    Bandwidth7.setText("              ");
+    Bandwidth8.setText("            ");
+    RXsens1.setText("              ");
+    RXsens2.setText("           ");
+    RXsens3.setText("          ");
+    RXsens4.setText("           ");
+    RXsens5.setText("            ");
+    RXsens6.setText("             ");
+    RXsens7.setText("            ");
+    RXsens8.setText("              ");
+    Cable2.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Cable2_actionPerformed(e);
+      }
+    });
+    Cable1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Cable1_actionPerformed(e);
+      }
+    });
+    adapter.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        adapter_actionPerformed(e);
+      }
+    });
+    jComboBox5.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jComboBox5_actionPerformed(e);
+      }
+    });
+    jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jComboBox1_actionPerformed(e);
+      }
+    });
+    Put.setText("15");
+    Ltx.setText("0");
+    Gtx.setText("0");
+    jLabel32.setText("-50");
+    jLabel33.setText("-100");
+    jLabel34.setText("-75");
+    jLabel35.setText("-55");
+    jLabel36.setText("-60");
+    jLabel37.setText("-65");
+    jLabel38.setText("-70");
+    jLabel39.setText("-80");
+    jLabel40.setText("-85");
+    jLabel41.setText("-90");
+    jLabel42.setText("-95");
+    jLabel43.setText("0");
+    jLabel44.setText("200");
+    jLabel45.setText("400");
+    jLabel46.setText("600");
+    jLabel47.setText("800");
+    jLabel48.setText("1000");
+    jLabel49.setText("1200");
+    jLabel50.setText("1400");
+    jLabel51.setText("1600");
+    jLabel52.setText("1800");
+    jLabel53.setText("2000");
+    jLabel54.setText("distance (m)");
+    jLabel55.setText("Signal Strength");
+    jPanel1.add(jLabel21,    new XYConstraints(5, 4, -1, -1));
+    jPanel1.add(Cable1,   new XYConstraints(7, 26, 70, -1));
+    jPanel1.add(adapter,  new XYConstraints(7, 78, -1, -1));
+    jPanel1.add(Cable2,   new XYConstraints(7, 52, 71, -1));
+    jPanel1.add(m1,    new XYConstraints(101, 26, 43, -1));
+    jPanel1.add(m2,     new XYConstraints(101, 51, 43, -1));
+    jPanel1.add(mt1,   new XYConstraints(179, 28, 52, -1));
+    jPanel1.add(mt2,   new XYConstraints(179, 53, 53, -1));
+    jPanel1.add(at1,   new XYConstraints(179, 80, 53, -1));
+    jPanel1.add(cls,    new XYConstraints(179, 104, 53, -1));
+    jPanel1.add(jLabel24,  new XYConstraints(10, 106, -1, -1));
+    jPanel1.add(jLabel25, new XYConstraints(243, 28, -1, -1));
+    jPanel1.add(jLabel26, new XYConstraints(244, 53, -1, -1));
+    jPanel1.add(jLabel27, new XYConstraints(244, 79, -1, -1));
+    jPanel1.add(jLabel28, new XYConstraints(245, 103, -1, -1));
+    jPanel1.add(jButton4,      new XYConstraints(267, 75, 74, 39));
+    jPanel1.add(jButton3, new XYConstraints(267, 29, 74, 38));
+    jPanel1.add(jLabel22, new XYConstraints(150, 28, -1, -1));
+    jPanel1.add(jLabel23, new XYConstraints(151, 53, -1, -1));
+    this.add(jLabel11, new XYConstraints(200, 452, -1, -1));
+    this.add(margin, new XYConstraints(251, 451, 52, -1));
+    this.add(jLabel19, new XYConstraints(310, 451, -1, -1));
+    this.add(jButton1, new XYConstraints(233, 497, -1, -1));
+    this.add(jLabel55,  new XYConstraints(32, 2, -1, -1));
+    this.add(f,  new XYConstraints(251, 423, 51, -1));
+    this.add(jLabel17,  new XYConstraints(307, 425, -1, -1));
+    this.add(Grx,   new XYConstraints(81, 498, 47, -1));
+    this.add(jLabel13,  new XYConstraints(51, 500, -1, -1));
+    this.add(jLabel14,  new XYConstraints(52, 526, -1, -1));
+    this.add(Lrx,   new XYConstraints(81, 525, 47, -1));
+    this.add(jLabel1,  new XYConstraints(51, 398, -1, -1));
+    this.add(jLabel2,  new XYConstraints(50, 425, -1, -1));
+    this.add(jLabel3,  new XYConstraints(50, 449, -1, -1));
+    this.add(jPanel2,     new XYConstraints(375, 397, 234, 308));
+    jPanel2.add(jLabel29, new XYConstraints(13, 6, -1, -1));
+    jPanel2.add(jComboBox5,   new XYConstraints(7, 27, 213, -1));
+    jPanel2.add(jLabel30,   new XYConstraints(7, 53, -1, -1));
+    jPanel2.add(Bandwidth1,    new XYConstraints(9, 77, 57, -1));
+    jPanel2.add(Bandwidth2,     new XYConstraints(9, 103, 58, -1));
+    jPanel2.add(Bandwidth3,      new XYConstraints(10, 126, 57, -1));
+    jPanel2.add(Bandwidth4,     new XYConstraints(9, 151, 59, -1));
+    jPanel2.add(Bandwidth5,     new XYConstraints(9, 174, 59, -1));
+    jPanel2.add(Bandwidth6,     new XYConstraints(9, 199, 58, -1));
+    jPanel2.add(Bandwidth7,     new XYConstraints(9, 222, 57, -1));
+    jPanel2.add(Bandwidth8,     new XYConstraints(9, 246, 57, -1));
+    jPanel2.add(RXsens1,    new XYConstraints(159, 77, 55, -1));
+    jPanel2.add(RXsens2,     new XYConstraints(159, 101, 55, -1));
+    jPanel2.add(RXsens3,     new XYConstraints(159, 125, 55, -1));
+    jPanel2.add(RXsens4,      new XYConstraints(159, 149, 55, -1));
+    jPanel2.add(RXsens5,     new XYConstraints(159, 172, 55, -1));
+    jPanel2.add(RXsens6,     new XYConstraints(159, 195, 55, -1));
+    jPanel2.add(RXsens7,     new XYConstraints(159, 218, 55, -1));
+    jPanel2.add(RXsens8,    new XYConstraints(158, 242, 55, -1));
+    jPanel2.add(jLabel31, new XYConstraints(159, 55, -1, -1));
+    this.add(jLabel15,  new XYConstraints(147, 501, -1, -1));
+    this.add(jLabel16,    new XYConstraints(146, 528, -1, -1));
+    this.add(jLabel54,   new XYConstraints(292, 365, -1, -1));
+    this.add(jLabel33,    new XYConstraints(44, 321, -1, -1));
+    this.add(jLabel34,   new XYConstraints(51, 176, -1, -1));
+    this.add(jLabel42, new XYConstraints(51, 293, -1, -1));
+    this.add(jLabel41, new XYConstraints(52, 264, -1, -1));
+    this.add(jLabel40, new XYConstraints(52, 233, -1, -1));
+    this.add(jLabel35, new XYConstraints(50, 50, -1, -1));
+    this.add(jLabel38, new XYConstraints(52, 145, -1, -1));
+    this.add(jLabel36, new XYConstraints(51, 82, -1, -1));
+    this.add(jLabel37, new XYConstraints(51, 115, -1, -1));
+    this.add(jLabel32, new XYConstraints(51, 21, -1, -1));
+    this.add(jLabel39, new XYConstraints(52, 204, -1, -1));
+    this.add(jLabel43,   new XYConstraints(75, 345, -1, -1));
+    this.add(jLabel53,    new XYConstraints(568, 345, -1, -1));
+    this.add(jLabel48, new XYConstraints(315, 345, -1, -1));
+    this.add(jLabel49,  new XYConstraints(371, 345, -1, -1));
+    this.add(jLabel52, new XYConstraints(521, 345, -1, -1));
+    this.add(jLabel51, new XYConstraints(473, 345, -1, -1));
+    this.add(jLabel50,  new XYConstraints(423, 345, -1, -1));
+    this.add(jLabel46,  new XYConstraints(214, 345, -1, -1));
+    this.add(jLabel45,  new XYConstraints(161, 345, -1, -1));
+    this.add(jLabel44,  new XYConstraints(110, 345, -1, -1));
+    this.add(jLabel47,  new XYConstraints(264, 345, -1, -1));
+    this.add(jComboBox1, new XYConstraints(199, 396, 116, -1));
+    this.add(Put, new XYConstraints(81, 395, 47, -1));
+    this.add(Ltx, new XYConstraints(81, 422, 47, -1));
+    this.add(Gtx, new XYConstraints(81, 447, 47, -1));
+    this.add(PutERP, new XYConstraints(81, 474, 49, -1));
+    this.add(jLabel4, new XYConstraints(19, 473, -1, -1));
+    this.add(jLabel5, new XYConstraints(144, 397, -1, -1));
+    this.add(jLabel7, new XYConstraints(147, 449, -1, -1));
+    this.add(jLabel8, new XYConstraints(146, 474, -1, -1));
+    this.add(jLabel6, new XYConstraints(145, 425, -1, -1));
+    this.add(jLabel9, new XYConstraints(200, 425, -1, -1));
+    this.add(jPanel1,  new XYConstraints(11, 566, 356, 137));
+  }
+  //Get Applet information
+  public String getAppletInfo() {
+    return "Applet Information";
+  }
+  //Get parameter info
+  public String[][] getParameterInfo() {
+    return null;
+  }
+
+  void Cable2_actionPerformed(ActionEvent e) {
+    change2();
+  }
+
+  void m1_actionPerformed(ActionEvent e) {
+    change2();
+  }
+  public void change2(){
+
+    double xm1,xm2,xm3;
+      int c1,c2,ad1;
+      xm1=Double.parseDouble(m1.getText());
+      xm2=Double.parseDouble(m2.getText());
+      c1=Cable1.getSelectedIndex();
+      c2=Cable2.getSelectedIndex();
+      if (adapter.getSelectedIndex()==0)
+      at1.setText("0.7");
+      else if (adapter.getSelectedIndex()==1)
+      at1.setText("0.3");
+      if (c1==0)
+        mt1.setText(Double.toString((xm1*0.9)));
+      else if(c1==1)
+        mt1.setText(Double.toString((xm1*0.46)));
+      else if(c1==2)
+        mt1.setText(Double.toString((xm1*0.46)));
+      else if(c1==3)
+        mt1.setText(Double.toString((xm1*0.24)));
+      else if(c1==4)
+        mt1.setText(Double.toString((xm1*0.12)));
+      else if(c1==5)
+        mt1.setText(Double.toString((xm1*0.07)));
+      if (c2==0)
+        mt2.setText(Double.toString((xm2*0.9)));
+      else if(c2==1)
+        mt2.setText(Double.toString((xm2*0.46)));
+      else if(c2==2)
+        mt2.setText(Double.toString((xm2*0.46)));
+      else if(c2==3)
+        mt2.setText(Double.toString((xm2*0.24)));
+      else if(c2==4)
+        mt2.setText(Double.toString((xm2*0.12)));
+      else if(c2==5)
+        mt2.setText(Double.toString((xm2*0.07)));
+      cls.setText(Double.toString(Double.parseDouble(mt1.getText())+Double.parseDouble(mt2.getText())+Double.parseDouble(at1.getText())));
+
+
+  }
+
+  void m2_actionPerformed(ActionEvent e) {
+    change2();
+  }
+
+  void Cable1_actionPerformed(ActionEvent e) {
+    change2();
+  }
+
+  void adapter_actionPerformed(ActionEvent e) {
+    change2();
+  }
+
+  void jButton3_actionPerformed(ActionEvent e) {
+     Ltx.setText(cls.getText());
+     calputerp();
+  }
+
+  void jButton4_actionPerformed(ActionEvent e) {
+    Lrx.setText(cls.getText());
+    calputerp();
+  }
+
+  void jComboBox5_actionPerformed(ActionEvent e) {
+    int a1;
+
+a1=jComboBox5.getSelectedIndex();
+if (a1==0){
+   rxc=3;
+   //disp3();
+   Put.setText("8");
+   Bandwidth1.setText("1.0");
+   Bandwidth2.setText("2.0");
+   Bandwidth3.setText("5.5");
+   Bandwidth4.setText("");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-94");
+   RXsens2.setText("-91");
+   RXsens3.setText("-87");
+   RXsens4.setText("");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+else if(a1==1){
+   rxc=4;
+   //disp4();
+   Put.setText("15");
+   Bandwidth1.setText("1.0");
+   Bandwidth2.setText("2.0");
+   Bandwidth3.setText("5.5");
+   Bandwidth4.setText("11.0");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-94");
+   RXsens2.setText("-91");
+   RXsens3.setText("-87");
+   RXsens4.setText("-82");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+else if(a1==2){
+   rxc=4;
+   //disp4();
+   Put.setText("11");
+   Bandwidth1.setText("1.0");
+   Bandwidth2.setText("2.0");
+   Bandwidth3.setText("5.5");
+   Bandwidth4.setText("11.0");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-94");
+   RXsens2.setText("-88");
+   RXsens3.setText("-87");
+   RXsens4.setText("-85");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+else if(a1==3){
+   rxc=3;
+   //disp3();
+   Put.setText("4");
+   Bandwidth1.setText("1.0");
+   Bandwidth2.setText("2.0");
+   Bandwidth3.setText("3.0");
+   Bandwidth4.setText("");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-83");
+   RXsens2.setText("-75");
+   RXsens3.setText("-67");
+   RXsens4.setText("");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+else if(a1==4){
+   rxc=3;
+   //disp3();
+   Put.setText("17");
+   Bandwidth1.setText("1.0");
+   Bandwidth2.setText("2.0");
+   Bandwidth3.setText("3.0");
+   Bandwidth4.setText("");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-83");
+   RXsens2.setText("-75");
+   RXsens3.setText("-67");
+   RXsens4.setText("");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+ else if(a1==5){
+   rxc=4;
+   //disp4();
+   Put.setText("-4");
+   Bandwidth1.setText("1.0");
+   Bandwidth2.setText("2.0");
+   Bandwidth3.setText("5.5");
+   Bandwidth4.setText("11.0");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-93");
+   RXsens2.setText("-90");
+   RXsens3.setText("-88");
+   RXsens4.setText("-85");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+ else if(a1==6){
+   rxc=3;
+   //disp3();
+   Put.setText("10");
+   Bandwidth1.setText("1.0");
+   Bandwidth2.setText("2.0");
+   Bandwidth3.setText("3.0");
+   Bandwidth4.setText("");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-80");
+   RXsens2.setText("-74");
+   RXsens3.setText("-66");
+   RXsens4.setText("");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+ else if(a1==7){
+   rxc=3;
+   //disp3();
+   Put.setText("17");
+   Bandwidth1.setText("1.0");
+   Bandwidth2.setText("2.0");
+   Bandwidth3.setText("3.0");
+   Bandwidth4.setText("");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-80");
+   RXsens2.setText("-74");
+   RXsens3.setText("-66");
+   RXsens4.setText("");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+ else if(a1==8){
+   rxc=3;
+   //disp3();
+   Put.setText("2");
+   Bandwidth1.setText("1.0");
+   Bandwidth2.setText("2.0");
+   Bandwidth3.setText("3.0");
+   Bandwidth4.setText("");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-87");
+   RXsens2.setText("-81");
+   RXsens3.setText("-73");
+   RXsens4.setText("");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+ else if(a1==9){
+   rxc=3;
+   //disp3();
+   Put.setText("26");
+   Bandwidth1.setText("1.0");
+   Bandwidth2.setText("2.0");
+   Bandwidth3.setText("3.0");
+   Bandwidth4.setText("");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-87");
+   RXsens2.setText("-81");
+   RXsens3.setText("-73");
+   RXsens4.setText("");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+ else if(a1==10){
+   rxc=3;
+   //disp3();
+   Put.setText("28");
+   Bandwidth1.setText("1.0");
+   Bandwidth2.setText("2.0");
+   Bandwidth3.setText("3.0");
+   Bandwidth4.setText("");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-93");
+   RXsens2.setText("-86");
+   RXsens3.setText("-77");
+   RXsens4.setText("");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+ else if(a1==11){
+   rxc=4;
+   //disp4();
+   Put.setText("27");
+   Bandwidth1.setText("2.0");
+   Bandwidth2.setText("4.0");
+   Bandwidth3.setText("8.0");
+   Bandwidth4.setText("12.0");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-94");
+   RXsens2.setText("-91");
+   RXsens3.setText("-85");
+   RXsens4.setText("-79");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+ else if(a1==12){
+   rxc=4;
+   //disp4();
+   Put.setText("-2");
+   Bandwidth1.setText("2.0");
+   Bandwidth2.setText("4.0");
+   Bandwidth3.setText("8.0");
+   Bandwidth4.setText("12.0");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-94");
+   RXsens2.setText("-91");
+   RXsens3.setText("-85");
+   RXsens4.setText("-79");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+ else if(a1==13){
+   rxc=4;
+   //disp4();
+   Put.setText("13");
+   Bandwidth1.setText("2.0");
+   Bandwidth2.setText("4.0");
+   Bandwidth3.setText("8.0");
+   Bandwidth4.setText("12.0");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-94");
+   RXsens2.setText("-91");
+   RXsens3.setText("-85");
+   RXsens4.setText("-79");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+ else if(a1==14){
+   rxc=4;
+   //disp4();
+   Put.setText("0");
+   Bandwidth1.setText("1.0");
+   Bandwidth2.setText("2.0");
+   Bandwidth3.setText("5.5");
+   Bandwidth4.setText("11.0");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-94");
+   RXsens2.setText("-91");
+   RXsens3.setText("-89");
+   RXsens4.setText("-85");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+ else if(a1==15){
+   rxc=4;
+   //disp4();
+   Put.setText("18");
+   Bandwidth1.setText("1.0");
+   Bandwidth2.setText("2.0");
+   Bandwidth3.setText("5.5");
+   Bandwidth4.setText("11.0");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-94");
+   RXsens2.setText("-91");
+   RXsens3.setText("-87");
+   RXsens4.setText("-84");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+ else if(a1==16){
+   rxc=4;
+   //disp4();
+   Put.setText("20");
+   Bandwidth1.setText("1.0");
+   Bandwidth2.setText("2.0");
+   Bandwidth3.setText("5.5");
+   Bandwidth4.setText("11.0");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-94");
+   RXsens2.setText("-91");
+   RXsens3.setText("-87");
+   RXsens4.setText("-84");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+ else if(a1==17){
+   rxc=8;
+   //disp8();
+   Put.setText("15");
+   Bandwidth1.setText("6.0");
+   Bandwidth2.setText("9.0");
+   Bandwidth3.setText("12.0");
+   Bandwidth4.setText("18.0");
+   Bandwidth5.setText("24.0");
+   Bandwidth6.setText("36.0");
+   Bandwidth7.setText("48.0");
+   Bandwidth8.setText("54.0");
+   RXsens1.setText("-88");
+   RXsens2.setText("-85");
+   RXsens3.setText("-82");
+   RXsens4.setText("-79");
+   RXsens5.setText("-76");
+   RXsens6.setText("-73");
+   RXsens7.setText("-70");
+   RXsens8.setText("-67");}
+ else if(a1==18){
+   rxc=4;
+   //disp4();
+   Put.setText("15");
+   Bandwidth1.setText("1.0");
+   Bandwidth2.setText("2.0");
+   Bandwidth3.setText("5.5");
+   Bandwidth4.setText("11.0");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-94");
+   RXsens2.setText("-91");
+   RXsens3.setText("-87");
+   RXsens4.setText("-82");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+  RXsens8.setText("");}
+else if(a1==19){
+   rxc=4;
+   //disp4();
+   Put.setText("8");
+   Bandwidth1.setText("1.0");
+   Bandwidth2.setText("2.0");
+   Bandwidth3.setText("5.5");
+   Bandwidth4.setText("11.0");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-94");
+   RXsens2.setText("-91");
+   RXsens3.setText("-87");
+   RXsens4.setText("-82");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+  RXsens8.setText("");}
+  else if(a1==20){
+    rxc=8;
+    //disp8();
+   Put.setText("5");
+   Bandwidth1.setText("6.0");
+   Bandwidth2.setText("9.0");
+   Bandwidth3.setText("12.0");
+   Bandwidth4.setText("18.0");
+   Bandwidth5.setText("24.0");
+   Bandwidth6.setText("36.0");
+   Bandwidth7.setText("48.0");
+   Bandwidth8.setText("54.0");
+   RXsens1.setText("-88");
+   RXsens2.setText("-87");
+   RXsens3.setText("-86");
+   RXsens4.setText("-84");
+   RXsens5.setText("-81");
+   RXsens6.setText("-77");
+   RXsens7.setText("-73");
+   RXsens8.setText("-69");}
+   else if(a1==21){
+     rxc=8;
+   //disp8();
+   Put.setText("5");
+   Bandwidth1.setText("6.0");
+   Bandwidth2.setText("9.0");
+   Bandwidth3.setText("12.0");
+   Bandwidth4.setText("18.0");
+   Bandwidth5.setText("24.0");
+   Bandwidth6.setText("36.0");
+   Bandwidth7.setText("48.0");
+   Bandwidth8.setText("54.0");
+   RXsens1.setText("-88");
+   RXsens2.setText("-87");
+   RXsens3.setText("-86");
+   RXsens4.setText("-84");
+   RXsens5.setText("-81");
+   RXsens6.setText("-77");
+   RXsens7.setText("-73");
+   RXsens8.setText("-69");}
+   else if(a1==22){
+     rxc=8;
+   //disp8();
+   Put.setText("5");
+   Bandwidth1.setText("6.0");
+   Bandwidth2.setText("9.0");
+   Bandwidth3.setText("12.0");
+   Bandwidth4.setText("18.0");
+   Bandwidth5.setText("24.0");
+   Bandwidth6.setText("36.0");
+   Bandwidth7.setText("48.0");
+   Bandwidth8.setText("54.0");
+   RXsens1.setText("-88");
+   RXsens2.setText("-87");
+   RXsens3.setText("-86");
+   RXsens4.setText("-84");
+   RXsens5.setText("-81");
+   RXsens6.setText("-77");
+   RXsens7.setText("-73");
+   RXsens8.setText("-69");}
+   else if(a1==23){
+     rxc=1;
+   //disp1();
+   Put.setText("0");
+   Bandwidth1.setText("10.0");
+   Bandwidth2.setText("");
+   Bandwidth3.setText("");
+   Bandwidth4.setText("");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-81");
+   RXsens2.setText("");
+   RXsens3.setText("");
+   RXsens4.setText("");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+   else if(a1==24){
+     rxc=1;
+   //disp1();
+   Put.setText("12");
+   Bandwidth1.setText("12.0");
+   Bandwidth2.setText("");
+   Bandwidth3.setText("");
+   Bandwidth4.setText("");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-81");
+   RXsens2.setText("");
+   RXsens3.setText("");
+   RXsens4.setText("");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+   else if(a1==25){
+     rxc=1;
+   //disp1();
+   Put.setText("-10");
+   Bandwidth1.setText("12.0");
+   Bandwidth2.setText("");
+   Bandwidth3.setText("");
+   Bandwidth4.setText("");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-80");
+   RXsens2.setText("");
+   RXsens3.setText("");
+   RXsens4.setText("");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+   else if(a1==26){
+     rxc=1;
+   //disp1();
+   Put.setText("-9");
+   Bandwidth1.setText("16.0");
+   Bandwidth2.setText("");
+   Bandwidth3.setText("");
+   Bandwidth4.setText("");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-82");
+   RXsens2.setText("");
+   RXsens3.setText("");
+   RXsens4.setText("");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+   else if(a1==27){
+     rxc=1;
+   //disp1();
+   Put.setText("-9");
+   Bandwidth1.setText("16.0");
+   Bandwidth2.setText("");
+   Bandwidth3.setText("");
+   Bandwidth4.setText("");
+   Bandwidth5.setText("");
+   Bandwidth6.setText("");
+   Bandwidth7.setText("");
+   Bandwidth8.setText("");
+   RXsens1.setText("-79");
+   RXsens2.setText("");
+   RXsens3.setText("");
+   RXsens4.setText("");
+   RXsens5.setText("");
+   RXsens6.setText("");
+   RXsens7.setText("");
+   RXsens8.setText("");}
+   calputerp();
+  }
+
+  public void calputerp() {
+    PutERP.setText(Double.toString(Double.parseDouble(Put.getText())-Double.parseDouble(Ltx.getText())+Double.parseDouble(Gtx.getText())));
+  }
+
+  void jComboBox1_actionPerformed(ActionEvent e) {
+    if (jComboBox5.getSelectedIndex()==0)
+     Gtx.setText("9.0");
+   else if (jComboBox5.getSelectedIndex()==1)
+     Gtx.setText("12.0");
+   else if (jComboBox5.getSelectedIndex()==2)
+     Gtx.setText("14.0");
+   else if (jComboBox5.getSelectedIndex()==3)
+     Gtx.setText("16.5");
+   else if (jComboBox5.getSelectedIndex()==4)
+     Gtx.setText("14.0");
+   else if (jComboBox5.getSelectedIndex()==5)
+     Gtx.setText("18.0");
+   else if (jComboBox5.getSelectedIndex()==6)
+     Gtx.setText("21.0");
+   else if (jComboBox5.getSelectedIndex()==7)
+     Gtx.setText("6.0");
+   else if (jComboBox5.getSelectedIndex()==8)
+     Gtx.setText("8.0");
+   else if (jComboBox5.getSelectedIndex()==9)
+     Gtx.setText("9.0");
+   else if (jComboBox5.getSelectedIndex()==10)
+     Gtx.setText("10.0");
+   else if (jComboBox5.getSelectedIndex()==11)
+     Gtx.setText("11.0");
+   else if (jComboBox5.getSelectedIndex()==12)
+     Gtx.setText("9.0");
+   else if (jComboBox5.getSelectedIndex()==13)
+     Gtx.setText("14.0");
+   else if (jComboBox5.getSelectedIndex()==14)
+     Gtx.setText("15.5");
+   else if (jComboBox5.getSelectedIndex()==15)
+     Gtx.setText("17.0");
+   else if (jComboBox5.getSelectedIndex()==16)
+     Gtx.setText("21.0");
+   else if (jComboBox5.getSelectedIndex()==17)
+     Gtx.setText("24.0");
+   else if (jComboBox5.getSelectedIndex()==18)
+     Gtx.setText("14.0");
+   else if (jComboBox5.getSelectedIndex()==19)
+     Gtx.setText("18.0");
+   else if (jComboBox5.getSelectedIndex()==20)
+     Gtx.setText("12.0");
+   else if (jComboBox5.getSelectedIndex()==21)
+     Gtx.setText("14.0");
+   else if (jComboBox5.getSelectedIndex()==22)
+     Gtx.setText("14.0");
+   else if (jComboBox5.getSelectedIndex()==23)
+     Gtx.setText("18.0");
+   else if (jComboBox5.getSelectedIndex()==24)
+     Gtx.setText("25.0");
+   else if (jComboBox5.getSelectedIndex()==25)
+     Gtx.setText("28.0");
+   else if (jComboBox5.getSelectedIndex()==26)
+     Gtx.setText("25.0");
+   calputerp();
+  }
+
+  public void paint(Graphics g){
+     super.paint(g);
+
+     g.drawLine(80,30,80,330);
+     g.drawLine(80,330,580,330);
+     g.drawLine(x1,y11,x2,y12);
+     g.drawLine(x1,y21,x2,y22);
+     g.drawLine(x1,y31,x2,y32);
+     g.drawLine(x1,y41,x2,y42);
+     g.drawLine(x1,y51,x2,y52);
+     g.drawLine(x1,y61,x2,y62);
+     g.drawLine(x1,y71,x2,y72);
+     g.drawLine(x1,y81,x2,y82);
+     g.drawPolyline(x,y,500);
+   }
+
+  void jButton1_actionPerformed(ActionEvent e) {
+   // double xPut,xLtx,xGtx,xGrx,xLrx,xPin,xFSPL;
+    double xx;
+   // x[0]=50;x[1]=60;x[2]=70;x[3]=90;x[4]=100;
+   // y[0]=50;y[1]=60;y[2]=70;y[3]=90;y[4]=100;
+   x1=80;
+   x2=580;
+   y11=330;y12=330;y21=330;y22=330;y31=330;y32=330;y41=330;y42=330;
+   y51=330;y52=330;y61=330;y62=330;y71=330;y72=330;y81=330;y82=330;
+   if (rxc==1){
+   y11=3*(Integer.parseInt(RXsens1.getText())*-1)+30;
+   y12=3*(Integer.parseInt(RXsens1.getText())*-1)+30;}
+   else if (rxc==2) {
+   y11=3*(Integer.parseInt(RXsens1.getText())*-1)+30;
+   y12=3*(Integer.parseInt(RXsens1.getText())*-1)+30;
+   y21=3*(Integer.parseInt(RXsens2.getText())*-1)+30;
+   y22=3*(Integer.parseInt(RXsens2.getText())*-1)+30;}
+   else if (rxc==3){
+   y11=3*(Integer.parseInt(RXsens1.getText())*-1)+30;
+   y12=3*(Integer.parseInt(RXsens1.getText())*-1)+30;
+   y21=3*(Integer.parseInt(RXsens2.getText())*-1)+30;
+   y22=3*(Integer.parseInt(RXsens2.getText())*-1)+30;
+   y31=3*(Integer.parseInt(RXsens3.getText())*-1)+30;
+   y32=3*(Integer.parseInt(RXsens3.getText())*-1)+30;
+   }
+   else if (rxc==4){
+   y11=3*(Integer.parseInt(RXsens1.getText())*-1)+30;
+   y12=3*(Integer.parseInt(RXsens1.getText())*-1)+30;
+   y21=3*(Integer.parseInt(RXsens2.getText())*-1)+30;
+   y22=3*(Integer.parseInt(RXsens2.getText())*-1)+30;
+   y31=3*(Integer.parseInt(RXsens3.getText())*-1)+30;
+   y32=3*(Integer.parseInt(RXsens3.getText())*-1)+30;
+   y41=3*(Integer.parseInt(RXsens4.getText())*-1)+30;
+   y42=3*(Integer.parseInt(RXsens4.getText())*-1)+30;
+   }
+   else if (rxc==5){
+   y11=3*(Integer.parseInt(RXsens1.getText())*-1)+30;
+   y12=3*(Integer.parseInt(RXsens1.getText())*-1)+30;
+   y21=3*(Integer.parseInt(RXsens2.getText())*-1)+30;
+   y22=3*(Integer.parseInt(RXsens2.getText())*-1)+30;
+   y31=3*(Integer.parseInt(RXsens3.getText())*-1)+30;
+   y32=3*(Integer.parseInt(RXsens3.getText())*-1)+30;
+   y41=3*(Integer.parseInt(RXsens4.getText())*-1)+30;
+   y42=3*(Integer.parseInt(RXsens4.getText())*-1)+30;
+   y51=3*(Integer.parseInt(RXsens5.getText())*-1)+30;
+   y52=3*(Integer.parseInt(RXsens5.getText())*-1)+30;
+   }
+   else if (rxc==6){
+   y11=3*(Integer.parseInt(RXsens1.getText())*-1)+30;
+   y12=3*(Integer.parseInt(RXsens1.getText())*-1)+30;
+   y21=3*(Integer.parseInt(RXsens2.getText())*-1)+30;
+   y22=3*(Integer.parseInt(RXsens2.getText())*-1)+30;
+   y31=3*(Integer.parseInt(RXsens3.getText())*-1)+30;
+   y32=3*(Integer.parseInt(RXsens3.getText())*-1)+30;
+   y41=3*(Integer.parseInt(RXsens4.getText())*-1)+30;
+   y42=3*(Integer.parseInt(RXsens4.getText())*-1)+30;
+   y51=3*(Integer.parseInt(RXsens5.getText())*-1)+30;
+   y52=3*(Integer.parseInt(RXsens5.getText())*-1)+30;
+   y61=3*(Integer.parseInt(RXsens6.getText())*-1)+30;
+   y62=3*(Integer.parseInt(RXsens6.getText())*-1)+30;
+   }
+   else if (rxc==7){
+   y11=3*(Integer.parseInt(RXsens1.getText())*-1)+30;
+   y12=3*(Integer.parseInt(RXsens1.getText())*-1)+30;
+   y21=3*(Integer.parseInt(RXsens2.getText())*-1)+30;
+   y22=3*(Integer.parseInt(RXsens2.getText())*-1)+30;
+   y31=3*(Integer.parseInt(RXsens3.getText())*-1)+30;
+   y32=3*(Integer.parseInt(RXsens3.getText())*-1)+30;
+   y41=3*(Integer.parseInt(RXsens4.getText())*-1)+30;
+   y42=3*(Integer.parseInt(RXsens4.getText())*-1)+30;
+   y51=3*(Integer.parseInt(RXsens5.getText())*-1)+30;
+   y52=3*(Integer.parseInt(RXsens5.getText())*-1)+30;
+   y61=3*(Integer.parseInt(RXsens6.getText())*-1)+30;
+   y62=3*(Integer.parseInt(RXsens6.getText())*-1)+30;
+   y71=3*(Integer.parseInt(RXsens7.getText())*-1)+30;
+   y72=3*(Integer.parseInt(RXsens7.getText())*-1)+30;
+   }
+   else if (rxc==8){
+   y11=3*(Integer.parseInt(RXsens1.getText())*-1)+30;
+   y12=3*(Integer.parseInt(RXsens1.getText())*-1)+30;
+   y21=3*(Integer.parseInt(RXsens2.getText())*-1)+30;
+   y22=3*(Integer.parseInt(RXsens2.getText())*-1)+30;
+   y31=3*(Integer.parseInt(RXsens3.getText())*-1)+30;
+   y32=3*(Integer.parseInt(RXsens3.getText())*-1)+30;
+   y41=3*(Integer.parseInt(RXsens4.getText())*-1)+30;
+   y42=3*(Integer.parseInt(RXsens4.getText())*-1)+30;
+   y51=3*(Integer.parseInt(RXsens5.getText())*-1)+30;
+   y52=3*(Integer.parseInt(RXsens5.getText())*-1)+30;
+   y61=3*(Integer.parseInt(RXsens6.getText())*-1)+30;
+   y62=3*(Integer.parseInt(RXsens6.getText())*-1)+30;
+   y71=3*(Integer.parseInt(RXsens7.getText())*-1)+30;
+   y72=3*(Integer.parseInt(RXsens7.getText())*-1)+30;
+   y81=3*(Integer.parseInt(RXsens8.getText())*-1)+30;
+   y82=3*(Integer.parseInt(RXsens8.getText())*-1)+30;
+   }
+
+
+    xPut=Double.parseDouble(Put.getText());
+    xLtx=Double.parseDouble(Ltx.getText());
+    xGtx=Double.parseDouble(Gtx.getText());
+    xGrx=Double.parseDouble(Grx.getText());
+    xLrx=Double.parseDouble(Lrx.getText());
+    for (int i=0; i<500; i=i+1){
+
+
+    xFSPL=-1*(32.4+(20*Math.log(Integer.parseInt(f.getText()))*0.434294482)+(20*Math.log(0.004*i)*0.434294482));
+    xPin=xFSPL+xPut-xLtx+xGtx+xGrx-xLrx;
+
+    xPin=xPin*-1;
+
+    x[i]=i+80;
+    y[i]=3*((int) xPin)+30;
+    if (y[i] > 330)
+      y[i]=330;
+    }
+    //test.setText(Integer.toString(xPut));
+   //test.setText(Integer.toString(abc()));
+   repaint();
+
+  }
+
+
+
+
+}
+
+

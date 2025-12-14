@@ -1,0 +1,101 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-874">
+<meta name=Generator content="Microsoft Word 11 (filtered)">
+<title>การพัฒนาการติดต่อระหว่างคอมพิวเตอร์กับโทรศัพท์โดย DirectX และ TAPI</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Angsana New";
+	panose-1:2 2 6 3 5 4 5 2 3 4;}
+@font-face
+	{font-family:"Cordia New";
+	panose-1:2 11 3 4 2 2 2 2 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:14.0pt;
+	font-family:"Cordia New";}
+span.Hyperlink4
+	{font-family:"Times New Roman";
+	color:black;
+	text-decoration:underline;}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span lang=TH
+style='font-size:15.0pt;font-family:"Angsana New"'>การพัฒนาการติดต่อระหว่างคอมพิวเตอร์กับโทรศัพท์โดย
+</span></b><b><span style='font-size:15.0pt;font-family:"Angsana New"'>DirectX <span
+lang=TH>และ </span>TAPI</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal align=center style='margin-left:243.0pt;text-align:center'><span
+style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:243.0pt'><span lang=TH style='font-size:
+15.0pt;font-family:"Angsana New"'>นางสาวจารุณี&nbsp;&nbsp; มีเงิน </span><span
+style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;43010058<span
+lang=TH>นายจิรายุ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+เจริญวิริยะภาพ&nbsp;&nbsp;&nbsp; 43010069</span></span></p>
+
+<p class=MsoNormal style='margin-left:243.0pt;text-align:justify'><span
+lang=TH style='font-size:15.0pt;font-family:"Angsana New"'>ดร.วรวัฒน์&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ลิ้มโภคา<span class=Hyperlink4><span style='font-family:"Angsana New";
+text-decoration:none'> &nbsp;อาจารย์ที่ปรึกษา</span></span></span></p>
+
+<p class=MsoNormal style='margin-left:243.0pt;text-align:justify'><span
+class=Hyperlink4><span lang=TH style='font-size:15.0pt;font-family:"Angsana New";
+text-decoration:none'>ดร. ชุติเมษฎ์&nbsp;&nbsp;&nbsp;&nbsp; ศรีนิลทา
+อาจารย์ที่ปรึกษา</span></span></p>
+
+<p class=MsoNormal style='margin-left:243.0pt'><span lang=TH style='font-size:
+15.0pt;font-family:"Angsana New"'>ปีการศึกษา 2546</span></p>
+
+<p class=MsoNormal><span style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=TH style='font-size:15.0pt;font-family:"Angsana New"'>บทคัดย่อ</span></b></p>
+
+<p class=MsoNormal><b><span style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;</span></b></p>
+
+<p class=MsoNormal style='text-align:justify;text-justify:inter-cluster;
+text-indent:54.0pt'><span lang=TH style='font-size:15.0pt;font-family:"Angsana New"'>การพัฒนาแอปพลิเคชันในโครงงานนี้เป็นการพัฒนาซอฟแวร์เพื่อศึกษาการเชื่อมต่อและสื่อสารระหว่างเครือข่ายอินเตอร์เน็ตกับเครือข่ายโทรศัพท์
+โดยได้เริ่มด้วยการพัฒนาแอปพลิเคชันให้สามารถติดต่อพูดคุยระหว่างคอมพิวเตอร์กับคอมพิวเตอร์ได้ด้วยเสียงและสามารถทำการประชุมหลายสายได้&nbsp;
+และในส่วนของการการสื่อสารระหว่างเครือข่ายอินเตอร์เน็ตและเครือข่ายโทรศัพท์ได้ทำการพัฒนาให้คอมพิวเตอร์ติดต่อกับโทรศัพท์
+ติดต่อกันในลักษณะของการฝากข้อความ</span></p>
+
+<p class=MsoNormal style='text-align:justify;text-justify:inter-cluster;
+text-indent:54.0pt'><span lang=TH style='font-size:15.0pt;font-family:"Angsana New"'>โดยแอปพลิเคชันที่พัฒนาจะประกอบด้วย
+2 ส่วนที่สำคัญคือ ส่วนของคอมพิวเตอร์ที่เป็นปลายทางของเครือข่ายอินเตอร์เน็ต
+ซึ่งจะมีการเรียกใช้บริการจากเซิร์ฟเวอร์เพื่อติดต่อกับปลายทางโดยรูปแบบที่ใช้ในการติดต่อคือเสียง
+ซึ่งเป็นข้อมูลแบบเรียลไทม์
+และส่วนที่สองคือส่วนของเซิร์ฟเวอร์ที่ทำหน้าที่ในการรับการร้องขอของไคลแอนท์
+และสร้างช่องทางการติดต่อโดยผ่านเครือข่ายอินเตอร์เน็ต
+ซึ่งการเชื่อมต่อภายในเครือข่ายอินเตอร์เน็ตนั้นสามารถพัฒนาโดยใช้ไดเร็กเพลย์
+และในส่วนการสร้างช่องทางการเชื่อมต่อผ่านเครือข่ายโทรศัพท์จะพัฒนาโดยใช้ </span><span
+style='font-size:15.0pt;font-family:"Angsana New"'>TAPI </span></p>
+
+<p class=MsoNormal><span lang=TH style='font-family:"Angsana New"'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

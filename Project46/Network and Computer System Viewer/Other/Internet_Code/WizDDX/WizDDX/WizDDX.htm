@@ -1,0 +1,217 @@
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Microsoft Developer Studio">
+<META HTTP-EQUIV="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>Document Title</TITLE>
+</HEAD>
+<BODY>
+
+<!-- Insert HTML here -->
+<!-- Article Title -->
+<CENTER><H3><FONT COLOR="#AOAO99">
+Extend DDX/DDV for Wizard Sheet
+</FONT></H3></CENTER>
+<CENTER><H3><HR></H3></CENTER>
+
+<!-- Author and contact details -->
+This article was contributed by <A HREF="mailto:gu_wen_jin@hotmail.com">WENJIN GU</A>.
+
+<!-- Sample image and source code/demo project -->
+<br>
+
+<!-- The article... -->
+
+<p>One of cool things which MFC provides is DDX/DDV mechanism. Variables are associated with Controls transparently. It probably can be thought as the easiest way to use the Dialog Box. But things were changed a little bit after Property Sheet was introduced. I'd like to explain what has been changed, and what I did to adopt it. This article focuses on 'Wizard Sheet', but as you know, wizard sheet is a kind of special property sheet, and the same technique will fit a normal proper sheet too. I list the class sketch here, for the complete declarations, please refer source code.</p>
+<PRE><TT><FONT COLOR="#990000"><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT>
+			class CWizardPage : public CPropertyPageEx
+			{
+			…
+			public:
+			…
+				virtual BOOL OnSetActive();
+				virtual LRESULT OnWizardNext();
+				virtual LRESULT OnWizardBack();
+						virtual BOOL OnWizardFinish();
+				virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+				//}}AFX_VIRTUAL
+			protected:
+				CWizardSheet *m_pps;
+				virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+				friend class CWizardSheet;
+
+			…
+			};
+
+			class CWizardSheet : public CPropertySheetEx
+			{
+			…
+				DECLARE_DDX_MAP()
+
+			public:
+			…
+				void AddPage( CWizardPage *pPage );
+			....
+				DECLARE_MESSAGE_MAP()
+			};
+</TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></FONT></TT></PRE>
+<p>First above all, the question is, is that DDX/DDV can be used on a Wizard Sheet? The answer is 'Yes'!  A Wizard Sheet just is a set of dialog box. Check the class CPropertyPage, it directly inherits from CDialog, nothing prevent us using DDX/DDV. But the problem is that each variable should be added into the CPropertyPage separately as a member variable, in terms we can not use the wizard pages array but need declare each individual class for each dialog box, and the only difference is those associated member variables. Another backward is we also need collect all the information from many classes. It looks like,</p>
+<PRE><TT><FONT COLOR="#990000"><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT>
+				CWizardSheet theSheet(…);
+				CWizardPage1 page1(…);
+				CWizardPage2 page2(…);
+				CWizardPage3 page3(…);
+				....
+
+				theSheet.AddPage(&page1);
+				theSheet.AddPage(&page2);
+				theSheet.AddPage(&page3);
+				…
+
+				if(theSheet.DoModal())
+				{//Get all values...
+				 func1(page1.v1, page3.v2, page2.v1...) ;
+				....
+				}
+</TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></FONT></TT></PRE>
+<p>It is getting worse when there are many pages. Honestly, when I'm using a wizard sheet, I just think it as a single object to collect some information from users, and I don't care it was separated to five pages or six pages. To instead of using a dialog box, I use a wizard sheet, it just because I'd like people to think me a polite and friendly guy. So that possibly, it's the CWizardSheet to be the right place to get all information and not those individual pages. According this, the first thing I did is here.</p>
+<PRE><TT><FONT COLOR="#990000"><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT>
+		void CWizardPage::DoDataExchange(CDataExchange* pDX)
+		{
+			CPropertyPageEx::DoDataExchange(pDX);
+			m_pps->DoDataExchange(pDX);
+		}
+</TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></FONT></TT></PRE>
+<p>Aha, the page does nothing, all data exchange jobs are delegated to the Sheet. But how does the sheet know which variable is associated with which control? To hard code the relationship isn't a good solution. As we don't know how many pages and how many controls will be adopted by this sheet, I decided to design a generical mechanism to bind the control and a variable pair at run time.</p>
+<PRE><TT><FONT COLOR="#990000"><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT>
+		struct DDX_MAP_ENTRY
+		{
+			 CWnd* pDlgWnd;
+			 int nIDCtrl;
+			 CTRLTYPE nTypeCtrl;
+			 void *pVariable;
+		};
+</TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></FONT></TT></PRE>
+<p>No doubt, we need 'nIDCtrl' to represent the control and 'pVariable' for the variable. 'nTypeCtrl' was used to indicate the control and variable type. But why we need 'pDlgWnd'? We know each control's resource ID in a dialog box is unique, but the thing is not true when it across a couple of dialog boxes, so 'pDlgWnd' is necessary.For the convenience, I defined some Macros here,</p>
+<PRE><TT><FONT COLOR="#990000"><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT>
+		#define DECLARE_DDX_MAP() \
+		public: \
+			const DDX_MAP_ENTRY *_pddxEntries; \
+			virtual void DoDataExchange(CDataExchange* pDX); \
+
+		#define BEGIN_DDX_MAP(theMap) \
+			const DDX_MAP_ENTRY theMap##_ddxEntries[] = \
+			{ \
+
+		#define END_DDX_MAP() \
+				{NULL, 0, None, NULL} \
+			}; \
+
+		#define DDX_ENTRY(winDlg, idCtrl, typeCtrl, varObj) \
+				{&winDlg, idCtrl, typeCtrl, &varObj}, \
+
+		#define ASSOCIATE_DDX_MAP(theClassInst,theMap) \
+			theClassInst._pddxEntries = theMap##_ddxEntries;
+</TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></FONT></TT></PRE>
+<p>The usage will be like,</p>
+<PRE><TT><FONT COLOR="#990000"><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT>
+			   BEGIN_DDX_MAP(MakeCert)
+					  DDX_ENTRY(MakeCertPages[0], IDC_LABEL, Edit, strLabel)
+					  DDX_ENTRY(MakeCertPages[0], 1000, CheckBox, email)
+					  DDX_ENTRY(MakeCertPages[0], 1001, CheckBox, file)
+					  ....…
+					  DDX_ENTRY(MakeCertPages[2], IDC_DTPICKER_END, DateTimePicker, TimeEnd)
+			   END_DDX_MAP()
+			  ASSOCIATE_DDX_MAP(MakeCertSheet,MakeCert);
+</TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></FONT></TT></PRE>
+<p>Now it's the time we finish the CWizardSheet::DoDataExchange(CDataExchange* pDX)</p>
+<PRE><TT><FONT COLOR="#990000"><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT>
+
+void CWizardSheet::DoDataExchange(CDataExchange* pDX)
+{
+    const DDX_MAP_ENTRY *_pddxEntries = this->_pddxEntries;
+	if( !_pddxEntries ) return;
+
+	while( _pddxEntries->nIDCtrl )
+	{
+	  if( pDX->m_pDlgWnd == _pddxEntries->pDlgWnd)
+	  {
+		  switch (_pddxEntries->nTypeCtrl)
+		  {
+			  case Edit:
+				   DDX_Text(pDX, _pddxEntries->nIDCtrl, *(CString*)_pddxEntries->pVariable);
+				  break;
+			  case CheckBox:
+				   DDX_Check(pDX, _pddxEntries->nIDCtrl, *(int*)_pddxEntries->pVariable);
+				  break;
+			  case RadioBox:
+				   DDX_Radio(pDX, _pddxEntries->nIDCtrl, *(int*)_pddxEntries->pVariable);
+				  break;
+			  case ListBoxIdx:
+				   DDX_LBIndex(pDX, _pddxEntries->nIDCtrl, *(int*)_pddxEntries->pVariable);
+				  break;
+			  case ComboBoxIdx:
+				   DDX_CBIndex(pDX, _pddxEntries->nIDCtrl, *(int*)_pddxEntries->pVariable);
+				  break;
+			  case ListBoxTxt:
+				   DDX_LBString(pDX, _pddxEntries->nIDCtrl, *(CString*)_pddxEntries->pVariable);
+				  break;
+			  case ComboBoxTxt:
+				   DDX_CBString(pDX, _pddxEntries->nIDCtrl, *(CString*)_pddxEntries->pVariable);
+				  break;
+			  case ScrollBar:
+				   DDX_Scroll(pDX, _pddxEntries->nIDCtrl, *(int*)_pddxEntries->pVariable);
+				  break;
+			  case Slider:
+				   DDX_Slider(pDX, _pddxEntries->nIDCtrl, *(int*)_pddxEntries->pVariable);
+				  break;
+			  case MonthCalCtrl:
+				   DDX_MonthCalCtrl(pDX, _pddxEntries->nIDCtrl, *(CTime*)_pddxEntries->pVariable);
+				  break;
+			  case DateTimeCtrl:
+				   DDX_DateTimeCtrl(pDX, _pddxEntries->nIDCtrl, *(CTime*)_pddxEntries->pVariable);
+				  break;
+		  }
+	         }
+	  _pddxEntries++;
+	}
+}
+</TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></FONT></TT></PRE>
+<p>Things seem done for the most parts, but wait a minute, there's a special 'DDX_' function in MFC. It's called 'DDX_Control'. MFC use it to transfer the data between a subclassed control and a CWnd instance. If we are using an activeX control we will need it. For example, I want to use the 'MS Date and Time Picker', I need associate it with a CDTPicker(inherits from CWnd) instance. So what I need do is it just like this?</p>
+<PRE><TT><FONT COLOR="#990000"><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT>
+			  case DateTimePicker:
+				  DDX_Control(pDX, _pddxEntries->nIDCtrl, *( CDTPicker*)_pddxEntries->pVariable);
+				  break;
+</TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></FONT></TT></PRE>
+<p>Not at all! What 'DDX_Control' does is just to subclass a control, which means you can operate the control only when the control is alive, once the sheet was closed, you cannot get any data from the CDTPicker! I like the ''MS DT Picker', because it looks cool, but what all I need is it gives me a CTime just like the normal DateTimeCtrl does. So that I declared,</p>
+<PRE><TT><FONT COLOR="#990000"><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT>
+
+		struct CDTPickerEx : public CDTPicker, public CTime
+		{
+		};
+</TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></FONT></TT></PRE>
+<p>and add these into CWizardSheet::DoDataExchange,</p>
+<PRE><TT><FONT COLOR="#990000"><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT><PRE><TT>
+			  case DateTimePicker:
+                   CDTPicker& picker=static_cast<CDTPicker&>(*(CDTPickerEx*)_pddxEntries->pVariable);
+                   CTime& timeVal= static_cast<CTime&>(*(CDTPickerEx*)_pddxEntries->pVariable);
+                   DDX_Control(pDX, _pddxEntries->nIDCtrl, picker);
+
+                   if(pDX->m_bSaveAndValidate){
+                                        timeVal = CTime(picker.GetYear().intVal,
+                                                  picker.GetMonth().intVal,
+                                                  picker.GetDay().intVal,
+                                                  picker.GetHour().intVal,
+                                                  picker.GetMinute().intVal,
+                                                  picker.GetSecond().intVal);
+			       }
+			       else{
+			       //We did not support it yet!
+			       
+			       }
+			       break;
+</TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></TT></PRE></FONT></TT></PRE>
+<p>It's the end of my article, but not the end of the story. There are many things we can improve on the DDX/DDV, the Mediator pattern could be a good hint.But after all, we should remember it's the lazy guys (not the smart guys) are improving the world.</p>
+
+
+</BODY>
+</HTML>

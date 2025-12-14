@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>การนำค่าติดตั้งที่ได้ไปใช้งาน</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+</head>
+
+<body>
+<div align="center"> 
+  <p><font color="#CC6666" face="MS Sans Serif, Tahoma, sans-serif"><a href="connection.html"><font color="#CC6699">การใช้งานโปรแกรมในการออกแบบเครือข่าย</font></a></font> 
+    <font color="#CC6699" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;&nbsp;&nbsp;<a href="SwitchConfig.html"><font color="#CC6699">การคอนฟิกสวิตช์</font></a></font> 
+    <font color="#CC6699" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;&nbsp;&nbsp;<a href="RouterConfig.html"><font color="#CC6699">การคอนฟิกเราเตอร์</font></a></font> 
+    <font color="#CC6699" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;&nbsp;&nbsp;<a href="GeneratingConfigFile.html"><font color="#CC6699">การสร้างค่าติดตั้งสวิตช์และเราเตอร์</font></a></font> 
+    <font color="#CC6699" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;&nbsp;&nbsp;<a href="UsingConfig.html"><font color="#CC6699">การนำค่าติดตั้งที่ได้ไปใช้งาน</font></a></font> 
+  </p>
+  <p><a href="index.html"><font color="#CC6699" face="MS Sans Serif, Tahoma, sans-serif">หน้าหลัก</font></a></p>
+  <p>&nbsp;</p>
+  <p><strong><font color="#003399" size="+2" face="MS Sans Serif, Tahoma, sans-serif">การนำค่าติดตั้งที่ได้ไปใช้งาน 
+    </font></strong></p>
+  <p>&nbsp;</p>
+  <table width="80%" border="0" align="center">
+    <tr> 
+      <td><p align="justify"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;การตั้งค่าการทำงานของสวิตช์โดยการอัพโหลดค่าติดตั้งสามารถทำได้หลายวิธี 
+          เช่น อัพโหลดผ่านเอกซ์โมเดม (XModem),</font><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">TFTP 
+          เป็นต้น การอัพโหลดจะมีผลให้สวิตช์มีการทำงานตามค่าติดตั้งที่ถูกสร้างขึ้นจากโปรแกรมสร้างค่าติดตั้งอุปกรณ์เครือข่ายนี้ 
+          ในที่นี้จะเป็นขั้นตอนการอัพโหลดผ่านโปรแกรมHyper Terminal โดยใช้เอกซ์โมเดม 
+          มีขั้นตอนดังนี้<br>
+          </font></p>
+        </td>
+    </tr>
+  </table>
+  <p>&nbsp; </p>
+  <table width="80%" border="0" align="center">
+    <tr> 
+      <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+          1 </strong></font></p>
+        <p>&nbsp;</p></td>
+      <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">ต่อสายซีเรี่ยลคอนโซลเข้ากับสวิตช์ที่ต้องการตั้งค่าและคอมพิวเตอร์ที่ต้องการส่งไฟล์ค่าติดตั้งไปยังสวิตช์ 
+          เปิดโปรแกรม Hyper Terminal ตั้งค่าการเชื่อมต่อเป็น COM1 หรือ COM2 ตามการต่อสายซีเรี่ยลคอนโซลที่ต่อกับเครื่องคอมพิวเตอร์ 
+          และตั้งค่า Bit Per Second เป็น 9600 ดังรูปที่ 45</font></p></td>
+    </tr>
+  </table>
+  <p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="UsingConfigFile/useHyperTerm.jpg" width="650" height="407"><br>
+    <font size="-3">รูปที่ 45 แสดงการตั้งค่าเพื่อใช้งานโปรแกรม Hyper Terminal</font></font></p>
+  <p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><font size="-3"><br>
+    </font><img src="UsingConfigFile/openHyperTerm.jpg" width="533" height="309"><br>
+    <font size="-3">รูปที่ 46 แสดงหน้าต่างสำหรับพิมพ์คำสั่งในการตั้งค่าสวิตช</font>์</font></p>
+  <p>&nbsp;</p>
+  <table width="80%" border="0" align="center">
+    <tr> 
+      <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+          2 </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></p>
+        </td>
+      <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">กดปุ่ม 
+          Enter เพื่อเข้าใช้งานตั้งค่าสวิตช์ หรือเราเตอร์ เข้าสู่โหมด Privilege 
+          พิมพ์คำสั่งเพื่อคัดลอกค่าติดตั้งอุปกรณ์เครือข่ายไปยังสวิตช์หรือเราเตอร์ตามคำสั่งดังรูปที่ 
+          47 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></p></td>
+    </tr>
+  </table>
+  <p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="UsingConfigFile/command.jpg" width="529" height="306"><br>
+    <font size="-3">รูปที่ 47 แสดงคำสั่งที่ใช้ในการอัพโหลดไฟล์ติดตั้งค่าอุปกรณ์เครือข่าย</font></font></p>
+  <p>&nbsp;</p>
+  <table width="80%" border="0" align="center">
+    <tr> 
+      <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+          3 </strong></font></p></td>
+      <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เลือกเมนู 
+          Transfer จากหน้าต่างโปรแกรม Hyper Terminal แล้วเลือก Send File.. ดังรูปที่ 
+          48</font></p></td>
+    </tr>
+  </table>
+  <p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="UsingConfigFile/TransferMenu_SendFile.jpg" width="529" height="307"><br>
+    <font size="-3">รูปที่ 48 แสดงขั้นตอนในการส่งไฟล์ผ่านเอกซ์โมเดม</font></font></p>
+  <p>&nbsp;</p>
+  <table width="80%" border="0" align="center">
+    <tr> 
+      <td><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เมื่อเลือก 
+          Send File... จะได้ผลดังรูปที่ 49</font></p>
+        </td>
+    </tr>
+  </table>
+  <p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+    <img src="UsingConfigFile/clickSend.jpg" width="350" height="196"> <br>
+    <font size="-3">รูปที่ 49 แสดงหน้าต่างที่ได้จากการใช้เมนู Transfer ในการส่งไฟล</font>์</font></p>
+  <p>&nbsp;</p>
+  <table width="80%" border="0" align="center">
+    <tr> 
+      <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+          4 </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></p></td>
+      <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เลือกปุ่ม 
+          Browse.. เพื่อเลือกไฟล์ค่าติดตั้งอุปกรณ์เครือข่าย และเลือกโพรโตคอลเป็น 
+          Xmodem และเลือกปุ่ม Send ดังรูปที่ 50 - 51</font></p></td>
+    </tr>
+  </table>
+  <p><img src="UsingConfigFile/selectXModem.jpg" width="352" height="245"></p>
+  <p><font color="#003399" size="-3" face="MS Sans Serif, Tahoma, sans-serif">รูปที่ 
+    50 แสดงขั้นตอนโพรโตคอลเพื่อใช้ในการส่งไฟล</font><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">์</font></p>
+  <p> <font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="UsingConfigFile/selectFile.jpg" width="566" height="375"><br>
+    <font size="-3">รูปที่ 51 แสดงขั้นตอนการเลือกไฟล</font>์</font></p>
+  <table width="80%" border="0" align="center">
+    <tr> 
+      <td><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">ผลที่ได้จากการกดปุ่ม 
+          Send เพื่อส่งอัพโหลดไฟล์ค่าติดตั้งอุปกรณ์เครือข่าย ดังรูปที่ 52 - 53</font></p>
+        </td>
+    </tr>
+  </table>
+  <p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="UsingConfigFile/Transfer.jpg" width="440" height="327"><br>
+    <font size="-3">รูปที่ 52 แสดงการอัพโหลดไฟล์ค่าติดตั้งอุปกรณ์เครือข่าย</font></font></p>
+  <p> <font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="UsingConfigFile/ShowResult.jpg" width="529" height="306"><br>
+    <font size="-3">รูปที่ 53 แสดงผลที่ได้จากการส่งไฟล์ผ่านโปรแกรม Hyper Terminal 
+    </font></font></p>
+  <p>&nbsp; </p>
+  <table width="80%" border="0" align="center">
+    <tr> 
+      <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+          5 </strong></font></p></td>
+      <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">พิมพ์คำสั่ง 
+          reload เพื่อให้สวิตช์หรือเราเตอร์มีการทำงานตามค่าติดตั้งสร้างขึ้นใหม่ 
+          ดังรูปที่ 54</font></p></td>
+    </tr>
+  </table>
+  <p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="UsingConfigFile/reload.jpg" width="529" height="307"><br>
+    <font size="-3">รูปที่ 54 แสดงคำสั่งในการ Reload สวิตช์ หรือเราเตอร์</font><br>
+    </font></p>
+  <p>&nbsp; </p>
+</div>
+</body>
+</html>

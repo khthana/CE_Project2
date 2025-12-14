@@ -1,0 +1,363 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "resource.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PAGE_SCAN DIALOG DISCARDABLE  0, 0, 240, 250
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Scanner"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Host address:",IDC_STATIC,5,10,44,8
+    EDITTEXT        IDC_EDIT_STARTHOST,65,10,95,12,ES_AUTOHSCROLL
+    LTEXT           "(start)",IDC_STATIC,165,10,18,8
+    EDITTEXT        IDC_EDIT_ENDHOST,65,25,95,12,ES_AUTOHSCROLL
+    LTEXT           "(end)",IDC_STATIC,165,25,17,8
+    LTEXT           "Port:",IDC_STATIC,5,45,16,8
+    CONTROL         "list",IDC_RADIO_PORTLIST,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,30,45,28,10
+    CONTROL         "range",IDC_RADIO_PORTRANGE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,30,60,31,10
+    EDITTEXT        IDC_EDIT_PORTLIST,65,45,95,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_STARTPORT,65,60,30,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER | WS_DISABLED
+    LTEXT           "(start)",IDC_STATIC,100,61,18,8
+    EDITTEXT        IDC_EDIT_ENDPORT,130,60,30,12,ES_AUTOHSCROLL | ES_NUMBER | 
+                    WS_DISABLED
+    LTEXT           "(end)",IDC_STATIC,165,61,17,8
+    CONTROL         "List1",IDC_LIST_SCAN,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,5,85,230,160
+END
+
+IDD_PAGE_SERVICES DIALOG DISCARDABLE  0, 0, 240, 250
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Services"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDC_LIST_SERVICES,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,5,5,230,210
+    LTEXT           "services database:",IDC_STATIC,5,220,60,8
+    COMBOBOX        IDC_COMBO_SERVICES,5,230,210,80,CBS_DROPDOWN | 
+                    CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "...",IDC_BUTTON_SERVICES,220,230,13,13
+END
+
+IDD_PAGE_CONNECT DIALOG DISCARDABLE  0, 0, 240, 250
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Connect"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Host Address:",IDC_STATIC,5,10,45,8
+    COMBOBOX        IDC_COMBO_HOST,55,10,70,80,CBS_DROPDOWN | 
+                    CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Port Number:",IDC_STATIC,150,10,42,8
+    COMBOBOX        IDC_COMBO_PORT,195,10,40,80,CBS_DROPDOWN | 
+                    CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Send:",IDC_STATIC,5,35,20,8
+    EDITTEXT        IDC_EDIT_SEND,5,45,230,90,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_AUTOHSCROLL | ES_WANTRETURN | WS_VSCROLL | WS_HSCROLL
+    LTEXT           "Receive:",IDC_STATIC,5,145,30,8
+    EDITTEXT        IDC_EDIT_RECV,5,155,230,90,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_AUTOHSCROLL | ES_WANTRETURN | WS_VSCROLL | WS_HSCROLL
+END
+
+IDD_DIALOG_ADDSERVICE DIALOG DISCARDABLE  0, 0, 185, 110
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "TcpScan"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Add Service ",IDC_STATIC,5,5,175,80
+    LTEXT           "Service name:",IDC_STATIC,13,20,45,10
+    EDITTEXT        IDC_EDIT_SERVICENAME,65,20,110,12,ES_AUTOHSCROLL
+    LTEXT           "Port number:",IDC_STATIC,13,35,40,10
+    EDITTEXT        IDC_EDIT_PORTNUMBER,65,35,30,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "Protocol:",IDC_STATIC,13,50,47,10
+    EDITTEXT        IDC_EDIT_PROTOCOLNAME,65,50,110,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "Comment:",IDC_STATIC,13,65,35,10
+    EDITTEXT        IDC_EDIT_COMMENT,65,65,110,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "&Add",IDOK,85,90,45,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,135,90,45,14
+END
+
+IDD_DIALOG_ADDURL DIALOG DISCARDABLE  0, 0, 185, 100
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "TcpScan"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        " Add Url ",IDC_STATIC,5,5,175,70
+    LTEXT           "Url:",IDC_STATIC,13,20,20,10
+    EDITTEXT        IDC_EDIT_URL,50,20,125,12,ES_AUTOHSCROLL
+    LTEXT           "Comment:",IDC_STATIC,13,40,31,10
+    EDITTEXT        IDC_EDIT_COMMENT,50,40,125,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "&Add",IDOK,85,80,45,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,135,80,45,14
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""resource.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_PAGE_SCAN, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 235
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 245
+    END
+
+    IDD_PAGE_SERVICES, DIALOG
+    BEGIN
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 243
+    END
+
+    IDD_PAGE_CONNECT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 233
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 243
+    END
+
+    IDD_DIALOG_ADDSERVICE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 178
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 103
+    END
+
+    IDD_DIALOG_ADDURL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 178
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 93
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_TCPSCAN             ICON    DISCARDABLE     "res\\TcpScan.ico"
+IDI_ICONPORT            ICON    DISCARDABLE     "res\\iconport.ico"
+IDI_ICONPORTERROR       ICON    DISCARDABLE     "res\\iconporterror.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDM_SERVICES MENU DISCARDABLE 
+BEGIN
+    POPUP "services"
+    BEGIN
+        MENUITEM "&Add...",                     IDM_SERVICES_ADDSERVICE
+        MENUITEM "&Remove",                     IDM_SERVICES_REMOVESERVICE
+        MENUITEM SEPARATOR
+        MENUITEM "&Load services from Registry", 
+                                                IDM_SERVICES_LOADFROMREGISTRY
+
+        MENUITEM "L&oad services from Database", 
+                                                IDM_SERVICES_LOADFROMDATABASE
+
+        MENUITEM "&Save services to Registry",  IDM_SERVICES_SAVETOREGISTRY
+        MENUITEM "S&ave services to Database",  IDM_SERVICES_SAVETODATABASE
+        MENUITEM SEPARATOR
+        MENUITEM "Add to &port list",           IDM_SERVICES_ADDPORT
+        MENUITEM "Load all &into port list",    IDM_SERVICES_LOADALLPORTS
+        MENUITEM "Set as star&t port",          IDM_SERVICES_SETSTARTPORT
+        MENUITEM "Set as en&d port",            IDM_SERVICES_SETENDPORT
+        MENUITEM "&Clear port numbers",         IDM_SERVICES_CLEARPORTS
+    END
+    POPUP "empty"
+    BEGIN
+        MENUITEM "&Add...",                     IDM_SERVICES_ADDSERVICE
+        MENUITEM SEPARATOR
+        MENUITEM "&Load services from Registry", 
+                                                IDM_SERVICES_LOADFROMREGISTRY
+
+        MENUITEM "L&oad services from Database", 
+                                                IDM_SERVICES_LOADFROMDATABASE
+
+        MENUITEM SEPARATOR
+        MENUITEM "&Clear port numbers",         IDM_SERVICES_CLEARPORTS
+    END
+END
+
+IDM_SCAN MENU DISCARDABLE 
+BEGIN
+    POPUP "scan"
+    BEGIN
+        MENUITEM "&Remove",                     IDM_SCAN_REMOVEPORT
+        MENUITEM SEPARATOR
+        MENUITEM "&Load scanning from Registry", IDM_SCAN_LOADFROMREGISTRY
+        MENUITEM "&Save scanning to Registry",  IDM_SCAN_SAVETOREGISTRY
+        MENUITEM SEPARATOR
+        MENUITEM "&Add to Services...",         IDM_SCAN_ADDTOSERVICES
+        MENUITEM "Remov&e from Services",       IDM_SCAN_REMOVEFROMSERVICES
+        MENUITEM "Loa&d all into Services",     IDM_SCAN_LOADSERVICES
+        MENUITEM SEPARATOR
+        MENUITEM "Load port numbers &from Services", 
+                                                IDM_SCAN_LOADFROMSERVICES
+        MENUITEM "&Clear port numbers",         IDM_SCAN_CLEARPORTS
+    END
+    POPUP "empty"
+    BEGIN
+        MENUITEM "&Load scanning from Registry", IDM_SCAN_LOADFROMREGISTRY
+        MENUITEM SEPARATOR
+        MENUITEM "Load port numbers &from Services", 
+                                                IDM_SCAN_LOADFROMSERVICES
+        MENUITEM "&Clear port numbers",         IDM_SCAN_CLEARPORTS
+    END
+END
+
+IDM_SCAN_EMPTY MENU DISCARDABLE 
+BEGIN
+    POPUP "empty"
+    BEGIN
+        MENUITEM "&Load scanning from Registry", IDM_SCAN_LOADFROMREGISTRY
+        MENUITEM SEPARATOR
+        MENUITEM "Load port numbers &from Services", 
+                                                IDM_SCAN_LOADFROMSERVICES
+        MENUITEM "&Clear port numbers",         IDM_SCAN_CLEARPORTS
+    END
+END
+
+IDM_SERVICES_EMPTY MENU DISCARDABLE 
+BEGIN
+    POPUP "empty"
+    BEGIN
+        MENUITEM "&Add...",                     IDM_SERVICES_ADDSERVICE
+        MENUITEM SEPARATOR
+        MENUITEM "&Load services from Registry", 
+                                                IDM_SERVICES_LOADFROMREGISTRY
+
+        MENUITEM "L&oad services from Database", 
+                                                IDM_SERVICES_LOADFROMDATABASE
+
+        MENUITEM SEPARATOR
+        MENUITEM "&Clear port numbers",         IDM_SERVICES_CLEARPORTS
+    END
+END
+
+IDM_MINE MENU DISCARDABLE 
+BEGIN
+    POPUP "mine"
+    BEGIN
+        MENUITEM "&Add...",                     IDM_MINE_ADDURL
+        MENUITEM "&Edit...",                    IDM_MINE_EDITURL
+        MENUITEM "&Remove",                     IDM_MINE_REMOVEURL
+        MENUITEM SEPARATOR
+        MENUITEM "&Load URLs from Registry",    IDM_MINE_LOADFROMREGISTRY
+        MENUITEM "&Save URLs to Registry",      IDM_MINE_SAVETOREGISTRY
+    END
+    POPUP "empty"
+    BEGIN
+        MENUITEM "&Add...",                     IDM_MINE_ADDURL
+        MENUITEM SEPARATOR
+        MENUITEM "Extra HTTP header...",        IDM_MINE_EXTRAHEADER
+        MENUITEM SEPARATOR
+        MENUITEM "&Load URLs from Registry",    IDM_MINE_LOADFROMREGISTRY
+    END
+END
+
+IDM_MINE_EMPTY MENU DISCARDABLE 
+BEGIN
+    POPUP "empty"
+    BEGIN
+        MENUITEM "&Add...",                     IDM_MINE_ADDURL
+        MENUITEM SEPARATOR
+        MENUITEM "Extra HTTP header...",        IDM_MINE_EXTRAHEADER
+        MENUITEM SEPARATOR
+        MENUITEM "&Load URLs from Registry",    IDM_MINE_LOADFROMREGISTRY
+    END
+END
+
+IDM_MINED MENU DISCARDABLE 
+BEGIN
+    POPUP "miner"
+    BEGIN
+        MENUITEM "Load...",                     IDM_MINER_LOADDOCUMENT
+    END
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

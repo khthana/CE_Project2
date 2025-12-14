@@ -1,0 +1,308 @@
+RUNTIME;
+BKCOLOR = 7;
+PLURAL: SQLStandard,Constraint,IsolationLevel,Backup,Port&Scale;
+ACTIONS
+	COLOR = 0
+	p=1
+	DISPLAY "
+
+
+
+
+
+				                     DBMS SELECTOR EXPERT SYSTEM
+				                     Press any key to continue .~"
+	CLS
+	PBasicDataType=9
+	PNationChar=7
+	PQueryOptimize=8
+	PStructureOptimize=9
+	PSizeLimit=8
+	PSpeed=5
+	PRecovery=6  
+	MBasicDataType=8
+	MNationChar=7
+	MQueryOptimize=7
+	MStructureOptimize=7
+	MSizeLimit=8
+	MSpeed=8
+	MRecovery=6
+	PBasicPoint1=(PBasicDataType+PNationChar+PQueryOptimize)
+	PBasicPoint2=(PStructureOptimize+PSizeLimit+PSpeed+PRecovery)
+	PBasicPoint=(PBasicPoint1+PBasicPoint2)
+	MBasicPoint1=(MBasicDataType+MNationChar+MQueryOptimize)
+	MBasicPoint2=(MStructureOptimize+MSizeLimit+MSpeed+MRecovery)	
+	MBasicPoint=(MBasicPoint1+MBasicPoint2)
+
+	FIND SQLStandard
+	CLS
+	FIND Constraint
+	CLS
+	FIND View
+	CLS
+	FIND Synonym
+	CLS
+	FIND AutoInc
+	FIND AutoIncW
+	CLS
+	FIND tx
+	FIND IsolationLevel
+	CLS
+	FIND ConcurControlW
+	CLS
+	FIND MultiUser
+	FIND MultiUserW
+	CLS
+	FIND Stored&Trigger
+	CLS
+	FIND DataAccess
+	FIND DataAccessW
+	CLS
+	FIND Backup
+	CLS
+	FIND DataMigration
+	FIND DataMigrationW
+	CLS
+	FIND Port&Scale
+	CLS
+	FIND LargeObject
+	FIND LargeObjectW
+	CLS
+	FIND UserDataType
+	CLS
+	FIND UserOp
+	CLS
+	FIND UserFn
+	CLS
+	FIND Inheritance
+	CLS
+	PPoint1=((AutoIncW*10)+(ConcurControlW*10)+(MultiUserW*5))
+	PPoint2=((DataAccessW*8)+(DataMigrationW*9)+(LargeObjectW*8))
+	PPoint=(PBasicPoint+PPoint1+PPoint2)
+	MPoint1=((AutoIncW*7)+(ConcurControlW*9)+(MultiUserW*5))
+	MPoint2=((DataAccessW*9)+(DataMigrationW*9)+(LargeObjectW*9))
+	MPoint=(MBasicPoint+MPoint1+MPoint2)
+	FIND ChoosePostgreSQL
+	FIND ChooseMySQL
+
+	DISPLAY "THE RECOMMEND IS"
+	FIND Decide1
+	FIND Decide2
+	FIND Decide3
+	FIND Decide4
+	FIND Decide5
+	DISPLAY ""
+	FIND PExplain1
+	FIND PExplain2
+	FIND PExplain3
+	FIND MExplain1
+	FIND MExplain2
+	FIND MExplain3
+	FIND MExplain4
+	FIND MExplain5
+	FIND MExplain6
+	FIND MExplain7
+	FIND MExplain8
+	FIND MExplain9
+	FIND MExplain10
+	FIND MExplain11
+	DISPLAY"                                                 Press any key to continue .~";
+
+
+RULE FindPostgreSQL
+IF Backup=1 OR Port&Scale=2
+THEN ChoosePostgreSQL=false
+ELSE ChoosePostgreSQL=true;
+
+RULE FindMySQL
+IF SQLStandard=2 OR Constraint=3 OR View=Y OR Synonym=Y OR Stored&Tringger=Y OR Backup=1 OR Port&Scale=1 
+OR Port&Scale=2 OR UserDataType=Y OR UserOp=Y OR Inheritance=Y 
+THEN ChooseMySQL=false
+ELSE ChooseMySQL=true;
+
+RULE FindDecide1 
+IF PPoint >= (MPoint) AND ChoosePostgreSQL=true
+THEN Decide1=1
+DISPLAY "1-PostgreSQL
+2-MySQL";
+
+RULE  FindDecide2
+IF MPoint > (PPoint) AND ChooseMySQL=true
+THEN Decide2=2
+DISPLAY "1-MySQl
+2-PostgreSQL";
+
+RULE  FindDecide3
+IF ChoosePostgreSQL=false AND ChooseMySQL=true
+THEN Decide3=3
+DISPLAY "MySQL";
+
+RULE  FindDecide4
+IF ChooseMySQL=false AND ChoosePostgreSQL=true
+THEN Decide4=4
+DISPLAY "PostgreSQL";
+
+RULE  FindDecide5
+IF ChoosePostgreSQL=false AND ChooseMySQL=false
+THEN Decide5=5
+DISPLAY "None";
+
+RULE FindPExplain1
+IF IsolationLevel=2 OR IsolationLevel=4
+THEN PExplain1= true
+DISPLAY  "      PostgreSQL doesn't support Repeatable read level and Read uncommitted level but you can use Serializable level and Read committed level instead respectively.";
+
+RULE FindPExplain2
+IF Backup=1
+THEN PExplain2=true
+DISPLAY "      PostgreSQL doesn't support Incremental backup method.";
+
+RULE FindPExplain3
+IF Port&Scale=2
+THEN PExplain2=true
+DISPLAY "      PostgreSQL doesn't support MMP (Massively parallel processing).";
+
+RULE FindMExplain1
+IF SQLStandard=2
+THEN MExplain1=true
+DISPLAY "      MySQL doesn't support SQL-99 Standard.";
+
+RULE FindMExplain2
+IF Constraint=3
+THEN MExplain2=true
+DISPLAY "      MySQL doesn't support Check constraint.";
+
+RULE FindMExplain3
+IF View=Y
+THEN MExplain3=true
+DISPLAY "      MySQL doesn't support View machanism.";
+
+RULE FindMExplain4
+IF Synonym=Y
+THEN MExplain4=true
+DISPLAY "      MySQL doesn't support synonym.";
+
+RULE FindMExplain5
+IF Stored&Trigger=Y
+THEN MExplain5=true
+DISPLAY "      MySQL doesn't support Stored procedure and Trigger.";
+
+RULE FindMExplain6
+IF Backup=1
+THEN MExplain6=true
+DISPLAY "      MySQL doesn't support Incremental backup.";
+
+RULE FindMExplain7
+IF Port&Scale=1
+THEN MExplain7=true
+DISPLAY "      MySQL doesn't support SMP (Symmetric multi-processing).";
+
+RULE FindMExplain8
+IF Port&Scale=2
+THEN MExplain8=true
+DISPLAY "      MySQL doesn't support MMP (Massively parallel processing).";
+
+RULE FindMExplain9
+IF UserData=Y
+THEN MExplain9=true
+DISPLAY "      MySQL doesn't support User-defined data type.";
+
+RULE FindMExplain10
+IF UserOp=Y
+THEN MExplain10=true
+DISPLAY "      MySQL doesn't support User-defined operator.";
+
+RULE FindMExplain11
+IF Inheritance=Y
+THEN MExplain11=true
+DISPLAY "      MySQL doesn't support Inheritance.";
+
+RULE FindAutoIncWeight
+IF AutoInc=N
+THEN AutoIncW=0;
+
+RULE FindMultiUserWeight
+IF MultiUser=N
+THEN MultiUserW=0;
+
+RULE FindLargeObjectWeight
+IF LargeObject=N
+THEN LargeObjectW=0;
+
+RULE FindUseOp&FnWeight
+IF UserOp&Fn=N
+THEN UserOp&FnW=0;
+
+RULE FindIsolationLevel1
+IF tx=N
+THEN IsolationLevel=false;
+
+RULE FindDataAccessWeight
+IF DataAccess=N
+THEN DataAccessW=0;
+
+RULE FindDataMigrationWeight
+IF DataMigration=N
+THEN DataMigrationW=0;
+
+ASK SQLStandard: "Compatible with SQL standard? (Can choose more than 1 answer)
+  1 SQL-92
+  2 SQL-99";
+CHOICES SQLStandard: 1,2;
+
+ASK Constraint: "Use of constraint? (Can choose more than 1 answer)
+  1 Primary key
+  2 Foreign key
+  3 Check";
+CHOICES Constraint: 1,2,3;
+
+ASK View: "Use of view? (Y/N)";
+
+ASK Synonym: "Use of synonym? (Y/N)";
+
+ASK AutoInc: "Use of Auto-increment column? (Y/N)";
+ASK AutoIncW: "Enter weight of this feature? (number between 0-10 : 0-less, 10-more)";
+
+ASK tx: "Use of transaction? (Y/N)";
+
+ASK IsolationLevel: "Which Isolation level? (Can choose more than 1 answer)
+  1 Serializable
+  2 Repeatable read
+  3 Read committed
+  4 Read uncommitted";
+CHOICES IsolationLevel: 1,2,3,4;
+
+ASK ConcurControlW: "Concurrency control? (number between 0-10 : 0-less, 10-more)";
+
+ASK MultiUser: "Do you want Multi user to access your database? (Y/N)";
+ASK MultiUserW: "Enter weight of this feature? (number between 0-10)";
+
+ASK Stored&Trigger: "Use of Stored procedure and trigger? (Y/N)";
+
+ASK DataAccess: "Do you want to control access to data in your database? (Y/N)";
+ASK DataAccessW: "Enter weight of this feature? (number between 0-10 : 0-less, 10-more)";
+
+ASK Backup: "The way to backup data? (Can choose more than 1 answer)
+  1 Incremental backup
+  2 On-line backup";
+CHOICES Backup: 1,2;
+
+ASK DataMigration: "Do you want to migrate data? (Y/N)";
+ASK DataMigrationW: "How often of migrate data? (number between 0-10 : 0-less, 10-more)";
+
+ASK Port&Scale: "Use of
+1 SMP
+2 MMP
+3 None";
+CHOICES Port&Scale: 1,2,3;
+
+ASK LargeObject: "Use of large object? (Y/N)";
+ASK LargeObjectW: "Enter weight of this feature? (number between 0-10 : 0-less, 10-more)";
+
+ASK UserDataType: "Use of user-defined data type? (Y/N)";
+
+ASK UserOp: "Use of user-defined operator? (Y/N)";
+
+ASK UserFn: "Use of user-defined aggregation function? (Y/N)";
+
+ASK Inheritance: "Use of Inheritance? (Y/N)";

@@ -1,0 +1,151 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-874">
+<meta name=Generator content="Microsoft Word 10 (filtered)">
+<title>การพัฒนาเว็บเซอร์วิสบนระบบฝังตัว</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Batang;
+	panose-1:2 3 6 0 0 1 1 1 1 1;}
+@font-face
+	{font-family:"Angsana New";
+	panose-1:2 2 6 3 5 4 5 2 3 4;}
+@font-face
+	{font-family:"Cordia New";
+	panose-1:2 11 3 4 2 2 2 2 2 4;}
+@font-face
+	{font-family:"Browallia New";
+	panose-1:2 11 6 4 2 2 2 2 2 4;}
+@font-face
+	{font-family:"\@Batang";
+	panose-1:2 3 6 0 0 1 1 1 1 1;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h1
+	{margin-top:12.0pt;
+	margin-right:0cm;
+	margin-bottom:3.0pt;
+	margin-left:21.6pt;
+	text-indent:-21.6pt;
+	page-break-after:avoid;
+	font-size:16.0pt;
+	font-family:Arial;}
+h2
+	{margin-top:12.0pt;
+	margin-right:0cm;
+	margin-bottom:3.0pt;
+	margin-left:28.8pt;
+	text-indent:-28.8pt;
+	page-break-after:avoid;
+	font-size:14.0pt;
+	font-family:Arial;
+	font-style:italic;}
+h3
+	{margin-top:12.0pt;
+	margin-right:0cm;
+	margin-bottom:3.0pt;
+	margin-left:36.0pt;
+	text-indent:-36.0pt;
+	page-break-after:avoid;
+	font-size:13.0pt;
+	font-family:Arial;}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<h1 align=center style='margin-left:0cm;text-align:center;text-indent:0cm'><a
+name="_Toc69350339"><span lang=TH style='font-size:15.0pt;font-family:"Angsana New"'>การพัฒนาเว็บเซอร์วิสบนระบบฝังตัว</span></a></h1>
+
+<p class=MsoNormal><b><span style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;</span></b></p>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='margin-left:248.75pt;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=223 valign=top style='width:167.4pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=TH style='font-size:15.0pt;font-family:"Angsana New"'>นายธเนศ&nbsp;
+  ชูวิเศษวณิชย์&nbsp;&nbsp;&nbsp;&nbsp; 43010175</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=223 valign=top style='width:167.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=TH style='font-size:15.0pt;font-family:"Angsana New"'>นายธีรยุทธ&nbsp;
+  สุทธิสุวรรณ&nbsp;&nbsp; 43010189</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=223 valign=top style='width:167.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=TH style='font-size:15.0pt;font-family:"Angsana New"'>ผศ.อภิเนตร&nbsp;
+  อูนากูล&nbsp;&nbsp;&nbsp; อาจารย์ที่ปรึกษา</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=223 valign=top style='width:167.4pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=TH style='font-size:15.0pt;font-family:"Angsana New"'>ปีการศึกษา
+  </span><span style='font-size:15.0pt;font-family:"Angsana New"'>2546</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=TH style='font-size:15.0pt;font-family:"Angsana New"'>บทคัดย่อ</span></b></p>
+
+<p class=MsoNormal><span style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=TH style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ในปัจจุบันการสื่อสารระหว่างแอพพลิเคชั่นผ่านออบเจ็กต์ระยะไกล</span><span
+style='font-size:15.0pt;font-family:"Angsana New"'> (Remote Procedure Call) <span
+lang=TH>ได้รับการพัฒนาขึ้นด้วยเทคโนโลยีเว็บเซอร์วิส </span>(Web Service) <span
+lang=TH>ที่นำเสนอแนวคิดในการกำหนดมาตรฐานการเชื่อมต่อระหว่างแอพพลิเคชั่น
+เพื่อให้ระบบที่มีความแตกต่างกันสามารถติดต่อสื่อสารถึงกันได้&nbsp;
+โดยอาศัยข้อดีของโปรโตคอลเอชทีทีพี </span>(HTTP Protocol) <span lang=TH>ที่มีความนิยมใช้กันอย่างแพร่หลาย&nbsp;
+และกลไกในการแลกเปลี่ยนข้อมูลผ่านทาง </span>SOAP (Simple Object Access Protocol)
+<span lang=TH>ที่ใช้โครงสร้างของ </span>XML Language <span lang=TH>ที่ใช้ในการนิยามความหมายของข้อมูล</span></span></p>
+
+<p class=MsoNormal><span style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+lang=TH>การนำเอาเว็บเซอร์วิสมาพัฒนาบนระบบฝังตัวจะช่วยทำให้อุปกรณ์มีความสามารถในการเชื่อมต่อกับอุปกรณ์ต่างๆ
+และความสามารถในการเชื่อมโยงข้อมูลที่ใช้ในการควบคุมอุปกรณ์ได้อย่างมีประสิทธิภาพสูงสุด
+จึงได้เกิดโครงงานในปีการศึกษา 2545
+ที่นำเสนอซอฟต์แวร์บนระบบฝังตัวที่ช่วยในการจัดการเอกสารที่มีรูปแบบตามมาตรฐานซิมเปิ้ล
+ออบเจ็กต์โปรโตคอล และเป็นเซิร์ฟเวอร์ที่ให้บริการเซอร์วิสกับอุปกรณ์ต่างๆได้
+และในโครงงานนี้เป็นการพัฒนาซอฟต์แวร์ดังกล่าวต่อเนื่องจากเดิม
+เพื่อเพิ่มประสิทธิภาพและความสามารถในการทำงานให้เหมาะกับการนำไปใช้งานจริงต่อไป</span></span></p>
+
+<p class=MsoNormal><span lang=TH style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ปริญญานิพนธ์ฉบับนี้จัดทำขึ้นเพื่อวัตถุประสงค์ในการนำเสนอแนวความคิด
+ทฤษฏีและหลักการในการพัฒนาเว็บเซอร์วิสบนระบบฝังตัวที่สามารถเป็นเซิร์ฟเวอร์ที่ให้บริการเซอร์วิส</span></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

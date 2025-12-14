@@ -1,0 +1,208 @@
+RUNTIME;
+BKCOLOR = 3;
+ACTIONS
+COLOR = 14
+DISPLAY "                       
+
+
+
+
+
+
+																			 					   DBMS Comparison System 
+													     
+														 										 ( Oracle, DB2, SQL Server)"
+COLOR = 10
+DISPLAY "														 										 
+														 										   Knowledged User Version"
+COLOR = 15								
+DISPLAY "
+					
+													 	 										 Press  Enter to continue
+
+      ~"
+    CLS
+	COLOR = 1
+	FIND con
+	CLS
+	FIND bak
+	CLS
+	FIND sec
+	CLS
+	FIND sca
+	CLS
+	FIND man
+	CLS
+	FIND ava
+	CLS
+	FIND tool
+	CLS
+	FIND uif
+	CLS
+	FIND par
+	CLS
+	FIND aud
+	CLS
+	FIND dis
+	CLS
+	FIND cfg
+	CLS
+	FIND spmn
+	CLS
+	FIND pmn
+	CLS
+	FIND mmn
+	CLS
+	FIND schmn
+	CLS
+	FIND umn
+	CLS
+	FIND atn
+	CLS
+	FIND load
+	CLS
+	FIND resume
+	CLS
+	FIND reorg
+	CLS
+	FIND sumS
+	FIND decide
+	COLOR = 14
+	DISPLAY "   			
+	
+	
+	
+	
+	
+	
+	
+																			  		     			 	 		RESULT	
+		
+																										   Recommended DBMS : {decide}
+			"	
+COLOR = 10										
+DISPLAY "	
+														   		 											   THANK YOU";
+	
+
+RULE 1 if   reorg <> 0
+            THEN  Oc=(@ABS(con-10))
+			Ob=(@ABS(bak-8))
+			Os=(@ABS(sec-9))
+			Osc=(@ABS(sca-9))
+			Om=(@ABS(man-7))
+			Oa=(@ABS(ava-8))
+			Ot=(@ABS(tool-8))
+			Ou=(@ABS(uif-5))
+			Op=(@ABS(par-10))
+			Oau=(@ABS(aud-9))
+			Od=(@ABS(dis-9))
+			Ocf=(@ABS(cfg-6))
+			Osm=(@ABS(spmn-7))
+			Opm=(@ABS(pmn-6))
+			Omm=(@ABS(mmn-5))
+			Oshm=(@ABS(schmn-8))
+			Oum=(@ABS(umn-7))
+			Oatn=(@ABS(atn-6))
+			Odl=(@ABS(load-7))
+			Ors=(@ABS(resume-9))
+			Oro=(@ABS(reorg-8))
+            sumO=(Oc+Ob+Os+Osc+Om+Oa+Ot+Ou+Op+Oau+Od+Ocf+Osm+Opm+Omm+Oshm+Oum+Oatn+Odl+Ors+Oro)
+
+			Dc=(@ABS(con-8))
+			Db=(@ABS(bak-8))
+			Ds=(@ABS(sec-8))
+			Dsc=(@ABS(sca-8))
+			Dm=(@ABS(man-9))
+			Da=(@ABS(ava-7))
+			Dt=(@ABS(tool-9))
+			Du=(@ABS(uif-8))
+			Dp=(@ABS(par-8))
+			Dau=(@ABS(aud-8))
+			Dd=(@ABS(dis-7))
+			Dcf=(@ABS(cfg-9))
+			Dsm=(@ABS(spmn-9))
+			Dpm=(@ABS(pmn-8))
+			Dmm=(@ABS(mmn-8))
+			Dshm=(@ABS(schmn-4))
+			Dum=(@ABS(umn-8))
+			Datn=(@ABS(atn-6))
+			Ddl=(@ABS(load-9))
+			Drs=(@ABS(resume-6))
+			Dro=(@ABS(reorg-9))
+            sumD=(Dc+Db+Ds+Dsc+Dm+Da+Dt+Du+Dp+Dau+Dd+Dcf+Dsm+Dpm+Dmm+Dshm+Dum+Datn+Ddl+Drs+Dro)
+			
+			Sc=(@ABS(con-7))
+			Sb=(@ABS(bak-5))
+			Ss=(@ABS(sec-7))
+			Ssc=(@ABS(sca-3))
+			Sm=(@ABS(man-5))
+			Sa=(@ABS(ava-6))
+			St=(@ABS(tool-5))
+			Su=(@ABS(uif-9))
+			Sp=(@ABS(par-3))
+			Sau=(@ABS(aud-7))
+			Sd=(@ABS(dis-6))
+			Scf=(@ABS(cfg-8))
+			Ssm=(@ABS(spmn-4))
+			Spm=(@ABS(pmn-6))
+			Smm=(@ABS(mmn-6))
+			Sshm=(@ABS(schmn-5))
+			Sumn=(@ABS(umn-5))
+			Satn=(@ABS(atn-8))
+			Sdl=(@ABS(load-5))
+			Srs=(@ABS(resume-6))
+			Sro=(@ABS(reorg-5))
+            sumS=(Sc+Sb+Ss+Ssc+Sm+Sa+St+Su+Sp+Sau+Sd+Scf+Ssm+Spm+Smm+Sshm+Sum+Satn+Sdl+Srs+Sro);
+
+RULE 2 if sumO < (sumD)
+	     AND sumO < (sumS)
+	     THEN decide = Oracle;
+RULE 3 if sumD < (sumO)
+	     AND sumD <= (sumS)
+	     THEN decide = DB2;
+RULE 4 if sumS <= (sumO)
+	     AND sumS <= (sumD)
+	     THEN decide = SQL;
+ASK con: "Select Weight of Concurrency Control";   
+CHOICES con: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK bak: "Select Weight of Backup/Recovery";   
+CHOICES bak: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK sec: "Select Weight of Security";   
+CHOICES sec: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK sca: "Select Weight of Scalability";   
+CHOICES sca: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK man: "Select Weight of Manageability";   
+CHOICES man: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK ava: "Select Weight of Avaibility";   
+CHOICES ava: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK tool: "Select Weight of Tool Support";   
+CHOICES tool: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK uif: "Select Weight of User Interface";   
+CHOICES uif: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK par: "Select Weight of Partitioning";   
+CHOICES par: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK aud: "Select Weight of Auditing";   
+CHOICES aud: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK dis: "Select Weight of Distribute";   
+CHOICES dis: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK cfg: "Select Weight of configuration";   
+CHOICES cfg: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK spmn: "Select Weight of Space Management";   
+CHOICES spmn: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK pmn: "Select Weight of Performance Management";   
+CHOICES pmn: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK mmn: "Select Weight of Memory Management";   
+CHOICES mmn: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK schmn: "Select Weight of Schema Management";   
+CHOICES schmn: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK umn: "Select Weight of Undo Management";   
+CHOICES umn: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK atn: "Select Weight of Autonomy";   
+CHOICES atn: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK load: "Select Weight of Loading Massive Amounts of Data";   
+CHOICES load: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK resume: "Select Weight of Resume Statement";   
+CHOICES resume: 0,1, 2, 3,4,5,6,7,8,9,10;
+ASK reorg: "Select Weight of Table Reorganization";   
+CHOICES reorg: 0,1, 2, 3,4,5,6,7,8,9,10;

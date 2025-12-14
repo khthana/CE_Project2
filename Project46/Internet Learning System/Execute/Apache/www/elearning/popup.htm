@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE> New Document </TITLE>
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+
+<!--
+<script language="JavaScript">
+function openwin(url,win_name,features) 
+{ 
+  window.open(url,win_name,features);
+}
+</script>
+-->
+
+<SCRIPT LANGUAGE="JavaScript">
+var ms = 0;
+var state = 0;
+/*
+function startstop() {
+if (state == 0) {
+state = 1;
+then = new Date();
+then.setTime(then.getTime() - ms);
+} else {
+state = 0;
+now = new Date();
+ms = now.getTime() - then.getTime();
+document.stpw.time.value = ms;
+   }
+}
+function swreset() {
+state = 0;
+ms = 0;
+document.stpw.time.value = ms;
+}
+function display() {
+setTimeout("display();", 50);
+if (state == 1)  {now = new Date();
+ms = now.getTime() - then.getTime();
+document.stpw.time.value = ms;
+   }
+}
+*/
+function counter() 
+{
+/*	
+	if (state == 0) 
+	{
+*/
+		state = 1;
+		then = new Date();
+		then.setTime(then.getTime() - ms);
+/*
+	} else {
+		state = 0;
+		now = new Date();
+		ms = now.getTime() - then.getTime();
+		document.stpw.time.value = ms;
+	}
+*/
+}
+function distime()
+{
+	setTimeout("distime();", 50);
+	if (state == 1)  
+	{
+		now = new Date();
+		ms = now.getTime() - then.getTime();
+		document.stpw.time.value = ms;
+	}
+}
+function autopopupdel() 
+{ 
+//	window.open("index.php","elearning","toolbar=yes,scrollbars=yes,resizable=no,width=800,height=600");
+	window.open("popup2.htm","elearning","toolbar=yes,scrollbars=yes,resizable=no,full");
+//	window.open("index.php","elearning","toolbar=yes,scrollbars=yes,resizable=no,full");
+//	setTimeout("self.close();",1000);
+//	distime();
+//	counter();
+}
+</SCRIPT>
+
+</HEAD>
+
+<!--
+<body onLoad="display()" onLoad="setTimeout('self.close()',5000)"
+onLoad="JavaScript:openwin('index.php','WindowName','toolbar=yes,scrollbars=yes,resizable=no,width=800,height=600')">
+-->
+<body onLoad="autopopupdel()">
+<!--
+<a href="JavaScript:openwin('index.php','WindowName','toolbar=yes,scrollbars=yes,resizable=no,width=800,height=600')">Open Window</a>
+-->
+<!--
+<FORM NAME="stpw">
+Time:
+<INPUT TYPE="text" Name="time">
+
+<INPUT TYPE="BUTTON" Name="ssbutton" VALUE="Start/Stop" onClick="startstop()">
+<INPUT TYPE="BUTTON" NAME="reset" VALUE="Reset" onClick="swreset()">
+
+</FORM>
+-->
+<a href="frame.htm">refresh</a>
+</BODY>
+</HTML>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:mstns="http://www.tempuri.org/ClearingDataset.xsd" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns="http://www.tempuri.org/ClearingDataset.xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.tempuri.org/ClearingDataset.xsd" id="ClearingDataset" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element msdata:IsDataSet="true" msdata:Locale="th-TH" name="ClearingDataset">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="CLEARING">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="HOSPMAIN" type="xs:string" />
+              <xs:element name="HOSPSUB" type="xs:string" />
+              <xs:element name="PID" type="xs:string" />
+              <xs:element name="BILL_ID" type="xs:string" />
+              <xs:element name="DATE_BILL" type="xs:string" />
+              <xs:element minOccurs="0" name="DISEASE" type="xs:string" />
+              <xs:element minOccurs="0" name="COST_MEDICINE" type="xs:int" />
+              <xs:element minOccurs="0" name="COST_DOCTOR" type="xs:int" />
+              <xs:element minOccurs="0" name="COST_ROOM" type="xs:int" />
+              <xs:element minOccurs="0" name="COST_TREAT" type="xs:int" />
+              <xs:element minOccurs="0" name="COST_OTHER" type="xs:string" />
+              <xs:element minOccurs="0" name="COST_SUM" type="xs:int" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique msdata:PrimaryKey="true" name="Constraint1">
+      <xs:selector xpath=".//mstns:CLEARING" />
+      <xs:field xpath="mstns:HOSPMAIN" />
+      <xs:field xpath="mstns:HOSPSUB" />
+      <xs:field xpath="mstns:PID" />
+      <xs:field xpath="mstns:BILL_ID" />
+      <xs:field xpath="mstns:DATE_BILL" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

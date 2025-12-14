@@ -1,0 +1,40 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema id="DataSet1" targetNamespace="http://www.tempuri.org/DataSet1.xsd" xmlns:mstns="http://www.tempuri.org/DataSet1.xsd" xmlns="http://www.tempuri.org/DataSet1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:element name="DataSet1" msdata:IsDataSet="true" msdata:Locale="th-TH">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="SSS">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="PID" type="xs:string" />
+              <xs:element name="FNAME" type="xs:string" minOccurs="0" />
+              <xs:element name="LNAME" type="xs:string" minOccurs="0" />
+              <xs:element name="CC" type="xs:string" minOccurs="0" />
+              <xs:element name="BRANCH" type="xs:string" minOccurs="0" />
+              <xs:element name="HMAIN" type="xs:string" minOccurs="0" />
+              <xs:element name="HNAME" type="xs:string" minOccurs="0" />
+              <xs:element name="STARTDATE" type="xs:string" minOccurs="0" />
+              <xs:element name="EXPDATE" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="UPDATE_SOCIAL">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="PID" type="xs:string" />
+              <xs:element name="DATE" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:SSS" />
+      <xs:field xpath="mstns:PID" />
+    </xs:unique>
+    <xs:unique name="UPDATE_SOCIAL_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:UPDATE_SOCIAL" />
+      <xs:field xpath="mstns:PID" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

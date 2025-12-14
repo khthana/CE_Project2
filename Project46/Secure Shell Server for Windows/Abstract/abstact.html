@@ -1,0 +1,156 @@
+
+<!-- Copyright by Thanatip Yindee -->
+<!-- Contact me at    thanatip [AT] hotmail.com        -->
+
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=TIS-620">
+<title>Secure Shell Server for Windows</title>
+<alink href="web.css" rel="stylesheet" type="text/css">
+<style>
+<!--
+A:link	{color: rgb(255, 255, 255); text-decoration: none;}
+A:visited	{color: rgb(255, 255, 255); text-decoration: none;}
+A:active	{color: rgb(255, 255, 255); text-decoration: none;}
+A:hover	{color: rgb(0, 0, 0); text-decoration: underline;}
+	.head1 {font-size: 18pt; font-weight: bold;}
+	.head2 {font-size: 16pt;}
+	.choice {font-size: 10pt;}
+	.justify {text-align: justify;}
+body
+{
+	scrollbar-arrow-color: #50a1f2;
+	scrollbar-base-color: #FFCCCC;
+	background-color: #FFCCCC;
+	scrollbar-arrow-color: #558BC8;
+	scrollbar-base-color: #75ABE8;
+	background-color: #75ABE8;
+	font-family: "Microsoft Sans Serif","Cordia New";
+	font-weight: 400;
+	font-size: 14pt;
+}
+table
+{
+	font-family: "Microsoft Sans Serif","Cordia New";
+	font-weight: 400;
+	font-size: 12pt;
+}
+-->
+</style>
+</head>
+<body bgcolor="#75ABE8" text="#000000" alink="#000000" link="#000000" vlink="#000000">
+<table width="100%" border="0"><tr><td align="center" width="100%">
+<table width="600" border="0"><tr><td align="center" width="100%">
+
+<a name="TH">
+<table width="100%" border="0"><tr><td align="right" class="choice"><font color="white">
+<a href="#TH">ไทย</a> | <a href="#EN">English</a>
+</font></td></tr></table>
+
+<table width="100%" border="0">
+<tr><td align="center" class="head1">โปรแกรมซีเคียวเชลเซิร์ฟเวอร์สำหรับวินโดวส์</td></tr>
+</table>
+<br>
+
+<table width="100%" border="0">
+<tr>
+	<td width="50%">&nbsp;</td>
+	<td>นายธนาธิป</td>
+	<td colspan="2">ยินดี</td>
+</tr>
+<tr>
+	<td>&nbsp;</td>
+	<td>นายปิติ</td>
+	<td colspan="2">จิโรจน์กุล</td>
+</tr><tr>
+	<td>&nbsp;</td>
+	<td>อาจารย์ธนา</td>
+	<td>หงษ์สุวรรณ</td>
+	<td>อาจารย์ที่ปรึกษา</td>
+</tr><tr>
+	<td>&nbsp;</td>
+	<td>อาจารย์อัครเดช</td>
+	<td>วัชระภูพงษ์</td>
+	<td>อาจารย์ที่ปรึกษา</td>
+</tr><tr>
+	<td>&nbsp;</td>
+	<td colspan="3">ปีการศึกษา 2546</td>
+</tr>
+</table>
+<br>
+
+<table width="100%" border="0">
+<tr><td class="head2">บทคัดย่อ</td></tr>
+<tr><td class="justify"> &nbsp; &nbsp; &nbsp;
+ปัจจุบันมีผู้ใช้งานระบบปฏิบัติการวินโดวส์เพิ่มขึ้นเป็นจำนวนมาก โปรแกรมอย่างเทลเน็ต (Telnet) ก็มีปัญหาด้านความปลอดภัย
+เนื่องจากข้อมูลที่ส่งไปไม่มีการเข้ารหัสลับ จึงทำให้การดูแลรักษา และการใช้งานจากระยะไกลก็จะมีปัญหาด้านความปลอดภัยด้วย
+รวมทั้งระบบปฏิบัติการวินโดวส์ขาดโปรแกรมที่ทำหน้าที่เป็นเซิร์ฟเวอร์ที่สามารถรับการเชื่อมต่อจากระยะไกลได้อย่างปลอดภัย
+ดังนั้นปริญญานิพนธ์ฉบับนี้ จึงเสนอโปรแกรมที่สามารถลดปัญหาที่กล่าวมาได้คือโปรแกรมซีเคียวเชลเซิร์ฟเวอร์สำหรับวินโดวส์
+ซึ่งมีความเข้ากันได้กับโพรโตคอลซีเคียวเชลเซิร์ฟเวอร์เวอร์ชันที่ 2 สนับสนุนการทำอินเทอร์แอกทีฟเซสชัน
+และการพิสูจน์ตนโดยใช้บัญชีผู้ใช้เดียวกับระบบปฏิบัติการ
+</td></tr>
+</table>
+
+
+<br><br><br>
+<table width="100%" border="0"><tr><td align="center">
+<hr width="80%">
+</td></tr></table>
+<br><br><br>
+
+
+<a name="EN">
+<table width="100%" border="0"><tr><td align="right" class="choice"><font color="white">
+<a href="#TH">ไทย</a> | <a href="#EN">English</a>
+</font></td></tr></table>
+
+<table width="100%" border="0">
+<tr><td align="center" class="head1">Secure Shell Server for Windows</td></tr>
+</table>
+<br>
+
+<table width="100%" border="0">
+<tr>
+	<td width="50%">&nbsp;</td>
+	<td>Thanatip</td>
+	<td colspan="2">Yindee</td>
+</tr>
+<tr>
+	<td>&nbsp;</td>
+	<td>Bhiti</td>
+	<td colspan="2">Jirojanakul</td>
+</tr><tr>
+	<td>&nbsp;</td>
+	<td>Thana</td>
+	<td>Hongsuwan</td>
+	<td>Advisor</td>
+</tr><tr>
+	<td>&nbsp;</td>
+	<td>Akkradach</td>
+	<td>Watcharapupong</td>
+	<td>Advisor</td>
+</tr>
+</table>
+<br>
+
+<table width="100%" border="0">
+<tr><td class="head2">ABSTRACT</td></tr>
+<tr><td class="justify"> &nbsp; &nbsp; &nbsp;
+Nowadays, there is an increasing number of Windows users. Because of the unencrypted
+transmission in Telnet-like programs, some security problems occurred in maintenance
+and remote-access. Due to the lack of secure remote-access server program on Windows
+platform, this thesis offer Secure Shell Server for Windows as a solution. This program is
+compatible with Secure Shell Protocol version 2,  provides interactive session and
+supports authentication via Windows account system
+</td></tr>
+</table>
+
+<br><br><br>
+<br><br><br>
+
+
+</td></tr></table>
+</td></tr></table>
+</body>
+</html>

@@ -1,0 +1,550 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>การคอนฟิกสวิตช์</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+</head>
+
+<body>
+<div align="center"> 
+  <p><font color="#CC6666" face="MS Sans Serif, Tahoma, sans-serif"><a href="connection.html"><font color="#CC6699">การใช้งานโปรแกรมในการออกแบบเครือข่าย</font></a></font> 
+    <font color="#CC6699" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;&nbsp;&nbsp;<a href="SwitchConfig.html"><font color="#CC6699">การคอนฟิกสวิตช์</font></a></font> 
+    <font color="#CC6699" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;&nbsp;&nbsp;<a href="RouterConfig.html"><font color="#CC6699">การคอนฟิกเราเตอร์</font></a></font> 
+    <font color="#CC6699" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;&nbsp;&nbsp;<a href="GeneratingConfigFile.html"><font color="#CC6699">การสร้างค่าติดตั้งสวิตช์และเราเตอร์</font></a></font> 
+    <font color="#CC6699" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;&nbsp;&nbsp;<a href="UsingConfig.html"><font color="#CC6699">การนำค่าติดตั้งที่ได้ไปใช้งาน</font></a></font> 
+  </p>
+    <p><a href="index.html"><font color="#CC6699" face="MS Sans Serif, Tahoma, sans-serif">หน้าหลัก</font></a></p>
+  <p>&nbsp;</p>
+  <p><font color="#003399" size="+2" face="MS Sans Serif, Tahoma, sans-serif"><strong>การคอนฟิกสวิตช</strong>์</font></p>
+  <p align="left">&nbsp;</p>
+  <table width="80%" border="0" align="left">
+    <tr> 
+      <td colspan="3"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><a href="SwitchConfig.html"><font color="#003399">การคอนฟิกสวิตช์</font></a></font></td>
+    </tr>
+    <tr> 
+      <td width="11%">&nbsp;</td>
+      <td colspan="2"><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"><a href="#GeneralConfig">การกำหนดค่าทั่วไป</a></font></td>
+    </tr>
+    <tr> 
+      <td>&nbsp;</td>
+      <td colspan="2"><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"><a href="#VlanConfig">การกำหนดค่าแลนเสมือน</a></font></td>
+    </tr>
+    <tr> 
+      <td>&nbsp;</td>
+      <td width="6%">&nbsp; </td>
+      <td width="83%"><font color="#006600" face="MS Sans Serif, Tahoma, sans-serif"><a href="#CreateVlan"><font color="#009933">&gt;&gt;</font></a></font><font color="#009933"><a href="#CreateVlan"><font face="MS Sans Serif, Tahoma, sans-serif">&nbsp;</font></a></font><a href="#CreateVlan"> 
+        <font color="#009933" face="MS Sans Serif, Tahoma, sans-serif">สร้างแลนเสมือน</font></a></td>
+    </tr>
+    <tr> 
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td><font color="#006600" face="MS Sans Serif, Tahoma, sans-serif"><a href="#CreateVlan"><font color="#009933">&gt;&gt;</font></a></font><font color="#009933"><a href="#CreateVlan"><font face="MS Sans Serif, Tahoma, sans-serif">&nbsp;</font></a></font><a href="#CreateVlan"></a><a href="#EditVlan"><font color="#009933" face="MS Sans Serif, Tahoma, sans-serif">กำหนดไอพีแอดเดรสเพื่อใช้ในการติดตั้งค่าสวิตช์ผ่านโปรแกรมเทลเนต</font></a></td>
+    </tr>
+    <tr> 
+      <td>&nbsp;</td>
+      <td colspan="2"><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"> 
+        <a href="#SwitchPortConfig">การกำหนดค่าพอร์ตของสวิตช์</a></font></td>
+    </tr>
+    <tr> 
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td><font color="#006600" face="MS Sans Serif, Tahoma, sans-serif"><a href="#CreateVlan"><font color="#009933">&gt;&gt;</font></a></font><font color="#009933"><a href="#CreateVlan"><font face="MS Sans Serif, Tahoma, sans-serif">&nbsp;</font></a></font><a href="#CreateVlan"></a><a href="#AccessMode"><font color="#009933" face="MS Sans Serif, Tahoma, sans-serif">กำหนดโหมดการทำงานเป็นแอคเซสลิงค์</font></a></td>
+    </tr>
+    <tr> 
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td><font color="#006600" face="MS Sans Serif, Tahoma, sans-serif"><a href="#CreateVlan"><font color="#009933">&gt;&gt;</font></a></font><font color="#009933"><a href="#CreateVlan"><font face="MS Sans Serif, Tahoma, sans-serif">&nbsp;</font></a></font><a href="#CreateVlan"></a><a href="#TrunkMode"><font color="#009933" face="MS Sans Serif, Tahoma, sans-serif">กำหนดโหมดการทำงานเป็นทรังค์ลิงค์</font></a></td>
+    </tr>
+    <tr> 
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td><font color="#006600" face="MS Sans Serif, Tahoma, sans-serif"><a href="#CreateVlan"><font color="#009933">&gt;&gt;</font></a></font><font color="#009933"><a href="#CreateVlan"><font face="MS Sans Serif, Tahoma, sans-serif">&nbsp;</font></a></font><a href="#CreateVlan"></a><a href="#PortGroup"><font color="#009933" face="MS Sans Serif, Tahoma, sans-serif">สร้างอีเธอร์แชนแนลพอร์ตกรุ๊ป</font></a></td>
+    </tr>
+    <tr> 
+      <td height="23">&nbsp;</td>
+      <td colspan="2"><p><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"> 
+          <a href="#LoadSharingWithSTP">การทำโหลดแชริ่งโดยการใช้สแปนนิ่งทรีโปรโตคอล</a></font></p></td>
+    </tr>
+    <tr> 
+      <td>&nbsp;</td>
+      <td colspan="2"><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"> 
+        <a href="#ACL">การกำหนดเอซีแอล</a></font></td>
+    </tr>
+    <tr> 
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td><font color="#006600" face="MS Sans Serif, Tahoma, sans-serif"><a href="#CreateVlan"><font color="#009933">&gt;&gt;</font></a></font><font color="#009933"><a href="#CreateVlan"><font face="MS Sans Serif, Tahoma, sans-serif">&nbsp;</font></a></font><a href="#CreateVlan"></a><a href="#StdACL"><font color="#009933" face="MS Sans Serif, Tahoma, sans-serif">สแตนดาร์ดเอซีแอล</font></a></td>
+    </tr>
+    <tr> 
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td><font color="#006600" face="MS Sans Serif, Tahoma, sans-serif"><a href="#CreateVlan"><font color="#009933">&gt;&gt;</font></a></font><font color="#009933"><a href="#CreateVlan"><font face="MS Sans Serif, Tahoma, sans-serif">&nbsp;</font></a></font><a href="#CreateVlan"></a><a href="#ExtACL"><font color="#009933" face="MS Sans Serif, Tahoma, sans-serif">เอกซ์เทนด์เอซีแอล</font></a></td>
+    </tr>
+    <tr> 
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td><font color="#006600" face="MS Sans Serif, Tahoma, sans-serif"><a href="#CreateVlan"><font color="#009933">&gt;&gt;</font></a></font><font color="#009933"><a href="#CreateVlan"><font face="MS Sans Serif, Tahoma, sans-serif">&nbsp;</font></a></font><a href="#CreateVlan"></a><a href="#UsingACL"><font color="#009933" face="MS Sans Serif, Tahoma, sans-serif">การนำเอซีแอลไปใช้งาน</font></a></td>
+    </tr>
+    <tr> 
+      <td>&nbsp;</td>
+      <td colspan="2"><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"> 
+        <a href="#ConPassword">การกำหนดรหัสผ่านพอร์ตคอนโซล</a></font></td>
+    </tr>
+    <tr> 
+      <td>&nbsp;</td>
+      <td colspan="2"><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"> 
+        <a href="#VtyPassword">การกำหนดรหัสผ่านการใช้งานสวิตช์ผ่านโปรแกรมเทลเนต</a></font></td>
+    </tr>
+  </table>
+  <div align="left"></div>
+  <p align="left"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+    </font></p>
+  <p align="left">&nbsp;</p>
+  <p align="left">&nbsp;</p>
+  <p align="left">&nbsp;</p>
+  <p align="left">&nbsp;</p>
+  <p align="left">&nbsp;</p>
+  <p align="left">&nbsp;</p>
+  <p align="left">&nbsp;</p>
+  <p align="left">&nbsp;</p>
+  <p align="left">&nbsp;</p>
+  <p align="left">&nbsp;</p>
+  <p align="left">&nbsp;</p>
+  <p align="left">&nbsp;</p>
+  <p align="left">&nbsp;</p>
+  <p align="left">&nbsp;</p>
+  <p align="left"><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"><strong><a name="GeneralConfig">การกำหนดค่าทั่วไป</a></strong></font></p>
+  <table width="80%" border="0" align="center">
+    <tr> 
+      <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+          1 </strong></font></p>
+        </td>
+      <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เปิดโปรแกรม 
+          สร้างสวิตช์ และเลือกเมนู Config ดังรูปที่ 4</font></p>
+        </td>
+    </tr>
+  </table>
+  <div align="left"></div>
+  <p align="center"><img src="ConfigSwitch/GeneralConfig/chooseMenuConfig.jpg" width="195" height="176"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+    <font size="-3">รูปที่ 4 แสดงขั้นตอนการใช้งานเมนู Configเพื่อกำหนดค่าให้สวิตช</font>์</font></p>
+  <p align="center">&nbsp;</p>
+  </div>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        2 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">กำหนดค่า 
+        IOS Version, hostname, Default Gateway และ Password ดังรูปที่ 5</font></p></td>
+  </tr>
+</table>
+<p align="center"> <font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="ConfigSwitch/GeneralConfig/configGeneral.jpg" width="415" height="500"><br>
+  <font size="-3">รูปที่ 5 แสดงการกำหนดค่าทั่วไปของสวิตช์</font><br>
+  </font></p>
+<p align="left">&nbsp; </p>
+<p align="left"><br>
+  <font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"><strong><a name="VlanConfig">การกำหนดค่าแลนเสมือน</a></strong></font></p>
+<p align="left"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+  <font color="#009933"><strong><a name="CreateVlan">1) การสร้างแลนเสมือน</a></strong></font></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        1 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เลือกเมนู 
+        Create/Remove VLAN เพื่อสร้างแลนเสมือน ดังรูปที่ 6</font></p></td>
+  </tr>
+</table>
+<p align="center"><img src="ConfigSwitch/VLAN/CreateVLAN/menuCreateRemoveVLAN.jpg" width="195" height="185"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+  <font size="-3">รูปที่ 6 แสดงการใช้งานเมนู Create/Remove VLAN</font></font></p>
+<p align="center">&nbsp;</p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        2 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">กรอกหมายเลขแลนเสมือนแล้วกดปุ่ม 
+        Add ดังรูปที่ 7</font></p></td>
+  </tr>
+</table>
+<p align="center"><img src="ConfigSwitch/VLAN/CreateVLAN/createVlan.jpg" width="400" height="480"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+  <font size="-3">รูปที่ 7 แสดงการสร้างแลนเสมือน 5 และ 6</font></font></p>
+<p align="left"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"> 
+  <br>
+  </font><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong><font color="#009933"><a name="EditVlan">2) 
+  การกำหนดไอพีแอดเดรสเพื่อใช้ในการติดตั้งค่าสวิตช์ผ่านโปรแกรมเทลเนต</a></font></strong></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        1 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เลือกแลนเสมือน 
+        แล้วเลือกปุ่ม Edit ดังรูปที่ 8</font></p></td>
+  </tr>
+</table>
+<p align="center"> <font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="ConfigSwitch/VLAN/EditVLAN/chooseVlanForEdit.jpg" width="400" height="480"><br>
+  <font size="-3">รูปที่ 8 แสดงการเลือกแลนเสมือนเพื่อกำหนดค่าให้แลนเสมือน</font></font></p>
+<p align="center">&nbsp;</p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        2 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">กรอกหมายเลขไอพีแอดเดรสและ 
+        Subnet เลือกปุ่ม OK รูปที่ 9</font></p></td>
+  </tr>
+</table>
+<p align="center"><img src="ConfigSwitch/VLAN/EditVLAN/setIPforVlan.jpg" width="255" height="260"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+  <font size="-3">รูปที่ 9 แสดงการกำหนดไอพีแอดเดรสให้แลนเสมือน</font><br>
+  </font></p>
+<p align="left">&nbsp;</p>
+<p align="left">&nbsp;</p>
+<p align="left"><strong><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"><a name="SwitchPortConfig">การกำหนดค่าพอร์ตของสวิตช์</a></font></strong></p>
+<p align="left"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+  <strong><font color="#009933"><a name="AccessMode">1) การกำหนดโหมดการทำงานเป็นแอคเซสลิงค์</a></font></strong></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        1 </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></p>
+      </td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">คลิ๊กขวาที่สวิตช์ 
+        เลือกเมนู Config เลือกอินเทอร์เฟสที่ต้องการกำหนดโหมดการทำงานและเลือกปุ่ม 
+        Properties </font><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">ดังรูปที่ 
+        10</font></p>
+      </td>
+  </tr>
+</table>
+<p align="center"> <font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="ConfigSwitch/SwitchPort/AccessMode/chooseFa0_1.jpg" width="415" height="500"><br>
+  <font size="-3">รูปที่ 10 แสดงการเลือกอินเทอร์เฟสของสวิตช์เพื่อกำหนดโหมดการทำงาน</font></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        2 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">กำหนดโหมดการทำงานเป็นแอคเซสลิงค์ 
+        และเลือกแลนเสมือนที่ต้องการ ดังรูปที่ 11</font></p></td>
+  </tr>
+</table>
+<p align="center"> <font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="ConfigSwitch/SwitchPort/AccessMode/editFa0_1.jpg" width="400" height="550"><br>
+  <font size="-3">รูปที่ 11 แสดงการกำหนดค่าติดตั้งให้อินเทอร์เฟส FastEthernet0/1 
+  เป็นแอคเซสลิงค์ และเป็นสมาชิกของแลนเสมือน 5</font></font></p>
+<p> <font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+  <strong><font color="#009933"><a name="TrunkMode">2) การกำหนดโหมดการทำงานเป็นทรังค์ลิงค์</a></font></strong></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        1 </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></p>
+      </td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เลือกอินเทอร์เฟสของสวิตช์ที่ต้องการกำหนดค่า 
+        เลือกปุ่ม Properties เลือกโหมดการทำงานเป็น Trunk และ</font><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เพิ่มสมาชิก</font><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">แลนเสมือนโดยคลิ๊กเลือกแลนเสมือนที่ต้องการแล้วกดปุ่ม 
+        Add ดังรูปที่ 12</font></p>
+      </td>
+  </tr>
+</table>
+<p align="center"><img src="ConfigSwitch/SwitchPort/TrunkMode/editFa0_8TrunkPortChannel1.jpg" width="400" height="550"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+  <font size="-3">รูปที่ 12 แสดงการกำหนดค่าติดตั้งให้อินเทอร์เฟส FastEthernet0/8 
+  เป็นทรังค์ลิงค์<br>
+  และเป็นสมาชิกของแลนเสมือน 5, 6 และ 7</font></font></p>
+<p> <font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+  <strong><font color="#009933"><a name="PortGroup">3) การสร้างอีเธอร์แชนแนลพอร์ตกรุ๊ป</a></font></strong></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        1 </strong></font></p>
+      </td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เลือกเมนู 
+        Ether Channel รูปที่ 13</font></p></td>
+  </tr>
+</table>
+<p align="center"><img src="ConfigSwitch/SwitchPort/CreateEtherChannel/chooseMenuEtherChannel.jpg" width="195" height="177"></p>
+<p align="center"><font color="#003399" size="-3" face="MS Sans Serif, Tahoma, sans-serif">รูปที่ 
+  13 แสดงการใช้งานเมนู EtherChannel</font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        2 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เลือก 
+        Enable กรุ๊ปที่ต้องการ จากตัวอย่างเป็นการสร้างพอร์ตแชนแนล ดังรูปที่ 14</font></p></td>
+  </tr>
+</table>
+<p align="center"><img src="ConfigSwitch/SwitchPort/CreateEtherChannel/enableEtherChannel.jpg" width="300" height="450"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+  <font size="-3">รูปที่ 14 แสดงการสร้างพอร์ตแชนแนล Group1 และ Group2</font></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;การกำหนดค่าติดตั้งต่างๆให้กับอีเธอร์แชนแนลพอร์ตกรุ๊ป 
+        ทำได้เช่นเดียวกับการกำหนดค่าติดตั้งให้กับอินเทอร์เฟสของสวิตช์ เช่น การกำหนดให้เป็นแอคเซสลิงค์หรือทรังค์ลิงค์ 
+        ให้กับอินเทอร์เฟสของสวิตช์ เป็นต้น<br>
+        </font></p>
+      </td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"><strong><a name="LoadSharingWithSTP">การทำโหลดแชริ่งโดยการใช้สแปนนิ่งทรีโปรโตคอล</a></strong></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;การทำโหลดแชริ่งเป็นการแบ่งการใช้งานทราฟฟิกระหว่างลิงค์ของแต่ละแลนเสมือนดังรูปที่ 
+        15 โดยการกำหนดค่า Path Cost และ Port Priorities ให้กับแต่ละแลนเสมือน<br>
+        </font></p></td>
+  </tr>
+</table>
+<p align="center"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="ConfigSwitch/LoadSharingWithSTP/loadSharing.jpg" width="331" height="156"><br>
+  <font size="-3">รูปที่ 15 แสดงการทำโหลดแชริ่งทรังค์ลิงค์โดยกำหนดค่า port priorities</font></font></p>
+<p align="left"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+  </font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        1 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">สร้างอีเธอร์แชนแนลพอร์ตกรุ๊ปตามจำนวนที่ต้องการดังรูปที่ 
+        16</font></p></td>
+  </tr>
+</table>
+<p align="center"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"> 
+  </font><img src="ConfigSwitch/LoadSharingWithSTP/enableEtherChannel.jpg" width="300" height="450"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+  <font size="-3">รูปที่ 16 แสดงการสร้างอีเธอร์แชนแนลพอร์ตกรุ๊ป</font><br>
+  <br>
+  </font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        2 </strong></font></p>
+      <p>&nbsp;</p>
+      </td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">กำหนดค่าติดตั้งของอีเธอร์แชนแนลพอร์ตกรุ๊ปให้เป็นทรังค์ลิงค์ที่มีแลนเสมือนที่ต้องการเป็นสมาชิก 
+        และกำหนดค่า </font><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">path 
+        cost หรือ port priorities ให้กับแต่ละแลนเสมือนโดยเลือกแลนเสมือนที่ต้องการกำหนดค่า 
+        แล้วเลือกปุ่ม </font><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">Property 
+        เพื่อกำหนดค่า ดังรูปที่17</font></p>
+      </td>
+  </tr>
+</table>
+<p align="center"><img src="ConfigSwitch/LoadSharingWithSTP/editTrunkVlanGroup1.jpg" width="600" height="550"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+  <font size="-3">รูปที่ 17 แสดงการกำหนดค่า path cost – port priorities ให้กับอีเธอร์แชนแนลพอร์ตกรุ๊ป 
+  1</font></font></p>
+<p> <font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+  </font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        3</strong></font></p>
+      <p>&nbsp;</p>
+      </td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เลือกเมนู 
+        Config เลือกอินเทอร์เฟสของสวิตช์ที่ต้องการตั้งค่าให้เป็นทรังค์ลิงค์เพื่อทำโหลดแชริ่งแล้วกำหนดค่าติดตั้ง</font><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">ต่างๆ 
+        path cost หรือ port priorities ให้เหมือนกับอินเทอร์เฟสอีเธอร์แชนแนลพอร์ตกรุ๊ปที่เลือกเป็นแชนแนลกรุ๊ป</font><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">บนอินเทอร์เฟสนั้นๆ 
+        ดังรูปที่ 18</font></p>
+      </td>
+  </tr>
+</table>
+<p align="center"><img src="ConfigSwitch/LoadSharingWithSTP/F0_8.jpg" width="600" height="550"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+  <font size="-3">รูปที่ 18 แสดงการกำหนดค่าติดตั้งอินเทอร์เฟส FastEthernet0/8 
+  เพื่อทำโหลดแชริ่ง</font></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        4 </strong></font></p>
+      </td>
+    <td width="92%"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">กำหนดค่าให้กับอินเทอร์เฟสอื่นๆที่ต้องการให้ครบตามที่ต้องการ</font></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"><strong> <a name="ACL">การกำหนดเอซีแอล</a></strong></font></p>
+<p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+  <font color="#009933"><strong><a name="StdACL">1) สแตนดาร์ทเอซีแอล</a></strong></font></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        1 </strong></font></p></td>
+    <td width="92%"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เลือกเมนู 
+      Create ACL ดังรูปที่ 19</font></td>
+  </tr>
+</table>
+<p align="center"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="ConfigSwitch/ACL/STD/chooseCreateACL.jpg" width="195" height="177"><br>
+  <font size="-3">รูปที่ 19 แสดงการใช้งานเมนู Create ACL</font></font></p>
+<p>&nbsp;</p><table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        2 </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></p>
+      </td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">สร้างหมายเลข 
+        ACL ที่มีค่าอยู่ในช่วง 1-99 จากตัวอย่างเป็นการสร้าง Access-List 1 แล้วเลือกปุ่ม 
+        Edit </font><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เพื่อสร้าง 
+        ACE (Access Control Entry สำหรับ Access-List 1) ดังรูปที่ 20</font></p>
+      </td>
+  </tr>
+</table>
+<p align="center"> <font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="ConfigSwitch/ACL/STD/createACL1.jpg" width="300" height="350"><br>
+  <font size="-3">รูปที่ 20 แสดงการสร้าง Access-List 1</font></font></p>
+<p align="center">&nbsp;</p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%" height="22"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        3 </strong></font></p></td>
+    <td width="92%"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เลือกปุ่ม 
+      Create เพื่อสร้าง ACEs ดังรูปที่ 21</font></td>
+  </tr>
+</table>
+<p align="center"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"> 
+  <img src="ConfigSwitch/ACL/STD/afterCreateACL1.jpg" width="455" height="300"> 
+  <br>
+  <font size="-3">รูปที่ 21 แสดง ACEs ของ ACL1</font></font></p>
+<p align="center">&nbsp;</p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        4 </strong></font></p></td>
+    <td width="92%"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">กำหนดข้อมูลการ 
+      permit และ deny ตามดังรูปที่ 22</font></td>
+  </tr>
+</table>
+<p align="center"> <font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="ConfigSwitch/ACL/STD/createACEs.jpg" width="670" height="260"><br>
+  <font size="-3">รูปที่ 22 แสดงการสร้าง Standard ACEs ของ ACL1<br>
+  </font> </font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;เมื่อสร้าง 
+        ACEs แล้วจะได้ผลดังรูปที่ 23</font></p>
+      </td>
+  </tr>
+</table>
+<p align="center"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="ConfigSwitch/ACL/STD/afterCreateACE1.jpg" width="455" height="300"><br>
+  <font size="-3">รูปที่ 23 แสดงผลจากการสร้าง Standard ACEs ของ ACL1</font></font></p>
+<p>&nbsp;</p>
+<p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong><font color="#009933"><a name="ExtACL">2) 
+  เอกซ์เทนด์เอซีแอล</a></font></strong></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        1 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เลือกเมนู 
+        Create ACL ดังรูปที่ 19</font></p></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        2 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">สร้างหมายเลข 
+        ACL ที่มีค่าอยู่ในช่วง 100-199 ดังรูปที่ 24 แล้วเลือกปุ่ม Create เพื่อสร้าง 
+        ACEs</font></p></td>
+  </tr>
+</table>
+<p align="center"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"> 
+  <img src="ConfigSwitch/ACL/EXT/afterCreateACL100.jpg" width="455" height="300"> 
+  <br>
+  <font size="-3">รูปที่ 24 แสดงการสร้าง Access-List 100</font></font></p>
+<p align="center">&nbsp;</p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        3 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">กำหนดข้อมูลการ 
+        permit และ deny ตามดังรูปที่ 25<br>
+        </font></p></td>
+  </tr>
+</table>
+<p align="center"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"> 
+  <img src="ConfigSwitch/ACL/EXT/createExtACE100.jpg" width="445" height="620"><br>
+  <font size="-3">รูปที่ 25 แสดงการสร้าง Extend ACEs ของ ACL100</font></font></p>
+<p align="center">&nbsp;</p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เมื่อสร้าง 
+        ACE แล้วจะได้ผลดังรูปที่ 26</font></p>
+      </td>
+  </tr>
+</table>
+<p align="center"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เมื่อสร้าง 
+  ACE แล้วจะได้ผลดังรูปที่ 26<br>
+  <img src="ConfigSwitch/ACL/EXT/afterCreateACE.jpg" width="455" height="300"><br>
+  <font size="-3">รูปที่ 26 แสดงผลจากการสร้าง Extend ACEs ของ ACL100<br>
+  </font></font></p>
+<p align="left"><font color="#009933" face="MS Sans Serif, Tahoma, sans-serif"><strong><a name="UsingACL">3)การนำเอซีแอลไปใช้งาน</a></strong></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        1 </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></p>
+      </td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เลือกอินเทอร์เฟสที่ต้องการกำหนดเอซีแอล 
+        เช่น อินเทอร์เฟสแลนเสมือน โดยเลือกเมนู Create/Remove VLAN, เลือกแลนเสมือนที่ต้องการกำหนดเอซีแอลแล้วเลือกปุ่ม 
+        Edit</font></p>
+      </td>
+  </tr>
+</table>
+<p align="center">&nbsp;</p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        2 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เลือกปุ่ม 
+        ACL เพื่อกำหนด ACL</font></p></td>
+  </tr>
+</table>
+<p>&nbsp;</p><table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        3 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เลือก 
+        Access-List และทิศทางการตรวจสอบแพ็กเก็ต ดังรูปที่ 27</font></p></td>
+  </tr>
+</table>
+<p align="center"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="ConfigSwitch/ACL/UsingACL/addACLtoVlan.jpg" width="580" height="850"><br>
+  <font size="-3">รูปที่ 27 แสดงการกำหนด ACL และกำหนดทิศทางในการตรวจสอบแพ็กเก็ต</font></font></p>
+<p> <font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><br>
+  </font></p>
+<p>&nbsp;</p>
+<p><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"><strong><a name="ConPassword">การกำหนดรหัสผ่านพอร์ตคอนโซล</a></strong></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        1 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เลือกเมนู 
+        Console ดังรูปที่ 28</font></p></td>
+  </tr>
+</table>
+<p align="center"> <font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="ConfigSwitch/ConsolePort/chooseMenuConsole.jpg" width="195" height="177"><br>
+  <font size="-3">รูปที่ 28 แสดงการใช้งานเมนู Console</font></font></p>
+<p align="center">&nbsp;</p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        2 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เลือก 
+        Enable เมื่อต้องการให้มีการใช้รหัสผ่านในการล็อกอินพอร์ตคอนโซล และกรอกรหัสผ่านดังรูปที่ 
+        29</font></p></td>
+  </tr>
+</table>
+<p align="center"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"> 
+  <img src="ConfigSwitch/ConsolePort/enablePasswordCosnole.jpg" width="240" height="275"> 
+  <br>
+  <font size="-3">รูปที่ 29 แสดงการใช้รหัสผ่านเมื่อรล็อกอินผ่านพอร์ตคอนโซล<br>
+  </font><br>
+  </font></p>
+<p align="center">&nbsp;</p>
+<p align="center">&nbsp;</p>
+<p><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"><strong><a name="VtyPassword">การกำหนดรหัสผ่านการใช้งานสวิตช์ผ่านโปรแกรมเทลเนต</a></strong></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        1 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เลือกเมนู 
+        Telnet ดังรูปที่ 30</font></p></td>
+  </tr>
+</table>
+<p align="center"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="ConfigSwitch/Telnet/chooseMenuTelnet.jpg" width="195" height="177"><br>
+  <font size="-3">รูปที่ 30 แสดงการใช้งานเมนู Telnet</font></font></p>
+<p align="center">&nbsp;</p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        2 </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></p></td>
+    <td width="92%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">เลือก 
+        Enable เมื่อต้องการให้มีการใช้รหัสผ่านในการล็อกอินโดยการใช้โปรแกรมเทลเนต 
+        และกรอกรหัสผ่านดังรูปที่ 31</font></p></td>
+  </tr>
+</table>
+<p align="center"> <font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><img src="ConfigSwitch/Telnet/enablePasswordTelnet.jpg"><br>
+  <font size="-3">รูปที่ 31 แสดงการใช้รหัสผ่านเมื่อรล็อกอินผ่านโปรแกรมเทลเนต<br>
+  </font><br>
+  </font></p>
+</body>
+</html>

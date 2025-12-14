@@ -1,0 +1,1479 @@
+import java.io.*;
+import java.sql.*;
+
+public class routing {
+
+  public static void main (String args[]) throws IOException,SQLException
+  {
+    String SrcNode;
+    String DesNode;
+    String timeOption, moneyOption, distanceOption;
+	String warningMessage = "";
+
+BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+System.out.print("Enter a source node: ");
+SrcNode = stdin.readLine();
+System.out.print("Enter a destination node: ");
+DesNode = stdin.readLine();
+System.out.print("Do you want to include 'time' for consideration? y/n: ");
+timeOption = stdin.readLine();
+System.out.print("Do you want to include 'money' for consideration? y/n: ");
+moneyOption = stdin.readLine();
+System.out.print("Do you want to include 'distance' for consideration? y/n: ");
+distanceOption = stdin.readLine();
+
+
+	if(SrcNode.equals(DesNode))
+	  {
+		warningMessage = "Error! Your destination is the same place as where you are.";
+		System.out.println("---------------------------------------");
+		System.out.println(warningMessage);
+	  }
+	  else
+	  {
+    System.out.println("---------------------------------------");
+    System.out.println("SrcNode = " + SrcNode);
+    System.out.println("DesNode = " + DesNode);
+	System.out.println("---------------------------------------");
+
+    String[][] adjNodeDetails;
+    adjNodeDetails = dbAdjNode(SrcNode);   // retrieve all info of adjacent node(s) of a source node by using class "dbAdjNode"
+
+    String[] routeBuffer;
+    routeBuffer = getNameAdjNode(adjNodeDetails, SrcNode);
+
+    String[] resultRoutes;
+    resultRoutes = findRoutes(routeBuffer, DesNode);
+
+	int j = 0;
+	for(int k = 0; k < resultRoutes.length; k++)
+	  {
+		if(resultRoutes[k] != null)
+			j++;
+	  }
+
+	String[] getResultRoutes = new String[j];
+	int n = 0;
+
+	for(int m = 0; m < resultRoutes.length; m++)
+	  {
+		if(resultRoutes[m] != null)
+		  {
+			getResultRoutes[n] = resultRoutes[m];
+			n++;
+		  }
+	  }
+
+	  for(int p = 0; p < n; p++)
+	  {
+		  System.out.println("Possible route No." +(p+1)+" = "+ getResultRoutes[p]);
+		  System.out.println();
+	  }
+
+    String[] bestRouteDetails = new String[4];
+    bestRouteDetails = findBestRoute(getResultRoutes, timeOption, moneyOption, distanceOption);
+
+	String displayRoute = "";
+	String displayTime = "";
+	String displayMoney = "";
+	String displayDistance = "";
+
+	displayRoute = bestRouteDetails[0];
+	displayTime = bestRouteDetails[1];
+	displayMoney = bestRouteDetails[2];
+	displayDistance = bestRouteDetails[3];
+
+
+//**************** return value to front-end part ***********************
+    System.out.println("---------------------------------------");
+    System.out.println("Best route is " + displayRoute);
+	System.out.println("");
+    System.out.println("Usage time about " + displayTime + " minutes");
+	System.out.println("");
+    System.out.println("Overall money = " + displayMoney + " Baht");
+	System.out.println("");
+    System.out.println("Overall distance = " + displayDistance + " meters");
+
+	  }
+  }
+
+//***********************************************************************
+//***********************************************************************
+  static String[][] dbAdjNode(String SNode)
+  {
+	  int increment = 0;
+
+	try
+		{
+			Class.forName("org.gjt.mm.mysql.Driver");
+  			Connection mycon = DriverManager.getConnection("jdbc:mysql://localhost/myproject?user=root&password=231025231025");
+			Statement stmt = mycon.createStatement();
+
+			ResultSet rs = stmt.executeQuery("select count(*) as num from nodeadjacent where node = '"+SNode+"' ");
+			while (rs.next())
+			{
+				increment = rs.getInt("num");
+			}
+
+			rs.close();
+			stmt.close();
+			mycon.close();
+		}
+
+	catch(Exception ex)
+	  {
+		System.out.println(ex.getMessage());
+	  }
+
+		String adjDetails[][];
+		adjDetails = new String[increment][8];
+		int arrayPosition = 0;
+		int money=0, distance=0, traffic=0;
+
+	  try
+	  {
+		  Class.forName("org.gjt.mm.mysql.Driver");
+  			Connection mycon = DriverManager.getConnection("jdbc:mysql://localhost/myproject?user=root&password=231025231025");
+			Statement stmt = mycon.createStatement();
+
+			ResultSet rs2 = stmt.executeQuery("select * from nodeadjacent where node = '"+SNode+"' ");
+			while (rs2.next())
+			{
+				adjDetails[arrayPosition][0] = rs2.getString("adja");
+				adjDetails[arrayPosition][1] = rs2.getString("straight_node");
+				adjDetails[arrayPosition][2] = rs2.getString("right_node");
+				adjDetails[arrayPosition][3] = rs2.getString("left_node");
+				adjDetails[arrayPosition][4] = rs2.getString("uturn");
+				distance = rs2.getInt("distance");
+				money = rs2.getInt("expressway");
+				traffic = rs2.getInt("density");
+				adjDetails[arrayPosition][5] = Integer.toString(distance);  
+				adjDetails[arrayPosition][6] = Integer.toString(money);  
+				adjDetails[arrayPosition][7] = Integer.toString(traffic);  
+				arrayPosition++;
+			}
+			rs2.close();
+			stmt.close();
+			mycon.close();
+  		}
+	  catch(Exception ex)
+	  {
+	  }
+
+		return adjDetails;
+  }
+
+//***********************************************************************
+//***********************************************************************
+// here, it'll fetch each adjacent node out of adjDetails which is passed
+// from other classes. And when finish the fetching, add each adj node
+// to the route
+
+  static String[] getNameAdjNode(String[][] getAdjNode, String upperNodes)  //receive values from main: adj nodes details, all previous nodes in the route
+  {
+    int adjArraySize = 0;
+    adjArraySize = getAdjNode.length;
+    String[] adjNode = new String[adjArraySize];
+
+    for(int i =0; i < adjArraySize; i++)
+    {
+      adjNode[i] = getAdjNode[i][0];
+    }
+
+    int adjNodeLength = 0;
+    adjNodeLength = adjNode.length;
+    String[] addNewNodeToRoute = new String[adjNodeLength];
+
+    for(int i = 0; i < adjNodeLength; i++)
+    {
+      addNewNodeToRoute[i] = upperNodes;
+      addNewNodeToRoute[i] = addNewNodeToRoute[i] + ">";   // use ">" between each node
+      addNewNodeToRoute[i] = addNewNodeToRoute[i] + adjNode[i];
+    }
+
+
+    String[] getRidOfLoopsType1;
+    getRidOfLoopsType1 = checkLoopType1(addNewNodeToRoute);   // after adding new node to each route, send routes to checkLoopType1 to get rid of loop A-B-A-B
+
+
+
+	String[] tempCheck = new String[1];
+
+	if(getRidOfLoopsType1 != null)
+	  {
+		String[] getRidOfLoopsType2;
+		getRidOfLoopsType2 = checkLoopType2(getRidOfLoopsType1);   // after discard routes with A-B-A-B loop, send remianing routes to checkLoopType2 to get rid of loop A-B-A-C
+
+		if(getRidOfLoopsType2 != null)
+		  {
+			String[] getRidOfLoopsType3;
+			getRidOfLoopsType3 = checkLoopType3(getRidOfLoopsType2);
+
+			if(getRidOfLoopsType3 != null)
+			  {			
+				String[] getRidOfLoopsType4;
+				getRidOfLoopsType4 = checkLoopType4(getRidOfLoopsType3);
+
+				if(getRidOfLoopsType4 != null)
+				  {
+					String[] getRidOfLoopsType5;
+					getRidOfLoopsType5 = checkLoopType5(getRidOfLoopsType4);
+
+					if(getRidOfLoopsType5 != null)
+					  {
+						addNewNodeToRoute = getRidOfLoopsType5;
+					  }
+				  }
+			  }
+		  }
+	  }
+
+
+	return addNewNodeToRoute;
+  }
+
+
+
+//***********************************************************************
+//***********************************************************************
+//!!!!!!!!!!!!!!!!!!!!!!!!!!![ start 1 ]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  static String[] findRoutes(String[] routeBuffer, String DesNode)
+  {
+    int arraySize = 0;
+    arraySize = routeBuffer.length;   // find numbers of routes
+    int countCompleteRoute = 0;
+    String[] completeRoute = new String[10000];
+    String[] uncompleteRoute = new String[10000];
+    int b = 0, c = 0;
+
+    String fetchLastNode = "";
+
+    for(int i = 0; i < arraySize; i++)
+    {
+      int a = routeBuffer[i].length();   // find a length of the name of each route (routeBuffer[0] = first route)
+      int hyphenPos = routeBuffer[i].lastIndexOf(">");   // find position of the LAST ">" in each route
+
+      fetchLastNode = routeBuffer[i].substring(hyphenPos+1, a);   // fetch the last node out of each route
+
+      if(fetchLastNode.equals(DesNode))   // if last node = destination, add that route to completeRoute[]
+      {
+        completeRoute[b] = routeBuffer[i];
+        countCompleteRoute++;
+        b++;
+      }
+      else   // if not, add to uncompleteRoute[] to be spanned in the next node level
+      {
+        uncompleteRoute[c] = routeBuffer[i];
+        countCompleteRoute = countCompleteRoute;
+        c++;
+       }
+    }
+
+    int d = 0;
+    for(int i = 0; i < arraySize; i++)
+    {
+      if(completeRoute[i] != null)
+      {
+        d++;
+      }
+    }
+
+    String[] getCompleteRoute = new String[d];
+
+    for(int i = 0; i < b; i++)
+    {
+      getCompleteRoute[i] = completeRoute[i];
+    }
+
+    int e = 0;
+    for(int i = 0; i < arraySize; i++)
+    {
+      if(uncompleteRoute[i] != null)
+      {
+        e++;
+      }
+    }
+
+    String[] getUncompleteRoute = new String[e];
+
+    for(int i = 0; i < c; i++)
+    {
+      getUncompleteRoute[i] = uncompleteRoute[i];
+    }
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!![ start 2 ]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+String[] finalRoutes = new String[0];
+int chk = 0;
+
+    while(countCompleteRoute < 3)    // *** SETTING *** : stop finding more routes after reaching this value
+    {
+      int f = 0;
+      f = getUncompleteRoute.length;
+      String[][] keepAnotherNode = new String[f][6];  // *** ASSUME *** that each node has no more than 6 adjacent nodes
+
+      fetchLastNode = "";
+
+          for(int i = 0; i < f; i++)
+          {
+            int g = 0;
+
+			try
+			{
+			g = getUncompleteRoute[i].length();
+			}
+			catch (NullPointerException x) {
+			countCompleteRoute = 4;
+			break;
+			}
+
+            int hyphenPos = getUncompleteRoute[i].lastIndexOf(">");
+            fetchLastNode = getUncompleteRoute[i].substring(hyphenPos+1, g);
+
+        String[][] anotherAdjNodeDetails;
+        anotherAdjNodeDetails = dbAdjNode(fetchLastNode);
+
+        String[] getAnotherNode;
+        getAnotherNode = getNameAdjNode(anotherAdjNodeDetails, getUncompleteRoute[i]);
+
+        int h = 0;
+
+        h = getAnotherNode.length;
+        for(int j = 0; j < h; j++)
+        {
+          keepAnotherNode[i][j] = getAnotherNode[j];
+        }
+      }
+
+//-----------------------------------------------------------------------
+
+      String[] newRoute = new String[keepAnotherNode.length*6];   // *** ASSUME *** that each node has no more than 6 adjacent nodes
+      int m = 0;
+
+      for(int i = 0; i < keepAnotherNode.length; i++)   // sort each routes, because...
+      {
+        for(int j = 0; j < 6; j++)   //...String keepAnotherNode[][] has null values mix up among route values...
+        {
+          if(keepAnotherNode[i][j] != null)  //...so we must have it re-arranged its values by...
+          {
+            newRoute[m] = keepAnotherNode[i][j];   //...moving all route values to...
+            m++;                     //...the front of String newRoute[]
+          }
+        }   // Anyway, there're still have null values...
+      }     //...left behinds all route values in String newRoute[]
+
+
+      int n = 0;
+      int p = 0;
+      for(int i = 0; i < newRoute.length; i++)   // count NOT null values in String newRoute[]
+      {
+        if(newRoute[i] != null)
+          n++;                                // NOT null values = n
+      }
+
+      String[] getNewRoute = new String[n];   // declare new 'String[] getNewRoute' by having its array size = n
+      for(int i = 0; i < newRoute.length; i++)
+      {
+        if(newRoute[i] != null)
+       {
+          getNewRoute[p] = newRoute[i];    // retrieve NOT null values from newRoute[] --> getNewRoute[]
+          p++;
+       }
+      }
+
+//-----------------------------------------------------------------------
+      arraySize = getNewRoute.length;
+      c = 0;
+
+      fetchLastNode = "";
+
+        for(int i = 0; i < arraySize; i++)
+        {
+          int a = getNewRoute[i].length();
+          int hyphenPos = getNewRoute[i].lastIndexOf(">");
+          fetchLastNode = getNewRoute[i].substring(hyphenPos+1, a);
+
+        if(fetchLastNode.equals(DesNode))
+        {
+          completeRoute[b] = getNewRoute[i];
+          countCompleteRoute++;
+          b++;
+        }
+        else
+        {
+          uncompleteRoute[c] = getNewRoute[i];
+          countCompleteRoute = countCompleteRoute;
+          c++;
+         }
+      }
+      for(int i = 0; i < arraySize; i++)
+      {
+        if(completeRoute[i] != null)
+        {
+          d++;
+        }
+      }
+
+      getCompleteRoute = new String[d];
+      for(int i = 0; i < b; i++)
+      {
+        getCompleteRoute[i] = completeRoute[i];
+    }
+
+    e = 0;
+    for(int i = 0; i < arraySize; i++)
+    {
+      if(uncompleteRoute[i] != null)
+      {
+        e++;
+      }
+    }
+
+      getUncompleteRoute = new String[e];
+
+      for(int i = 0; i < c; i++)
+      {
+        getUncompleteRoute[i] = uncompleteRoute[i];
+      }
+
+    }
+//!!!!!!!!!!!!!!!!!!!!!!!!! end while !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    int reArrangedNumber = 0;   // get rid of null values in getCompleteRoute[]
+
+	finalRoutes = new String[countCompleteRoute];   // declare finalRouts[] which has size = getCompleteRoute[] - null values
+    for(int i = 0; i < getCompleteRoute.length; i++)
+    {
+      if(getCompleteRoute[i] != null)
+      {
+        finalRoutes[reArrangedNumber] = getCompleteRoute[i];
+        reArrangedNumber++;
+      }
+    }
+
+	return(finalRoutes);
+  }
+
+//!!!!!!!!!!!!!!!!!!!!!!!!![  end 3  ]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//***********************************************************************
+//***********************************************************************
+// check loop A-B-A-B
+  static String[] checkLoopType1(String[] routeWithLoops)
+  {
+    String[] routeWithoutLoop;
+    int numberOfRoutes = routeWithLoops.length;
+    int countHyphens = 0;
+    int[] keepPosOfHyphen = new int[4];
+    String[] last4Nodes = new String[4];
+    int n = 0;
+
+
+    String[] getRouteWithoutLoop = new String[numberOfRoutes];
+
+      for(int i = 0; i < numberOfRoutes; i++)   // check if there's still has routes left for checking loops
+      {
+        countHyphens = 0;
+        for(int j = 0; j < routeWithLoops[i].length(); j++)  // in each route, while not end of string
+        {
+          char detectHyphen = routeWithLoops[i].charAt(j);  // check each character, searching for "-"
+          if(detectHyphen == '>')   // if found "-", count number of hyphens
+            countHyphens++;
+          else
+            countHyphens = countHyphens;
+        }
+
+        if(countHyphens < 3)   // if number of hyphens < 3 which means this route has nodes lees than 4, no need to check loop
+        {
+          getRouteWithoutLoop = routeWithLoops;
+        }
+        else   // if number of hyphens >= 3, have to check loop
+        {
+
+        int[] tempKeepPosOfHyphen = new int[countHyphens];  // declare int[] for keeping position of each hyphen in route
+        int increasePosOfArray = 0;
+
+        for(int k = 0; k < routeWithLoops[i].length(); k++)
+        {
+          char detectHyphen = routeWithLoops[i].charAt(k);  // check each char to find position of "-"
+          if(detectHyphen == '>')   // if found "-"...
+          {
+            tempKeepPosOfHyphen[increasePosOfArray] = k;   //...add its position to tempKeepPosOfHyphen[]
+            increasePosOfArray++;
+          }
+          else
+            increasePosOfArray = increasePosOfArray;
+        }
+
+        if(countHyphens == 3)   // if number of hyphens = 3 (this route has 4 nodes)
+        {
+          keepPosOfHyphen[0] = tempKeepPosOfHyphen[countHyphens-3];
+          keepPosOfHyphen[1] = tempKeepPosOfHyphen[countHyphens-2];
+          keepPosOfHyphen[2] = tempKeepPosOfHyphen[countHyphens-1];
+
+          last4Nodes[0] = routeWithLoops[i].substring(0, keepPosOfHyphen[0]);   // fetch each node between hyphen, start from the last node to the fourth from the back
+          last4Nodes[1] = routeWithLoops[i].substring(keepPosOfHyphen[0]+1, keepPosOfHyphen[1]);
+          last4Nodes[2] = routeWithLoops[i].substring(keepPosOfHyphen[1]+1, keepPosOfHyphen[2]);
+          last4Nodes[3] = routeWithLoops[i].substring(keepPosOfHyphen[2]+1);
+        }
+        if(countHyphens > 3)   // if number of hyphens > 3 (this route has more than 4 nodes)
+        {
+          keepPosOfHyphen[0] = tempKeepPosOfHyphen[countHyphens-4];
+          keepPosOfHyphen[1] = tempKeepPosOfHyphen[countHyphens-3];
+          keepPosOfHyphen[2] = tempKeepPosOfHyphen[countHyphens-2];
+          keepPosOfHyphen[3] = tempKeepPosOfHyphen[countHyphens-1];
+
+          last4Nodes[0] = routeWithLoops[i].substring(keepPosOfHyphen[0]+1, keepPosOfHyphen[1]);
+          last4Nodes[1] = routeWithLoops[i].substring(keepPosOfHyphen[1]+1, keepPosOfHyphen[2]);
+          last4Nodes[2] = routeWithLoops[i].substring(keepPosOfHyphen[2]+1, keepPosOfHyphen[3]);
+          last4Nodes[3] = routeWithLoops[i].substring(keepPosOfHyphen[3]+1);
+        }
+
+        if(last4Nodes[0].equals(last4Nodes[2]) && last4Nodes[1].equals(last4Nodes[3]))   // check that this route has loop A-B-A-B or not
+        {
+          getRouteWithoutLoop[n] = getRouteWithoutLoop[n];
+        }
+        else   // if has none, keep that route as a route without loop A-B-A-B
+        {
+          getRouteWithoutLoop[n] = routeWithLoops[i];
+          n++;
+        }
+        }
+      }
+
+    routeWithoutLoop = getRouteWithoutLoop;   // move all routes without loop to "routeWithoutLoop"
+
+    int q = 0;
+    int r = 0;
+    for(int s = 0; s < routeWithoutLoop.length; s++)
+    {
+      if(routeWithoutLoop[s] != null)   // count number of NOT NULL values in routeWithoutLoop[]
+        q++;
+    }
+
+    String[] routeWithoutLoopAndNull = new String[q];
+    for(int t = 0; t < routeWithoutLoop.length; t++)
+    {
+      if(routeWithoutLoop[t] != null)
+      {
+        routeWithoutLoopAndNull[r] = routeWithoutLoop[t];   // keep NOT NULL value in routeWithoutLoopAndNull[]
+        r++;
+      }
+    }
+
+    return routeWithoutLoopAndNull;   //return routes without loop A-B-A-B back to "getNameAdjNode"
+  }
+
+
+//***********************************************************************
+//***********************************************************************
+// check loop A-B-C-B-D and A-B-C-B-A and A-B-C-A-D
+  static String[] checkLoopType2(String[] routeWithLoops)
+  {
+    String[] routeWithoutLoop;
+    int numberOfRoutes = routeWithLoops.length;
+    int countHyphens = 0;
+    int[] keepPosOfHyphen = new int[5];
+    String[] last5Nodes = new String[5];
+    int n = 0;
+
+
+    String[] getRouteWithoutLoop = new String[numberOfRoutes];
+
+    for(int i = 0; i < numberOfRoutes; i++)   // check if there's still has routes left for checking loops
+    {
+      countHyphens = 0;
+      for(int j = 0; j < routeWithLoops[i].length(); j++)  // in each route, while not end of string
+      {
+        char detectHyphen = routeWithLoops[i].charAt(j);  // check each character, searching for "-"
+        if(detectHyphen == '>')   // if found "-", count number of hyphens
+          countHyphens++;
+        else
+          countHyphens = countHyphens;
+      }
+
+      if(countHyphens < 4)   // if number of hyphens < 4 which means this route has nodes lees than 5, no need to check loop
+      {
+        getRouteWithoutLoop = routeWithLoops;
+      }
+      else   // if number of hyphens >= 4, have to check loop
+      {
+
+        int[] tempKeepPosOfHyphen = new int[countHyphens];  // declare int[] for keeping position of each hyphen in route
+        int increasePosOfArray = 0;
+
+        for(int k = 0; k < routeWithLoops[i].length(); k++)
+        {
+          char detectHyphen = routeWithLoops[i].charAt(k);  // check each char to find position of "-"
+          if(detectHyphen == '>')   // if found "-"...
+          {
+            tempKeepPosOfHyphen[increasePosOfArray] = k;   //...add its position to tempKeepPosOfHyphen[]
+            increasePosOfArray++;
+          }
+          else
+            increasePosOfArray = increasePosOfArray;
+        }
+
+        if(countHyphens == 4)   // if number of hyphens = 4 (this route has 5 nodes)
+        {
+          keepPosOfHyphen[0] = tempKeepPosOfHyphen[countHyphens-4];
+          keepPosOfHyphen[1] = tempKeepPosOfHyphen[countHyphens-3];
+          keepPosOfHyphen[2] = tempKeepPosOfHyphen[countHyphens-2];
+          keepPosOfHyphen[3] = tempKeepPosOfHyphen[countHyphens-1];
+
+          last5Nodes[0] = routeWithLoops[i].substring(0, keepPosOfHyphen[0]);   // fetch each node between hyphen, start from the last node to the fifth from the back
+          last5Nodes[1] = routeWithLoops[i].substring(keepPosOfHyphen[0]+1, keepPosOfHyphen[1]);
+          last5Nodes[2] = routeWithLoops[i].substring(keepPosOfHyphen[1]+1, keepPosOfHyphen[2]);
+          last5Nodes[3] = routeWithLoops[i].substring(keepPosOfHyphen[2]+1, keepPosOfHyphen[3]);
+          last5Nodes[4] = routeWithLoops[i].substring(keepPosOfHyphen[3]+1);
+
+        }
+        if(countHyphens > 4)   // if number of hyphens > 4 (this route has more than 5 nodes)
+        {
+          keepPosOfHyphen[0] = tempKeepPosOfHyphen[countHyphens-5];
+          keepPosOfHyphen[1] = tempKeepPosOfHyphen[countHyphens-4];
+          keepPosOfHyphen[2] = tempKeepPosOfHyphen[countHyphens-3];
+          keepPosOfHyphen[3] = tempKeepPosOfHyphen[countHyphens-2];
+          keepPosOfHyphen[4] = tempKeepPosOfHyphen[countHyphens-1];
+
+          last5Nodes[0] = routeWithLoops[i].substring(keepPosOfHyphen[0]+1, keepPosOfHyphen[1]);
+          last5Nodes[1] = routeWithLoops[i].substring(keepPosOfHyphen[1]+1, keepPosOfHyphen[2]);
+          last5Nodes[2] = routeWithLoops[i].substring(keepPosOfHyphen[2]+1, keepPosOfHyphen[3]);
+          last5Nodes[3] = routeWithLoops[i].substring(keepPosOfHyphen[3]+1, keepPosOfHyphen[4]);
+          last5Nodes[4] = routeWithLoops[i].substring(keepPosOfHyphen[4]+1);
+        }
+
+        if(last5Nodes[1].equals(last5Nodes[3]))   // check that this route has loop A(last5Nodes[0]) --> B(last5Nodes[1]) --> C(last5Nodes[2]) --> B(last5Nodes[3]) --> D(last5Nodes[4]) and A-B-C-B-A or not
+        {                                         // if last5Nodes[1] = last5Nodes[3]
+          String[][] getNodeDetails;
+          getNodeDetails = dbAdjNode(last5Nodes[0]);       // get details of adj nodes of node A(last5Nodes[0])
+          for(int m = 0; m < getNodeDetails.length; m++)   // get getNodeDetails[size][], while m < getNodeDetails size
+          {
+            if(getNodeDetails[m][0].equals(last5Nodes[1])) //find any row of getNodeDetails that equals last5Nodes[1], if equals
+            {
+              if(getNodeDetails[m][1].equals(last5Nodes[4]) || getNodeDetails[m][2].equals(last5Nodes[4]) || getNodeDetails[m][3].equals(last5Nodes[4]) || getNodeDetails[m][4].equals(last5Nodes[4]))   // check if A --> B --> D is capable or not
+              {
+                getRouteWithoutLoop[n] = getRouteWithoutLoop[n];      // if capable, discard this route
+              }
+              else
+              {
+                getRouteWithoutLoop[n] = routeWithLoops[i];     // if not capable, keep this route
+                n++;
+              }
+            }
+          }
+        }
+
+        else if(last5Nodes[0].equals(last5Nodes[3]))      // if found loop A-B-C-A-D, discard that route
+        {
+          getRouteWithoutLoop[n] = getRouteWithoutLoop[n];
+        }
+
+        else   // if has none, keep that route as a route without loop A-B-C-B-D or A-B-C-B-A
+        {
+          getRouteWithoutLoop[n] = routeWithLoops[i];
+          n++;
+        }
+      }
+    }
+
+    routeWithoutLoop = getRouteWithoutLoop;   // move all routes without loop to "routeWithoutLoop"
+
+    int q = 0;
+    int r = 0;
+    for(int s = 0; s < routeWithoutLoop.length; s++)
+    {
+      if(routeWithoutLoop[s] != null)   // count number of NOT NULL values in routeWithoutLoop[]
+        q++;
+    }
+
+    String[] routeWithoutLoopAndNull = new String[q];
+
+    for(int t = 0; t < routeWithoutLoop.length; t++)
+    {
+      if(routeWithoutLoop[t] != null)
+      {
+        routeWithoutLoopAndNull[r] = routeWithoutLoop[t];   // keep NOT NULL value in routeWithoutLoopAndNull[]
+        r++;
+      }
+    }
+
+    return routeWithoutLoopAndNull;   //return routes without loop A-B-C-B-D and A-B-C-B-A back to "getNameAdjNode"
+  }
+
+
+//***********************************************************************
+//***********************************************************************
+// check loop A-B-A at the beginning of each route
+  static String[] checkLoopType3(String[] routeWithLoops)
+  {
+    String[] routeWithoutLoop;
+    int numberOfRoutes = routeWithLoops.length;
+    int countHyphens = 0;
+    int[] keepPosOfHyphen = new int[3];
+    String[] first3Nodes = new String[3];
+    int n = 0;
+
+
+
+    String[] getRouteWithoutLoop = new String[numberOfRoutes];
+
+      for(int i = 0; i < numberOfRoutes; i++)   // check if there's still has routes left for checking loops
+      {
+        countHyphens = 0;
+        for(int j = 0; j < routeWithLoops[i].length(); j++)  // in each route, while not end of string
+        {
+          char detectHyphen = routeWithLoops[i].charAt(j);  // check each character, searching for "-"
+          if(detectHyphen == '>')   // if found "-", count number of hyphens
+            countHyphens++;
+          else
+            countHyphens = countHyphens;
+        }
+
+        if(countHyphens < 2)   // 1.) if number of hyphens < 2 which means this route has nodes lees than 3, no need to check loop
+        {
+          getRouteWithoutLoop = routeWithLoops;
+        }
+
+        else if(countHyphens == 2)   // 2.) if number of hyphens = 2 (nodes = 3), have to check loop A-B-A
+        {
+        int[] tempKeepPosOfHyphen = new int[countHyphens];  // declare int[] for keeping position of each hyphen in route
+        int increasePosOfArray = 0;
+
+        for(int k = 0; k < routeWithLoops[i].length(); k++)
+        {
+          char detectHyphen = routeWithLoops[i].charAt(k);  // check each char to find position of "-"
+          if(detectHyphen == '>')   // if found "-"...
+          {
+            tempKeepPosOfHyphen[increasePosOfArray] = k;   //...add its position to tempKeepPosOfHyphen[]
+            increasePosOfArray++;
+          }
+          else
+            increasePosOfArray = increasePosOfArray;
+        }
+
+          keepPosOfHyphen[0] = tempKeepPosOfHyphen[countHyphens-2];
+          keepPosOfHyphen[1] = tempKeepPosOfHyphen[countHyphens-1];
+
+          first3Nodes[0] = routeWithLoops[i].substring(0, keepPosOfHyphen[0]);   // fetch each node between hyphen, start from the first node to the third
+          first3Nodes[1] = routeWithLoops[i].substring(keepPosOfHyphen[0]+1, keepPosOfHyphen[1]);
+          first3Nodes[2] = routeWithLoops[i].substring(keepPosOfHyphen[1]+1);
+
+          if(first3Nodes[0].equals(first3Nodes[2]))   // check that this route has loop A-B-A at the beginning or not
+          {
+            getRouteWithoutLoop[n] = getRouteWithoutLoop[n];   // if A(first3Nodes[0]) = A(first3Nodes[2]), discard this route
+          }
+
+          else   // if first3Nodes[0]) != first3Nodes[2], keep this route
+          {
+            getRouteWithoutLoop[n] = routeWithLoops[i];
+            n++;
+          }
+        }
+
+        else   //  3.) if number of hyphens > 2 (nodes > 3), unnecessary to check loop A-B-A at the beginning
+        {
+          getRouteWithoutLoop = routeWithLoops;
+        }
+      }
+
+    routeWithoutLoop = getRouteWithoutLoop;   // move all routes without loop to "routeWithoutLoop"
+
+    int q = 0;
+    int r = 0;
+    for(int s = 0; s < routeWithoutLoop.length; s++)
+    {
+      if(routeWithoutLoop[s] != null)   // count number of NOT NULL values in routeWithoutLoop[]
+        q++;
+    }
+
+    String[] routeWithoutLoopAndNull = new String[q];
+    for(int t = 0; t < routeWithoutLoop.length; t++)
+    {
+      if(routeWithoutLoop[t] != null)
+      {
+        routeWithoutLoopAndNull[r] = routeWithoutLoop[t];   // keep NOT NULL value in routeWithoutLoopAndNull[]
+        r++;
+      }
+    }
+
+    return routeWithoutLoopAndNull;   //return routes without loop A-B-A back to "getNameAdjNode"
+  }
+
+
+//***********************************************************************
+//***********************************************************************
+// check loop A-B-C-D-B-E and A-B-C-D-A-E
+  static String[] checkLoopType4(String[] routeWithLoops)
+  {
+    String[] routeWithoutLoop;
+    int numberOfRoutes = routeWithLoops.length;
+    int countHyphens = 0;
+    int[] keepPosOfHyphen = new int[6];
+    String[] last6Nodes = new String[6];
+    int n = 0;
+
+
+    String[] getRouteWithoutLoop = new String[numberOfRoutes];
+
+    for(int i = 0; i < numberOfRoutes; i++)   // check if there's still has routes left for checking loops
+    {
+      countHyphens = 0;
+      for(int j = 0; j < routeWithLoops[i].length(); j++)  // in each route, while not end of string
+      {
+        char detectHyphen = routeWithLoops[i].charAt(j);  // check each character, searching for "-"
+        if(detectHyphen == '>')   // if found "-", count number of hyphens
+          countHyphens++;
+        else
+          countHyphens = countHyphens;
+      }
+
+      if(countHyphens < 5)   // if number of hyphens < 5 which means this route has nodes lees than 6, no need to check loop in this case
+      {
+        getRouteWithoutLoop = routeWithLoops;
+      }
+      else   // if number of hyphens >= 5, have to check loop A-B-C-D-B-E and A-B-C-D-A-E
+      {
+
+        int[] tempKeepPosOfHyphen = new int[countHyphens];  // declare int[] for keeping position of each hyphen in route
+        int increasePosOfArray = 0;
+
+        for(int k = 0; k < routeWithLoops[i].length(); k++)
+        {
+          char detectHyphen = routeWithLoops[i].charAt(k);  // check each char to find position of "-"
+          if(detectHyphen == '>')   // if found "-"...
+          {
+            tempKeepPosOfHyphen[increasePosOfArray] = k;   //...add its position to tempKeepPosOfHyphen[]
+            increasePosOfArray++;
+          }
+          else
+            increasePosOfArray = increasePosOfArray;
+        }
+
+        if(countHyphens == 5)   // if number of hyphens = 5 (this route has 6 nodes)
+        {
+          keepPosOfHyphen[0] = tempKeepPosOfHyphen[countHyphens-5];
+          keepPosOfHyphen[1] = tempKeepPosOfHyphen[countHyphens-4];
+          keepPosOfHyphen[2] = tempKeepPosOfHyphen[countHyphens-3];
+          keepPosOfHyphen[3] = tempKeepPosOfHyphen[countHyphens-2];
+          keepPosOfHyphen[4] = tempKeepPosOfHyphen[countHyphens-1];
+
+          last6Nodes[0] = routeWithLoops[i].substring(0, keepPosOfHyphen[0]);   // fetch each node between hyphen, start from the last node to the sixth from the back
+          last6Nodes[1] = routeWithLoops[i].substring(keepPosOfHyphen[0]+1, keepPosOfHyphen[1]);
+          last6Nodes[2] = routeWithLoops[i].substring(keepPosOfHyphen[1]+1, keepPosOfHyphen[2]);
+          last6Nodes[3] = routeWithLoops[i].substring(keepPosOfHyphen[2]+1, keepPosOfHyphen[3]);
+          last6Nodes[4] = routeWithLoops[i].substring(keepPosOfHyphen[3]+1, keepPosOfHyphen[4]);
+          last6Nodes[5] = routeWithLoops[i].substring(keepPosOfHyphen[4]+1);
+
+        }
+        if(countHyphens > 5)   // if number of hyphens > 5 (this route has more than 6 nodes)
+        {
+          keepPosOfHyphen[0] = tempKeepPosOfHyphen[countHyphens-6];
+          keepPosOfHyphen[1] = tempKeepPosOfHyphen[countHyphens-5];
+          keepPosOfHyphen[2] = tempKeepPosOfHyphen[countHyphens-4];
+          keepPosOfHyphen[3] = tempKeepPosOfHyphen[countHyphens-3];
+          keepPosOfHyphen[4] = tempKeepPosOfHyphen[countHyphens-2];
+          keepPosOfHyphen[5] = tempKeepPosOfHyphen[countHyphens-1];
+
+          last6Nodes[0] = routeWithLoops[i].substring(keepPosOfHyphen[0]+1, keepPosOfHyphen[1]);
+          last6Nodes[1] = routeWithLoops[i].substring(keepPosOfHyphen[1]+1, keepPosOfHyphen[2]);
+          last6Nodes[2] = routeWithLoops[i].substring(keepPosOfHyphen[2]+1, keepPosOfHyphen[3]);
+          last6Nodes[3] = routeWithLoops[i].substring(keepPosOfHyphen[3]+1, keepPosOfHyphen[4]);
+          last6Nodes[4] = routeWithLoops[i].substring(keepPosOfHyphen[4]+1, keepPosOfHyphen[5]);
+          last6Nodes[5] = routeWithLoops[i].substring(keepPosOfHyphen[5]+1);
+        }
+
+        if(last6Nodes[1].equals(last6Nodes[4]))   // check that this route has loop A-B-C-D-B-E or not
+        {                                         // if last6Nodes[1] = last6Nodes[4]
+          String[][] getNodeDetails;
+          getNodeDetails = dbAdjNode(last6Nodes[0]);       // get details of adj nodes of node A(last6Nodes[0])
+          for(int m = 0; m < getNodeDetails.length; m++)   // get getNodeDetails[size][], while m < getNodeDetails size
+          {
+            if(getNodeDetails[m][0].equals(last6Nodes[1])) //find any row of getNodeDetails that equals last6Nodes[1], if equals
+            {
+              if(getNodeDetails[m][1].equals(last6Nodes[5]) || getNodeDetails[m][2].equals(last6Nodes[5]) || getNodeDetails[m][3].equals(last6Nodes[5]) || getNodeDetails[m][4].equals(last6Nodes[5]))   // check if A --> B --> E is capable or not
+              {
+                getRouteWithoutLoop[n] = getRouteWithoutLoop[n];      // if capable, discard this route
+              }
+              else
+              {
+                getRouteWithoutLoop[n] = routeWithLoops[i];     // if not capable, keep this route
+                n++;
+              }
+            }
+          }
+        }
+
+        else if(last6Nodes[0].equals(last6Nodes[4]))     // else if found loop A-B-C-D-A-E, discard that route
+        {
+          getRouteWithoutLoop[n] = getRouteWithoutLoop[n];
+        }
+        else   // if has none, keep that route as a route without loop A-B-C-D-B-E and A-B-C-D-A-E
+        {
+          getRouteWithoutLoop[n] = routeWithLoops[i];
+          n++;
+        }
+      }
+    }
+
+    routeWithoutLoop = getRouteWithoutLoop;   // move all routes without loop to "routeWithoutLoop"
+
+    int q = 0;
+    int r = 0;
+    for(int s = 0; s < routeWithoutLoop.length; s++)
+    {
+      if(routeWithoutLoop[s] != null)   // count number of NOT NULL values in routeWithoutLoop[]
+        q++;
+    }
+
+    String[] routeWithoutLoopAndNull = new String[q];
+    for(int t = 0; t < routeWithoutLoop.length; t++)
+    {
+      if(routeWithoutLoop[t] != null)
+      {
+        routeWithoutLoopAndNull[r] = routeWithoutLoop[t];   // keep NOT NULL value in routeWithoutLoopAndNull[]
+        r++;
+      }
+    }
+
+    return routeWithoutLoopAndNull;   //return routes without loop A-B-C-B-D and A-B-C-B-A back to "getNameAdjNode"
+  }
+
+
+//***********************************************************************
+//***********************************************************************
+// check loop A-B-C-D-E-B-F
+  static String[] checkLoopType5(String[] routeWithLoops)
+  {
+    String[] routeWithoutLoop;
+    int numberOfRoutes = routeWithLoops.length;
+    int countHyphens = 0;
+    int[] keepPosOfHyphen = new int[7];
+    String[] last7Nodes = new String[7];
+    int n = 0;
+
+
+    String[] getRouteWithoutLoop = new String[numberOfRoutes];
+
+    for(int i = 0; i < numberOfRoutes; i++)   // check if there's still has routes left for checking loops
+    {
+      countHyphens = 0;
+      for(int j = 0; j < routeWithLoops[i].length(); j++)  // in each route, while not end of string
+      {
+        char detectHyphen = routeWithLoops[i].charAt(j);  // check each character, searching for "-"
+        if(detectHyphen == '>')   // if found "-", count number of hyphens
+          countHyphens++;
+        else
+          countHyphens = countHyphens;
+      }
+
+      if(countHyphens < 6)   // if number of hyphens < 6 which means this route has nodes lees than 7, no need to check loop in this case
+      {
+        getRouteWithoutLoop = routeWithLoops;
+      }
+      else   // if number of hyphens >= 6, have to check loop A-B-C-D-E-B-F
+      {
+
+        int[] tempKeepPosOfHyphen = new int[countHyphens];  // declare int[] for keeping position of each hyphen in route
+        int increasePosOfArray = 0;
+
+        for(int k = 0; k < routeWithLoops[i].length(); k++)
+        {
+          char detectHyphen = routeWithLoops[i].charAt(k);  // check each char to find position of "-"
+          if(detectHyphen == '>')   // if found "-"...
+          {
+            tempKeepPosOfHyphen[increasePosOfArray] = k;   //...add its position to tempKeepPosOfHyphen[]
+            increasePosOfArray++;
+          }
+          else
+            increasePosOfArray = increasePosOfArray;
+        }
+
+        if(countHyphens == 6)   // if number of hyphens = 6 (this route has 7 nodes)
+        {
+          keepPosOfHyphen[0] = tempKeepPosOfHyphen[countHyphens-6];
+          keepPosOfHyphen[1] = tempKeepPosOfHyphen[countHyphens-5];
+          keepPosOfHyphen[2] = tempKeepPosOfHyphen[countHyphens-4];
+          keepPosOfHyphen[3] = tempKeepPosOfHyphen[countHyphens-3];
+          keepPosOfHyphen[4] = tempKeepPosOfHyphen[countHyphens-2];
+          keepPosOfHyphen[5] = tempKeepPosOfHyphen[countHyphens-1];
+
+          last7Nodes[0] = routeWithLoops[i].substring(0, keepPosOfHyphen[0]);   // fetch each node between hyphen, start from the last node to the seventh from the back
+          last7Nodes[1] = routeWithLoops[i].substring(keepPosOfHyphen[0]+1, keepPosOfHyphen[1]);
+          last7Nodes[2] = routeWithLoops[i].substring(keepPosOfHyphen[1]+1, keepPosOfHyphen[2]);
+          last7Nodes[3] = routeWithLoops[i].substring(keepPosOfHyphen[2]+1, keepPosOfHyphen[3]);
+          last7Nodes[4] = routeWithLoops[i].substring(keepPosOfHyphen[3]+1, keepPosOfHyphen[4]);
+          last7Nodes[5] = routeWithLoops[i].substring(keepPosOfHyphen[4]+1, keepPosOfHyphen[5]);
+          last7Nodes[6] = routeWithLoops[i].substring(keepPosOfHyphen[5]+1);
+
+        }
+        if(countHyphens > 6)   // if number of hyphens > 6 (this route has more than 7 nodes)
+        {
+          keepPosOfHyphen[0] = tempKeepPosOfHyphen[countHyphens-7];
+          keepPosOfHyphen[1] = tempKeepPosOfHyphen[countHyphens-6];
+          keepPosOfHyphen[2] = tempKeepPosOfHyphen[countHyphens-5];
+          keepPosOfHyphen[3] = tempKeepPosOfHyphen[countHyphens-4];
+          keepPosOfHyphen[4] = tempKeepPosOfHyphen[countHyphens-3];
+          keepPosOfHyphen[5] = tempKeepPosOfHyphen[countHyphens-2];
+          keepPosOfHyphen[6] = tempKeepPosOfHyphen[countHyphens-1];
+
+          last7Nodes[0] = routeWithLoops[i].substring(keepPosOfHyphen[0]+1, keepPosOfHyphen[1]);
+          last7Nodes[1] = routeWithLoops[i].substring(keepPosOfHyphen[1]+1, keepPosOfHyphen[2]);
+          last7Nodes[2] = routeWithLoops[i].substring(keepPosOfHyphen[2]+1, keepPosOfHyphen[3]);
+          last7Nodes[3] = routeWithLoops[i].substring(keepPosOfHyphen[3]+1, keepPosOfHyphen[4]);
+          last7Nodes[4] = routeWithLoops[i].substring(keepPosOfHyphen[4]+1, keepPosOfHyphen[5]);
+          last7Nodes[5] = routeWithLoops[i].substring(keepPosOfHyphen[5]+1, keepPosOfHyphen[6]);
+          last7Nodes[6] = routeWithLoops[i].substring(keepPosOfHyphen[6]+1);
+        }
+
+        if(last7Nodes[0].equals(last7Nodes[5]) || last7Nodes[0].equals(last7Nodes[6]))     // else if found loop A-B-C-D-E-A or A-B-C-D-E-F-A, discard that route
+        {
+          getRouteWithoutLoop[n] = getRouteWithoutLoop[n];
+        }
+
+        else   // if has none, keep that route as a route without loop A-B-C-D-E-B-F
+        {
+          getRouteWithoutLoop[n] = routeWithLoops[i];
+          n++;
+        }
+      }
+    }
+
+    routeWithoutLoop = getRouteWithoutLoop;   // move all routes without loop to "routeWithoutLoop"
+
+    int q = 0;
+    int r = 0;
+    for(int s = 0; s < routeWithoutLoop.length; s++)
+    {
+      if(routeWithoutLoop[s] != null)   // count number of NOT NULL values in routeWithoutLoop[]
+        q++;
+    }
+
+    String[] routeWithoutLoopAndNull = new String[q];
+    for(int t = 0; t < routeWithoutLoop.length; t++)
+    {
+      if(routeWithoutLoop[t] != null)
+      {
+        routeWithoutLoopAndNull[r] = routeWithoutLoop[t];   // keep NOT NULL value in routeWithoutLoopAndNull[]
+        r++;
+      }
+    }
+
+    return routeWithoutLoopAndNull;   //return routes without loop A-B-C-B-D and A-B-C-B-A back to "getNameAdjNode"
+  }
+
+
+//***********************************************************************
+//***********************************************************************
+// find the best route
+  static String[] findBestRoute(String[] someRoutes, String chooseTime, String chooseMoney, String chooseDistance)     // receive routes to find the best route
+  {
+    String[] route = new String[someRoutes.length];
+    String node1 = "", node2 = "";
+    int routeLength = 0;
+    float[] overallTime = new float[someRoutes.length];
+    int[] overallMoney = new int[someRoutes.length];
+    float[] overallDistance = new float[someRoutes.length];
+
+//-----------------------------------------------------------------
+// find usage time, overall distance and overall money
+// of each route
+    for(int i = 0; i < someRoutes.length; i++)
+    {
+      route[i] = someRoutes[i];
+      routeLength = route[i].length();
+      float distance = 0;
+      int trafficCondition = -1;
+      int money = 0;
+      float timeUsedBetween2Nodes = 0;
+      int countHyphens = 0;
+
+      for(int j = 0; j < routeLength; j++)          // check each character to detect hyphens
+      {
+        char detectHyphen = route[i].charAt(j);
+        if(detectHyphen == '>')
+          countHyphens++;                           // if found hyphen, count it
+        else
+          countHyphens = countHyphens;
+      }
+
+      int[] tempKeepPosOfHyphen = new int[countHyphens];  // declare int[] for keeping position of each hyphen in route
+      int increasePosOfArray = 0;
+
+      for(int k = 0; k < routeLength; k++)
+      {
+        char detectHyphen = route[i].charAt(k);  // check each char to find position of "-"
+        if(detectHyphen == '>')   // if found "-"...
+        {
+          tempKeepPosOfHyphen[increasePosOfArray] = k;   //...add its position to tempKeepPosOfHyphen[]
+          increasePosOfArray++;
+        }
+        else
+          increasePosOfArray = increasePosOfArray;
+      }
+
+      node1 = route[i].substring(0, tempKeepPosOfHyphen[0]);   // get the name of 1st node from the beginning part of string route till the first hyphen
+
+      for(int m = 1; m <= increasePosOfArray; m++)
+      {
+        if(m < increasePosOfArray)     // while not reach the last hyphen, use this command to get 2nd node
+        node2 = route[i].substring(tempKeepPosOfHyphen[m-1]+1, tempKeepPosOfHyphen[m]);
+        if(m == increasePosOfArray)    // if reach the last hyphen, use this command to get 2nd node
+        node2 = route[i].substring(tempKeepPosOfHyphen[m-1]+1);
+
+        String[][] getNodeDetails;
+        getNodeDetails = dbAdjNode(node1);   // get details of 1st node from adj table
+
+        for(int n = 0; n < getNodeDetails.length; n++)   // while not end of string adj details, do
+        {
+          if(getNodeDetails[n][0].equals(node2))   // if 1st column (adj node name) = 2nd node
+          {
+            distance = Float.valueOf(getNodeDetails[n][5]).floatValue();  // get distance in that row
+            money = Integer.valueOf(getNodeDetails[n][6]).intValue();     // get money in that row
+            trafficCondition = Integer.valueOf(getNodeDetails[n][7]).intValue();   // get traffic condition in that row
+
+            if(trafficCondition == 0)     // use traffic condition to find usage time between these 2 nodes
+              timeUsedBetween2Nodes = distance / 83;
+            if(trafficCondition == 1)
+              timeUsedBetween2Nodes = distance / 250;
+            if(trafficCondition == 2)
+              timeUsedBetween2Nodes = distance / 500;
+            if(trafficCondition == 3)
+              timeUsedBetween2Nodes = distance / 1000;
+
+            overallTime[i] = overallTime[i] + timeUsedBetween2Nodes;   // add usage time between these 2 nodes to overall time of this route
+            overallMoney[i] = overallMoney[i] + money;   // add spent money between these 2 nodes to overall money of this route
+            overallDistance[i] = overallDistance[i] + distance;   // add a distance between these 2 nodes to overall distance of this route
+          }
+        }
+
+        node1 = "";
+        node1 = node2;    // set 2nd node to be 1st node for checking with the following node
+        node2 = "";       // set node2 to null, ready to fetch another node name in this route
+        timeUsedBetween2Nodes = 0;
+        distance = 0;
+        money = 0;
+        trafficCondition = -1;
+      }
+    }
+
+//-----------------------------------------------------------------
+// compare each route to find the best route
+
+    int indicateBestRoute = 0;
+    int someRoutesLength = someRoutes.length;   // how many routes we have before comparing
+    int q = 1;
+
+    //-------------------------------------------------------------
+    // I. considering (1)time (2)distance
+    if(chooseTime.equals("y") && chooseMoney.equals("n") && chooseDistance.equals("y"))
+    {
+      for(int p = 1; p < someRoutesLength; p++)   // while still have routes to compare, do
+      {
+        if(overallTime[indicateBestRoute] < overallTime[indicateBestRoute + q])   // if overall time of 1st route is lower than 2nd,...
+        {
+          indicateBestRoute = indicateBestRoute;         // ...keep number of 1st route
+        }
+        if(overallTime[indicateBestRoute] > overallTime[indicateBestRoute + q])   // if overall time of 1st route is higher than 2nd,...
+        {
+          indicateBestRoute = indicateBestRoute + q;     // ...keep number of 2nd route
+          q = 0;
+        }
+        if(overallTime[indicateBestRoute] == overallTime[indicateBestRoute + q])  // if overall time of 1st route = 2nd route,...
+        {
+          if(overallDistance[indicateBestRoute] < overallDistance[indicateBestRoute + q])   // if overall time of 1st route is lower than 2nd,...
+          {
+            indicateBestRoute = indicateBestRoute;         // ...keep number of 1st route
+          }
+          if(overallDistance[indicateBestRoute] > overallDistance[indicateBestRoute + q])   // if overall time of 1st route is higher than 2nd,...
+          {
+            indicateBestRoute = indicateBestRoute + q;     // ...keep number of 2nd route
+            q = 0;
+          }
+          if(overallDistance[indicateBestRoute] == overallDistance[indicateBestRoute + q])  // if overall time of 1st route = 2nd route,...
+          {
+            if(overallMoney[indicateBestRoute] <= overallMoney[indicateBestRoute + q])   // compare distance
+              indicateBestRoute = indicateBestRoute;
+            else
+            {
+              indicateBestRoute = indicateBestRoute + q;
+              q = 0;
+            }
+          }
+        }
+        q++;
+      }
+    }
+    // end considering (1)time (2)distance
+    //-------------------------------------------------------------
+    // II. considering all (1)money (2)time (3)distance or just (1)money (2)time
+
+    if(chooseTime.equals("y") && chooseMoney.equals("y"))
+    {
+      for(int p = 1; p < someRoutesLength; p++)   // while still have routes to compare, do
+      {
+        if(overallMoney[indicateBestRoute] < overallMoney[indicateBestRoute + q])   // if overall time of 1st route is lower than 2nd,...
+        {
+          indicateBestRoute = indicateBestRoute;         // ...keep number of 1st route
+        }
+        if(overallMoney[indicateBestRoute] > overallMoney[indicateBestRoute + q])   // if overall time of 1st route is higher than 2nd,...
+        {
+          indicateBestRoute = indicateBestRoute + q;     // ...keep number of 2nd route
+          q = 0;
+        }
+        if(overallMoney[indicateBestRoute] == overallMoney[indicateBestRoute + q])  // if overall time of 1st route = 2nd route,...
+        {
+          if(overallTime[indicateBestRoute] < overallTime[indicateBestRoute + q])   // if overall time of 1st route is lower than 2nd,...
+          {
+            indicateBestRoute = indicateBestRoute;         // ...keep number of 1st route
+          }
+          if(overallTime[indicateBestRoute] > overallTime[indicateBestRoute + q])   // if overall time of 1st route is higher than 2nd,...
+          {
+            indicateBestRoute = indicateBestRoute + q;     // ...keep number of 2nd route
+            q = 0;
+          }
+          if(overallTime[indicateBestRoute] == overallTime[indicateBestRoute + q])  // if overall time of 1st route = 2nd route,...
+          {
+            if(overallDistance[indicateBestRoute] <= overallDistance[indicateBestRoute + q])   // compare distance
+              indicateBestRoute = indicateBestRoute;
+            else
+            {
+              indicateBestRoute = indicateBestRoute + q;
+              q = 0;
+            }
+          }
+        }
+        q++;
+      }
+    }
+
+    // end considering all (1)money (2)time (3)distance or just (1)money (2)time
+    //-------------------------------------------------------------
+    // III. considering (1)money (2)distance
+
+    if(chooseTime.equals("n") && chooseMoney.equals("y") && chooseDistance.equals("y"))
+    {
+      for(int p = 1; p < someRoutesLength; p++)   // while still have routes to compare, do
+      {
+        if(overallMoney[indicateBestRoute] < overallMoney[indicateBestRoute + q])   // if overall time of 1st route is lower than 2nd,...
+        {
+          indicateBestRoute = indicateBestRoute;         // ...keep number of 1st route
+        }
+        if(overallMoney[indicateBestRoute] > overallMoney[indicateBestRoute + q])   // if overall time of 1st route is higher than 2nd,...
+        {
+          indicateBestRoute = indicateBestRoute + q;     // ...keep number of 2nd route
+          q = 0;
+        }
+        if(overallMoney[indicateBestRoute] == overallMoney[indicateBestRoute + q])  // if overall time of 1st route = 2nd route,...
+        {
+          if(overallDistance[indicateBestRoute] < overallDistance[indicateBestRoute + q])   // if overall time of 1st route is lower than 2nd,...
+          {
+            indicateBestRoute = indicateBestRoute;         // ...keep number of 1st route
+          }
+          if(overallDistance[indicateBestRoute] > overallDistance[indicateBestRoute + q])   // if overall time of 1st route is higher than 2nd,...
+          {
+            indicateBestRoute = indicateBestRoute + q;     // ...keep number of 2nd route
+            q = 0;
+          }
+          if(overallDistance[indicateBestRoute] == overallDistance[indicateBestRoute + q])  // if overall time of 1st route = 2nd route,...
+          {
+            if(overallTime[indicateBestRoute] <= overallTime[indicateBestRoute + q])   // compare distance
+              indicateBestRoute = indicateBestRoute;
+            else
+            {
+              indicateBestRoute = indicateBestRoute + q;
+              q = 0;
+            }
+          }
+        }
+        q++;
+      }
+    }
+
+    // end considering (1)money (2)distance
+    //-------------------------------------------------------------
+    // IV. considering only (1)money
+
+    if(chooseTime.equals("n") && chooseMoney.equals("y") && chooseDistance.equals("n"))
+    {
+      for(int p = 1; p < someRoutesLength; p++)   // while still have routes to compare, do
+      {
+        if(overallMoney[indicateBestRoute] < overallMoney[indicateBestRoute + q])   // if overall time of 1st route is lower than 2nd,...
+        {
+          indicateBestRoute = indicateBestRoute;         // ...keep number of 1st route
+        }
+        if(overallMoney[indicateBestRoute] > overallMoney[indicateBestRoute + q])   // if overall time of 1st route is higher than 2nd,...
+        {
+          indicateBestRoute = indicateBestRoute + q;     // ...keep number of 2nd route
+          q = 0;
+        }
+        if(overallMoney[indicateBestRoute] == overallMoney[indicateBestRoute + q])  // if overall time of 1st route = 2nd route,...
+        {
+          if(overallTime[indicateBestRoute] < overallTime[indicateBestRoute + q])   // if overall time of 1st route is lower than 2nd,...
+          {
+            indicateBestRoute = indicateBestRoute;         // ...keep number of 1st route
+          }
+          if(overallTime[indicateBestRoute] > overallTime[indicateBestRoute + q])   // if overall time of 1st route is higher than 2nd,...
+          {
+            indicateBestRoute = indicateBestRoute + q;     // ...keep number of 2nd route
+            q = 0;
+          }
+          if(overallTime[indicateBestRoute] == overallTime[indicateBestRoute + q])  // if overall time of 1st route = 2nd route,...
+          {
+            if(overallDistance[indicateBestRoute] <= overallDistance[indicateBestRoute + q])   // compare distance
+              indicateBestRoute = indicateBestRoute;
+            else
+            {
+              indicateBestRoute = indicateBestRoute + q;
+              q = 0;
+            }
+          }
+        }
+        q++;
+      }
+    }
+
+    // end considering only (1)money
+    //-------------------------------------------------------------
+    // V. considering only (1)time
+
+    if(chooseTime.equals("y") && chooseMoney.equals("n") && chooseDistance.equals("n"))
+    {
+      for(int p = 1; p < someRoutesLength; p++)   // while still have routes to compare, do
+      {
+        if(overallTime[indicateBestRoute] < overallTime[indicateBestRoute + q])   // if overall time of 1st route is lower than 2nd,...
+        {
+          indicateBestRoute = indicateBestRoute;         // ...keep number of 1st route
+        }
+        if(overallTime[indicateBestRoute] > overallTime[indicateBestRoute + q])   // if overall time of 1st route is higher than 2nd,...
+        {
+          indicateBestRoute = indicateBestRoute + q;     // ...keep number of 2nd route
+          q = 0;
+        }
+        if(overallTime[indicateBestRoute] == overallTime[indicateBestRoute + q])  // if overall time of 1st route = 2nd route,...
+        {
+          if(overallDistance[indicateBestRoute] < overallDistance[indicateBestRoute + q])   // if overall time of 1st route is lower than 2nd,...
+          {
+            indicateBestRoute = indicateBestRoute;         // ...keep number of 1st route
+          }
+          if(overallDistance[indicateBestRoute] > overallDistance[indicateBestRoute + q])   // if overall time of 1st route is higher than 2nd,...
+          {
+            indicateBestRoute = indicateBestRoute + q;     // ...keep number of 2nd route
+            q = 0;
+          }
+          if(overallDistance[indicateBestRoute] == overallDistance[indicateBestRoute + q])  // if overall time of 1st route = 2nd route,...
+          {
+            if(overallMoney[indicateBestRoute] <= overallMoney[indicateBestRoute + q])   // compare distance
+              indicateBestRoute = indicateBestRoute;
+            else
+            {
+              indicateBestRoute = indicateBestRoute + q;
+              q = 0;
+            }
+          }
+        }
+        q++;
+      }
+    }
+
+    // end considering only (1)time
+    //-------------------------------------------------------------
+    // VI. considering only (1)distance
+
+    if(chooseTime.equals("n") && chooseMoney.equals("n") && chooseDistance.equals("y"))
+    {
+      for(int p = 1; p < someRoutesLength; p++)   // while still have routes to compare, do
+      {
+        if(overallDistance[indicateBestRoute] < overallDistance[indicateBestRoute + q])   // if overall time of 1st route is lower than 2nd,...
+        {
+          indicateBestRoute = indicateBestRoute;         // ...keep number of 1st route
+        }
+        if(overallDistance[indicateBestRoute] > overallDistance[indicateBestRoute + q])   // if overall time of 1st route is higher than 2nd,...
+        {
+          indicateBestRoute = indicateBestRoute + q;     // ...keep number of 2nd route
+          q = 0;
+        }
+        if(overallDistance[indicateBestRoute] == overallDistance[indicateBestRoute + q])  // if overall time of 1st route = 2nd route,...
+        {
+          if(overallTime[indicateBestRoute] < overallTime[indicateBestRoute + q])   // if overall time of 1st route is lower than 2nd,...
+          {
+            indicateBestRoute = indicateBestRoute;         // ...keep number of 1st route
+          }
+          if(overallTime[indicateBestRoute] > overallTime[indicateBestRoute + q])   // if overall time of 1st route is higher than 2nd,...
+          {
+            indicateBestRoute = indicateBestRoute + q;     // ...keep number of 2nd route
+            q = 0;
+          }
+          if(overallTime[indicateBestRoute] == overallTime[indicateBestRoute + q])  // if overall time of 1st route = 2nd route,...
+          {
+            if(overallMoney[indicateBestRoute] <= overallMoney[indicateBestRoute + q])   // compare distance
+              indicateBestRoute = indicateBestRoute;
+            else
+            {
+              indicateBestRoute = indicateBestRoute + q;
+              q = 0;
+            }
+          }
+        }
+        q++;
+      }
+    }
+
+    // end considering only (1)distance
+    //-------------------------------------------------------------
+    // VII. no considering option
+
+    if(chooseTime.equals("n") && chooseMoney.equals("n") && chooseDistance.equals("n"))
+    {
+      for(int p = 1; p < someRoutesLength; p++)   // while still have routes to compare, do
+      {
+        if(overallTime[indicateBestRoute] < overallTime[indicateBestRoute + q])   // if overall time of 1st route is lower than 2nd,...
+        {
+          indicateBestRoute = indicateBestRoute;         // ...keep number of 1st route
+        }
+        if(overallTime[indicateBestRoute] > overallTime[indicateBestRoute + q])   // if overall time of 1st route is higher than 2nd,...
+        {
+          indicateBestRoute = indicateBestRoute + q;     // ...keep number of 2nd route
+          q = 0;
+        }
+        if(overallTime[indicateBestRoute] == overallTime[indicateBestRoute + q])  // if overall time of 1st route = 2nd route,...
+        {
+          if(overallDistance[indicateBestRoute] < overallDistance[indicateBestRoute + q])   // if overall time of 1st route is lower than 2nd,...
+          {
+            indicateBestRoute = indicateBestRoute;         // ...keep number of 1st route
+          }
+          if(overallDistance[indicateBestRoute] > overallDistance[indicateBestRoute + q])   // if overall time of 1st route is higher than 2nd,...
+          {
+            indicateBestRoute = indicateBestRoute + q;     // ...keep number of 2nd route
+            q = 0;
+          }
+          if(overallDistance[indicateBestRoute] == overallDistance[indicateBestRoute + q])  // if overall time of 1st route = 2nd route,...
+          {
+            if(overallMoney[indicateBestRoute] <= overallMoney[indicateBestRoute + q])   // compare distance
+              indicateBestRoute = indicateBestRoute;
+            else
+            {
+              indicateBestRoute = indicateBestRoute + q;
+              q = 0;
+            }
+          }
+        }
+        q++;
+      }
+    }
+
+    // end no considering option
+    //-------------------------------------------------------------
+
+    String strOverallTime = Float.toString(overallTime[indicateBestRoute]);   // convert "overallTime[indicateBestRoute]" from float to string
+    String strMoney = Integer.toString(overallMoney[indicateBestRoute]);      // convert "overallMoney[indicateBestRoute]" from int to string
+    String strOverallDistance = Float.toString(overallDistance[indicateBestRoute]);   // convert "overallDistance[indicateBestRoute]" from float to string
+
+    String[] finalRouteDetails = new String[4];
+    finalRouteDetails[0] = route[indicateBestRoute];
+    finalRouteDetails[1] = strOverallTime;
+    finalRouteDetails[2] = strMoney;
+    finalRouteDetails[3] = strOverallDistance;
+
+//-----------------------------------------------------------------
+
+    return finalRouteDetails;
+  }
+}

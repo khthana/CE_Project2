@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>การคอนฟิกเราเตอร์</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-874">
+</head>
+
+<body>
+<p align="center"><font color="#CC6666" face="MS Sans Serif, Tahoma, sans-serif"><a href="connection.html"><font color="#CC6699">การใช้งานโปรแกรมในการออกแบบเครือข่าย</font></a></font> 
+  <font color="#CC6699" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;&nbsp;&nbsp;<a href="SwitchConfig.html"><font color="#CC6699">การคอนฟิกสวิตช์</font></a></font> 
+  <font color="#CC6699" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;&nbsp;&nbsp;<a href="RouterConfig.html"><font color="#CC6699">การคอนฟิกเราเตอร์</font></a></font> 
+  <font color="#CC6699" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;&nbsp;&nbsp;<a href="GeneratingConfigFile.html"><font color="#CC6699">การสร้างค่าติดตั้งสวิตช์และเราเตอร์</font></a></font> 
+  <font color="#CC6699" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;&nbsp;&nbsp;<a href="UsingConfig.html"><font color="#CC6699">การนำค่าติดตั้งที่ได้ไปใช้งาน</font></a></font> 
+</p>
+  
+<p align="center"><a href="index.html"><font color="#CC6699" face="MS Sans Serif, Tahoma, sans-serif">หน้าหลัก</font></a></p>
+<p align="center">&nbsp;</p>
+<p align="center"><font color="#003399" size="+2" face="MS Sans Serif, Tahoma, sans-serif"><strong>การคอนฟิกเราเตอร์</strong></font></p>
+<p align="center">&nbsp;</p>
+<table width="80%" border="0">
+  <tr> 
+    <td colspan="3"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif">การคอนฟิกเราเตอร์</font></td>
+  </tr>
+  <tr> 
+    <td width="11%">&nbsp;</td>
+    <td colspan="2"><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"> 
+      <a href="#GeneralConfig">การกำหนดค่าทั่วไป</a></font></td>
+  </tr>
+  <tr> 
+    <td>&nbsp;</td>
+    <td colspan="2"><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"> 
+      <font color="#0033FF"><a href="#InterfaceConfig">การกำหนดค่าอินเทอร์เฟสของเราเตอร์</a></font></font></td>
+  </tr>
+  <tr> 
+    <td>&nbsp;</td>
+    <td width="6%">&nbsp;</td>
+    <td width="83%"><font color="#006600" face="MS Sans Serif, Tahoma, sans-serif"><a href="#CreateVlan"><font color="#009933">&gt;&gt;</font></a></font><font color="#009933"><a href="#CreateVlan"><font face="MS Sans Serif, Tahoma, sans-serif">&nbsp;</font></a></font><a href="#CreateVlan"> 
+      <font color="#009933" face="MS Sans Serif, Tahoma, sans-serif"></font></a><a href="#FastEthInf"><font color="#009933" face="MS Sans Serif, Tahoma, sans-serif">FastEthernet 
+      Interface</font></a></td>
+  </tr>
+  <tr> 
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><font color="#006600" face="MS Sans Serif, Tahoma, sans-serif"><a href="#CreateVlan"><font color="#009933">&gt;&gt;</font></a></font><font color="#009933"><a href="#CreateVlan"><font face="MS Sans Serif, Tahoma, sans-serif">&nbsp;</font></a></font><a href="#CreateVlan"> 
+      <font color="#009933" face="MS Sans Serif, Tahoma, sans-serif"></font></a><a href="#SerialInf"><font color="#009933" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;Serial 
+      Interface</font></a></td>
+  </tr>
+  <tr> 
+    <td>&nbsp;</td>
+    <td colspan="2"><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"> 
+      <a href="#SubInterfaceConfig">การกำหนดค่าซับอินเทอร์เฟสของเราเตอร์</a></font></td>
+  </tr>
+  <tr> 
+    <td>&nbsp;</td>
+    <td colspan="2"><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"> 
+      <a href="#RoutingProtocol">การกำหนดการเลือกเส้นทาง</a></font></td>
+  </tr>
+  <tr> 
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><font color="#006600" face="MS Sans Serif, Tahoma, sans-serif"><a href="#CreateVlan"><font color="#009933">&gt;&gt;</font></a></font><font color="#009933"><a href="#CreateVlan"><font face="MS Sans Serif, Tahoma, sans-serif">&nbsp;</font></a></font><a href="#CreateVlan"> 
+      <font color="#009933" face="MS Sans Serif, Tahoma, sans-serif"></font></a><a href="#DefaultRoute"><font color="#009933" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;ดีฟอล์ตเราท์</font></a></td>
+  </tr>
+  <tr> 
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><font color="#006600" face="MS Sans Serif, Tahoma, sans-serif"><a href="#CreateVlan"><font color="#009933">&gt;&gt;</font></a></font><font color="#009933"><a href="#CreateVlan"><font face="MS Sans Serif, Tahoma, sans-serif">&nbsp;</font></a></font><a href="#CreateVlan"> 
+      <font color="#009933" face="MS Sans Serif, Tahoma, sans-serif"></font></a><a href="#StaticRoute"><font color="#009933" face="MS Sans Serif, Tahoma, sans-serif">&nbsp;สแตติกเราท์</font></a></td>
+  </tr>
+  <tr> 
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><font color="#006600" face="MS Sans Serif, Tahoma, sans-serif"><a href="#CreateVlan"><font color="#009933">&gt;&gt;</font></a></font><font color="#009933"><a href="#CreateVlan"><font face="MS Sans Serif, Tahoma, sans-serif">&nbsp;</font></a></font><a href="#CreateVlan"> 
+      <font color="#009933" face="MS Sans Serif, Tahoma, sans-serif"></font></a><a href="#DynamicRoute"><font color="#009933" face="MS Sans Serif, Tahoma, sans-serif">ไดนามิกเราท์</font></a></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"><strong><a name="GeneralConfig">การกำหนดค่าทั่วไป</a></strong></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        1 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399">เปิดโปรแกรม สร้างเราเตอร์ และเลือกเมนู 
+        config ดังรูปที่ 32</font></p></td>
+  </tr>
+</table>
+<p align="center"><font color="#003399"><img src="ConfigRouter/GeneralConfig/chooseMenuConfig.jpg" width="195" height="176"><br>
+  <font size="-3">รูปที่ 32 แสดงขั้นตอนการใช้งานเมนู Config เพื่อกำหนดค่าให้เราเตอร</font>์</font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        2 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399">กำหนดค่า IOS Version, hostname,และ 
+        Password ดังรูปที่ 33</font></p></td>
+  </tr>
+</table>
+<p align="center"> <font color="#003399"><img src="ConfigRouter/GeneralConfig/generalInformation.jpg" width="400" height="490"><br>
+  <font size="-3">รูปที่ 33 แสดงการกำหนดค่าทั่วไปของเราเตอร์</font></font><font size="-3"><br>
+  </font> </p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><font color="#0033FF"><strong><a name="InterfaceConfig">การกำหนดค่าอินเทอร์เฟสของเราเตอร์</a></strong></font></font></p>
+<p><font color="#009933"><strong><a name="FastEthInf">1) การกำหนดค่าให้อินเทอร์เฟส FastEthernet</a></strong></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        1 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399">เลือกเมนู Config เลือกอินเทอร์เฟส 
+        FastEthernet ที่ต้องการกำหนดค่าแล้วเลือกปุ่ม Properties ดังรูปที่ 34</font></p></td>
+  </tr>
+</table>
+<p align="center"> <font color="#003399"><img src="ConfigRouter/InterfaceConfig/FastEthInf/Fa0_0.jpg" width="300" height="490"><br>
+  <font size="-3">รูปที่ 34 แสดงการกำหนดค่าให้อินเทอร์เฟส FastEthernet0/0<br>
+  </font> </font> </p>
+<p><font color="#009933"><strong><a name="SerialInf">2) การกำหนดค่าให้อินเทอร์เฟส Serial</a> 
+ </strong></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        1 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399">เลือกเมนู Config เลือกอินเทอร์เฟส 
+        Serial ที่ต้องการกำหนดค่าแล้วเลือกปุ่ม Properties ดังรูปที่ 35 </font> 
+      </p></td>
+  </tr>
+</table>
+<p align="center"><font color="#003399"><img src="ConfigRouter/InterfaceConfig/SerialInf/s0_0.jpg" width="300" height="500"><br>
+  <font size="-3">รูปที่ 35 แสดงการกำหนดค่าให้อินเทอร์เฟส Serial0/0</font></font></p>
+<p></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"><strong><a name="SubInterfaceConfig">การกำหนดค่าซับอินเทอร์เฟสของเราเตอร์</a></strong></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        1 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399">สร้างซับอินเทอร์เฟสของ FastEthernet0/0 
+        ให้กับเราเตอร์ โดยเลือก FastEthernet0/0 และเลือกปุ่ม Sub-Interface ดังรูปที่ 
+        36</font></p></td>
+  </tr>
+</table>
+<p align="center"><font color="#003399"><img src="ConfigRouter/SubInterface/clickSubInterface.jpg" width="400" height="490"><br>
+  <font size="-3">รูปที่ 36 แสดงการเลือกอินเทอร์เฟส FastEthernet0/0 เพื่อกำหนดค่าติดตั้ง</font></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        2 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399">เลือกปุ่ม New เพื่อสร้างซับอินเทอร์เฟส 
+        ดังรูปที่ 37<br>
+        </font></p></td>
+  </tr>
+</table>
+<p align="center"><font color="#003399"><br>
+  <img src="ConfigRouter/SubInterface/showNewSubINF.jpg" width="850" height="490"><br>
+  <font size="-3">รูปที่ 37 แสดงการเลือกสร้างซับอินเทอร์เฟส</font></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        3 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399">กำหนดรายละเอียดให้กับแต่ละซับอินเทอร์เฟส 
+        ดังรูปที่ 38</font></p></td>
+  </tr>
+</table>
+<p align="center"><font color="#003399"><img src="ConfigRouter/SubInterface/F0_0_1.jpg" width="300" height="540"><br>
+  <font size="-3">รูปที่ 38 แสดงการกำหนดค่าติดตั้งให้ซับอินเทอร์เฟสFastEthernet0/0.1</font><br>
+  </font> </p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><font color="#0033FF" face="MS Sans Serif, Tahoma, sans-serif"><strong><a name="RoutingProtocol">การกำหนดการเลือกเส้นทาง</a></strong></font></p>
+<p><font color="#009933" face="MS Sans Serif, Tahoma, sans-serif"><strong><a name="DefaultRoute">1) 
+  การเลือกเส้นทางแบบดีฟอล์ตเราท์</a></strong></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        1 </strong></font></p></td>
+    <td width="92%"><p><font color="#009933" face="MS Sans Serif, Tahoma, sans-serif"><font color="#003399">เลือกเมนู 
+        Routing Protocol ดังรูปที่ 39</font></font></p></td>
+  </tr>
+</table>
+<p align="center"><font color="#003399"><img src="ConfigRouter/RoutingProtocol/chooseConfigMenu.jpg" width="195" height="176"><br>
+  <font size="-3">รูปที่ 39 แสดงการใช้งานเมนู Routing Protocol</font></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        2 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399">เลือกเมนู Routing Protocol เลือกปุ่ม 
+        ADD เพื่อกำหนดค่าดังรูปที่ 40</font></p></td>
+  </tr>
+</table>
+<p align="center"><font color="#003399"><img src="ConfigRouter/RoutingProtocol/DefaultRoute/DefaultRoute.jpg" width="645" height="535"><br>
+  <font size="-3">รูปที่ 40 แสดงการกำหนดดีผอล์ตเราท์ให้เราเตอร์</font></font><br>
+</p>
+<p>&nbsp;</p>
+<p><font color="#009933"><strong><a name="StaticRoute">2) การเลือกเส้นทางแบบสแตติกเราท์</a></strong></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        1 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399">เลือกเมนู Routing Protocol </font></p></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        2 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399">เลือกเมนู Routing Protocol เลือกปุ่ม 
+        ADD เพื่อกำหนดค่าดังรูปที่ 41</font></p></td>
+  </tr>
+</table>
+<p align="center"><font color="#003399"><img src="ConfigRouter/RoutingProtocol/StaticRoute/StaticRoute.jpg" width="645" height="586"><br>
+  <font size="-3">รูปที่ 41 แสดงการกำหนดสแตติกให้เราเตอร์</font><br>
+  </font> </p>
+<p><font color="#009933" face="MS Sans Serif, Tahoma, sans-serif"><strong><a name="DynamicRoute">3) 
+  การเลือกเส้นทางแบบไดนามิกเราท์</a></strong></font></p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        1 </strong></font></p></td>
+    <td width="92%"><p><font color="#009933" face="MS Sans Serif, Tahoma, sans-serif"><font color="#003399">เลือกเมนู 
+        Routing Protocol </font></font></p></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<table width="80%" border="0" align="center">
+  <tr> 
+    <td width="8%"><p><font color="#003399" face="MS Sans Serif, Tahoma, sans-serif"><strong>ขั้นที่ 
+        2 </strong></font></p></td>
+    <td width="92%"><p><font color="#003399">เลือกเมนู Routing Protocol เลือกปุ่ม 
+        ADD เพื่อกำหนดค่าดังรูปที่ 42</font></p></td>
+  </tr>
+</table>
+<p align="center"><font color="#003399"><img src="ConfigRouter/RoutingProtocol/DynamicRoute/RIPRouting.jpg" width="630" height="760"><br>
+  <font size="-3">รูปที่ 42 แสดงการกำหนดอาร์ไอพีเราท์ให้เราเตอร</font>์<font face="MS Sans Serif, Tahoma, sans-serif">์</font></font></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>

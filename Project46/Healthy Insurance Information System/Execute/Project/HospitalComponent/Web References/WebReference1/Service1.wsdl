@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:i1="http://www.tempuri.org/ClearingDataset.xsd" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://tempuri.org/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:i0="http://www.tempuri.org/RegisterDataset.xsd" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://tempuri.org/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <import namespace="http://www.tempuri.org/RegisterDataset.xsd" location="http://161.246.6.44/HealthyService/Service1.asmx?schema=RegisterDataset" />
+  <import namespace="http://www.tempuri.org/ClearingDataset.xsd" location="http://161.246.6.44/HealthyService/Service1.asmx?schema=ClearingDataset" />
+  <types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:import namespace="http://www.w3.org/2001/XMLSchema" />
+      <s:import namespace="http://www.tempuri.org/RegisterDataset.xsd" />
+      <s:import namespace="http://www.tempuri.org/ClearingDataset.xsd" />
+      <s:element name="queryHealthy">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="queryHealthyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="queryHealthyResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="registerHealthy">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="inputData">
+              <s:complexType>
+                <s:sequence>
+                  <s:any namespace="http://www.tempuri.org/RegisterDataset.xsd" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="registerHealthyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="registerHealthyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="updateHealthy">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="hmain" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="hsub" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="updateHealthyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="updateHealthyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="checkPrivilegeAccident">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="checkPrivilegeAccidentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="checkPrivilegeAccidentResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendClearing">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="datasend">
+              <s:complexType>
+                <s:sequence>
+                  <s:any namespace="http://www.tempuri.org/ClearingDataset.xsd" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sendClearingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sendClearingResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="receiveClearing">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="hnumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dateBill" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="receiveClearingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="receiveClearingResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any namespace="http://www.tempuri.org/ClearingDataset.xsd" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DataSet" nillable="true">
+        <s:complexType>
+          <s:sequence>
+            <s:element ref="s:schema" />
+            <s:any />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+      <s:element name="ClearingDataset" nillable="true">
+        <s:complexType>
+          <s:sequence>
+            <s:any namespace="http://www.tempuri.org/ClearingDataset.xsd" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </types>
+  <message name="queryHealthySoapIn">
+    <part name="parameters" element="s0:queryHealthy" />
+  </message>
+  <message name="queryHealthySoapOut">
+    <part name="parameters" element="s0:queryHealthyResponse" />
+  </message>
+  <message name="registerHealthySoapIn">
+    <part name="parameters" element="s0:registerHealthy" />
+  </message>
+  <message name="registerHealthySoapOut">
+    <part name="parameters" element="s0:registerHealthyResponse" />
+  </message>
+  <message name="updateHealthySoapIn">
+    <part name="parameters" element="s0:updateHealthy" />
+  </message>
+  <message name="updateHealthySoapOut">
+    <part name="parameters" element="s0:updateHealthyResponse" />
+  </message>
+  <message name="checkPrivilegeAccidentSoapIn">
+    <part name="parameters" element="s0:checkPrivilegeAccident" />
+  </message>
+  <message name="checkPrivilegeAccidentSoapOut">
+    <part name="parameters" element="s0:checkPrivilegeAccidentResponse" />
+  </message>
+  <message name="sendClearingSoapIn">
+    <part name="parameters" element="s0:sendClearing" />
+  </message>
+  <message name="sendClearingSoapOut">
+    <part name="parameters" element="s0:sendClearingResponse" />
+  </message>
+  <message name="receiveClearingSoapIn">
+    <part name="parameters" element="s0:receiveClearing" />
+  </message>
+  <message name="receiveClearingSoapOut">
+    <part name="parameters" element="s0:receiveClearingResponse" />
+  </message>
+  <message name="queryHealthyHttpGetIn">
+    <part name="pid" type="s:string" />
+  </message>
+  <message name="queryHealthyHttpGetOut">
+    <part name="Body" element="s0:DataSet" />
+  </message>
+  <message name="updateHealthyHttpGetIn">
+    <part name="pid" type="s:string" />
+    <part name="hmain" type="s:string" />
+    <part name="hsub" type="s:string" />
+  </message>
+  <message name="updateHealthyHttpGetOut">
+    <part name="Body" element="s0:string" />
+  </message>
+  <message name="checkPrivilegeAccidentHttpGetIn">
+    <part name="pid" type="s:string" />
+  </message>
+  <message name="checkPrivilegeAccidentHttpGetOut">
+    <part name="Body" element="s0:string" />
+  </message>
+  <message name="receiveClearingHttpGetIn">
+    <part name="hnumber" type="s:string" />
+    <part name="dateBill" type="s:string" />
+  </message>
+  <message name="receiveClearingHttpGetOut">
+    <part name="Body" element="s0:ClearingDataset" />
+  </message>
+  <message name="queryHealthyHttpPostIn">
+    <part name="pid" type="s:string" />
+  </message>
+  <message name="queryHealthyHttpPostOut">
+    <part name="Body" element="s0:DataSet" />
+  </message>
+  <message name="updateHealthyHttpPostIn">
+    <part name="pid" type="s:string" />
+    <part name="hmain" type="s:string" />
+    <part name="hsub" type="s:string" />
+  </message>
+  <message name="updateHealthyHttpPostOut">
+    <part name="Body" element="s0:string" />
+  </message>
+  <message name="checkPrivilegeAccidentHttpPostIn">
+    <part name="pid" type="s:string" />
+  </message>
+  <message name="checkPrivilegeAccidentHttpPostOut">
+    <part name="Body" element="s0:string" />
+  </message>
+  <message name="receiveClearingHttpPostIn">
+    <part name="hnumber" type="s:string" />
+    <part name="dateBill" type="s:string" />
+  </message>
+  <message name="receiveClearingHttpPostOut">
+    <part name="Body" element="s0:ClearingDataset" />
+  </message>
+  <portType name="Service1Soap">
+    <operation name="queryHealthy">
+      <input message="s0:queryHealthySoapIn" />
+      <output message="s0:queryHealthySoapOut" />
+    </operation>
+    <operation name="registerHealthy">
+      <input message="s0:registerHealthySoapIn" />
+      <output message="s0:registerHealthySoapOut" />
+    </operation>
+    <operation name="updateHealthy">
+      <input message="s0:updateHealthySoapIn" />
+      <output message="s0:updateHealthySoapOut" />
+    </operation>
+    <operation name="checkPrivilegeAccident">
+      <input message="s0:checkPrivilegeAccidentSoapIn" />
+      <output message="s0:checkPrivilegeAccidentSoapOut" />
+    </operation>
+    <operation name="sendClearing">
+      <input message="s0:sendClearingSoapIn" />
+      <output message="s0:sendClearingSoapOut" />
+    </operation>
+    <operation name="receiveClearing">
+      <input message="s0:receiveClearingSoapIn" />
+      <output message="s0:receiveClearingSoapOut" />
+    </operation>
+  </portType>
+  <portType name="Service1HttpGet">
+    <operation name="queryHealthy">
+      <input message="s0:queryHealthyHttpGetIn" />
+      <output message="s0:queryHealthyHttpGetOut" />
+    </operation>
+    <operation name="updateHealthy">
+      <input message="s0:updateHealthyHttpGetIn" />
+      <output message="s0:updateHealthyHttpGetOut" />
+    </operation>
+    <operation name="checkPrivilegeAccident">
+      <input message="s0:checkPrivilegeAccidentHttpGetIn" />
+      <output message="s0:checkPrivilegeAccidentHttpGetOut" />
+    </operation>
+    <operation name="receiveClearing">
+      <input message="s0:receiveClearingHttpGetIn" />
+      <output message="s0:receiveClearingHttpGetOut" />
+    </operation>
+  </portType>
+  <portType name="Service1HttpPost">
+    <operation name="queryHealthy">
+      <input message="s0:queryHealthyHttpPostIn" />
+      <output message="s0:queryHealthyHttpPostOut" />
+    </operation>
+    <operation name="updateHealthy">
+      <input message="s0:updateHealthyHttpPostIn" />
+      <output message="s0:updateHealthyHttpPostOut" />
+    </operation>
+    <operation name="checkPrivilegeAccident">
+      <input message="s0:checkPrivilegeAccidentHttpPostIn" />
+      <output message="s0:checkPrivilegeAccidentHttpPostOut" />
+    </operation>
+    <operation name="receiveClearing">
+      <input message="s0:receiveClearingHttpPostIn" />
+      <output message="s0:receiveClearingHttpPostOut" />
+    </operation>
+  </portType>
+  <binding name="Service1Soap" type="s0:Service1Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <operation name="queryHealthy">
+      <soap:operation soapAction="http://tempuri.org/queryHealthy" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="registerHealthy">
+      <soap:operation soapAction="http://tempuri.org/registerHealthy" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="updateHealthy">
+      <soap:operation soapAction="http://tempuri.org/updateHealthy" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="checkPrivilegeAccident">
+      <soap:operation soapAction="http://tempuri.org/checkPrivilegeAccident" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="sendClearing">
+      <soap:operation soapAction="http://tempuri.org/sendClearing" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="receiveClearing">
+      <soap:operation soapAction="http://tempuri.org/receiveClearing" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="Service1HttpGet" type="s0:Service1HttpGet">
+    <http:binding verb="GET" />
+    <operation name="queryHealthy">
+      <http:operation location="/queryHealthy" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="updateHealthy">
+      <http:operation location="/updateHealthy" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="checkPrivilegeAccident">
+      <http:operation location="/checkPrivilegeAccident" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="receiveClearing">
+      <http:operation location="/receiveClearing" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="Service1HttpPost" type="s0:Service1HttpPost">
+    <http:binding verb="POST" />
+    <operation name="queryHealthy">
+      <http:operation location="/queryHealthy" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="updateHealthy">
+      <http:operation location="/updateHealthy" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="checkPrivilegeAccident">
+      <http:operation location="/checkPrivilegeAccident" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+    <operation name="receiveClearing">
+      <http:operation location="/receiveClearing" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output>
+        <mime:mimeXml part="Body" />
+      </output>
+    </operation>
+  </binding>
+  <service name="Service1">
+    <port name="Service1Soap" binding="s0:Service1Soap">
+      <soap:address location="http://161.246.6.44/HealthyService/Service1.asmx" />
+    </port>
+    <port name="Service1HttpGet" binding="s0:Service1HttpGet">
+      <http:address location="http://161.246.6.44/HealthyService/Service1.asmx" />
+    </port>
+    <port name="Service1HttpPost" binding="s0:Service1HttpPost">
+      <http:address location="http://161.246.6.44/HealthyService/Service1.asmx" />
+    </port>
+  </service>
+</definitions>

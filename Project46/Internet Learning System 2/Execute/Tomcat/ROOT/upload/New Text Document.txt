@@ -1,0 +1,6 @@
+select t1.* from subject_detail as t1,login_subject as t2 
+where t1.time<>'' && t1.subjectid <> t2.subject_id;
+
+select t1.* from subject_detail as t1,login_subject as t2 
+where t1.time<>'' && t1.subjectid =(select subject_id 
+from login_subject where username='yajok_su');

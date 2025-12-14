@@ -1,0 +1,181 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-874">
+<meta name=Generator content="Microsoft Word 10 (filtered)">
+<title>การพัฒนาเครื่องมือสร้างเกมประเภท RPG 3 มิติ</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"MS Mincho";
+	panose-1:2 2 6 9 4 2 5 8 3 4;}
+@font-face
+	{font-family:"Angsana New";
+	panose-1:2 2 6 3 5 4 5 2 3 4;}
+@font-face
+	{font-family:"Cordia New";
+	panose-1:2 11 3 4 2 2 2 2 2 4;}
+@font-face
+	{font-family:"\@MS Mincho";
+	panose-1:2 2 6 9 4 2 5 8 3 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+h1
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:center;
+	page-break-after:avoid;
+	font-size:18.0pt;
+	font-family:"Times New Roman";}
+h3
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	page-break-after:avoid;
+	font-size:15.0pt;
+	font-family:"Times New Roman";}
+h5
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:center;
+	page-break-after:avoid;
+	font-size:20.0pt;
+	font-family:"Times New Roman";}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+p.MsoBodyText, li.MsoBodyText, div.MsoBodyText
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-cluster;
+	font-size:14.0pt;
+	font-family:"Times New Roman";}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span lang=TH
+style='font-size:15.0pt;font-family:"Angsana New"'>การพัฒนาเครื่องมือสร้างเกมประเภท
+</span></b><b><span style='font-size:15.0pt;font-family:"Angsana New"'>RPG 3 <span
+lang=TH>มิติ</span></span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span lang=TH
+style='font-size:15.0pt;font-family:"Angsana New"'>แบบเป็นหน้าต่างติดต่อกับผู้ใช้</span></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><b><span lang=TH
+style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></b></p>
+
+<p class=MsoNormal><span style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span lang=TH>นาย ชาคริต</span>&nbsp; <span lang=TH>สวัสดิรักษ์</span></span></p>
+
+<p class=MsoNormal><span style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+lang=TH>นาย ชยานนท์</span>&nbsp; <span lang=TH>รูปประดิษฐ์</span></span></p>
+
+<p class=MsoNormal><span style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span lang=TH>ดร. วรวัฒน์</span>&nbsp; <span lang=TH>ลิ้มโภคา </span>&nbsp;&nbsp;<span
+lang=TH>อาจารย์ที่ปรึกษา</span></span></p>
+
+<p class=MsoNormal><span style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+lang=TH>ปีการศึกษา&nbsp; 2546</span></span></p>
+
+<p class=MsoNormal><span style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span lang=TH style='font-size:15.0pt;font-family:"Angsana New"'>บทคัดย่อ</span></b></p>
+
+<p class=MsoNormal style='text-align:justify;text-justify:inter-ideograph;
+text-indent:36.0pt'><span lang=TH style='font-size:15.0pt;font-family:"Angsana New"'>โครงงานนี้เป็นการพัฒนาโปรแกรมสร้างเกมประเภท
+</span><span style='font-size:15.0pt;font-family:"Angsana New"'>RPG 3 <span
+lang=TH>มิติแบบหน้าต่างติดต่อผู้ใช้ เพื่อให้นำไปใช้งานง่ายขึ้น โดยที่ผู้สร้างเกมไม่จำเป็นต้องมีความรู้ในด้านการเขียนโปรแกรมเลย
+ระหว่างการสร้างเกมผู้สร้างสามารถเห็นกราฟฟิกจริงๆที่จะถูกแสดงเมื่อเกมถูกนำไปเล่น
+สามารถสร้างเนื้อเรื่องผ่านทางการกำหนดเหตุการณ์ต่างๆให้กับเกมได้ และส่วนติดต่อผู้ใช้ของโปรแกรมนี้ถูกออกแบบให้ง่ายต่อการเรียนรู้
+เป็นแอพพลิเคชั่นซึ่งผู้ใช้สามารถกำหนดสิ่งต่างๆลงไปในเกมได้ตั้งแต่การเลือกโมเดลไปจนถึงการสร้างเนื้อเรื่องให้กับเกม&nbsp;&nbsp;&nbsp;&nbsp;
+ซึ่งผลลัพธ์สุดท้ายก็คือเกมที่สามารถเล่นได้จริงที่มีเรื่องราวเหมือนกับที่ผู้สร้างได้วางไว้ตั้งแต่แรก</span></span></p>
+
+<p class=MsoNormal style='text-align:justify;text-justify:inter-ideograph'><span
+lang=TH style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; เนื้อหาของ</span><span
+lang=TH style='font-size:15.0pt;font-family:"Angsana New";color:black'>ปริญญานิพนธ์ฉบับนี้
+ในส่วนของ บทที่ 2 </span><span lang=TH style='font-size:15.0pt;font-family:
+"Angsana New"'>ทฤษฏีและหลักการของเกมสามมิติ</span><span lang=TH
+style='font-size:15.0pt;font-family:"Angsana New";color:black'> และ บทที่ 3 </span><span
+lang=TH style='font-size:15.0pt;font-family:"Angsana New"'>ไดเร็คเอ็ก</span><span
+lang=TH style='font-size:15.0pt;font-family:"Angsana New"'> จะมีเนื้อหาตรงกันกับ</span><span
+lang=TH style='font-size:15.0pt;font-family:"Angsana New";color:black'>ปริญญานิพนธ์ของโครงงาน
+</span><span lang=TH style='font-size:15.0pt;font-family:"Angsana New"'>การพัฒนาเกมสามมิติบนระบบเครือข่าย<b>
+</b></span><span lang=TH style='font-size:15.0pt;font-family:"Angsana New";
+color:black'>เนื่องจากเป็นโครงงานในประเภทเกมที่อ้างอิงทฤษฎีเดียวกัน</span></p>
+
+<p class=MsoNormal><span style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></p>
+
+<p class=MsoNormal style='text-indent:36.0pt'><span style='font-size:15.0pt;
+font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:36.0pt'><span style='font-size:15.0pt;
+font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:36.0pt'><span style='font-size:15.0pt;
+font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:36.0pt'><span style='font-size:15.0pt;
+font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:36.0pt'><span style='font-size:15.0pt;
+font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:36.0pt'><span style='font-size:15.0pt;
+font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:36.0pt'><span style='font-size:15.0pt;
+font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:36.0pt'><span style='font-size:15.0pt;
+font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:36.0pt'><span style='font-size:15.0pt;
+font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:36.0pt'><span style='font-size:15.0pt;
+font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:36.0pt'><span style='font-size:15.0pt;
+font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:36.0pt'><span style='font-size:15.0pt;
+font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal style='text-indent:36.0pt'><span style='font-size:15.0pt;
+font-family:"Angsana New"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:15.0pt;font-family:"Angsana New"'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>
