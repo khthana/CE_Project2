@@ -1,0 +1,121 @@
+Imports System.Data
+Imports System.Data.SqlClient
+
+Partial Class ChangeProfile
+    Inherits System.Web.UI.Page
+
+    Protected Sub BtCancel_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtCancel.Click
+        Response.Redirect("Default.aspx")
+    End Sub
+
+    Protected Sub BtClear_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtClear.Click
+        Name.Text = ""
+        Surname.Text = ""
+        PersonalID.Text = ""
+        ListBirthDay.Text = "1"
+        ListBirthMonth.Text = "01"
+        ListBirthYear.Text = "2549"
+        Address.Text = ""
+        EMail.Text = ""
+        ListQuestion.SelectedIndex = 0
+        Answer.Text = ""
+        UsernameChangeProfile.Text = ""
+        PasswordChangeProfile.Text = ""
+        ConfirmPassword.Text = ""
+    End Sub
+
+    Protected Sub BtSave_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtSave.Click
+        OpenConn()
+        Dim d, m, y, dmy, n As String
+        d = ListBirthDay.SelectedItem.Value
+        m = ListBirthMonth.SelectedItem.Value
+        y = ListBirthYear.SelectedItem.Value
+        dmy = d & "/" & m & "/" & y
+        Response.Write(Name.Text)
+        QueryStr = "update Member set Name = '" & Name.Text & "' , Surname = '" & Surname.Text & "' , PersonalID = '" & _
+            PersonalID.Text & "' , BirthDate = '" & dmy & "' , Address = '" & Address.Text & "' , EMail = '" & _
+            EMail.Text & "' , Username = '" & UsernameChangeProfile.Text & "' , Password = '" & PasswordChangeProfile.Text & _
+            "' where Username = '" & UserLogin & "' and Password = '" & PassLogin & "'"
+        'QueryStr = "update Member set Name = '" & Name.Text & "' where Username = '" & UserLogin & "'"
+        sqlComm = New SqlCommand(QueryStr, sqlConn)
+        sqlComm.CommandType = CommandType.Text
+        sqlComm.ExecuteNonQuery()
+        CloseConn()
+        'Response.Redirect("Default.aspx")
+    End Sub
+
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Dim tmp As String
+        Dim strArray As Array
+        Dim count As Integer = 1
+        Dim MyRow As DataRow
+
+        QueryStr = "select Name,Surname,PersonalID,BirthDate,Address,EMail,Question,Answer,Username,Password from Member where Username = '" & UserLogin & "' and Password = '" & PassLogin & "'"
+        TableStr = "ChangeProfile"
+        FillCommQ(QueryStr, TableStr)
+
+        If sqlDS.Tables(TableStr).Rows.Count = 1 Then
+            For Each MyRow In sqlDS.Tables(TableStr).Rows
+                tmp = MyRow("Name")
+                tmp = Trim(tmp)
+                Name.Text = tmp
+
+                tmp = MyRow("Surname")
+                tmp = Trim(tmp)
+                Surname.Text = tmp
+
+                tmp = MyRow("PersonalID")
+                tmp = Trim(tmp)
+                PersonalID.Text = tmp
+
+                tmp = MyRow("BirthDate")
+                tmp = Trim(tmp)
+                strArray = tmp.Split("/")
+                For Each tmp In strArray
+                    If count = 1 Then
+                        ListBirthDay.Text = tmp
+                    ElseIf count = 2 Then
+                        ListBirthMonth.Text = tmp
+                    ElseIf count = 3 Then
+                        ListBirthYear.Text = tmp
+                    End If
+                    count = count + 1
+                Next
+
+                tmp = MyRow("Address")
+                tmp = Trim(tmp)
+                Address.Text = tmp
+
+                tmp = MyRow("EMail")
+                tmp = Trim(tmp)
+                EMail.Text = tmp
+
+                tmp = MyRow("Question")
+                tmp = Trim(tmp)
+                If tmp = "Favorite Star" Then
+                    ListQuestion.SelectedIndex = 1
+                ElseIf tmp = "Pet's name" Then
+                    ListQuestion.SelectedIndex = 2
+                ElseIf tmp = "Lover's name" Then
+                    ListQuestion.SelectedIndex = 3
+                End If
+
+                tmp = MyRow("Answer")
+                tmp = Trim(tmp)
+                Answer.Text = tmp
+
+                tmp = MyRow("Username")
+                tmp = Trim(tmp)
+                UsernameChangeProfile.Text = tmp
+
+                tmp = MyRow("Password")
+                tmp = Trim(tmp)
+                PasswordChangeProfile.Text = tmp
+
+                tmp = MyRow("Password")
+                tmp = Trim(tmp)
+                ConfirmPassword.Text = tmp
+            Next
+        End If
+    End Sub
+End Class

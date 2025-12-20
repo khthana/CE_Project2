@@ -1,0 +1,81 @@
+package gisoncampusservices;
+
+import org.apache.axis.client.Call;
+import javax.xml.namespace.QName;
+
+public class CallServices {
+  String server;
+  Call call;
+  public CallServices() {
+    server = "http://161.246.6.214:8080/GisServer/services/";
+  }
+
+  public CallServices(String service) throws Exception {
+    server = "http://161.246.6.214:8080/GisServer/services/";
+    try{
+      setService(service);
+    }catch(Exception e){
+      throw e;
+    }
+  }
+
+  public CallServices(String service, String operationName) throws Exception {
+    server = "http://161.246.6.214:8080/GisServer/services/";
+    try{
+      setService(service, operationName);
+    }catch(Exception e){
+      throw e;
+    }
+  }
+
+
+  public void setService(String service, String operationName) throws Exception{
+    try{
+      call = new Call(server + service);
+      call.setOperationName ( new QName(operationName) ) ;
+    }catch(Exception e){
+      throw e;
+    }
+  }
+
+
+  public void setService(String service) throws Exception{
+    try{
+      call = new Call(server + service);
+    }catch(Exception e){
+      throw e;
+    }
+  }
+
+
+  public void setOperation(String operationName) throws Exception{
+    try{
+      call.setOperationName ( new QName(operationName) ) ;
+    }catch(Exception e){
+      throw e;
+    }
+  }
+
+  public int intInvoke(Object[] arguments) throws Exception{
+    int result=0;
+    try{
+      result = (Integer)call.invoke(arguments);
+    }catch(Exception e){
+      throw e;
+    }
+    return result;
+  }
+
+  public String strInvoke(Object[] arguments) throws Exception{
+    String result="";
+    try{
+      result = (String)call.invoke(arguments);
+    }catch(Exception e){
+      throw e;
+    }
+    return result;
+  }
+
+
+
+}

@@ -1,0 +1,251 @@
+package gisoncampusservices;
+
+import java.util.*;
+
+public class PositionServices
+{
+    public PositionServices(){}
+
+   public String updatePosition(String sessionkey,String posX,String posY)
+   {
+       UserServices service = new UserServices();
+        int memberid = service.checkSession(sessionkey);
+        if(memberid != -1){
+        try
+        {
+            GisDBConnect gdb = new GisDBConnect();
+
+            gdb.query("SELECT elementid FROM element WHERE type=0 AND id="+memberid+";");
+            gdb.getReturn() .next() ;
+            int elementid = gdb.getReturn().getInt("elementid");
+
+            gdb.query("SELECT positionid FROM position order by positionid desc;");
+            gdb.getReturn() .next() ;
+            int positionid = gdb.getReturn().getInt("positionid")+1;
+            Date time = new Date();
+            gdb.exeSQL("INSERT INTO position  VALUES("
+                        + positionid +","+elementid+ ", " + posX + ","+posY+","+time.getTime()+");") ;
+             System.out.println("OK");
+            return "OK";
+        }
+        catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+            return "Error : "+e.getMessage();
+        }}
+       System.out.println("Error : No Session");
+        return "Error : No Session";
+
+   }
+
+   public String updateBusPosition(String sessionkey,String posX,String posY,String busID)
+   {
+       UserServices service = new UserServices();
+        int memberid = service.checkSession(sessionkey);
+        if(memberid != -1){
+        try
+        {
+            GisDBConnect gdb = new GisDBConnect();
+
+            gdb.query("SELECT elementid FROM element WHERE type=1 AND id="+busID+";");
+            gdb.getReturn() .next() ;
+            int elementid = gdb.getReturn().getInt("elementid");
+
+            gdb.query("SELECT positionid FROM position order by positionid desc;");
+            gdb.getReturn() .next() ;
+            int positionid = gdb.getReturn().getInt("positionid")+1;
+            Date time = new Date();
+            gdb.exeSQL("INSERT INTO position  VALUES("
+                        + positionid +","+elementid+ ", " + posX + ","+posY+","+time.getTime()+");") ;
+             System.out.println("OK");
+            return "OK";
+        }
+        catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+            return "Error : "+e.getMessage();
+        }}
+       System.out.println("Error : No Session");
+        return "Error : No Session";
+   }
+
+   public String getMyRecordPosition(String sessionkey)
+   {
+       UserServices service = new UserServices();
+        int memberid = service.checkSession(sessionkey);
+        if(memberid != -1){
+        try
+        {
+            GisDBConnect gdb = new GisDBConnect();
+
+            gdb.query("SELECT elementid FROM element WHERE type=0 AND id="+memberid+";");
+            gdb.getReturn() .next() ;
+            int elementid = gdb.getReturn().getInt("elementid");
+
+            gdb.query("SELECT username FROM member WHERE memberid="+memberid+";");
+            gdb.getReturn() .next() ;
+            String username = gdb.getReturn().getString("username");
+
+
+            gdb.query("SELECT * FROM position WHERE elementid="+elementid+"order by positionid desc;");
+
+            String xmlRes = new String("<?xml version='1.0' encoding='UTF-8'?>\r\n");
+             xmlRes += "<positions>\r\n";
+
+             xmlRes += "<element id='"+elementid+"' objectid='"+memberid+"'"+
+                        " type='0' label='"+username+"'>\n";
+
+            while(gdb.getReturn().next())
+            {
+                xmlRes += "     <position>\n"+
+                          "          <posx>"+gdb.getReturn().getString("posx")+"</posx>\n"+
+                          "          <posy>"+gdb.getReturn().getString("posy")+"</posy>\n"+
+                          "          <time>"+gdb.getReturn().getString("time")+"</time>\n"+
+                          "     </position>\n";
+
+            }
+            xmlRes += "</element>\n";
+
+           xmlRes += "</positions>";
+           System.out.println(xmlRes);
+            return xmlRes;
+        }
+        catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+            return "Error : "+e.getMessage();
+        }}
+       System.out.println("Error : No Session");
+        return "Error : No Session";
+
+   }
+
+   public String getContactsPosition(String sessionkey)
+   {
+       UserServices service = new UserServices();
+        int memberid = service.checkSession(sessionkey);
+        if(memberid != -1){
+        try
+        {
+            String xmlRes = new String(
+                        "<?xml version='1.0' encoding='UTF-8'?>\r\n");
+                xmlRes += "<positions>\r\n";
+
+
+            GisDBConnect gdb2 = new GisDBConnect();
+
+            gdb2.query("SELECT * FROM contact WHERE (ownerid="+memberid+" OR mateid="+memberid+") AND active=true;");
+            while(gdb2.getReturn() .next())
+            {
+                int contactid;
+                if(gdb2.getReturn().getInt("ownerid") == memberid)
+                {
+                    contactid = gdb2.getReturn().getInt("mateid");
+                }
+                else
+                {
+                    contactid = gdb2.getReturn().getInt("ownerid");
+                }
+
+                GisDBConnect gdb = new GisDBConnect();
+
+                gdb.query("SELECT elementid FROM element WHERE type=0 AND id="+contactid+";");
+                gdb.getReturn().next();
+                int elementid = gdb.getReturn().getInt("elementid");
+
+                gdb.query("SELECT username FROM member WHERE memberid=" +
+                          contactid + ";");
+                gdb.getReturn().next();
+                String username = gdb.getReturn().getString("username");
+
+                gdb.query("SELECT * FROM position WHERE elementid=" + elementid +
+                          "order by positionid desc;");
+
+                xmlRes += "<element id='" + elementid + "' objectid='" +
+                        contactid + "'" +
+                        " type='0' label='" + username + "'>\n";
+
+                gdb.getReturn().next();
+                    xmlRes += "     <position>\n" +
+                            "          <posx>" +
+                            gdb.getReturn().getString("posx") + "</posx>\n" +
+                            "          <posy>" +
+                            gdb.getReturn().getString("posy") + "</posy>\n" +
+                            "          <time>" +
+                            gdb.getReturn().getString("time") + "</time>\n" +
+                            "     </position>\n";
+
+                xmlRes += "</element>\n";
+            }
+
+            xmlRes += "</positions>";
+            System.out.println(xmlRes);
+            return xmlRes;
+        }
+        catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+            return "Error : "+e.getMessage();
+        }}
+       System.out.println("Error : No Session");
+        return "Error : No Session";
+
+
+   }
+
+   public String getBusPosition(String sessionkey)
+   {
+       UserServices service = new UserServices();
+        int memberid = service.checkSession(sessionkey);
+        if(memberid != -1){
+        try
+        {
+            String xmlRes = new String(
+                        "<?xml version='1.0' encoding='UTF-8'?>\r\n");
+                xmlRes += "<positions>\r\n";
+
+
+            GisDBConnect gdb2 = new GisDBConnect();
+
+            gdb2.query("SELECT * FROM bus;");
+
+            while(gdb2.getReturn() .next())
+            {
+                String name = gdb2.getReturn().getString("name");
+                int busid = gdb2.getReturn().getInt("busid");
+
+                GisDBConnect gdb = new GisDBConnect();
+                gdb.query("SELECT elementid FROM element WHERE type=1 AND id="+busid+";");
+                gdb.getReturn().next();
+                int elementid = gdb.getReturn().getInt("elementid");
+
+                gdb.query("SELECT * FROM position WHERE elementid=" + elementid +
+                          "order by positionid desc;");
+
+                xmlRes += "<element id='" + elementid + "' objectid='" +
+                        busid + "'" +
+                        " type='1' label='"  + name+ "'>\n";
+
+                gdb.getReturn().next();
+                    xmlRes += "     <position>\n" +
+                            "          <posx>" +
+                            gdb.getReturn().getString("posx") + "</posx>\n" +
+                            "          <posy>" +
+                            gdb.getReturn().getString("posy") + "</posy>\n" +
+                            "          <time>" +
+                            gdb.getReturn().getString("time") + "</time>\n" +
+                            "     </position>\n";
+
+                xmlRes += "</element>\n";
+            }
+
+            xmlRes += "</positions>";
+            System.out.println(xmlRes);
+            return xmlRes;
+        }
+        catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+            return "Error : "+e.getMessage();
+        }}
+       System.out.println("Error : No Session");
+        return "Error : No Session";
+
+
+   }
+}

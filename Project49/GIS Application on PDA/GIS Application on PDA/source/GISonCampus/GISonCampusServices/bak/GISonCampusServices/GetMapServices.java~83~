@@ -1,0 +1,205 @@
+package gisoncampusservices;
+
+public class GetMapServices
+{
+    public GetMapServices(){}
+
+    private String login(String sessionkey){
+        UserServices user = new UserServices();
+        String sessionkey2="";
+       if (user.checkSession(sessionkey) != -1)
+       {
+           try {
+               CallServices cs = new CallServices("GIS_UserServices", "login");
+               sessionkey2 = cs.strInvoke(new Object[] {"root", "gisgis"});
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+       }
+
+       return sessionkey2;
+    }
+
+    public String listMapLayer(String sessionKey){
+        String KeepName[];
+        String KeepID[]=null;
+        String KeepOrg[];
+        String strXML="";
+        String sessionKey2 = login(sessionKey);
+        if(sessionKey2 != ""){
+            try {
+                /////////////////Check Can See/////////////////////////////
+                CallServices cs = new CallServices("GIS_LayerServices", "listLayer");
+                String resV = cs.strInvoke(new Object[] {sessionKey2});
+
+                /////////////////End Check/////////////////////////////////
+
+                //////////////////Keep Table Name/////////////////////////
+                GisXmlReader gxr = new GisXmlReader(resV);
+
+                /////Create Array///////////
+
+                KeepName = new String[gxr.child("layer").count()];
+                KeepID = new String[gxr.child("layer").count()];
+                KeepOrg = new String[gxr.child("layer").count()];
+                ////////////////////////////
+
+                for (int i = 0; i < gxr.child("layer").count(); i++) {
+                    KeepID[i] = gxr.child("layer", i).attribute("id");
+                    KeepName[i] = gxr.child("layer", i).attribute("name");
+                    KeepOrg[i] = gxr.child("layer", i).attribute("owner");
+                }
+                int y = 0;
+
+                strXML += "<?xml version=\"1.0\"?>\r\n";
+                strXML += "<listLayer>\n";
+                while (y < gxr.child("layer").count()) {
+                    if(KeepOrg[y].equals("King Mongkut Institute of Technology Ladkrabung"))
+                    {
+                        strXML += "<layer id='"+KeepID[y]+"'>"+KeepName[y]+"</layer>\n";
+                    }
+                    y++;
+                }
+                strXML += "</listLayer>\n";
+            } catch (Exception ea) {
+                System.out.println(ea.getStackTrace());
+                return "Error : "+ea.getStackTrace();
+            }
+        }
+        else
+        {
+            System.out.println("Error : Session Error");
+                return "Error : Session Error";
+        }
+        System.out.println(strXML);
+       return strXML;
+    }
+
+    public String getMap(String sessionkey,String posX,String posY,String width,String height,String layers){
+        String res="";
+        String sessionkey2 = login(sessionkey);
+        if (sessionkey2 != "") {
+
+            try {
+                CallServices cs = new CallServices("Gis_GetMapServices",
+                                      "requestSVG");
+
+                MapArgument ma = new MapArgument();
+
+                String str[] = layers.split(",");
+                ma.setDefault(str);
+
+                for(int i=0;i!=ma.layer.length;++i)
+                    ma.layer[i].strLabel = "name";
+
+                res = cs.strInvoke(new Object[] {sessionkey2, ma.getXml(),
+                                   Double.parseDouble(posX), Double.parseDouble(posY), Double.parseDouble(width), Double.parseDouble(height)});
+//                res = res.replace("</svg>","<g id='position'>\n\n</g>\n</svg>");
+
+            } catch (Exception ex) {
+                res = "Error : Request error";
+                System.out.println(ex.getMessage());
+            }
+        }
+        else
+            res = "Error : Failed connect to map server";
+        System.out.println(res);
+        return res;
+    }
+
+    public String searchNearbyArea(String sessionkey,String posX,String posY,String width,String height,String layer,String currentLadtitude,String currentLongitude,String radian){
+        String res="";
+        String sessionkey2 = login(sessionkey);
+        if (sessionkey2 != "") {
+
+            try {
+                CallServices cs = new CallServices("Gis_GetMapServices",
+                                      "requestNearbySVG");
+
+                MapArgument ma = new MapArgument();
+
+                String str[] = new String[]{layer};
+                ma.setDefault(str);
+
+                for(int i=0;i!=ma.layer.length;++i)
+                    ma.layer[i].strLabel = "name";
+
+                res = cs.strInvoke(new Object[] {sessionkey2, ma.getXml(),Integer.parseInt(layer),
+                                   Double.parseDouble(posX), Double.parseDouble(posY), Double.parseDouble(width), Double.parseDouble(height),
+                                   Double.parseDouble(currentLadtitude),Double.parseDouble(currentLongitude),Double.parseDouble(radian),
+                                   "rgb(0,0,0)","rgb(0,0,0)"});
+
+                 res = res.substring(res.lastIndexOf("mapid='"+layer+"'")-3);
+                 res = res.substring(0,res.indexOf("</g>")+4);
+                 GisXmlReader gxr = new GisXmlReader(res);
+
+                 res = new String("<?xml version=\"1.0\"?>\r\n");
+                 res  += "<object>\n";
+
+                 for(int i=0;i!=gxr.child("polygon").count();++i)
+                 {
+                     res += "<id>"+gxr.child("polygon",i).attribute("id")+"</id>\n";
+                 }
+
+                 res += "</object>";
+
+
+
+            } catch (Exception ex) {
+                res = "Error : Request error";
+                System.out.println(ex.getMessage());
+            }
+        }
+        else
+            res = "Error : Failed connect to map server";
+        System.out.println(res);
+        return res;
+
+    }
+
+    public String searchNearestArea(String sessionkey,String posX,String posY,String width,String height,String layer,String currentLadtitude,String currentLongitude){
+        String res="";
+        String sessionkey2 = login(sessionkey);
+        if (sessionkey2 != "") {
+
+            try {
+                CallServices cs = new CallServices("Gis_GetMapServices",
+                                      "requestNearestSVG");
+
+                MapArgument ma = new MapArgument();
+
+                String str[] = new String[]{layer};
+                ma.setDefault(str);
+
+                for(int i=0;i!=ma.layer.length;++i)
+                    ma.layer[i].strLabel = "name";
+
+                res = cs.strInvoke(new Object[] {sessionkey2, ma.getXml(),Integer.parseInt(layer),
+                                   Double.parseDouble(posX), Double.parseDouble(posY), Double.parseDouble(width), Double.parseDouble(height),
+                                   Double.parseDouble(currentLadtitude),Double.parseDouble(currentLongitude),
+                                   "rgb(0,0,0)","rgb(0,0,0)"});
+
+                res = res.substring(res.lastIndexOf("mapid='"+layer+"'")-3);
+                 res = res.substring(0,res.indexOf("</g>")+4);
+                 GisXmlReader gxr = new GisXmlReader(res);
+
+                 res = new String("<?xml version=\"1.0\"?>\r\n");
+                 res  += "<object>\n";
+                 res += "<id>"+gxr.child("polygon").attribute("id")+"</id>";
+                 res += "</object>";
+
+            } catch (Exception ex) {
+                res = "Error : Request error";
+                System.out.println(ex.getMessage());
+            }
+        }
+        else
+            res = "Error : Failed connect to map server";
+        System.out.println(res);
+        return res;
+
+    }
+
+
+
+}

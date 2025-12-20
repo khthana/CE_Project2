@@ -1,0 +1,188 @@
+/*
+ * MATLAB Compiler: 4.2 (R14SP2)
+ * Date: Sun Mar 11 20:02:21 2007
+ * Arguments: "-B" "macro_default" "-m" "-W" "main" "-T" "link:exe" "main2" 
+ */
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+const unsigned char __MCC_main2_public_data[] = {'3', '0', '8', '1', '9', 'D',
+                                                 '3', '0', '0', 'D', '0', '6',
+                                                 '0', '9', '2', 'A', '8', '6',
+                                                 '4', '8', '8', '6', 'F', '7',
+                                                 '0', 'D', '0', '1', '0', '1',
+                                                 '0', '1', '0', '5', '0', '0',
+                                                 '0', '3', '8', '1', '8', 'B',
+                                                 '0', '0', '3', '0', '8', '1',
+                                                 '8', '7', '0', '2', '8', '1',
+                                                 '8', '1', '0', '0', 'C', '4',
+                                                 '9', 'C', 'A', 'C', '3', '4',
+                                                 'E', 'D', '1', '3', 'A', '5',
+                                                 '2', '0', '6', '5', '8', 'F',
+                                                 '6', 'F', '8', 'E', '0', '1',
+                                                 '3', '8', 'C', '4', '3', '1',
+                                                 '5', 'B', '4', '3', '1', '5',
+                                                 '2', '7', '7', 'E', 'D', '3',
+                                                 'F', '7', 'D', 'A', 'E', '5',
+                                                 '3', '0', '9', '9', 'D', 'B',
+                                                 '0', '8', 'E', 'E', '5', '8',
+                                                 '9', 'F', '8', '0', '4', 'D',
+                                                 '4', 'B', '9', '8', '1', '3',
+                                                 '2', '6', 'A', '5', '2', 'C',
+                                                 'C', 'E', '4', '3', '8', '2',
+                                                 'E', '9', 'F', '2', 'B', '4',
+                                                 'D', '0', '8', '5', 'E', 'B',
+                                                 '9', '5', '0', 'C', '7', 'A',
+                                                 'B', '1', '2', 'E', 'D', 'E',
+                                                 '2', 'D', '4', '1', '2', '9',
+                                                 '7', '8', '2', '0', 'E', '6',
+                                                 '3', '7', '7', 'A', '5', 'F',
+                                                 'E', 'B', '5', '6', '8', '9',
+                                                 'D', '4', 'E', '6', '0', '3',
+                                                 '2', 'F', '6', '0', 'C', '4',
+                                                 '3', '0', '7', '4', 'A', '0',
+                                                 '4', 'C', '2', '6', 'A', 'B',
+                                                 '7', '2', 'F', '5', '4', 'B',
+                                                 '5', '1', 'B', 'B', '4', '6',
+                                                 '0', '5', '7', '8', '7', '8',
+                                                 '5', 'B', '1', '9', '9', '0',
+                                                 '1', '4', '3', '1', '4', 'A',
+                                                 '6', '5', 'F', '0', '9', '0',
+                                                 'B', '6', '1', 'F', 'C', '2',
+                                                 '0', '1', '6', '9', '4', '5',
+                                                 '3', 'B', '5', '8', 'F', 'C',
+                                                 '8', 'B', 'A', '4', '3', 'E',
+                                                 '6', '7', '7', '6', 'E', 'B',
+                                                 '7', 'E', 'C', 'D', '3', '1',
+                                                 '7', '8', 'B', '5', '6', 'A',
+                                                 'B', '0', 'F', 'A', '0', '6',
+                                                 'D', 'D', '6', '4', '9', '6',
+                                                 '7', 'C', 'B', '1', '4', '9',
+                                                 'E', '5', '0', '2', '0', '1',
+                                                 '1', '1', '\0'};
+
+const char *__MCC_main2_name_data = "main2";
+
+const char *__MCC_main2_root_data = "";
+
+const unsigned char __MCC_main2_session_data[] = {'A', 'B', '8', '9', 'C',
+                                                  '4', 'A', '8', '5', '7',
+                                                  '3', '0', 'E', 'C', 'D',
+                                                  'F', '9', 'F', '6', 'F',
+                                                  'A', '3', 'D', '0', 'D',
+                                                  '9', 'D', 'B', '4', 'E',
+                                                  '5', 'B', '5', '8', '8',
+                                                  'B', 'D', '6', '4', '6',
+                                                  'D', 'C', '8', '3', '0',
+                                                  '9', '4', '5', 'B', '3',
+                                                  'A', '8', 'A', 'B', 'D',
+                                                  '6', 'F', 'F', '7', '1',
+                                                  'E', '4', '5', 'B', '0',
+                                                  'D', '0', '0', 'E', 'A',
+                                                  '0', '0', 'C', '4', '9',
+                                                  'C', '6', '2', 'C', '5',
+                                                  'A', '2', '9', 'C', '6',
+                                                  'E', '4', 'F', '4', '2',
+                                                  '7', '4', '6', '5', 'C',
+                                                  'D', '7', 'A', '7', 'B',
+                                                  '6', '8', 'C', '6', '8',
+                                                  '0', '0', 'E', '3', 'D',
+                                                  '1', '6', '2', '7', '5',
+                                                  '9', '5', '2', '2', '3',
+                                                  '9', '2', 'A', 'A', 'D',
+                                                  '1', '2', '5', 'F', '6',
+                                                  'A', '4', '5', 'F', 'C',
+                                                  '3', '7', '4', '5', '2',
+                                                  '1', '1', '8', 'A', 'F',
+                                                  '7', '0', 'D', '5', '1',
+                                                  '6', '2', '6', 'A', '2',
+                                                  '9', '8', '6', 'B', '5',
+                                                  'F', '6', 'D', '3', 'E',
+                                                  'B', '6', 'A', '0', 'E',
+                                                  '6', '2', 'A', '7', 'B',
+                                                  '3', '0', '2', 'A', '1',
+                                                  '2', '7', 'A', 'D', '8',
+                                                  'F', 'B', '8', '6', 'A',
+                                                  '1', '1', '3', 'B', '6',
+                                                  '5', '1', '8', '6', 'A',
+                                                  '8', '1', 'D', 'B', '4',
+                                                  '3', '6', '9', '8', '5',
+                                                  'A', 'C', '6', '7', '2',
+                                                  'C', 'D', '6', 'F', '7',
+                                                  'A', 'F', 'F', 'C', '6',
+                                                  'F', 'F', '2', 'A', '2',
+                                                  'C', '4', '7', 'D', '3',
+                                                  '9', '0', '5', 'D', '4',
+                                                  'F', 'A', '2', '7', '0',
+                                                  '3', '6', '1', '7', 'E',
+                                                  '0', '4', '6', 'B', '0',
+                                                  '3', '\0'};
+
+const char *__MCC_main2_matlabpath_data[] = {"main2/",
+                                             "toolbox/compiler/deploy/",
+                                             "$TOOLBOXMATLABDIR/general/",
+                                             "$TOOLBOXMATLABDIR/ops/",
+                                             "$TOOLBOXMATLABDIR/lang/",
+                                             "$TOOLBOXMATLABDIR/elmat/",
+                                             "$TOOLBOXMATLABDIR/elfun/",
+                                             "$TOOLBOXMATLABDIR/specfun/",
+                                             "$TOOLBOXMATLABDIR/matfun/",
+                                             "$TOOLBOXMATLABDIR/datafun/",
+                                             "$TOOLBOXMATLABDIR/polyfun/",
+                                             "$TOOLBOXMATLABDIR/funfun/",
+                                             "$TOOLBOXMATLABDIR/sparfun/",
+                                             "$TOOLBOXMATLABDIR/scribe/",
+                                             "$TOOLBOXMATLABDIR/graph2d/",
+                                             "$TOOLBOXMATLABDIR/graph3d/",
+                                             "$TOOLBOXMATLABDIR/specgraph/",
+                                             "$TOOLBOXMATLABDIR/graphics/",
+                                             "$TOOLBOXMATLABDIR/uitools/",
+                                             "$TOOLBOXMATLABDIR/strfun/",
+                                             "$TOOLBOXMATLABDIR/imagesci/",
+                                             "$TOOLBOXMATLABDIR/iofun/",
+                                             "$TOOLBOXMATLABDIR/audiovideo/",
+                                             "$TOOLBOXMATLABDIR/timefun/",
+                                             "$TOOLBOXMATLABDIR/datatypes/",
+                                             "$TOOLBOXMATLABDIR/verctrl/",
+                                             "$TOOLBOXMATLABDIR/codetools/",
+                                             "$TOOLBOXMATLABDIR/helptools/",
+                                             "$TOOLBOXMATLABDIR/winfun/",
+                                             "$TOOLBOXMATLABDIR/demos/",
+                                             "$TOOLBOXMATLABDIR/timeseries/",
+                                             "$TOOLBOXMATLABDIR/hds/",
+                                             "toolbox/local/",
+                                             "toolbox/shared/controllib/",
+                                             "toolbox/compiler/",
+                                             "toolbox/control/control/",
+                                             "toolbox/control/ctrlguis/",
+                                             "toolbox/control/ctrlobsolete/",
+                                             "toolbox/control/ctrlutil/",
+                                             "toolbox/database/database/",
+                                             "toolbox/images/images/",
+                                             "toolbox/images/imuitools/",
+                                             "toolbox/images/iptutils/",
+                                             "toolbox/shared/imageslib/",
+                                             "toolbox/imaq/imaq/",
+                                             "toolbox/optim/",
+                                             "toolbox/signal/signal/",
+                                             "toolbox/signal/sigtools/"};
+const int __MCC_main2_matlabpath_data_count = 48;
+
+const char *__MCC_main2_classpath_data[] = {"java/jar/toolbox/control.jar",
+                                            "java/jar/toolbox/database.jar"};
+const int __MCC_main2_classpath_data_count = 2;
+
+const char *__MCC_main2_lib_path_data[] = {"bin/win32/"};
+const int __MCC_main2_lib_path_data_count = 1;
+
+const char *__MCC_main2_mcr_application_options[] = { "" };
+const int __MCC_main2_mcr_application_option_count = 0;
+const char *__MCC_main2_mcr_runtime_options[] = { "" };
+const int __MCC_main2_mcr_runtime_option_count = 0;
+#ifdef __cplusplus
+}
+#endif
+
+

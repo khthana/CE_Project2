@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://gisoncampusservices" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://gisoncampusservices" xmlns:intf="http://gisoncampusservices" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.2.1
+Built on Aug 08, 2005 (11:49:10 PDT)-->
+
+   <wsdl:message name="postAsCalendarResponse">
+
+      <wsdl:part name="postAsCalendarReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAllAnnouncementsRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="postAsCalendarRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="topic" type="xsd:string"/>
+
+      <wsdl:part name="content" type="xsd:string"/>
+
+      <wsdl:part name="location" type="xsd:string"/>
+
+      <wsdl:part name="startTime" type="xsd:string"/>
+
+      <wsdl:part name="endTime" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="postResponse">
+
+      <wsdl:part name="postReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAnnouncementsRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="start_" type="xsd:string"/>
+
+      <wsdl:part name="num" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="groupPostResponse">
+
+      <wsdl:part name="groupPostReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAllAnnouncementsResponse">
+
+      <wsdl:part name="getAllAnnouncementsReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="groupPostAsCalendarResponse">
+
+      <wsdl:part name="groupPostAsCalendarReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="postRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="topic" type="xsd:string"/>
+
+      <wsdl:part name="content" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="groupPostRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="groupname" type="xsd:string"/>
+
+      <wsdl:part name="topic" type="xsd:string"/>
+
+      <wsdl:part name="content" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAnnouncementsResponse">
+
+      <wsdl:part name="getAnnouncementsReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="groupPostAsCalendarRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="groupname" type="xsd:string"/>
+
+      <wsdl:part name="topic" type="xsd:string"/>
+
+      <wsdl:part name="content" type="xsd:string"/>
+
+      <wsdl:part name="location" type="xsd:string"/>
+
+      <wsdl:part name="startTime" type="xsd:string"/>
+
+      <wsdl:part name="endTime" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="AnnouncementServices">
+
+      <wsdl:operation name="post" parameterOrder="sessionkey topic content">
+
+         <wsdl:input message="impl:postRequest" name="postRequest"/>
+
+         <wsdl:output message="impl:postResponse" name="postResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="groupPost" parameterOrder="sessionkey groupname topic content">
+
+         <wsdl:input message="impl:groupPostRequest" name="groupPostRequest"/>
+
+         <wsdl:output message="impl:groupPostResponse" name="groupPostResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="groupPostAsCalendar" parameterOrder="sessionkey groupname topic content location startTime endTime">
+
+         <wsdl:input message="impl:groupPostAsCalendarRequest" name="groupPostAsCalendarRequest"/>
+
+         <wsdl:output message="impl:groupPostAsCalendarResponse" name="groupPostAsCalendarResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="postAsCalendar" parameterOrder="sessionkey topic content location startTime endTime">
+
+         <wsdl:input message="impl:postAsCalendarRequest" name="postAsCalendarRequest"/>
+
+         <wsdl:output message="impl:postAsCalendarResponse" name="postAsCalendarResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getAllAnnouncements" parameterOrder="sessionkey">
+
+         <wsdl:input message="impl:getAllAnnouncementsRequest" name="getAllAnnouncementsRequest"/>
+
+         <wsdl:output message="impl:getAllAnnouncementsResponse" name="getAllAnnouncementsResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getAnnouncements" parameterOrder="sessionkey start_ num">
+
+         <wsdl:input message="impl:getAnnouncementsRequest" name="getAnnouncementsRequest"/>
+
+         <wsdl:output message="impl:getAnnouncementsResponse" name="getAnnouncementsResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="AnnouncementServicesSoapBinding" type="impl:AnnouncementServices">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="post">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="postRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="postResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="groupPost">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="groupPostRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="groupPostResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="groupPostAsCalendar">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="groupPostAsCalendarRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="groupPostAsCalendarResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="postAsCalendar">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="postAsCalendarRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="postAsCalendarResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getAllAnnouncements">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getAllAnnouncementsRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getAllAnnouncementsResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getAnnouncements">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getAnnouncementsRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getAnnouncementsResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="AnnouncementServicesService">
+
+      <wsdl:port binding="impl:AnnouncementServicesSoapBinding" name="AnnouncementServices">
+
+         <wsdlsoap:address location="http://localhost:8080/GISonCampusServices/services/AnnouncementServices"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

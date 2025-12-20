@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://gisoncampusservices" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://gisoncampusservices" xmlns:intf="http://gisoncampusservices" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.2.1
+Built on Aug 08, 2005 (11:49:10 PDT)-->
+
+   <wsdl:message name="getMapRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="posX" type="xsd:string"/>
+
+      <wsdl:part name="posY" type="xsd:string"/>
+
+      <wsdl:part name="width" type="xsd:string"/>
+
+      <wsdl:part name="height" type="xsd:string"/>
+
+      <wsdl:part name="layers" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="searchNearbyAreaResponse">
+
+      <wsdl:part name="searchNearbyAreaReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getMapResponse">
+
+      <wsdl:part name="getMapReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="searchNearestAreaResponse">
+
+      <wsdl:part name="searchNearestAreaReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="listMapLayerResponse">
+
+      <wsdl:part name="listMapLayerReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="searchNearbyAreaRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="posX" type="xsd:string"/>
+
+      <wsdl:part name="posY" type="xsd:string"/>
+
+      <wsdl:part name="width" type="xsd:string"/>
+
+      <wsdl:part name="height" type="xsd:string"/>
+
+      <wsdl:part name="layer" type="xsd:string"/>
+
+      <wsdl:part name="currentLadtitude" type="xsd:string"/>
+
+      <wsdl:part name="currentLongitude" type="xsd:string"/>
+
+      <wsdl:part name="radian" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="searchNearestAreaRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="posX" type="xsd:string"/>
+
+      <wsdl:part name="posY" type="xsd:string"/>
+
+      <wsdl:part name="width" type="xsd:string"/>
+
+      <wsdl:part name="height" type="xsd:string"/>
+
+      <wsdl:part name="layer" type="xsd:string"/>
+
+      <wsdl:part name="currentLadtitude" type="xsd:string"/>
+
+      <wsdl:part name="currentLongitude" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="listMapLayerRequest">
+
+      <wsdl:part name="sessionKey" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="GetMapServices">
+
+      <wsdl:operation name="getMap" parameterOrder="sessionkey posX posY width height layers">
+
+         <wsdl:input message="impl:getMapRequest" name="getMapRequest"/>
+
+         <wsdl:output message="impl:getMapResponse" name="getMapResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="listMapLayer" parameterOrder="sessionKey">
+
+         <wsdl:input message="impl:listMapLayerRequest" name="listMapLayerRequest"/>
+
+         <wsdl:output message="impl:listMapLayerResponse" name="listMapLayerResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchNearbyArea" parameterOrder="sessionkey posX posY width height layer currentLadtitude currentLongitude radian">
+
+         <wsdl:input message="impl:searchNearbyAreaRequest" name="searchNearbyAreaRequest"/>
+
+         <wsdl:output message="impl:searchNearbyAreaResponse" name="searchNearbyAreaResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchNearestArea" parameterOrder="sessionkey posX posY width height layer currentLadtitude currentLongitude">
+
+         <wsdl:input message="impl:searchNearestAreaRequest" name="searchNearestAreaRequest"/>
+
+         <wsdl:output message="impl:searchNearestAreaResponse" name="searchNearestAreaResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="GetMapServicesSoapBinding" type="impl:GetMapServices">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="getMap">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getMapRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getMapResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="listMapLayer">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="listMapLayerRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="listMapLayerResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchNearbyArea">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="searchNearbyAreaRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="searchNearbyAreaResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="searchNearestArea">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="searchNearestAreaRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="searchNearestAreaResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="GetMapServicesService">
+
+      <wsdl:port binding="impl:GetMapServicesSoapBinding" name="GetMapServices">
+
+         <wsdlsoap:address location="http://localhost:8080/GISonCampusServices/services/GetMapServices"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

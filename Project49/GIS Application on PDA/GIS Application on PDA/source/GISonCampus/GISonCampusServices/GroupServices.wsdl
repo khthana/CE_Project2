@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://gisoncampusservices" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://gisoncampusservices" xmlns:intf="http://gisoncampusservices" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.2.1
+Built on Aug 08, 2005 (11:49:10 PDT)-->
+
+   <wsdl:message name="updateDetailsRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="groupname" type="xsd:string"/>
+
+      <wsdl:part name="details" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="updateDetailsResponse">
+
+      <wsdl:part name="updateDetailsReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="createGroupRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="name" type="xsd:string"/>
+
+      <wsdl:part name="type" type="xsd:string"/>
+
+      <wsdl:part name="details" type="xsd:string"/>
+
+      <wsdl:part name="moderatorid" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDetailsResponse">
+
+      <wsdl:part name="getDetailsReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAllGroupListResponse">
+
+      <wsdl:part name="getAllGroupListReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="registerToGroupResponse">
+
+      <wsdl:part name="registerToGroupReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getGroupListResponse">
+
+      <wsdl:part name="getGroupListReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="createGroupResponse">
+
+      <wsdl:part name="createGroupReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getGroupListRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="start_" type="xsd:string"/>
+
+      <wsdl:part name="num" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="departGroupRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="groupname" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getAllGroupListRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDetailsRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="groupname" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="departGroupResponse">
+
+      <wsdl:part name="departGroupReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="registerToGroupRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="groupname" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="GroupServices">
+
+      <wsdl:operation name="createGroup" parameterOrder="sessionkey name type details moderatorid">
+
+         <wsdl:input message="impl:createGroupRequest" name="createGroupRequest"/>
+
+         <wsdl:output message="impl:createGroupResponse" name="createGroupResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="registerToGroup" parameterOrder="sessionkey groupname">
+
+         <wsdl:input message="impl:registerToGroupRequest" name="registerToGroupRequest"/>
+
+         <wsdl:output message="impl:registerToGroupResponse" name="registerToGroupResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="departGroup" parameterOrder="sessionkey groupname">
+
+         <wsdl:input message="impl:departGroupRequest" name="departGroupRequest"/>
+
+         <wsdl:output message="impl:departGroupResponse" name="departGroupResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDetails" parameterOrder="sessionkey groupname">
+
+         <wsdl:input message="impl:getDetailsRequest" name="getDetailsRequest"/>
+
+         <wsdl:output message="impl:getDetailsResponse" name="getDetailsResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateDetails" parameterOrder="sessionkey groupname details">
+
+         <wsdl:input message="impl:updateDetailsRequest" name="updateDetailsRequest"/>
+
+         <wsdl:output message="impl:updateDetailsResponse" name="updateDetailsResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getGroupList" parameterOrder="sessionkey start_ num">
+
+         <wsdl:input message="impl:getGroupListRequest" name="getGroupListRequest"/>
+
+         <wsdl:output message="impl:getGroupListResponse" name="getGroupListResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getAllGroupList" parameterOrder="sessionkey">
+
+         <wsdl:input message="impl:getAllGroupListRequest" name="getAllGroupListRequest"/>
+
+         <wsdl:output message="impl:getAllGroupListResponse" name="getAllGroupListResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="GroupServicesSoapBinding" type="impl:GroupServices">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="createGroup">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="createGroupRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="createGroupResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="registerToGroup">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="registerToGroupRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="registerToGroupResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="departGroup">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="departGroupRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="departGroupResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDetails">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getDetailsRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getDetailsResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="updateDetails">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="updateDetailsRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="updateDetailsResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getGroupList">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getGroupListRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getGroupListResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getAllGroupList">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getAllGroupListRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getAllGroupListResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="GroupServicesService">
+
+      <wsdl:port binding="impl:GroupServicesSoapBinding" name="GroupServices">
+
+         <wsdlsoap:address location="http://localhost:8080/GISonCampusServices/services/GroupServices"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

@@ -1,0 +1,50 @@
+package gisoncampusservices;
+
+import java.util.*;
+
+public class BookmarkServices
+{
+    public BookmarkServices(){}
+
+   public String getMap(String sessionkey)
+   {
+       try
+        {
+            GisDBConnect gdb = new GisDBConnect();
+
+            gdb.query("SELECT memberid FROM session WHERE sessionid='"+sessionkey+"';") ;
+            gdb.getReturn() .next() ;
+            int memberid = gdb.getReturn().getInt(1);
+
+            gdb.query("SELECT posx,posy FROM position WHERE memberid='"+memberid+"';") ;
+            gdb.getReturn() .next() ;
+            int posX = gdb.getReturn().getInt(1);
+            int posY = gdb.getReturn().getInt(2);
+
+
+            return "";
+        }
+        catch(Exception e){return null;}
+   }
+
+   public String saveBookmark(String sessionkey,int[] points)
+   {
+       try
+        {
+            GisDBConnect gdb = new GisDBConnect();
+
+            gdb.query("SELECT memberid FROM session WHERE sessionid='"+sessionkey+"';") ;
+            gdb.getReturn() .next() ;
+            int memberid = gdb.getReturn().getInt(1);
+
+            gdb.exeSQL("INSERT INTO bookmark () VALUES("
+                      ) ;
+
+
+
+            return "";
+        }
+        catch(Exception e){return null;}
+
+   }
+}

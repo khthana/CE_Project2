@@ -1,0 +1,352 @@
+/**
+ * UserServicesServiceTestCase.java
+ *
+ * This file was auto-generated from WSDL
+ * by the Apache Axis 1.2.1 Aug 08, 2005 (11:49:10 PDT) WSDL2Java emitter.
+ */
+
+package gisoncampusservices.generated;
+
+public class UserServicesServiceTestCase extends junit.framework.TestCase {
+    public UserServicesServiceTestCase(java.lang.String name) {
+        super(name);
+    }
+
+    public void testUserServicesWSDL() throws Exception {
+        javax.xml.rpc.ServiceFactory serviceFactory = javax.xml.rpc.ServiceFactory.newInstance();
+        java.net.URL url = new java.net.URL(new gisoncampusservices.generated.UserServicesServiceLocator().getUserServicesAddress() + "?WSDL");
+        javax.xml.rpc.Service service = serviceFactory.createService(url, new gisoncampusservices.generated.UserServicesServiceLocator().getServiceName());
+        assertTrue(service != null);
+    }
+
+    public void test1UserServicesLogin() throws Exception {
+        gisoncampusservices.generated.UserServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.UserServicesSoapBindingStub)
+                          new gisoncampusservices.generated.UserServicesServiceLocator().getUserServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.login(new java.lang.String(), new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test2UserServicesCheckSession() throws Exception {
+        gisoncampusservices.generated.UserServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.UserServicesSoapBindingStub)
+                          new gisoncampusservices.generated.UserServicesServiceLocator().getUserServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        int value = -3;
+        value = binding.checkSession(new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test3UserServicesSignup() throws Exception {
+        gisoncampusservices.generated.UserServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.UserServicesSoapBindingStub)
+                          new gisoncampusservices.generated.UserServicesServiceLocator().getUserServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.signup(new java.lang.String(), new java.lang.String(), new java.lang.String(), new java.lang.String(), new java.lang.String(), new java.lang.String(), new java.lang.String(), new java.lang.String(), new java.lang.String(), new java.lang.String(), new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test4UserServicesLogout() throws Exception {
+        gisoncampusservices.generated.UserServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.UserServicesSoapBindingStub)
+                          new gisoncampusservices.generated.UserServicesServiceLocator().getUserServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.logout(new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test5UserServicesGetProfile() throws Exception {
+        gisoncampusservices.generated.UserServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.UserServicesSoapBindingStub)
+                          new gisoncampusservices.generated.UserServicesServiceLocator().getUserServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.getProfile(new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test6UserServicesGetProfileList() throws Exception {
+        gisoncampusservices.generated.UserServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.UserServicesSoapBindingStub)
+                          new gisoncampusservices.generated.UserServicesServiceLocator().getUserServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.getProfileList(new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test7UserServicesGetNoActiveProfileList() throws Exception {
+        gisoncampusservices.generated.UserServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.UserServicesSoapBindingStub)
+                          new gisoncampusservices.generated.UserServicesServiceLocator().getUserServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.getNoActiveProfileList(new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test8UserServicesAddContact() throws Exception {
+        gisoncampusservices.generated.UserServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.UserServicesSoapBindingStub)
+                          new gisoncampusservices.generated.UserServicesServiceLocator().getUserServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.addContact(new java.lang.String(), new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test9UserServicesRemoveContact() throws Exception {
+        gisoncampusservices.generated.UserServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.UserServicesSoapBindingStub)
+                          new gisoncampusservices.generated.UserServicesServiceLocator().getUserServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.removeContact(new java.lang.String(), new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test10UserServicesActivateContact() throws Exception {
+        gisoncampusservices.generated.UserServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.UserServicesSoapBindingStub)
+                          new gisoncampusservices.generated.UserServicesServiceLocator().getUserServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.activateContact(new java.lang.String(), new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test11UserServicesActivateMember() throws Exception {
+        gisoncampusservices.generated.UserServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.UserServicesSoapBindingStub)
+                          new gisoncampusservices.generated.UserServicesServiceLocator().getUserServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.activateMember(new java.lang.String(), new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test12UserServicesEditProfile() throws Exception {
+        gisoncampusservices.generated.UserServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.UserServicesSoapBindingStub)
+                          new gisoncampusservices.generated.UserServicesServiceLocator().getUserServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.editProfile(new java.lang.String(), new java.lang.String(), new java.lang.String(), new java.lang.String(), new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test13UserServicesGetNoActiveMemberGroupList() throws Exception {
+        gisoncampusservices.generated.UserServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.UserServicesSoapBindingStub)
+                          new gisoncampusservices.generated.UserServicesServiceLocator().getUserServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.getNoActiveMemberGroupList(new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test14UserServicesActivateMemberGroup() throws Exception {
+        gisoncampusservices.generated.UserServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.UserServicesSoapBindingStub)
+                          new gisoncampusservices.generated.UserServicesServiceLocator().getUserServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.activateMemberGroup(new java.lang.String(), new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test15UserServicesGetInformation() throws Exception {
+        gisoncampusservices.generated.UserServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.UserServicesSoapBindingStub)
+                          new gisoncampusservices.generated.UserServicesServiceLocator().getUserServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.getInformation(new java.lang.String());
+        // TBD - validate results
+    }
+
+}

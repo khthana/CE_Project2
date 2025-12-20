@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://gisoncampusservices" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://gisoncampusservices" xmlns:intf="http://gisoncampusservices" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.2.1
+Built on Aug 08, 2005 (11:49:10 PDT)-->
+
+   <wsdl:message name="signupRequest">
+
+      <wsdl:part name="type" type="xsd:string"/>
+
+      <wsdl:part name="name" type="xsd:string"/>
+
+      <wsdl:part name="surname" type="xsd:string"/>
+
+      <wsdl:part name="year" type="xsd:string"/>
+
+      <wsdl:part name="faculty" type="xsd:string"/>
+
+      <wsdl:part name="major" type="xsd:string"/>
+
+      <wsdl:part name="phone" type="xsd:string"/>
+
+      <wsdl:part name="email" type="xsd:string"/>
+
+      <wsdl:part name="studentid" type="xsd:string"/>
+
+      <wsdl:part name="username" type="xsd:string"/>
+
+      <wsdl:part name="password" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getNoActiveMemberGroupListRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="activateMemberResponse">
+
+      <wsdl:part name="activateMemberReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="activateMemberGroupResponse">
+
+      <wsdl:part name="activateMemberGroupReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getInformationResponse">
+
+      <wsdl:part name="getInformationReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getInformationRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="addContactResponse">
+
+      <wsdl:part name="addContactReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getNoActiveProfileListResponse">
+
+      <wsdl:part name="getNoActiveProfileListReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="logoutRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="editProfileRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="year" type="xsd:string"/>
+
+      <wsdl:part name="phone" type="xsd:string"/>
+
+      <wsdl:part name="email" type="xsd:string"/>
+
+      <wsdl:part name="password" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getNoActiveProfileListRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="logoutResponse">
+
+      <wsdl:part name="logoutReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="signupResponse">
+
+      <wsdl:part name="signupReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="loginResponse">
+
+      <wsdl:part name="loginReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="loginRequest">
+
+      <wsdl:part name="username" type="xsd:string"/>
+
+      <wsdl:part name="password" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="editProfileResponse">
+
+      <wsdl:part name="editProfileReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="addContactRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="mateid" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="activateMemberGroupRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="membergroupids" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getProfileListResponse">
+
+      <wsdl:part name="getProfileListReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getProfileRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="activateContactResponse">
+
+      <wsdl:part name="activateContactReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="checkSessionRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="activateContactRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="ownerid" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="checkSessionResponse">
+
+      <wsdl:part name="checkSessionReturn" type="xsd:int"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getNoActiveMemberGroupListResponse">
+
+      <wsdl:part name="getNoActiveMemberGroupListReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getProfileListRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="removeContactResponse">
+
+      <wsdl:part name="removeContactReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="activateMemberRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="memberids" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="removeContactRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="mateid" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getProfileResponse">
+
+      <wsdl:part name="getProfileReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="UserServices">
+
+      <wsdl:operation name="login" parameterOrder="username password">
+
+         <wsdl:input message="impl:loginRequest" name="loginRequest"/>
+
+         <wsdl:output message="impl:loginResponse" name="loginResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="checkSession" parameterOrder="sessionkey">
+
+         <wsdl:input message="impl:checkSessionRequest" name="checkSessionRequest"/>
+
+         <wsdl:output message="impl:checkSessionResponse" name="checkSessionResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="signup" parameterOrder="type name surname year faculty major phone email studentid username password">
+
+         <wsdl:input message="impl:signupRequest" name="signupRequest"/>
+
+         <wsdl:output message="impl:signupResponse" name="signupResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="logout" parameterOrder="sessionkey">
+
+         <wsdl:input message="impl:logoutRequest" name="logoutRequest"/>
+
+         <wsdl:output message="impl:logoutResponse" name="logoutResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getProfile" parameterOrder="sessionkey">
+
+         <wsdl:input message="impl:getProfileRequest" name="getProfileRequest"/>
+
+         <wsdl:output message="impl:getProfileResponse" name="getProfileResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getProfileList" parameterOrder="sessionkey">
+
+         <wsdl:input message="impl:getProfileListRequest" name="getProfileListRequest"/>
+
+         <wsdl:output message="impl:getProfileListResponse" name="getProfileListResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getNoActiveProfileList" parameterOrder="sessionkey">
+
+         <wsdl:input message="impl:getNoActiveProfileListRequest" name="getNoActiveProfileListRequest"/>
+
+         <wsdl:output message="impl:getNoActiveProfileListResponse" name="getNoActiveProfileListResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="addContact" parameterOrder="sessionkey mateid">
+
+         <wsdl:input message="impl:addContactRequest" name="addContactRequest"/>
+
+         <wsdl:output message="impl:addContactResponse" name="addContactResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="removeContact" parameterOrder="sessionkey mateid">
+
+         <wsdl:input message="impl:removeContactRequest" name="removeContactRequest"/>
+
+         <wsdl:output message="impl:removeContactResponse" name="removeContactResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="activateContact" parameterOrder="sessionkey ownerid">
+
+         <wsdl:input message="impl:activateContactRequest" name="activateContactRequest"/>
+
+         <wsdl:output message="impl:activateContactResponse" name="activateContactResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="activateMember" parameterOrder="sessionkey memberids">
+
+         <wsdl:input message="impl:activateMemberRequest" name="activateMemberRequest"/>
+
+         <wsdl:output message="impl:activateMemberResponse" name="activateMemberResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="editProfile" parameterOrder="sessionkey year phone email password">
+
+         <wsdl:input message="impl:editProfileRequest" name="editProfileRequest"/>
+
+         <wsdl:output message="impl:editProfileResponse" name="editProfileResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getNoActiveMemberGroupList" parameterOrder="sessionkey">
+
+         <wsdl:input message="impl:getNoActiveMemberGroupListRequest" name="getNoActiveMemberGroupListRequest"/>
+
+         <wsdl:output message="impl:getNoActiveMemberGroupListResponse" name="getNoActiveMemberGroupListResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="activateMemberGroup" parameterOrder="sessionkey membergroupids">
+
+         <wsdl:input message="impl:activateMemberGroupRequest" name="activateMemberGroupRequest"/>
+
+         <wsdl:output message="impl:activateMemberGroupResponse" name="activateMemberGroupResponse"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getInformation" parameterOrder="sessionkey">
+
+         <wsdl:input message="impl:getInformationRequest" name="getInformationRequest"/>
+
+         <wsdl:output message="impl:getInformationResponse" name="getInformationResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="UserServicesSoapBinding" type="impl:UserServices">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="login">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="loginRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="loginResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="checkSession">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="checkSessionRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="checkSessionResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="signup">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="signupRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="signupResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="logout">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="logoutRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="logoutResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getProfile">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getProfileRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getProfileResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getProfileList">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getProfileListRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getProfileListResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getNoActiveProfileList">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getNoActiveProfileListRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getNoActiveProfileListResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="addContact">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="addContactRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="addContactResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="removeContact">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="removeContactRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="removeContactResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="activateContact">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="activateContactRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="activateContactResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="activateMember">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="activateMemberRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="activateMemberResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="editProfile">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="editProfileRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="editProfileResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getNoActiveMemberGroupList">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getNoActiveMemberGroupListRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getNoActiveMemberGroupListResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="activateMemberGroup">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="activateMemberGroupRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="activateMemberGroupResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getInformation">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getInformationRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getInformationResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="UserServicesService">
+
+      <wsdl:port binding="impl:UserServicesSoapBinding" name="UserServices">
+
+         <wsdlsoap:address location="http://localhost:8080/GISonCampusServices/services/UserServices"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

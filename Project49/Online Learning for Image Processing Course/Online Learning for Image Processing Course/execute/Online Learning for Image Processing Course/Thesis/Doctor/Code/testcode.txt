@@ -1,0 +1,350 @@
+Imports System.IO
+Imports System.Data
+Imports System.Data.SqlClient
+
+Partial Class LoginedAdmin
+    Inherits System.Web.UI.Page
+
+    Protected Sub news_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles news.Click
+        newsform.Visible = True
+    End Sub
+
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        'If Session("loginstatus") = False Then
+        '    Response.Write("Please ogin before entrance to system...")
+        'End If
+    End Sub
+
+    Protected Sub clear_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles clear.Click
+        topic.Text = ""
+        writer.Text = ""
+        description.Text = ""
+        picnews.Style.Clear()
+        othernews1.Style.Clear()
+        othernews2.Style.Clear()
+    End Sub
+
+    Protected Sub upload_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles upload.Click
+        Dim picf, othf1, othf2 As Boolean
+        Dim currentID As String = ""
+        Dim getdate As String = "1/1/2549"
+        Dim typefile As String = ""
+
+        Dim pictarget As String = Server.MapPath(".") + "\News\Picture\"
+        Dim othertarget As String = Server.MapPath(".") + "\News\OtherFile\"
+
+        Dim objpic As New FileInfo(Server.MapPath(".") + "\News\Picture\" + Path.GetFileName(picnews.PostedFile.FileName.Trim()))
+        Dim objother1 As New FileInfo(Server.MapPath(".") + "\News\OtherFile\" + Path.GetFileName(othernews1.PostedFile.FileName.Trim()))
+        Dim objother2 As New FileInfo(Server.MapPath(".") + "\News\OtherFile\" + Path.GetFileName(othernews2.PostedFile.FileName.Trim()))
+
+        If picnews.PostedFile.FileName <> "" Then
+            If objpic.Exists Then
+                warningnews.Text = "Please rename this file '" & Path.GetFileName(picnews.PostedFile.FileName.Trim()) & _
+                    "' because this name exist..."
+                picnews.Style.Clear()
+                Exit Sub
+            Else
+                typefile = picnews.PostedFile.ContentType
+                If (typefile = "image/gif") Then
+                ElseIf (typefile = "image/pjpeg") Then
+                ElseIf (typefile = "image/bmp") Then
+                ElseIf (typefile = "image/x-png") Then
+                Else
+                    warningnews.Text = "In browse Picture File, Please choose file to be type IMAGE..."
+                    picnews.Style.Clear()
+                    Exit Sub
+                End If
+            End If
+            If (picnews.PostedFile.FileName <> "" And picnews.PostedFile.FileName.Trim().Length > 0 And picnews.PostedFile.ContentLength > 0 And picnews.PostedFile.ContentLength <= 400000000) Then
+                picnews.PostedFile.SaveAs(pictarget & Path.GetFileName(picnews.PostedFile.FileName.Trim()))
+                picf = True
+            Else
+                picf = False
+            End If
+        Else
+            picf = False
+        End If
+
+        If othernews1.PostedFile.FileName <> "" Then
+            If objother1.Exists Then
+                warningnews.Text = "Please rename this file '" & Path.GetFileName(othernews1.PostedFile.FileName.Trim()) & _
+                    "' because this name exist..."
+                othernews1.Style.Clear()
+                Exit Sub
+            End If
+            If (othernews1.PostedFile.FileName <> "" And othernews1.PostedFile.FileName.Trim().Length > 0 And othernews1.PostedFile.ContentLength > 0 And othernews1.PostedFile.ContentLength <= 400000000) Then
+                othernews1.PostedFile.SaveAs(othertarget & Path.GetFileName(othernews1.PostedFile.FileName.Trim()))
+                othf1 = True
+            Else
+                othf1 = False
+            End If
+        Else
+            othf1 = False
+        End If
+
+        If othernews2.PostedFile.FileName <> "" Then
+            If objother2.Exists Then
+                warningnews.Text = "Please rename this file '" & Path.GetFileName(othernews2.PostedFile.FileName.Trim()) & _
+                                "' because this name exist..."
+                othernews2.Style.Clear()
+                Exit Sub
+            End If
+            If (othernews2.PostedFile.FileName <> "" And othernews2.PostedFile.FileName.Trim().Length > 0 And othernews2.PostedFile.ContentLength > 0 And othernews2.PostedFile.ContentLength <= 400000000) Then
+                othernews2.PostedFile.SaveAs(othertarget & Path.GetFileName(othernews2.PostedFile.FileName.Trim()))
+                othf2 = True
+            Else
+                othf2 = False
+            End If
+        Else
+            othf2 = False
+        End If
+
+        If picf = True Then
+            QueryStr = "insert into News(new_topic,new_description,new_writer,new_date,new_picfile,new_picpath) values('" & _
+                        topic.Text & "','" & description.Text & "','" & writer.Text & "','" & getdate & "','" & _
+                        Path.GetFileName(picnews.PostedFile.FileName.Trim()) & "','" & "News/Picture/" & _
+                        Path.GetFileName(picnews.PostedFile.FileName.Trim()) & "')"
+        Else
+            QueryStr = "insert into News(new_topic,new_description,new_writer,new_date,new_picfile,new_picpath) values('" & _
+            topic.Text & "','" & description.Text & "','" & writer.Text & "','" & getdate & "','-','-')"
+        End If
+
+        OpenConn()
+
+        sqlComm = New SqlCommand(QueryStr, sqlConn)
+        sqlComm.CommandType = CommandType.Text
+        sqlComm.ExecuteNonQuery()
+
+        QueryStr = "select @@identity as currentID"
+        TableStr = "getcurrentID"
+        FillCommQ(QueryStr, TableStr)
+        If IsNothing(sqlDS) Then
+        Else
+            If sqlDS.Tables(TableStr).Columns.Count > 0 Then
+                If sqlDS.Tables(TableStr).Rows.Count > 0 Then
+                    For Each row As DataRow In sqlDS.Tables(TableStr).Rows
+                        currentID = row("currentID")
+                        Exit For
+                    Next
+                End If
+            End If
+        End If
+
+        If othf1 = True Then
+            QueryStr = "insert into NewsFile(new_id,newf_name,newf_path) values('" & currentID & "','" & _
+                Path.GetFileName(othernews1.PostedFile.FileName.Trim()) & "','" & "News/OtherFile/" & _
+                Path.GetFileName(othernews1.PostedFile.FileName.Trim()) & "')"
+            sqlComm = New SqlCommand(QueryStr, sqlConn)
+            sqlComm.CommandType = CommandType.Text
+            sqlComm.ExecuteNonQuery()
+        End If
+
+        If othf2 = True Then
+            QueryStr = "insert into NewsFile(new_id,newf_name,newf_path) values('" & currentID & "','" & _
+                Path.GetFileName(othernews2.PostedFile.FileName.Trim()) & "','" & "News/OtherFile/" & _
+                Path.GetFileName(othernews2.PostedFile.FileName.Trim()) & "')"
+            sqlComm = New SqlCommand(QueryStr, sqlConn)
+            sqlComm.CommandType = CommandType.Text
+            sqlComm.ExecuteNonQuery()
+        End If
+        CloseConn()
+        topic.Text = ""
+        writer.Text = ""
+        description.Text = ""
+        picnews.Style.Clear()
+        othernews1.Style.Clear()
+        othernews2.Style.Clear()
+        warningnews.Text = "Upload Complete"
+    End Sub
+
+    Protected Sub thesis_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles thesis.Click
+        thesisform.Visible = True
+    End Sub
+
+    Protected Sub clear1_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles clear1.Click
+        year.Text = ""
+        degreeDDL.SelectedItem.Text = "[SELECT]"
+        thaititle.Text = ""
+        englishtitle.Text = ""
+        developer1.Text = ""
+        devcode1.Text = ""
+        developer2.Text = ""
+        devcode2.Text = ""
+        developer3.Text = ""
+        devcode3.Text = ""
+        advisor1.Text = ""
+        advisor2.Text = ""
+        advisor3.Text = ""
+        thaiabstract.Text = ""
+        englishabstract.Text = ""
+        reportfile.Style.Clear()
+        codefile.Style.Clear()
+    End Sub
+
+    Protected Sub upload1_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles upload1.Click
+        Dim tmp As String = ""
+        Dim tmpquery As String = ""
+        Dim currentID As String = ""
+        Dim bpath As String = "\Thesis\Bachelor\"
+        Dim mpath As String = "\Thesis\Master\"
+        Dim dpath As String = "\Thesis\Doctor\"
+        Dim mappath As String = Server.MapPath(".")
+        Dim getreportfile As String = Path.GetFileName(reportfile.PostedFile.FileName.Trim())
+        Dim getcodefile As String = Path.GetFileName(codefile.PostedFile.FileName.Trim())
+        Dim objreport As New FileInfo("")
+        Dim objcode As New FileInfo("")
+
+        If degreeDDL.SelectedItem.Value = "bachelor" Then
+            objreport = New FileInfo(mappath + bpath + getreportfile)
+            objcode = New FileInfo(mappath + bpath + getcodefile)
+            tmp = "bachelor"
+        ElseIf degreeDDL.SelectedItem.Value = "master" Then
+            objreport = New FileInfo(mappath + mpath + getreportfile)
+            objcode = New FileInfo(mappath + mpath + getcodefile)
+            tmp = "master"
+        ElseIf degreeDDL.SelectedItem.Value = "doctor" Then
+            objreport = New FileInfo(mappath + dpath + getreportfile)
+            objcode = New FileInfo(mappath + dpath + getcodefile)
+            tmp = "doctor"
+        Else
+            warningthesis.Text = "Please choose degree of this thesis..."
+            Exit Sub
+        End If
+
+        If objreport.Exists Then
+            warningthesis.Text = "Please rename this file '" & getreportfile & "' because this name exist..."
+            reportfile.Style.Clear()
+            Exit Sub
+        End If
+        If objcode.Exists Then
+            warningthesis.Text = "Please rename this file '" & getcodefile & "' because this name exist..."
+            codefile.Style.Clear()
+            Exit Sub
+        End If
+
+        If (reportfile.PostedFile.FileName <> "" And reportfile.PostedFile.FileName.Trim().Length > 0 And reportfile.PostedFile.ContentLength > 0 And reportfile.PostedFile.ContentLength <= 400000000) Then
+            If tmp = "bachelor" Then
+                reportfile.PostedFile.SaveAs(bpath & getreportfile)
+            ElseIf tmp = "master" Then
+                reportfile.PostedFile.SaveAs(mpath & getreportfile)
+            ElseIf tmp = "doctor" Then
+                reportfile.PostedFile.SaveAs(dpath & getreportfile)
+            Else
+                warningthesis.Text = "Please choose degree of this thesis..."
+                Exit Sub
+            End If
+        End If
+
+        If (codefile.PostedFile.FileName <> "" And codefile.PostedFile.FileName.Trim().Length > 0 And codefile.PostedFile.ContentLength > 0 And codefile.PostedFile.ContentLength <= 400000000) Then
+            If tmp = "bachelor" Then
+                codefile.PostedFile.SaveAs(bpath & getcodefile)
+            ElseIf tmp = "master" Then
+                codefile.PostedFile.SaveAs(mpath & getcodefile)
+            ElseIf tmp = "doctor" Then
+                codefile.PostedFile.SaveAs(dpath & getcodefile)
+            Else
+                warningthesis.Text = "Please choose degree of this thesis..."
+                Exit Sub
+            End If
+        End If
+
+        If tmp = "bachelor" Then
+            tmpquery = "Thesis/Bachelor/"
+        ElseIf tmp = "master" Then
+            tmpquery = "Thesis/Master/"
+        ElseIf tmp = "doctor" Then
+            tmpquery = "Thesis/Doctor/"
+        Else
+            warningthesis.Text = "Please choose degree of this thesis..."
+            Exit Sub
+        End If
+
+        OpenConn()
+        QueryStr = "insert into Thesis(tsis_year,tsis_degree,tsis_tname,tsis_ename,tsis_tabstract,tsis_eabstract,tsis_repfile,tsis_reppath,tsis_codefile,tsis_codepath) values('" & _
+                    year.Text & "','" & degreeDDL.SelectedItem.Value & "','" & thaititle.Text & "','" & englishtitle.Text & _
+                    "','" & thaiabstract.Text & "','" & englishabstract.Text & "','" & getreportfile & "','" & tmpquery & _
+                    getreportfile & "','" & getcodefile & "','" & tmpquery & getcodefile & "')"
+        sqlComm = New SqlCommand(QueryStr, sqlConn)
+        sqlComm.CommandType = CommandType.Text
+        sqlComm.ExecuteNonQuery()
+
+        QueryStr = "select @@identity as currentID"
+        TableStr = "getcurrentID"
+        FillCommQ(QueryStr, TableStr)
+        If IsNothing(sqlDS) Then
+        Else
+            If sqlDS.Tables(TableStr).Columns.Count > 0 Then
+                If sqlDS.Tables(TableStr).Rows.Count > 0 Then
+                    For Each row As DataRow In sqlDS.Tables(TableStr).Rows
+                        currentID = row("currentID")
+                        Exit For
+                    Next
+                End If
+            End If
+        End If
+
+        If developer1.Text <> "" And devcode1.Text <> "" Then
+            QueryStr = "insert into DeveloperThesis(tsis_id,dev_name,dev_code) values('" & currentID & "','" & _
+                developer1.Text & "','" & devcode1.Text & "')"
+            sqlComm = New SqlCommand(QueryStr, sqlConn)
+            sqlComm.CommandType = CommandType.Text
+            sqlComm.ExecuteNonQuery()
+        End If
+
+        If developer2.Text <> "" And devcode2.Text <> "" Then
+            QueryStr = "insert into DeveloperThesis(tsis_id,dev_name,dev_code) values('" & currentID & "','" & _
+                developer2.Text & "','" & devcode2.Text & "')"
+            sqlComm = New SqlCommand(QueryStr, sqlConn)
+            sqlComm.CommandType = CommandType.Text
+            sqlComm.ExecuteNonQuery()
+        End If
+
+        If developer3.Text <> "" And devcode3.Text <> "" Then
+            QueryStr = "insert into DeveloperThesis(tsis_id,dev_name,dev_code) values('" & currentID & "','" & _
+                developer3.Text & "','" & devcode3.Text & "')"
+            sqlComm = New SqlCommand(QueryStr, sqlConn)
+            sqlComm.CommandType = CommandType.Text
+            sqlComm.ExecuteNonQuery()
+        End If
+
+        If advisor1.Text <> "" Then
+            QueryStr = "insert into AdvisorThesis(tsis_id,adv_name) values('" & currentID & "','" & advisor1.Text & "')"
+            sqlComm = New SqlCommand(QueryStr, sqlConn)
+            sqlComm.CommandType = CommandType.Text
+            sqlComm.ExecuteNonQuery()
+        End If
+
+        If advisor2.Text <> "" Then
+            QueryStr = "insert into AdvisorThesis(tsis_id,adv_name) values('" & currentID & "','" & advisor2.Text & "')"
+            sqlComm = New SqlCommand(QueryStr, sqlConn)
+            sqlComm.CommandType = CommandType.Text
+            sqlComm.ExecuteNonQuery()
+        End If
+
+        If advisor3.Text <> "" Then
+            QueryStr = "insert into AdvisorThesis(tsis_id,adv_name) values('" & currentID & "','" & advisor3.Text & "')"
+            sqlComm = New SqlCommand(QueryStr, sqlConn)
+            sqlComm.CommandType = CommandType.Text
+            sqlComm.ExecuteNonQuery()
+        End If
+        CloseConn()
+        year.Text = ""
+        degreeDDL.SelectedItem.Text = "[SELECT]"
+        thaititle.Text = ""
+        englishtitle.Text = ""
+        developer1.Text = ""
+        devcode1.Text = ""
+        developer2.Text = ""
+        devcode2.Text = ""
+        developer3.Text = ""
+        devcode3.Text = ""
+        advisor1.Text = ""
+        advisor2.Text = ""
+        advisor3.Text = ""
+        thaiabstract.Text = ""
+        englishabstract.Text = ""
+        reportfile.Style.Clear()
+        codefile.Style.Clear()
+        warningthesis.Text = "Upload Thesis Complete..."
+    End Sub
+End Class

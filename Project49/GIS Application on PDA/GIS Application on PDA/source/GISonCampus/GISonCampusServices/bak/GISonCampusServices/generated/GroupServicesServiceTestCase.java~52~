@@ -1,0 +1,176 @@
+/**
+ * GroupServicesServiceTestCase.java
+ *
+ * This file was auto-generated from WSDL
+ * by the Apache Axis 1.2.1 Aug 08, 2005 (11:49:10 PDT) WSDL2Java emitter.
+ */
+
+package gisoncampusservices.generated;
+
+public class GroupServicesServiceTestCase extends junit.framework.TestCase {
+    public GroupServicesServiceTestCase(java.lang.String name) {
+        super(name);
+    }
+
+    public void testGroupServicesWSDL() throws Exception {
+        javax.xml.rpc.ServiceFactory serviceFactory = javax.xml.rpc.ServiceFactory.newInstance();
+        java.net.URL url = new java.net.URL(new gisoncampusservices.generated.GroupServicesServiceLocator().getGroupServicesAddress() + "?WSDL");
+        javax.xml.rpc.Service service = serviceFactory.createService(url, new gisoncampusservices.generated.GroupServicesServiceLocator().getServiceName());
+        assertTrue(service != null);
+    }
+
+    public void test1GroupServicesCreateGroup() throws Exception {
+        gisoncampusservices.generated.GroupServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.GroupServicesSoapBindingStub)
+                          new gisoncampusservices.generated.GroupServicesServiceLocator().getGroupServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.createGroup(new java.lang.String(), new java.lang.String(), new java.lang.String(), new java.lang.String(), new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test2GroupServicesRegisterToGroup() throws Exception {
+        gisoncampusservices.generated.GroupServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.GroupServicesSoapBindingStub)
+                          new gisoncampusservices.generated.GroupServicesServiceLocator().getGroupServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.registerToGroup(new java.lang.String(), new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test3GroupServicesDepartGroup() throws Exception {
+        gisoncampusservices.generated.GroupServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.GroupServicesSoapBindingStub)
+                          new gisoncampusservices.generated.GroupServicesServiceLocator().getGroupServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.departGroup(new java.lang.String(), new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test4GroupServicesGetDetails() throws Exception {
+        gisoncampusservices.generated.GroupServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.GroupServicesSoapBindingStub)
+                          new gisoncampusservices.generated.GroupServicesServiceLocator().getGroupServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.getDetails(new java.lang.String(), new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test5GroupServicesUpdateDetails() throws Exception {
+        gisoncampusservices.generated.GroupServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.GroupServicesSoapBindingStub)
+                          new gisoncampusservices.generated.GroupServicesServiceLocator().getGroupServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.updateDetails(new java.lang.String(), new java.lang.String(), new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test6GroupServicesGetGroupList() throws Exception {
+        gisoncampusservices.generated.GroupServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.GroupServicesSoapBindingStub)
+                          new gisoncampusservices.generated.GroupServicesServiceLocator().getGroupServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.getGroupList(new java.lang.String(), new java.lang.String(), new java.lang.String());
+        // TBD - validate results
+    }
+
+    public void test7GroupServicesGetAllGroupList() throws Exception {
+        gisoncampusservices.generated.GroupServicesSoapBindingStub binding;
+        try {
+            binding = (gisoncampusservices.generated.GroupServicesSoapBindingStub)
+                          new gisoncampusservices.generated.GroupServicesServiceLocator().getGroupServices();
+        }
+        catch (javax.xml.rpc.ServiceException jre) {
+            if(jre.getLinkedCause()!=null)
+                jre.getLinkedCause().printStackTrace();
+            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+        }
+        assertNotNull("binding is null", binding);
+
+        // Time out after a minute
+        binding.setTimeout(60000);
+
+        // Test operation
+        java.lang.String value = null;
+        value = binding.getAllGroupList(new java.lang.String());
+        // TBD - validate results
+    }
+
+}

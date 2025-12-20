@@ -1,0 +1,16 @@
+/**
+ * PositionServices.java
+ *
+ * This file was auto-generated from WSDL
+ * by the Apache Axis 1.2.1 Aug 08, 2005 (11:49:10 PDT) WSDL2Java emitter.
+ */
+
+package gisoncampusservices.generated;
+
+public interface PositionServices extends java.rmi.Remote {
+    public java.lang.String updatePosition(java.lang.String sessionkey, java.lang.String posX, java.lang.String posY) throws java.rmi.RemoteException;
+    public java.lang.String updateBusPosition(java.lang.String sessionkey, java.lang.String posX, java.lang.String posY, java.lang.String busID) throws java.rmi.RemoteException;
+    public java.lang.String getMyRecordPosition(java.lang.String sessionkey) throws java.rmi.RemoteException;
+    public java.lang.String getContactsPosition(java.lang.String sessionkey) throws java.rmi.RemoteException;
+    public java.lang.String getBusPosition(java.lang.String sessionkey) throws java.rmi.RemoteException;
+}

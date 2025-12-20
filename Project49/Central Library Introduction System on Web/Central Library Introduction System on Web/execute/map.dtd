@@ -1,0 +1,28 @@
+<!-- DTD for map XML document -->
+
+<!ELEMENT map (preloadpicture,picture,data*) >
+<!ATTLIST map location CDATA #REQUIRED >
+<!ATTLIST map floor CDATA #REQUIRED >
+	
+	<!ELEMENT preloadpicture (#PCDATA) >
+	
+	<!ELEMENT picture (atl?,src,linkto?,width,height) >
+		<!ATTLIST picture meaning CDATA #REQUIRED >
+		
+			<!ELEMENT atl (#PCDATA) >
+				<!ATTLIST atl meaning CDATA #REQUIRED >
+			<!ELEMENT src (#PCDATA) >
+				<!ATTLIST src meaning CDATA #REQUIRED >
+			<!ELEMENT linkto (#PCDATA) >
+				<!ATTLIST linkto meaning CDATA #REQUIRED >
+			<!ELEMENT width (#PCDATA) >
+			<!ELEMENT height (#PCDATA) >
+	
+	<!ELEMENT data (overimage,section,service*,media*) >
+		<!ELEMENT overimage (#PCDATA) >
+		<!ELEMENT section (#PCDATA) >
+			<!ATTLIST section description CDATA #REQUIRED >
+		<!ELEMENT service (#PCDATA) >
+			<!ATTLIST service description CDATA #REQUIRED >
+		<!ELEMENT media (#PCDATA) >
+			<!ATTLIST media description CDATA #REQUIRED >

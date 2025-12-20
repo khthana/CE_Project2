@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://gisoncampusservices" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://gisoncampusservices" xmlns:intf="http://gisoncampusservices" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.2.1
+Built on Aug 08, 2005 (11:49:10 PDT)-->
+
+   <wsdl:message name="getInformationFromIDResponse">
+
+      <wsdl:part name="getInformationFromIDReturn" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="getInformationFromIDRequest">
+
+      <wsdl:part name="sessionkey" type="xsd:string"/>
+
+      <wsdl:part name="objectid" type="xsd:string"/>
+
+      <wsdl:part name="layerid" type="xsd:string"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="InformationServices">
+
+      <wsdl:operation name="getInformationFromID" parameterOrder="sessionkey objectid layerid">
+
+         <wsdl:input message="impl:getInformationFromIDRequest" name="getInformationFromIDRequest"/>
+
+         <wsdl:output message="impl:getInformationFromIDResponse" name="getInformationFromIDResponse"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="InformationServicesSoapBinding" type="impl:InformationServices">
+
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="getInformationFromID">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getInformationFromIDRequest">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getInformationFromIDResponse">
+
+            <wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://gisoncampusservices" use="encoded"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="InformationServicesService">
+
+      <wsdl:port binding="impl:InformationServicesSoapBinding" name="InformationServices">
+
+         <wsdlsoap:address location="http://localhost:8080/GISonCampusServices/services/InformationServices"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

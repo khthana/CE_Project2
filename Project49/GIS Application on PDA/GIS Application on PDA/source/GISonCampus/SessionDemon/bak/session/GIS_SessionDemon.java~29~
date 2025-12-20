@@ -1,0 +1,73 @@
+package session;
+
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.*;
+import java.util.*;
+
+
+
+//-------------------------------------------------------- RUN Thread
+public class GIS_SessionDemon {
+  public GIS_SessionDemon() {
+  }
+
+  public static void main(String[] args) {
+    GIS_SessionThread session = new GIS_SessionThread();
+    //session.start() ;
+    while(true){
+      session.run();
+    }
+  }
+}
+
+
+//-------------------------------------------------- THREAD CLASS
+
+class GIS_SessionThread extends Thread{
+
+  private Connection conn ;
+  private Statement stmt;
+  private Statement upd ;
+  private ResultSet rset ;
+
+  public GIS_SessionThread(){
+    try {
+             Class.forName("org.postgresql.Driver");
+             conn = DriverManager.getConnection("jdbc:postgresql:GISWSDB","postgres","");
+             stmt = conn.createStatement();
+             upd = conn.createStatement() ;
+      } catch(Exception e) {
+        e.printStackTrace() ;
+      }
+  }
+  public void run(){
+    try {
+
+      int usrcount=0;
+      rset = stmt.executeQuery("select sessid, time from session");
+      while (rset.next()) {
+        String sessid = rset.getString("sessid");
+        int time = rset.getInt("time")-10 ;
+        if (time>0) {
+          upd.execute("update session set time=" + time + " where sessid='" +
+                      sessid + "'");
+          usrcount++;
+        }
+        else upd.execute("delete from session where sessid='"+sessid+"'") ;
+      }
+
+      Calendar cal = new GregorianCalendar();
+
+      System.out.println(cal.getTime() + " --- has " + usrcount + " users") ;
+
+    } catch(Exception e) {
+      e.printStackTrace() ;
+    }
+
+    try{
+      //sleep(5000);
+      sleep(600000);
+    }catch(InterruptedException e){}
+  }
+}

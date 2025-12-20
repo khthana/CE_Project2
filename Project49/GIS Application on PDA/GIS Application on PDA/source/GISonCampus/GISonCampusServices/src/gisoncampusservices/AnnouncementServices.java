@@ -1,0 +1,370 @@
+package gisoncampusservices;
+
+import java.util.*;
+
+public class AnnouncementServices
+{
+    public AnnouncementServices(){}
+
+    public String groupPost(String sessionkey,String groupname,String topic,String content){
+        UserServices service = new UserServices();
+        int memberid = service.checkSession(sessionkey);
+        if(memberid != -1){
+        try
+        {
+            GisDBConnect gdb = new GisDBConnect();
+
+            gdb.query("SELECT groupid,moderatorid FROM campusgroup WHERE name='"+groupname+"';") ;
+            gdb.getReturn() .next() ;
+            int groupid = gdb.getReturn().getInt("groupid");
+            int moderatorid = gdb.getReturn().getInt("moderatorid");
+
+            if(moderatorid != memberid)
+            {
+                System.out.println("Error : Access deny");
+                return "Error : Access deny";
+            }
+
+
+            Date posttime = new Date();
+            gdb.query("SELECT announcementid FROM announcement order by announcementid desc;");
+            gdb.getReturn().next();
+            int announcementid = gdb.getReturn().getInt("announcementid") ;
+            announcementid += 1;
+
+
+            gdb.exeSQL("INSERT INTO announcement (announcementid,type, topic,posttime,groupid,content,ownerid) VALUES("
+                       +announcementid+
+                       "," + 0 +
+                        ", '" + topic + "'"+
+                        "," + posttime.getTime()+
+                        "," + groupid +
+                        ", '" + content + "'"+
+                        ", " + memberid +
+                        ");") ;
+            System.out.println("OK");
+            return "OK";
+        }
+        catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+            return "Error : "+e.getMessage();
+        }}
+      System.out.println("Error : No Session");
+      return "Error : No Session";
+    }
+
+    public String groupPostAsCalendar(String sessionkey,String groupname,String topic,String content,String location,String startTime,String endTime){
+        UserServices service = new UserServices();
+        int memberid = service.checkSession(sessionkey);
+        if(memberid != -1){
+        try
+        {
+            GisDBConnect gdb = new GisDBConnect();
+            gdb.query("SELECT groupid,moderatorid FROM campusgroup WHERE name='"+groupname+"';") ;
+            gdb.getReturn() .next() ;
+            int groupid = gdb.getReturn().getInt("groupid");
+            int moderatorid = gdb.getReturn().getInt("moderatorid");
+
+            if(moderatorid != memberid)
+            {
+                System.out.println("Error : Access deny");
+                return "Error : Access deny";
+            }
+
+            Date posttime = new Date();
+            gdb.query("SELECT announcementid FROM announcement order by announcementid desc;");
+            gdb.getReturn().next();
+            int announcementid = gdb.getReturn().getInt("announcementid") ;
+            announcementid += 1;
+
+            gdb.exeSQL("INSERT INTO announcement (announcementid,type, topic,posttime,groupid,content,ownerid) VALUES("
+                       +announcementid+
+                       "," + 1 +
+                        ", '" + topic + "'"+
+                        "," + posttime.getTime()+
+                        "," + groupid +
+                        ", '" + content + "'"+
+                        ", " + memberid +
+                        ");") ;
+
+            gdb.query("SELECT calendarid FROM calendar order by calendarid desc;");
+            gdb.getReturn().next();
+            int calendarid = gdb.getReturn().getInt("calendarid") ;
+            calendarid += 1;
+
+            if(!startTime.equals("") && !endTime.equals(""))
+                gdb.exeSQL("INSERT INTO calendar (calendarid,announcementid,location,starttime,endtime) VALUES("
+                           + calendarid +
+                           "," + announcementid +
+                           ", '" + location + "'" +
+                           "," + new Date(Long.parseLong(startTime)).getTime() +
+                           "," + new Date(Long.parseLong(endTime)).getTime() +
+                           ");");
+            else if (!startTime.equals("") && endTime.equals("") )
+                gdb.exeSQL("INSERT INTO calendar (calendarid,announcementid,location,starttime) VALUES("
+                                + calendarid +
+                                "," + announcementid +
+                                ", '" + location + "'" +
+                                "," + new Date(Long.parseLong(startTime)).getTime() +
+                                ");");
+            else
+                gdb.exeSQL("INSERT INTO calendar (calendarid,announcementid,location) VALUES("
+                                + calendarid +
+                                "," + announcementid +
+                                ", '" + location + "'" +
+                                ");");
+            System.out.println("OK");
+            return "OK";
+        }
+        catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+            return "Error : "+e.getMessage();
+        }}
+        System.out.println("Error : No Session");
+        return "Error : No Session";
+    }
+
+    public String post(String sessionkey,String topic,String content){
+        UserServices service = new UserServices();
+        int memberid = service.checkSession(sessionkey);
+        if(memberid != -1){
+        try
+        {
+            GisDBConnect gdb = new GisDBConnect();
+            Date posttime = new Date();
+            gdb.query("SELECT announcementid FROM announcement order by announcementid desc;");
+            gdb.getReturn().next();
+            int announcementid = gdb.getReturn().getInt("announcementid") ;
+            announcementid += 1;
+
+
+            gdb.exeSQL("INSERT INTO announcement (announcementid,type, topic,posttime,content,ownerid) VALUES("
+                       +announcementid+
+                       "," + 2 +
+                        ", '" + topic + "'"+
+                        "," + posttime.getTime()+
+                        ", '" + content + "'"+
+                        ", " + memberid +
+                        ");") ;
+            System.out.println("OK");
+            return "OK";
+        }
+        catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+            return "Error : "+e.getMessage();
+        }}
+      System.out.println("Error : No Session");
+      return "Error : No Session";
+    }
+
+    public String postAsCalendar(String sessionkey,String topic,String content,String location,String startTime,String endTime){
+        UserServices service = new UserServices();
+        int memberid = service.checkSession(sessionkey);
+        if(memberid != -1){
+        try
+        {
+            GisDBConnect gdb = new GisDBConnect();
+            Date posttime = new Date();
+            gdb.query("SELECT announcementid FROM announcement order by announcementid desc;");
+            gdb.getReturn().next();
+            int announcementid = gdb.getReturn().getInt("announcementid") ;
+            announcementid += 1;
+
+            gdb.exeSQL("INSERT INTO announcement (announcementid,type, topic,posttime,content,ownerid) VALUES("
+                       +announcementid+
+                       "," + 3 +
+                        ", '" + topic + "'"+
+                        "," + posttime.getTime()+
+                        ", '" + content + "'"+
+                        ", " + memberid +
+                        ");") ;
+
+            gdb.query("SELECT calendarid FROM calendar order by calendarid desc;");
+            gdb.getReturn().next();
+            int calendarid = gdb.getReturn().getInt("calendarid") ;
+            calendarid += 1;
+
+            if(!startTime.equals("") && !endTime.equals(""))
+                gdb.exeSQL("INSERT INTO calendar (calendarid,announcementid,location,starttime,endtime) VALUES("
+                           + calendarid +
+                           "," + announcementid +
+                           ", '" + location + "'" +
+                           "," + new Date(Long.parseLong(startTime)).getTime() +
+                           "," + new Date(Long.parseLong(endTime)).getTime() +
+                           ");");
+            else if (!startTime.equals("") && endTime.equals("") )
+                gdb.exeSQL("INSERT INTO calendar (calendarid,announcementid,location,starttime) VALUES("
+                                + calendarid +
+                                "," + announcementid +
+                                ", '" + location + "'" +
+                                "," + new Date(Long.parseLong(startTime)).getTime() +
+                                ");");
+            else
+                gdb.exeSQL("INSERT INTO calendar (calendarid,announcementid,location) VALUES("
+                                + calendarid +
+                                "," + announcementid +
+                                ", '" + location + "'" +
+                                ");");
+            System.out.println("OK");
+            return "OK";
+        }
+        catch(Exception e){
+            System.out.println("Error : "+e.getMessage());
+            return "Error : "+e.getMessage();
+        }}
+        System.out.println("Error : No Session");
+        return "Error : No Session";
+    }
+
+    public String getAllAnnouncements(String sessionkey){
+        String details = getAnnouncementsDetails(sessionkey,"0","100");
+        String announcements = new String("<?xml version='1.0' encoding='UTF-8'?>\r\n");
+        if(!details.substring(0,5).equals("Error"))
+        {
+            announcements += "<announcements>\n";
+            announcements += details;
+            announcements += "</announcements>";
+        }
+        else
+        {
+            return details;
+        }
+        System.out.println(announcements);
+        return announcements;
+    }
+
+    public String getAnnouncements(String sessionkey,String start_,String num){
+        String details = getAnnouncementsDetails(sessionkey,start_,num);
+        if(!details.substring(0,5).equals("Error"))
+        {
+            String announcements = new String("<?xml version='1.0' encoding='UTF-8'?>\r\n");
+            announcements += "<announcements>\n";
+            announcements += details;
+            announcements += "</announcements>";
+
+            System.out.println(announcements);
+            return announcements;
+        }
+        else
+        {
+            return details;
+        }
+
+    }
+
+    private String getAnnouncementsDetails(String sessionkey,String start_,String num){
+        int numberOfAnnounce = Integer.parseInt(num);
+        int start = Integer.parseInt(start_);
+
+        UserServices user = new UserServices();
+        boolean check = false;
+        if(user.checkSession(sessionkey) != -1)
+        {
+            check = true;
+        }
+
+        if (check)
+        {
+            try
+            {
+                GisDBConnect gdb = new GisDBConnect();
+                gdb.query("SELECT * FROM announcement  order by announcementid desc;");
+                int actual=-1;
+
+                String announcements="";
+
+                while (gdb.getReturn().next()) {
+                    actual++;
+                    if(actual >= start && actual < start+numberOfAnnounce)
+                    {
+                        String announcementid = gdb.getReturn().getString("announcementid");
+
+                        announcements +=
+                                ("     <announcement id='" +
+                                 announcementid + "'>\n");
+                        announcements +=
+                                ("          <type>" +
+                                 gdb.getReturn().getString("type") +
+                                 "</type>\n");
+
+                        GisDBConnect gdb3 = new GisDBConnect();
+                        gdb3.query("SELECT name FROM campusgroup WHERE groupid="+gdb.getReturn().getString("groupid")+";");
+
+                        if(gdb3.getReturn().next())
+                        {
+                            String groupName = gdb3.getReturn().getString("name");
+                            announcements +=
+                                ("          <groupname>" + groupName +
+                                 "</groupname>\n");
+                        }
+
+                        gdb3.query("SELECT username FROM member WHERE memberid="+gdb.getReturn().getString("ownerid")+";");
+                        if(gdb3.getReturn().next())
+                        {
+                            announcements +=
+                                ("          <owner>" +
+                                 gdb3.getReturn().getString("username") +
+                                 "</owner>\n");
+                        }
+
+
+                        announcements +=
+                                ("          <content>" +
+                                 gdb.getReturn().getString("content") +
+                                 "</content>\n");
+                        announcements +=
+                                ("          <topic>" +
+                                 gdb.getReturn().getString("topic") +
+                                 "</topic>\n");
+                        announcements +=
+                                ("          <posttime>" +
+                                 gdb.getReturn().getString("posttime") +
+                                 "</posttime>\n");
+
+                        GisDBConnect gdb2 = new GisDBConnect();
+                        gdb2.query(
+                                "SELECT * FROM calendar WHERE announcementid='" +
+                                announcementid + "';");
+
+                        announcements += "          <calendar>\n";
+                        while (gdb2.getReturn().next()) {
+                            announcements +=
+                                    ("               <summary>" +
+                                     gdb.getReturn().getString("topic") +
+                                     "</summary>\n");
+                            announcements +=
+                                    ("               <note>" +
+                                     gdb.getReturn().getString("content") +
+                                     "</note>\n");
+                            announcements +=
+                                    ("               <location>" +
+                                     gdb2.getReturn().getString("location") +
+                                     "</location>\n");
+                            announcements +=
+                                    ("               <startTime>" +
+                                     gdb2.getReturn().getString("starttime") +
+                                     "</startTime>\n");
+                            announcements +=
+                                    ("               <endTime>" +
+                                     gdb2.getReturn().getString("endtime") +
+                                     "</endTime>\n");
+                        }
+                        announcements += "          </calendar>\n";
+
+                        announcements += ("     </announcement>\n");
+                    }else if(actual >= start+numberOfAnnounce)
+                        break;
+                }
+
+                return announcements;
+            } catch (Exception e) {
+                System.out.println("Error : "+e.getMessage());
+                return "Error : "+e.getMessage() ;
+            }
+        }
+        System.out.println("Error : No Session");
+        return "Error : No Session";
+      }
+
+
+}

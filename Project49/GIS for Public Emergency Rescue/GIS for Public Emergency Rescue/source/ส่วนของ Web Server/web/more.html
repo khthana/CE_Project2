@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<meta http-equiv="Expires" content="Tue, 12 May 1962 1:00:00 GMT">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Content-type" CONTENT="text/html; charset=iso-8859-1">
+		<meta http-equiv="Content-language" CONTENT="en">
+		<title>Video from EMERGENCY</title>
+		
+		<!-- GLOBAL JAVASCRIPTS -->
+		<script language="JavaScript" type="text/javascript"><!--
+		
+		function launch(url) 
+		{
+		  var w = 480, h = 340;
+
+		  if (document.all) 
+		  {
+			w = document.body.clientWidth;
+			h = document.body.clientHeight;
+		  }
+		  else if (document.layers)
+		  {
+			w = window.innerWidth;
+			h = window.innerHeight;
+		  }
+
+		  var popW = 462, popH = 570;
+		  var leftPos = (w-popW)/2, topPos = (h-popH)/2;
+
+		  self.name = "opener";
+		  remote = open(url, "helpWin", "resizable,scrollbars,status,width=" + popW + ",height="+popH+",left="+leftPos+",top="+topPos+"");
+		}
+
+		function openPopUp(thePage, theName, theWidth, theHeight)
+		{
+		  var someFeatures = 'scrollbars=yes,toolbar=0,location=no,directories=0,status=0,menubar=0,resizable=1,width=' + theWidth + ',height=' + theHeight;
+		  var aPopUpWin = window.open(thePage, theName, someFeatures);
+
+		  if (navigator.appVersion.indexOf("Win") != -1) {
+			aPopUpWin.focus();
+		  }
+
+		  if (navigator.appName == "Netscape") {
+			aPopUpWin.focus();
+		  }
+		}
+		// -->
+		</script>
+
+	<!-- END GLOBAL JAVASCRIPTS -->
+	</head>
+
+	<body topmargin="0" leftmargin="0" marginwidth="0" marginheight="0" onLoad="window.resizeTo(200, 144)">
+		<form>
+			<table border="0" cellpadding="2" cellspacing="0" class="bg_color2" width="100%">
+			  <tr>
+				<td class="oddItem" align="left">
+
+					<script language="JavaScript" type="text/javascript">
+					<!--
+						  var File = "http://161.246.5.88/axis-cgi/mjpg/video.cgi?";
+
+						  File += "camera=1";
+						  File += "&resolution=1280x1024";
+						  File += "&compression=30";
+						  File += "&rotation=0";
+						  File += "&color=1";
+						  File += "&squarepixel=0";
+						  File += "&overlayimage=0";
+						  File += "&overlaypos=0x0";
+						  File += "&date=1";
+						  File += "&clock=1";
+						  File += "&textstring=kmitl"; //+ escape(opener.document.WizardForm.root_Image_I0_Text_String.value);
+						  File += "&textpos=top";
+						  File += "&fps=24";
+						  //alert("ASDDDDDDDDDDDDDDDDD");
+
+					// -->
+					</script>
+
+			<SCRIPT LANGUAGE="JavaScript">
+			<!--
+			if ((navigator.appName == "Microsoft Internet Explorer") && (navigator.platform != "MacPPC") && (navigator.platform != "Mac68k")) {
+			  var browser = "IE"
+			} else {
+			  var browser = "Netscape"
+			}
+			//-->
+			</SCRIPT>
+
+			<SCRIPT SRC="/script/activeX.js?id=191"></SCRIPT>
+
+			<SCRIPT LANGUAGE="JavaScript">
+			<!--
+
+			var useJavaApplet = "no"
+			
+			if (browser == "IE") 
+			{
+			} else 
+			{
+			}
+
+			var width = parseInt(200)
+			var height = parseInt(200)
+
+			var agent = navigator.userAgent.toLowerCase();
+			
+			if (agent.indexOf("applewebkit/") != -1) 
+			{
+			  var pos = agent.indexOf("applewebkit/") + 12
+			  var webKitVersion = parseInt(agent.substring(pos, agent.indexOf(" ", pos)))
+			  if (webKitVersion < 416) 
+			  {
+				useJavaApplet = "yes";
+			  }
+			}
+
+			if (useJavaApplet == "yes") {
+			  document.write('<APPLET archive="ama.jar" codeBase="/java/ama" code="ama.MediaApplet" width="' + width + '" height="' + height + '">');
+			  document.write('<PARAM NAME="code" VALUE="ama.MediaApplet">');
+			  document.write('<PARAM NAME="archive" VALUE="ama.jar">');
+			  document.write('<PARAM NAME="codebase" VALUE="/java/ama">');
+			  document.write('<PARAM NAME="ama_cgi-path" VALUE="axis-cgi">');
+			  document.write('<PARAM NAME="cache_archive" VALUE="ama.jar">');
+			  document.write('<PARAM NAME="cache_version" VALUE="0.90.1.0">');
+			  document.write('<PARAM NAME="ama_plugins" VALUE="">');
+			  document.write('<PARAM NAME="type" VALUE="application/x-java-applet;version=1.4">');
+				document.write('<PARAM NAME="ama_url" VALUE="' + File + '">');
+			  document.write("</APPLET><br>");
+			  alert("KMITL");
+			} else {
+				
+				//alert("A");
+			  if (browser == "IE") {
+			  //alert("AA");
+				var imagepath = File
+				var installText1 = "which enables streaming"; 
+				var videoText = "video";
+				var installText2 = "in Microsoft Internet Explorer, has not been installed or could not be registered on this computer.";
+				var installText3 = "To install or upgrade the";
+				var installText4 = ", you must have Administration rights on this computer and you must answer Yes when asked if you wish to allow the installation. AXIS 212 PTZ can also be configured to show still images.";
+
+				DrawAMC("AXIS 212 PTZ", "AXIS Media Control", height, width, imagepath, "DE625294-70E6-45ED-B895-CFFA13AEB044", "AMC.cab", "3,32,37,1", "no", "no", "no", "1", "", "", "", "no", "", "", "no", installText1, videoText, installText2, installText3, installText4, "0");
+
+
+
+			  } else {
+				//alert("AB");
+				theDate = new Date();
+				  var output = '<img id="stream" SRC=' + File + '&';
+				output += theDate.getTime()
+				output += "\" ALT=\"Press Reload if no image is displayed\" BORDER=\"0\">";
+				document.write(output);
+			  }
+			}
+
+			//-->
+			</SCRIPT>
+				</td>
+			  </tr>
+			  <tr>
+				<td class="button" align="right">
+				  <!--<input type="button" value="Close"  width="75" class="btnNormal" onClick="window.close()"> -->
+				</td>
+			  </tr>
+			</table>
+		</form>
+
+		<script language="JavaScript" type="text/javascript">
+		<!--
+		var fps = 30;
+		var fps_speed = 1000;
+		var fps_speed_factor = 2;
+		var last_FramesDrawn = 0;
+		var FPS_call = null;
+		var Player = document.Player;
+		var use_init_speed = 0;
+
+		function FPS_status() 
+		{
+		  if (Player.FramesDrawn != last_FramesDrawn) {
+			fps = Player.FramesDrawn - last_FramesDrawn;
+			if (use_init_speed) {
+			  use_init_speed = 0;
+			  fps = fps / fps_speed_factor;
+			}
+		  }
+		  last_FramesDrawn = Player.FramesDrawn;
+		 
+		  self.status='FPS: ' + Math.round(fps).toString();
+		  FPS_call=setTimeout("FPS_status()",fps_speed);
+		}
+
+		if (browser == "IE") {
+		  use_init_speed = 1;
+		  FPS_call=setTimeout("FPS_status()",fps_speed_factor * fps_speed);
+		}
+		// -->
+		</script>
+
+	</body>
+</html>

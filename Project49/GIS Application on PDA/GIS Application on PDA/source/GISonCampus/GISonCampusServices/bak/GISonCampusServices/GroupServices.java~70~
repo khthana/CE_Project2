@@ -1,0 +1,301 @@
+package gisoncampusservices;
+
+public class GroupServices
+{
+    public GroupServices(){}
+
+    public String createGroup(String sessionkey,String name,String type,String details,String moderatorid)
+    {
+        UserServices service = new UserServices();
+        int memberid = service.checkSession(sessionkey);
+        if(memberid != -1)
+        {
+            try {
+                GisDBConnect gdb = new GisDBConnect();
+                gdb.query("SELECT groupid FROM campusgroup order by groupid desc;");
+                gdb.getReturn().next();
+                int groupid = gdb.getReturn().getInt("groupid") ;
+                groupid += 1;
+
+                gdb.query("SELECT memberid FROM member where memberid="+Integer.parseInt(moderatorid)+";");
+                gdb.getReturn().next();
+                int moderator = gdb.getReturn().getInt("memberid");
+
+                gdb.query("SELECT type FROM member where memberid="+memberid+";");
+                gdb.getReturn().next();
+                if(!gdb.getReturn().getString("type").equals("0"))
+                {
+                    System.out.println("Error : Access deny");
+                    return "Error : Access deny";
+                }
+
+                gdb.exeSQL(
+                        "INSERT INTO campusgroup (groupid,type, name,details,moderatorid) VALUES("
+                        + groupid + "," + Integer.parseInt(type) + ", '" + name + "','" + details +
+                        "'," + moderator + ");");
+
+                gdb.query("SELECT membergroupid FROM membergroup order by membergroupid desc;");
+                gdb.getReturn().next();
+                int membergroupid = gdb.getReturn().getInt("membergroupid");
+                membergroupid += 1;
+                System.out.println("OK");
+                gdb.exeSQL(
+                        "INSERT INTO membergroup (membergroupid,memberid,groupid,active) VALUES("
+                        +membergroupid +"," +moderator+","+groupid+","+true+");");
+
+                System.out.println("OK");
+                return "OK";
+
+            } catch (Exception e) {
+                System.out.println("Error : "+e.getMessage());
+                return "Error : "+e.getMessage();
+            }
+        }
+        System.out.println("Error : Session error");
+        return "Error : Session error";
+    }
+
+    public String registerToGroup(String sessionkey,String groupname)
+    {
+        UserServices service = new UserServices();
+        int memberid = service.checkSession(sessionkey);
+        if(memberid != -1)
+        {
+            try
+            {
+                GisDBConnect gdb = new GisDBConnect();
+                gdb.query("SELECT groupid FROM campusgroup WHERE name='" + groupname +
+                          "';");
+                gdb.getReturn().next();
+                int groupid = gdb.getReturn().getInt(1);
+
+                gdb.query("SELECT membergroupid FROM membergroup order by membergroupid desc;");
+                gdb.getReturn().next();
+                int membergroupid = gdb.getReturn().getInt("membergroupid") ;
+                membergroupid += 1;
+
+                gdb.exeSQL(
+                        "INSERT INTO membergroup (membergroupid,memberid, groupid) VALUES("
+                         + membergroupid  + "," + memberid + "," + groupid + ");");
+                System.out.println("OK");
+                return "OK";
+            } catch (Exception ex) {
+                System.out.println("Error : "+ex.getMessage());
+                return "Error : " + ex.getMessage();
+            }
+        }
+        System.out.println("Error : Session error");
+        return "Error : Session error";
+    }
+
+    public String departGroup(String sessionkey,String groupname)
+    {
+        UserServices service = new UserServices();
+        int memberid = service.checkSession(sessionkey);
+         if (memberid != -1)
+         {
+             try
+             {
+                 GisDBConnect gdb = new GisDBConnect();
+                 gdb.query("SELECT groupid,moderatorid FROM campusgroup WHERE name='" + groupname +
+                           "';");
+                 gdb.getReturn().next();
+                 int groupid = gdb.getReturn().getInt("groupid");
+                 int moderatorid = gdb.getReturn().getInt("moderatorid");
+
+                 if(memberid == moderatorid)
+                 {
+                     System.out.println("Error : A moderator cannot depart from group");
+                     return "Error : A moderator cannot depart from group";
+                 }
+
+                 gdb.exeSQL("DELETE FROM membergroup WHERE memberid='" + memberid +
+                            "' AND groupid='" + groupid + "';");
+                 System.out.println("OK");
+                 return "OK";
+             }
+             catch (Exception ex) {
+                 System.out.println("Error : "+ex.getMessage());
+                 return "Error : "+ex.getMessage();
+             }
+         }
+         System.out.println("Error : Session error");
+         return "Error : Session error";
+    }
+
+
+    public String getDetails(String sessionkey,String groupname)
+    {
+        UserServices service = new UserServices();
+        int memberid = service.checkSession(sessionkey);
+         if (memberid != -1)
+         {
+             try
+             {
+                 GisDBConnect gdb = new GisDBConnect();
+                 gdb.query("SELECT details FROM campusgroup WHERE name='" + groupname +
+                           "';");
+                 gdb.getReturn().next();
+                 String details = gdb.getReturn().getString(1);
+
+                 System.out.println(details);
+                 return details;
+             }
+             catch (Exception ex) {
+                 System.out.println("Error : "+ex.getMessage());
+                 return "Error : "+ex.getMessage();
+             }
+         }
+         System.out.println("Error : Session error");
+         return "Error : Session error";
+    }
+
+
+    public String updateDetails(String sessionkey,String groupname,String details)
+    {
+        UserServices service = new UserServices();
+        int memberid = service.checkSession(sessionkey);
+         if (memberid != -1)
+         {
+             try
+             {
+                 GisDBConnect gdb = new GisDBConnect();
+                 gdb.query("SELECT moderatorid FROM campusgroup WHERE name='" + groupname +"';");
+                 gdb.getReturn().next();
+                 int moderatorid = gdb.getReturn().getInt("moderatorid");
+
+                 if(moderatorid == memberid)
+                 {
+                     //   Update by replace
+                    gdb.exeSQL("UPDATE campusgroup SET details='" + details +
+                           "' WHERE name='" + groupname + "';");
+                    System.out.println("OK");
+                    return "OK";
+                 }
+                 else
+                 {
+                     System.out.println("Error : Access deny");
+                     return "Error : Access deny";
+                 }
+            }
+             catch (Exception ex) {
+                 System.out.println("Error : "+ex.getMessage());
+                 return "Error : "+ex.getMessage();
+             }
+         }
+         System.out.println("Error : Session error");
+         return "Error : Session error";
+    }
+
+    public String getGroupList(String sessionkey,String start_,String num)
+     {
+         int numberOfGroup = Integer.parseInt(num);
+         int start = Integer.parseInt(start_);
+         UserServices service = new UserServices();
+         int memberid = service.checkSession(sessionkey);
+         if (memberid != -1)
+        {
+            try{
+             String xmlRes = new String("<?xml version='1.0' encoding='UTF-8'?>\r\n");
+             xmlRes += "<groupdetails>\r\n";
+
+             GisDBConnect gdb2 = new GisDBConnect();
+             gdb2.query("SELECT * FROM campusgroup order by groupid desc;");
+             int actual=-1;
+
+             while(gdb2.getReturn().next())
+             {
+                 actual++;
+                  if(actual >= start && actual < start+numberOfGroup)
+                  {
+                      int groupid = gdb2.getReturn().getInt("groupid");
+                      xmlRes += ("  <group id='" + groupid + "' >\r\n");
+                      xmlRes +=
+                              ("    <name>" + gdb2.getReturn().getString("name") +
+                               "</name>\r\n");
+                      xmlRes +=
+                              ("    <details>" +
+                               gdb2.getReturn().getString("details") +
+                               "</details>\r\n");
+                      xmlRes +=
+                              ("    <type>" + gdb2.getReturn().getString("type") +
+                               "</type>\r\n");
+                      int moderatorid = gdb2.getReturn().getInt("moderatorid");
+                      GisDBConnect gdb3 = new GisDBConnect();
+                      gdb3.query("SELECT username FROM member WHERE memberid=" +
+                                 moderatorid + ";");
+                      gdb3.getReturn().next();
+                      xmlRes +=
+                              ("    <moderator>" +
+                               gdb3.getReturn().getString("username") +
+                               "</moderator>\r\n");
+                      xmlRes += ("    <mygroup>" + "true" + "</mygroup>\r\n");
+                      xmlRes += ("  </group>\r\n");
+                  }else if(actual >= start+numberOfGroup)
+                        break;
+             }
+
+             xmlRes += "</groupdetails>\r\n";
+             System.out.println(xmlRes);
+             return xmlRes;
+         } catch (Exception e) {
+             System.out.println("Error : "+e.getMessage());
+             return "Error : " + e.getMessage();
+         }
+        }
+        System.out.println("Error : Session error");
+         return "Error : Session error";
+
+     }
+
+     public String getAllGroupList(String sessionkey)
+     {
+         UserServices service = new UserServices();
+         int memberid = service.checkSession(sessionkey);
+         if (memberid != -1)
+        {
+            try{
+             String xmlRes = new String("<?xml version='1.0' encoding='UTF-8'?>\r\n");
+             xmlRes += "<groupdetails>\r\n";
+
+             GisDBConnect gdb = new GisDBConnect();
+             gdb.query("SELECT * FROM campusgroup order by groupid desc;");
+
+             while(gdb.getReturn().next())
+             {
+                 xmlRes += ("  <group id='"+gdb.getReturn().getString("groupid")+"' >\r\n");
+                 xmlRes += ("    <name>" + gdb.getReturn().getString("name") + "</name>\r\n");
+                 xmlRes += ("    <details>" + gdb.getReturn().getString("details") + "</details>\r\n");
+                 xmlRes += ("    <type>" + gdb.getReturn().getString("type") + "</type>\r\n");
+                 int moderatorid = gdb.getReturn().getInt("moderatorid");
+                 GisDBConnect gdb2 = new GisDBConnect();
+                 gdb2.query("SELECT username FROM member WHERE memberid=" + moderatorid+";");
+                 gdb2.getReturn().next();
+                 xmlRes += ("    <moderator>" + gdb2.getReturn().getString("username") + "</moderator>\r\n");
+                 GisDBConnect gdb3 = new GisDBConnect();
+                 gdb3.query("SELECT * FROM membergroup WHERE memberid=" + memberid+" AND groupid="+gdb.getReturn().getString("groupid")+";");
+                 if(gdb3.getReturn().next())
+                     xmlRes += ("    <mygroup>" + "true" + "</mygroup>\r\n");
+                 else
+                     xmlRes += ("    <mygroup>" + "false" + "</mygroup>\r\n");
+                 xmlRes += ("  </group>\r\n");
+             }
+
+             xmlRes += "</groupdetails>\r\n";
+             System.out.println(xmlRes);
+             return xmlRes;
+         } catch (Exception e) {
+             System.out.println("Error : "+e.getMessage());
+             return "Error : " + e.getMessage();
+         }
+        }
+        System.out.println("Error : Session error");
+         return "Error : Session error";
+     }
+
+
+
+
+
+
+}

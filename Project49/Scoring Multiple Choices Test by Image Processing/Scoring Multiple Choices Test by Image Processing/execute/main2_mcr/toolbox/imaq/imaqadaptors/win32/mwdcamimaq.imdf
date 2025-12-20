@@ -1,0 +1,1150 @@
+<?xml version="1.0"?>
+<!DOCTYPE ImageAcquisitionInfo [
+<!--
+
+This XML file is used to store static information for a particular
+vendor's image acquistion devices.
+
+-->
+
+<!-- The ImageAcquisitionInfo node is the root node of the file.  It
+     contains zero or one Help nodes and zero or more Device nodes. -->
+<!ELEMENT ImageAcquisitionInfo (Help?, Property*, Include*, Source*, TriggerInfo?, Device*)>
+
+<!-- The Help node, if present, must contain one or more AdaptorHelp nodes. -->
+<!ELEMENT Help (AdaptorHelp+)>
+
+<!-- AdaptorHelp nodes have some amount of text, followed by zero or more
+     DeviceHelp nodes followed by zero or one SeeAlso lines.  The text will
+     be formated in MATLAB exactly as it is entered in this file so no extra
+     spacing or indentation should be used.  Because the node is of mixed
+     type, it is not possible to specify the exact order or number of any of
+     these elements within the DTD, so care should be taken when adding
+     them. -->
+<!ELEMENT AdaptorHelp (#PCDATA | DeviceHelp | SeeAlso)*>
+
+<!-- The AdaptorHelp node contains one attribute, the name of the property
+     to which the help applies. -->
+<!ATTLIST AdaptorHelp property CDATA #REQUIRED>
+
+<!-- The AdaptorHelp node contains the DeviceHelp node which adds extra help
+     for a specific piece of hardware. -->
+<!ELEMENT DeviceHelp (#PCDATA)>
+
+<!-- The device attribute of the DeviceHelp node contains the name of the
+     board that the help is for.  This should be the same as the name
+     attribute of the Device node for the hardware. -->
+<!ATTLIST DeviceHelp device CDATA #REQUIRED>
+
+<!-- The SeeAlso node of the AdaptorHelp node specifies the "see also" line
+     that should appear in MATLAB. -->
+<!ELEMENT SeeAlso (#PCDATA)>
+
+<!-- Device nodes can have zero or more Section nodes followed by zero or
+     more VideoFormat, Include, Section, or Property nodes and zero or one
+     TriggerInfo nodes. -->
+<!ELEMENT Device (VideoFormat*, Include*, Section*, Property*, TriggerInfo?)>
+
+<!-- Device nodes have exactly one property "name", which is the name of the
+device as known by the cooresponding adaptor.  This name usually is the name
+of the device from the SDK.  -->
+<!ATTLIST Device name CDATA #REQUIRED>
+
+<!-- The VideoFormat element can define properties and trigger information that
+     is specific to a known video format.  It is legal for the VideoFormat
+     element to also contain Include and Section elements. -->
+<!ELEMENT VideoFormat (Include*, Section*, Property*, TriggerInfo?)>
+
+<!-- VideoFormat nodes have exactly one property "name", which is the video
+     format supported by the device.  This video format usually is the name of
+     the video format as used by the adaptor. -->
+<!ATTLIST VideoFormat name CDATA #REQUIRED>
+
+<!-- Section nodes can have zero or more Include nodes.  The Include nodes
+     can be followed by zero or more Property nodes or zero or one TriggerInfo
+     nodes.  It is not possible to mix Property nodes and TriggerInfo nodes in
+     the same Section.  The Property and TriggerInfo nodes follow the same
+     rules as the nodes directly under a device node. The name attribute is
+     required and is used by the Include nodes to locate a particular 
+     section. -->
+<!ELEMENT Section (Include*, (Property* | TriggerInfo?))> 
+<!ATTLIST Section name CDATA #REQUIRED>
+
+<!-- The optional Include element can be used to simplify the XML file.  By
+including -->
+<!ELEMENT Include EMPTY>
+
+<!-- The value of the tag property should be the name of a Section node. -->
+<!ATTLIST Include tag CDATA #REQUIRED>
+
+<!-- The Property node describes the properties for a specific peice of
+     hardware.  Property nodes can have zero or more EnumConstraintValue
+     nodes.  The EnumConstraintValue nodes are only valid if the constraint
+     attribute is equal to "enum". -->
+<!ELEMENT Property (EnumConstraintValue*)>
+
+<!-- The attributes of the Property node.  The attributes are:
+       constraint     - Constraints on property values.  Defines the what kind of
+                        property will be created.  Valid values are:
+
+                        bounded           - A bounded property.  Requires the 
+			                    min and max attributes to be set.
+	                enum              - A list of enumerations.
+	                none              - No constraints, property can hold 
+	                                    any valid MATLAB variable.
+	                zeroorpositive    - Value which must be greater than 
+	                                    zero.
+	                zeroinforpositive - Value which must be greater than 
+	                                    zero or infinite.
+                        positive          - Value which must be positive.
+	                inforpositive     - Value must be positive or infinite.
+       deviceSpecific - Indicates whether or not the property is vendor
+                        specific.  Valid values are:
+                          true  - The property is vendor specific.
+                          false - The property is not vendor specific.
+       name           - The property name as it should be listed
+       readOnly       - The read-only status of the property.  Valid values 
+                        are:
+                          always         - The property is always read-only.
+                          never          - The property is never read-only.
+                          whileRunning   - The property is read-only when the 
+                                           device's Running property is "on".
+       type           - The data type of the property.  Valid values are:
+                          cell   - Value is a cell array.  Requires a 
+                                   constraint value of none.
+                          double - Value is a double value.  Requires a 
+                                   constraint value of none, zeroorpositive, 
+                                   zeroinforpositive, or bounded.
+                          int    - Value is an integer value.  Requires a 
+                                   constraint value of none, zeroorpositive, 
+                                   zeroinforpositive, positive, inforpositive,
+                                   or bounded.
+                          string - Value is a string.  Requires a constraint 
+                                   value of none or enum.
+       min            - The minimum allowable value of the property.
+       max            - The maximum allowable value of the property.
+       optionial      - If set to "on", the property will not be created and 
+                        added to the object by default.  Instead, the adaptor 
+                        must explicity create the object.  If not present or 
+                        set to "off" the property will automatically be created
+                        and added to the object.
+       default        - The default value of the property.
+
+     The constraint, deviceSpecific, name, readOnly, and type attributes are 
+     required.  The min, max, optional, and default attributes are optional. 
+-->
+<!ATTLIST Property constraint (bounded | enum | none | zeroorpositive | zeroinforpositive | positive | inforpositive)  #REQUIRED
+		   deviceSpecific (true | false)                  #REQUIRED
+		   name           CDATA                           #REQUIRED
+		   readOnly       (always | never | whileRunning) #REQUIRED
+		   type           (cell | double | int | string)  #REQUIRED
+		   min            CDATA                           #IMPLIED
+		   max            CDATA                           #IMPLIED
+		   optional       (on | off)                      #IMPLIED
+		   default        CDATA                           #IMPLIED>
+
+<!-- The EnumConstraintValue does not have any sub-nodes.  Both the id and
+     name attributes are required. The name of the constraint is the name
+     that will be displayed within MATLAB.  The id can be set to any unique
+     identifier.  It is typically set to some value that is recognized by
+     the vendor's SDK.--> 
+<!ELEMENT EnumConstraintValue EMPTY>
+<!ATTLIST EnumConstraintValue id   CDATA #REQUIRED
+                              name CDATA #REQUIRED>
+
+<!-- The Source element defines a source to be added to the object.  The
+     name is the name of the sources and will the value that appears in the
+     source's "Name" property.  The id can be any unique identifier.  It
+     is typically set to some value that is recognized by the vendor's SDK.
+-->
+<!ELEMENT Source EMPTY>
+<!ATTLIST Source id   CDATA #REQUIRED
+                 name CDATA #REQUIRED>
+
+<!-- The TriggerInfo node must have one or more TriggerSource nodes. It
+     defines the triggers that will be available for a particular device. -->
+<!ELEMENT TriggerInfo (Include*, TriggerSource+)>
+
+<!-- Each TriggerSource must have one or more TriggerCondition nodes. The
+     TriggerSource node has two attributes, id and name, which are both
+     required. The name will appear in the TriggerSource field of the data
+     returned by the TRIGGERINFO function.  The id can be any unique
+     identifier.  It is typically set to some value that is recognized by
+     the vendor's SDK. -->
+<!ELEMENT TriggerSource (TriggerCondition*, Include*)>
+<!ATTLIST TriggerSource id   CDATA #REQUIRED
+                        name CDATA #REQUIRED>
+			
+<!-- The TriggerCondition is a terminal node.  Both the name and id
+     attributes are required.  The name will appear in the TriggerCondition
+     field of the data returned by the TRIGGERINFO function.  The id can be
+     any unique identifier.  It is typically set to some value that is
+     recognized by the vendor's SDK. -->
+<!ELEMENT TriggerCondition EMPTY>
+<!ATTLIST TriggerCondition id   CDATA #REQUIRED
+                           name CDATA #REQUIRED>
+
+]>
+<!--
+
+KL 10-09-2003
+Copyright 2001-2004 The MathWorks, Inc.
+
+$Revision: 1.1.6.4 $
+$Date: 2004/12/01 20:11:30 $
+
+-->
+<ImageAcquisitionInfo>
+	<Help>
+	   	<AdaptorHelp property="Brightness">Specify the lightness or darkness of an image using relative values.
+
+Brightness controls the black level of an image. When brightness is controlled 
+using relative values, the unit for brightness is device specific. For more 
+information about controlling the brightness feature of a particular camera, 
+see the documentation that came with the device.
+
+Depending on the acquisition device, this property may have an associated 
+BrightnessMode, BrightnessAbsolute, or BrightnessControl property.
+
+Setting the Brightness property will set the BrightnessMode property, if 
+available, to 'manual' and the BrightnessControl property, if available, to 
+'relative'.
+
+<SeeAlso>BrightnessAbsolute, BrightnessControl, BrightnessMode.</SeeAlso></AdaptorHelp>
+	   
+	   	<AdaptorHelp property="BrightnessMode">Specify whether the Brightness property is controlled manually or automatically.
+
+If specified as 'auto', the device manages brightness. If specified as 
+'manual', you can control brightness using the Brightness or the 
+BrightnessAbsolute property, if available.
+
+The Brightness, BrightnessAbsolute, BrightnessControl, and BrightnessMode 
+properties are closely related. When you specify a value for either the 
+Brightness or BrightnessAbsolute property, the BrightnessMode property is 
+automatically set to 'manual'. 
+
+If you change the BrightnessMode property from 'auto' to 'manual', the 
+Brightness property is automatically set back to the value stored by that 
+property if the BrightnessControl value is 'relative'. Otherwise, the 
+BrightnessAbsolute property is automatically set back to the value stored 
+by that property if the BrightnessControl value is 'absolute'.
+
+<SeeAlso>Brightness, BrightnessAbsolute, BrightnessControl.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="BrightnessAbsolute">Specify the lightness or darkness of an image using absolute values.
+	   	
+BrightnessAbsolute controls lightness or darkness by specifying the black 
+level offset. You specify the value as a percentage. For more information 
+about controlling the brightness feature of a particular camera, see the 
+documentation that came with the device.
+
+Depending on the acquisition device, this property may have an associated mode 
+property allowing this value to be controlled automatically by the device or 
+for it to be manually configured.
+
+Setting the BrightnessAbsolute property will set the BrightnessMode property, 
+if available, to 'manual' and the BrightnessControl property to 'absolute'.
+
+<SeeAlso>Brightness, BrightnessMode, BrightnessControl.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="BrightnessControl">Specify whether the brightness feature is controlled by relative or absolute values.
+	   	
+If specified as 'relative', brightness is controlled by the value specified by 
+the Brightness property. If specified as 'absolute', brightness is controlled 
+by the value specified by the BrightnessAbsolute property.
+
+<SeeAlso>Brightness.</SeeAlso></AdaptorHelp>   	
+	   		   	
+	   	<AdaptorHelp property="AutoExposure">Specify the exposure using relative values.
+	   	
+AutoExposure specifies the exposure value. When exposure is controlled using 
+relative values, the unit for exposure is device specific. For more 
+information about controlling the exposure feature of a particular camera, see 
+the documentation that came with the device.
+
+Depending on the acquisition device, this property may have an associated 
+AutoExposureMode, AutoExposureAbsolute, or AutoExposureControl property.
+
+Setting the AutoExposure property will set the AutoExposureMode property, if 
+available, to 'manual' and the AutoExposureControl property, if available, to 
+'relative'.
+
+<SeeAlso>AutoExposureAbsolute, AutoExposureControl, AutoExposureMode.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="AutoExposureMode">Specify whether the AutoExposure property is controlled manually or automatically.
+
+If specified as 'auto', the device manages the exposure setting. If specified 
+as 'manual', you can control exposure using the AutoExposure or the 
+AutoExposureAbsolute property, if available.
+
+The AutoExposure, AutoExposureAbsolute, AutoExposureControl, and 
+AutoExposureMode properties are closely related. When you specify a value for 
+either the AutoExposure or AutoExposureAbsolute property, the AutoExposureMode 
+property is automatically set to 'manual'.
+
+If you change the AutoExposureMode property from 'auto' to 'manual', the 
+AutoExposure property is automatically set back to the value stored by that 
+property if the AutoExposureControl value is 'relative'. Otherwise, the 
+AutoExposureAbsolute property is automatically set back to the value stored by 
+that property if the AutoExposureControl value is 'absolute'.
+
+<SeeAlso>AutoExposure, AutoExposureAbsolute, AutoExposureControl.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="AutoExposureAbsolute">Specify the exposure using absolute values.
+	   	
+AutoExposureAbsolute specifies the exposure value (EV). An EV number defines 
+certain combinations of aperture and shutter speed settings that determine 
+exposure. For more information about controlling the AutoExposure feature of a 
+particular camera, see the documentation that came with the device.
+
+Depending on the acquisition device, this property may have an associated mode 
+property allowing this value to be controlled automatically by the device or 
+for it to be manually configured.
+
+Setting the AutoExposureAbsolute property will set the AutoExposureMode 
+property, if available, to 'manual' and the AutoExposureControl property to 
+'absolute'.
+
+<SeeAlso>AutoExposure, AutoExposureMode, AutoExposureControl.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="AutoExposureControl">Specify whether the exposure feature is controlled by relative or absolute values.
+	   	
+If specified as 'relative', exposure is controlled by the value specified by 
+the AutoExposure property. If specified as 'absolute', exposure is controlled 
+by the value specified by the AutoExposureAbsolute property.
+
+<SeeAlso>AutoExposure.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="Sharpness">Specify the image sharpness using relative values.
+
+Sharpness specifies the subjective impression of the amount of detailed 
+information provided in a picture image. When sharpness is controlled using 
+relative values, the unit for sharpness is device specific. For more 
+information about controlling the sharpness feature of a particular camera, 
+see the documentation that came with the device.
+
+Depending on the acquisition device, this property may have an associated 
+SharpnessMode, SharpnessAbsolute, or SharpnessControl property.
+
+Setting the Sharpness property will set the SharpnessMode property, if 
+available, to 'manual' and the SharpnessControl property, if available, to 
+'relative'.
+
+<SeeAlso>SharpnessAbsolute, SharpnessControl, SharpnessMode.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="SharpnessMode">Specify whether the Sharpness property is controlled manually or automatically.
+
+If specified as 'auto', the device manages the sharpness setting. If specified 
+as 'manual', you can control sharpness using the Sharpness or the 
+SharpnessAbsolute property, if available.
+
+The Sharpness, SharpnessAbsolute, SharpnessControl, and SharpnessMode 
+properties are closely related. When you specify a value for either the 
+Sharpness or SharpnessAbsolute property, the SharpnessMode property is 
+automatically set to 'manual'. 
+
+If you change the SharpnessMode property from 'auto' to 'manual', the 
+Sharpness property is automatically set back to the value stored by that 
+property if the SharpnessControl value is 'relative'. Otherwise, the 
+SharpnessAbsolute property is automatically set back to the value stored by 
+that property if the SharpnessControl value is 'absolute'.
+
+<SeeAlso>Sharpness.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="SharpnessAbsolute">Specify the sharpness using absolute values.
+	   	
+SharpnessAbsolute specifies the subjective impression of the amount of 
+detailed information provided in a picture image. For more information about 
+controlling the sharpness feature of a particular camera, see the 
+documentation that came with the device.
+
+Depending on the acquisition device, this property may have an associated mode 
+property allowing this value to be controlled automatically by the device or 
+for it to be manually configured.
+
+Setting the SharpnessAbsolute property will set the SharpnessMode property, if 
+available, to 'manual' and the SharpnessControl property to 'absolute'.
+
+<SeeAlso>Sharpness, SharpnessMode, SharpnessControl.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="SharpnessControl">Specify whether the sharpness feature is controlled by relative or absolute values.
+	   	
+If specified as 'relative', sharpness is controlled by the value specified by 
+the Sharpness property. If specified as 'absolute', sharpness is controlled by 
+the value specified by the SharpnessAbsolute property.
+
+<SeeAlso>Sharpness.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="WhiteBalance">Specify the color temperature of white using relative values.
+	   	
+The term "white balance" describes how a digital camera adjusts the color 
+balance to compensate for the ambient lighting. You specify WhiteBalance as a 
+vector containing two values. In YUV video format, WhiteBalance specifies U 
+and V values. In RGB video format, WhiteBalance specifies B and R values. For 
+more information about specifying the white balance on a particular camera, 
+see the documentation that came with the device.
+
+Depending on the acquisition device, this property may have an associated 
+WhiteBalanceMode, WhiteBalanceAbsolute, or WhiteBalanceControl property.
+
+Setting the WhiteBalance property will set the WhiteBalanceMode property, if 
+available, to 'manual' and the WhiteBalanceControl property, if available, to 
+'relative'.
+
+<SeeAlso>WhiteBalanceAbsolute, WhiteBalanceControl, WhiteBalanceMode.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="WhiteBalanceMode">Specify whether the WhiteBalance property is controlled manually or automatically.
+
+If specified as 'auto', the device manages the white balance adjustment. If 
+specified as 'manual', you can control white balance by using the WhiteBalance 
+or the WhiteBalanceAbsolute property, if available.
+
+The WhiteBalance, WhiteBalanceAbsolute, WhiteBalanceControl, and 
+WhiteBalanceMode properties are closely related. When you specify a value for 
+either the WhiteBalance or WhiteBalanceAbsolute property, the WhiteBalanceMode 
+property is automatically set to 'manual'. 
+
+If you change the WhiteBalanceMode property from 'auto' to 'manual', the 
+WhiteBalance property is automatically set back to the value stored by that 
+property if the WhiteBalanceControl value is 'relative'. Otherwise, the 
+WhiteBalanceAbsolute property is automatically set back to the value stored by 
+that property if the WhiteBalanceControl value is 'absolute'.
+
+<SeeAlso>WhiteBalance.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="WhiteBalanceAbsolute">Specify the color temperature of white using absolute values.
+	   	
+The term "white balance" describes how a digital camera adjusts the color 
+balance to compensate for the ambient lighting. Using the WhiteBalanceAbsolute 
+property, you can specify the color temperature (in Kelvin) of the white value 
+the camera uses to calibrate colors. For more information about specifying the 
+white balance on a particular camera, see the documentation that came with the 
+device.
+
+Depending on the acquisition device, this property may have an associated mode 
+property allowing this value to be controlled automatically by the device or 
+for it to be manually configured.
+
+Setting the WhiteBalanceAbsolute property will set the WhiteBalanceMode 
+property, if available, to 'manual' and the WhiteBalanceControl property to 
+'absolute'.
+
+<SeeAlso>WhiteBalance, WhiteBalanceMode, WhiteBalanceControl.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="WhiteBalanceControl">Specify whether the white balance feature is controlled by relative or absolute values.
+	   	
+If specified as 'relative', white balance is controlled by the value specified 
+by the WhiteBalance property. If specified as 'absolute', white balance is 
+controlled by the value specified by the WhiteBalanceAbsolute property.
+
+<SeeAlso>WhiteBalance.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="Hue">Specify color on color circle using relative values.
+	   	 
+Hue specifies color as an angle on the color circle. When hue is controlled 
+using relative values, the unit for hue is device specific. For more 
+information about controlling the hue feature of a particular camera, see the 
+documentation that came with the device.
+
+Depending on the acquisition device, this property may have an associated 
+HueMode, HueAbsolute, or HueControl property.
+
+Setting the Hue property will set the HueMode property, if available, to 
+'manual' and the HueControl property, if available, to 'relative'.
+
+<SeeAlso>HueAbsolute, HueControl, HueMode.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="HueMode">Specify whether the Hue property is controlled manually or automatically.
+
+If specified as 'auto', the device manages the hue value. If specified as 
+'manual', you can control hue by using the Hue or the HueAbsolute property, if 
+available. 
+
+The Hue, HueAbsolute, HueControl, and HueMode properties are closely related. 
+When you specify a value for either the Hue or HueAbsolute property, the 
+HueMode property is automatically set to 'manual'.
+
+If you change the HueMode property from 'auto' to 'manual', the Hue property 
+is automatically set back to the value stored by that property if the 
+HueControl value is 'relative'. Otherwise, HueAbsolute property is 
+automatically set back to the value stored by that property if the HueControl 
+value is 'absolute'.
+
+<SeeAlso>Hue.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="HueAbsolute">Specify color on color circle using absolute values.
+	  
+Hue specifies color as an angle on the color circle. You specify the angle in 
+degrees. Positive values specify an angle counterclockwise from the origin; 
+negative values specify angles clockwise from the origin. For more information 
+on specifying Hue with a particular camera, see the documentation that came 
+with the device.
+	  
+Depending on the acquisition device, this property may have an associated mode 
+property allowing this value to be controlled automatically by the device or 
+for it to be manually configured.
+
+Setting the HueAbsolute property will set the HueMode property, if available, 
+to 'manual' and the HueControl property to 'absolute'.
+
+<SeeAlso>Hue, HueMode, HueControl.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="HueControl">Specify whether the hue feature is controlled by relative or absolute values.
+	   	
+If specified as 'relative', hue is controlled by the value specified by the 
+Hue property. If specified as 'absolute', hue is controlled by the value 
+specified by the HueAbsolute property.
+
+<SeeAlso>Hue.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="Saturation">Specify the intensity of colors using relative values.
+
+Saturation specifies the intensity of the colors. Intensity is determined by 
+the amount of gray in a color. A color with more gray is considered less 
+saturated; a color with more gray is considered more saturated. When 
+saturation is controlled using relative values, the unit for saturation is 
+device specific. For more information about controlling the color saturation 
+of a particular camera, see the documentation that came with the device.
+
+Depending on the acquisition device, this property may have an associated 
+SaturationMode, SaturationAbsolute, or SaturationControl property.
+
+Setting the Saturation property will set the SaturationMode property, if 
+available, to 'manual' and the SaturationControl property, if available, to 
+'relative'.
+
+<SeeAlso>SaturationAbsolute, SaturationControl, SaturationMode.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="SaturationMode">Specify whether the Saturation property is controlled manually or automatically.
+
+If specified as 'auto', the device manages the saturation value. If specified 
+as 'manual', you can control saturation by using the Saturation or the 
+SaturationAbsolute property, if available.
+
+The Saturation, SaturationAbsolute, SaturationControl, and SaturationMode 
+properties are closely related. When you specify a value for either the 
+Saturation or SaturationAbsolute property, the SaturationMode property is 
+automatically set to 'manual'. 
+
+If you change the SaturationMode property from 'auto' to 'manual', the 
+Saturation property is automatically set back to the value stored by that 
+property if the SaturationControl value is 'relative'. Otherwise, the 
+SaturationAbsolute property is automatically set back to the value stored by 
+that property if the SaturationControl value is 'absolute'.
+
+<SeeAlso>Saturation.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="SaturationAbsolute">Specify the intensity of colors using absolute values.
+
+Saturation specifies the intensity of the colors. Intensity is determined by 
+the amount of gray in a color. A color with more gray is considered less 
+saturated; a color with more gray is considered more saturated. You specify 
+the saturation level as a percentage with reference to the original image at 
+100 percent. For more information about controlling the color saturation of a 
+particular camera, see the documentation that came with the device.
+
+Depending on the acquisition device, this property may have an associated mode 
+property allowing this value to be controlled automatically by the device or 
+for it to be manually configured.
+
+Setting the SaturationAbsolute property will set the SaturationMode property, 
+if available, to 'manual' and the SaturationControl property to 'absolute'.
+
+<SeeAlso>Saturation, SaturationMode, SaturationControl.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="SaturationControl">Specify whether the saturation feature is controlled by relative or absolute values.
+	   	
+If specified as 'relative', saturation is controlled by the value specified by 
+the Saturation property. If specified as 'absolute', saturation is controlled 
+by the value specified by the SaturationAbsolute property.
+
+<SeeAlso>Saturation.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="Gamma">Specify the gamma level using relative values.
+	   	
+The gamma defines the function between the light level input and the light 
+level picture output. When gamma is controlled using relative values, the unit 
+for gamma is device specific. For more information on the light level relation 
+function and the Gamma value, see the documentation that came with the device.
+
+Depending on the acquisition device, this property may have an associated 
+GammaMode, GammaAbsolute, or GammaControl property.
+
+Setting the Gamma property will set the GammaMode property, if available, to 
+'manual' and the GammaControl property, if available, to 'relative'.
+   	
+<SeeAlso>GammaAbsolute, GammaControl, GammaMode.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="GammaMode">Specify whether the Gamma property is controlled manually or automatically.
+
+If specified as 'auto', the device manages the gamma value. If specified as 
+'manual', you can control gamma by using the Gamma or the GammaAbsolute 
+property, if available.
+
+The Gamma, GammaAbsolute, GammaControl, and GammaMode properties are closely 
+related. When you specify a value for either the Gamma or GammaAbsolute 
+property, the GammaMode property is automatically set to 'manual'.
+
+If you change the GammaMode property from 'auto' to 'manual', the Gamma 
+property is automatically set back to the value stored by that property if the 
+GammaControl value is 'relative'. Otherwise, the GammaAbsolute property is 
+automatically set back to the value stored by that property if the 
+GammaControl value is 'absolute'.
+
+<SeeAlso>Gamma.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="GammaAbsolute">Specify the gamma level using absolute values.
+
+The gamma defines the function between the light level input and the light 
+level picture output. For more information on the light level relation 
+function and the Gamma value, see the documentation that came with the device.
+
+Depending on the acquisition device, this property may have an associated mode 
+property allowing this value to be controlled automatically by the device or 
+for it to be manually configured.
+
+Setting the GammaAbsolute property will set the GammaMode property, if 
+available, to 'manual' and the GammaControl property to 'absolute'.
+
+<SeeAlso>Gamma, GammaMode, GammaControl.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="GammaControl">Specify whether the gamma feature is controlled by relative or absolute values.
+	   	
+If specified as 'relative', gamma is controlled by the value specified by the 
+Gamma property. If specified as 'absolute', gamma is controlled by the value 
+specified by the GammaAbsolute property.
+
+<SeeAlso>Gamma.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="Shutter">Specify the amount of time that the sensor is exposed to light using relative values.
+	   	
+The Shutter property specifies the amount of time that the sensor is exposed 
+to light, also known as integration time. When shutter is controlled using 
+relative values, the unit for shutter is device specific. For more information 
+about setting the shutter speed of a particular camera, see the documentation 
+that came with the device.
+
+Depending on the acquisition device, this property may have an associated 
+ShutterMode, ShutterAbsolute, or ShutterControl property.
+
+Setting the Shutter property will set the ShutterMode property, if available, 
+to 'manual' and the ShutterControl property, if available, to 'relative'.
+
+<SeeAlso>ShutterAbsolute, ShutterControl, ShutterMode.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="ShutterMode">Specify whether the Shutter property is controlled manually or automatically.
+
+If specified as 'auto', the device manages the shutter value. If specified as 
+'manual', you can control shutter by using the Shutter or the ShutterAbsolute 
+property, if available. 
+
+The Shutter, ShutterAbsolute, ShutterControl, and ShutterMode properties are 
+closely related. When you specify a value for either the Shutter or 
+ShutterAbsolute property, the ShutterMode property is automatically set to 
+'manual'.
+
+If you change the ShutterMode property from 'auto' to 'manual', the Shutter 
+property is automatically set back to the value stored by that property if the 
+ShutterControl value is 'relative'. Otherwise, the ShutterAbsolute property is 
+automatically set back to the value stored by that property if the 
+ShutterControl value is 'absolute'.
+
+<SeeAlso>Shutter.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="ShutterAbsolute">Specify the amount of time that the sensor is exposed to light using absolute values.
+	   	
+The Shutter property specifies the amount of time that the sensor is exposed 
+to light, also known as integration time. You specify the shutter speed in 
+seconds. For more information about setting the shutter speed of a particular 
+camera, see the documentation that came with the device.
+
+Depending on the acquisition device, this property may have an associated mode 
+property allowing this value to be controlled automatically by the device or 
+for it to be manually configured.
+
+Setting the ShutterAbsolute property will set the ShutterMode property, if 
+available, to 'manual' and the ShutterControl property to 'absolute'.
+
+<SeeAlso>Shutter, ShutterMode, ShutterControl.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="ShutterControl">Specify whether the shutter feature is controlled by relative or absolute values.
+	   	
+If specified as 'relative', shutter is controlled by the value specified by 
+the Shutter property. If specified as 'absolute', shutter is controlled by the 
+value specified by the ShutterAbsolute property.
+
+<SeeAlso>Shutter.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="Gain">Specify the gain adjustment using relative values.
+
+Gain describes the circuit gain on the original image. When gain is controlled 
+using relative values, the unit for gain is device specific. For more 
+information about controlling gain in a particular camera, see the documention 
+that came with the device.
+
+Depending on the acquisition device, this property may have an associated 
+GainMode, GainAbsolute, or GainControl property.
+
+Setting the Gain property will set the GainMode property, if available, to 
+'manual' and the GainControl property, if available, to 'relative'.
+
+<SeeAlso>GainAbsolute, GainControl, GainMode.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="GainMode">Specify whether the Gain property is controlled manually or automatically.
+
+If specified as 'auto', the device manages the gain value. If specified as 
+'manual', you can control gain by using the Gain or the GainAbsolute property, 
+if available.
+
+The Gain, GainAbsolute, GainControl, and GainMode properties are closely 
+related. When you specify a value for either the Gain or GainAbsolute 
+property, the GainMode property is automatically set to 'manual'. 
+
+If you change the GainMode property from 'auto' to 'manual', the Gain property 
+is automatically set back to the value stored by that property if the 
+GainControl value is 'relative'. Otherwise, the GainAbsolute property is 
+automatically set back to the value stored by that property if the GainControl 
+value is 'absolute'.
+
+<SeeAlso>Gain.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="GainAbsolute">Specify the gain adjustment using absolute values.
+	   	
+Gain describes the circuit gain in decibels (dB) with reference to the 
+original image at 0. For more information about setting the gain adjustment 
+for a particular camera, see the documentation that came with the device.
+
+Depending on the acquisition device, this property may have an associated mode 
+property allowing this value to be controlled automatically by the device or 
+for it to be manually configured.
+
+Setting the GainAbsolute property will set the GainMode property, if 
+available, to 'manual' and the GainControl property to 'absolute'.
+
+<SeeAlso>Gain, GainMode, GainControl.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="GainControl">Specify whether the gain feature is controlled by relative or absolute values.
+	   	
+If specified as 'relative', gain is controlled by the value specified by the 
+Gain property. If specified as 'absolute', gain is controlled by the value 
+specified by the GainAbsolute property.
+
+<SeeAlso>Gain.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="Iris">Specify the camera aperture opening using relative values.
+
+A camera's iris (or aperture) is the opening through which light enters the 
+camera. Camera's provide a mechanism through which you can control the size of 
+this opening. When iris is controlled using relative values, the unit for iris 
+is device specific. For more information about controlling the iris of a 
+particular camera, see the documentation that came with the device.
+
+Depending on the acquisition device, this property may have an associated 
+IrisMode, IrisAbsolute, or IrisControl property.
+
+Setting the Iris property will set the IrisMode property, if available, to 
+'manual' and the IrisControl property, if available, to 'relative'.
+
+<SeeAlso>IrisAbsolute, IrisControl, IrisMode.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="IrisMode">Specify whether the Iris property is controlled manually or automatically.
+
+If specified as 'auto', the device manages the iris value. If specified as 
+'manual', you can control iris by using the Iris or the IrisAbsolute property, 
+if available.
+
+The Iris, IrisAbsolute, IrisControl, and IrisMode properties are closely 
+related. When you specify a value for either the Iris or IrisAbsolute 
+property, the IrisMode property is automatically set to 'manual'. 
+
+If you change the IrisMode property from 'auto' to 'manual', the Iris property 
+is automatically set back to the value stored by that property if the 
+IrisControl value is 'relative'. Otherwise, the IrisAbsolute property is 
+automatically set back to the value stored by that property if the IrisControl 
+value is 'absolute'.
+
+<SeeAlso>Iris.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="IrisAbsolute">Specify the camera aperture opening using absolute values.
+	   	
+A camera's iris (or aperture) is the opening through which light enters the 
+camera. Camera's provide a mechanism through which you can control the size of 
+this opening. Using the IrisAbsolute property, you can specify the size as an 
+F number. For more information about controlling the iris of a particular 
+camera, see the documentation that came with the device.
+	  
+Depending on the acquisition device, this property may have an associated mode 
+property allowing this value to be controlled automatically by the device or 
+for it to be manually configured.
+
+Setting the IrisAbsolute property will set the IrisMode property, if 
+available, to 'manual' and the IrisControl property to 'absolute'.
+
+<SeeAlso>Iris, IrisMode, IrisControl.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="IrisControl">Specify whether the iris feature is controlled by relative or absolute values.
+	   	
+If specified as 'relative', aperture is controlled by the value specified by 
+the Iris property. If specified as 'absolute', aperture is controlled by the 
+value specified by the IrisAbsolute property.
+
+<SeeAlso>Iris.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="Focus">Specify the camera-to-subject distance using relative values.
+
+Focus is the process of adjusting the distance setting on a camera's lens 
+system to produce a sharp image. The Focus property specifies the 
+camera-to-subject distance. When focus is controlled using relative values, 
+the unit for focal distance is device specific. For more information about the 
+focusing features of a specific camera, see the documentation that came with 
+the device.
+
+Depending on the acquisition device, this property may have an associated 
+FocusMode, FocusAbsolute, or FocusControl property.
+
+Setting the Focus property will set the FocusMode property, if available, to 
+'manual' and the FocusControl property, if available, to 'relative'.
+
+<SeeAlso>FocusAbsolute, FocusControl, FocusMode.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="FocusMode">Specify whether the Focus property is controlled manually or automatically.
+
+If specified as 'auto', the device manages the focus value. If specified as 
+'manual', you can control focus by using the Focus or the FocusAbsolute 
+property, if available.
+
+The Focus, FocusAbsolute, FocusControl, and FocusMode properties are closely 
+related. When you specify a value for either the Focus or FocusAbsolute 
+property, the FocusMode property is automatically set to 'manual'. 
+
+If you change the FocusMode property from 'auto' to 'manual', the Focus 
+property is automatically set back to the value stored by that property if the 
+FocusControl value is 'relative'. Otherwise, the FocusAbsolute property is 
+automatically set back to the value stored by that property if the 
+FocusControl value is 'absolute'.
+
+<SeeAlso>Focus.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="FocusAbsolute">Specify the camera-to-subject distance using absolute values.
+	   	
+FocusAbsolute is the process of adjusting the distance setting on a camera's 
+lens system to produce a sharp image. The FocusAbsolute property specifies the 
+camera-to-subject distance in meters. For more information about the focusing 
+features of a specific camera, see the documentation that came with the device.
+ 
+Depending on the acquisition device, this property may have an associated mode 
+property allowing this value to be controlled automatically by the device or 
+for it to be manually configured.
+
+Setting the FocusAbsolute property will set the FocusMode property, if 
+available, to 'manual' and the FocusControl property to 'absolute'.
+
+<SeeAlso>Focus, FocusMode, FocusControl.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="FocusControl">Specify whether the focus feature is controlled by relative or absolute values.
+	   	
+If specified as 'relative', focus is controlled by the value specified by the 
+Focus property. If specified as 'absolute', focus is controlled by the value 
+specified by the FocusAbsolute property.
+
+<SeeAlso>Focus.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="Temperature">Specify target temperature for the device using relative values.
+
+Temperature specifies the target temperature at which you want the camera to 
+operate. For more information about the temperature capabilities of a 
+particular camera, see the documentation that came with the device.
+
+Depending on the acquisition device, this property may have an associated 
+TemperatureMode, TemperatureAbsolute, or TemperatureControl property.
+
+Setting the Temperature property will set the TemperatureMode property, if 
+available, to 'manual' and the TemperatureControl property, if available, to 
+'relative'.
+
+<SeeAlso>TemperatureAbsolute, TemperatureControl, TemperatureMode.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="TemperatureMode">Specify whether the Temperature property is controlled manually or automatically.
+
+If specified as 'auto', the device manages the target temperature value. If 
+specified as 'manual', you can control the target temperature by using the 
+Temperature or the TemperatureAbsolute property, if available. 
+
+The Temperature, TemperatureAbsolute, TemperatureControl, and TemperatureMode 
+properties are closely related. When you specify a value for either the 
+Temperature or TemperatureAbsolute property, the TemperatureMode property is 
+automatically set to 'manual'. 
+
+If you change the TemperatureMode property from 'auto' to 'manual', the 
+Temperature property is automatically set back to the value stored by that 
+property if the TemperatureControl value is 'relative'. Otherwise, the 
+TemperatureAbsolute property is automatically set back to the value stored by 
+that property if the TemperatureControl value is 'absolute'.
+
+<SeeAlso>Temperature.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="TemperatureAbsolute">Specify target temperature for the device using absolute values.
+	   	
+TemperatureAbsolute specifies the target temperature at which you want the 
+camera to operate. For more information about the temperature capabilities of 
+a particular camera, see the documentation that came with the device.
+
+Depending on the acquisition device, this property may have an associated mode 
+property allowing this value to be controlled automatically by the device or 
+for it to be manually configured.
+
+Setting the TemperatureAbsolute property will set the TemperatureMode 
+property, if available, to 'manual' and the TemperatureControl property to 
+'absolute'.
+
+<SeeAlso>Temperature, TemperatureMode, TemperatureControl.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="TemperatureControl">Specify whether the temperature feature is controlled by relative or absolute values.
+	   	
+If specified as 'relative', target temperature is controlled by the value 
+specified by the Temperature property. If specified as 'absolute', target 
+temperature is controlled by the value specified by the TemperatureAbsolute 
+property.
+
+<SeeAlso>Temperature.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="Zoom">Specify the lens magnification using relative values.
+
+Zoom describes the lens magnification. When lens magnification is controlled 
+using relative values, the unit of magnification is device specific. For more 
+information on the lens magnification of a particular camera, see the 
+documentation that came with the device. 
+
+Depending on the acquisition device, this property may have an associated 
+ZoomMode, ZoomAbsolute, or ZoomControl property.
+
+Setting the Zoom property will set the ZoomMode property, if available, to 
+'manual' and the ZoomControl property, if available, to 'relative'.
+
+<SeeAlso>ZoomAbsolute, ZoomControl, ZoomMode.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="ZoomMode">Specify whether the Zoom property is controlled manually or automatically.
+
+If specified as 'auto', the device manages the zoom value. If specified as 
+'manual', you can control zoom by using the Zoom or the ZoomAbsolute property, 
+if available.
+
+The Zoom, ZoomAbsolute, ZoomControl, and ZoomMode properties are closely 
+related. When you specify a value for either the Zoom or ZoomAbsolute 
+property, the ZoomMode property is automatically set to 'manual'. 
+
+If you change the ZoomMode property from 'auto' to 'manual', the Zoom 
+property is automatically set back to the value stored by that property if 
+the ZoomControl value is 'relative'. Otherwise, the ZoomAbsolute property is 
+automatically set back to the value stored by that property if the ZoomControl 
+value is 'absolute'.
+
+<SeeAlso>Zoom.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="ZoomAbsolute">Specify the lens magnification using absolute values.
+	   	
+ZoomAbsolute describes the lens magnification in power relative to the 
+original image. For more information on the magnification power of a 
+particular camera, see the documentation that came with the device. 
+	   	
+Depending on the acquisition device, this property may have an associated mode 
+property allowing this value to be controlled automatically by the device or 
+for it to be manually configured.
+
+Setting the ZoomAbsolute property will set the ZoomMode property, if 
+available, to 'manual' and the ZoomControl property to 'absolute'.
+
+<SeeAlso>Zoom, ZoomMode, ZoomControl.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="ZoomControl">Specify whether the zoom feature is controlled by relative or absolute values.
+	   	
+If specified as 'relative', zoom is controlled by the value specified by the 
+Zoom property. If specified as 'absolute', zoom is controlled by the value 
+specified by the ZoomAbsolute property.
+
+<SeeAlso>Zoom.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="Pan">Specify camera horizontal positioning using relative values.
+
+Pan specifies the horizontal positioning of a camera. When pan is controlled 
+using relative values, the unit for horizontal positioning is device specific. 
+For more information controlling the panning of a particular camera, see the 
+documentation that came with the device. 
+
+Depending on the acquisition device, this property may have an associated 
+PanMode, PanAbsolute, or PanControl property.
+
+Setting the Pan property will set the PanMode property, if available, to 
+'manual' and the PanControl property, if available, to 'relative'.
+
+<SeeAlso>PanAbsolute, PanControl, PanMode.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="PanMode">Specify whether the Pan property is controlled manually or automatically.
+
+If specified as 'auto', the device manages the pan value. If specified as 
+'manual', you can control pan by using the Pan or the PanAbsolute property, if 
+available.
+
+The Pan, PanAbsolute, PanControl, and PanMode properties are closely related. 
+When you specify a value for either the Pan or PanAbsolute property, the 
+PanMode property is automatically set to 'manual'. 
+
+If you change the PanMode property from 'auto' to 'manual', the Pan property 
+is automatically set back to the value stored by that property if the 
+PanControl value is 'relative'. Otherwise, the PanAbsolute property is 
+automatically set back to the value stored by that property if the PanControl 
+value is 'absolute'.
+
+<SeeAlso>Pan.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="PanAbsolute">Specify camera horizontal positioning using absolute values.
+	   	
+PanAbsolute specifies the horizontal positioning of a camera in degrees. 
+Positive values indicate clockwise movement from the origin (the camera 
+rotates clockwise when viewed from above); negative values indicate 
+counterclockwise movement from the origin. For more information controlling 
+the panning of a particular camera, see the documentation that came with the 
+device. 
+
+Depending on the acquisition device, this property may have an associated mode 
+property allowing this value to be controlled automatically by the device or 
+for it to be manually configured.
+
+Setting the PanAbsolute property will set the PanMode property, if available, 
+to 'manual' and the PanControl property to 'absolute'.
+
+<SeeAlso>Pan, PanMode, PanControl.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="PanControl">Specify whether the pan feature is controlled by relative or absolute values.
+	   	
+If specified as 'relative', pan is controlled by the value specified by the 
+Pan property. If specified as 'absolute', pan is controlled by the value 
+specified by the PanAbsolute property.
+
+<SeeAlso>Pan.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="Tilt">Specify camera vertical positioning using relative values.
+
+Tilt specifies the vertical positioning of a camera. When Tilt is controlled 
+using relative values, the unit for vertical positioning is device specific. 
+For more information controlling the tilt of a particular camera, see the 
+documentation that came with the device. 
+
+Depending on the acquisition device, this property may have an associated 
+TiltMode, TiltAbsolute, or TiltControl property.
+
+Setting the Tilt property will set the TiltMode property, if available, to 
+'manual' and the TiltControl property, if available, to 'relative'.
+
+<SeeAlso>TiltAbsolute, TiltControl, TiltMode.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="TiltMode">Specify whether the Tilt property is controlled manually or automatically.
+
+If specified as 'auto', the device manages the tilt value. If specified as 
+'manual', you can control tilt by using the Tilt or the TiltAbsolute property, 
+if available.
+
+The Tilt, TiltAbsolute, TiltControl, and TiltMode properties are closely 
+related. When you specify a value for either the Tilt or TiltAbsolute 
+property, the TiltMode property is automatically set to 'manual'. 
+
+If you change the TiltMode property from 'auto' to 'manual', the Tilt property 
+is automatically set back to the value stored by that property if the 
+TiltControl value is 'relative'. Otherwise, the TiltAbsolute property is 
+automatically set back to the value stored by that property if the TiltControl 
+value is 'absolute'.
+
+<SeeAlso>Tilt.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="TiltAbsolute">Specify camera vertical positioning using absolute values.
+	   	
+TiltAbsolute specifies the vertical positioning of the camera in degrees. 
+Positive values indicate upward movement from the origin; negative values 
+indicate downward movement from the origin. For more information on 
+controlling tilt in a particular camera, see the documentation that came with 
+the device.
+
+Depending on the acquisition device, this property may have an associated mode 
+property allowing this value to be controlled automatically by the device or 
+for it to be manually configured.
+
+Setting the TiltAbsolute property will set the TiltMode property, if 
+available, to 'manual' and the TiltControl property to 'absolute'.
+
+<SeeAlso>Tilt, TiltMode, TiltControl.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="TiltControl">Specify whether the tilt feature is controlled by relative or absolute values.
+	   	
+If specified as 'relative', tilt is controlled by the value specified by the 
+Tilt property. If specified as 'absolute', tilt is controlled by the value 
+specified by the TiltAbsolute property.
+
+<SeeAlso>Tilt.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="OpticalFilter">Specify the optical filter setting using relative values.
+
+OpticalFilter describes the camera's optical lens filter function. For more 
+information on the optical lens filter and the OpticalFilter value, see the 
+documentation that came with the device. 
+
+Depending on the acquisition device, this property may have an associated 
+OpticalFilterMode, OpticalFilterAbsolute, or OpticalFilterControl property.
+
+Setting the OpticalFilter property will set the OpticalFilterMode property, if 
+available, to 'manual' and the OpticalFilterControl property, if available, to 
+'relative'.
+
+<SeeAlso>OpticalFilterAbsolute, OpticalFilterControl, OpticalFilterMode.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="OpticalFilterMode">Specify whether the OpticalFilter property is controlled manually or automatically.
+
+If specified as 'auto', the device manages the optical filter value. If 
+specified as 'manual', you can control optical filter by using the 
+OpticalFilter or the OpticalFilterAbsolute property, if available.
+
+The OpticalFilter, OpticalFilterAbsolute, OpticalFilterControl, and 
+OpticalFilterMode properties are closely related. When you specify a value for 
+either the OpticalFilter or OpticalFilterAbsolute property, the 
+OpticalFilterMode property is automatically set to 'manual'. 
+
+If you change the OpticalFilterMode property from 'auto' to 'manual', the 
+OpticalFilter property is automatically set back to the value stored by that 
+property if the OpticalFilterControl value is 'relative'. Otherwise, the 
+OpticalFilterAbsolute property is automatically set back to the value stored 
+by that property if the OpticalFilterControl value is 'absolute'.
+
+<SeeAlso>OpticalFilter.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="OpticalFilterAbsolute">Specify the optical filter setting using absolute values.
+	   	
+OpticalFilter describes the camera's optical lens filter function. For more 
+information on the optical lens filter and the OpticalFilter value, see the 
+documentation that came with the device. 
+
+Depending on the acquisition device, this property may have an associated mode 
+property allowing this value to be controlled automatically by the device or 
+for it to be manually configured.
+
+Setting the OpticalFilterAbsolute property will set the OpticalFilterMode 
+property, if available, to 'manual' and the OpticalFilterControl property to 
+'absolute'.
+
+<SeeAlso>OpticalFilter, OpticalFilterMode, OpticalFilterControl.</SeeAlso></AdaptorHelp>
+
+	   	<AdaptorHelp property="OpticalFilterControl">Specify whether the optical filter feature is controlled by relative or absolute values.
+	   	
+If specified as 'relative', lens filter is controlled by the value specified 
+by the OpticalFilter property. If specified as 'absolute', lens filter is 
+controlled by the value specified by the OpticalFilterAbsolute property.
+
+<SeeAlso>OpticalFilter.</SeeAlso></AdaptorHelp>
+	
+	   	<AdaptorHelp property="FrameRate">Specify the device frame rate.
+
+FrameRate determines the rate at which frames are acquired by the device. The 
+FrameRate value is measured in number of frames per second.
+
+</AdaptorHelp>
+
+	</Help>
+</ImageAcquisitionInfo>
